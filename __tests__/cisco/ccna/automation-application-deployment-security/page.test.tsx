@@ -594,4 +594,12 @@ describe('CcnaAppDeploymentSecurityPage', () => {
         expect(cssSource).toMatch(/:not\(pre\).*code/s);
         expect(cssSource).toMatch(/#c9d8ff/);
     });
+
+    it('page.cssの.mermaid-wrapが中央寄せスタイル（margin: ... auto ...）を持つ', () => {
+        const cssSource = readFileSync(
+            join(process.cwd(), 'app/cisco/ccna/automation-application-deployment-security/page.css'),
+            'utf8',
+        );
+        expect(cssSource).toMatch(/\.mermaid-wrap[^}]*margin:\s*1\.5rem auto/s);
+    });
 });
