@@ -224,6 +224,7 @@ curl -s -X POST \
 | `-H "Content-Type: application/json"` | リクエストボディが JSON であることをサーバーに伝えるヘッダー |
 | `--data-binary @request.json` | ファイルの内容をバイト単位で保持して送信する。Google 公式手順の `-d @request.json` も有効で、JSON の前後や要素間の空白・改行は意味を変えない |
 | `-o text-response.json` | レスポンスを標準出力ではなくファイルに保存する |
+| `-w '\nHTTP %{http_code}\n'` | レスポンス処理後に改行付きで HTTP ステータスコードを出力する |
 
 > **根拠**: Vision API の公式コマンドライン手順では `POST https://vision.googleapis.com/v1/images:annotate` に `-d @request.json` で JSON を送信しています。本ガイドでは送信バイトをそのまま保持したい場合の選択肢として `--data-binary` を使用しています。
 > 出典: [Detect labels in an image by using the command line | Cloud Vision API](https://cloud.google.com/vision/docs/detect-labels-image-command-line)
