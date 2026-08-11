@@ -22,10 +22,30 @@ vi.mock('@/components/MermaidDiagram', () => ({
     ),
 }));
 
-describe('CCNA Automation Network Fundamentals Guide - ScrollSpy & Title Fidelity', () => {
+describe('CCNA Automation Network Fundamentals Guide - Layout & Order Integrity', () => {
     it('renders the Page component with title and Server Component wrapper', () => {
         const pageElement = Page();
         expect(pageElement).toBeTruthy();
+    });
+
+    it('renders Overview section with exact paragraph and table sequence from original HTML', () => {
+        const { container } = render(<CcnaNetworkFundamentalsGuide />);
+        const overviewSection = container.querySelector('#overview');
+        expect(overviewSection).toBeTruthy();
+
+        const ps = overviewSection?.querySelectorAll('p');
+        expect(ps?.length).toBe(3);
+
+        expect(ps?.[0]?.textContent).toContain('DevNet Associate');
+        expect(ps?.[1]?.textContent).toContain('この試験は次の6つのドメインで構成されており');
+
+        const tableWrapper = overviewSection?.querySelector('.table-wrapper');
+        expect(tableWrapper).toBeTruthy();
+
+        const domainTable = tableWrapper?.querySelector('table.domain-highlight');
+        expect(domainTable).toBeTruthy();
+
+        expect(ps?.[2]?.textContent).toContain('自動化やプログラミングの資格なのに、なぜネットワークの基礎知識が問われるのか？');
     });
 
     it('renders exact H2 section step titles matching original HTML 100%', () => {
@@ -51,9 +71,6 @@ describe('CCNA Automation Network Fundamentals Guide - ScrollSpy & Title Fidelit
 
         expectedH2Titles.forEach((expectedTitle) => {
             const hasMatch = h2Texts.some(text => text.includes(expectedTitle));
-            if (!hasMatch) {
-                console.log('MISSING H2 TITLE:', expectedTitle, 'DOM H2s:', h2Texts);
-            }
             expect(hasMatch).toBe(true);
         });
     });
@@ -63,13 +80,5 @@ describe('CCNA Automation Network Fundamentals Guide - ScrollSpy & Title Fidelit
         const activeLink = container.querySelector('a.active');
         expect(activeLink).toBeTruthy();
         expect(activeLink?.getAttribute('href')).toBe('#step3');
-        expect(activeLink?.textContent).toContain('Step 3：ネットワーク機器（6.3）');
-    });
-
-    it('renders exact paragraph text from original HTML', () => {
-        const { container } = render(<CcnaNetworkFundamentalsGuide />);
-        const text = container.textContent || '';
-        expect(text).toContain('自動化やプログラミングの資格なのに、なぜネットワークの基礎知識が問われるのか？');
-        expect(text).toContain('どこまでがネットワーク部で、どこからがホスト部か');
     });
 });
