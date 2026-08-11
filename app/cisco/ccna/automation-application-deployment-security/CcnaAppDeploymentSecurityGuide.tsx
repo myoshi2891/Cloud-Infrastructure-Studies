@@ -477,29 +477,31 @@ export function CcnaAppDeploymentSecurityGuide() {
 
                         <h3>コード例</h3>
                         <div className="code-block">
-                            <div className="code-label">Python — unittest の基本形</div>
-                            <div className="code-line">import unittest</div>
-                            <div className="code-line">&nbsp;</div>
-                            <div className="code-line">def add(a, b):</div>
-                            <div className="code-line">{'    '}&#34;&#34;&#34;2つの数値を加算する簡単な関数&#34;&#34;&#34;</div>
-                            <div className="code-line">{'    '}return a + b</div>
-                            <div className="code-line">&nbsp;</div>
-                            <div className="code-line">class TestAddFunction(unittest.TestCase):</div>
-                            <div className="code-line">&nbsp;</div>
-                            <div className="code-line">{'    '}def test_add_positive_numbers(self):</div>
-                            <div className="code-line">{'        '}# Arrange</div>
-                            <div className="code-line">{'        '}a, b = 2, 3</div>
-                            <div className="code-line">{'        '}# Act</div>
-                            <div className="code-line">{'        '}result = add(a, b)</div>
-                            <div className="code-line">{'        '}# Assert</div>
-                            <div className="code-line">{'        '}self.assertEqual(result, 5)</div>
-                            <div className="code-line">&nbsp;</div>
-                            <div className="code-line">{'    '}def test_add_negative_numbers(self):</div>
-                            <div className="code-line">{'        '}result = add(-1, -1)</div>
-                            <div className="code-line">{'        '}self.assertEqual(result, -2)</div>
-                            <div className="code-line">&nbsp;</div>
-                            <div className="code-line">if __name__ == &#34;__main__&#34;:</div>
-                            <div className="code-line">{'    '}unittest.main()</div>
+                            <div className="code-header">Python — unittest の基本形</div>
+                            <div className="code-content">
+                                <div className="code-line"><span className="code-keyword">import</span> unittest</div>
+                                <div className="code-line">&nbsp;</div>
+                                <div className="code-line"><span className="code-keyword">def</span> <span className="code-function">add</span>(a, b):</div>
+                                <div className="code-line">{'    '}<span className="code-string">&#34;&#34;&#34;2つの数値を加算する簡単な関数&#34;&#34;&#34;</span></div>
+                                <div className="code-line">{'    '}<span className="code-keyword">return</span> a + b</div>
+                                <div className="code-line">&nbsp;</div>
+                                <div className="code-line"><span className="code-keyword">class</span> <span className="code-function">TestAddFunction</span>(unittest.TestCase):</div>
+                                <div className="code-line">&nbsp;</div>
+                                <div className="code-line">{'    '}<span className="code-keyword">def</span> <span className="code-function">test_add_positive_numbers</span>(self):</div>
+                                <div className="code-line">{'        '}<span className="code-comment"># Arrange</span></div>
+                                <div className="code-line">{'        '}a, b = 2, 3</div>
+                                <div className="code-line">{'        '}<span className="code-comment"># Act</span></div>
+                                <div className="code-line">{'        '}result = add(a, b)</div>
+                                <div className="code-line">{'        '}<span className="code-comment"># Assert</span></div>
+                                <div className="code-line">{'        '}self.assertEqual(result, 5)</div>
+                                <div className="code-line">&nbsp;</div>
+                                <div className="code-line">{'    '}<span className="code-keyword">def</span> <span className="code-function">test_add_negative_numbers</span>(self):</div>
+                                <div className="code-line">{'        '}result = add(-1, -1)</div>
+                                <div className="code-line">{'        '}self.assertEqual(result, -2)</div>
+                                <div className="code-line">&nbsp;</div>
+                                <div className="code-line"><span className="code-keyword">if</span> __name__ == <span className="code-string">&#34;__main__&#34;</span>:</div>
+                                <div className="code-line">{'    '}unittest.main()</div>
+                            </div>
                         </div>
 
                         <p>
@@ -578,25 +580,27 @@ export function CcnaAppDeploymentSecurityGuide() {
 
                         <h3>サンプルDockerfile</h3>
                         <div className="code-block">
-                            <div className="code-label">Dockerfile</div>
-                            <div className="code-line"># ベースイメージを指定</div>
-                            <div className="code-line">FROM python:3.12-slim</div>
-                            <div className="code-line">&nbsp;</div>
-                            <div className="code-line"># 作業ディレクトリを作成・移動</div>
-                            <div className="code-line">WORKDIR /app</div>
-                            <div className="code-line">&nbsp;</div>
-                            <div className="code-line"># 依存関係定義ファイルを先にコピーしてキャッシュを効かせる</div>
-                            <div className="code-line">COPY requirements.txt .</div>
-                            <div className="code-line">RUN pip install --no-cache-dir -r requirements.txt</div>
-                            <div className="code-line">&nbsp;</div>
-                            <div className="code-line"># アプリ本体をコピー</div>
-                            <div className="code-line">COPY . .</div>
-                            <div className="code-line">&nbsp;</div>
-                            <div className="code-line"># コンテナが待ち受けるポートを明示</div>
-                            <div className="code-line">EXPOSE 8080</div>
-                            <div className="code-line">&nbsp;</div>
-                            <div className="code-line"># コンテナ起動時に実行するコマンド</div>
-                            <div className="code-line">{`CMD ["python", "app.py"]`}</div>
+                            <div className="code-header">Dockerfile</div>
+                            <div className="code-content">
+                                <div className="code-line"><span className="code-comment"># ベースイメージを指定</span></div>
+                                <div className="code-line"><span className="code-keyword">FROM</span> python:3.12-slim</div>
+                                <div className="code-line">&nbsp;</div>
+                                <div className="code-line"><span className="code-comment"># 作業ディレクトリを作成・移動</span></div>
+                                <div className="code-line"><span className="code-keyword">WORKDIR</span> /app</div>
+                                <div className="code-line">&nbsp;</div>
+                                <div className="code-line"><span className="code-comment"># 依存関係定義ファイルを先にコピーしてキャッシュを効かせる</span></div>
+                                <div className="code-line"><span className="code-keyword">COPY</span> requirements.txt .</div>
+                                <div className="code-line"><span className="code-keyword">RUN</span> pip install --no-cache-dir -r requirements.txt</div>
+                                <div className="code-line">&nbsp;</div>
+                                <div className="code-line"><span className="code-comment"># アプリ本体をコピー</span></div>
+                                <div className="code-line"><span className="code-keyword">COPY</span> . .</div>
+                                <div className="code-line">&nbsp;</div>
+                                <div className="code-line"><span className="code-comment"># コンテナが待ち受けるポートを明示</span></div>
+                                <div className="code-line"><span className="code-keyword">EXPOSE</span> 8080</div>
+                                <div className="code-line">&nbsp;</div>
+                                <div className="code-line"><span className="code-comment"># コンテナ起動時に実行するコマンド</span></div>
+                                <div className="code-line"><span className="code-keyword">CMD</span> [<span className="code-string">&#34;python&#34;</span>, <span className="code-string">&#34;app.py&#34;</span>]</div>
+                            </div>
                         </div>
 
                         <h3>4.7 ローカル開発環境でのDockerイメージの利用</h3>
