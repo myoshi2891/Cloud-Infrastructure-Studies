@@ -40,10 +40,11 @@ export default function CcnaNetworkFundamentalsGuide() {
             observer?.disconnect();
             const topOffset = Math.round(window.innerHeight * 0.2);
             const bottomOffset = Math.round(window.innerHeight * 0.7);
-            observer = new IntersectionObserver(handleIntersections, {
+            const nextObserver = new IntersectionObserver(handleIntersections, {
                 rootMargin: `-${topOffset}px 0px -${bottomOffset}px 0px`,
             });
-            sections.forEach((section) => observer.observe(section));
+            observer = nextObserver;
+            sections.forEach((section) => nextObserver.observe(section));
         };
 
         observeSections();
