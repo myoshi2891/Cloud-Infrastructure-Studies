@@ -7,6 +7,9 @@ import { renderToString } from 'react-dom/server';
 // Mock MermaidDiagram component to avoid SVG rendering issues during SSR string compilation
 vi_mock_mermaid();
 
+/**
+ * Exposes React globally for standalone execution.
+ */
 function vi_mock_mermaid() {
     // If running in standalone node process
     globalThis.React = React;
@@ -14,6 +17,12 @@ function vi_mock_mermaid() {
 
 import CcnaNetworkFundamentalsGuide from '../app/cisco/ccna/automation-network-fundamentals/CcnaNetworkFundamentalsGuide.tsx';
 
+/**
+ * Identifies text differences between source and rendered text sequences.
+ * @param {string[]} sourceTexts - Text values from the source document.
+ * @param {string[]} jsxTexts - Text values from the rendered document.
+ * @return {string[]} Mismatch descriptions, or an empty array when the sequences match after whitespace removal.
+ */
 export function findOrderedTextMismatches(sourceTexts, jsxTexts) {
     const comparisonText = (text) => text.replace(/\s+/g, '');
     const missingTexts = [];
@@ -31,10 +40,11 @@ export function findOrderedTextMismatches(sourceTexts, jsxTexts) {
 }
 
 /**
- * Compare DOM text nodes between source HTML and rendered Next.js component.
+ * Verifies that the rendered component matches the source HTML content and reference links.
  *
- * @param {string} htmlPath - Absolute path to source HTML
- * @returns {boolean} True if 100% matched
+ * @param {string} htmlPath - Path to the source HTML file.
+ * @returns {boolean} `true` if all compared content and reference links match.
+ * @throws {Error} If the source file is missing or the rendered output differs from the source.
  */
 export function verifyDOMFidelity(htmlPath) {
     if (!fs.existsSync(htmlPath)) {

@@ -2,7 +2,9 @@
 
 import { useEffect, useState } from 'react';
 
-/** Renders the responsive Infrastructure and Automation table of contents with scroll tracking. */
+/**
+ * Renders a responsive table of contents for the Infrastructure and Automation guide and tracks the visible section.
+ */
 export default function NavBar() {
     const [isOpen, setIsOpen] = useState(false);
     const [activeSection, setActiveSection] = useState('overview');

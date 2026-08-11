@@ -8,7 +8,11 @@ export const metadata: Metadata = {
         'Cisco CCNA Automation 200-901 試験の Network Fundamentals ドメイン（MACアドレス・VLAN・IP・ルーティング・3つのPlane・IPサービス・ポート番号・トラブルシューティング）徹底解説。',
 };
 
-/** Renders the server entry point for the CCNAAUTO Network Fundamentals guide. */
+/**
+ * Renders the CCNA Automation Network Fundamentals guide page.
+ *
+ * @returns The Network Fundamentals guide component
+ */
 export default function NetworkFundamentalsPage() {
     return <CcnaNetworkFundamentalsGuide />;
 }

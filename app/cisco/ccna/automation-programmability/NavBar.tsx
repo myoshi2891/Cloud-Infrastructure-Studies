@@ -16,7 +16,7 @@ const NAV_ITEMS = [
 ];
 
 /**
- * Renders the Automation and Programmability table of contents with ScrollSpy.
+ * Renders the CCNA Domain 6.0 table of contents and highlights the active section.
  *
  * @param activeId - Optional externally controlled section identifier.
  */

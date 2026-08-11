@@ -1,6 +1,7 @@
 /**
- * コメントと文字列を除外し、実コード上の `const DIAGRAMS =` 宣言を探す。
- * 返す valueStart は `=` 後の空白を飛ばした値の開始位置。
+ * Locates a real-code `const DIAGRAMS =` declaration in script content or the full source.
+ * @param {string} source - The source text to search.
+ * @returns {{index: number, valueStart: number}|null} The declaration index and value start index, or `null` when no declaration is found in script content.
  */
 export function findDiagramsDeclaration(source) {
     const scriptPattern = /<script\b[^>]*>([\s\S]*?)<\/script\s*>/gi;
@@ -19,6 +20,11 @@ export function findDiagramsDeclaration(source) {
     return hasScript ? null : findInCode(source);
 }
 
+/**
+ * Finds a `const DIAGRAMS =` declaration in source code.
+ * @param {string} source - The source text to search.
+ * @returns {{index: number, valueStart: number} | null} The declaration's start index and value start position, or `null` if no declaration is found.
+ */
 function findInCode(source) {
     const code = maskCommentsAndStrings(source);
     const match = /\bconst\s+DIAGRAMS\s*=\s*/.exec(code);
@@ -30,8 +36,9 @@ function findInCode(source) {
 }
 
 /**
- * コメント、文字列、テンプレートリテラル、正規表現リテラルを
- * 元のオフセットを維持した空白へ置換する。
+ * Masks comments, strings, template literals, and regular-expression literals while preserving source offsets and line breaks.
+ * @param {string} source - The JavaScript source to mask.
+ * @return {string} The source with non-code regions replaced by whitespace.
  */
 export function maskCommentsAndStrings(source) {
     const chars = source.split('');
@@ -156,6 +163,13 @@ export function maskCommentsAndStrings(source) {
     return chars.join('');
 }
 
+/**
+ * Determines whether a slash at the specified position can begin a regular expression literal.
+ * @param {string} source - The source text containing the slash.
+ * @param {number} slashIndex - The slash position in the source text.
+ * @param {boolean} closedControlCondition - Whether the slash follows a closed control-condition expression.
+ * @return {boolean} `true` if the slash can begin a regular expression literal, `false` otherwise.
+ */
 function canStartRegexLiteral(source, slashIndex, closedControlCondition) {
     if (closedControlCondition) return true;
 
