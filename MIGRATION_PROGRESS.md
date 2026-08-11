@@ -8,17 +8,17 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 
 - **ブランチ:** dev
 - **進行中タスク:** (なし)
-- **最新実装 HEAD:** `4ef5a60` (`feat(cisco/ccna): complete 100% faithful CSS style and code syntax highlighting migration for automation-app-deployment-security`)
-- **前回進捗同期コミット:** `4ef5a60`
+- **最新実装 HEAD:** `fe5bc4e` (`feat(cisco/ccna): make diagram wrappers full-width without artificial maxWidth restrictions`)
+- **前回進捗同期コミット:** `fe5bc4e`
 - **次の作業:** 完了
-- **ビルド状態:** 単体テスト40件全パス（デザイン忠実性テスト7件含む）
-- **最終更新日時(UTC):** 2026-08-11T03:57:00.000Z
+- **ビルド状態:** 単体テスト42件全パス（図解の中央寄せ・全幅化レイアウトテスト含む）
+- **最終更新日時(UTC):** 2026-08-11T04:01:00.000Z
 
 ## 2026-08-11: Cisco「CCNA Automation ドメイン4.0 Application Deployment and Security 完全ガイド」コンテンツ＆デザイン100%完全忠実移植 (完了)
 
 ### 目的
 
-`Ccna-automation-application-deployment-security.html`（1944行）との全量照合およびデザインレビューにより、文章・表構造だけでなくCSS変数（`:root`）、`h1`グラデーションテキスト、`h2`左アクセントバー、`th`白文字＆半透明アクセント背景、`.badge`ピル型、`.callout`アクセントバー、インラインコード背景、コードブロック構文ハイライトの乖離を特定。デザイン忠実性テスト7件（Red）を追加し、`page.css`およびTSXコンポーネントを原本HTMLデザインに100%忠実に全面修復・完成させた（Green）。
+`Ccna-automation-application-deployment-security.html`（1944行）との全量照合およびデザインレビューにより、文章・表構造だけでなくCSS変数（`:root`）、`h1`グラデーションテキスト、`h2`左アクセントバー、`th`白文字＆半透明アクセント背景、`.badge`ピル型、`.callout`アクセントバー、インラインコード背景、コードブロック構文ハイライトの乖離を特定。さらに Mermaid 図解の人工的な幅制限（`maxWidth: 800px` 等）を排除してコンテンツエリア全幅 (`width: 100%`) かつ中央寄せ配置へ改善。デザイン・レイアウトテスト（Red）を追加し、`page.css`およびTSXコンポーネントを原本HTMLデザインに100%忠実に全面修復・完成させた（Green）。
 
 ### 完了済みステップ
 
@@ -26,6 +26,8 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 - [x] **Step 2 (Green - コンテンツ)**: `feat(cisco/ccna): rewrite automation-app-deployment-security guide with 100% HTML-faithful content` (`6ece372`)
 - [x] **Step 1 (Red - デザイン・CSS)**: `test(cisco/ccna): add 7 failing design-faithfulness tests for automation-app-deployment-security CSS migration` (`b324651`)
 - [x] **Step 2 (Green - デザイン・CSS)**: `feat(cisco/ccna): complete 100% faithful CSS style and code syntax highlighting migration for automation-app-deployment-security` (`4ef5a60`)
+- [x] **Step 1 (Red - 図解レイアウト)**: `test(cisco/ccna): add failing test for diagram centering (margin: 1.5rem auto 2rem)` (`3d2a578`) / `test(cisco/ccna): add failing test for full-width diagram wrapper without artificial maxWidth` (`540afa3`)
+- [x] **Step 2 (Green - 図解レイアウト)**: `feat(cisco/ccna): make diagram wrappers full-width without artificial maxWidth restrictions` (`fe5bc4e`)
 
 ### 主な修正内容
 
