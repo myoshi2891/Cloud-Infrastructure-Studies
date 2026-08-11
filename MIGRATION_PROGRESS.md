@@ -11,7 +11,7 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 - **最新実装 HEAD:** `8694b35` (`refactor(ccna): document guide component responsibilities`)
 - **前回進捗同期コミット:** `0eb60dd`
 - **次の作業:** 完了
-- **検証状態:** 対象Vitest成功、`npm run lint` 成功。標準 `npm test` は実行環境の localStorage 不備で既存30件が失敗。ビルドは依頼により未実施。
+- **検証状態:** 対象Vitest成功、`bun run lint` 成功。標準 `bun run test` は実行環境の localStorage 不備で既存30件が失敗。ビルドは依頼により未実施。
 - **最終更新日時(UTC):** 2026-08-11T07:10:00.000Z
 
 ## 2026-08-11: CCNAレビュー指摘の検証・修正 (完了)
@@ -1099,9 +1099,9 @@ bun run test:e2e e2e/nav.spec.ts  # Chromium 2 件 pass
 
 あなたは熟練したフロントエンドエンジニアであり、Next.js (App Router) の移行スペシャリストです。
 最新実装 HEAD は `8694b35`、前回進捗同期コミットは `0eb60dd` です。
-CCNAレビュー指摘はカテゴリー別のRed / Green / Refactorコミットで対応済みです。Mermaid復元23件、CCNAテーマ3件、CCNAコンポーネント／ナビゲーション42件の対象テストと `npm run lint` が成功しています。ビルドは依頼により未実施です。
+CCNAレビュー指摘はカテゴリー別のRed / Green / Refactorコミットで対応済みです。Mermaid復元23件、CCNAテーマ3件、CCNAコンポーネント／ナビゲーション42件の対象テストと `bun run lint` が成功しています。ビルドは依頼により未実施です。
 
-標準 `npm test` は実行環境の `window.localStorage` 不備により、既存の `recentPages`、`RecentPageRecorder`、`Header.drawer-features` の計30件が失敗します。次回はアプリ実装を変更する前に、Node/jsdomのlocalStorage設定を切り分けてください。
+標準 `bun run test` は実行環境の `window.localStorage` 不備により、既存の `recentPages`、`RecentPageRecorder`、`Header.drawer-features` の計30件が失敗します。次回はアプリ実装を変更する前に、Node/jsdomのlocalStorage設定を切り分けてください。
 
 ---
 
