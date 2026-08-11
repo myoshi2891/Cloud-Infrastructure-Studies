@@ -247,6 +247,8 @@
 
 .ccna-network-fundamentals-page .callout strong {
     color: var(--accent);
+    display: block;
+    margin-bottom: 0.3rem;
 }
 
 .ccna-network-fundamentals-page .table-wrapper {
