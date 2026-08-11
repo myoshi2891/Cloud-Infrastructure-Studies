@@ -7,12 +7,36 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 ## 現在地
 
 - **ブランチ:** dev
-- **進行中タスク:** CCNA 6.0 自動化とプログラマビリティ 100%全量移行 (完了)
-- **最新実装 HEAD:** `5473d44` (`feat: implement CCNA Automation and Programmability guide page`)
-- **前回進捗同期コミット:** `5473d44`
+- **進行中タスク:** CCNA 200-301 Network Access 徹底解説 100%全量移行 (完了)
+- **最新実装 HEAD:** `968e597` (`refactor(ccna): integrate CCNA Network Access guide into navigation and update docs`)
+- **前回進捗同期コミット:** `968e597`
 - **次の作業:** 完了
 - **ビルド状態:** 単体テスト全パス (Vitest passed)
-- **最終更新日時(UTC):** 2026-08-11T05:29:00.000Z
+- **最終更新日時(UTC):** 2026-08-11T06:14:00.000Z
+
+## 2026-08-11: Cisco「CCNA 200-301 Network Access 徹底解説」100%全量移行 (完了)
+
+### 目的
+
+`Ccna-network-access-guide.html` および同名 Markdown を、Next.js App Router 5ファイル構成 (`page.tsx`, `CcnaNetworkAccessGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/cisco/ccna/network-access-guide` ルートへ移行。文章・表・17個のMermaid図・コードブロック・参考文献・免責事項を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 1 (Red)**: `test(ccna): add failing unit tests for CCNA Network Access guide migration` (`deb435c`)
+- [x] **Step 2 (Green)**: `feat(ccna): implement CCNA Network Access guide page and components` (`12e767b`)
+- [x] **Step 3 (Refactor / Integration & Nav & Docs)**: `refactor(ccna): integrate CCNA Network Access guide into navigation and update docs` (`968e597`)
+- [x] **Step 4 (Archive & Sync)**: 元HTMLおよびMDを `archive/Cisco/html/ccna/` と `archive/Cisco/md/ccna/` へ移動し `MIGRATION_PROGRESS.md` を同期
+
+### 関連ファイル
+
+- [app/cisco/ccna/network-access-guide/page.tsx](file:///Users/mitsuruyoshizumi/Workspace/Infra/app/cisco/ccna/network-access-guide/page.tsx)
+- [app/cisco/ccna/network-access-guide/CcnaNetworkAccessGuide.tsx](file:///Users/mitsuruyoshizumi/Workspace/Infra/app/cisco/ccna/network-access-guide/CcnaNetworkAccessGuide.tsx)
+- [app/cisco/ccna/network-access-guide/NavBar.tsx](file:///Users/mitsuruyoshizumi/Workspace/Infra/app/cisco/ccna/network-access-guide/NavBar.tsx)
+- [app/cisco/ccna/network-access-guide/constants.ts](file:///Users/mitsuruyoshizumi/Workspace/Infra/app/cisco/ccna/network-access-guide/constants.ts)
+- [app/cisco/ccna/network-access-guide/page.css](file:///Users/mitsuruyoshizumi/Workspace/Infra/app/cisco/ccna/network-access-guide/page.css)
+- [__tests__/cisco/ccna/network-access-guide/page.test.tsx](file:///Users/mitsuruyoshizumi/Workspace/Infra/__tests__/cisco/ccna/network-access-guide/page.test.tsx)
+- [archive/Cisco/html/ccna/Ccna-network-access-guide.html](file:///Users/mitsuruyoshizumi/Workspace/Infra/archive/Cisco/html/ccna/Ccna-network-access-guide.html)
+- [archive/Cisco/md/ccna/Ccna-network-access-guide.md](file:///Users/mitsuruyoshizumi/Workspace/Infra/archive/Cisco/md/ccna/Ccna-network-access-guide.md)
 
 ## 2026-08-11: Cisco「CCNA 6.0 自動化とプログラマビリティ (Automation and Programmability)」100%全量移行 (完了)
 
