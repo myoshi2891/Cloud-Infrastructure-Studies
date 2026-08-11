@@ -602,4 +602,13 @@ describe('CcnaAppDeploymentSecurityPage', () => {
         );
         expect(cssSource).toMatch(/\.mermaid-wrap[^}]*margin:\s*1\.5rem auto/s);
     });
+
+    it('.mermaid-wrap要素に人工的なmaxWidthインラインスタイルが指定されていないこと', () => {
+        const { container } = render(<CcnaAppDeploymentSecurityPage />);
+        const mermaidWraps = container.querySelectorAll('.mermaid-wrap');
+        expect(mermaidWraps.length).toBeGreaterThan(0);
+        mermaidWraps.forEach((wrap) => {
+            expect((wrap as HTMLElement).style.maxWidth).toBe('');
+        });
+    });
 });
