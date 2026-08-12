@@ -1,5 +1,6 @@
 # Associate Google Workspace Administrator 試験対策ガイド
-# Section 4: セキュリティポリシーとアクセス制御の管理
+
+## Section 4: セキュリティポリシーとアクセス制御の管理
 
 *Managing security policies and access controls(出題比率 約20%)*
 
@@ -54,7 +55,7 @@ flowchart TD
   - [4.2.3 セキュリティ健全性ページによる設定ギャップの特定](#423-セキュリティ健全性ページによる設定ギャップの特定)
   - [4.2.4 アクティビティルールとアラートの作成](#424-アクティビティルールとアラートの作成)
 - [4.3 追加のGoogleおよびサードパーティアプリケーションの有効化](#43-追加のgoogleおよびサードパーティアプリケーションの有効化)
-  - [4.3.1 Marketplaceアローリストの管理](#431-marketplaceアローリストの管理)
+  - [4.3.1 Marketplace許可リストの管理](#431-marketplace許可リストの管理)
   - [4.3.2 MarketplaceとPlayストアアプリのデプロイと制限](#432-marketplaceとplayストアアプリのデプロイと制限)
   - [4.3.3 サードパーティアプリケーションでのSSO設定](#433-サードパーティアプリケーションでのsso設定)
   - [4.3.4 特定ユーザーへの追加Googleサービスのアクセス管理](#434-特定ユーザーへの追加googleサービスのアクセス管理)
@@ -245,7 +246,7 @@ flowchart TD
 | 「誰が」サインインしたかを検証したい | パスワード + 2SV |
 | 「どこから・どの端末から」のアクセスかを制御したい | Context-Aware Access |
 | 「一定時間ごとに」再認証を求めたい | Google Session Control |
-| DLPと組み合わせて特定条件下でのみ機密データ共有を制限したい | CAA + DLPルールの組み合わせ |
+| CAA条件と組み合わせて機密データの操作を制限したい | Chromeではアップロード・貼り付け・ダウンロード・印刷、Google Driveでは「Disable download, print, and copy」を制御 |
 
 CAAは、設定グループ(Configuration Groups)と組み合わせることで、組織単位の階層構造とは独立してユーザー横断的にアクセスレベルを適用することも可能です。また、Admin Console自体へのアクセスにもCAAレベルを割り当てられますが、これは管理者自身がロックアウトされるリスクがあるため、明確な必要がある場合以外は推奨されません。
 
@@ -268,7 +269,7 @@ Google Workspaceのセキュリティ設定は、基本的に**組織単位**(OU
 | 組織単位(OU) | 階層構造を持ち、子OUは親OUの設定を継承 | 部署・役職などの恒久的な組織構造に基づく設定 |
 | 設定グループ(Configuration Group) | OUの階層をまたいで任意のユーザーをグループ化 | 「一部の部署の一部の人だけ」といった横断的な例外設定 |
 
-**優先順位のルール**として、設定グループの設定はOUの設定より優先されます(Group settings override organizational units)。これは2SV・CAA・パスワードポリシーなど、本章で扱うほぼすべてのセキュリティ設定に共通する原則であり、試験でも頻出のポイントです。
+**優先順位のルール**として、設定グループに対応する設定では、グループの設定がOUの設定より優先されます(Group settings override organizational units)。この原則は2SV・CAAなどに適用されますが、パスワードポリシーは設定グループに対応せず、OU単位で管理します。
 
 #### 典型的な適用パターン
 
@@ -481,10 +482,10 @@ flowchart LR
 |---|---|
 | アカウントセキュリティ | 管理者・ユーザーの2SV登録状況、強制状況 |
 | Gmail | 自動転送設定、メールルーティングの健全性 |
-| Drive | 外部共有設定、Trust Rulesの適用状況 |
-| Groups | グループの外部公開範囲 |
+| Drive | Drive sharing settings。対応エディション: Frontline Plus、Enterprise Plus、Education Standard / Plus、Enterprise Essentials Plus |
+| Groups | Groups creation and membership。対応エディション: Frontline Plus、Enterprise Plus、Education Standard / Plus、Enterprise Essentials Plus |
 | デバイス管理 | 端末の暗号化・パスコード要求状況 |
-| Marketplace | インストール済みアプリのリスク評価 |
+| Marketplace | Google Workspace Marketplace applications usage。対応エディション: Frontline Plus、Enterprise Plus、Education Standard / Plus、Enterprise Essentials Plus |
 | Sites | 公開設定の状態 |
 
 セキュリティ健全性ページで確認できる項目は**契約エディションによって異なります**。また、あくまで「一般的なセキュリティガイドラインに基づく推奨状態との比較」であるため、実際に設定を変更するかどうかは、組織のビジネス要件やリスク管理ポリシーとのバランスを取って判断する必要があります(すべての推奨をそのまま適用すればよいわけではありません)。
@@ -502,7 +503,7 @@ flowchart LR
 - 新規に管理者になった際、まずセキュリティ健全性ページを確認し、既存環境のセキュリティ設定のベースラインを把握することから始めるとよい。
 - 四半期ごとなど定期的にセキュリティ健全性ページをレビューし、設定ドリフト(意図せぬ設定変更の蓄積)を早期発見する運用を確立する。
 
-> **出典**: [About the security center](https://knowledge.workspace.google.com/admin/security/about-the-security-center)(セキュリティ健全性ページの概要記載箇所)
+> **出典**: [Get started with the security health page](https://knowledge.workspace.google.com/admin/security/get-started-with-the-security-health-page) / [Monitor the health of your Drive settings](https://knowledge.workspace.google.com/admin/security/monitor-the-health-of-your-drive-settings) / [Monitor the health of your Groups settings](https://knowledge.workspace.google.com/admin/security/monitor-the-health-of-your-groups-settings) / [Monitor the health of your Marketplace apps settings](https://knowledge.workspace.google.com/admin/security/monitor-the-health-of-your-marketplace-apps-settings)
 
 ---
 
@@ -563,25 +564,25 @@ flowchart TD
 
 ## 4.3 追加のGoogleおよびサードパーティアプリケーションの有効化
 
-### 4.3.1 Marketplaceアローリストの管理
+### 4.3.1 Marketplace許可リストの管理
 
-Google Workspace Marketplaceのアローリスト(allowlist)は、ユーザーが自身でインストールできるアプリの範囲を管理者が事前承認する仕組みです。アローリストは「Manage access to apps」設定が **Allow users to install and run allowlisted apps from the Marketplace** になっているユーザーにのみ影響します。
+Google Workspace Marketplaceの許可リスト(allowlist)は、ユーザーが自身でインストールできるアプリの範囲を管理者が事前承認する仕組みです。許可リストは「Manage access to apps」設定が **Allow users to install and run allowlisted apps from the Marketplace** になっているユーザーにのみ影響します。
 
 #### アプリアクセスの3つのモード
 
 | モード | 内容 |
 |---|---|
 | 任意のアプリを許可 | ユーザーは任意のMarketplaceアプリをインストール・実行可能 |
-| アローリストのみ許可 | 管理者が承認したアプリのみインストール・実行可能 |
+| 許可リストのみ許可 | 管理者が承認したアプリのみインストール・実行可能 |
 | インストール不可 | ユーザー自身はいかなるアプリもインストールできない(管理者による代理インストールは可能) |
 
-**除外リスト**(Excludelist)の挙動にも注意が必要です。組織全体でアプリを除外することは「アローリストに追加しない」ことと同義ですが、特定のOUのみで除外指定した場合、親OUでそのアプリが許可されていなければ実質的に効果を持ちません(親の許可が前提条件になる)。また、除外リストはMarketplace以外の経路からのアプリインストールを妨げるものではなく、より強力なデータアクセス制御が必要な場合は次節のAPI Controlsを併用します。
+**除外リスト**(Excludelist)の挙動にも注意が必要です。組織全体でアプリを除外することは「許可リストに追加しない」ことと同義ですが、特定のOUのみで除外指定した場合、親OUでそのアプリが許可されていなければ実質的に効果を持ちません(親の許可が前提条件になる)。また、除外リストはMarketplace以外の経路からのアプリインストールを妨げるものではなく、より強力なデータアクセス制御が必要な場合は次節のAPI Controlsを併用します。
 
 #### ベストプラクティス
 
 - アプリを一部のユーザーのみに提供したい場合は、事前にそのユーザーを専用のOUまたはアクセスグループに配置してから、そのOU/グループに対してのみアプリを許可する。
-- アローリストに追加されたアプリは自動的に「信頼済み(Trusted)」として扱われるため、アローリスト登録前に十分なレビュー(要求スコープの確認等)を行う。
-- 未成年ユーザー(18歳未満)が在籍する組織(教育機関など)では、Marketplaceアプリは既定でGoogleデータへのアクセスがブロックされ、アローリスト登録・管理者インストール・個別設定のいずれかを行わない限り利用できない点を踏まえ、保護者の同意取得プロセスも運用に組み込む。
+- 許可リストに追加されたアプリは自動的に「信頼済み(Trusted)」として扱われるため、許可リスト登録前に十分なレビュー(要求スコープの確認等)を行う。
+- 未成年ユーザー(18歳未満)が在籍する組織(教育機関など)では、Marketplaceアプリは既定でGoogleデータへのアクセスがブロックされ、許可リスト登録・管理者インストール・個別設定のいずれかを行わない限り利用できない点を踏まえ、保護者の同意取得プロセスも運用に組み込む。
 
 > **出典**: [Manage the Marketplace app allowlist for your organization](https://knowledge.workspace.google.com/admin/apps/manage-the-marketplace-app-allowlist-for-your-organization) / [Set whether users can install Marketplace apps](https://knowledge.workspace.google.com/admin/apps/set-whether-users-can-install-marketplace-apps)
 
@@ -593,7 +594,7 @@ Googleは、アプリガバナンスを2つの補完的なレイヤーで捉え�
 
 | レイヤー | 制御対象 | 主なツール |
 |---|---|---|
-| App access(アプリアクセス) | ユーザーがインストール・実行できるアプリそのものの範囲 | Marketplaceアローリスト・インストール設定 |
+| App access(アプリアクセス) | ユーザーがインストール・実行できるアプリそのものの範囲 | Marketplace許可リスト・インストール設定 |
 | API controls(API制御) | インストールされたアプリがどのGoogleデータ(スコープ)にアクセスできるか | API Controls(App Access Control) |
 
 App accessを「任意のアプリを許可」に設定している組織ほど、API controlsによるデータアクセス制御の重要性が高まります。両者を組み合わせることで、「インストールは自由だが、機密性の高いデータへのアクセスは個別審査する」という柔軟な運用が可能になります。
@@ -602,7 +603,7 @@ App accessを「任意のアプリを許可」に設定している組織ほど�
 
 | 方法 | 説明 | 適したケース |
 |---|---|---|
-| ユーザー自身によるインストール(アローリスト経由) | ユーザーがMarketplaceからセルフサービスでインストール | 全社共通ツールで、部門ごとの裁量を残したい場合 |
+| ユーザー自身によるインストール(許可リスト経由) | ユーザーがMarketplaceからセルフサービスでインストール | 全社共通ツールで、部門ごとの裁量を残したい場合 |
 | 管理者による代理インストール(Admin install) | 管理者がユーザーに代わって組織全体・特定OUへ一括インストール | 必須ツールを全員に確実に配布したい場合、Marketplace承認画面をスキップしたい場合 |
 
 管理者によるドメインインストール(Domain installation)を使うと、承認済みアプリに限り、エンドユーザーが個別に同意画面を確認する手間を省略できます。
@@ -613,7 +614,7 @@ Google Playストアアプリの制御は、モバイルデバイス管理(4.1�
 
 #### ベストプラクティス
 
-- 必須アプリ(勤怠管理・経費精算など)は管理者インストールで確実に配布し、任意ツールはアローリスト経由のセルフサービスに留めることで、ガバナンスと利便性のバランスを取る。
+- 必須アプリ(勤怠管理・経費精算など)は管理者インストールで確実に配布し、任意ツールは許可リスト経由のセルフサービスに留めることで、ガバナンスと利便性のバランスを取る。
 - アプリのインストール設定を「より制限的な設定」に変更すると、既にインストール済みのユーザーがアクセスできなくなる場合があるため、変更前に影響範囲(利用者数・利用中のワークフロー)を確認する。
 - Drive・Calendar・Chatなど、サービスごとに個別のサードパーティアプリ許可設定(アドオン等)が存在し、これらはMarketplace全体設定より優先される。サービス単位の設定も忘れずに確認する。
 
@@ -659,7 +660,7 @@ sequenceDiagram
 
 #### サードパーティIdPを利用する場合(GoogleがService Provider)
 
-Google Workspaceは、SAMLとOIDCの両プロトコルをサポートします(OIDCは現時点でMicrosoft Entra IDのみ対応)。設定は「**SSOプロファイル**」という単位で行い、プロファイルをユーザーグループ・組織単位に割り当てることで、**複数のIdPを併用**したり、本番導入前にテスト用プロファイルを試したりすることが可能です。これはGoogleが推奨する現行方式です。
+Google Workspaceは、SAMLとOIDCの両プロトコルをサポートします。OIDCではMicrosoft Entra ID向けの事前設定プロファイルに加え、その他のIdP向けにカスタムOIDCプロファイルを作成できます。設定は「**SSOプロファイル**」という単位で行い、プロファイルをユーザーグループ・組織単位に割り当てることで、**複数のIdPを併用**したり、本番導入前にテスト用プロファイルを試したりすることが可能です。これはGoogleが推奨する現行方式です。
 
 旧方式として「レガシーSSOプロファイル」も存在しますが、これは単一のIdPしかサポートせず、既にSSOプロファイル方式へ移行済みのユーザー向けの互換性維持機能という位置付けです。新規構築では原則SSOプロファイル方式を選択します。
 
@@ -748,7 +749,9 @@ flowchart TD
     style DENY2 fill:#d93025,color:#ffffff
 ```
 
-管理者がアプリを「Restricted(制限)」なサービスに対して「Blocked」に変更すると、それまで信頼されていなかったアプリは即座に停止し、**関連するトークンも取り消され**ます。この変更が「Accessed apps」一覧に反映されるまでには最大48時間のタイムラグがある点に留意してください。
+Googleサービスを「Restricted(制限付き)」へ変更すると、そのサービスへアクセスする未信頼アプリは即座に停止し、**関連するOAuthトークンも取り消され**ます。この変更が「Accessed apps」一覧に反映されるまでには最大48時間のタイムラグがある点に留意してください。
+
+一方、API Controlsで個別アプリを「Blocked」に設定すると、対象アプリはGoogleサービスへアクセスできなくなります。これはサービスをRestrictedへ変更する操作とは別の設定です。
 
 また、Gmail・Drive・Docs・Chatについては、送信・削除など特に影響の大きい「高リスクOAuthスコープ」をあらかじめ定義しており、これらを個別に制限対象へ含めることも可能です。
 
@@ -786,7 +789,7 @@ flowchart TD
 - [ ] Google Session Controlの既定値(14日)、Admin Console自体のセッション(1時間固定)、サードパーティIdP利用時の注意点を説明できる
 - [ ] セキュリティ調査ツール・セキュリティダッシュボード・セキュリティ健全性ページの役割の違いを説明できる
 - [ ] アクティビティルールがログイベントデータソースのみで作成可能であり、しきい値が累積(ユーザー横断)で評価される点を説明できる
-- [ ] Marketplaceアローリストと除外リストの挙動(親OUの許可が前提条件になる点)を説明できる
+- [ ] Marketplace許可リストと除外リストの挙動(親OUの許可が前提条件になる点)を説明できる
 - [ ] App access(インストール可否)とAPI controls(データアクセス範囲)という2層構造でアプリガバナンスを捉えられる
 - [ ] Google as IdPとサードパーティIdP利用という2方向のSSO構成の違いを説明できる
 - [ ] アクセスグループがOUの設定を「オンに上書き」する方向にのみ作用する点を説明できる
