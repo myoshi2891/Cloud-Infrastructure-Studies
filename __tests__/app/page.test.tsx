@@ -1,7 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen, within } from '@testing-library/react';
-import Home, { countUniqueGuideUrls } from '@/app/page';
+import Home from '@/app/page';
 import { EXAMS, STATS } from '@/app/constants';
+import { countUniqueGuideUrls } from '@/app/home-utils';
 
 const VISIBLE_EXAMS = EXAMS.filter((e) => e.status !== 'coming-soon');
 

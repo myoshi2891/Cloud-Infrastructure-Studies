@@ -3,6 +3,7 @@ import Link from 'next/link';
 import styles from './page.module.css';
 import { EXAMS, STATS, type Exam, type Stat, type ColorKey, type Provider } from './constants';
 import { ProviderMark } from '@/components/ProviderMark';
+import { countUniqueGuideUrls } from './home-utils';
 
 export const metadata: Metadata = {
     title: 'Cloud Infrastructure Studies | ホーム',
@@ -39,11 +40,6 @@ const providerMeta: Record<Provider, { label: string; kicker: string; descriptio
 };
 
 const providerOrder: Provider[] = ['GCP', 'AWS', 'Cisco'];
-
-/** Counts unique exam and domain guide URLs displayed in the hero summary. */
-export function countUniqueGuideUrls(exams: Exam[]) {
-    return new Set(exams.flatMap((exam) => [exam.href, ...exam.domains.map((domain) => domain.href)])).size;
-}
 
 /** Renders the landing hero and its guide/provider summary for the supplied exams. */
 function Hero({ exams }: { exams: Exam[] }) {
