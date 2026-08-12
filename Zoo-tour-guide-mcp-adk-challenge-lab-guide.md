@@ -423,7 +423,7 @@ EOF
 ```bash
 cd ~/zoo_guide_agent
 python --version
-python -c 'import sys; assert sys.version_info >= (3, 10), "Python 3.10以上が必要です。処理を中止します。"'
+python -c 'import sys; sys.exit("Python 3.10以上が必要です。処理を中止します。") if sys.version_info < (3, 10) else None'
 ```
 
 表示されたバージョンがPython 3.10以上であることを確認します。Python 3.10未満の場合は2つ目のコマンドが失敗するため、ここで処理を中止し、Pythonを更新してから以降の手順を実行してください。要件を満たす場合のみ、仮想環境を作成します。
@@ -479,27 +479,35 @@ gcloud run services proxy <AGENT_SERVICE_NAME> \
 
 ```bash
 export AGENT_BASE_URL="<SERVICE_URL_OR_HTTP_127.0.0.1_8080>"
+SESSION_ID="verification-$(date +%s)"
 
 curl --fail-with-body --silent --show-error \
   -X POST \
   -H 'Content-Type: application/json' \
-  "$AGENT_BASE_URL/apps/zoo_guide_agent/users/verification-user/sessions/verification-session" \
-  -d '{}'
+  "$AGENT_BASE_URL/apps/zoo_guide_agent/users/verification-user/sessions" \
+  -d @- <<EOF
+{
+  "session_id": "$SESSION_ID",
+  "state": {}
+}
+EOF
 
 curl --fail-with-body --no-buffer --silent --show-error \
   -X POST \
   -H 'Content-Type: application/json' \
   "$AGENT_BASE_URL/run_sse" \
-  -d '{
-    "app_name": "zoo_guide_agent",
-    "user_id": "verification-user",
-    "session_id": "verification-session",
-    "new_message": {
-      "role": "user",
-      "parts": [{"text": "Where can I find elephants, and what is the latest conservation news about them?"}]
-    },
-    "streaming": true
-  }'
+  -d @- <<EOF
+{
+  "app_name": "zoo_guide_agent",
+  "user_id": "verification-user",
+  "session_id": "$SESSION_ID",
+  "new_message": {
+    "role": "user",
+    "parts": [{"text": "Where can I find elephants, and what is the latest conservation news about them?"}]
+  },
+  "streaming": true
+}
+EOF
 ```
 
 返却されるストリーミング応答を読み、動物園情報を取得するMCPツール呼び出しと、最新情報を取得するGoogle Search呼び出しの両方が関数呼び出しイベントとして含まれることを確認します。両方のイベントと最終回答が連続して返れば、7.1の実装が本番APIで機能しています。
