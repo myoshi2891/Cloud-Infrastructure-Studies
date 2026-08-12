@@ -105,6 +105,13 @@ describe('Cisco DevNet Associate Guide Migration Verification', () => {
         expect(DIAGRAMS['diag-s9']).toContain('flowchart TB');
     });
 
+    it('表ヘッダーと現在位置の目次リンクにアクセシビリティ属性があること', () => {
+        const { container } = render(<DevNetAssociateGuide />);
+
+        expect(container.querySelectorAll('th:not([scope="col"])')).toHaveLength(0);
+        expect(container.querySelectorAll('a[aria-current="location"]')).toHaveLength(1);
+    });
+
     it('13個の参考文献・一次情報源URLがすべて正しいhrefと属性でレンダリングされていること', () => {
         render(<DevNetAssociateGuide />);
 

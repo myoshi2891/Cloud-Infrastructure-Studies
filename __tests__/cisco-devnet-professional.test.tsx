@@ -107,6 +107,12 @@ describe('Cisco DevNet Professional Guide Page', () => {
     });
   });
 
+  it('現在位置の目次リンクだけが aria-current を持つこと', () => {
+    const { container } = render(<DevNetProfessionalGuide />);
+
+    expect(container.querySelectorAll('a[aria-current="true"]')).toHaveLength(1);
+  });
+
   it('全7つのテーブルが存在し、ヘッダーとセルデータが正確に表示されること', () => {
     render(<DevNetProfessionalGuide />);
 

@@ -1,4 +1,4 @@
-export const DIAGRAMS: Record<string, string> = {
+export const DIAGRAMS = {
   levels: `flowchart TB
     Associate["Cisco Certified DevNet Associate<br/>試験: 200-901 DEVASC 1本のみ"]
     Associate --> ProfessionalGoal["Cisco Certified DevNet Professional を目指す"]
@@ -66,4 +66,4 @@ export const DIAGRAMS: Record<string, string> = {
     Choice -- "CEクレジット80単位を取得" --> Renewed["再認定 成功<br/>(新たに3年間有効)"]
     Choice -- "対象試験に再度合格" --> Renewed
     Choice -- "何もしなかった" --> Expired["認定が失効<br/>最初から取得しなおしが必要"]`,
-};
+} as const satisfies Record<string, string>;

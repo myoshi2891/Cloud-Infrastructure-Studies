@@ -21,7 +21,9 @@ describe('CcnaNetworkFundamentalsGuide Page & Component', () => {
   });
 
   it('renders all 10 chapters and reference headers accurately', () => {
-    render(<CcnaNetworkFundamentalsGuide />);
+    const { container } = render(<CcnaNetworkFundamentalsGuide />);
+
+    expect(container.querySelectorAll('a[aria-current="location"]')).toHaveLength(1);
 
     expect(screen.getByRole('heading', { level: 1, name: /Cisco CCNA試験対策：.*ネットワークの基礎 入門ガイド/i })).toBeInTheDocument();
 

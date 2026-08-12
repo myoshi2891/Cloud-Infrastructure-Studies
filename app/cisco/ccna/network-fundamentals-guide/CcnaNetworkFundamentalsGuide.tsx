@@ -1,19 +1,7 @@
-'use client';
-
 import React from 'react';
 import NavBar from './NavBar';
-import { MermaidDiagram } from '@/components/MermaidDiagram';
-import { DIAGRAMS } from './constants';
-
-function Diagram({ id, label }: { id: string; label: string }) {
-  const chart = DIAGRAMS[id];
-  if (!chart) return null;
-  return (
-    <div className="mermaid-wrap">
-      <MermaidDiagram chart={chart} ariaLabel={label} preserveNaturalScale />
-    </div>
-  );
-}
+import Diagram from './Diagram';
+import { TOC_ITEMS } from './constants';
 
 export default function CcnaNetworkFundamentalsGuide() {
   return (
@@ -36,7 +24,7 @@ export default function CcnaNetworkFundamentalsGuide() {
           </p>
 
           {/* 第1章 */}
-          <section id="sec-1">
+          <section id={TOC_ITEMS[0].id}>
             <h2>
               <span className="chapter-num">第1章</span>CCNA認定試験とは
             </h2>
@@ -157,7 +145,7 @@ export default function CcnaNetworkFundamentalsGuide() {
           </section>
 
           {/* 第2章 */}
-          <section id="sec-2">
+          <section id={TOC_ITEMS[1].id}>
             <h2>
               <span className="chapter-num">第2章</span>ネットワークとは何か（基礎概念）
             </h2>
@@ -221,7 +209,7 @@ export default function CcnaNetworkFundamentalsGuide() {
           </section>
 
           {/* 第3章 */}
-          <section id="sec-3">
+          <section id={TOC_ITEMS[2].id}>
             <h2>
               <span className="chapter-num">第3章</span>OSI参照モデルとTCP/IPモデル
             </h2>
@@ -344,7 +332,7 @@ export default function CcnaNetworkFundamentalsGuide() {
           </section>
 
           {/* 第4章 */}
-          <section id="sec-4">
+          <section id={TOC_ITEMS[3].id}>
             <h2>
               <span className="chapter-num">第4章</span>ネットワーク機器の基礎
             </h2>
@@ -406,7 +394,7 @@ export default function CcnaNetworkFundamentalsGuide() {
           </section>
 
           {/* 第5章 */}
-          <section id="sec-5">
+          <section id={TOC_ITEMS[4].id}>
             <h2>
               <span className="chapter-num">第5章</span>イーサネットと物理層／データリンク層
             </h2>
@@ -465,7 +453,7 @@ export default function CcnaNetworkFundamentalsGuide() {
           </section>
 
           {/* 第6章 */}
-          <section id="sec-6">
+          <section id={TOC_ITEMS[5].id}>
             <h2>
               <span className="chapter-num">第6章</span>IPv4アドレッシングの基礎
             </h2>
@@ -613,7 +601,7 @@ export default function CcnaNetworkFundamentalsGuide() {
           </section>
 
           {/* 第7章 */}
-          <section id="sec-7">
+          <section id={TOC_ITEMS[6].id}>
             <h2>
               <span className="chapter-num">第7章</span>IPv6の基礎
             </h2>
@@ -656,7 +644,7 @@ export default function CcnaNetworkFundamentalsGuide() {
           </section>
 
           {/* 第8章 */}
-          <section id="sec-8">
+          <section id={TOC_ITEMS[7].id}>
             <h2>
               <span className="chapter-num">第8章</span>TCP/UDPとポート番号
             </h2>
@@ -763,7 +751,7 @@ export default function CcnaNetworkFundamentalsGuide() {
           </section>
 
           {/* 第9章 */}
-          <section id="sec-9">
+          <section id={TOC_ITEMS[8].id}>
             <h2>
               <span className="chapter-num">第9章</span>学習の進め方（ロードマップ）
             </h2>
@@ -779,7 +767,7 @@ export default function CcnaNetworkFundamentalsGuide() {
           </section>
 
           {/* 第10章 */}
-          <section id="sec-10">
+          <section id={TOC_ITEMS[9].id}>
             <h2>
               <span className="chapter-num">第10章</span>2026年の重要な最新情報：CCNA 200-301 V2.0への移行
             </h2>
@@ -829,7 +817,7 @@ export default function CcnaNetworkFundamentalsGuide() {
           </section>
 
           {/* 参考文献・出典 */}
-          <section id="sec-refs">
+          <section id={TOC_ITEMS[10].id}>
             <h2>
               <span className="chapter-num">参考文献</span>・出典
             </h2>

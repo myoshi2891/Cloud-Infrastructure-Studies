@@ -1,11 +1,8 @@
-'use client';
-
 import { MermaidDiagram } from '@/components/MermaidDiagram';
-import { memo } from 'react';
 import NavBar from './NavBar';
 import { DIAGRAMS } from './constants';
 
-const Diagram = memo(function Diagram({ id, label }: { id: string; label: string }) {
+function Diagram({ id, label }: { id: keyof typeof DIAGRAMS; label: string }) {
   const chart = DIAGRAMS[id];
   if (!chart) return null;
   return (
@@ -13,7 +10,7 @@ const Diagram = memo(function Diagram({ id, label }: { id: string; label: string
       <MermaidDiagram chart={chart} ariaLabel={label} preserveNaturalScale />
     </div>
   );
-});
+}
 
 export default function DevNetProfessionalGuide() {
   return (

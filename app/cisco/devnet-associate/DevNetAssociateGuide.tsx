@@ -5,6 +5,7 @@ import { MermaidDiagram } from '@/components/MermaidDiagram';
 import NavBar from './NavBar';
 import { DIAGRAMS } from './constants';
 
+/** Wraps Mermaid's client renderer for diagrams embedded throughout the guide. */
 const Diagram = memo(function Diagram({ id, label }: { id: string; label: string }) {
     const chart = DIAGRAMS[id];
     if (!chart) return null;
@@ -15,6 +16,7 @@ const Diagram = memo(function Diagram({ id, label }: { id: string; label: string
     );
 });
 
+/** Renders the complete DevNet Associate guide body and delegates client UI to child components. */
 export default function DevNetAssociateGuide() {
     return (
         <div className="devnet-associate-page">
@@ -58,9 +60,9 @@ export default function DevNetAssociateGuide() {
                         <table>
                             <thead>
                                 <tr>
-                                    <th>項目</th>
-                                    <th>旧名称（〜2026年2月2日）</th>
-                                    <th>新名称（2026年2月3日〜）</th>
+                                    <th scope="col">項目</th>
+                                    <th scope="col">旧名称（〜2026年2月2日）</th>
+                                    <th scope="col">新名称（2026年2月3日〜）</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -135,8 +137,8 @@ export default function DevNetAssociateGuide() {
                         <table>
                             <thead>
                                 <tr>
-                                    <th>項目</th>
-                                    <th>内容</th>
+                                    <th scope="col">項目</th>
+                                    <th scope="col">内容</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -202,9 +204,9 @@ export default function DevNetAssociateGuide() {
                         <table>
                             <thead>
                                 <tr>
-                                    <th>No.</th>
-                                    <th>ドメイン名</th>
-                                    <th>配分</th>
+                                    <th scope="col">No.</th>
+                                    <th scope="col">ドメイン名</th>
+                                    <th scope="col">配分</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -253,8 +255,8 @@ export default function DevNetAssociateGuide() {
                         <table>
                             <thead>
                                 <tr>
-                                    <th>学習項目</th>
-                                    <th>初心者向けポイント</th>
+                                    <th scope="col">学習項目</th>
+                                    <th scope="col">初心者向けポイント</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -293,8 +295,8 @@ export default function DevNetAssociateGuide() {
                         <table>
                             <thead>
                                 <tr>
-                                    <th>学習項目</th>
-                                    <th>初心者向けポイント</th>
+                                    <th scope="col">学習項目</th>
+                                    <th scope="col">初心者向けポイント</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -334,8 +336,8 @@ export default function DevNetAssociateGuide() {
                         <table>
                             <thead>
                                 <tr>
-                                    <th>プラットフォーム分野</th>
-                                    <th>代表製品・API</th>
+                                    <th scope="col">プラットフォーム分野</th>
+                                    <th scope="col">代表製品・API</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -379,8 +381,8 @@ export default function DevNetAssociateGuide() {
                         <table>
                             <thead>
                                 <tr>
-                                    <th>学習項目</th>
-                                    <th>初心者向けポイント</th>
+                                    <th scope="col">学習項目</th>
+                                    <th scope="col">初心者向けポイント</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -428,8 +430,8 @@ export default function DevNetAssociateGuide() {
                         <table>
                             <thead>
                                 <tr>
-                                    <th>学習項目</th>
-                                    <th>初心者向けポイント</th>
+                                    <th scope="col">学習項目</th>
+                                    <th scope="col">初心者向けポイント</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -481,8 +483,8 @@ export default function DevNetAssociateGuide() {
                         <table>
                             <thead>
                                 <tr>
-                                    <th>学習項目</th>
-                                    <th>初心者向けポイント</th>
+                                    <th scope="col">学習項目</th>
+                                    <th scope="col">初心者向けポイント</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -541,8 +543,8 @@ export default function DevNetAssociateGuide() {
                         <table>
                             <thead>
                                 <tr>
-                                    <th>出題形式</th>
-                                    <th>概要</th>
+                                    <th scope="col">出題形式</th>
+                                    <th scope="col">概要</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -608,8 +610,8 @@ export default function DevNetAssociateGuide() {
                         <table>
                             <thead>
                                 <tr>
-                                    <th>項目</th>
-                                    <th>内容</th>
+                                    <th scope="col">項目</th>
+                                    <th scope="col">内容</th>
                                 </tr>
                             </thead>
                             <tbody>

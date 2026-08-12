@@ -17,6 +17,7 @@ const NAV_ITEMS = [
     { id: 's12', label: '12. 参考文献・ソース' },
 ];
 
+/** Renders the client-side table of contents and tracks sections with IntersectionObserver. */
 export default function NavBar() {
     const [activeId, setActiveId] = useState<string>('s1');
 
@@ -55,6 +56,7 @@ export default function NavBar() {
                     key={item.id}
                     href={`#${item.id}`}
                     className={activeId === item.id ? 'active' : ''}
+                    aria-current={activeId === item.id ? 'location' : undefined}
                     onClick={() => setActiveId(item.id)}
                 >
                     {item.label}

@@ -1,3 +1,17 @@
+export const TOC_ITEMS = [
+  { id: 'sec-1', label: '第1章　CCNA認定試験とは' },
+  { id: 'sec-2', label: '第2章　ネットワークとは何か' },
+  { id: 'sec-3', label: '第3章　OSI参照モデルとTCP/IP' },
+  { id: 'sec-4', label: '第4章　ネットワーク機器の基礎' },
+  { id: 'sec-5', label: '第5章　イーサネットと物理層' },
+  { id: 'sec-6', label: '第6章　IPv4アドレッシング' },
+  { id: 'sec-7', label: '第7章　IPv6の基礎' },
+  { id: 'sec-8', label: '第8章　TCP/UDPとポート番号' },
+  { id: 'sec-9', label: '第9章　学習ロードマップ' },
+  { id: 'sec-10', label: '第10章　2026年の最新動向' },
+  { id: 'sec-refs', label: '参考文献・出典' },
+] as const;
+
 export const DIAGRAMS: Record<string, string> = {
   'diagram-pie': `pie title CCNA 200-301 出題ドメインと配点（v1.1）
     "1.0 ネットワークの基礎 (20%)" : 20
