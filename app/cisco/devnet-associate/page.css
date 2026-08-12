@@ -1,0 +1,270 @@
+.devnet-associate-page {
+    --devnet-bg: #07111e;
+    --devnet-panel: #0d1b2e;
+    --devnet-panel-2: #0f2038;
+    --devnet-accent: #7c9eff;
+    --devnet-accent-soft: rgba(124, 158, 255, 0.14);
+    --devnet-accent-border: rgba(124, 158, 255, 0.3);
+    --devnet-text: #e7edf8;
+    --devnet-text-dim: #93a5c4;
+    --devnet-border: rgba(124, 158, 255, 0.16);
+    --devnet-warn: #ffb86b;
+    --devnet-warn-soft: rgba(255, 184, 107, 0.12);
+
+    background: var(--devnet-bg);
+    color: var(--devnet-text);
+    font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', 'Yu Gothic', system-ui, -apple-system, sans-serif;
+    line-height: 1.85;
+    font-size: 16px;
+    min-height: 100vh;
+}
+
+.devnet-associate-page .layout {
+    display: block;
+    position: relative;
+}
+
+/* サイドバーレイアウト契約準拠 */
+.devnet-associate-page .sidebar {
+    position: fixed;
+    top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px));
+    left: 0;
+    bottom: 0;
+    width: 280px;
+    overflow-y: auto;
+    background: var(--devnet-panel);
+    border-right: 1px solid var(--devnet-border);
+    padding: 32px 22px 40px;
+    z-index: 40;
+}
+
+.devnet-associate-page .sidebar .brand {
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    color: var(--devnet-accent);
+    margin-bottom: 4px;
+    font-weight: 700;
+}
+
+.devnet-associate-page .sidebar .brand-sub {
+    font-size: 12px;
+    color: var(--devnet-text-dim);
+    margin-bottom: 28px;
+}
+
+.devnet-associate-page .sidebar h2 {
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    color: var(--devnet-text-dim);
+    text-transform: uppercase;
+    margin: 0 0 14px 4px;
+    font-weight: 600;
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.devnet-associate-page .sidebar a {
+    display: block;
+    padding: 9px 12px;
+    border-radius: 8px;
+    color: var(--devnet-text-dim);
+    text-decoration: none;
+    font-size: 13.5px;
+    margin-bottom: 2px;
+    transition: background 0.15s, color 0.15s;
+    border-left: 2px solid transparent;
+}
+
+.devnet-associate-page .sidebar a:hover {
+    color: var(--devnet-text);
+    background: var(--devnet-accent-soft);
+}
+
+.devnet-associate-page .sidebar a.active {
+    color: var(--devnet-accent);
+    background: var(--devnet-accent-soft);
+    border-left: 2px solid var(--devnet-accent);
+    font-weight: 600;
+}
+
+/* メインコンテンツ領域レイアウト契約準拠 */
+.devnet-associate-page .main {
+    margin-left: 280px;
+    width: calc(100% - 280px);
+    max-width: none;
+    padding: 64px 72px 96px;
+}
+
+.devnet-associate-page .section {
+    max-width: none;
+    margin-bottom: 72px;
+    scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 24px);
+}
+
+.devnet-associate-page h1 {
+    font-size: 32px;
+    margin: 0 0 12px;
+    background: linear-gradient(90deg, #ffffff 0%, var(--devnet-accent) 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+    font-weight: 700;
+}
+
+.devnet-associate-page h2 {
+    font-size: 24px;
+    color: var(--devnet-text);
+    border-bottom: 1px solid var(--devnet-border);
+    padding-bottom: 10px;
+    margin: 0 0 20px;
+    font-weight: 700;
+}
+
+.devnet-associate-page h2 .num {
+    color: var(--devnet-accent);
+    margin-right: 8px;
+}
+
+.devnet-associate-page h3 {
+    font-size: 18px;
+    color: var(--devnet-accent);
+    margin: 32px 0 12px;
+    font-weight: 600;
+}
+
+.devnet-associate-page p {
+    color: var(--devnet-text);
+    margin: 0 0 16px;
+}
+
+.devnet-associate-page .lead {
+    color: var(--devnet-text-dim);
+    font-size: 15px;
+}
+
+.devnet-associate-page a {
+    color: var(--devnet-accent);
+}
+
+.devnet-associate-page .badge {
+    display: inline-block;
+    padding: 3px 12px;
+    border-radius: 999px;
+    background: var(--devnet-accent-soft);
+    border: 1px solid var(--devnet-accent-border);
+    color: var(--devnet-accent);
+    font-size: 12.5px;
+    margin: 0 6px 6px 0;
+}
+
+.devnet-associate-page .callout {
+    background: var(--devnet-accent-soft);
+    border-left: 3px solid var(--devnet-accent);
+    padding: 18px 22px;
+    border-radius: 10px;
+    margin: 20px 0;
+    color: var(--devnet-text);
+}
+
+.devnet-associate-page .callout.warn {
+    background: var(--devnet-warn-soft);
+    border-left: 3px solid var(--devnet-warn);
+}
+
+.devnet-associate-page .callout p:last-child {
+    margin-bottom: 0;
+}
+
+.devnet-associate-page table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 18px 0 28px;
+    font-size: 14px;
+    background: var(--devnet-panel-2);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.devnet-associate-page th,
+.devnet-associate-page td {
+    border: 1px solid var(--devnet-border);
+    padding: 11px 16px;
+    text-align: left;
+    vertical-align: top;
+}
+
+.devnet-associate-page th {
+    background: var(--devnet-accent-soft);
+    color: var(--devnet-accent);
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.devnet-associate-page tr:nth-child(even) td {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.devnet-associate-page code {
+    background: rgba(255, 255, 255, 0.07);
+    padding: 2px 7px;
+    border-radius: 5px;
+    font-size: 0.88em;
+    font-family: 'SFMono-Regular', Consolas, Menlo, monospace;
+    color: #cfe0ff;
+}
+
+.devnet-associate-page ul,
+.devnet-associate-page ol {
+    padding-left: 22px;
+}
+
+.devnet-associate-page li {
+    margin-bottom: 6px;
+}
+
+.devnet-associate-page .mermaid-wrap {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    background: transparent;
+    margin: 28px 0;
+}
+
+.devnet-associate-page .toc-index {
+    color: var(--devnet-text-dim);
+    font-size: 13px;
+    margin-bottom: 8px;
+}
+
+.devnet-associate-page .footer {
+    border-top: 1px solid var(--devnet-border);
+    padding-top: 28px;
+    color: var(--devnet-text-dim);
+    font-size: 13px;
+}
+
+.devnet-associate-page .footer ul {
+    padding-left: 18px;
+}
+
+.devnet-associate-page .footer li {
+    margin-bottom: 10px;
+    word-break: break-all;
+}
+
+.devnet-associate-page .footer a {
+    color: var(--devnet-accent);
+}
+
+@media (max-width: 900px) {
+    .devnet-associate-page .sidebar {
+        display: none;
+        transform: translateX(-100%);
+    }
+    .devnet-associate-page .main {
+        margin-left: 0;
+        width: 100%;
+        padding: 40px 24px;
+    }
+}
