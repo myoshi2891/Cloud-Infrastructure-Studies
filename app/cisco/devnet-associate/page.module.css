@@ -1,14 +1,4 @@
 .page {
-    --color-devnet-associate-panel: #0d1b2e;
-    --color-devnet-associate-panel-alt: #0f2038;
-    --color-devnet-associate-accent-soft: rgba(124, 158, 255, 0.14);
-    --color-devnet-associate-accent-border: rgba(124, 158, 255, 0.3);
-    --color-devnet-associate-foreground: #e7edf8;
-    --color-devnet-associate-foreground-muted: #93a5c4;
-    --color-devnet-associate-border: rgba(124, 158, 255, 0.16);
-    --color-devnet-associate-warning: #ffb86b;
-    --color-devnet-associate-warning-soft: rgba(255, 184, 107, 0.12);
-
     background: var(--color-guide-background);
     color: var(--color-devnet-associate-foreground);
     font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', 'Yu Gothic', system-ui, -apple-system, sans-serif;

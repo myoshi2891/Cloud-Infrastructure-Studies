@@ -77,6 +77,39 @@
     --color-guide-meta: #5f7291;
     --color-guide-hero-start: #ffffff;
 
+    /* Cisco guide page themes */
+    --color-ccna-fundamentals-elevated: #0d1a2e;
+    --color-ccna-fundamentals-card: #101f38;
+    --color-ccna-fundamentals-accent-soft: rgba(124, 158, 255, 0.14);
+    --color-ccna-fundamentals-foreground: #e6edf7;
+    --color-ccna-fundamentals-foreground-muted: #9fb0cc;
+    --color-ccna-fundamentals-border: rgba(124, 158, 255, 0.18);
+    --color-ccna-fundamentals-border-soft: rgba(230, 237, 247, 0.08);
+    --color-ccna-fundamentals-table-header: rgba(124, 158, 255, 0.10);
+    --color-ccna-fundamentals-row-hover: rgba(124, 158, 255, 0.05);
+    --color-ccna-fundamentals-code-background: #0a1626;
+    --color-ccna-fundamentals-code-foreground: #d7e3fb;
+    --color-devnet-associate-panel: #0d1b2e;
+    --color-devnet-associate-panel-alt: #0f2038;
+    --color-devnet-associate-accent-soft: rgba(124, 158, 255, 0.14);
+    --color-devnet-associate-accent-border: rgba(124, 158, 255, 0.3);
+    --color-devnet-associate-foreground: #e7edf8;
+    --color-devnet-associate-foreground-muted: #93a5c4;
+    --color-devnet-associate-border: rgba(124, 158, 255, 0.16);
+    --color-devnet-associate-warning: #ffb86b;
+    --color-devnet-associate-warning-soft: rgba(255, 184, 107, 0.12);
+    --color-devnet-professional-background: #07111e;
+    --color-devnet-professional-elevated: #0d1b2e;
+    --color-devnet-professional-panel: #101f36;
+    --color-devnet-professional-accent: #7c9eff;
+    --color-devnet-professional-accent-strong: #a9c1ff;
+    --color-devnet-professional-accent-soft: rgba(124, 158, 255, 0.14);
+    --color-devnet-professional-border: rgba(124, 158, 255, 0.18);
+    --color-devnet-professional-foreground: #e6ecf5;
+    --color-devnet-professional-foreground-muted: #93a3bd;
+    --color-devnet-professional-foreground-faint: #6c7d9a;
+    --color-devnet-professional-row-even: rgba(124, 158, 255, 0.03);
+
     /* CCNA Platforms and Development guide (source-design fidelity) */
     --color-ccna-platforms-surface-1: #0d1b2c;
     --color-ccna-platforms-surface-2: #101f34;

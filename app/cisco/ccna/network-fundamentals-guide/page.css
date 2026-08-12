@@ -1,16 +1,4 @@
 .ccna-network-fundamentals-page {
-  --color-ccna-fundamentals-elevated: #0d1a2e;
-  --color-ccna-fundamentals-card: #101f38;
-  --color-ccna-fundamentals-accent-soft: rgba(124, 158, 255, 0.14);
-  --color-ccna-fundamentals-foreground: #e6edf7;
-  --color-ccna-fundamentals-foreground-muted: #9fb0cc;
-  --color-ccna-fundamentals-border: rgba(124, 158, 255, 0.18);
-  --color-ccna-fundamentals-border-soft: rgba(230, 237, 247, 0.08);
-  --color-ccna-fundamentals-table-header: rgba(124, 158, 255, 0.10);
-  --color-ccna-fundamentals-row-hover: rgba(124, 158, 255, 0.05);
-  --color-ccna-fundamentals-code-background: #0a1626;
-  --color-ccna-fundamentals-code-foreground: #d7e3fb;
-
   background: var(--color-guide-background);
   color: var(--color-ccna-fundamentals-foreground);
   font-family: var(--font-body), "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;

@@ -6,7 +6,7 @@ export const DIAGRAMS = {
     subgraph ProfPath["CCNP Automation 認定までの流れ"]
         direction TB
         CoreExam["コア試験に合格<br/>350-901 AUTOCOR"] --> CoreSpecialist["自動的に付与:<br/>Cisco Certified Specialist - Automation Core"]
-        ConcExam["コンセントレーション試験に合格<br/>専門分野を1つ選択"] --> ConcSpecialist["自動的に付与:<br/>Cisco Certified Specialist - Enterprise Automation<br/>または<br/>Cisco Certified Specialist - Data Center Automation"]
+        ConcExam["コンセントレーション試験に合格<br/>専門分野を1つ選択"] --> ConcSpecialist["自動的に付与:<br/>Cisco Certified Specialist - Enterprise Automation and Programmability<br/>または<br/>Cisco Certified Specialist - Data Center Automation and Programmability"]
         CoreSpecialist --> BothDone["コア + コンセントレーション<br/>両方に合格"]
         ConcSpecialist --> BothDone
         BothDone --> ProfCert["CCNP Automation 認定"]
@@ -22,8 +22,8 @@ export const DIAGRAMS = {
 
     subgraph Concentrations["コンセントレーション試験（いずれか1つに合格・すべて90分）"]
         direction TB
-        C1["300-435 ENAUTO<br/>Cisco Certified Specialist - Enterprise Automation"]
-        C2["300-635 DCNAUTO<br/>Cisco Certified Specialist - Data Center Automation"]
+        C1["300-435 ENAUTO<br/>Cisco Certified Specialist - Enterprise Automation and Programmability"]
+        C2["300-635 DCNAUTO<br/>Cisco Certified Specialist - Data Center Automation and Programmability"]
     end
 
     Choose --> Concentrations
@@ -50,7 +50,7 @@ export const DIAGRAMS = {
     S3["Step 3<br/>公式トレーニング・教材で<br/>コア試験(350-901 AUTOCOR)対策を行う"] --> S4
     S4["Step 4<br/>コア試験(AUTOCOR)に合格する<br/>→ Cisco Certified Specialist - Automation Core 認定を取得"] --> S5
     S5["Step 5<br/>自分の専門分野に合う<br/>コンセントレーション試験を1つ選ぶ"] --> S6
-    S6["Step 6<br/>選んだコンセントレーション試験に合格する<br/>→ Enterprise Automation または Data Center Automation 認定を取得"] --> S7
+    S6["Step 6<br/>選んだコンセントレーション試験に合格する<br/>→ Enterprise Automation and Programmability<br/>または Data Center Automation and Programmability 認定を取得"] --> S7
     S7["Step 7<br/>CCNP Automation 認定 取得"] --> S8
     S8["Step 8<br/>3年ごとに再認定<br/>(CEクレジット or 再受験)"]`,
 

@@ -3,6 +3,7 @@ import NavBar from './NavBar';
 import { DIAGRAMS } from './constants';
 import styles from './page.module.css';
 
+/** 指定されたMermaid図を描画する。 */
 function Diagram({ id, label }: { id: keyof typeof DIAGRAMS; label: string }) {
   const chart = DIAGRAMS[id];
   if (!chart) return null;
@@ -13,6 +14,7 @@ function Diagram({ id, label }: { id: keyof typeof DIAGRAMS; label: string }) {
   );
 }
 
+/** 自動化プロフェッショナルガイドを表示するコンポーネント。 */
 export default function AutomationProfessionalGuide() {
   return (
     <div className={styles.page}>
@@ -306,8 +308,8 @@ export default function AutomationProfessionalGuide() {
               </li>
               <li>
                 コンセントレーション試験に合格すると、選んだ試験に応じて「Cisco
-                Certified Specialist - Enterprise Automation」または「Cisco Certified Specialist -
-                Data Center Automation」認定が付与される
+                Certified Specialist - Enterprise Automation and Programmability」または「Cisco Certified Specialist -
+                Data Center Automation and Programmability」認定が付与される
               </li>
               <li>
                 <strong>両方に合格して初めて CCNP Automation 認定が成立する</strong>
@@ -483,8 +485,8 @@ export default function AutomationProfessionalGuide() {
             </div>
 
             <p>
-              ENAUTOの合格で「Cisco Certified Specialist - Enterprise Automation」、
-              DCNAUTOの合格で「Cisco Certified Specialist - Data Center Automation」がそれぞれ付与されます。
+              ENAUTOの合格で「Cisco Certified Specialist - Enterprise Automation and Programmability」、
+              DCNAUTOの合格で「Cisco Certified Specialist - Data Center Automation and Programmability」がそれぞれ付与されます。
             </p>
 
             <h3>コンセントレーション試験の選び方（考え方の目安）</h3>
