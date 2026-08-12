@@ -7,12 +7,32 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 ## 現在地
 
 - **ブランチ:** dev
-- **進行中タスク:** CCNAレビュー指摘の検証・修正 (完了)
-- **最新実装 HEAD:** `2cd6be2` (`fix(ccna): memoize network fundamentals diagrams`)
-- **前回進捗同期コミット:** `2951b8a`
-- **次の作業:** 完了
-- **検証状態:** 対象Vitest 25件成功、`bun run lint` 成功。標準 `bun run test` は912件成功し、実行環境の localStorage 不備で既存30件が失敗。対象E2Eは4件成功し、既存のページタイトル二重付与との期待値不一致1件が失敗。ビルドは依頼により未実施。
-- **最終更新日時(UTC):** 2026-08-11T12:08:33.000Z
+- **進行中タスク:** Cisco CCNA ネットワークの基礎 入門ガイド 100%全量移行 (完了)
+- **最新実装 HEAD:** `416fa0c` (`feat: implement CCNA network fundamentals guide page and components`)
+- **最終更新日時(UTC):** 2026-08-12T04:26:00.000Z
+
+## 2026-08-12: Cisco「CCNA 200-301 Network Fundamentals ネットワークの基礎 入門ガイド」100%全量移行 (完了)
+
+### 目的
+
+`Ccna-network-fundamentals-guide.html` および `Ccna-network-fundamentals-guide.md` を、Next.js App Router 5ファイル構成 (`page.tsx`, `CcnaNetworkFundamentalsGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/cisco/ccna/network-fundamentals-guide` ルートへ移行。文章・全10章・10個のMermaid図・表・コードブロック・参考文献を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 1 (Red)**: `test: add failing tests for CCNA network fundamentals guide` (`56db16b`)
+- [x] **Step 2 (Green)**: `feat: implement CCNA network fundamentals guide page and components` (`416fa0c`)
+- [x] **Step 3 (Refactor / Integration & Nav & Docs)**: `app/constants.ts`, `CLAUDE.md`, `GEMINI.md` にルーティングを統合し、元ファイル (`HTML`/`MD`) を `archive/Cisco/html/ccna/` および `archive/Cisco/md/ccna/` へ移動
+
+### 関連ファイル
+
+- [app/cisco/ccna/network-fundamentals-guide/page.tsx](app/cisco/ccna/network-fundamentals-guide/page.tsx)
+- [app/cisco/ccna/network-fundamentals-guide/CcnaNetworkFundamentalsGuide.tsx](app/cisco/ccna/network-fundamentals-guide/CcnaNetworkFundamentalsGuide.tsx)
+- [app/cisco/ccna/network-fundamentals-guide/NavBar.tsx](app/cisco/ccna/network-fundamentals-guide/NavBar.tsx)
+- [app/cisco/ccna/network-fundamentals-guide/constants.ts](app/cisco/ccna/network-fundamentals-guide/constants.ts)
+- [app/cisco/ccna/network-fundamentals-guide/page.css](app/cisco/ccna/network-fundamentals-guide/page.css)
+- [__tests__/cisco/ccna/network-fundamentals-guide.test.tsx](__tests__/cisco/ccna/network-fundamentals-guide.test.tsx)
+- [archive/Cisco/html/ccna/Ccna-network-fundamentals-guide.html](archive/Cisco/html/ccna/Ccna-network-fundamentals-guide.html)
+- [archive/Cisco/md/ccna/Ccna-network-fundamentals-guide.md](archive/Cisco/md/ccna/Ccna-network-fundamentals-guide.md)
 
 ## 2026-08-11: CCNAレビュー指摘の検証・修正 (完了)
 

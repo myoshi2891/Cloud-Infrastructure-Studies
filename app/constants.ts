@@ -303,7 +303,7 @@ const ALL_EXAMS: Exam[] = [
         domains: [
             {
                 label: '1.0 Network Fundamentals（ネットワークの基礎）',
-                href: '/cisco/ccna/beginner-guide',
+                href: '/cisco/ccna/network-fundamentals-guide',
                 pct: '20%',
             },
             {

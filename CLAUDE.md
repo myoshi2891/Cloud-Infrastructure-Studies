@@ -258,6 +258,18 @@ app/
         page.css                    # ページ固有スタイル
       automation-network-fundamentals/
         page.tsx                    # CCNAAUTO 200-901 6.0 Network Fundamentals 完全ガイド
+      security-fundamentals/
+        page.tsx                    # CCNA 200-301 Security Fundamentals 完全ガイド（Server。メタデータ定義）
+        CcnaSecurityFundamentalsGuide.tsx # 本文＋インタラクション（client。全12章、10個のMermaid図等）
+        NavBar.tsx                  # サイドバーナビ（IntersectionObserver）
+        constants.ts                # Mermaid 図定義（10図）
+        page.css                    # ページ固有スタイル
+      network-fundamentals-guide/
+        page.tsx                    # CCNA 200-301 Network Fundamentals ネットワークの基礎 入門ガイド（Server。メタデータ定義）
+        CcnaNetworkFundamentalsGuide.tsx # 本文＋インタラクション（client。全10章、10個のMermaid図等）
+        NavBar.tsx                  # サイドバーナビ（IntersectionObserver）
+        constants.ts                # Mermaid 図定義（10図）
+        page.css                    # ページ固有スタイル
       network-access-guide/
         page.tsx                    # CCNA 200-301 Network Access 徹底解説ガイド（Server。メタデータ定義）
         CcnaNetworkAccessGuide.tsx  # 本文＋インタラクション（client。全15セクション、17個のMermaid図等）
