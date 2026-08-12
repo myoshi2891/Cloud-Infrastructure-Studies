@@ -192,19 +192,17 @@ flowchart LR
 
 | 試験コード | 正式名称（略称） | 試験時間 | 主な学習内容 |
 |---|---|---|---|
-| 300-910 DEVOPS | Implementing DevOps Solutions and Practices using Cisco Platforms | 90分 | クラウドマイクロサービス、インフラプロセスの自動コンフィグレーション・管理・スケーラビリティ |
-| 300-920 DEVWBX | Developing Applications for Cisco Webex and Webex Devices | 90分 | Webex API基礎、Meetings、デバイス、メッセージング、管理とコンプライアンス |
+| 300-435 ENAUTO | Automating and Programming Cisco Enterprise Solutions | 90分 | エンタープライズネットワークの自動化、API、コントローラ、運用、AI |
+| 300-635 DCNAUTO | Automating Cisco Data Center Networking Solutions | 90分 | データセンターネットワークのIaC、プログラマビリティ、運用、AI |
 
-> **2026年2月2日以前の旧制度（参考）**：旧DevNet Professional制度では 350-901 DEVCOR をコア試験とし、300-435 ENAUTO, 300-835 CLAUTO, 300-635 DCAUTO, 300-535 SPAUTO, 300-735 SAUTO, 300-915 DEVIOT 等のコンセントレーション試験が提供されていました。現在これらは各トラックの自動化集中試験および旧制度情報として明確に区分されています。
+> **2026年2月2日以前の旧制度（参考）**：旧DevNet Professional制度では350-901 DEVCORをコア試験とし、300-835 CLAUTO、300-535 SPAUTO、300-735 SAUTO、300-910 DEVOPS、300-915 DEVIOT、300-920 DEVWBXなども提供されていました。これらは現行CCNP Automationの選択肢ではありません。
 
 ### コンセントレーション試験の選び方（考え方の目安）
 
-- 普段からネットワークの自動化業務（Enterprise/Data Center/Security等）に関わっている → 対応する自動化系試験（ENAUTO/DCAUTO/SAUTO等）
-- クラウド・コンテナ・CI/CDなど「DevOps」寄りの働き方をしている → DEVOPS
-- IoTデバイスやエッジコンピューティングに関心がある → DEVIOT
-- チャットボットや会議連携などWebexのアプリ開発をしたい → DEVWBX
+- エンタープライズネットワークの自動化に関わっている → ENAUTO
+- データセンターネットワークの自動化に関わっている → DCNAUTO
 
-（出典: 各試験ページ　[ENAUTO](https://www.cisco.com/c/ja_jp/training-events/training-certifications/exams/current-list/enauto-300-435.html)、[CLAUTO](https://www.cisco.com/c/ja_jp/training-events/training-certifications/exams/current-list/clauto-300-835.html)、[DCAUTO](https://www.cisco.com/c/ja_jp/training-events/training-certifications/exams/current-list/dcauto-300-635.html)、[SPAUTO](https://www.cisco.com/c/ja_jp/training-events/training-certifications/exams/current-list/spauto-300-535.html)、[SAUTO](https://www.cisco.com/c/ja_jp/training-events/training-certifications/exams/current-list/sauto-300-735.html)、[DEVOPS](https://www.cisco.com/c/ja_jp/training-events/training-certifications/exams/current-list/devops-300-910.html)、[DEVIOT](https://www.cisco.com/c/ja_jp/training-events/training-certifications/exams/current-list/deviot-300-915.html)、[DEVWBX](https://www.cisco.com/c/ja_jp/training-events/training-certifications/exams/current-list/devwbx-300-920.html)）
+（出典: [CCNP Automation Exams and Training](https://www.cisco.com/site/us/en/learn/training-certifications/certifications/automation/ccnp-automation/exams-and-training.html)）
 
 ---
 

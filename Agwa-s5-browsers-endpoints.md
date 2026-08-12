@@ -364,6 +364,8 @@ flowchart TB
 
 この優先順位の変更は、Windows・macOS・Linux上のChromeブラウザが対象であり、ChromeOSは対象外である。Chrome Enterprise Coreで対象ブラウザのフリートを管理している場合に限り、Admin consoleの「Policy precedence」設定、またはCloudPolicyOverridesPlatformPolicy／CloudUserPolicyOverridesCloudMachinePolicyポリシーによって、この優先順位を4通りの組み合わせに変更できる。また、リストやディクショナリ形式のポリシー（ExtensionSettingsなど）は「Policy mergelist」設定やワイルドカード`*`を使うことで、複数ソースからの値をマージすることも可能である。
 
+Android/iOSのアプリには、上記4通りのデスクトップ向けポリシーソース組み合わせをそのまま当てはめない。モバイルのクラウドユーザーポリシーは、Chromeで管理対象アカウントにサインインしている間に適用される。個別ポリシーの対応可否は公式のSupported on一覧に従い、CloudPolicyOverridesPlatformPolicyはAndroid版Chrome 97以降とiOS/iPadOS版Chrome 88以降でサポートされる。
+
 #### オフラインアクセス
 
 「オフラインアクセス」は、Google Docs・Sheets・Slidesをインターネット未接続のコンピューターから利用できるようにする機能で、既定で組織に対して有効になっており、ユーザーは自分のアカウントで個別にオン/オフを切り替えられる。Chrome BrowserとMicrosoft Edgeブラウザで利用でき、Google Drive for desktopには適用されない別機能である。
@@ -523,7 +525,7 @@ flowchart TD
 
 強制インストールされた拡張機能・アプリは、Chromeウェブストアサービス自体がオフになっていても引き続き自動インストールされ、ブロック設定よりも優先される。設定はUsers & browsers単位のほか、User app settings画面からも構成でき、グループとアプリ数の組み合わせで500件という上限がある点にも注意する。
 
-自社サーバーでホストする独自拡張機能（Chromeウェブストア外）を自動インストールする場合は、`update_url`に更新マニフェストXMLのURLを指定し、そのXMLの`codebase`属性でパッケージ済み`.crx`ファイルのURLを示す。Windowsで強制インストールするには、コンピューターがMicrosoft Active Directoryドメインに参加しているか、ブラウザがChrome Enterprise Coreに登録されている必要がある。Microsoft Intuneはこれらの要件に代わるものではなく、ポリシーの配布手段として利用する。
+自社サーバーでホストする独自拡張機能（Chromeウェブストア外）を自動インストールする場合は、`update_url`に更新マニフェストXMLのURLを指定し、そのXMLの`codebase`属性でパッケージ済み`.crx`ファイルのURLを示す。Windowsで強制インストールするには、コンピューターがMicrosoft Active DirectoryドメインまたはMicrosoft Azure Active Directory（Microsoft Entra ID）に参加しているか、ブラウザがChrome Enterprise Coreに登録されている必要がある。Microsoft Intuneはこれらの要件に代わるものではなく、ポリシーの配布手段として利用する。
 
 #### ベストプラクティス
 

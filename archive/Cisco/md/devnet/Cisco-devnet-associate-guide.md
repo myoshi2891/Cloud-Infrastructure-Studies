@@ -20,6 +20,7 @@
 ---
 
 <a id="section1"></a>
+
 ## 1. 【重要】名称変更に関するお知らせ（2026年2月〜）
 
 このガイドを書いている2026年7月時点で、**「Cisco Certified DevNet Associate」という名称そのものはすでに移行済み**です。ご質問にあったシスコ公式ページ（日本語版）は現在も「DevNet Associate」の名称で表示されていますが、シスコ公式ブログによると、2026年2月3日をもって認定名称が刷新されています。
@@ -43,6 +44,7 @@
 ---
 
 <a id="section2"></a>
+
 ## 2. DevNet Associate認定とは何か
 
 CCNA Automation（旧DevNet Associate）は、シスコプラットフォーム上で動くアプリケーションの開発・運用スキルを証明する、**エントリー〜アソシエイトレベル**の認定です。
@@ -59,6 +61,7 @@ CCNA Automation（旧DevNet Associate）は、シスコプラットフォーム�
 ---
 
 <a id="section3"></a>
+
 ## 3. Cisco資格体系における位置づけ
 
 CCNA Automationは、Automationトラック（旧DevNetトラック）における最初のステップです。上位にProfessional、Expertレベルが存在し、段階的にキャリアアップしていく構成になっています。
@@ -74,6 +77,7 @@ flowchart TB
 ---
 
 <a id="section4"></a>
+
 ## 4. 試験の基本情報
 
 | 項目 | 内容 |
@@ -95,6 +99,7 @@ flowchart TB
 ---
 
 <a id="section5"></a>
+
 ## 5. 出題範囲と配分
 
 試験は6つのドメイン（出題領域）から構成されます。配分（重み）は以下の通りです。
@@ -123,6 +128,7 @@ pie title 200-901 CCNAAUTO 出題範囲の比率
 ---
 
 <a id="section6"></a>
+
 ## 6. 各ドメインを初心者向けに解説
 
 ### 6.1 ソフトウェア開発と設計（15%）
@@ -230,6 +236,7 @@ sequenceDiagram
 ---
 
 <a id="section7"></a>
+
 ## 7. 受験の前提条件・推奨スキル
 
 シスコ公式には**正式な前提条件はありません**。ただし、以下の経験があることが推奨されています。
@@ -241,6 +248,7 @@ sequenceDiagram
 ---
 
 <a id="section8"></a>
+
 ## 8. 出題形式
 
 Cisco認定試験全般に共通する出題形式です（公式のCisco Certification Exam Tutorialより）。
@@ -258,6 +266,7 @@ Cisco認定試験全般に共通する出題形式です（公式のCisco Certif
 ---
 
 <a id="section9"></a>
+
 ## 9. 学習ロードマップ（ステップバイステップ）
 
 初学者が実際にどう進めればよいか、大まかな流れを示します。
@@ -289,6 +298,7 @@ flowchart TB
 ---
 
 <a id="section10"></a>
+
 ## 10. 再認定（recertification）
 
 | 項目 | 内容 |
@@ -300,6 +310,7 @@ flowchart TB
 ---
 
 <a id="section11"></a>
+
 ## 11. まとめ
 
 - CCNA Automation（旧DevNet Associate、試験コード200-901）は、シスコプラットフォーム上でのソフトウェア開発・自動化スキルを証明するエントリー〜アソシエイトレベルの認定。
@@ -311,6 +322,7 @@ flowchart TB
 ---
 
 <a id="section12"></a>
+
 ## 12. 参考文献・ソース一覧
 
 本ガイドの内容は、以下のシスコ公式情報源、およびシスコ公式ブログを一次情報源として作成しています。
