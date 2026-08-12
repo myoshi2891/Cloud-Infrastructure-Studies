@@ -790,8 +790,8 @@
                             >[出典8]</a
                         >
                         実装上は Python の
-                        <code>random.choices(population, weights=probabilities)</code>
-                        のような重み付きサンプリングを random モードに使います。greedy
+                        <code>random.choices(population, weights=probabilities)[0]</code>
+                        のように、重み付きサンプリングが返す1要素のリストから文字を取り出して random モードに使います。greedy
                         モードでは <code>max(probabilities)</code> が返す確率値そのものではなく、最大確率のインデックスを求め、そのインデックスに対応する文字を選択します。
                     </p>
 
