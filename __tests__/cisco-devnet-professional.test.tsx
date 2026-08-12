@@ -161,11 +161,11 @@ describe('Cisco CCNP Automation Guide Page', () => {
       screen.getAllByText(/Cisco Certified Specialist - Automation Core/).length
     ).toBeGreaterThanOrEqual(2);
     expect(
-      screen.getByText(/Cisco Certified Specialist - Enterprise Automation/)
-    ).toBeInTheDocument();
+      screen.getAllByText(/Cisco Certified Specialist - Enterprise Automation/).length
+    ).toBeGreaterThanOrEqual(1);
     expect(
-      screen.getByText(/Cisco Certified Specialist - Data Center Automation/)
-    ).toBeInTheDocument();
+      screen.getAllByText(/Cisco Certified Specialist - Data Center Automation/).length
+    ).toBeGreaterThanOrEqual(1);
 
     expect(DIAGRAMS.levels).toContain('Cisco Certified Specialist - Automation Core');
     expect(DIAGRAMS.levels).toContain('Cisco Certified Specialist - Enterprise Automation');

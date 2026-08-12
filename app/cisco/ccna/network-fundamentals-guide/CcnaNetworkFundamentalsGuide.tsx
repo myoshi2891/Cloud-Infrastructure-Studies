@@ -828,39 +828,39 @@ export default function CcnaNetworkFundamentalsGuide() {
             <ul className="source-list">
               <li>
                 <span className="src-title">① Cisco公式 CCNA認定ページ（日本語）</span>
-                <span className="src-url">https://www.cisco.com/c/ja_jp/training-events/training-certifications/certifications/associate/ccna.html</span>
+                <a className="src-url" href="https://www.cisco.com/c/ja_jp/training-events/training-certifications/certifications/associate/ccna.html">https://www.cisco.com/c/ja_jp/training-events/training-certifications/certifications/associate/ccna.html</a>
               </li>
               <li>
                 <span className="src-title">② Cisco Learning Network：CCNA試験内容（公式ブループリント）</span>
-                <span className="src-url">https://learningnetwork.cisco.com/s/ccna-exam-topics</span>
+                <a className="src-url" href="https://learningnetwork.cisco.com/s/ccna-exam-topics">https://learningnetwork.cisco.com/s/ccna-exam-topics</a>
               </li>
               <li>
                 <span className="src-title">③ Cisco公式 200-301試験ページ</span>
-                <span className="src-url">https://www.cisco.com/c/ja_jp/training-events/training-certifications/exams/current-list/ccna-200-301.html</span>
+                <a className="src-url" href="https://www.cisco.com/c/ja_jp/training-events/training-certifications/exams/current-list/ccna-200-301.html">https://www.cisco.com/c/ja_jp/training-events/training-certifications/exams/current-list/ccna-200-301.html</a>
               </li>
               <li>
                 <span className="src-title">④ Cisco公式 再認定ポリシー</span>
-                <span className="src-url">https://www.cisco.com/c/ja_jp/training-events/training-certifications/recertification-policy.html</span>
+                <a className="src-url" href="https://www.cisco.com/c/ja_jp/training-events/training-certifications/recertification-policy.html">https://www.cisco.com/c/ja_jp/training-events/training-certifications/recertification-policy.html</a>
               </li>
               <li>
                 <span className="src-title">⑤ Wendell Odom（Cisco Press公式著者）による CCNA V2.0ブループリント解説</span>
-                <span className="src-url">https://www.certskills.com/ccna26-02/</span>
+                <a className="src-url" href="https://www.certskills.com/ccna26-02/">https://www.certskills.com/ccna26-02/</a>
               </li>
               <li>
                 <span className="src-title">⑥ CCNA V2.0発表記事（Wendell Odom&apos;s CCNA Skills Blog）</span>
-                <span className="src-url">https://www.certskills.com/ccna26-01/</span>
+                <a className="src-url" href="https://www.certskills.com/ccna26-01/">https://www.certskills.com/ccna26-01/</a>
               </li>
               <li>
                 <span className="src-title">⑦ CCNA 200-301出題ドメイン配点の分析記事（OpenExamPrep）</span>
-                <span className="src-url">https://open-exam-prep.com/blog/ccna-200-301-exam-topics-lab-blueprint-2026</span>
+                <a className="src-url" href="https://open-exam-prep.com/blog/ccna-200-301-exam-topics-lab-blueprint-2026">https://open-exam-prep.com/blog/ccna-200-301-exam-topics-lab-blueprint-2026</a>
               </li>
               <li>
                 <span className="src-title">⑧ CCNA 200-301シラバス解説記事（Uninets）</span>
-                <span className="src-url">https://www.uninets.com/blog/ccna-course-syllabus</span>
+                <a className="src-url" href="https://www.uninets.com/blog/ccna-course-syllabus">https://www.uninets.com/blog/ccna-course-syllabus</a>
               </li>
               <li>
                 <span className="src-title">⑨ Cisco公式 認定ロードマップ</span>
-                <span className="src-url">https://www.cisco.com/go/certroadmap</span>
+                <a className="src-url" href="https://www.cisco.com/go/certroadmap">https://www.cisco.com/go/certroadmap</a>
               </li>
             </ul>
 

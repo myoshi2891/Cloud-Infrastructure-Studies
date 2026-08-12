@@ -48,7 +48,7 @@ export default function NavBar() {
     }, []);
 
     return (
-        <nav className={styles.sidebar} id="sidebar">
+        <nav className={styles.sidebar} id="sidebar" aria-label="目次">
             <div className={styles.brand}>CISCO CERT GUIDE</div>
             <div className={styles.brandSub}>DevNet Associate / CCNA Automation</div>
             <h2>目次</h2>
