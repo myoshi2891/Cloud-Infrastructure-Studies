@@ -269,7 +269,7 @@ Google Workspaceのセキュリティ設定は、基本的に**組織単位**(OU
 | 組織単位(OU) | 階層構造を持ち、子OUは親OUの設定を継承 | 部署・役職などの恒久的な組織構造に基づく設定 |
 | 設定グループ(Configuration Group) | OUの階層をまたいで任意のユーザーをグループ化 | 「一部の部署の一部の人だけ」といった横断的な例外設定 |
 
-**優先順位のルール**として、設定グループに対応する設定では、グループの設定がOUの設定より優先されます(Group settings override organizational units)。この原則は2SV・CAAなどに適用されますが、パスワードポリシーは設定グループに対応せず、OU単位で管理します。
+**優先順位のルール**として、設定グループに対応する設定では、通常はグループの設定がOUの設定より優先されます(Group settings override organizational units)。ただし2SVでは、子OUが上位OUの設定を継承している場合は設定グループを優先し、子OUに2SVの明示設定がある場合は子OUを優先します。CAAも設定グループに対応しますが、パスワードポリシーは対応せず、OU単位で管理します。
 
 #### 典型的な適用パターン
 
@@ -582,7 +582,7 @@ Google Workspace Marketplaceの許可リスト(allowlist)は、ユーザーが�
 
 - アプリを一部のユーザーのみに提供したい場合は、事前にそのユーザーを専用のOUまたはアクセスグループに配置してから、そのOU/グループに対してのみアプリを許可する。
 - 許可リストに追加されたアプリは自動的に「信頼済み(Trusted)」として扱われるため、許可リスト登録前に十分なレビュー(要求スコープの確認等)を行う。
-- 未成年ユーザー(18歳未満)が在籍する組織(教育機関など)では、Marketplaceアプリは既定でGoogleデータへのアクセスがブロックされ、許可リスト登録・管理者インストール・個別設定のいずれかを行わない限り利用できない点を踏まえ、保護者の同意取得プロセスも運用に組み込む。
+- Google Workspace for Educationで「18歳未満」と指定されたユーザーにMarketplaceアプリへのアクセスを許可する場合は、教育機関が必要な保護者同意を取得するプロセスを運用に組み込む。
 
 > **出典**: [Manage the Marketplace app allowlist for your organization](https://knowledge.workspace.google.com/admin/apps/manage-the-marketplace-app-allowlist-for-your-organization) / [Set whether users can install Marketplace apps](https://knowledge.workspace.google.com/admin/apps/set-whether-users-can-install-marketplace-apps)
 
