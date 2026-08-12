@@ -248,7 +248,8 @@ export function renderDashboardHtml(data) {
         <section class="legend" aria-label="凡例">
             <h2>凡例</h2>
             <ul>
-                <li><span class="cell cell--ok cell--legend">✅</span> 実装済み (80% 以上カバー)</li>
+                <li><span class="cell cell--ok cell--legend">✅</span> Visual・A11y・Performance・Security: 対応テストが1件以上</li>
+                <li><span class="cell cell--ok cell--legend">✅</span> その他のカテゴリ: 80%以上カバー</li>
                 <li><span class="cell cell--warn cell--legend">⚠️</span> 部分的 (0〜80% 未満)</li>
                 <li><span class="cell cell--missing cell--legend">❌</span> 未実装 (対応テスト 0 件)</li>
             </ul>
@@ -263,7 +264,7 @@ export function renderDashboardHtml(data) {
     <script type="application/json" id="dashboard-data">${safeJson(data)}</script>
     <script>${JS}</script>
 </body>
-</html>`;
+</html>`.replace(/[ \t]+$/gm, '');
 }
 
 const CSS = `

@@ -5,6 +5,8 @@ export const DOMAINS = [
     { id: 'agwa', label: 'Google Workspace Admin', provider: 'GCP' },
     { id: 'pcne', label: 'Professional Cloud Network Engineer', provider: 'GCP' },
     { id: 'pcne-step', label: 'PCNE Step-by-Step', provider: 'GCP' },
+    { id: 'ccna', label: 'Cisco CCNA', provider: 'Cisco' },
+    { id: 'devnet', label: 'Cisco DevNet / Automation', provider: 'Cisco' },
     { id: 'common', label: '共通 (components / lib / navigation)', provider: '共通' },
 ];
 
@@ -81,6 +83,8 @@ export function domainOf(filePath) {
     if (p.startsWith('app/gcl/professional-cloud-network-engineer-step-by-step/')) return 'pcne-step';
     if (p.startsWith('app/gcl/professional-cloud-network-engineer/')) return 'pcne';
     if (p.startsWith('app/gcl/agwa/')) return 'agwa';
+    if (p.startsWith('app/cisco/ccna/')) return 'ccna';
+    if (p.startsWith('app/cisco/devnet-')) return 'devnet';
 
     if (p.startsWith('components/')) return 'common';
     if (p.startsWith('lib/')) return 'common';
@@ -97,25 +101,30 @@ export function domainOf(filePath) {
  *   `domain` (string), `category` (string), `status` (string, e.g. "missing" | "ok" | "warn"),
  *   `sources` (number) and `coveredSources` (number).
  * @param {Object} [options] - Optional behaviour modifiers.
- * @param {number} [options.libSourceCount=0] - Number of lib/ sources used to decide common/lib integration actions.
+ * @param {number} [options.libSourceCount=0] - Number of canonical lib/ targets in the completed P0 scope.
+ * @param {number} [options.libIntegrationCoveredCount=0] - Number of those targets covered by Integration tests.
  * @returns {Array<Object>} Sorted action objects. Each action contains:
  *   `priority` (P0|P1|P2), `area` (string), `detail` (string), `tool` (string), `cost` (string),
  *   `effect` (string) and `impact` (number).
  */
 export function buildActions(cells, options = {}) {
-    const { libSourceCount = 0 } = options;
+    const { libSourceCount = 0, libIntegrationCoveredCount = 0 } = options;
     const actions = [];
 
     for (const cell of cells) {
-        if (cell.domain === 'common' && cell.category === 'Integration' && cell.status !== 'ok' && libSourceCount > 0) {
+        if (
+            cell.domain === 'common'
+            && cell.category === 'Integration'
+            && libSourceCount > libIntegrationCoveredCount
+        ) {
             actions.push({
                 priority: 'P0',
                 area: '共通 / lib カバレッジ補強',
-                detail: `lib/ の ${libSourceCount} ファイルに対する Integration テストが不足しています`,
+                detail: `lib/ の対象 ${libSourceCount} ファイル中 ${libIntegrationCoveredCount} ファイルが Integration テストでカバーされています`,
                 tool: 'Vitest',
                 cost: '中',
                 effect: '主要ユーティリティ（recentPages, navigation, utils）の回帰防止',
-                impact: cell.sources - cell.coveredSources,
+                impact: libSourceCount - libIntegrationCoveredCount,
             });
         }
         if (cell.domain === 'common' && cell.category === 'Unit' && cell.status === 'missing') {

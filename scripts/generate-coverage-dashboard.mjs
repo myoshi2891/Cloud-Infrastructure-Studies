@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 
 import {
     extractImports,
+    extractReadFilePaths,
     extractGotoPaths,
     resolveAliasPath,
     classifyTestCategory,
@@ -77,6 +78,9 @@ function build() {
             const src = resolveGotoPathToSource(goto, sourceSet);
             if (src) resolved.add(src);
         }
+        for (const referencedPath of extractReadFilePaths(content)) {
+            if (sourceSet.has(referencedPath)) resolved.add(referencedPath);
+        }
         testToSources.set(t, [...resolved]);
     }
 
@@ -130,8 +134,16 @@ function build() {
         .filter((s) => (sourceCovered.get(s)?.size || 0) === 0)
         .sort();
 
-    const libSourceCount = sourceFiles.filter((s) => s.startsWith('lib/')).length;
-    const actions = buildActions(cells, { libSourceCount });
+    const canonicalLibTargets = ['lib/recentPages.ts', 'lib/utils.ts']
+        .filter((source) => sourceSet.has(source));
+    const libIntegrationCoveredCount = canonicalLibTargets.filter((source) =>
+        [...(sourceCovered.get(source) || [])]
+            .some((test) => classifyTestCategory(test) === 'Integration')
+    ).length;
+    const actions = buildActions(cells, {
+        libSourceCount: canonicalLibTargets.length,
+        libIntegrationCoveredCount,
+    });
 
     return {
         generatedAt: new Date().toISOString(),

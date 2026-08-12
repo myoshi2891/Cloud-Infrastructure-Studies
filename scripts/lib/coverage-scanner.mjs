@@ -3,6 +3,7 @@ import path from 'node:path';
 
 const IMPORT_RE = /from\s+['"](@\/[^'"]+)['"]/g;
 const GOTO_RE = /page\.goto\(\s*(['"])([^'"]+)\1\s*\)/g;
+const FILE_SOURCE_RE = /['"]((?:app|components|lib)\/[^'"]+\.(?:css|tsx?|mjs|jsx?))['"]/g;
 
 /**
  * Extract unique alias import paths from a source file.
@@ -12,6 +13,20 @@ const GOTO_RE = /page\.goto\(\s*(['"])([^'"]+)\1\s*\)/g;
 export function extractImports(source) {
     const seen = new Set();
     for (const match of source.matchAll(IMPORT_RE)) {
+        seen.add(match[1]);
+    }
+    return [...seen];
+}
+
+/**
+ * Extract repository source paths used by file-backed tests, including paths passed
+ * through readFileSync helper functions such as guide-content-widths.test.ts.
+ * @param {string} source - Test source text to scan.
+ * @returns {string[]} Unique repository-relative source paths.
+ */
+export function extractReadFilePaths(source) {
+    const seen = new Set();
+    for (const match of source.matchAll(FILE_SOURCE_RE)) {
         seen.add(match[1]);
     }
     return [...seen];
@@ -134,7 +149,10 @@ export function listSourceFiles(rootDir) {
     const roots = ['app', 'components', 'lib'];
     for (const r of roots) {
         const abs = path.join(rootDir, r);
-        for (const f of walk(abs, (p) => /\.(tsx?|mjs|jsx?)$/.test(p))) {
+        const sourcePattern = r === 'app'
+            ? /\.(css|tsx?|mjs|jsx?)$/
+            : /\.(tsx?|mjs|jsx?)$/;
+        for (const f of walk(abs, (p) => sourcePattern.test(p))) {
             result.add(path.relative(rootDir, f).replace(/\\/g, '/'));
         }
     }
