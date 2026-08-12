@@ -43,7 +43,7 @@ export function findOrderedTextMismatches(sourceTexts, jsxTexts) {
  * Verifies that the server-rendered guide matches the source HTML content and reference links.
  *
  * @param {string} htmlPath - Path to the source HTML file.
- * @returns {boolean} `true` if all compared content and reference links match, `false` otherwise.
+ * @returns {boolean} `true` when all compared content and reference links match.
  * @throws {Error} If the source file is missing or the rendered output differs from the source.
  */
 export function verifyDOMFidelity(htmlPath) {

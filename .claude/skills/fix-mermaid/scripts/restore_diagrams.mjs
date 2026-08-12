@@ -15,8 +15,9 @@ import {
 } from './javascript_source.mjs';
 
 /**
- * Markdown 内の ```mermaid ブロックを抽出する。
- * @returns {string[]} 各ブロックの中身(trim 済み)
+ * Extract Mermaid code blocks from Markdown content.
+ * @param {string} md - The Markdown content to search.
+ * @returns {string[]} The trimmed contents of each Mermaid block.
  */
 export function extractMdMermaidBlocks(md) {
     const blocks = [];

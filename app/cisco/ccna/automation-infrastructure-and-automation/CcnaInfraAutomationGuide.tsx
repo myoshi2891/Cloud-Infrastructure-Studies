@@ -24,7 +24,7 @@ function Diagram({ id, label }: { id: string; label: string }) {
 }
 
 /**
- * Renders a study guide for the CCNA Automation 200-901 Infrastructure and Automation domain.
+ * Renders a study guide for the CCNA Automation 200-901 Infrastructure and Automation domain, including its exam topics and study resources.
  */
 export default function CcnaInfraAutomationGuide() {
     return (
