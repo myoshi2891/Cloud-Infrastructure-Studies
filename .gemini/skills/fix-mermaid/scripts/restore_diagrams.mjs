@@ -15,8 +15,9 @@ import {
 } from './javascript_source.mjs';
 
 /**
- * Markdown 内の ```mermaid ブロックを抽出する。
- * @returns {string[]} 各ブロックの中身(trim 済み)
+ * Extract Mermaid code blocks from Markdown content.
+ * @param {string} md - The Markdown content to search.
+ * @return {string[]} The trimmed contents of each Mermaid code block.
  */
 export function extractMdMermaidBlocks(md) {
     const blocks = [];
@@ -248,10 +249,10 @@ function parseTemplateLiteralObject(objectSource) {
 }
 
 /**
- * Validates a diagram definition object.
+ * Validates a diagram definition object and its string values.
  * @param {Object} diagrams - The diagram definitions to validate.
  * @returns {Object} The validated diagram definitions.
- * @throws {TypeError} If the value is not an object or contains a non-string value.
+ * @throws {TypeError} If the value is null, an array, or contains a non-string value.
  */
 function validateDiagrams(diagrams) {
     if (
@@ -268,9 +269,9 @@ function validateDiagrams(diagrams) {
 /**
  * Extracts and validates the `DIAGRAMS` object definition from HTML without evaluating it.
  * @param {string} html - The HTML containing the `DIAGRAMS` definition.
- * @returns {{diagrams: Object<string, string>, start: number, end: number}} The validated diagrams and the definition's character range.
+ * @returns {{diagrams: Object<string, string>, start: number, end: number}} The validated diagrams and the definition range, with `end` exclusive.
  * @throws {Error} If the definition is missing, malformed, or unterminated.
- * @throws {TypeError} If the definition is not an object whose values are strings.
+ * @throws {TypeError} If the definition is not an object with string values.
  */
 export function extractDiagramsDefinition(html) {
     const declaration = findDiagramsDeclaration(html);

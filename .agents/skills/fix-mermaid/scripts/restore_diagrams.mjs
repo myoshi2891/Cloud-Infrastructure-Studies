@@ -15,8 +15,9 @@ import {
 } from './javascript_source.mjs';
 
 /**
- * Markdown 内の ```mermaid ブロックを抽出する。
- * @returns {string[]} 各ブロックの中身(trim 済み)
+ * Extract Mermaid code blocks from Markdown content.
+ * @param {string} md - The Markdown content to scan.
+ * @return {string[]} The trimmed contents of each Mermaid code block.
  */
 export function extractMdMermaidBlocks(md) {
     const blocks = [];
@@ -114,11 +115,11 @@ function findObjectEnd(source, openingIndex) {
 }
 
 /**
- * Decodes an escape sequence beginning at the specified position.
+ * Decodes an escape sequence from the specified position.
  * @param {string} source - The source text containing the escape sequence.
- * @param {number} start - The index of the escaped character.
- * @returns {{value: string, next: number}} The decoded character and the index after the sequence.
- * @throws {Error} If the escape contains invalid hexadecimal digits or an out-of-range Unicode code point.
+ * @param {number} start - The index of the character following the escape marker.
+ * @returns {{value: string, next: number}} The decoded value and the index following the escape sequence.
+ * @throws {Error} If a Unicode or hexadecimal escape has invalid digits or an out-of-range code point.
  */
 function decodeEscape(source, start) {
     const char = source[start];
