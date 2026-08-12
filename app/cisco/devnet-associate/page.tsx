@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import DevNetAssociateGuide from './DevNetAssociateGuide';
-import './page.css';
 
 export const metadata: Metadata = {
     title: 'Cisco Certified DevNet Associate (200-901) 試験 完全ガイド | Cloud Infrastructure Studies',

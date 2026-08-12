@@ -1,3 +1,4 @@
+/* TODO: Migrate the remaining scoped variables to the three-layer tokens in app/globals.css. */
 .devnet-pro-page {
   --bg: #07111e;
   --bg-elevated: #0d1b2e;
@@ -9,9 +10,9 @@
   --text: var(--color-foreground, #e6ecf5);
   --text-dim: var(--color-muted-foreground, #93a3bd);
   --text-faint: #6c7d9a;
-  --good: #6fd6a1;
   --sidebar-width: 280px;
   --radius: 10px;
+
   background-color: var(--bg);
   color: var(--text);
   min-height: 100vh;
@@ -302,11 +303,5 @@
   .devnet-pro-page .main {
     margin-left: 0;
     padding: 2rem 5vw 4rem;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .devnet-pro-page html {
-    scroll-behavior: auto;
   }
 }

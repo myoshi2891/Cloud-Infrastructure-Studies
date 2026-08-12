@@ -4,13 +4,14 @@ import { memo } from 'react';
 import { MermaidDiagram } from '@/components/MermaidDiagram';
 import NavBar from './NavBar';
 import { DIAGRAMS } from './constants';
+import styles from './page.module.css';
 
 /** Wraps Mermaid's client renderer for diagrams embedded throughout the guide. */
 const Diagram = memo(function Diagram({ id, label }: { id: string; label: string }) {
     const chart = DIAGRAMS[id];
     if (!chart) return null;
     return (
-        <div className="mermaid-wrap">
+        <div className={styles.mermaidWrap}>
             <MermaidDiagram chart={chart} ariaLabel={label} preserveNaturalScale={true} />
         </div>
     );
@@ -19,26 +20,26 @@ const Diagram = memo(function Diagram({ id, label }: { id: string; label: string
 /** Renders the complete DevNet Associate guide body and delegates client UI to child components. */
 export default function DevNetAssociateGuide() {
     return (
-        <div className="devnet-associate-page">
-            <div className="layout">
+        <div className={styles.page}>
+            <div className={styles.layout}>
                 <NavBar />
 
-                <main className="main">
-                    <div className="section" id="s0">
+                <main className={styles.main}>
+                    <div className={styles.section} id="s0">
                         <h1>Cisco Certified DevNet Associate 試験 完全ガイド</h1>
-                        <p className="lead">
+                        <p className={styles.lead}>
                             初学者向けにステップバイステップで解説します。各記述の根拠となる一次情報源URLは、本文中および末尾「参考文献・ソース一覧」に明記しています。
                         </p>
-                        <span className="badge">試験コード: 200-901</span>
-                        <span className="badge">試験時間: 120分</span>
-                        <span className="badge">認定有効期間: 3年</span>
+                        <span className={styles.badge}>試験コード: 200-901</span>
+                        <span className={styles.badge}>試験時間: 120分</span>
+                        <span className={styles.badge}>認定有効期間: 3年</span>
                     </div>
 
-                    <div className="section" id="s1">
+                    <div className={styles.section} id="s1">
                         <h2>
-                            <span className="num">1.</span>【重要】名称変更に関するお知らせ（2026年2月〜）
+                            <span className={styles.num}>1.</span>【重要】名称変更に関するお知らせ（2026年2月〜）
                         </h2>
-                        <div className="callout warn">
+                        <div className={`${styles.callout} ${styles.warn}`}>
                             <p>
                                 このガイドを書いている2026年7月時点で、「Cisco Certified DevNet
                                 Associate」という名称そのものはすでに移行済みです。ご質問にあったシスコ公式ページ（日本語版）は現在も「DevNet
@@ -102,8 +103,8 @@ export default function DevNetAssociateGuide() {
                         </p>
                     </div>
 
-                    <div className="section" id="s2">
-                        <h2><span className="num">2.</span>DevNet Associateとは何か</h2>
+                    <div className={styles.section} id="s2">
+                        <h2><span className={styles.num}>2.</span>DevNet Associateとは何か</h2>
                         <p>
                             CCNA Automation（旧DevNet Associate）は、シスコプラットフォーム上で動くアプリケーションの開発・運用スキルを証明する、<strong>エントリー〜アソシエイトレベル</strong>の認定です。
                         </p>
@@ -119,8 +120,8 @@ export default function DevNetAssociateGuide() {
                         </p>
                     </div>
 
-                    <div className="section" id="s3">
-                        <h2><span className="num">3.</span>Cisco資格体系における位置づけ</h2>
+                    <div className={styles.section} id="s3">
+                        <h2><span className={styles.num}>3.</span>Cisco資格体系における位置づけ</h2>
                         <p>
                             CCNA Automationは、Automationトラック（旧DevNetトラック）における最初のステップです。上位にProfessional、Expertレベルが存在し、段階的にキャリアアップしていく構成になっています。
                         </p>
@@ -132,8 +133,8 @@ export default function DevNetAssociateGuide() {
                         </p>
                     </div>
 
-                    <div className="section" id="s4">
-                        <h2><span className="num">4.</span>試験の基本情報</h2>
+                    <div className={styles.section} id="s4">
+                        <h2><span className={styles.num}>4.</span>試験の基本情報</h2>
                         <table>
                             <thead>
                                 <tr>
@@ -188,15 +189,15 @@ export default function DevNetAssociateGuide() {
                                 </tr>
                             </tbody>
                         </table>
-                        <div className="callout">
+                        <div className={styles.callout}>
                             <p>
                                 合格に必要なスコア（カットスコア）は、シスコが公式には固定値を公表していません。1000点満点中おおむね750〜850点前後が目安とされていますが、これは非公式の推定値である点に注意してください。
                             </p>
                         </div>
                     </div>
 
-                    <div className="section" id="s5">
-                        <h2><span className="num">5.</span>出題範囲と配分</h2>
+                    <div className={styles.section} id="s5">
+                        <h2><span className={styles.num}>5.</span>出題範囲と配分</h2>
                         <p>試験は6つのドメイン（出題領域）から構成されます。配分（重み）は以下の通りです。</p>
 
                         <Diagram id="diag-s5" label="200-901 CCNAAUTO 出題範囲の比率を示す円グラフ" />
@@ -247,8 +248,8 @@ export default function DevNetAssociateGuide() {
                         </p>
                     </div>
 
-                    <div className="section" id="s6">
-                        <h2><span className="num">6.</span>各ドメインを初心者向けに解説</h2>
+                    <div className={styles.section} id="s6">
+                        <h2><span className={styles.num}>6.</span>各ドメインを初心者向けに解説</h2>
 
                         <h3>6.1 ソフトウェア開発と設計（15%）</h3>
                         <p>プログラマーとしての「土台」となる知識です。初学者はまずここから固めるとスムーズです。</p>
@@ -367,7 +368,7 @@ export default function DevNetAssociateGuide() {
                                 </tr>
                             </tbody>
                         </table>
-                        <div className="callout">
+                        <div className={styles.callout}>
                             <p>
                                 上表の「Cisco Catalyst Center」「Cisco Catalyst SD-WAN」「Secure Connect」は、2025年更新の最新版試験ガイド（英語版）での呼称です。旧称（DNA Center、SD-WAN、Umbrella）を使った教材もまだ多く出回っているため、両方の名前を覚えておくと安心です。
                             </p>
@@ -524,8 +525,8 @@ export default function DevNetAssociateGuide() {
                         </table>
                     </div>
 
-                    <div className="section" id="s7">
-                        <h2><span className="num">7.</span>受験の前提条件・推奨スキル</h2>
+                    <div className={styles.section} id="s7">
+                        <h2><span className={styles.num}>7.</span>受験の前提条件・推奨スキル</h2>
                         <p>
                             シスコ公式には<strong>正式な前提条件はありません</strong>。ただし、以下の経験があることが推奨されています。
                         </p>
@@ -537,8 +538,8 @@ export default function DevNetAssociateGuide() {
                         </p>
                     </div>
 
-                    <div className="section" id="s8">
-                        <h2><span className="num">8.</span>出題形式</h2>
+                    <div className={styles.section} id="s8">
+                        <h2><span className={styles.num}>8.</span>出題形式</h2>
                         <p>Cisco認定試験全般に共通する出題形式です（公式のCisco Certification Exam Tutorialより）。</p>
                         <table>
                             <thead>
@@ -575,8 +576,8 @@ export default function DevNetAssociateGuide() {
                         </p>
                     </div>
 
-                    <div className="section" id="s9">
-                        <h2><span className="num">9.</span>学習ロードマップ（ステップバイステップ）</h2>
+                    <div className={styles.section} id="s9">
+                        <h2><span className={styles.num}>9.</span>学習ロードマップ（ステップバイステップ）</h2>
                         <p>初学者が実際にどう進めればよいか、大まかな流れを示します。</p>
 
                         <Diagram id="diag-s9" label="学習ロードマップのステップを示すフローチャート" />
@@ -605,8 +606,8 @@ export default function DevNetAssociateGuide() {
                         </ol>
                     </div>
 
-                    <div className="section" id="s10">
-                        <h2><span className="num">10.</span>再認定（recertification）</h2>
+                    <div className={styles.section} id="s10">
+                        <h2><span className={styles.num}>10.</span>再認定（recertification）</h2>
                         <table>
                             <thead>
                                 <tr>
@@ -633,8 +634,8 @@ export default function DevNetAssociateGuide() {
                         </table>
                     </div>
 
-                    <div className="section" id="s11">
-                        <h2><span className="num">11.</span>まとめ</h2>
+                    <div className={styles.section} id="s11">
+                        <h2><span className={styles.num}>11.</span>まとめ</h2>
                         <ul>
                             <li>
                                 CCNA Automation（旧DevNet Associate、試験コード200-901）は、シスコプラットフォーム上でのソフトウェア開発・自動化スキルを証明するエントリー〜アソシエイトレベルの認定。
@@ -654,12 +655,12 @@ export default function DevNetAssociateGuide() {
                         </ul>
                     </div>
 
-                    <div className="section" id="s12">
-                        <h2><span className="num">12.</span>参考文献・ソース一覧</h2>
+                    <div className={styles.section} id="s12">
+                        <h2><span className={styles.num}>12.</span>参考文献・ソース一覧</h2>
                         <p>
                             本ガイドの内容は、以下のシスコ公式情報源、およびシスコ公式ブログを一次情報源として作成しています。
                         </p>
-                        <div className="footer">
+                        <div className={styles.footer}>
                             <ul>
                                 <li>
                                     Cisco Certified DevNet Associate 認定とトレーニングプログラム（日本語版・ユーザー提供URL）

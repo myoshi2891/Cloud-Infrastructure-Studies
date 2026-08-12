@@ -12,13 +12,13 @@ export const metadata: Metadata = {
 };
 
 const cardColorMap: Record<ColorKey, string> = {
-    'card-ace': `card-ace ${styles.cardAce}`,
-    'card-genai': `card-genai ${styles.cardGenai}`,
-    'card-cdl': `card-cdl ${styles.cardCdl}`,
-    'card-agwa': `card-agwa ${styles.cardAgwa}`,
-    'card-pcne': `card-pcne ${styles.cardPcne}`,
-    'card-ccna': `card-ccna ${styles.cardCisco}`,
-    'card-aws-saa': `card-aws-saa ${styles.cardAws}`,
+    'card-ace': 'card-ace',
+    'card-genai': 'card-genai',
+    'card-cdl': 'card-cdl',
+    'card-agwa': 'card-agwa',
+    'card-pcne': 'card-pcne',
+    'card-ccna': 'card-ccna',
+    'card-aws-saa': 'card-aws-saa',
 };
 
 const providerMeta: Record<Provider, { label: string; kicker: string; description: string }> = {

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import styles from './page.module.css';
 
 const NAV_ITEMS = [
     { id: 's1', label: '1. 名称変更のお知らせ' },
@@ -47,15 +48,15 @@ export default function NavBar() {
     }, []);
 
     return (
-        <nav className="sidebar" id="sidebar">
-            <div className="brand">CISCO CERT GUIDE</div>
-            <div className="brand-sub">DevNet Associate / CCNA Automation</div>
+        <nav className={styles.sidebar} id="sidebar">
+            <div className={styles.brand}>CISCO CERT GUIDE</div>
+            <div className={styles.brandSub}>DevNet Associate / CCNA Automation</div>
             <h2>目次</h2>
             {NAV_ITEMS.map((item) => (
                 <a
                     key={item.id}
                     href={`#${item.id}`}
-                    className={activeId === item.id ? 'active' : ''}
+                    className={activeId === item.id ? styles.active : undefined}
                     aria-current={activeId === item.id ? 'location' : undefined}
                     onClick={() => setActiveId(item.id)}
                 >

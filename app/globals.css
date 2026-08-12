@@ -77,6 +77,24 @@
     --color-guide-meta: #5f7291;
     --color-guide-hero-start: #ffffff;
 
+    /* Cisco guide page-specific source-fidelity tokens */
+    --color-ccna-fundamentals-elevated: #0d1a2e;
+    --color-ccna-fundamentals-card: #101f38;
+    --color-ccna-fundamentals-accent-soft: rgba(124, 158, 255, 0.14);
+    --color-ccna-fundamentals-foreground: #e6edf7;
+    --color-ccna-fundamentals-foreground-muted: #9fb0cc;
+    --color-ccna-fundamentals-border: rgba(124, 158, 255, 0.18);
+    --color-ccna-fundamentals-border-soft: rgba(230, 237, 247, 0.08);
+    --color-devnet-associate-panel: #0d1b2e;
+    --color-devnet-associate-panel-alt: #0f2038;
+    --color-devnet-associate-accent-soft: rgba(124, 158, 255, 0.14);
+    --color-devnet-associate-accent-border: rgba(124, 158, 255, 0.3);
+    --color-devnet-associate-foreground: #e7edf8;
+    --color-devnet-associate-foreground-muted: #93a5c4;
+    --color-devnet-associate-border: rgba(124, 158, 255, 0.16);
+    --color-devnet-associate-warning: #ffb86b;
+    --color-devnet-associate-warning-soft: rgba(255, 184, 107, 0.12);
+
     /* CCNA Platforms and Development guide (source-design fidelity) */
     --color-ccna-platforms-surface-1: #0d1b2c;
     --color-ccna-platforms-surface-2: #101f34;
@@ -278,6 +296,14 @@ body {
 @utility bg-gradient-aurora {
     background: linear-gradient(135deg, var(--color-brand-start), var(--color-brand-end));
 }
+
+.card-ace { --card-accent: var(--color-theme-ace-fg); }
+.card-genai { --card-accent: var(--color-theme-genai-fg); }
+.card-cdl { --card-accent: var(--color-theme-cdl-fg); }
+.card-agwa { --card-accent: var(--color-theme-agwa-fg); }
+.card-pcne { --card-accent: var(--color-theme-pcne-fg); }
+.card-ccna { --card-accent: var(--color-theme-cisco-fg); }
+.card-aws-saa { --card-accent: var(--color-theme-aws-fg); }
 
 @utility text-gradient-aurora {
     background: linear-gradient(135deg, var(--color-brand-text-start), var(--color-brand-text-end));
