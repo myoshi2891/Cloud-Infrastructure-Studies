@@ -3,8 +3,10 @@ import {
     classifyCell,
     domainOf,
     buildActions,
+    CANONICAL_COMMON_TARGETS,
     DOMAINS,
 } from '../../scripts/lib/classifier.mjs';
+import { extractReadFilePaths } from '../../scripts/lib/coverage-scanner.mjs';
 
 describe('classifier / classifyCell', () => {
     it('should return missing when no tests cover the cell', () => {
@@ -91,11 +93,20 @@ describe('classifier / domainOf', () => {
 });
 
 describe('classifier / buildActions', () => {
+    it('does not treat domain classification strings as file-backed coverage', () => {
+        expect(
+            extractReadFilePaths("domainOf('app/cisco/devnet-professional/page.module.css')")
+        ).toEqual([]);
+    });
+
     it('should generate P0 action when lib Integration cell is missing', () => {
         const cells = [
             { domain: 'common', category: 'Integration', status: 'missing', sources: 2, coveredSources: 0, tests: [] },
         ];
-        const actions = buildActions(cells, { libSourceCount: 2, libIntegrationCoveredCount: 0 });
+        const actions = buildActions(cells, {
+            commonTargetCount: CANONICAL_COMMON_TARGETS.length,
+            commonIntegrationCoveredCount: 0,
+        });
         const firstAction = actions[0];
         expect(firstAction).toBeDefined();
         if (!firstAction) return;
@@ -104,13 +115,21 @@ describe('classifier / buildActions', () => {
     });
 
     it('should not generate a P0 action when every canonical lib target is covered', () => {
+        const expectedTargets = [
+            'lib/recentPages.ts',
+            'lib/utils.ts',
+            'app/navigation.ts',
+        ];
         const cells = [
             { domain: 'common', category: 'Integration', status: 'warn', sources: 36, coveredSources: 4, tests: ['navigation', 'recentPages', 'utils'] },
         ];
 
+        expect(CANONICAL_COMMON_TARGETS).toHaveLength(expectedTargets.length);
+        expect(CANONICAL_COMMON_TARGETS).toEqual(expectedTargets);
+
         const actions = buildActions(cells, {
-            libSourceCount: 2,
-            libIntegrationCoveredCount: 2,
+            commonTargetCount: CANONICAL_COMMON_TARGETS.length,
+            commonIntegrationCoveredCount: CANONICAL_COMMON_TARGETS.length,
         });
 
         expect(actions).not.toEqual(expect.arrayContaining([
@@ -122,7 +141,7 @@ describe('classifier / buildActions', () => {
         const cells = [
             { domain: 'agwa', category: 'E2E', status: 'missing', sources: 3, coveredSources: 0, tests: [] },
         ];
-        const actions = buildActions(cells, { libSourceCount: 0 });
+        const actions = buildActions(cells, { commonTargetCount: 0 });
         const p1 = actions.find((a) => a.priority === 'P1');
         expect(p1).toBeDefined();
         if (!p1) return;
@@ -134,7 +153,7 @@ describe('classifier / buildActions', () => {
             { domain: 'ace', category: 'Visual', status: 'missing', sources: 5, coveredSources: 0, tests: [] },
             { domain: 'agwa', category: 'Visual', status: 'missing', sources: 3, coveredSources: 0, tests: [] },
         ];
-        const actions = buildActions(cells, { libSourceCount: 0 });
+        const actions = buildActions(cells, { commonTargetCount: 0 });
         const p2 = actions.find((a) => a.priority === 'P2');
         expect(p2).toBeDefined();
         if (!p2) return;
@@ -147,7 +166,10 @@ describe('classifier / buildActions', () => {
             { domain: 'common', category: 'Integration', status: 'missing', sources: 2, coveredSources: 0, tests: [] },
             { domain: 'ace', category: 'Visual', status: 'missing', sources: 5, coveredSources: 0, tests: [] },
         ];
-        const actions = buildActions(cells, { libSourceCount: 2, libIntegrationCoveredCount: 0 });
+        const actions = buildActions(cells, {
+            commonTargetCount: CANONICAL_COMMON_TARGETS.length,
+            commonIntegrationCoveredCount: 0,
+        });
         const priorities = actions.map((a) => a.priority);
         const firstPriority = priorities[0];
         const lastPriority = priorities[priorities.length - 1];

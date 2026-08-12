@@ -13,6 +13,9 @@ describe('coverage-scanner / file-backed source references', () => {
         expect(listSourceFiles(process.cwd())).toContain(
             'app/cisco/devnet-professional/page.module.css'
         );
+        expect(listSourceFiles(process.cwd())).toContain(
+            'components/MermaidDiagram.module.css'
+        );
     });
 
     it('extracts CSS paths read directly or through join(process.cwd())', () => {
@@ -25,6 +28,12 @@ describe('coverage-scanner / file-backed source references', () => {
             'app/cisco/devnet-associate/page.module.css',
             'app/cisco/ccna/network-fundamentals-guide/page.css',
         ]);
+    });
+
+    it('ignores repository paths that are not readFile calls', () => {
+        expect(
+            extractReadFilePaths("domainOf('app/cisco/devnet-associate/page.module.css');")
+        ).toEqual([]);
     });
 });
 
