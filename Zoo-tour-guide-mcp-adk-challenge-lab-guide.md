@@ -46,7 +46,7 @@ flowchart TB
     subgraph AgentService["Cloud Run: zoo_guide_agent（ADKエージェント + Web UI）"]
         Root["root_agent（LlmAgent）"]
         MCPTool["MCPToolset：zoo-remoteサーバーに接続"]
-        SearchAgent["AgentTool経由のsub-agent：google_search"]
+        SearchAgent["GoogleSearchTool：最新情報を検索"]
         Root --> MCPTool
         Root --> SearchAgent
     end
@@ -71,7 +71,7 @@ flowchart TB
 ポイントは2つです。
 
 1. **MCPサーバーは`--no-allow-unauthenticated`でデプロイされ、IDトークンによる認証が必須**になる（Task 3・4で扱う）。
-2. **ADKの`google_search`組み込みツールは、他のツール（MCPToolsetなど）と同一エージェント内で単純併用できない**という既知の制約があり、これをAgentToolでラップしたsub-agentパターンで回避する必要がある（Task 5で扱う、後述）。
+2. **ADKの`google_search`組み込みツールは、他のツール（MCPToolsetなど）と同一エージェント内で単純併用できない**という既知の制約があり、ADK 1.16.0以前はAgentTool、1.17.0以上は`GoogleSearchTool(bypass_multi_tools_limit=True)`で対処する（Task 5で扱う、後述）。
 
 タスク全体の流れは以下の通りです。
 
@@ -112,7 +112,7 @@ Cloud Storageからボイラープレートコードを取得します。ラボ�
 cd ~/zoo_guide_agent
 cat <<EOF > .env
 MODEL="<MODEL_NAME>"
-SERVICE_ACCOUNT="<PROJECT_ID>-compute@developer.gserviceaccount.com"
+SERVICE_ACCOUNT="<PROJECT_NUMBER>-compute@developer.gserviceaccount.com"
 MCP_SERVER_URL="https://<MCP_SERVICE>-<HASH>.<REGION>.run.app/mcp/"
 GOOGLE_GENAI_USE_ENTERPRISE=1
 GOOGLE_CLOUD_PROJECT=<PROJECT_ID>
@@ -123,7 +123,7 @@ EOF
 
 `.env`にシークレットや接続先URLをハードコードせず環境変数として切り出すのは、**12-Factor App**の設定管理原則に沿ったベストプラクティスです。特に`MCP_SERVER_URL`はTask 3でCloud Runにデプロイした後にしか確定しない値のため、後から書き換える前提の設計になっています。
 
-`SERVICE_ACCOUNT`が`<PROJECT_ID>-compute@developer.gserviceaccount.com`という形式になっているのは、Compute Engineのデフォルトサービスアカウントを指しています。Cloud Runもデフォルトではこのサービスアカウントの権限で動作するため、Task 2のIAM設定と直接関係してきます。
+`SERVICE_ACCOUNT`が`<PROJECT_NUMBER>-compute@developer.gserviceaccount.com`という形式になっているのは、Compute Engineのデフォルトサービスアカウントを指しています。Cloud Runもデフォルトではこのサービスアカウントの権限で動作するため、Task 2のIAM設定と直接関係してきます。
 
 ### 3.4 有効化すべきAPI
 
@@ -134,6 +134,15 @@ EOF
 | Compute Engine API | Cloud Run / Cloud Buildが内部的に利用するコンピューティング基盤 |
 | Cloud Build API | ソースコードからコンテナイメージをビルドする（`gcloud run deploy --source=.`の裏側） |
 | Cloud Run Admin API | Cloud Runサービスの作成・更新・管理 |
+
+```bash
+gcloud services enable \
+    run.googleapis.com \
+    artifactregistry.googleapis.com \
+    cloudbuild.googleapis.com \
+    aiplatform.googleapis.com \
+    --project=<PROJECT_ID>
+```
 
 **ベストプラクティス:** APIの有効化には`serviceusage.services.enable`権限が必要です。自分がプロジェクトオーナーでない場合は、Service Usage Admin（`roles/serviceusage.serviceUsageAdmin`）ロールを管理者に依頼する必要があります。ラボ環境では学生アカウントに最初から付与されていますが、実務のプロジェクトでは明示的に確認すべきポイントです。
 
@@ -152,30 +161,49 @@ EOF
 
 ### 4.2 付与すべきロール
 
-| ロール | ロールID | 付与理由 |
-|---|---|---|
-| Cloud Run Admin | `roles/run.admin` | Cloud Runサービスの作成・デプロイ・IAMポリシーの変更（サービスを公開状態にする等）を行うために必要 |
-| Agent Platform User | `roles/aiplatform.user` | Gemini Enterprise Agent Platform（Vertex AI基盤）上でモデル推論・エージェント実行を行うために必要 |
+| 主体 | ロール | ロールID | 付与理由 |
+|---|---|---|---|
+| デプロイ主体 | Cloud Run Source Developer | `roles/run.sourceDeveloper` | ソースからCloud Runサービスをビルド・デプロイする |
+| デプロイ主体 | Service Usage Consumer | `roles/serviceusage.serviceUsageConsumer` | デプロイ時にプロジェクトの有効なAPIを利用する |
+| デプロイ主体 | Service Account User | `roles/iam.serviceAccountUser` | Cloud Run実行用サービスアカウントとして動作させる権限を持つ |
+| ビルドサービスアカウント | Cloud Run Builder | `roles/run.builder` | ソースからコンテナイメージをビルドする |
+| 実行用サービスアカウント | Vertex AI User | `roles/aiplatform.user` | Vertex AI基盤でモデル推論・エージェント実行を行う |
+| 実行用サービスアカウント | Cloud Run Invoker | `roles/run.invoker` | IAM保護されたMCP Cloud Runサービスを呼び出す |
+
+`roles/run.admin`は広い管理権限を含むため、ソースデプロイの最小権限として扱いません。デプロイ主体・ビルド主体・実行主体を分け、それぞれに必要なロールだけを付与します。
 
 ### 4.3 コマンドの型
 
 ```bash
 gcloud projects add-iam-policy-binding <PROJECT_ID> \
     --member="user:<USER_EMAIL>" \
-    --role="roles/run.admin"
+    --role="roles/run.sourceDeveloper"
 
 gcloud projects add-iam-policy-binding <PROJECT_ID> \
     --member="user:<USER_EMAIL>" \
+    --role="roles/serviceusage.serviceUsageConsumer"
+
+gcloud iam service-accounts add-iam-policy-binding \
+    <PROJECT_NUMBER>-compute@developer.gserviceaccount.com \
+    --member="user:<USER_EMAIL>" \
+    --role="roles/iam.serviceAccountUser"
+
+gcloud projects add-iam-policy-binding <PROJECT_ID> \
+    --member="serviceAccount:<PROJECT_NUMBER>-compute@developer.gserviceaccount.com" \
+    --role="roles/run.builder"
+
+gcloud projects add-iam-policy-binding <PROJECT_ID> \
+    --member="serviceAccount:<PROJECT_NUMBER>-compute@developer.gserviceaccount.com" \
     --role="roles/aiplatform.user"
 ```
 
 `--member`は`user:`、`group:`、`serviceAccount:`などのプレフィックスで主体の種類を明示する必要があります。ここを間違える（例: `serviceAccount:`とすべきところを`user:`にする）のは、実務でも頻発するミスです。
 
-**ベストプラクティス:** 基本ロール（Owner / Editor / Viewer）を安易に付与せず、目的に応じた事前定義ロール（predefined role）を使うことで、影響範囲を最小化できます。Cloud Run Adminロールには「IAMポリシーを変更してサービスを公開状態にする」権限まで含まれるため、本番運用では誰に付与するかを慎重に管理すべきロールです。
+**ベストプラクティス:** 基本ロール（Owner / Editor / Viewer）やCloud Run Adminを安易に付与せず、目的に応じた事前定義ロール（predefined role）を主体ごとに使い分けることで、影響範囲を最小化できます。
 
 ### 4.4 根拠・参考ソース
 
-- Cloud RunのIAMアクセス制御とCloud Run Adminロールの権限範囲: [Access control with IAM（Cloud Run 公式ドキュメント）](https://docs.cloud.google.com/run/docs/securing/managing-access)
+- Cloud Runのソースデプロイに必要な主体別ロール: [Cloud Run IAM roles（Cloud Run 公式ドキュメント）](https://docs.cloud.google.com/run/docs/reference/iam/roles)
 - `gcloud projects add-iam-policy-binding`コマンドリファレンス: [gcloud projects add-iam-policy-binding（Google Cloud SDK 公式ドキュメント）](https://docs.cloud.google.com/sdk/gcloud/reference/projects/add-iam-policy-binding)
 - Agent Platform Userロール（`roles/aiplatform.user`）の定義: [Get started with Gemini Enterprise Agent Platform（Google Cloud公式ドキュメント）](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/start)
 - IAMロール付与の一般手順: [Manage access to projects, folders, and organizations（IAM 公式ドキュメント）](https://docs.cloud.google.com/iam/docs/granting-changing-revoking-access)
@@ -229,6 +257,16 @@ gcloud run deploy <MCP_SERVICE_NAME> \
     --labels=lab-dev=mcp-zoo-cloud-run-service
 ```
 
+デプロイ後、ADKエージェントの実行用サービスアカウントにMCPサービスの呼び出し権限を付与します。
+
+```bash
+gcloud run services add-iam-policy-binding <MCP_SERVICE_NAME> \
+    --region=<REGION> \
+    --project=<PROJECT_ID> \
+    --member="serviceAccount:<PROJECT_NUMBER>-compute@developer.gserviceaccount.com" \
+    --role="roles/run.invoker"
+```
+
 | フラグ | 意味 |
 |---|---|
 | `--no-allow-unauthenticated` | 未認証アクセスを拒否し、IAM（IDトークン）による認証を必須にする |
@@ -244,6 +282,7 @@ gcloud run deploy <MCP_SERVICE_NAME> \
 - `--no-allow-unauthenticated`を使うべき理由の解説: [Build and Deploy a Remote MCP Server to Google Cloud Run in Under 10 Minutes（Google Cloud公式ブログ）](https://cloud.google.com/blog/topics/developers-practitioners/build-and-deploy-a-remote-mcp-server-to-google-cloud-run-in-under-10-minutes)
 - zoo MCPサーバー（`get_animals_by_species`等）を題材にした公式コードラボ: [How to deploy a secure MCP server on Cloud Run（Google Codelabs）](https://codelabs.developers.google.com/codelabs/cloud-run/how-to-deploy-a-secure-mcp-server-on-cloud-run)
 - Cloud Run上でのMCPサーバーホスティング全般のベストプラクティス: [Host MCP servers on Cloud Run（Google Cloud公式ドキュメント）](https://docs.cloud.google.com/run/docs/host-mcp-servers)
+- Cloud Runサービス間認証と`roles/run.invoker`: [Authenticating service-to-service（Google Cloud公式ドキュメント）](https://docs.cloud.google.com/run/docs/authenticating/service-to-service)
 
 ---
 
@@ -323,56 +362,85 @@ Cloud Runサービスのログを直接読み取ることで、「ツール呼�
 
 ### 7.1 `agent.py`のTODOで最も重要な落とし穴: google_searchとMCPツールの併用制限
 
-ADKには「1つのエージェント内で組み込みツール（`google_search`など）を他のツールと単純併用できない」という既知の制約があります。これを知らずにそのまま実装すると、以下のようなエラーに直面します。
+ADKには「1つのエージェント内で組み込みツール（`google_search`など）を他のツールと単純併用できない」という既知の制約があり、対処方法は`google-adk`のバージョンによって異なります。これを知らずにそのまま実装すると、以下のようなエラーに直面します。
 
 ```text
 400 INVALID_ARGUMENT: Multiple tools are supported only when they are all search tools.
 ```
 
-このラボが「Wikipedia参照に加えてGoogle Search MCPサーバーツールを持たせる」という要件をわざわざ明示しているのは、この制約への対処を実践させる意図があると考えられます。公式な回避パターンは、**`google_search`を専用のsub-agentに閉じ込め、それを`AgentTool`でラップしてroot_agentのツールとして登録する**という構成です。
+#### バージョン別の実装
+
+| `google-adk` | 適用する実装 |
+|---|---|
+| 1.16.0以前 | `google_search`を専用sub-agentに閉じ込め、`AgentTool`でroot_agentのツールとして登録する |
+| 1.17.0以上、2.0.0未満 | `GoogleSearchTool(bypass_multi_tools_limit=True)`をMCPToolsetと同じroot_agentへ登録する |
+
+`bypass_multi_tools_limit`とMCPToolsetの動的`header_provider`はv1.17.0で追加されたため、本番用の以下の実装では依存関係を明示的に固定します。
+
+```text
+google-adk>=1.17.0,<2.0.0
+```
 
 ```mermaid
 flowchart TB
-    Root["root_agent（zoo_guide_agent）<br/>tools = [MCPToolset, AgentTool(search_agent)]"]
-    MCPToolset["MCPToolset<br/>zoo-remote MCPサーバーのツール群"]
-    AgentToolWrap["AgentTool（ラッパー）"]
-    SearchAgent["search_agent（sub-agent）<br/>tools = [google_search]のみ"]
-
-    Root --> MCPToolset
-    Root --> AgentToolWrap
-    AgentToolWrap --> SearchAgent
-    SearchAgent --> GoogleSearchAPI["Google Search（組み込みツール）"]
+    Version{"google-adkのバージョン"}
+    Version -->|"1.16.0以前"| Legacy["AgentToolで<br/>search_agentをラップ"]
+    Version -->|"1.17.0以上"| Current["GoogleSearchTool<br/>bypass_multi_tools_limit=True"]
+    Legacy --> Root["root_agent + MCPToolset"]
+    Current --> Root
 ```
 
-この構成のポイントは、**「1エージェント1組み込みツール」というADKの制約を、sub-agent単位で守る**ことです。`search_agent`は`google_search`だけを持ち、`root_agent`はMCPツールと「search_agentを呼び出すためのAgentTool」だけを持つため、それぞれのエージェント内では制約に抵触しません。
-
-イメージのPythonコード（概念例、実際のTODOはラボの`agent.py`のコメントに従って実装します）:
+1.16.0以前では、**「1エージェント1組み込みツール」という制約をsub-agent単位で守る**ため、次のAgentToolパターンを使います。
 
 ```python
 from google.adk.agents import Agent
 from google.adk.tools import google_search
 from google.adk.tools.agent_tool import AgentTool
-from google.adk.tools.mcp_tool import MCPToolset, StreamableHTTPConnectionParams
 
 search_agent = Agent(
-    model="gemini-flash-latest",
+    model=MODEL,
     name="search_agent",
-    instruction="あなたはGoogle検索専門のエージェントです。最新の一般情報を検索して回答します。",
+    instruction="Google検索を使って最新の一般情報を回答します。",
     tools=[google_search],
-)
-
-mcp_toolset = MCPToolset(
-    connection_params=StreamableHTTPConnectionParams(
-        url=MCP_SERVER_URL,  # .envのMCP_SERVER_URL
-        headers={"Authorization": f"Bearer {ID_TOKEN}"},
-    ),
 )
 
 root_agent = Agent(
     model=MODEL,
     name="zoo_guide_agent",
-    instruction="来園者の質問に対し、動物情報はMCPツールで、最新の一般情報はsearch_agentツールで回答してください。",
+    instruction="動物情報はMCPツール、一般情報はsearch_agentを使います。",
     tools=[mcp_toolset, AgentTool(agent=search_agent)],
+)
+```
+
+1.17.0以上では`GoogleSearchTool`を使い、Cloud Run上の実行用サービスアカウントから短命のIDトークンを動的に取得します。`fetch_id_token`はCloud Runにアタッチされた`SERVICE_ACCOUNT`のApplication Default Credentialsを使用します。`.env`の`MCP_SERVER_URL`は`/mcp/`を含む接続先なので、Cloud Runがaudienceとして要求するサービスURL部分を取り出して使います。固定の`ID_TOKEN`は`.env`へ保存しません。
+
+```python
+from google.auth.transport.requests import Request
+from google.oauth2 import id_token
+from google.adk.agents import Agent
+from google.adk.tools.google_search_tool import GoogleSearchTool
+from google.adk.tools.mcp_tool import MCPToolset, StreamableHTTPConnectionParams
+
+MCP_AUDIENCE = MCP_SERVER_URL.removesuffix("/mcp/")
+auth_request = Request()
+
+
+def mcp_header_provider(_context):
+    token = id_token.fetch_id_token(auth_request, MCP_AUDIENCE)
+    return {"Authorization": f"Bearer {token}"}
+
+mcp_toolset = MCPToolset(
+    connection_params=StreamableHTTPConnectionParams(
+        url=MCP_SERVER_URL,
+    ),
+    header_provider=mcp_header_provider,
+)
+
+root_agent = Agent(
+    model=MODEL,
+    name="zoo_guide_agent",
+    instruction="動物情報はMCPツール、最新の一般情報はGoogle Searchで回答します。",
+    tools=[mcp_toolset, GoogleSearchTool(bypass_multi_tools_limit=True)],
 )
 ```
 
@@ -413,7 +481,7 @@ adk deploy cloud_run \
 
 `adk deploy cloud_run`は、エージェントコードのパッケージング、コンテナイメージのビルド、Artifact Registryへのプッシュ、Cloud Runへのデプロイを1コマンドで完結させるADK CLIの機能です。裏側ではCloud BuildとCloud Run Admin APIが使われるため、Task 1・2で有効化・権限付与した内容がここで実際に効いてきます。
 
-未認証呼び出しを許可するかを聞かれた際に`y`と回答するのは、来園者が誰でもアクセスできる公開エージェントとして仕上げる、というラボの要件（「公開呼び出し用に設定し、公開URLで応答することを確認する」）に対応するためです。
+`--with_ui`はWeb UIをコンテナへ同梱するだけで、未認証アクセスを有効にするフラグではありません。未認証呼び出しを許可するかという確認は、Cloud Runサービスを公開するかどうかの設定です。来園者向けに公開する要件がある場合に限って`y`を選び、内部検証用など公開要件がない場合は許可しません。
 
 ### 7.4 デプロイ後の検証
 
@@ -421,7 +489,7 @@ adk deploy cloud_run \
 adk web  # ローカル確認用（本番はService URLを直接開く）
 ```
 
-デプロイ完了後に出力される`Service URL`を開き、Token Streamingを有効化した上で質問（例: `Where can I find elephants?`）を投げ、MCPツール呼び出しとGoogle Search呼び出しの両方が正しくイベントとして表示されるかを確認します。ここで「関数呼び出しイベントが両方見える」ことが、7.1で説明したAgentToolパターンが正しく機能している証拠になります。
+デプロイ完了後に出力される`Service URL`を開き、Token Streamingを有効化した上で質問（例: `Where can I find elephants?`）を投げ、MCPツール呼び出しとGoogle Search呼び出しの両方が正しくイベントとして表示されるかを確認します。ここで「関数呼び出しイベントが両方見える」ことが、7.1で選択したバージョン別実装が正しく機能している証拠になります。
 
 ### 7.5 根拠・参考ソース
 
@@ -429,7 +497,9 @@ adk web  # ローカル確認用（本番はService URLを直接開く）
 - zoo-tour-guideを題材にしたADK公式デプロイチュートリアル: [Build and deploy an ADK agent on Cloud Run（Google Codelabs）](https://codelabs.developers.google.com/codelabs/production-ready-ai-with-gc/5-deploying-agents/deploy-an-adk-agent-to-cloud-run)
 - Cloud Run上でのADKエージェントの一般的なビルド・デプロイ手順: [Build and deploy an AI agent to Cloud Run using ADK（Google Cloud公式ドキュメント）](https://docs.cloud.google.com/run/docs/ai/build-and-deploy-ai-agents/adk)
 - MCPToolset / StreamableHTTPConnectionParamsの公式仕様: [MCP tools - Agent Development Kit (ADK)（Google公式ADKドキュメント）](https://google.github.io/adk-docs/tools/mcp-tools/)
-- `google_search`など組み込みツールが他のツールと併用できない制約、およびAgentToolによるsub-agentラッピングでの回避策: [Support using enterprise_web_search built-in tool with other tools in the same agent（google/adk-python Issue #3412）](https://github.com/google/adk-python/issues/3412)、[ADK: Root agent with sub_agents fails if sub-agents use a mix of VertexAiSearchTool and custom function tools（google/adk-python Issue #899）](https://github.com/google/adk-python/issues/899)
+- `GoogleSearchTool(bypass_multi_tools_limit=True)`と動的`header_provider`が追加されたバージョン: [google-adk v1.17.0 release notes（Google公式GitHub）](https://github.com/google/adk-python/discussions/3257)
+- Cloud Run実行サービスアカウントによる短命IDトークンの取得: [Authenticating service-to-service（Google Cloud公式ドキュメント）](https://docs.cloud.google.com/run/docs/authenticating/service-to-service)
+- 旧バージョンのAgentTool回避策: [ADK: Root agent with sub_agents fails if sub-agents use a mix of VertexAiSearchTool and custom function tools（google/adk-python Issue #899）](https://github.com/google/adk-python/issues/899)
 
 ---
 
@@ -440,7 +510,7 @@ flowchart TB
     A["最小権限のIAM設計<br/>基本ロールでなく事前定義ロールを使う"]
     B["MCPサーバーは常に認証必須<br/>--no-allow-unauthenticated"]
     C["設定は環境変数に外出し<br/>.env / settings.jsonで秘匿情報を分離"]
-    D["組み込みツールの制約を理解し<br/>AgentToolでsub-agent分離"]
+    D["ADKバージョンに応じて<br/>検索ツールの実装を選択"]
     E["ローカル検証してからCloud Runへ<br/>uv run / adk web で先に動作確認"]
     F["ログでエンドツーエンド検証<br/>gcloud run services logs read"]
 
@@ -449,10 +519,10 @@ flowchart TB
 
 | # | 原則 | このラボでの実例 |
 |---|---|---|
-| 1 | 最小権限 | `roles/run.admin`と`roles/aiplatform.user`のみを付与し、Ownerを使わない |
+| 1 | 最小権限 | デプロイ・ビルド・実行主体を分け、各主体に必要な事前定義ロールだけを付与 |
 | 2 | ゼロトラストに近い認証設計 | MCPサーバーを`--no-allow-unauthenticated`でデプロイし、IDトークンで検証 |
 | 3 | 設定と秘匿情報の分離 | `.env`にURLやプロジェクト情報、`settings.json`にMCP接続情報を分離管理 |
-| 4 | フレームワークの制約を事前に把握する | `google_search`とMCPツールの併用制限をAgentToolパターンで回避 |
+| 4 | フレームワークの制約を事前に把握する | ADK 1.16.0以前はAgentTool、1.17.0以上は`bypass_multi_tools_limit=True`を適用 |
 | 5 | ローカルファースト検証 | `uv run server.py` → `adk web`の順でローカル確認してから本番デプロイ |
 | 6 | 可観測性の確保 | Cloud Runログを都度確認し、問題の切り分けを迅速に行う |
 
@@ -466,8 +536,8 @@ flowchart TB
 | `google.logging.v2.WriteLogEntriesPartialErrors` | プロジェクト設定がリセットされている | `gcloud config set project <PROJECT_ID>`を再実行 |
 | Gemini CLIで認証エラー | `ID_TOKEN`の有効期限切れ | `/quit`で終了し、`gcloud config set project`後にトークンを再発行して再起動 |
 | Cloud Runデプロイで`Quota exceeded for total allowable CPU` | リージョンのCPUクォータに達している | 少し待ってから同じコマンドを再実行 |
-| `400 INVALID_ARGUMENT: Multiple tools are supported only when they are all search tools` | `google_search`を他のツールと同じエージェントに混在させている | 7.1のAgentToolによるsub-agent分離パターンを適用 |
-| ADKデプロイ時に未認証呼び出しの確認プロンプト | `--with_ui`で公開UIを含めてデプロイしている | 来園者向け公開エージェントとして仕上げる要件のため`y`で許可 |
+| `400 INVALID_ARGUMENT: Multiple tools are supported only when they are all search tools` | ADKバージョンに合わない方法で`google_search`を他のツールと混在させている | 7.1を参照し、1.16.0以前はAgentTool、1.17.0以上は`bypass_multi_tools_limit=True`を適用 |
+| ADKデプロイ時に未認証呼び出しの確認プロンプト | Cloud Runサービスの公開設定が未確定 | 公開要件がある場合のみ`y`で許可する。`--with_ui`とは別設定 |
 
 ---
 
