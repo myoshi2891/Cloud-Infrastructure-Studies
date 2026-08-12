@@ -12,7 +12,7 @@ function Diagram({ id, label }: { id: keyof typeof DIAGRAMS; label: string }) {
   );
 }
 
-export default function DevNetProfessionalGuide() {
+export default function AutomationProfessionalGuide() {
   return (
     <div className="devnet-pro-page">
       <div className="layout">
@@ -21,21 +21,21 @@ export default function DevNetProfessionalGuide() {
         <main className="main">
           <header className="hero">
             <span className="eyebrow">Beginner Step-by-Step Guide</span>
-            <h1>Cisco Certified DevNet Professional 認定 徹底解説ガイド</h1>
+            <h1>CCNP Automation 認定 徹底解説ガイド</h1>
             <p className="lead">
-              Cisco公式サイトの一次情報にもとづき、DevNet Professional認定について
+              Cisco公式サイトの一次情報にもとづき、CCNP Automation認定について
               「何を証明する資格なのか」「どの試験に合格すればよいのか」「どう学習を進めればよいのか」を、
-              初めてDevNet認定に触れる方でも理解できるようステップバイステップで整理しました。
+              初めてAutomation認定に触れる方でも理解できるようステップバイステップで整理しました。
               図解はすべて Mermaid のフローチャート、比較情報はすべて表で表現しています。
             </p>
             <p className="source-line">
               主な参照元：
               <a
-                href="https://www.cisco.com/c/ja_jp/training-events/training-certifications/certifications/devnet/cisco-certified-devnet-professional.html"
+                href="https://www.cisco.com/site/us/en/learn/training-certifications/certifications/automation/ccnp-automation/index.html"
                 target="_blank"
                 rel="noopener"
               >
-                Cisco Certified DevNet Professional
+                CCNP Automation
                 認定とトレーニングプログラム（Cisco公式）
               </a>
             </p>
@@ -45,7 +45,7 @@ export default function DevNetProfessionalGuide() {
           <section className="section prose" id="prereq">
             <h2>1. このガイドの前提知識</h2>
             <p>
-              DevNet
+              Automation
               Professionalはネットワーク技術者向けの資格として語られることが多いですが、実態は
               <strong>「ソフトウェア開発の知識」</strong>と
               <strong>「シスコ製品・ネットワークの知識」</strong>の
@@ -63,7 +63,7 @@ export default function DevNetProfessionalGuide() {
                   <tr>
                     <td>API</td>
                     <td>
-                      別のアプリケーションやシステムの機能を呼び出すための「窓口」。DevNet試験では特に
+                      別のアプリケーションやシステムの機能を呼び出すための「窓口」。Automation試験では特に
                       REST API が中心
                     </td>
                   </tr>
@@ -76,7 +76,7 @@ export default function DevNetProfessionalGuide() {
                   <tr>
                     <td>Python</td>
                     <td>
-                      DevNet認定全体で標準的に使われるプログラミング言語。自動化スクリプトの記述に使用
+                      Automation認定全体で標準的に使われるプログラミング言語。自動化スクリプトの記述に使用
                     </td>
                   </tr>
                   <tr>
@@ -96,7 +96,7 @@ export default function DevNetProfessionalGuide() {
                   <tr>
                     <td>コンセントレーション試験</td>
                     <td>
-                      「専門分野」を意味し、DevNet
+                      「専門分野」を意味し、Automation
                       Professionalでは自分の得意領域を選んで受験する試験を指す
                     </td>
                   </tr>
@@ -107,10 +107,10 @@ export default function DevNetProfessionalGuide() {
 
           {/* 2 */}
           <section className="section prose" id="what-is-devnet">
-            <h2>2. DevNet認定とは何か（CCNA/CCNPとの違い）</h2>
+            <h2>2. Automation認定とは何か（CCNA/CCNPとの違い）</h2>
             <p>
               Ciscoには従来からあるCCNA・CCNP・CCIEのような、ネットワーク運用・設計を中心とした認定トラックがあります。
-              一方で<strong>DevNet認定</strong>は「シスコプラットフォーム上で動くアプリケーションの開発・自動化・保守」に
+              一方で<strong>Automation認定</strong>は「シスコプラットフォーム上で動くアプリケーションの開発・自動化・保守」に
               焦点を当てた、比較的新しい認定プログラムです。
             </p>
             <ul>
@@ -122,20 +122,20 @@ export default function DevNetProfessionalGuide() {
             <p className="source-note">
               出典：
               <a
-                href="https://www.cisco.com/c/ja_jp/training-events/training-certifications/certifications/devnet/cisco-certified-devnet-professional.html"
+                href="https://www.cisco.com/site/us/en/learn/training-certifications/certifications/automation/ccnp-automation/index.html"
                 target="_blank"
                 rel="noopener"
               >
-                Cisco Certified DevNet Professional 認定とトレーニングプログラム
+                CCNP Automation 認定とトレーニングプログラム
               </a>
             </p>
           </section>
 
           {/* 3 */}
           <section className="section prose" id="cert-levels">
-            <h2>3. Cisco認定全体における DevNet Professional の位置づけ</h2>
+            <h2>3. Cisco認定全体における CCNP Automation の位置づけ</h2>
             <p>
-              DevNet認定には、易しい順に「Associate → Specialist → Professional →
+              Automation認定には、易しい順に「Associate → Specialist → Professional →
               Expert（現名称：CCIE Automation）」という
               段階があります。ポイントは、
               <strong>
@@ -145,50 +145,48 @@ export default function DevNetProfessionalGuide() {
               であるという点です。
             </p>
 
-            <Diagram id="levels" label="図1: DevNet認定レベルの全体像とProfessional取得の流れ" />
+            <Diagram id="levels" label="図1: Automation認定レベルの全体像とProfessional取得の流れ" />
             <p className="diagram-caption">
-              図1: DevNet認定レベルの全体像とProfessional取得の流れ
+              図1: Automation認定レベルの全体像とProfessional取得の流れ
             </p>
 
             <ul>
               <li>
-                <strong>DevNet Associate</strong>
+                <strong>CCNA Automation</strong>
                 ：正式な前提条件はないが、1年以上のPython開発経験が推奨される入門レベル
               </li>
               <li>
-                <strong>DevNet Professional</strong>
+                <strong>CCNP Automation</strong>
                 ：コア試験＋コンセントレーション試験の合格が必要。合格した時点でそれぞれ「Specialist」認定も得られる
               </li>
               <li>
-                <strong>DevNet Expert（現CCIE Automation）</strong>
+                <strong>Automation Expert（現CCIE Automation）</strong>
                 ：コア試験に加え、実技（ハンズオンラボ）試験に合格する必要がある最上位レベル
               </li>
             </ul>
 
             <div className="callout">
               <strong className="label">補足（最新情報）：</strong>
-              Cisco公式サイトのリンク構造を確認したところ、旧称「Cisco Certified DevNet
-              Expert」のページは現在 「<strong>CCIE Automation</strong>
-              」のページへ転送される仕様になっており、最上位認定の名称が変更されていることが
-              確認できました。学習時期によっては旧名称の情報と混在する可能性があるため、最新の名称は公式サイトで都度確認することをおすすめします。
+              最上位の自動化認定は現在「<strong>CCIE Automation</strong>」です。
+              学習時期によっては旧制度の情報と混在する可能性があるため、最新名称は公式サイトで確認してください。
             </div>
 
             <p className="source-note">
               出典：
               <a
-                href="https://www.cisco.com/c/ja_jp/training-events/training-certifications/certifications/devnet.html"
+                href="https://www.cisco.com/site/us/en/learn/training-certifications/certifications/automation/index.html"
                 target="_blank"
                 rel="noopener"
               >
-                DevNet 認定 - トレーニング &amp; 認定
+                Automation 認定 - トレーニング &amp; 認定
               </a>
               、
               <a
-                href="https://www.cisco.com/c/ja_jp/training-events/training-certifications/certifications/devnet/cisco-certified-devnet-associate.html"
+                href="https://www.cisco.com/site/us/en/learn/training-certifications/certifications/automation/ccna-automation/index.html"
                 target="_blank"
                 rel="noopener"
               >
-                Cisco Certified DevNet Associate 認定
+                CCNA Automation 認定
               </a>
               、
               <a
@@ -196,14 +194,14 @@ export default function DevNetProfessionalGuide() {
                 target="_blank"
                 rel="noopener"
               >
-                CCIE Automation（旧 DevNet Expert）
+                CCIE Automation（旧 Automation Expert）
               </a>
             </p>
           </section>
 
           {/* 4 */}
           <section className="section prose" id="overview">
-            <h2>4. Cisco Certified DevNet Professional の概要</h2>
+            <h2>4. CCNP Automation の概要</h2>
             <div className="table-wrap">
               <table>
                 <thead>
@@ -241,11 +239,11 @@ export default function DevNetProfessionalGuide() {
             <p className="source-note">
               出典：
               <a
-                href="https://www.cisco.com/c/ja_jp/training-events/training-certifications/certifications/devnet/cisco-certified-devnet-professional.html"
+                href="https://www.cisco.com/site/us/en/learn/training-certifications/certifications/automation/ccnp-automation/index.html"
                 target="_blank"
                 rel="noopener"
               >
-                Cisco Certified DevNet Professional 認定とトレーニングプログラム
+                CCNP Automation 認定とトレーニングプログラム
               </a>
             </p>
           </section>
@@ -256,7 +254,7 @@ export default function DevNetProfessionalGuide() {
             <p>
               Cisco
               の認定試験には共通する特徴として、「<strong>受験資格そのものに公式な制限はない</strong>」というものがあります。
-              DevNet Professionalも例外ではありません。
+              CCNP Automationも例外ではありません。
             </p>
             <ul>
               <li>正式な前提条件は設けられていない</li>
@@ -268,17 +266,17 @@ export default function DevNetProfessionalGuide() {
             </ul>
             <p>
               つまり「受けようと思えば誰でも受験できるが、内容的にはある程度の開発経験を積んだ人向けの試験」という位置づけです。
-              DevNet
+              Automation
               Associate（1年以上のPython経験が目安）と比べても、一段階レベルが上がっていることが分かります。
             </p>
             <p className="source-note">
               出典：
               <a
-                href="https://www.cisco.com/c/ja_jp/training-events/training-certifications/certifications/devnet/cisco-certified-devnet-professional.html"
+                href="https://www.cisco.com/site/us/en/learn/training-certifications/certifications/automation/ccnp-automation/index.html"
                 target="_blank"
                 rel="noopener"
               >
-                Cisco Certified DevNet Professional 認定とトレーニングプログラム
+                CCNP Automation 認定とトレーニングプログラム
               </a>
             </p>
           </section>
@@ -286,15 +284,15 @@ export default function DevNetProfessionalGuide() {
           {/* 6 */}
           <section className="section prose" id="mechanism">
             <h2>6. 認定取得の仕組み（コア試験＋コンセントレーション試験）</h2>
-            <p>DevNet Professionalを取得するための試験構成は、次の2階建てになっています。</p>
+            <p>CCNP Automationを取得するための試験構成は、次の2階建てになっています。</p>
             <ol>
               <li>
                 <strong>コア試験（必須・1種類のみ）</strong>
                 ：ソフトウェア開発・設計に関する共通知識を問う試験
               </li>
               <li>
-                <strong>コンセントレーション試験（選択式・8種類から1つ）</strong>
-                ：自動化やDevOpsなど、自分の専門分野を選んで受験する試験
+                <strong>コンセントレーション試験（選択式・2種類から1つ）</strong>
+                ：エンタープライズまたはデータセンターの自動化分野を選んで受験する試験
               </li>
             </ol>
 
@@ -303,24 +301,24 @@ export default function DevNetProfessionalGuide() {
 
             <ul>
               <li>
-                コア試験に合格すると、その時点で「DevNet Specialist - Core」認定が付与される
+                コア試験に合格すると、その時点で「Automation Specialist - Core」認定が付与される
               </li>
               <li>
-                コンセントレーション試験に合格すると、選んだ分野に応じた「DevNet Specialist -
+                コンセントレーション試験に合格すると、選んだ分野に応じた「Automation Specialist -
                 （分野名）」認定が付与される
               </li>
               <li>
-                <strong>両方に合格して初めて DevNet Professional 認定が成立する</strong>
+                <strong>両方に合格して初めて CCNP Automation 認定が成立する</strong>
               </li>
             </ul>
             <p className="source-note">
               出典：
               <a
-                href="https://www.cisco.com/c/ja_jp/training-events/training-certifications/certifications/devnet/cisco-certified-devnet-professional.html"
+                href="https://www.cisco.com/site/us/en/learn/training-certifications/certifications/automation/ccnp-automation/index.html"
                 target="_blank"
                 rel="noopener"
               >
-                Cisco Certified DevNet Professional 認定とトレーニングプログラム
+                CCNP Automation 認定とトレーニングプログラム
               </a>
               、
               <a
@@ -328,14 +326,14 @@ export default function DevNetProfessionalGuide() {
                 target="_blank"
                 rel="noopener"
               >
-                DevNet Professional At-a-Glance（PDF）
+                CCNP Automation At-a-Glance（PDF）
               </a>
             </p>
           </section>
 
           {/* 7 */}
           <section className="section prose" id="devcor">
-            <h2>7. コア試験「350-901 DEVCOR」を徹底解説</h2>
+            <h2>7. コア試験「350-901 AUTOCOR」を徹底解説</h2>
 
             <h3>7-1. 基本情報</h3>
             <div className="table-wrap">
@@ -349,11 +347,11 @@ export default function DevNetProfessionalGuide() {
                 <tbody>
                   <tr>
                     <td>試験コード</td>
-                    <td>350-901（DEVCOR）</td>
+                    <td>350-901（AUTOCOR）</td>
                   </tr>
                   <tr>
                     <td>正式名称</td>
-                    <td>Developing Applications using Cisco Core Platforms and APIs</td>
+                    <td>Designing, Deploying and Managing Network Automation Systems</td>
                   </tr>
                   <tr>
                     <td>試験時間</td>
@@ -362,12 +360,12 @@ export default function DevNetProfessionalGuide() {
                   <tr>
                     <td>関連する認定</td>
                     <td>
-                      Cisco Certified DevNet Professional、Cisco Certified DevNet Specialist - Core
+                      CCNP Automation、Cisco Certified Automation Specialist - Core
                     </td>
                   </tr>
                   <tr>
                     <td>推奨トレーニング</td>
-                    <td>Developing Applications Using Cisco Core Platforms and APIs（DEVCOR）</td>
+                    <td>Designing, Deploying and Managing Network Automation Systems（AUTOCOR）</td>
                   </tr>
                 </tbody>
               </table>
@@ -375,18 +373,18 @@ export default function DevNetProfessionalGuide() {
             <p className="source-note">
               出典：
               <a
-                href="https://www.cisco.com/c/ja_jp/training-events/training-certifications/exams/current-list/devcor-350-901.html"
+                href="https://www.cisco.com/site/us/en/learn/training-certifications/exams/autocor.html"
                 target="_blank"
                 rel="noopener"
               >
-                350-901 DEVCOR 試験ページ
+                350-901 AUTOCOR 試験ページ
               </a>
             </p>
 
             <h3>7-2. 出題ドメインと比率</h3>
             <p>
-              DEVCORの出題範囲は、大きく5つの分野に<strong>均等に20%ずつ</strong>配分されています。
-              1つの分野に偏った学習ではなく、幅広くバランスよく対策する必要があることが分かります。
+              AUTOCORの出題範囲は4分野で、ネットワーク自動化とInfrastructure as Codeが各30%、
+              運用と自動化におけるAIが各20%です。
             </p>
             <div className="table-wrap">
               <table>
@@ -399,65 +397,46 @@ export default function DevNetProfessionalGuide() {
                 </thead>
                 <tbody>
                   <tr>
-                    <td>20%</td>
-                    <td>1.0 ソフトウェアの開発と設計</td>
-                    <td>
-                      分散アプリケーションの考え方、可用性・保守性・オブザーバビリティを意識した設計、データベース選定、アーキテクチャパターン、Gitの高度な操作
-                    </td>
+                    <td>30%</td>
+                    <td>1.0 ネットワーク自動化</td>
+                    <td>Ansible、Terraform、RESTCONF、Python、REST APIを用いた自動化ソリューション</td>
+                  </tr>
+                  <tr>
+                    <td>30%</td>
+                    <td>2.0 Infrastructure as Code</td>
+                    <td>Git、GitLab CI/CD、CML、Docker Compose、Source of Truth、YANGモデル</td>
                   </tr>
                   <tr>
                     <td>20%</td>
-                    <td>2.0 APIの活用</td>
-                    <td>
-                      REST
-                      APIのエラー処理、HTTPキャッシュの最適化、ページネーション対応、OAuth2の三者間認可フローの理解
-                    </td>
+                    <td>3.0 運用</td>
+                    <td>モデル駆動型テレメトリ、ログ、障害診断、pyATS、TLS証明書、安全なコーディング</td>
                   </tr>
                   <tr>
                     <td>20%</td>
-                    <td>3.0 シスコプラットフォーム</td>
-                    <td>
-                      Webex・Firepower・Meraki・Intersight・UCS・Cisco DNA
-                      Center・AppDynamicsなど、各種シスコ製品のAPI活用
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>20%</td>
-                    <td>4.0 アプリケーションの展開とセキュリティ</td>
-                    <td>
-                      CI/CDパイプラインのトラブル診断、Dockerによるコンテナ化、12-Factor
-                      Appの原則、OWASPの脅威対策、証明書設定
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>20%</td>
-                    <td>5.0 インフラストラクチャと自動化</td>
-                    <td>
-                      モデル駆動型テレメトリ、RESTCONFによるネットワーク設定、Ansible/Terraformを使ったワークフロー作成
-                    </td>
+                    <td>4.0 自動化におけるAI</td>
+                    <td>AI支援開発のリスク、AI自動化のセキュリティ、FastMCP、LLMエージェント、提案精度の評価</td>
                   </tr>
                 </tbody>
               </table>
             </div>
 
-            <Diagram id="domains" label="図3: DEVCORの5つの出題ドメイン（すべて均等20%）" />
-            <p className="diagram-caption">図3: DEVCORの5つの出題ドメイン（すべて均等20%）</p>
+            <Diagram id="domains" label="図3: AUTOCORの4つの出題ドメインと配点" />
+            <p className="diagram-caption">図3: AUTOCORの4つの出題ドメインと配点</p>
 
             <div className="callout">
               <strong className="label">初学者向けポイント：</strong>
-              DEVCORは「シスコ製品の設定方法」を暗記する試験ではなく、「一般的なソフトウェアエンジニアリングの原則
-              （設計・API・CI/CD・セキュリティ）をシスコのプラットフォーム上でどう実践するか」を問う試験です。
-              Webエンジニアやバックエンド開発の経験があると理解が早い分野が多く含まれています。
+              AUTOCORは、ネットワーク設定をAnsible、Terraform、RESTCONF、Pythonで自動化し、
+              IaCパイプラインを運用しながらAIを安全に組み込む実践力を問う試験です。
             </div>
 
             <p className="source-note">
               出典：
               <a
-                href="https://www.cisco.com/c/dam/global/ja_jp/training-events/training-certifications/exam-topics/350-901-DEVCOR.pdf"
+                href="https://learningcontent.cisco.com/documents/marketing/exam-topics/350-901-AUTOCOR-v2.0-7-9-2025.pdf"
                 target="_blank"
                 rel="noopener"
               >
-                350-901 DEVCOR 試験内容（PDF・出題トピック一覧）
+                350-901 AUTOCOR 試験内容（PDF・出題トピック一覧）
               </a>
             </p>
           </section>
@@ -466,7 +445,7 @@ export default function DevNetProfessionalGuide() {
           <section className="section prose" id="concentration">
             <h2>8. コンセントレーション試験（専門分野選択式試験）一覧</h2>
             <p>
-              コンセントレーション試験は8種類あり、<strong>すべて試験時間は90分</strong>
+              コンセントレーション試験は2種類あり、<strong>どちらも試験時間は90分</strong>
               です（コア試験より短い点に注意）。
               それぞれ、対応する他のCisco認定トラック（CCNPシリーズなど）とも関連付けられているものが多く、
               既に別トラックを学習中の人は一部知識を流用できます。
@@ -485,66 +464,17 @@ export default function DevNetProfessionalGuide() {
                 <tbody>
                   <tr>
                     <td>300-435 ENAUTO</td>
-                    <td>Automating Cisco Enterprise Solutions</td>
+                    <td>Automating and Programming Cisco Enterprise Solutions</td>
                     <td>90分</td>
                     <td>プログラミングの概念、Python、API、コントローラ、自動化ツール</td>
                     <td>CCNP Enterprise</td>
                   </tr>
                   <tr>
-                    <td>300-835 CLAUTO</td>
-                    <td>Automating Cisco Collaboration Solutions</td>
-                    <td>90分</td>
-                    <td>コラボレーション製品向けのAPI・自動化プロトコル、Python</td>
-                    <td>CCNP Collaboration</td>
-                  </tr>
-                  <tr>
-                    <td>300-635 DCAUTO</td>
-                    <td>Automating Cisco Data Center Solutions</td>
+                    <td>300-635 DCNAUTO</td>
+                    <td>Automating Cisco Data Center Networking Solutions</td>
                     <td>90分</td>
                     <td>データセンターのオーケストレーション、自動化ツール</td>
                     <td>CCNP Data Center</td>
-                  </tr>
-                  <tr>
-                    <td>300-535 SPAUTO</td>
-                    <td>Automating Cisco Service Provider Solutions</td>
-                    <td>90分</td>
-                    <td>サービスプロバイダー向けオーケストレーション、プログラミングOS</td>
-                    <td>CCNP Service Provider</td>
-                  </tr>
-                  <tr>
-                    <td>300-735 SAUTO</td>
-                    <td>Automating Cisco Security Solutions</td>
-                    <td>90分</td>
-                    <td>
-                      RESTful
-                      API、データモデル、ファイアウォール/Web/DNS/クラウドのセキュリティ、ISE
-                    </td>
-                    <td>CCNP Security</td>
-                  </tr>
-                  <tr>
-                    <td>300-910 DEVOPS</td>
-                    <td>Implementing DevOps Solutions and Practices using Cisco Platforms</td>
-                    <td>90分</td>
-                    <td>
-                      クラウドマイクロサービス、インフラプロセスの自動コンフィグレーション・管理・スケーラビリティ
-                    </td>
-                    <td>（DevNet系列のみ）</td>
-                  </tr>
-                  <tr>
-                    <td>300-915 DEVIOT</td>
-                    <td>Developing Solutions using Cisco IoT and Edge Platforms</td>
-                    <td>90分</td>
-                    <td>Cisco IOx/EFM、IoTデータ仮想化、IoT向けセキュリティ手法</td>
-                    <td>（DevNet系列のみ）</td>
-                  </tr>
-                  <tr>
-                    <td>300-920 DEVWBX</td>
-                    <td>Developing Applications for Cisco Webex and Webex Devices</td>
-                    <td>90分</td>
-                    <td>
-                      Webex API基礎、Meetings、デバイス、メッセージング、管理とコンプライアンス
-                    </td>
-                    <td>（DevNet系列のみ）</td>
                   </tr>
                 </tbody>
               </table>
@@ -553,12 +483,9 @@ export default function DevNetProfessionalGuide() {
             <h3>コンセントレーション試験の選び方（考え方の目安）</h3>
             <ul>
               <li>
-                普段からネットワークの自動化業務（Enterprise/Data Center/Security等）に関わっている →
-                対応する自動化系試験（ENAUTO/DCAUTO/SAUTO等）
+                エンタープライズネットワークの自動化に関わっている → ENAUTO
               </li>
-              <li>クラウド・コンテナ・CI/CDなど「DevOps」寄りの働き方をしている → DEVOPS</li>
-              <li>IoTデバイスやエッジコンピューティングに関心がある → DEVIOT</li>
-              <li>チャットボットや会議連携などWebexのアプリ開発をしたい → DEVWBX</li>
+              <li>データセンターネットワークの自動化に関わっている → DCNAUTO</li>
             </ul>
 
             <p className="source-note">
@@ -572,59 +499,11 @@ export default function DevNetProfessionalGuide() {
               </a>
               、
               <a
-                href="https://www.cisco.com/c/ja_jp/training-events/training-certifications/exams/current-list/clauto-300-835.html"
+                href="https://www.cisco.com/site/us/en/learn/training-certifications/exams/dcnauto.html"
                 target="_blank"
                 rel="noopener"
               >
-                CLAUTO
-              </a>
-              、
-              <a
-                href="https://www.cisco.com/c/ja_jp/training-events/training-certifications/exams/current-list/dcauto-300-635.html"
-                target="_blank"
-                rel="noopener"
-              >
-                DCAUTO
-              </a>
-              、
-              <a
-                href="https://www.cisco.com/c/ja_jp/training-events/training-certifications/exams/current-list/spauto-300-535.html"
-                target="_blank"
-                rel="noopener"
-              >
-                SPAUTO
-              </a>
-              、
-              <a
-                href="https://www.cisco.com/c/ja_jp/training-events/training-certifications/exams/current-list/sauto-300-735.html"
-                target="_blank"
-                rel="noopener"
-              >
-                SAUTO
-              </a>
-              、
-              <a
-                href="https://www.cisco.com/c/ja_jp/training-events/training-certifications/exams/current-list/devops-300-910.html"
-                target="_blank"
-                rel="noopener"
-              >
-                DEVOPS
-              </a>
-              、
-              <a
-                href="https://www.cisco.com/c/ja_jp/training-events/training-certifications/exams/current-list/deviot-300-915.html"
-                target="_blank"
-                rel="noopener"
-              >
-                DEVIOT
-              </a>
-              、
-              <a
-                href="https://www.cisco.com/c/ja_jp/training-events/training-certifications/exams/current-list/devwbx-300-920.html"
-                target="_blank"
-                rel="noopener"
-              >
-                DEVWBX
+                DCNAUTO
               </a>
               各試験ページ
             </p>
@@ -642,7 +521,7 @@ export default function DevNetProfessionalGuide() {
                 出題形式（画面操作のチュートリアル等）は Cisco Learning Network 上で事前確認できる
               </li>
               <li>
-                コア試験（DEVCOR）は日本語・英語の両方に対応していることが試験ページで明記されている試験もある
+                コア試験（AUTOCOR）は日本語・英語の両方に対応していることが試験ページで明記されている試験もある
                 （コンセントレーション試験の対応言語は試験ごとに異なるため、受験前に各試験ページで要確認）
               </li>
             </ul>
@@ -661,11 +540,11 @@ export default function DevNetProfessionalGuide() {
             <p className="source-note">
               出典：
               <a
-                href="https://www.cisco.com/c/ja_jp/training-events/training-certifications/exams/current-list/devcor-350-901.html"
+                href="https://www.cisco.com/site/us/en/learn/training-certifications/exams/autocor.html"
                 target="_blank"
                 rel="noopener"
               >
-                350-901 DEVCOR 試験ページ
+                350-901 AUTOCOR 試験ページ
               </a>
               、
               <a
@@ -682,7 +561,7 @@ export default function DevNetProfessionalGuide() {
           <section className="section prose" id="roadmap">
             <h2>10. 合格までの学習ロードマップ（ステップバイステップ）</h2>
             <p>
-              初学者がゼロからDevNet
+              初学者がゼロからAutomation
               Professionalを目指す場合の、一般的な学習の流れを整理しました。
             </p>
 
@@ -701,14 +580,14 @@ export default function DevNetProfessionalGuide() {
                   <tr>
                     <td>Step 0〜1</td>
                     <td>
-                      公式な前提条件はないが、実務上はPythonでのAPI操作経験が重要。DevNet
-                      Associateの学習内容は土台として非常に有効
+                      公式な前提条件はないが、実務上はPythonでのAPI操作経験が重要。CCNA
+                      Automationの学習内容は土台として非常に有効
                     </td>
                   </tr>
                   <tr>
                     <td>Step 2〜3</td>
                     <td>
-                      DEVCORは5分野が均等配点のため、得意分野に偏らずまんべんなく学習計画を立てる
+                      AUTOCORは4分野で30%と20%の配点差があるため、比率を踏まえて学習計画を立てる
                     </td>
                   </tr>
                   <tr>
@@ -726,8 +605,7 @@ export default function DevNetProfessionalGuide() {
                   <tr>
                     <td>Step 6〜7</td>
                     <td>
-                      コンセントレーション試験も合格すれば、その時点でDevNet
-                      Professional認定が成立する
+                      コンセントレーション試験も合格すれば、その時点でCCNP Automation認定が成立する
                     </td>
                   </tr>
                   <tr>
@@ -743,11 +621,11 @@ export default function DevNetProfessionalGuide() {
             <p className="source-note">
               出典：
               <a
-                href="https://www.cisco.com/c/ja_jp/training-events/training-certifications/certifications/devnet/cisco-certified-devnet-professional.html"
+                href="https://www.cisco.com/site/us/en/learn/training-certifications/certifications/automation/ccnp-automation/index.html"
                 target="_blank"
                 rel="noopener"
               >
-                Cisco Certified DevNet Professional 認定とトレーニングプログラム
+                CCNP Automation 認定とトレーニングプログラム
               </a>
               、
               <a
@@ -764,7 +642,7 @@ export default function DevNetProfessionalGuide() {
           <section className="section prose" id="recert">
             <h2>11. 再認定（Recertification）制度</h2>
             <p>
-              DevNet Professional 認定は、取得後<strong>3年間</strong>
+              CCNP Automation 認定は、取得後<strong>3年間</strong>
               有効です。有効期限が切れる前に、以下いずれかの方法で再認定を行う必要があります。
             </p>
 
@@ -790,7 +668,7 @@ export default function DevNetProfessionalGuide() {
                   </tr>
                   <tr>
                     <td>
-                      <strong>プロフェッショナル（DevNet Professionalが該当）</strong>
+                      <strong>プロフェッショナル（CCNP Automationが該当）</strong>
                     </td>
                     <td>
                       <strong>80 CEクレジット</strong>
@@ -834,7 +712,7 @@ export default function DevNetProfessionalGuide() {
 
           {/* 12 */}
           <section className="section prose" id="summary">
-            <h2>12. まとめ：DevNet Professionalはこんな人におすすめ</h2>
+            <h2>12. まとめ：CCNP Automationはこんな人におすすめ</h2>
             <ul>
               <li>
                 ネットワークエンジニアとして、これからの「自動化・NetDevOps」の波に対応したい人
@@ -848,12 +726,11 @@ export default function DevNetProfessionalGuide() {
               <li>3〜5年程度のソフトウェア開発経験（Pythonを含む）がある人</li>
             </ul>
             <p>
-              DevNet
-              Professionalは「コア試験＋コンセントレーション試験」という2階建て構造によって、
+              CCNP Automationは「コア試験＋コンセントレーション試験」という2階建て構造によって、
               <strong>共通のソフトウェア開発力</strong>と
               <strong>個々の専門分野の実践力</strong>
               の両方を証明できる設計になっている点が最大の特徴です。
-              まずは出題比率が均等な5分野を意識してDEVCORの学習計画を立て、その後に自分の得意分野でコンセントレーション試験を選ぶ、
+              まずは4つの出題分野を意識してAUTOCORの学習計画を立て、その後に自分の得意分野でコンセントレーション試験を選ぶ、
               という順序で進めるとスムーズに学習できます。
             </p>
           </section>
@@ -867,11 +744,11 @@ export default function DevNetProfessionalGuide() {
             <ul className="refs">
               <li>
                 <a
-                  href="https://www.cisco.com/c/ja_jp/training-events/training-certifications/certifications/devnet/cisco-certified-devnet-professional.html"
+                  href="https://www.cisco.com/site/us/en/learn/training-certifications/certifications/automation/ccnp-automation/index.html"
                   target="_blank"
                   rel="noopener"
                 >
-                  Cisco Certified DevNet Professional 認定とトレーニングプログラム
+                  CCNP Automation 認定とトレーニングプログラム
                 </a>
               </li>
               <li>
@@ -880,25 +757,25 @@ export default function DevNetProfessionalGuide() {
                   target="_blank"
                   rel="noopener"
                 >
-                  DevNet Professional At-a-Glance（PDF）
+                  CCNP Automation At-a-Glance（PDF）
                 </a>
               </li>
               <li>
                 <a
-                  href="https://www.cisco.com/c/ja_jp/training-events/training-certifications/certifications/devnet.html"
+                  href="https://www.cisco.com/site/us/en/learn/training-certifications/certifications/automation/index.html"
                   target="_blank"
                   rel="noopener"
                 >
-                  DevNet 認定 - トレーニング &amp; 認定（認定トラック全体）
+                  Automation 認定 - トレーニング &amp; 認定（認定トラック全体）
                 </a>
               </li>
               <li>
                 <a
-                  href="https://www.cisco.com/c/ja_jp/training-events/training-certifications/certifications/devnet/cisco-certified-devnet-associate.html"
+                  href="https://www.cisco.com/site/us/en/learn/training-certifications/certifications/automation/ccna-automation/index.html"
                   target="_blank"
                   rel="noopener"
                 >
-                  Cisco Certified DevNet Associate 認定とトレーニングプログラム
+                  CCNA Automation 認定とトレーニングプログラム
                 </a>
               </li>
               <li>
@@ -907,25 +784,25 @@ export default function DevNetProfessionalGuide() {
                   target="_blank"
                   rel="noopener"
                 >
-                  CCIE Automation（旧 Cisco Certified DevNet Expert）
+                  CCIE Automation
                 </a>
               </li>
               <li>
                 <a
-                  href="https://www.cisco.com/c/ja_jp/training-events/training-certifications/exams/current-list/devcor-350-901.html"
+                  href="https://www.cisco.com/site/us/en/learn/training-certifications/exams/autocor.html"
                   target="_blank"
                   rel="noopener"
                 >
-                  350-901 DEVCOR 試験ページ
+                  350-901 AUTOCOR 試験ページ
                 </a>
               </li>
               <li>
                 <a
-                  href="https://www.cisco.com/c/dam/global/ja_jp/training-events/training-certifications/exam-topics/350-901-DEVCOR.pdf"
+                  href="https://learningcontent.cisco.com/documents/marketing/exam-topics/350-901-AUTOCOR-v2.0-7-9-2025.pdf"
                   target="_blank"
                   rel="noopener"
                 >
-                  350-901 DEVCOR 試験内容（PDF・出題トピック一覧）
+                  350-901 AUTOCOR 試験内容（PDF・出題トピック一覧）
                 </a>
               </li>
               <li>
@@ -939,65 +816,11 @@ export default function DevNetProfessionalGuide() {
               </li>
               <li>
                 <a
-                  href="https://www.cisco.com/c/ja_jp/training-events/training-certifications/exams/current-list/clauto-300-835.html"
+                  href="https://www.cisco.com/site/us/en/learn/training-certifications/exams/dcnauto.html"
                   target="_blank"
                   rel="noopener"
                 >
-                  300-835 CLAUTO 試験ページ
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://www.cisco.com/c/ja_jp/training-events/training-certifications/exams/current-list/dcauto-300-635.html"
-                  target="_blank"
-                  rel="noopener"
-                >
-                  300-635 DCAUTO 試験ページ
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://www.cisco.com/c/ja_jp/training-events/training-certifications/exams/current-list/spauto-300-535.html"
-                  target="_blank"
-                  rel="noopener"
-                >
-                  300-535 SPAUTO 試験ページ
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://www.cisco.com/c/ja_jp/training-events/training-certifications/exams/current-list/sauto-300-735.html"
-                  target="_blank"
-                  rel="noopener"
-                >
-                  300-735 SAUTO 試験ページ
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://www.cisco.com/c/ja_jp/training-events/training-certifications/exams/current-list/devops-300-910.html"
-                  target="_blank"
-                  rel="noopener"
-                >
-                  300-910 DEVOPS 試験ページ
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://www.cisco.com/c/ja_jp/training-events/training-certifications/exams/current-list/deviot-300-915.html"
-                  target="_blank"
-                  rel="noopener"
-                >
-                  300-915 DEVIOT 試験ページ
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://www.cisco.com/c/ja_jp/training-events/training-certifications/exams/current-list/devwbx-300-920.html"
-                  target="_blank"
-                  rel="noopener"
-                >
-                  300-920 DEVWBX 試験ページ
+                  300-635 DCNAUTO 試験ページ
                 </a>
               </li>
               <li>

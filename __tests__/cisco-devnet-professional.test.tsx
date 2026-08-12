@@ -1,9 +1,9 @@
 // @vitest-environment jsdom
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
-import DevNetProfessionalGuide from '../app/cisco/devnet-professional/DevNetProfessionalGuide';
+import AutomationProfessionalGuide from '../app/cisco/devnet-professional/DevNetProfessionalGuide';
 import { DIAGRAMS } from '../app/cisco/devnet-professional/constants';
-import DevNetProfessionalPage, { metadata } from '../app/cisco/devnet-professional/page';
+import AutomationProfessionalPage, { metadata } from '../app/cisco/devnet-professional/page';
 
 // MermaidDiagram をモック化
 vi.mock('@/components/MermaidDiagram', () => ({
@@ -29,28 +29,28 @@ vi.mock('@/components/MermaidDiagram', () => ({
   },
 }));
 
-describe('Cisco DevNet Professional Guide Page', () => {
+describe('Cisco CCNP Automation Guide Page', () => {
   it('ページ metadata が正しく定義されていること', () => {
     expect(metadata.title).toBe(
-      'Cisco Certified DevNet Professional 認定 徹底解説ガイド | Cisco資格対策'
+      'CCNP Automation 認定 徹底解説ガイド | Cisco資格対策'
     );
     expect(metadata.description).toBe(
-      'Cisco公式情報に基づくDevNet Professional認定徹底解説ガイド。コア試験（350-901 DEVCOR）の出題トピック、8つのコンセントレーション試験の一覧と選び方、試験形式、合格ロードマップ、再認定制度を分かりやすく整理。'
+      'Cisco公式情報に基づくCCNP Automation認定徹底解説ガイド。コア試験（350-901 AUTOCOR）の出題トピック、2つのコンセントレーション試験の一覧と選び方、試験形式、合格ロードマップ、再認定制度を分かりやすく整理。'
     );
   });
 
   it('Server Page Component が正常にレンダリングされること', () => {
-    render(<DevNetProfessionalPage />);
+    render(<AutomationProfessionalPage />);
     expect(
       screen.getByRole('heading', {
         level: 1,
-        name: 'Cisco Certified DevNet Professional 認定 徹底解説ガイド',
+        name: 'CCNP Automation 認定 徹底解説ガイド',
       })
     ).toBeInTheDocument();
   });
 
   it('Hero セクションが元HTMLと完全に一致するコンテンツとデザイン構造を持っていること', () => {
-    render(<DevNetProfessionalGuide />);
+    render(<AutomationProfessionalGuide />);
 
     // Hero eyebrow
     const eyebrow = screen.getByText('Beginner Step-by-Step Guide');
@@ -60,43 +60,43 @@ describe('Cisco DevNet Professional Guide Page', () => {
     // H1 Title
     const h1 = screen.getByRole('heading', {
       level: 1,
-      name: 'Cisco Certified DevNet Professional 認定 徹底解説ガイド',
+      name: 'CCNP Automation 認定 徹底解説ガイド',
     });
     expect(h1).toBeInTheDocument();
 
     // Lead text
     expect(
-      screen.getByText(/Cisco公式サイトの一次情報にもとづき、DevNet Professional認定について/i)
+      screen.getByText(/Cisco公式サイトの一次情報にもとづき、CCNP Automation認定について/i)
     ).toBeInTheDocument();
 
     // Hero source line link
     const heroLink = screen.getByRole('link', {
-      name: /Cisco Certified DevNet Professional 認定とトレーニングプログラム（Cisco公式）/i,
+      name: /CCNP Automation 認定とトレーニングプログラム（Cisco公式）/i,
     });
     expect(heroLink).toHaveAttribute(
       'href',
-      'https://www.cisco.com/c/ja_jp/training-events/training-certifications/certifications/devnet/cisco-certified-devnet-professional.html'
+      'https://www.cisco.com/site/us/en/learn/training-certifications/certifications/automation/ccnp-automation/index.html'
     );
     expect(heroLink).toHaveAttribute('target', '_blank');
     expect(heroLink).toHaveAttribute('rel', 'noopener');
   });
 
   it('全13セクションの見出し (H2) と ID が正確に存在すること', () => {
-    const { container } = render(<DevNetProfessionalGuide />);
+    const { container } = render(<AutomationProfessionalGuide />);
 
     const expectedSections = [
       { id: 'prereq', title: '1. このガイドの前提知識' },
-      { id: 'what-is-devnet', title: '2. DevNet認定とは何か（CCNA/CCNPとの違い）' },
-      { id: 'cert-levels', title: '3. Cisco認定全体における DevNet Professional の位置づけ' },
-      { id: 'overview', title: '4. Cisco Certified DevNet Professional の概要' },
+      { id: 'what-is-devnet', title: '2. Automation認定とは何か（CCNA/CCNPとの違い）' },
+      { id: 'cert-levels', title: '3. Cisco認定全体における CCNP Automation の位置づけ' },
+      { id: 'overview', title: '4. CCNP Automation の概要' },
       { id: 'prerequisites', title: '5. 受験資格・前提条件' },
       { id: 'mechanism', title: '6. 認定取得の仕組み（コア試験＋コンセントレーション試験）' },
-      { id: 'devcor', title: '7. コア試験「350-901 DEVCOR」を徹底解説' },
+      { id: 'devcor', title: '7. コア試験「350-901 AUTOCOR」を徹底解説' },
       { id: 'concentration', title: '8. コンセントレーション試験（専門分野選択式試験）一覧' },
       { id: 'format', title: '9. 試験形式・受験方法' },
       { id: 'roadmap', title: '10. 合格までの学習ロードマップ（ステップバイステップ）' },
       { id: 'recert', title: '11. 再認定（Recertification）制度' },
-      { id: 'summary', title: '12. まとめ：DevNet Professionalはこんな人におすすめ' },
+      { id: 'summary', title: '12. まとめ：CCNP Automationはこんな人におすすめ' },
       { id: 'sources', title: '13. 参考ソース一覧' },
     ];
 
@@ -108,13 +108,13 @@ describe('Cisco DevNet Professional Guide Page', () => {
   });
 
   it('現在位置の目次リンクだけが aria-current を持つこと', () => {
-    const { container } = render(<DevNetProfessionalGuide />);
+    const { container } = render(<AutomationProfessionalGuide />);
 
     expect(container.querySelectorAll('a[aria-current="true"]')).toHaveLength(1);
   });
 
   it('全7つのテーブルが存在し、ヘッダーとセルデータが正確に表示されること', () => {
-    render(<DevNetProfessionalGuide />);
+    render(<AutomationProfessionalGuide />);
 
     // Section 1: 前提知識テーブル
     expect(screen.getByText('初学者向けの説明')).toBeInTheDocument();
@@ -130,20 +130,20 @@ describe('Cisco DevNet Professional Guide Page', () => {
     expect(screen.getByText('認定が証明するスキル')).toBeInTheDocument();
     expect(screen.getAllByText('3年間').length).toBeGreaterThanOrEqual(2);
 
-    // Section 7-1: DEVCOR基本情報テーブル
-    expect(screen.getByText('350-901（DEVCOR）')).toBeInTheDocument();
+    // Section 7-1: AUTOCOR基本情報テーブル
+    expect(screen.getByText('350-901（AUTOCOR）')).toBeInTheDocument();
     expect(
-      screen.getByText('Developing Applications using Cisco Core Platforms and APIs')
+      screen.getByText('Designing, Deploying and Managing Network Automation Systems')
     ).toBeInTheDocument();
 
-    // Section 7-2: DEVCOR出題比率テーブル
-    expect(screen.getByText('1.0 ソフトウェアの開発と設計')).toBeInTheDocument();
-    expect(screen.getByText('4.0 アプリケーションの展開とセキュリティ')).toBeInTheDocument();
+    // Section 7-2: AUTOCOR出題比率テーブル
+    expect(screen.getByText('1.0 ネットワーク自動化')).toBeInTheDocument();
+    expect(screen.getByText('4.0 自動化におけるAI')).toBeInTheDocument();
 
     // Section 8: コンセントレーション試験一覧テーブル
     expect(screen.getByText('300-435 ENAUTO')).toBeInTheDocument();
-    expect(screen.getByText('300-910 DEVOPS')).toBeInTheDocument();
-    expect(screen.getByText('300-920 DEVWBX')).toBeInTheDocument();
+    expect(screen.getByText('300-635 DCNAUTO')).toBeInTheDocument();
+    expect(screen.queryByText(/CLAUTO|SPAUTO|SAUTO|DEVOPS|DEVIOT|DEVWBX/)).not.toBeInTheDocument();
 
     // Section 10: ロードマップステップテーブル
     expect(screen.getByText('Step 0〜1')).toBeInTheDocument();
@@ -155,7 +155,7 @@ describe('Cisco DevNet Professional Guide Page', () => {
   });
 
   it('全6つの Mermaid ダイアグラムが正確なDSLとariaLabelでレンダリングされ、preserveNaturalScaleがtrueであること', () => {
-    render(<DevNetProfessionalGuide />);
+    render(<AutomationProfessionalGuide />);
 
     const mermaidDiagrams = screen.getAllByTestId('mermaid-diagram');
     expect(mermaidDiagrams).toHaveLength(6);
@@ -163,11 +163,11 @@ describe('Cisco DevNet Professional Guide Page', () => {
     // 1. levels
     expect(mermaidDiagrams[0]).toHaveAttribute(
       'data-aria-label',
-      '図1: DevNet認定レベルの全体像とProfessional取得の流れ'
+      '図1: Automation認定レベルの全体像とProfessional取得の流れ'
     );
     expect(mermaidDiagrams[0]).toHaveAttribute('data-preserve-scale', 'true');
     expect(DIAGRAMS.levels).toContain('flowchart TB');
-    expect(DIAGRAMS.levels).toContain('350-901 DEVCOR');
+    expect(DIAGRAMS.levels).toContain('350-901 AUTOCOR');
 
     // 2. mechanism
     expect(mermaidDiagrams[1]).toHaveAttribute(
@@ -180,7 +180,7 @@ describe('Cisco DevNet Professional Guide Page', () => {
     // 3. domains
     expect(mermaidDiagrams[2]).toHaveAttribute(
       'data-aria-label',
-      '図3: DEVCORの5つの出題ドメイン（すべて均等20%）'
+      '図3: AUTOCORの4つの出題ドメインと配点'
     );
     expect(mermaidDiagrams[2]).toHaveAttribute('data-preserve-scale', 'true');
     expect(DIAGRAMS.domains).toContain('flowchart LR');
@@ -199,13 +199,13 @@ describe('Cisco DevNet Professional Guide Page', () => {
   });
 
   it('全Callout（補足注釈コンポーネント）と注意事項フッターが元デザイン通りにレンダリングされること', () => {
-    const { container } = render(<DevNetProfessionalGuide />);
+    const { container } = render(<AutomationProfessionalGuide />);
 
     const callouts = container.querySelectorAll('.callout');
     expect(callouts.length).toBeGreaterThanOrEqual(3);
 
     expect(screen.getByText('補足（最新情報）：')).toBeInTheDocument();
-    expect(screen.getByText('CCIE Automation')).toBeInTheDocument();
+    expect(screen.getAllByText('CCIE Automation')).toHaveLength(2);
     expect(screen.getByText('初学者向けポイント：')).toBeInTheDocument();
     expect(screen.getByText('不合格日の翌日から5暦日')).toBeInTheDocument();
 
@@ -214,18 +214,18 @@ describe('Cisco DevNet Professional Guide Page', () => {
     expect(footerNotice?.textContent).toContain('予告なく変更される場合があります');
   });
 
-  it('参考ソース一覧 (Section 13) 内に16個以上の公式リンクが正しく出力されていること', () => {
-    const { container } = render(<DevNetProfessionalGuide />);
+  it('参考ソース一覧に現行試験の公式リンクが出力されていること', () => {
+    const { container } = render(<AutomationProfessionalGuide />);
 
     const refsSection = container.querySelector('section#sources');
     expect(refsSection).toBeInTheDocument();
 
     const links = refsSection?.querySelectorAll('a');
-    expect(links?.length).toBe(16);
+    expect(links?.length).toBe(10);
 
-    const devarcLink = refsSection?.querySelector('a[href*="350-901-DEVCOR.pdf"]');
-    expect(devarcLink).toBeInTheDocument();
-    expect(devarcLink).toHaveAttribute('target', '_blank');
-    expect(devarcLink).toHaveAttribute('rel', 'noopener');
+    const autocorLink = refsSection?.querySelector('a[href*="350-901-AUTOCOR-v2.0"]');
+    expect(autocorLink).toBeInTheDocument();
+    expect(autocorLink).toHaveAttribute('target', '_blank');
+    expect(autocorLink).toHaveAttribute('rel', 'noopener');
   });
 });

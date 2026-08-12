@@ -345,7 +345,7 @@ const ALL_EXAMS: Exam[] = [
         color: 'card-ccna',
         href: '/cisco/devnet-associate',
         description:
-            'Ciscoネットワークのソフトウェア開発、API、プラットフォーム、自動化、セキュリティ、ネットワーク基礎の知識を認定（旧DevNet Associate）。',
+            'Ciscoネットワークのソフトウェア開発、API、プラットフォーム、自動化、セキュリティ、ネットワーク基礎の知識を認定（旧CCNA Automation）。',
         domains: [
             {
                 label: '完全試験対策ガイド',
@@ -432,14 +432,14 @@ const ALL_EXAMS: Exam[] = [
     },
     {
         id: 'cisco-devnet-professional',
-        label: 'Cisco Certified DevNet Professional',
-        abbr: 'DevNet Professional',
+        label: 'CCNP Automation',
+        abbr: 'CCNP Automation',
         level: 'Professional',
         score: 'コア 120分 + コンセントレーション 90分',
         color: 'card-ccna',
         href: '/cisco/devnet-professional',
         description:
-            'Ciscoプラットフォーム上のアプリケーション開発・運用・自動化プロフェッショナル認定。コア試験(350-901 DEVCOR)と8つのコンセントレーション試験を徹底解説。',
+            'Ciscoプラットフォーム上のアプリケーション開発・運用・自動化プロフェッショナル認定。コア試験(350-901 AUTOCOR)と2つのコンセントレーション試験を徹底解説。',
         domains: [
             {
                 label: '徹底解説ガイド',
@@ -447,7 +447,7 @@ const ALL_EXAMS: Exam[] = [
                 pct: '完全解説',
             },
         ],
-        badge: 'DevNet プロフェッショナル',
+        badge: 'Automation プロフェッショナル',
         icon: '🚀',
         provider: 'Cisco',
     },
