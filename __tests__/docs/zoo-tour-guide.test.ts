@@ -10,7 +10,7 @@ describe('Zoo tour guide deployment instructions', () => {
             .find((line) => line.includes('フレームワークの制約を事前に把握する'));
         const troubleshootingRow = guide
             .split('\n')
-            .find((line) => line.includes('400 INVALID_ARGUMENT'));
+            .find((line) => line.startsWith('| `400 INVALID_ARGUMENT'));
 
         expect(frameworkRow).toContain('google-adk>=1.17.0,<2.0.0');
         expect(frameworkRow).toContain('Gemini 2.x');

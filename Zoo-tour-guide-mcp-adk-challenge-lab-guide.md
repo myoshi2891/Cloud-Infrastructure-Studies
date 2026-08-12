@@ -422,6 +422,14 @@ EOF
 
 ```bash
 cd ~/zoo_guide_agent
+python --version
+python -c 'import sys; assert sys.version_info >= (3, 10), "Python 3.10以上が必要です。処理を中止します。"'
+```
+
+表示されたバージョンがPython 3.10以上であることを確認します。Python 3.10未満の場合は2つ目のコマンドが失敗するため、ここで処理を中止し、Pythonを更新してから以降の手順を実行してください。要件を満たす場合のみ、仮想環境を作成します。
+
+```bash
+cd ~/zoo_guide_agent
 python -m venv ../zoo_guide_venv
 source ../zoo_guide_venv/bin/activate
 pip install --no-cache-dir -r requirements.txt
@@ -467,7 +475,34 @@ gcloud run services proxy <AGENT_SERVICE_NAME> \
   --port=8080
 ```
 
-Token Streamingを有効化した上で質問（例: `Where can I find elephants?`）を投げ、MCPツール呼び出しとGoogle Search呼び出しの両方が正しくイベントとして表示されるかを確認します。ここで「関数呼び出しイベントが両方見える」ことが、7.1の実装が正しく機能している証拠になります。
+別のCloud Shellターミナルで、公開サービスなら`<SERVICE_URL>`、非公開サービスなら上記プロキシのURLをAPIの接続先に設定します。次に検証用セッションを作成し、質問リクエストをストリーミングAPIへ送信します。
+
+```bash
+export AGENT_BASE_URL="<SERVICE_URL_OR_HTTP_127.0.0.1_8080>"
+
+curl --fail-with-body --silent --show-error \
+  -X POST \
+  -H 'Content-Type: application/json' \
+  "$AGENT_BASE_URL/apps/zoo_guide_agent/users/verification-user/sessions/verification-session" \
+  -d '{}'
+
+curl --fail-with-body --no-buffer --silent --show-error \
+  -X POST \
+  -H 'Content-Type: application/json' \
+  "$AGENT_BASE_URL/run_sse" \
+  -d '{
+    "app_name": "zoo_guide_agent",
+    "user_id": "verification-user",
+    "session_id": "verification-session",
+    "new_message": {
+      "role": "user",
+      "parts": [{"text": "Where can I find elephants, and what is the latest conservation news about them?"}]
+    },
+    "streaming": true
+  }'
+```
+
+返却されるストリーミング応答を読み、動物園情報を取得するMCPツール呼び出しと、最新情報を取得するGoogle Search呼び出しの両方が関数呼び出しイベントとして含まれることを確認します。両方のイベントと最終回答が連続して返れば、7.1の実装が本番APIで機能しています。
 
 ### 7.5 根拠・参考ソース
 
@@ -501,7 +536,7 @@ flowchart TB
 | 1 | 最小権限 | デプロイ・ビルド・実行主体を分け、各主体に必要な事前定義ロールだけを付与 |
 | 2 | ゼロトラストに近い認証設計 | MCPサーバーを`--no-allow-unauthenticated`でデプロイし、IDトークンで検証 |
 | 3 | 設定と秘匿情報の分離 | `.env`にURLやプロジェクト情報、`settings.json`にMCP接続情報を分離管理 |
-| 4 | フレームワークの制約を事前に把握する | google-adk 1.17.0以上とGemini 2.xで`bypass_multi_tools_limit=True`を適用 |
+| 4 | フレームワークの制約を事前に把握する | `google-adk>=1.17.0,<2.0.0`とGemini 2.xで`bypass_multi_tools_limit=True`を適用 |
 | 5 | ローカルファースト検証 | `uv run server.py` → `adk web`の順でローカル確認してから本番デプロイ |
 | 6 | 可観測性の確保 | Cloud Runログを都度確認し、問題の切り分けを迅速に行う |
 
@@ -515,7 +550,7 @@ flowchart TB
 | `google.logging.v2.WriteLogEntriesPartialErrors` | プロジェクト設定がリセットされている | `gcloud config set project <PROJECT_ID>`を再実行 |
 | Gemini CLIで認証エラー | `ID_TOKEN`の有効期限切れ | `/quit`で終了し、`gcloud config set project`後にトークンを再発行して再起動 |
 | Cloud Runデプロイで`Quota exceeded for total allowable CPU` | リージョンのCPUクォータに達している | 少し待ってから同じコマンドを再実行 |
-| `400 INVALID_ARGUMENT: Multiple tools are supported only when they are all search tools` | ADKバージョンやモデルに合わない方法で`google_search`を他のツールと混在させている | 7.1を参照し、google-adk 1.17.0以上・Gemini 2.x・`bypass_multi_tools_limit=True`の組み合わせを確認する |
+| `400 INVALID_ARGUMENT: Multiple tools are supported only when they are all search tools` | ADKバージョンやモデルに合わない方法で`google_search`を他のツールと混在させている | 7.1を参照し、`google-adk>=1.17.0,<2.0.0`・Gemini 2.x・`bypass_multi_tools_limit=True`の組み合わせを確認する |
 | ADKデプロイ時に未認証呼び出しの確認プロンプト | Cloud Runサービスの公開設定が未確定 | 公開要件がある場合のみ`y`で許可する |
 
 ---
