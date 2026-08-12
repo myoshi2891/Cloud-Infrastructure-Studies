@@ -7,7 +7,7 @@ import { RecentPageRecorder } from '@/components/RecentPageRecorder';
 import './globals.css';
 
 const notoSansJP = Noto_Sans_JP({
-    subsets: ['latin', 'japanese'],
+    subsets: ['latin'],
     weight: ['300', '400', '500', '700', '900'],
     variable: '--font-body',
     display: 'swap',
