@@ -124,7 +124,7 @@ flowchart TD
     Q2 -->|"必要"| Q3{"Google純正機能の範囲で<br/>十分か?"}
     Q2 -->|"不要"| Basic
     Q3 -->|"十分"| Advanced["高度モバイル管理<br/>デバイスポリシーアプリの導入が必要"]
-    Q3 -->|"不十分<br/>UEM/脅威対策製品を既に運用中"| ThirdParty["サードパーティ管理<br/>BeyondCorp Alliance連携<br/>Check Point / CrowdStrike / Jamf /<br/>Lookout / Microsoft Intune / Omnissa"]
+    Q3 -->|"不十分<br/>UEM/脅威対策製品を既に運用中"| ThirdParty["サードパーティ管理<br/>BeyondCorp Alliance連携<br/>Check Point / CrowdStrike / Jamf /<br/>Lookout / Microsoft Intune（デスクトップのみ） /<br/>Omnissa"]
 
     Basic --> End1["Devices > Mobile & endpoints ><br/>Settings > Universal で設定"]
     Advanced --> End1
@@ -267,7 +267,7 @@ flowchart TD
 
 #### ベストプラクティス
 
-- BYODを許容する組織では、デバイス承認（Require admin approval）を有効にし、承認待ち/ブロック状態をContext-Aware Accessの条件に組み込むことで、「野良デバイス」からのアクセスを構造的に防止する。
+- BYODを許容する組織でデバイス承認（Require admin approval）を適用するには、Android・iOSでは高度モバイル管理、PCではEndpoint Verification、Chromeシグナル共有を有効にした基本管理、またはGoogle Drive for desktopのいずれかが必要である。承認要求の対象デバイスは既定でブロックされる一方、会社所有として事前登録済みのデバイスなどは自動承認される。特定のアプリやサービスにのみ承認済み状態を要求する場合は、Context-Aware Accessの条件として設定できる。
 - エンドポイント検証は、モバイルデバイス向けの基本/高度管理ではカバーされない「Chromeブラウザが動くPC」の可視性を補完する位置づけであることを理解し、両者を併用する。
 - iOSデバイスでサードパーティ連携を使う場合、Safariの有効化状態によって重複デバイスエントリが発生しうるため、Context-Aware Accessによる意図しないブロックが起きていないか定期的に確認する。
 
@@ -287,8 +287,8 @@ flowchart TD
     C --> C1["ワークプロファイルのない<br/>Androidとデバイス登録済みiOSは<br/>個人データも含め全データを削除"]
     D --> D1["デバイス上の仕事用データ・<br/>仕事用アプリのみ削除<br/>個人データは保持"]
 
-    C1 --> E{"Androidが<br/>基本管理下<br/>かつ過去に高度管理下だったか?"}
-    E -->|"はい かつ Device Ownerモード"| F["アカウントではなく<br/>デバイスのみワイプ可能"]
+    C1 --> E{"Androidが現在は基本管理下で、<br/>過去に高度管理下、かつ<br/>Device Ownerモード・<br/>Android Device Policy管理か?"}
+    E -->|"4条件すべてに一致"| F["アカウントではなく<br/>デバイスのみワイプ可能"]
     E -->|"いいえ"| G["通常どおりワイプ実行"]
 
     D1 --> H["サインインCookieをリセット"]
@@ -316,7 +316,7 @@ flowchart TD
 | デバイスをワイプ（Wipe a device） | 会社所有デバイス、または個人所有で紛失・盗難に遭ったデバイス | 仕事用データ・アプリを削除。ワークプロファイルのないAndroidやデバイス登録済みiOSでは個人データ・個人アプリも含め全削除 |
 | アカウントをワイプ（Wipe an account） | 個人所有デバイスを使う従業員が退職する場合 | デバイス上の仕事用アカウントとそれに紐づくデータのみ削除。個人データは保持される |
 
-Android端末が「現在は基本管理下だが、過去に高度管理下にあり、かつDevice Ownerモード（会社所有デバイスまたは『仕事専用』として設定された個人デバイス）」という条件を満たす場合は、アカウント単位ではなくデバイス全体のワイプしかできない点に注意する。
+Android端末が「現在は基本管理下」「過去に高度管理下」「Device Ownerモード（会社所有デバイスまたは『仕事専用』として設定された個人デバイス）」「Android Device Policyで管理」の4条件すべてを満たす場合は、アカウント単位ではなくデバイス全体のワイプしかできない点に注意する。
 
 #### サインアウトによる即時アクセス遮断
 
@@ -343,7 +343,7 @@ Chromeポリシーには4種類の適用経路があり、既定では次の優�
 
 ```mermaid
 flowchart TB
-    A["プラットフォームポリシー<br/>Windows GPO / macOS 管理対象プリファレンス /<br/>Linux 管理ツール / ChromeOS管理コンソール<br/>デバイス上の全ユーザーに適用"]
+    A["プラットフォームポリシー<br/>Windows GPO / macOS 管理対象プリファレンス /<br/>Linux 管理ツール<br/>デバイス上の全ユーザーに適用"]
     B["マシンクラウドポリシー<br/>Chrome Enterprise Core 登録済みブラウザ<br/>サインイン不要で適用"]
     C["OSユーザーポリシー<br/>管理対象デバイスで<br/>社内アカウントにサインイン時に適用"]
     D["クラウドユーザーポリシー<br/>Chromeプロファイル<br/>管理対象アカウントでのサインインに紐づく"]
@@ -362,7 +362,7 @@ flowchart TB
     class D lowest
 ```
 
-Chrome Enterprise Coreでブラウザフリートを管理している場合に限り、Admin consoleの「Policy precedence」設定、またはCloudPolicyOverridesPlatformPolicy／CloudUserPolicyOverridesCloudMachinePolicyポリシーによって、この優先順位を4通りの組み合わせに変更できる。また、リストやディクショナリ形式のポリシー（ExtensionSettingsなど）は「Policy mergelist」設定やワイルドカード`*`を使うことで、複数ソースからの値をマージすることも可能である。
+この優先順位の変更は、Windows・macOS・Linux上のChromeブラウザが対象であり、ChromeOSは対象外である。Chrome Enterprise Coreで対象ブラウザのフリートを管理している場合に限り、Admin consoleの「Policy precedence」設定、またはCloudPolicyOverridesPlatformPolicy／CloudUserPolicyOverridesCloudMachinePolicyポリシーによって、この優先順位を4通りの組み合わせに変更できる。また、リストやディクショナリ形式のポリシー（ExtensionSettingsなど）は「Policy mergelist」設定やワイルドカード`*`を使うことで、複数ソースからの値をマージすることも可能である。
 
 #### オフラインアクセス
 
@@ -458,7 +458,7 @@ Devices > Chrome > Managed browsersで対象のOU（トップレベルまたは�
 | Linux | `/etc/opt/chrome/policies/enrollment`にトークンのみを記載したテキストファイルを配置 |
 | Android / iOS | Google endpoint management経由でChrome Enterprise Coreの登録トークンを配布 |
 
-Windows・macOSでは、登録が失敗した場合に「Chromeを未管理状態のまま起動させる」か「起動自体をブロックする」かを`CloudManagementEnrollmentMandatory`ポリシーで選択できる。
+登録失敗時にChromeの起動をブロックするには、Windows・macOSでは`CloudManagementEnrollmentMandatory`ポリシーを有効にする。Linuxでは`/etc/opt/chrome/policies/enrollment/CloudManagementEnrollmentOptions`に`Mandatory`を設定する。これらを設定しない場合は、登録に失敗してもChromeを未管理状態で起動できる。
 
 #### ステップ3: 登録の確認とポリシー適用
 
@@ -523,7 +523,7 @@ flowchart TD
 
 強制インストールされた拡張機能・アプリは、Chromeウェブストアサービス自体がオフになっていても引き続き自動インストールされ、ブロック設定よりも優先される。設定はUsers & browsers単位のほか、User app settings画面からも構成でき、グループとアプリ数の組み合わせで500件という上限がある点にも注意する。
 
-自社サーバーでホストする独自拡張機能（Chromeウェブストア外）を自動インストールする場合は、パッケージ済みの`.crx`ファイルをダウンロードできるURLを`update_url`として指定する。Windowsで独自拡張機能を自動インストールするには、コンピューターがMicrosoft Active Directoryドメインに参加している必要がある。
+自社サーバーでホストする独自拡張機能（Chromeウェブストア外）を自動インストールする場合は、`update_url`に更新マニフェストXMLのURLを指定し、そのXMLの`codebase`属性でパッケージ済み`.crx`ファイルのURLを示す。Windowsで強制インストールするには、コンピューターがMicrosoft Active Directoryドメインに参加しているか、ブラウザがChrome Enterprise Coreに登録されている必要がある。Microsoft Intuneはこれらの要件に代わるものではなく、ポリシーの配布手段として利用する。
 
 #### ベストプラクティス
 
