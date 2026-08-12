@@ -304,11 +304,11 @@ export default function AutomationProfessionalGuide() {
 
             <ul>
               <li>
-                コア試験に合格すると、その時点で「Cisco Certified Specialist - Automation Core」認定が付与される
+                コア試験に合格すると、その時点で「Cisco Certified Automation Specialist - Core」認定が付与される
               </li>
               <li>
                 コンセントレーション試験に合格すると、選んだ試験に応じて「Cisco
-                Certified Specialist - Enterprise Automation and Programmability」または「Cisco Certified Specialist -
+                Certified Automation Specialist - Enterprise Automation and Programmability」または「Cisco Certified Automation Specialist -
                 Data Center Automation and Programmability」認定が付与される
               </li>
               <li>
@@ -364,7 +364,7 @@ export default function AutomationProfessionalGuide() {
                   <tr>
                     <td>関連する認定</td>
                     <td>
-                      CCNP Automation、Cisco Certified Specialist - Automation Core
+                      CCNP Automation、Cisco Certified Automation Specialist - Core
                     </td>
                   </tr>
                   <tr>
@@ -485,8 +485,8 @@ export default function AutomationProfessionalGuide() {
             </div>
 
             <p>
-              ENAUTOの合格で「Cisco Certified Specialist - Enterprise Automation and Programmability」、
-              DCNAUTOの合格で「Cisco Certified Specialist - Data Center Automation and Programmability」がそれぞれ付与されます。
+              ENAUTOの合格で「Cisco Certified Automation Specialist - Enterprise Automation and Programmability」、
+              DCNAUTOの合格で「Cisco Certified Automation Specialist - Data Center Automation and Programmability」がそれぞれ付与されます。
             </p>
 
             <h3>コンセントレーション試験の選び方（考え方の目安）</h3>

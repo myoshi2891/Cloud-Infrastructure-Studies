@@ -15,7 +15,6 @@
 /* Layout */
 .page .layout {
   display: block;
-  padding-left: 280px;
 }
 
 .page .sidebar {
@@ -95,9 +94,9 @@
 
 /* Main Content */
 .page .main {
-  width: 100%;
-  max-width: calc(1200px + 8vw);
-  margin-inline: auto;
+  margin-left: 280px;
+  width: calc(100% - 280px);
+  max-width: none;
   padding: 3.2rem 4vw 6rem;
 }
 
@@ -105,8 +104,6 @@
   border-bottom: 1px solid var(--color-devnet-professional-border);
   padding-bottom: 2.6rem;
   margin-bottom: 2.6rem;
-  margin-inline: auto;
-  max-width: 1200px;
 }
 
 .page .hero .eyebrow {
@@ -147,9 +144,7 @@
 
 .page section.section {
   margin-bottom: 3.6rem;
-  margin-inline: auto;
   scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 16px);
-  max-width: 1200px;
 }
 
 .page h2 {
@@ -290,10 +285,9 @@
     border-right: none;
     border-bottom: 1px solid var(--color-devnet-professional-border);
   }
-  .page .layout {
-    padding-left: 0;
-  }
   .page .main {
+    margin-left: 0;
+    width: 100%;
     padding: 2rem 5vw 4rem;
     max-width: none;
   }
