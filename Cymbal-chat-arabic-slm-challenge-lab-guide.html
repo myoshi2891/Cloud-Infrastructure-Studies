@@ -7,6 +7,8 @@
         <link
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"
+            integrity="sha384-oaMLBGEzBOJx3UHwac0cVndtX5fxGQIfnAeFZ35RTgqPcYlbprH9o9PUV/F8Le07"
+            crossorigin="anonymous"
         />
         <style>
             :root {
@@ -789,10 +791,8 @@
                         >
                         実装上は Python の
                         <code>random.choices(population, weights=probabilities)</code>
-                        のような重み付きサンプリングを random モードに、<code
-                            >max(probabilities)</code
-                        >
-                        を greedy モードに対応させるのが典型的なパターンです。
+                        のような重み付きサンプリングを random モードに使います。greedy
+                        モードでは <code>max(probabilities)</code> が返す確率値そのものではなく、最大確率のインデックスを求め、そのインデックスに対応する文字を選択します。
                     </p>
 
                     <h3>4.3 推論ループの設計</h3>
@@ -997,9 +997,8 @@
                                         character）が想定と異なる分解のされ方をしている
                                     </td>
                                     <td>
-                                        <code>len(list(text))</code> と
-                                        <code>len(text)</code>
-                                        を比較し、意図した粒度で分解されているか確認する
+                                        <code>[f"U+{ord(char):04X}" for char in text]</code>
+                                        で各文字のUnicodeコードポイントを出力し、その並びを期待するコードポイント列と比較する
                                     </td>
                                 </tr>
                                 <tr>
@@ -1125,7 +1124,9 @@
                 <!-- ============================================================ -->
                 <section id="references">
                     <h2>8. 参考文献・出典</h2>
-                    <p>本ガイドのベストプラクティスは、以下の一次情報源に基づいています。</p>
+                    <p>
+                        本ガイドのベストプラクティスは、以下の公式ドキュメント、学術資料、解説資料に基づいています。
+                    </p>
 
                     <div class="ref-list">
                         <div class="ref-item">
@@ -1345,8 +1346,16 @@
             </main>
         </div>
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/mermaid@11.12.0/dist/mermaid.min.js"></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"
+            integrity="sha384-F/bZzf7p3Joyp5psL90p/p89AZJsndkSoGwRpXcZhleCWhd8SnRuoYo4d0yirjJp"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/mermaid@11.12.0/dist/mermaid.min.js"
+            integrity="sha384-o+g/BxPwhi0C3RK7oQBxQuNimeafQ3GE/ST4iT2BxVI4Wzt60SH4pq9iXVYujjaS"
+            crossorigin="anonymous"
+        ></script>
         <script>
             hljs.highlightAll();
 

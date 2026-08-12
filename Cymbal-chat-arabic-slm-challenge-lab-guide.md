@@ -1,5 +1,6 @@
 # Cymbal Chat: Arabic Small Language Model チャレンジラボ 完全攻略ガイド
-### ~ Character-Level Tokenizer / N-gram Text Generator / Transformer 学習データ準備のベストプラクティス ~
+
+~ Character-Level Tokenizer / N-gram Text Generator / Transformer 学習データ準備のベストプラクティス ~
 
 対象ラボ: [Cymbal Chat: Develop a Chatbot for the Arabic-Speaking Market](https://www.skills.google/course_templates/1453/labs/600981)（Google DeepMind: 01 Build Your Own Small Language Model コース付属チャレンジラボ）
 
@@ -115,7 +116,7 @@ def join_text(self, tokens: list[str]) -> str:
 | 右から左（RTL）書字方向 | 表示上の方向であり、内部のトークン配列の順序自体は論理順（logical order）で保持するのが一般的 | 表示崩れとデータ処理上の順序を混同しないよう注意 |
 | 形態的豊かさ（morphological richness） | 1つのアラビア語単語が英語の文相当の情報を持つことがある | 語彙ベースのモデルでは語彙爆発が起きやすく、character-level が有効な一因になる |
 
-学術的なサーベイでも、アラビア語 NLP の前処理では diacritic の除去・復元、正書法の正規化（normalization）が主要な課題として挙げられています。[出典5][出典6]
+学術的なサーベイでも、アラビア語 NLP の前処理では diacritic の除去・復元、正書法の正規化（normalization）が主要な課題として挙げられています（出典5、出典6）。
 
 ---
 
@@ -134,7 +135,7 @@ n-gram 言語モデルは「直前の (n-1) 文字（または単語）が与え
 | Greedy sampling | 確率分布の中で最も高い確率を持つ文字を常に選ぶ | 決定的（同じプロンプトなら常に同じ出力）。反復的・単調になりやすい | 再現性が必要なデバッグ・評価 |
 | Random sampling | 確率分布に従って確率的に文字を選ぶ | 毎回異なる出力になり多様性がある反面、確率の低い経路を選ぶと支離滅裂になりやすい | 創造的なテキスト生成、データ拡張 |
 
-この2分類は n-gram モデルにおける代表的なデコーディング手法として広く整理されています。[出典8] 実装上は Python の `random.choices(population, weights=probabilities)` のような重み付きサンプリングを random モードに、`max(probabilities)` を greedy モードに対応させるのが典型的なパターンです。
+この2分類は n-gram モデルにおける代表的なデコーディング手法として広く整理されています。[出典8] 実装上は Python の `random.choices(population, weights=probabilities)` のような重み付きサンプリングを random モードに使います。greedy モードでは `max(probabilities)` が返す確率値そのものではなく、最大確率のインデックスを求め、そのインデックスに対応する文字を選択します。
 
 ### 4.3 推論ループの設計
 
@@ -205,7 +206,7 @@ flowchart TB
 
 | 症状 | 想定される原因 | 確認ポイント |
 |---|---|---|
-| `character_tokenize` のテストで文字数が合わない | Unicode の合字（ligature）や結合文字（combining character）が想定と異なる分解のされ方をしている | `len(list(text))` と `len(text)` を比較し、意図した粒度で分解されているか確認する |
+| `character_tokenize` のテストで文字数が合わない | Unicode の合字（ligature）や結合文字（combining character）が想定と異なる分解のされ方をしている | `[f"U+{ord(char):04X}" for char in text]` で各文字のUnicodeコードポイントを出力し、その並びを期待するコードポイント列と比較する |
 | `join_text` の出力に余分な区切り文字が入る | `"".join()` ではなく `" ".join()` など区切り文字を挟む実装になっている | 要件は「パディングなしで結合」なので区切り文字を入れない |
 | n-gram 生成が同じ文字列をループする | greedy モードで同じ context に戻るループに陥っている（決定的モデルの典型的な弱点） | 最大生成長の上限を設ける、または random モードで挙動を比較する |
 | `segment_encoded_sequence` の最終チャンクだけ長さが違ってエラーになる | 呼び出し側ですべてのチャンクが同じ長さである前提のコードになっている | 「最終チャンクのみ短くてよい」という要件通りに実装し、パディングは `create_training_sequences` 側の責務にする |
@@ -228,7 +229,7 @@ flowchart TB
 
 ## 8. 参考文献・出典
 
-本ガイドのベストプラクティスは、以下の一次情報源に基づいています。
+本ガイドのベストプラクティスは、以下の公式ドキュメント、学術資料、解説資料に基づいています。
 
 **[出典1]** Google Cloud Documentation, "Introduction to Colab Enterprise"
 https://docs.cloud.google.com/colab/docs/introduction
