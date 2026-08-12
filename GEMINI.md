@@ -38,6 +38,7 @@ Updated 2026-08-11
   - `/app/gcl/professional-cloud-network-engineer`: PCNE 試験対策ページ（概要・ドメイン別解説）。
   - `/app/gcl/professional-cloud-network-engineer-step-by-step`: PCNE ステップバイステップ実践ガイド。
   - `/app/cisco/ccde/complete-guide`: Cisco CCDE 認定 完全ガイド。
+  - `/app/cisco/devnet-professional`: Cisco Certified DevNet Professional 認定 徹底解説ガイド。
   - `/app/cisco/devnet-associate`: Cisco Certified DevNet Associate (200-901 / CCNA Automation) 完全対策ガイド。
   - `/app/cisco/ccna/beginner-guide`: Cisco CCNA試験 完全ガイド。
   - `/app/cisco/ccna/automation-software-development-design`: CCNA Automation ソフトウェア開発と設計 完全ガイド。

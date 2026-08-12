@@ -430,6 +430,27 @@ const ALL_EXAMS: Exam[] = [
         icon: '🏗️',
         provider: 'Cisco',
     },
+    {
+        id: 'cisco-devnet-professional',
+        label: 'Cisco Certified DevNet Professional',
+        abbr: 'DevNet Professional',
+        level: 'Professional',
+        score: 'コア 120分 + コンセントレーション 90分',
+        color: 'card-ccna',
+        href: '/cisco/devnet-professional',
+        description:
+            'Ciscoプラットフォーム上のアプリケーション開発・運用・自動化プロフェッショナル認定。コア試験(350-901 DEVCOR)と8つのコンセントレーション試験を徹底解説。',
+        domains: [
+            {
+                label: '徹底解説ガイド',
+                href: '/cisco/devnet-professional',
+                pct: '完全解説',
+            },
+        ],
+        badge: 'DevNet プロフェッショナル',
+        icon: '🚀',
+        provider: 'Cisco',
+    },
 ];
 
 export const EXAMS: Exam[] = HANDS_ON_ENABLED

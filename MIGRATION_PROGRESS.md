@@ -7,9 +7,31 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 ## 現在地
 
 - **ブランチ:** dev
-- **進行中タスク:** Cisco Certified DevNet Associate (200-901 / CCNA Automation) 完全対策ガイド 100%全量移行 (完了)
-- **最新実装 HEAD:** `1c58598` (`test(cisco): update test assertions for heading elements`)
-- **最終更新日時(UTC):** 2026-08-12T04:48:00.000Z
+- **進行中タスク:** Cisco Certified DevNet Professional 認定 徹底解説ガイド 100%全量移行 (完了)
+- **最終更新日時(UTC):** 2026-08-12T13:58:00.000Z
+
+## 2026-08-12: Cisco「Cisco Certified DevNet Professional 認定 徹底解説ガイド」100%全量移行 (完了)
+
+### 目的
+
+`Cisco-devnet-professional-guide.html` および `Cisco-devnet-professional-guide.md` を、Next.js App Router 5ファイル構成 (`page.tsx`, `DevNetProfessionalGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/cisco/devnet-professional` ルートへ移行。全13セクションの見出し、7個のテーブルセルテキスト、6個のMermaid図解、3個のコールアウト、16個の参考文献リンクを一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 1 (Red)**: `test: add failing tests for DevNet Professional guide migration` (`4bb2249`)
+- [x] **Step 2 (Green)**: `feat: implement DevNet Professional guide page to pass tests` (`cd2d3fb`)
+- [x] **Step 3 (Refactor / Integration & Nav & Docs)**: `app/constants.ts`, `CLAUDE.md`, `GEMINI.md` にルーティングを統合し、元ファイル (`HTML`/`MD`) を `archive/Cisco/html/` および `archive/Cisco/md/` へ移動
+
+### 関連ファイル
+
+- [app/cisco/devnet-professional/page.tsx](app/cisco/devnet-professional/page.tsx)
+- [app/cisco/devnet-professional/DevNetProfessionalGuide.tsx](app/cisco/devnet-professional/DevNetProfessionalGuide.tsx)
+- [app/cisco/devnet-professional/NavBar.tsx](app/cisco/devnet-professional/NavBar.tsx)
+- [app/cisco/devnet-professional/constants.ts](app/cisco/devnet-professional/constants.ts)
+- [app/cisco/devnet-professional/page.css](app/cisco/devnet-professional/page.css)
+- [__tests__/cisco-devnet-professional.test.tsx](__tests__/cisco-devnet-professional.test.tsx)
+- [archive/Cisco/html/Cisco-devnet-professional-guide.html](archive/Cisco/html/Cisco-devnet-professional-guide.html)
+- [archive/Cisco/md/Cisco-devnet-professional-guide.md](archive/Cisco/md/Cisco-devnet-professional-guide.md)
 
 ## 2026-08-12: Cisco「Cisco Certified DevNet Associate (200-901 / CCNA Automation) 完全対策ガイド」100%全量移行 (完了)
 
