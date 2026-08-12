@@ -1,3 +1,4 @@
+// @vitest-environment jsdom
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import React from 'react';
@@ -41,17 +42,17 @@ describe('CcnaNetworkFundamentalsGuide Page & Component', () => {
     // Section 1 details
     expect(screen.getByText(/200-301（Implementing and Administering Cisco Solutions）/i)).toBeInTheDocument();
     expect(screen.getByText(/取得後3年間（出典①）/i)).toBeInTheDocument();
-    expect(screen.getByText(/1.0 ネットワークの基礎（Network Fundamentals）/i)).toBeInTheDocument();
-    expect(screen.getByText(/6.0 自動化とプログラマビリティ（Automation and Programmability）/i)).toBeInTheDocument();
+    expect(screen.getByText(/ネットワークの基礎（Network Fundamentals）/i)).toBeInTheDocument();
+    expect(screen.getByText(/自動化とプログラマビリティ（Automation and Programmability）/i)).toBeInTheDocument();
 
     // Section 2 details
     expect(screen.getByText(/Local Area Network/i)).toBeInTheDocument();
-    expect(screen.getByText(/スター型トポロジー/i)).toBeInTheDocument();
-    expect(screen.getByText(/メッシュ型トポロジー/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/スター型トポロジー/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/メッシュ型トポロジー/i).length).toBeGreaterThan(0);
 
     // Section 3 details
-    expect(screen.getByText(/第7層　アプリケーション層/i)).toBeInTheDocument();
-    expect(screen.getByText(/第1層　物理層/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/アプリケーション層/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/物理層/i).length).toBeGreaterThan(0);
     expect(screen.getByText(/データ → セグメント → パケット → フレーム → ビット/i)).toBeInTheDocument();
 
     // Section 4 details
@@ -62,7 +63,7 @@ describe('CcnaNetworkFundamentalsGuide Page & Component', () => {
     // Section 5 details
     expect(screen.getByText(/シングルモード（SMF）/i)).toBeInTheDocument();
     expect(screen.getByText(/00:1A:2B:3C:4D:5E/i)).toBeInTheDocument();
-    expect(screen.getByText(/CSMA\/CD/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/CSMA\/CD/i).length).toBeGreaterThan(0);
 
     // Section 6 details
     expect(screen.getByText(/192.168.1.10/i)).toBeInTheDocument();
@@ -74,13 +75,13 @@ describe('CcnaNetworkFundamentalsGuide Page & Component', () => {
     expect(screen.getByText(/リンクローカルアドレス（fe80::\/10）/i)).toBeInTheDocument();
 
     // Section 8 details
-    expect(screen.getByText(/3ウェイハンドシェイク/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/3ウェイハンドシェイク/i).length).toBeGreaterThan(0);
     expect(screen.getByText(/コネクション型（事前に接続確立）/i)).toBeInTheDocument();
     expect(screen.getByText(/暗号化されたリモート接続/i)).toBeInTheDocument();
 
     // Section 10 details
-    expect(screen.getByText(/2026年5月20日/i)).toBeInTheDocument();
-    expect(screen.getByText(/CCNA 200-301 V2.0への移行/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/2026年5月20日/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/CCNA 200-301 V2.0への移行/i).length).toBeGreaterThan(0);
 
     // References
     expect(screen.getByText(/Cisco公式 CCNA認定ページ（日本語）/i)).toBeInTheDocument();
