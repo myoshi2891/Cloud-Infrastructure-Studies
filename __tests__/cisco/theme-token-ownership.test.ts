@@ -4,34 +4,55 @@ import { describe, expect, it } from 'vitest';
 const read = (path: string) => readFileSync(path, 'utf8');
 
 describe('Cisco guide theme token ownership', () => {
-    it('CCNA fundamentals and DevNet Associate tokens are scoped to their owning guides', () => {
+    it('keeps all three guide token definitions in the global theme layer', () => {
         const globals = read('app/globals.css');
-        const ccnaCss = read('app/cisco/ccna/network-fundamentals-guide/page.css');
-        const associateCss = read('app/cisco/devnet-associate/page.module.css');
+        const stylesheets = [
+            read('app/cisco/ccna/network-fundamentals-guide/page.css'),
+            read('app/cisco/devnet-associate/page.module.css'),
+            read('app/cisco/devnet-professional/page.module.css'),
+        ];
 
-        expect(globals).not.toContain('--color-ccna-fundamentals-');
-        expect(globals).not.toContain('--color-devnet-associate-');
-        expect(ccnaCss).toContain('--color-ccna-fundamentals-elevated: #0d1a2e');
-        expect(associateCss).toContain('--color-devnet-associate-panel: #0d1b2e');
+        expect(globals).toContain('--color-ccna-fundamentals-elevated: #0d1a2e');
+        expect(globals).toContain('--color-devnet-associate-panel: #0d1b2e');
+        expect(globals).toContain('--color-devnet-professional-background: #07111e');
+        for (const css of stylesheets) {
+            expect(css).not.toMatch(/^\s*--[\w-]+\s*:/m);
+        }
     });
 
     it('affected guide declarations reference theme tokens instead of raw colors', () => {
         const ccnaCss = read('app/cisco/ccna/network-fundamentals-guide/page.css');
         const associateCss = read('app/cisco/devnet-associate/page.module.css');
+        const professionalCss = read('app/cisco/devnet-professional/page.module.css');
         const homeCss = read('app/page.module.css');
-        const withoutTokenDefinitions = (css: string) => css.replace(/^\s*--[^;]+;\s*$/gm, '');
 
         expect(ccnaCss).not.toMatch(/background:\s*linear-gradient\(90deg,\s*#ffffff/);
-        expect(withoutTokenDefinitions(ccnaCss)).not.toMatch(
+        expect(ccnaCss).not.toMatch(
             /(?:background|color):\s*(?:#[0-9a-f]{6}|rgba\()/i
         );
         expect(associateCss).not.toMatch(/background:\s*linear-gradient\(90deg,\s*#ffffff/);
-        expect(withoutTokenDefinitions(associateCss)).not.toMatch(
+        expect(associateCss).not.toMatch(
             /(?:background|color):\s*(?:#cfe0ff|rgba\()/i
+        );
+        expect(professionalCss).not.toMatch(
+            /(?:background(?:-color)?|color|border(?:-left|-right|-top|-bottom)?):\s*(?:#[0-9a-f]{3,8}|rgba\()/i
         );
         expect(homeCss).not.toContain(
             'background: linear-gradient(145deg, rgba(255,255,255,.028), rgba(255,255,255,.008))'
         );
+    });
+
+    it('centers the DevNet Professional readable content at the established 1200px width', () => {
+        const css = read('app/cisco/devnet-professional/page.module.css');
+        const rule = (selector: string) => css.match(
+            new RegExp(`${selector.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*\\{([^}]*)\\}`)
+        )?.[1] ?? '';
+
+        expect(rule('.page .main')).not.toContain('max-width: none');
+        expect(rule('.page .hero')).toMatch(/max-width:\s*1200px/);
+        expect(rule('.page .hero')).toMatch(/margin-(?:left|inline):\s*auto/);
+        expect(rule('.page section.section')).toMatch(/max-width:\s*1200px/);
+        expect(rule('.page section.section')).toMatch(/margin-(?:left|inline):\s*auto/);
     });
 
     it('DevNet Professional uses CSS Modules without a page-level global CSS import', () => {

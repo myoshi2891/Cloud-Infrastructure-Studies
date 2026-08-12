@@ -1,4 +1,5 @@
 // @vitest-environment jsdom
+import { readFileSync } from 'node:fs';
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import AutomationProfessionalGuide from '../app/cisco/devnet-professional/DevNetProfessionalGuide';
@@ -156,22 +157,42 @@ describe('Cisco CCNP Automation Guide Page', () => {
   });
 
   it('コアとコンセントレーション資格をCisco公式名称で統一すること', () => {
-    render(<AutomationProfessionalGuide />);
+    const { container } = render(<AutomationProfessionalGuide />);
 
     expect(
       screen.getAllByText(/Cisco Certified Specialist - Automation Core/).length
     ).toBeGreaterThanOrEqual(2);
     expect(
-      screen.getAllByText(/Cisco Certified Specialist - Enterprise Automation/).length
+      screen.getAllByText(/Cisco Certified Specialist - Enterprise Automation and Programmability/).length
     ).toBeGreaterThanOrEqual(1);
     expect(
-      screen.getAllByText(/Cisco Certified Specialist - Data Center Automation/).length
+      screen.getAllByText(/Cisco Certified Specialist - Data Center Automation and Programmability/).length
     ).toBeGreaterThanOrEqual(1);
 
     expect(DIAGRAMS.levels).toContain('Cisco Certified Specialist - Automation Core');
-    expect(DIAGRAMS.levels).toContain('Cisco Certified Specialist - Enterprise Automation');
-    expect(DIAGRAMS.levels).toContain('Cisco Certified Specialist - Data Center Automation');
+    expect(DIAGRAMS.levels).toContain('Cisco Certified Specialist - Enterprise Automation and Programmability');
+    expect(DIAGRAMS.levels).toContain('Cisco Certified Specialist - Data Center Automation and Programmability');
+    expect(DIAGRAMS.mechanism).toContain('Cisco Certified Specialist - Enterprise Automation and Programmability');
+    expect(DIAGRAMS.mechanism).toContain('Cisco Certified Specialist - Data Center Automation and Programmability');
     expect(DIAGRAMS.roadmap).toContain('Cisco Certified Specialist - Automation Core');
+    expect(DIAGRAMS.roadmap).toContain('Enterprise Automation and Programmability');
+    expect(DIAGRAMS.roadmap).toContain('Data Center Automation and Programmability');
+
+    const content = container.textContent ?? '';
+    expect(content).not.toMatch(/Cisco Certified Specialist - Enterprise Automation(?! and Programmability)/);
+    expect(content).not.toMatch(/Cisco Certified Specialist - Data Center Automation(?! and Programmability)/);
+    expect(DIAGRAMS.levels).not.toMatch(/Cisco Certified Specialist - Enterprise Automation(?! and Programmability)/);
+    expect(DIAGRAMS.mechanism).not.toMatch(/Cisco Certified Specialist - Data Center Automation(?! and Programmability)/);
+  });
+
+  it('公開コンポーネントの責務をJSDocで説明すること', () => {
+    const source = readFileSync(
+      'app/cisco/devnet-professional/DevNetProfessionalGuide.tsx',
+      'utf8'
+    );
+
+    expect(source).toMatch(/\/\*\*[\s\S]*?指定されたMermaid図を描画[\s\S]*?function Diagram/);
+    expect(source).toMatch(/\/\*\*[\s\S]*?自動化プロフェッショナルガイドを表示[\s\S]*?function AutomationProfessionalGuide/);
   });
 
   it('全6つの Mermaid ダイアグラムが正確なDSLとariaLabelでレンダリングされ、preserveNaturalScaleがtrueであること', () => {
