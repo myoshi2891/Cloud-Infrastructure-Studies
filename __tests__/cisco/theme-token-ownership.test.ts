@@ -42,17 +42,21 @@ describe('Cisco guide theme token ownership', () => {
         );
     });
 
-    it('centers the DevNet Professional readable content at the established 1200px width', () => {
+    it('reserves the desktop sidebar width without globally limiting main content', () => {
         const css = read('app/cisco/devnet-professional/page.module.css');
         const rule = (selector: string) => css.match(
             new RegExp(`${selector.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*\\{([^}]*)\\}`)
         )?.[1] ?? '';
 
-        expect(rule('.page .main')).not.toContain('max-width: none');
-        expect(rule('.page .hero')).toMatch(/max-width:\s*1200px/);
-        expect(rule('.page .hero')).toMatch(/margin-(?:left|inline):\s*auto/);
-        expect(rule('.page section.section')).toMatch(/max-width:\s*1200px/);
-        expect(rule('.page section.section')).toMatch(/margin-(?:left|inline):\s*auto/);
+        expect(rule('.page .layout')).not.toContain('padding-left');
+        expect(rule('.page .main')).toMatch(/margin-left:\s*280px/);
+        expect(rule('.page .main')).toMatch(/width:\s*calc\(100%\s*-\s*280px\)/);
+        expect(rule('.page .main')).toMatch(/max-width:\s*none/);
+        expect(rule('.page .hero')).not.toContain('max-width');
+        expect(rule('.page .hero')).not.toMatch(/margin-(?:left|inline):\s*auto/);
+        expect(rule('.page section.section')).not.toContain('max-width');
+        expect(rule('.page section.section')).not.toMatch(/margin-(?:left|inline):\s*auto/);
+        expect(css).not.toMatch(/max-width:\s*1200px/);
     });
 
     it('DevNet Professional uses CSS Modules without a page-level global CSS import', () => {

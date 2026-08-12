@@ -158,31 +158,36 @@ describe('Cisco CCNP Automation Guide Page', () => {
 
   it('コアとコンセントレーション資格をCisco公式名称で統一すること', () => {
     const { container } = render(<AutomationProfessionalGuide />);
+    const coreName = 'Cisco Certified Automation Specialist - Core';
+    const enterpriseName =
+      'Cisco Certified Automation Specialist - Enterprise Automation and Programmability';
+    const dataCenterName =
+      'Cisco Certified Automation Specialist - Data Center Automation and Programmability';
 
     expect(
-      screen.getAllByText(/Cisco Certified Specialist - Automation Core/).length
+      screen.getAllByText(new RegExp(coreName)).length
     ).toBeGreaterThanOrEqual(2);
     expect(
-      screen.getAllByText(/Cisco Certified Specialist - Enterprise Automation and Programmability/).length
+      screen.getAllByText(new RegExp(enterpriseName)).length
     ).toBeGreaterThanOrEqual(1);
     expect(
-      screen.getAllByText(/Cisco Certified Specialist - Data Center Automation and Programmability/).length
+      screen.getAllByText(new RegExp(dataCenterName)).length
     ).toBeGreaterThanOrEqual(1);
 
-    expect(DIAGRAMS.levels).toContain('Cisco Certified Specialist - Automation Core');
-    expect(DIAGRAMS.levels).toContain('Cisco Certified Specialist - Enterprise Automation and Programmability');
-    expect(DIAGRAMS.levels).toContain('Cisco Certified Specialist - Data Center Automation and Programmability');
-    expect(DIAGRAMS.mechanism).toContain('Cisco Certified Specialist - Enterprise Automation and Programmability');
-    expect(DIAGRAMS.mechanism).toContain('Cisco Certified Specialist - Data Center Automation and Programmability');
-    expect(DIAGRAMS.roadmap).toContain('Cisco Certified Specialist - Automation Core');
-    expect(DIAGRAMS.roadmap).toContain('Enterprise Automation and Programmability');
-    expect(DIAGRAMS.roadmap).toContain('Data Center Automation and Programmability');
+    expect(DIAGRAMS.levels).toContain(coreName);
+    expect(DIAGRAMS.levels).toContain(enterpriseName);
+    expect(DIAGRAMS.levels).toContain(dataCenterName);
+    expect(DIAGRAMS.mechanism).toContain(enterpriseName);
+    expect(DIAGRAMS.mechanism).toContain(dataCenterName);
+    expect(DIAGRAMS.roadmap).toContain(coreName);
+    expect(DIAGRAMS.roadmap).toContain(enterpriseName);
+    expect(DIAGRAMS.roadmap).toContain(dataCenterName);
 
     const content = container.textContent ?? '';
-    expect(content).not.toMatch(/Cisco Certified Specialist - Enterprise Automation(?! and Programmability)/);
-    expect(content).not.toMatch(/Cisco Certified Specialist - Data Center Automation(?! and Programmability)/);
-    expect(DIAGRAMS.levels).not.toMatch(/Cisco Certified Specialist - Enterprise Automation(?! and Programmability)/);
-    expect(DIAGRAMS.mechanism).not.toMatch(/Cisco Certified Specialist - Data Center Automation(?! and Programmability)/);
+    expect(content).not.toContain('Cisco Certified Specialist -');
+    expect(DIAGRAMS.levels).not.toContain('Cisco Certified Specialist -');
+    expect(DIAGRAMS.mechanism).not.toContain('Cisco Certified Specialist -');
+    expect(DIAGRAMS.roadmap).not.toContain('Cisco Certified Specialist -');
   });
 
   it('公開コンポーネントの責務をJSDocで説明すること', () => {
