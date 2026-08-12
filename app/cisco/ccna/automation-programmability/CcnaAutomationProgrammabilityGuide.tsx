@@ -4,7 +4,13 @@ import { MermaidDiagram } from '@/components/MermaidDiagram';
 import NavBar from './NavBar';
 import { DIAGRAMS } from './constants';
 
-/** Renders the labelled Mermaid diagram selected by its identifier. */
+/**
+ * Renders the Mermaid diagram associated with an identifier.
+ *
+ * @param id - The diagram identifier used to select the chart
+ * @param label - The accessibility label for the rendered diagram
+ * @returns The labelled diagram, or `null` when no matching chart exists
+ */
 function Diagram({ id, label }: { id: string; label: string }) {
     const chart = DIAGRAMS[id];
     if (!chart) return null;

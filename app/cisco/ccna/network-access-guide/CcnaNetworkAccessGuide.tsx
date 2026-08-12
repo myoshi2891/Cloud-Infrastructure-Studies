@@ -16,7 +16,9 @@ function Diagram({ id, label }: { id: string; label: string }) {
     );
 }
 
-/** Renders the complete Network Access guide and its seventeen source-backed diagrams. */
+/**
+ * Renders the CCNA 200-301 Network Access guide with its diagrams and reference material.
+ */
 export default function CcnaNetworkAccessGuide() {
     return (
         <div className="network-access-page">

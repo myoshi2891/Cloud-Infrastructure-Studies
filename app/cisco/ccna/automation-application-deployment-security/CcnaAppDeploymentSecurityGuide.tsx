@@ -2,6 +2,13 @@ import { MermaidDiagram } from '@/components/MermaidDiagram';
 import { DIAGRAMS } from './constants';
 import { NavBar } from './NavBar';
 
+/**
+ * Renders a Mermaid diagram identified by its registry key.
+ *
+ * @param id - The diagram identifier used to look up the chart.
+ * @param label - The accessible label for the rendered diagram.
+ * @returns The diagram wrapper, or `null` when no chart matches the identifier.
+ */
 function Diagram({ id, label }: { id: string; label: string }) {
     const chart = DIAGRAMS[id];
     if (!chart) return null;
@@ -13,9 +20,7 @@ function Diagram({ id, label }: { id: string; label: string }) {
 }
 
 /**
- * CCNA Automation Application Deployment and Security ガイドコンポーネント。
- * 原本 HTML（archive/Cisco/html/ccna/Ccna-automation-application-deployment-security.html）を
- * 100% 忠実に移植したものです。
+ * Renders a Japanese study guide for the CCNA Automation Domain 4.0 exam topics.
  */
 export function CcnaAppDeploymentSecurityGuide() {
     return (

@@ -4,6 +4,12 @@ import { MermaidDiagram } from '@/components/MermaidDiagram';
 import NavBar from './NavBar';
 import { DIAGRAMS } from './constants';
 
+/**
+ * Renders a labeled diagram when the specified diagram is available.
+ *
+ * @param id - The identifier of the diagram to display
+ * @param label - The visible label and accessibility description for the diagram
+ */
 function Diagram({ id, label }: { id: string; label: string }) {
     const chart = DIAGRAMS[id];
     if (!chart) return null;
@@ -17,6 +23,9 @@ function Diagram({ id, label }: { id: string; label: string }) {
     );
 }
 
+/**
+ * Renders a study guide for the CCNA Automation 200-901 Infrastructure and Automation domain, including its exam topics and study resources.
+ */
 export default function CcnaInfraAutomationGuide() {
     return (
         <div className="ccna-infra-automation-page">
