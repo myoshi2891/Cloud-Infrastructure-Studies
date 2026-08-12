@@ -10,9 +10,9 @@
 
 プロジェクト全体のテストカバレッジとリソース状況は以下の通りです。
 
-- **ソースファイル総数:** 348 ファイル
-- **テストカバー済みソース数:** 122 ファイル
-- **全体カバレッジ達成率:** **35%**
+- **ソースファイル総数:** 462 ファイル
+- **テストカバー済みソース数:** 157 ファイル
+- **全体カバレッジ達成率:** **34%**
 - **テストファイル総数:** 122 ファイル (Vitest 4.x + Playwright 1.x)
 
 ---
@@ -23,16 +23,19 @@
 
 | ドメイン | 進捗 (カバー数/総数) | 達成率 | Unit | Integration | E2E | Smoke | Visual | A11y | Perf | Security |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **Associate Cloud Engineer (ACE)** | 14 / 33 | **42%** | ⚠️ 42% | ❌ 0% | ⚠️ 3% | ❌ 0% | ✅ 実装 | ✅ 実装 | ✅ 実装 | ✅ 実装 |
-| **Generative AI Leader (GCL)** | 5 / 19 | **26%** | ⚠️ 26% | ❌ 0% | ⚠️ 5% | ❌ 0% | ✅ 実装 | ✅ 実装 | ✅ 実装 | ✅ 実装 |
-| **Cloud Digital Leader (CDL)** | 21 / 107 | **20%** | ⚠️ 20% | ❌ 0% | ⚠️ 1% | ❌ 0% | ✅ 実装 | ✅ 実装 | ✅ 実装 | ✅ 実装 |
-| **Google Workspace Admin (AGWA)** | 4 / 5 | **✅ 80%** | ✅ 80% | ❌ 0% | ⚠️ 20% | ❌ 0% | ✅ 実装 | ✅ 実装 | ✅ 実装 | ✅ 実装 |
-| **Professional Cloud Network Engineer (PCNE)** | 10 / 11 | **91%** | ✅ 91% | ❌ 0% | ⚠️ 9% | ❌ 0% | ✅ 実装 | ✅ 実装 | ✅ 実装 | ✅ 実装 |
-| **PCNE Step-by-Step** | 7 / 9 | **78%** | ⚠️ 67% | ❌ 0% | ⚠️ 11% | ❌ 0% | ✅ 実装 | ✅ 実装 | ✅ 実装 | ✅ 実装 |
+| **Associate Cloud Engineer (ACE)** | 19 / 42 | **45%** | ⚠️ 45% | ❌ 0% | ⚠️ 2% | ❌ 0% | ✅ 実装 | ✅ 実装 | ✅ 実装 | ✅ 実装 |
+| **Generative AI Leader (GCL)** | 5 / 24 | **21%** | ⚠️ 21% | ❌ 0% | ⚠️ 4% | ❌ 0% | ✅ 実装 | ✅ 実装 | ✅ 実装 | ✅ 実装 |
+| **Cloud Digital Leader (CDL)** | 21 / 167 | **13%** | ⚠️ 13% | ❌ 0% | ⚠️ 1% | ❌ 0% | ✅ 実装 | ✅ 実装 | ✅ 実装 | ✅ 実装 |
+| **Google Workspace Admin (AGWA)** | 6 / 8 | **75%** | ⚠️ 75% | ❌ 0% | ⚠️ 13% | ❌ 0% | ✅ 実装 | ✅ 実装 | ✅ 実装 | ✅ 実装 |
+| **Professional Cloud Network Engineer (PCNE)** | 10 / 13 | **77%** | ⚠️ 77% | ❌ 0% | ⚠️ 8% | ❌ 0% | ✅ 実装 | ✅ 実装 | ✅ 実装 | ✅ 実装 |
+| **PCNE Step-by-Step** | 7 / 11 | **64%** | ⚠️ 55% | ❌ 0% | ⚠️ 9% | ❌ 0% | ✅ 実装 | ✅ 実装 | ✅ 実装 | ✅ 実装 |
+| **Cisco CCNA** | 34 / 66 | **52%** | ⚠️ 52% | ❌ 0% | ❌ 0% | ❌ 0% | ❌ 0% | ❌ 0% | ❌ 0% | ✅ 実装 |
+| **Cisco DevNet / Automation** | 3 / 10 | **30%** | ⚠️ 30% | ❌ 0% | ❌ 0% | ❌ 0% | ❌ 0% | ❌ 0% | ❌ 0% | ✅ 実装 |
 | **共通 (components / lib / navigation)** | 14 / 36 | **39%** | ⚠️ 33% | ⚠️ 11% | ⚠️ 3% | ⚠️ 3% | ✅ 実装 | ✅ 実装 | ✅ 実装 | ✅ 実装 |
 
 > **凡例:**
-> - ✅ **実装済み**: 80% 以上カバー
+> - ✅ **実装済み（Visual / A11y / Performance / Security）**: 対応テストが1件以上
+> - ✅ **実装済み（その他のカテゴリ）**: 80% 以上カバー
 > - ⚠️ **部分的**: 0%〜80% 未満カバー
 > - ❌ **未実装**: 対応テスト 0 件
 
@@ -42,17 +45,17 @@
 
 ### ① Unit（単体テスト）
 
-- **現状**: PCNE（91%）や PCNE Step-by-Step（67%）など、比較的新しい移行セクションでは TDD 開発ルールに従って単体テストが整備されています。CCNA / DevNetではテーマトークン所有権、アクセシブル名、公式資格名、参照リンクを検証し、ホームのセクション分割とガイドURL重複除外も回帰テストで保護しています。さらに `guide-content-widths.test.ts` が、サイドバーを持つ24スタイルシートのデスクトップ・レスポンシブ配置を73ケースで横断検証します。
+- **現状**: PCNE（77%）や PCNE Step-by-Step（55%）など、比較的新しい移行セクションでは TDD 開発ルールに従って単体テストが整備されています。CCNA（52%）/ DevNet（30%）は独立ドメインとして集計され、テーマトークン所有権、アクセシブル名、公式資格名、参照リンクを検証しています。`readFileSync()` 経由のCSS参照も解決するため、`guide-content-widths.test.ts` が参照するスタイルシートをUnitカバレッジへ反映します。
 - **課題**: 移行元の HTML から復元されたコンポーネントや追加コンポーネントのテストカバレッジ底上げが必要です。
 
 ### ② Integration（結合テスト）
 
-- **現状**: 共通ロジックである `lib/navigation.test.ts`, `lib/recentPages.test.ts`, `lib/utils.test.ts` の 3 件が部分的（13%）にカバーされ、`navigation.test.ts` はCCNAとCCNAAUTOの試験データ分離も検証します。
+- **現状**: 共通ロジックである `lib/navigation.test.ts`, `lib/recentPages.test.ts`, `lib/utils.test.ts` の 3 件が共通ソース36件中4件を部分的（11%）にカバーし、`navigation.test.ts` はCCNAとCCNAAUTOの試験データ分離も検証します。
 - **課題**: 試験ドメインごとのコンポーネント間連携（例: `navigation` から各セクションページへの遷移ロジック）を検証する結合テストが全ドメインで未実装です。
 
 ### ③ E2E（エンドツーエンドテスト）
 
-- **現状**: ACE（3%）、GCL（5%）、共通（3%）で Playwright による基本的なナビゲーションフローがカバーされているのみです。
+- **現状**: GCP系6ドメインと共通で Playwright による基本的なナビゲーションフローをカバーしています。新たに独立集計したCCNA / DevNetは0%です。
 - **課題**: 主要なユーザー導線や、アコーディオン・スクロールスパイ・ドロワー開閉などのインタラクティブ操作が完全にカバーされていません。
 
 ### ④ Smoke（スモークテスト）
@@ -62,8 +65,8 @@
 
 ### ⑤ 横断品質（Visual, A11y, Performance, Security）
 
-- **現状**: Visual / A11y / Performance / Security の自動テストが全 7 ドメインで **✅ 実装** されました。Performance は Playwright `perf` project で LCP / CLS / TBT を計測し `e2e/perf-budgets.json` と比較、Security は `scripts/security-audit.mjs` が `bun audit --json` を集計します。
-- **課題**: 現状はローカル npm scripts のみ。`.github/workflows/` への CI 統合と、初期バジェット値（LCP/CLS/TBT 閾値）の段階的なチューニングが次の対象です。
+- **現状**: 従来のGCP系6ドメインと共通では Visual / A11y / Performance / Security が実装済みです。新たに独立集計したCCNA / DevNetはSecurityのみ対象テストがあり、他3カテゴリは未実装です。
+- **課題**: CCNA / DevNetを横断E2Eの対象へ追加したうえで、`.github/workflows/` への CI 統合とLCP / CLS / TBT閾値の段階的なチューニングが必要です。
 
 ---
 
@@ -74,7 +77,7 @@
 ### 🔴 P0: 最優先タスク (完了)
 
 - [x] **共通 / lib カバレッジ補強**
-  - **対象**: `lib/utils.ts`, `lib/navigation.ts`, `lib/recentPages.ts`
+  - **対象**: `lib/utils.ts`, `app/navigation.ts`, `lib/recentPages.ts`
   - **内容**: 主要ユーティリティの回帰防止のため、Integration/Unit テストを追加。
   - **推奨ツール**: Vitest
 
@@ -92,6 +95,13 @@
 - [x] **`agwa` クリティカルパス E2E テストの作成**
   - **推奨ツール**: Playwright
 
+### 🟡 P1: Cisco E2E（未完了）
+
+- [ ] **`ccna` クリティカルパス E2E テストの作成**
+  - **推奨ツール**: Playwright
+- [ ] **`devnet` クリティカルパス E2E テストの作成**
+  - **推奨ツール**: Playwright
+
 ### 🔵 P2: 横断品質（完了）
 
 - [x] **サイドバーガイドの横断レイアウト回帰テスト**
@@ -99,7 +109,7 @@
   - **内容**: 左端固定280pxサイドバー、残り幅100%のメイン領域、レスポンシブ時の幅100%復帰を73ケースで検証。
   - **推奨ツール**: Vitest
 - [x] **Visual 回帰テストの導入**
-  - **対象**: 全ドメインの主要ページ
+  - **対象**: 導入時点の主要7ドメイン
   - **内容**: レンダリング崩れ（特にダークモードやレスポンシブ表示）の自動検知。
   - **推奨ツール**: Playwright (`toHaveScreenshot`)
 - [x] **A11y (アクセシビリティ) 自動テストの導入**
@@ -121,9 +131,8 @@
 カバレッジ向上のターゲットとなる主な未カバーファイルです。
 
 - **AGWA (Google Workspace Admin)**
-  - `app/gcl/agwa/page.tsx`
-  - `app/gcl/agwa/ScrollSpy.tsx`
   - `app/gcl/agwa/section1/page.tsx`
+  - `app/gcl/agwa/section1/page.css`
 - **ACE (Associate Cloud Engineer)**
   - `app/gcl/associate-cloud-engineer/architecture-guide/page.tsx`
   - `app/gcl/associate-cloud-engineer/domain1/page.tsx`
@@ -134,6 +143,12 @@
 - **GCL (Generative AI Leader)**
   - `app/gcl/genai-leader/section1/components/` 内の各セクションコンポーネント
   - `app/gcl/genai-leader/section2/components/` 内の各セクションコンポーネント
+- **Cisco CCNA**
+  - 各ガイドの `NavBar.tsx` と `constants.ts`
+  - 一部ガイドの本体コンポーネントと `page.tsx`
+- **Cisco DevNet / Automation**
+  - Associate / Professionalの `NavBar.tsx`, `constants.ts`, `page.tsx`
+  - `app/cisco/devnet-associate/DevNetAssociateGuide.tsx`
 
 ---
 
@@ -159,7 +174,7 @@ bun run dashboard
 ## 7. 次回セッションでのテスト追加再開プロンプト
 
 あなたは熟練したテストエンジニアであり、Next.js (App Router) / TypeScript / Vitest / Playwright のテストスペシャリストです。
-現在、[docs/TEST_COVERAGE_PROGRESS.md](TEST_COVERAGE_PROGRESS.md) にまとめられた「4. 優先度別ネクストアクション」のうち **🔴 P0 / 🟡 P1 / 🔵 P2 は全て完了済み** です。サイドバー付き全24スタイルシートの横断レイアウト契約も `guide-content-widths.test.ts` の73ケースで保護されています。次フェーズとして以下のいずれかをステップバイステップで進めてください。
+現在、[docs/TEST_COVERAGE_PROGRESS.md](TEST_COVERAGE_PROGRESS.md) の既存 **🔴 P0 / 🟡 P1 / 🔵 P2** は完了済みですが、CCNA / DevNetの独立集計によりCisco向けP1 E2Eが新たに未完了として可視化されています。サイドバー付き全24スタイルシートの横断レイアウト契約は `guide-content-widths.test.ts` の73ケースで保護されています。次フェーズではCisco E2Eを優先し、以下の候補もステップバイステップで進めてください。
 
 直近のレビュー対応では、ホーム分割、Ciscoガイドのテーマトークン所有権とCSS Modules、アクセシビリティ、公式資格名、ADKデプロイ検証手順を強化し、対象Vitest 115件、全体ESLint、Markdown lintが成功しています。標準全体テストは937件が成功し、既存スモーク期待値1件、実行環境の `window.localStorage` 不備による30件、並列負荷時の5秒タイムアウト5件が失敗しているため、次回はテスト環境と既存スモーク期待値の切り分けを優先候補に含めてください。
 
@@ -177,7 +192,7 @@ bun run dashboard
    - **CI 統合**: `.github/workflows/` を追加し、`bun run test` / `bun run test:e2e` / `bun run test:perf` / `bun run test:security` を PR ゲートとして自動実行する。
    - **Smoke テスト拡充**: 「2. ドメイン別カバレッジマトリクス」で全ドメインが ❌ 0% の Smoke 列を埋めるため、各ドメインのトップページに対する軽量レンダリングテストを追加する。
    - **Integration テスト導入**: ドメインごとの「ナビ → セクション遷移」「ScrollSpy → SectionNav 連動」等のコンポーネント間連携テストを Vitest + Testing Library で追加する。
-   - **Unit カバレッジ底上げ**: CDL（20%）/ GCL（26%）/ ACE（43%）の未カバーコンポーネントから優先的に追加する。具体的ターゲットは「5. 主な未カバーソースファイル一覧」を参照。
+   - **Unit カバレッジ底上げ**: CDL（13%）/ GCL（21%）/ DevNet（30%）の未カバーコンポーネントから優先的に追加する。具体的ターゲットは「5. 主な未カバーソースファイル一覧」を参照。
    - **Performance バジェットのチューニング**: `e2e/perf-budgets.json` の初期バジェット値は、本番ビルドの実測値に基づいて段階的に引き締め調整されました（LCP: 3000ms, CLS: 0.1, TBT: 200ms）。
 
 開始時は上記候補からひとつを選び、対応する優先度ラベル（🟢 P3）と「Smoke / Integration / Unit / CI / Perf チューニング」のどのトラックかを宣言してから着手してください。
