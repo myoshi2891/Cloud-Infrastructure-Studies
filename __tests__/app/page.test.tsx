@@ -1,28 +1,61 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen, within } from '@testing-library/react';
+import { existsSync, readFileSync } from 'node:fs';
 import Home from '@/app/page';
-import { EXAMS, STATS } from '@/app/constants';
+import { EXAMS, STATS, type Exam } from '@/app/constants';
 import { countUniqueGuideUrls } from '@/app/home-utils';
 
 const VISIBLE_EXAMS = EXAMS.filter((e) => e.status !== 'coming-soon');
 
 describe('Home ページ', () => {
     it('ヒーローのガイド数は試験ページとドメインページの重複 URL を除外すること', () => {
-        const firstExam = VISIBLE_EXAMS[0];
-        expect(firstExam).toBeDefined();
-        if (!firstExam) return;
-
-        const duplicateUrlsExam = {
-            ...firstExam,
-            href: firstExam.domains[0]?.href ?? firstExam.href,
-            domains: [...firstExam.domains, ...firstExam.domains],
+        const examA: Exam = {
+            id: 'fixture-a',
+            label: 'Fixture A',
+            abbr: 'A',
+            level: 'Associate',
+            score: '100',
+            color: 'card-ace',
+            href: '/fixture-a',
+            description: 'Fixture A description',
+            domains: [
+                { label: 'Shared guide', href: '/shared-guide', pct: '50%' },
+                { label: 'Guide A', href: '/guide-a', pct: '50%' },
+            ],
+            badge: 'Fixture',
+            icon: 'A',
+            provider: 'GCP',
         };
-        const expected = new Set([
-            duplicateUrlsExam.href,
-            ...duplicateUrlsExam.domains.map((domain) => domain.href),
-        ]).size;
+        const examB: Exam = {
+            id: 'fixture-b',
+            label: 'Fixture B',
+            abbr: 'B',
+            level: 'Professional',
+            score: '100',
+            color: 'card-aws-saa',
+            href: examA.domains[0].href,
+            description: 'Fixture B description',
+            domains: [{ label: 'Guide B', href: '/guide-b', pct: '100%' }],
+            badge: 'Fixture',
+            icon: 'B',
+            provider: 'AWS',
+        };
 
-        expect(countUniqueGuideUrls([duplicateUrlsExam])).toBe(expected);
+        expect(countUniqueGuideUrls([examA, examB])).toBe(4);
+    });
+
+    it('ホームはセクションコンポーネントの構成に専念すること', () => {
+        const sectionFiles = ['Hero', 'ExamCard', 'ExamCatalog', 'Stats'].map(
+            (name) => `components/sections/home/${name}.tsx`
+        );
+
+        sectionFiles.forEach((file) => expect(existsSync(file), file).toBe(true));
+
+        const pageSource = readFileSync('app/page.tsx', 'utf8');
+        expect(pageSource).not.toMatch(/function (Hero|ExamCard|ExamCatalog|Stats)\b/);
+        expect(pageSource).toContain("from '@/components/sections/home/Hero'");
+        expect(pageSource).toContain("from '@/components/sections/home/ExamCatalog'");
+        expect(pageSource).toContain("from '@/components/sections/home/Stats'");
     });
 
     it('試験カードは公開済み (available) の試験数だけ表示されること', () => {
