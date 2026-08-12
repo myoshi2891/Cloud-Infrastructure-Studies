@@ -1,0 +1,532 @@
+.ccna-infra-automation-page {
+  background: var(--color-background, #07111e);
+  color: var(--color-foreground, #e7edf7);
+  font-family: var(--font-body, 'Inter', sans-serif);
+  line-height: 1.75;
+}
+
+.ccna-infra-automation-page .layout {
+  display: block;
+  position: relative;
+}
+
+/* ---------- sidebar ---------- */
+.ccna-infra-automation-page .sidebar {
+  position: fixed;
+  top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px));
+  left: 0;
+  width: 280px;
+  bottom: 0;
+  overflow-y: auto;
+  background: var(--color-card, #0e1c30);
+  border-right: 1px solid var(--color-gcp-border, rgba(124, 158, 255, 0.16));
+  padding: 1.75rem 1.25rem 3rem;
+  z-index: 40;
+  scrollbar-width: thin;
+}
+
+.ccna-infra-automation-page .sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.ccna-infra-automation-page .sidebar::-webkit-scrollbar-thumb {
+  background: var(--color-gcp-border, rgba(124, 158, 255, 0.16));
+  border-radius: 3px;
+}
+
+.ccna-infra-automation-page .brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-display, 'Space Grotesk', sans-serif);
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--color-foreground, #e7edf7);
+  margin-bottom: 0.35rem;
+}
+
+.ccna-infra-automation-page .brand-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  background: linear-gradient(135deg, #7c9eff, #4dd8c0);
+  color: #04101f;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.ccna-infra-automation-page .brand-sub {
+  color: var(--color-muted-foreground, #a5bce1);
+  font-size: 0.9rem;
+  margin-bottom: 1.4rem;
+}
+
+.ccna-infra-automation-page .nav-group-label {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.75rem;
+  color: var(--color-muted-foreground, #a5bce1);
+  margin: 1.3rem 0 0.5rem;
+  font-weight: 600;
+}
+
+.ccna-infra-automation-page .nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.42rem 0.6rem;
+  border-radius: 8px;
+  color: var(--color-muted-foreground, #bcc9df);
+  font-size: 0.9rem;
+  border-left: 2px solid transparent;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  text-decoration: none;
+}
+
+.ccna-infra-automation-page .nav-link:hover {
+  background: rgba(124, 158, 255, 0.12);
+  color: var(--color-foreground, #e7edf7);
+}
+
+.ccna-infra-automation-page .nav-link.active {
+  background: rgba(124, 158, 255, 0.12);
+  color: #7c9eff;
+  border-left: 2px solid #7c9eff;
+}
+
+.ccna-infra-automation-page .nav-num {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #4dd8c0;
+  min-width: 2.1rem;
+  text-align: right;
+  flex: none;
+}
+
+/* ---------- main layout ---------- */
+.ccna-infra-automation-page .main {
+  margin-left: 280px;
+  width: calc(100% - 280px);
+  max-width: none;
+  padding: 0 0 6rem;
+}
+
+.ccna-infra-automation-page .section,
+.ccna-infra-automation-page .prose,
+.ccna-infra-automation-page .hero,
+.ccna-infra-automation-page .footer {
+  max-width: none;
+}
+
+.ccna-infra-automation-page .section-block {
+  scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 16px);
+}
+
+/* ---------- hero ---------- */
+.ccna-infra-automation-page .hero {
+  padding: 4.5rem 4rem 3rem;
+  border-bottom: 1px solid var(--color-gcp-border, rgba(124, 158, 255, 0.16));
+  background:
+    radial-gradient(700px 320px at 85% -10%, rgba(124, 158, 255, 0.12), transparent 60%),
+    radial-gradient(500px 260px at 10% 0%, rgba(77, 216, 192, 0.08), transparent 60%);
+}
+
+.ccna-infra-automation-page .eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.9rem;
+  color: #4dd8c0;
+  border: 1px solid rgba(77, 216, 192, 0.2);
+  background: rgba(77, 216, 192, 0.12);
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  margin-bottom: 1.3rem;
+}
+
+.ccna-infra-automation-page .hero h1 {
+  font-family: var(--font-display, 'Space Grotesk', sans-serif);
+  font-size: 2.5rem;
+  line-height: 1.3;
+  margin: 0 0 1rem;
+  background: linear-gradient(90deg, #e7edf7, #7c9eff 70%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.ccna-infra-automation-page .hero p.lead {
+  font-size: 1.08rem;
+  color: var(--color-muted-foreground, #bcc9df);
+  max-width: 760px;
+  margin: 0 0 2rem;
+}
+
+.ccna-infra-automation-page .meta-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+}
+
+.ccna-infra-automation-page .chip {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  background: var(--color-card, #101f35);
+  border: 1px solid var(--color-gcp-border, rgba(124, 158, 255, 0.16));
+  border-radius: 10px;
+  padding: 0.6rem 1rem;
+  min-width: 120px;
+}
+
+.ccna-infra-automation-page .chip .k {
+  font-size: 0.75rem;
+  color: var(--color-muted-foreground, #a5bce1);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.ccna-infra-automation-page .chip .v {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 1rem;
+  color: var(--color-foreground, #e7edf7);
+}
+
+.ccna-infra-automation-page .chip.highlight {
+  border-color: rgba(124, 158, 255, 0.45);
+  background: rgba(124, 158, 255, 0.12);
+}
+
+.ccna-infra-automation-page .chip.highlight .v {
+  color: #7c9eff;
+}
+
+/* ---------- content sections ---------- */
+.ccna-infra-automation-page .section {
+  padding: 3.4rem 4rem;
+  border-bottom: 1px solid var(--color-gcp-border, rgba(124, 158, 255, 0.16));
+}
+
+.ccna-infra-automation-page .section:last-of-type {
+  border-bottom: none;
+}
+
+.ccna-infra-automation-page .section-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.1rem;
+  margin-bottom: 1.4rem;
+}
+
+.ccna-infra-automation-page .domain-chip {
+  flex: none;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: #07111e;
+  background: linear-gradient(135deg, #7c9eff, #4dd8c0);
+  border-radius: 10px;
+  padding: 0.5rem 0.85rem;
+  line-height: 1;
+}
+
+.ccna-infra-automation-page .section-head h2 {
+  font-family: var(--font-display, 'Space Grotesk', sans-serif);
+  font-size: 1.5rem;
+  margin: 0.15rem 0 0;
+  color: var(--color-foreground, #e7edf7);
+}
+
+.ccna-infra-automation-page .section-head .weight-tag {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.88rem;
+  color: var(--color-muted-foreground, #a5bce1);
+  margin-top: 0.4rem;
+}
+
+.ccna-infra-automation-page .prose p {
+  color: var(--color-muted-foreground, #bcc9df);
+  margin: 0 0 1.1rem;
+}
+
+.ccna-infra-automation-page .prose ul,
+.ccna-infra-automation-page .prose ol {
+  color: var(--color-muted-foreground, #bcc9df);
+  margin: 0 0 1.1rem;
+  padding-left: 1.4rem;
+}
+
+.ccna-infra-automation-page .prose li {
+  margin-bottom: 0.4rem;
+}
+
+.ccna-infra-automation-page .prose strong {
+  color: var(--color-foreground, #e7edf7);
+}
+
+.ccna-infra-automation-page h3.subhead {
+  font-size: 1.05rem;
+  color: #7c9eff;
+  margin: 2rem 0 0.8rem;
+  font-family: var(--font-display, 'Space Grotesk', sans-serif);
+}
+
+/* ---------- tables ---------- */
+.ccna-infra-automation-page .table-wrapper {
+  overflow-x: auto;
+  margin: 1.2rem 0 1.8rem;
+  border: 1px solid var(--color-gcp-border, rgba(124, 158, 255, 0.16));
+  border-radius: var(--radius-lg, 14px);
+}
+
+.ccna-infra-automation-page table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.95rem;
+}
+
+.ccna-infra-automation-page thead th {
+  background: var(--color-card, #0e1c30);
+  color: #4dd8c0;
+  text-align: left;
+  padding: 0.7rem 1rem;
+  font-weight: 600;
+  border-bottom: 1px solid var(--color-gcp-border, rgba(124, 158, 255, 0.16));
+  white-space: nowrap;
+}
+
+.ccna-infra-automation-page tbody td {
+  padding: 0.65rem 1rem;
+  border-bottom: 1px solid var(--color-gcp-border, rgba(124, 158, 255, 0.16));
+  color: var(--color-muted-foreground, #bcc9df);
+  vertical-align: top;
+}
+
+.ccna-infra-automation-page tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.ccna-infra-automation-page tbody tr:hover {
+  background: rgba(124, 158, 255, 0.05);
+}
+
+.ccna-infra-automation-page code.inline {
+  background: var(--color-gcp-code-background, #0a1424);
+  color: #4dd8c0;
+  padding: 0.12rem 0.4rem;
+  border-radius: 5px;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.9rem;
+}
+
+/* ---------- diagrams ---------- */
+.ccna-infra-automation-page .diagram-wrapper {
+  width: 100%;
+  margin: 1.5rem auto 2rem;
+  background: var(--color-card, #0e1c30);
+  border: 1px solid var(--color-gcp-border, rgba(124, 158, 255, 0.16));
+  border-radius: var(--radius-lg, 14px);
+  padding: 1.6rem;
+  overflow-x: auto;
+}
+
+.ccna-infra-automation-page .diagram-label {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.85rem;
+  color: var(--color-muted-foreground, #a5bce1);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.8rem;
+}
+
+.ccna-infra-automation-page .mermaid-wrap {
+  width: 100%;
+  margin: 1.5rem auto 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+/* ---------- code blocks ---------- */
+.ccna-infra-automation-page .code-wrapper {
+  margin: 1.2rem 0 1.8rem;
+}
+
+.ccna-infra-automation-page .code-label {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.85rem;
+  color: var(--color-muted-foreground, #a5bce1);
+  background: var(--color-card, #0e1c30);
+  border: 1px solid var(--color-gcp-border, rgba(124, 158, 255, 0.16));
+  border-bottom: none;
+  border-radius: 14px 14px 0 0;
+  padding: 0.55rem 1rem;
+}
+
+.ccna-infra-automation-page pre.code-block {
+  margin: 0;
+  padding: 1.1rem 1.3rem;
+  overflow-x: auto;
+  background: var(--color-gcp-code-background, #0a1424) !important;
+  border: 1px solid var(--color-gcp-border, rgba(124, 158, 255, 0.16));
+  border-radius: 0 0 14px 14px;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.9rem;
+  line-height: 1.65;
+}
+
+.ccna-infra-automation-page .code-wrapper:not(:has(.code-label)) pre.code-block {
+  border-radius: 14px;
+}
+
+.ccna-infra-automation-page .code-line {
+  white-space: pre;
+}
+
+/* syntax highlighting */
+.ccna-infra-automation-page .hl-kw { color: #7c9eff; font-weight: 600; }
+.ccna-infra-automation-page .hl-str { color: #4dd8c0; }
+.ccna-infra-automation-page .hl-num { color: #f2b880; }
+.ccna-infra-automation-page .hl-fn { color: #6cc7ff; }
+.ccna-infra-automation-page .hl-cm { color: var(--color-muted-foreground, #a5bce1); font-style: italic; }
+.ccna-infra-automation-page .hl-attr { color: #c3e88d; }
+.ccna-infra-automation-page .hl-meta { color: #ffcb6b; }
+.ccna-infra-automation-page .hl-del { color: #ff96a3; background: rgba(255, 107, 129, 0.1); }
+.ccna-infra-automation-page .hl-add { color: #8fd6a8; background: rgba(111, 207, 151, 0.1); }
+
+/* ---------- callouts ---------- */
+.ccna-infra-automation-page .callout {
+  border: 1px solid rgba(124, 158, 255, 0.12);
+  background: rgba(124, 158, 255, 0.08);
+  border-left: 3px solid #7c9eff;
+  border-radius: 0 10px 10px 0;
+  padding: 1rem 1.3rem;
+  margin: 1.4rem 0;
+  color: var(--color-muted-foreground, #bcc9df);
+  font-size: 0.95rem;
+}
+
+.ccna-infra-automation-page .callout strong {
+  color: #7c9eff;
+}
+
+/* ---------- summary table ---------- */
+.ccna-infra-automation-page .summary-table td:first-child,
+.ccna-infra-automation-page .summary-table th:first-child {
+  white-space: nowrap;
+  color: #4dd8c0;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+}
+
+/* ---------- footer / sources ---------- */
+.ccna-infra-automation-page .footer {
+  padding: 3rem 4rem 5rem;
+}
+
+.ccna-infra-automation-page .footer h2 {
+  font-family: var(--font-display, 'Space Grotesk', sans-serif);
+  font-size: 1.3rem;
+  color: var(--color-foreground, #e7edf7);
+}
+
+.ccna-infra-automation-page .source-list {
+  list-style: none;
+  margin: 1.2rem 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.ccna-infra-automation-page .source-list li {
+  border: 1px solid var(--color-gcp-border, rgba(124, 158, 255, 0.16));
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  background: var(--color-card, #101f35);
+  font-size: 0.95rem;
+  color: var(--color-muted-foreground, #bcc9df);
+}
+
+.ccna-infra-automation-page .source-list .src-name {
+  color: var(--color-foreground, #e7edf7);
+  font-weight: 600;
+  display: block;
+  margin-bottom: 0.15rem;
+}
+
+.ccna-infra-automation-page .source-list a {
+  color: #7c9eff;
+  word-break: break-all;
+  text-decoration: none;
+}
+
+.ccna-infra-automation-page .source-list a:hover {
+  text-decoration: underline;
+}
+
+.ccna-infra-automation-page .disclaimer {
+  margin-top: 2rem;
+  padding: 1rem 1.3rem;
+  border: 1px dashed var(--color-gcp-border, rgba(124, 158, 255, 0.16));
+  border-radius: 10px;
+  font-size: 0.9rem;
+  color: var(--color-muted-foreground, #a5bce1);
+}
+
+/* ---------- mobile ---------- */
+.ccna-infra-automation-page .menu-toggle {
+  display: none;
+  position: fixed;
+  top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 0.5rem);
+  left: 0.75rem;
+  z-index: 50;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  border: 1px solid var(--color-gcp-border, rgba(124, 158, 255, 0.16));
+  background: var(--color-card, #0e1c30);
+  color: var(--color-foreground, #e7edf7);
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+@media (max-width: 900px) {
+  .ccna-infra-automation-page .sidebar {
+    transform: translateX(-100%);
+    visibility: hidden;
+    transition: transform 0.2s ease, visibility 0.2s ease;
+    box-shadow: 20px 0 40px rgba(0, 0, 0, 0.4);
+  }
+
+  .ccna-infra-automation-page .sidebar.open {
+    transform: translateX(0);
+    visibility: visible;
+  }
+
+  .ccna-infra-automation-page .main {
+    margin-left: 0;
+    width: 100%;
+    max-width: none;
+  }
+
+  .ccna-infra-automation-page .hero,
+  .ccna-infra-automation-page .section,
+  .ccna-infra-automation-page .footer {
+    padding-left: 1.6rem;
+    padding-right: 1.6rem;
+  }
+
+  .ccna-infra-automation-page .menu-toggle {
+    display: flex;
+  }
+
+  .ccna-infra-automation-page .hero h1 {
+    font-size: 1.8rem;
+  }
+}

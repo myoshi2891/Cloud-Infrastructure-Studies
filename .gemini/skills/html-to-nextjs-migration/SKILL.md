@@ -14,7 +14,7 @@ description: >
 
 # HTML → Next.js Migration Workflow（本リポジトリ専用）
 
-(最終更新日: 2026-08-09)
+(最終更新日: 2026-08-11)
 
 ## Goal
 
@@ -22,17 +22,17 @@ Provide the complete, ordered workflow for converting a standalone HTML page (wi
 
 **Prerequisite**: The global skill covers `<pre>` block conversion, `class`/`className` rules, HTML entity handling, `@layer` priority, and cache invalidation. This skill assumes that knowledge and focuses on the **end-to-end workflow + reusable reference**.
 
-> **トークン効率の鉄則（省略禁止）**: 本 skill の目的の一つは将来の移行のトークン浪費削減である。
-> **ソースHTMLは常に100%読む。移行時の内容の省略・要約は厳禁。**
-> 削減してよいのは「参照ファイル・トークンマップ・配置値の**再読込/再導出の往復**」のみ。
-> 下記「正準リファレンス」と「効率的読み取りプロトコル」に従えば、参照コンポーネントや
-> `globals.css` を毎回読み直さずに移行を完了できる。
+> **ユーザー手動確認ゼロ原則（必須ルール）**:
+> ユーザーへ「目視確認」や「スクリーンショットの提供」を求める行為は**厳禁**とする。
+> 1. `scripts/verify-html-migration.mjs` (または `__tests__/` 内の全自動 DOM テスト) で元HTMLとNext.jsコンポーネントのテキストが100%全量一致することを自動検証する。
+> 2. `Playwright` E2E テストでスクロール時の文字重なり、固定ヘッダー遮蔽、ScrollSpy連動、レスポンシブ崩れが0件であることを自動検証する。
+> 3. 上記の自動テスト合格証明を添えて作業完了を宣言すること。
 
 ## セッション開始時に必ず読むファイル
 
 1. **`MIGRATION_PROGRESS.md`**（リポジトリ直下）— 現在地・残タスク・再開プロンプト
 2. **このファイル（`SKILL.md`）** — 移行手順・正準リファレンス・本リポジトリ固有ルール
-3. **`.claude/rules/tdd-commit-workflow.md`** — TDD必須サイクル & コミット分割ルール
+3. **`.agents/rules/tdd-commit-workflow.md`** — TDD必須サイクル & コミット分割ルール
 
 ## 未移行 HTML
 
@@ -69,6 +69,14 @@ content-heavy な単一HTML（hero + サイドバー + 多数セクション + M
 
 HTML の `:root` ローカル変数を、本リポジトリの `globals.css` 既存トークンへ機械的に置換する。
 既存トークンに無いテーマ値は、承認済みの3層デザイントークンとして `app/globals.css` の `@theme` に追加してから参照する。ページ固有 CSS では新規 custom property を定義しない。
+
+「100%忠実に移転」の対象は、原本の文章、情報構造、レイアウト、装飾、視覚効果など、原本を構成する要素とする。次のリポジトリ標準への対応付けだけは許可された変更であり、欠落や簡略化として扱わない。
+
+- Space Grotesk は既存の `var(--font-display)`（DM Sans）へ置換する。
+- 原本のテーマはリポジトリの統一ダークテーマへ対応付ける。
+- 原本の配色は、意味を保ったまま既存または承認済みの3層グローバルトークンへ置換する。
+
+優先順位は、原本要素をすべて保持したうえで上記標準へ対応付けること、次に既存コンポーネントとの統合とする。上記以外の文章・構造・レイアウト・装飾・視覚効果は変更、省略、簡略化しない。
 
 | HTML ローカル変数 | 置換先 | 備考 |
 |---|---|---|
@@ -127,7 +135,7 @@ HTML 末尾 `<script>` の `DIAGRAMS` オブジェクト + `mermaid.render(...)`
   }
   ```
 
-- 壊れた Mermaid 構文（`__STR0__` プレースホルダ・重複エッジ等）は移植時に修正する → `.claude/skills/fix-mermaid`。
+- 壊れた Mermaid 構文（`__STR0__` プレースホルダ・重複エッジ等）は移植時に修正する → `.agents/skills/fix-mermaid`。
 
 ### 5. HTML 末尾 `<script>` の interactivity → React 変換表
 
@@ -173,7 +181,7 @@ HTML 末尾 `<script>` の `DIAGRAMS` オブジェクト + `mermaid.render(...)`
 
 ### TDD 必須サイクルの適用（最重要）
 
-移行作業中は、常に `.claude/rules/tdd-commit-workflow.md` に定められた TDD サイクル（Red → Green → Refactor → Docs）を最優先で適用しなければなりません。
+移行作業中は、常に `.agents/rules/tdd-commit-workflow.md` に定められた TDD サイクル（Red → Green → Refactor → Docs）を最優先で適用しなければなりません。
 
 1. **タスク設計の段階（`task.md` の作成時）**:
    - `task.md` 内のタスクを「Red（テスト失敗とコミット）」「Green（実装とコミット）」「Refactor（リファクタ/ビルド/Linter修正とコミット）」「Docs Sync（進捗同期とコミット）」のコミット単位に明確に構造化してください。
@@ -234,7 +242,8 @@ GCP 系ガイド HTML（`--gcp-blue` / `--bg-*` / `--text-*` などの `:root` �
 | --- | --- | --- |
 | Invalid DOM property | `<div class="sidebar">` | `<div className="sidebar">` （JSXでは `className` に統一） |
 | Unescaped entities | `parsed["hostname"]` (raw text) | `{`print(parsed["hostname"])`}` や `&quot;` / `&apos;` でラップ（`react/no-unescaped-entities` 解消） |
-| 元CSS変数・デザインの省略 | 共通グラデーションやカード色を汎用黒に簡略化、またはローカルな `--*` 変数を再作成 | 元HTMLの変数が表すグラデーション、色、余白、タイポグラフィ、境界線、バッジ、ボタンの全デザイン値をグローバル `@theme` トークンへ対応付けて100%忠実に移転（ローカル変数の再作成は不要） |
+| 元CSS変数・デザインの省略 | 共通グラデーションやカード色を汎用黒に簡略化、またはローカルな `--*` 変数を再作成 | 元HTMLの変数が表す `:root` カラー、h1グラデーションテキスト、h2左バー、thスタイル、ピル型バッジ、calloutバー、コードブロック構文ハイライトの全デザイン値を100%忠実に移転 |
+| Mermaid図の人工的な幅制限 | `style={{ maxWidth: '800px' }}` 等で幅を狭めスクロールバー発生 | 人工的な `maxWidth` 制限を排除して全幅 (`width: 100%`) を使い、`margin: 1.5rem auto 2rem` で中央寄せ |
 | Mermaid 黄色ノードの文字色 | 白文字 (`#fff`) になり同化 | `components/MermaidDiagram.module.css` の黄色ノード条件に `#ffe08a`, `#ffd479` 等のカラーコードを漏れなく追加し黒文字 (`#000000 !important`) を強制 |
 | Monochrome code blocks | ハイライト無しの単色 `<pre><code>` | コードブロックの各要素（`.code-comment`, `.code-prompt`, `.code-keyword`, `.code-command`, `.code-number`, `.code-param` 等）を `<span>` でカラー装飾するか、プレーン整形のみ（Section 6の方針に従い使い分け） |
 | Mermaid 図の文字縮小 | `preserveNaturalScale` なしの `<MermaidDiagram>` | `<MermaidDiagram chart={...} ariaLabel="..." preserveNaturalScale />` を指定し 1rem (16px) サイズを維持 |
@@ -374,7 +383,7 @@ rm -rf .next && bun run build
 
 ## セッション終了前同期（必須）
 
-進捗同期の手順は `.claude/rules/migration-progress-sync.md` に従ってください。毎ページ、移行作業の完了直後に実施します。
+進捗同期の手順は `.agents/rules/migration-progress-sync.md` に従ってください。毎ページ、移行作業の完了直後に実施します。
 
 ## Reusable CSS Component Classes (globals.css)
 
@@ -399,6 +408,8 @@ Do NOT redefine these in page-specific CSS. Use them directly in TSX:
 - **Never use camelCase for `@keyframes` names** — use kebab-case
 - **Pages are server-rendered by default** — no `useState`/`useEffect` in `page.tsx`。**例外**: 進捗バー・scroll spy・チェックリスト等を持つリッチガイドは「正準リファレンス §1」の通り、Server `page.tsx`（`metadata` + `<XxxGuide/>` を返すだけ）と client `XxxGuide.tsx`（`'use client'`）に分割する。Server に状態を持ち込まない。
 - **Always specify `preserveNaturalScale={true}` for `<MermaidDiagram>`** — 図が無理やり縮小されて文字が 1rem 未満になるのを絶対防止する
+- **Never apply artificial `maxWidth` inline styles to Diagram wrappers** — `Diagram` や `.mermaid-wrap` に個別の `maxWidth` 幅制限（`maxWidth: 800px` 等）をインラインスタイルで指定することは禁止。コンテンツ領域の全幅 (`width: 100%`) を活用し、`margin: 1.5rem auto 2rem` で親コンテナ内中央に配置すること
+- **Never omit or simplify visual design elements from original HTML** — 元HTMLの `:root` スタイル変数、`h1` グラデーションテキスト (`background-clip: text`)、`h2` 左アクセントバー (`border-left`)、`th` 白文字＆背景色、`.badge` ピル型 (`border-radius: 999px`)、`.callout` アクセントバー、構文ハイライトを100%完全に全量移植すること
 - **Apply CLI / code syntax highlighting appropriately** — コードブロックは Section 6 の方針に従い `.code-header`, `.code-line`, `.code-comment` 等のクラスでカラー装飾するか、プレーン整形のみ（`.code-line`）を適切に選択すること
 - **Always archive original files to correct subdirectories** — Cisco資料は原本を保持したまま `archive/Cisco/html/` および `archive/Cisco/md/` へそれぞれコピーして保存すること（削除厳禁）
 - **Always write implementation plans in Japanese** — `implementation_plan.md` や応答は必ず日本語で作成すること

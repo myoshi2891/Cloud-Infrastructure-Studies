@@ -1,0 +1,1401 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>BigQuery Lakehouseテーブル構築チャレンジラボ 完全解説</title>
+        <meta
+            name="description"
+            content="機密データを保護しながらCloud StorageからBigLake Lakehouseテーブルを作るチャレンジラボの解説。Cloud Resource接続、Dataplex Aspect、IAM権限整理までステップバイステップで解説。"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"
+        />
+        <style>
+            :root {
+                --color-background-primary: #07111e;
+                --color-background-secondary: #0d1826;
+                --color-background-tertiary: #142234;
+                --color-background-info: #16233a;
+                --color-background-danger: #2a1418;
+                --color-background-success: #10261c;
+                --color-background-warning: #2a2312;
+                --color-text-primary: #f5f8fc;
+                --color-text-secondary: #d3dcec;
+                --color-text-tertiary: #9fadc4;
+                --color-text-info: #9ab6ff;
+                --color-text-danger: #ff9d9d;
+                --color-text-success: #8fe8bf;
+                --color-text-warning: #f7d38c;
+                --color-border-primary: #1f2f45;
+                --color-border-secondary: #263a54;
+                --color-border-tertiary: #16233a;
+                --font-sans:
+                    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Kaku Gothic ProN',
+                    'Hiragino Sans', Meiryo, sans-serif;
+                --font-mono:
+                    ui-monospace, SFMono-Regular, 'SF Mono', Consolas, 'Liberation Mono', monospace;
+                --border-radius-md: 8px;
+                --border-radius-lg: 12px;
+                --border-radius-xl: 16px;
+                --accent: #9ab6ff;
+                --sidebar-width: 280px;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+            html {
+                scroll-behavior: smooth;
+            }
+
+            body {
+                margin: 0;
+                background: var(--color-background-primary);
+                color: var(--color-text-primary);
+                font-family: var(--font-sans);
+                font-size: 16px;
+                line-height: 1.7;
+                -webkit-font-smoothing: antialiased;
+            }
+
+            .layout {
+                display: block;
+            }
+
+            /* ---------- サイドバー ---------- */
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: var(--sidebar-width);
+                height: 100vh;
+                overflow-y: auto;
+                background: var(--color-background-secondary);
+                border-right: 1px solid var(--color-border-primary);
+                padding: 32px 22px;
+            }
+            .sidebar-eyebrow {
+                color: var(--color-text-tertiary);
+                letter-spacing: 0.06em;
+                text-transform: uppercase;
+                margin: 0 0 6px 0;
+            }
+            .sidebar-title {
+                font-size: 18px;
+                font-weight: 500;
+                margin: 0 0 4px 0;
+                color: var(--color-text-primary);
+            }
+            .sidebar-sub {
+                color: var(--color-text-secondary);
+                margin: 0 0 24px 0;
+            }
+            .sidebar-nav {
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+                border-top: 1px solid var(--color-border-primary);
+                padding-top: 16px;
+            }
+            .nav-link {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                padding: 9px 10px;
+                border-radius: var(--border-radius-md);
+                color: var(--color-text-secondary);
+                text-decoration: none;
+                font-weight: 400;
+                transition:
+                    background 0.15s ease,
+                    color 0.15s ease;
+            }
+            .nav-link:hover {
+                background: var(--color-background-tertiary);
+                color: var(--color-text-primary);
+            }
+            .nav-link.active {
+                background: var(--color-background-info);
+                color: var(--color-text-info);
+                font-weight: 500;
+            }
+            .nav-badge {
+                flex: none;
+                width: 26px;
+                height: 26px;
+                border-radius: var(--border-radius-md);
+                background: var(--color-background-tertiary);
+                border: 1px solid var(--color-border-secondary);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: var(--color-text-tertiary);
+                font-family: var(--font-mono);
+            }
+            .nav-link.active .nav-badge {
+                background: var(--color-background-primary);
+                border-color: var(--accent);
+                color: var(--color-text-info);
+            }
+
+            /* ---------- メインコンテンツ ---------- */
+            .content {
+                margin-left: var(--sidebar-width);
+                padding: 56px 64px 80px 64px;
+            }
+
+            .hero {
+                border-bottom: 1px solid var(--color-border-primary);
+                padding-bottom: 32px;
+                margin-bottom: 40px;
+            }
+            .hero-eyebrow {
+                color: var(--color-text-info);
+                text-transform: uppercase;
+                letter-spacing: 0.06em;
+                margin: 0 0 12px 0;
+                font-weight: 500;
+            }
+            h1 {
+                font-size: 22px;
+                font-weight: 500;
+                line-height: 1.5;
+                margin: 0 0 14px 0;
+                color: var(--color-text-primary);
+            }
+            .hero-lead {
+                color: var(--color-text-secondary);
+                margin: 0 0 18px 0;
+            }
+            .hero-link {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                color: var(--color-text-info);
+                text-decoration: none;
+                border: 1px solid var(--color-border-secondary);
+                padding: 9px 14px;
+                border-radius: var(--border-radius-md);
+            }
+            .hero-link:hover {
+                border-color: var(--accent);
+            }
+
+            section {
+                margin-bottom: 56px;
+                scroll-margin-top: 24px;
+            }
+            h2 {
+                font-size: 18px;
+                font-weight: 500;
+                margin: 0 0 18px 0;
+                padding-bottom: 12px;
+                border-bottom: 1px solid var(--color-border-primary);
+                color: var(--color-text-primary);
+            }
+            h3 {
+                font-size: 16px;
+                font-weight: 500;
+                margin: 32px 0 14px 0;
+                color: var(--color-text-primary);
+            }
+            p {
+                margin: 0 0 16px 0;
+                color: var(--color-text-secondary);
+            }
+            strong {
+                font-weight: 500;
+                color: var(--color-text-primary);
+            }
+            ul,
+            ol {
+                margin: 0 0 16px 0;
+                padding-left: 22px;
+                color: var(--color-text-secondary);
+            }
+            li {
+                margin-bottom: 8px;
+            }
+            a {
+                color: var(--color-text-info);
+            }
+
+            code {
+                font-family: var(--font-mono);
+                background: var(--color-background-tertiary);
+                border: 1px solid var(--color-border-primary);
+                border-radius: 4px;
+                padding: 2px 6px;
+                color: var(--color-text-primary);
+            }
+
+            pre {
+                margin: 0 0 20px 0;
+                border-radius: var(--border-radius-lg);
+                overflow: auto;
+                border: 1px solid var(--color-border-primary);
+            }
+            pre code.hljs {
+                display: block;
+                padding: 18px 20px;
+                background: var(--color-background-tertiary) !important;
+                border-radius: var(--border-radius-lg);
+                border: none;
+                font-size: 16px;
+                line-height: 1.7;
+            }
+
+            /* ---------- 表 ---------- */
+            .table-wrap {
+                overflow-x: auto;
+                margin-bottom: 20px;
+                border: 1px solid var(--color-border-primary);
+                border-radius: var(--border-radius-lg);
+            }
+            table {
+                border-collapse: collapse;
+                width: 100%;
+            }
+            th,
+            td {
+                text-align: left;
+                padding: 12px 16px;
+                border-bottom: 1px solid var(--color-border-primary);
+                font-size: 16px;
+                color: var(--color-text-secondary);
+                vertical-align: top;
+            }
+            th {
+                background: var(--color-background-secondary);
+                color: var(--color-text-primary);
+                font-weight: 500;
+            }
+            tr:last-child td {
+                border-bottom: none;
+            }
+            td strong,
+            th strong {
+                color: var(--color-text-primary);
+            }
+
+            /* ---------- コールアウト ---------- */
+            .callout {
+                border: 1px solid var(--color-border-secondary);
+                border-left: 3px solid var(--accent);
+                background: var(--color-background-info);
+                border-radius: var(--border-radius-lg);
+                padding: 16px 20px;
+                margin: 0 0 20px 0;
+            }
+            .callout-label {
+                text-transform: uppercase;
+                letter-spacing: 0.06em;
+                font-weight: 500;
+                color: var(--color-text-info);
+                margin: 0 0 8px 0;
+            }
+            .callout p:last-child {
+                margin-bottom: 0;
+            }
+            .callout-warning {
+                background: var(--color-background-warning);
+                border-left-color: var(--color-text-warning);
+            }
+            .callout-warning .callout-label {
+                color: var(--color-text-warning);
+            }
+            .callout-danger {
+                background: var(--color-background-danger);
+                border-left-color: var(--color-text-danger);
+            }
+            .callout-danger .callout-label {
+                color: var(--color-text-danger);
+            }
+            .callout-quote {
+                font-style: normal;
+                color: var(--color-text-primary);
+            }
+
+            /* ---------- 図 ---------- */
+            .diagram-card {
+                border: 1px solid var(--color-border-primary);
+                border-radius: var(--border-radius-xl);
+                background: var(--color-background-secondary);
+                padding: 24px;
+                margin-bottom: 20px;
+            }
+            .diagram-caption {
+                color: var(--color-text-tertiary);
+                margin: 12px 0 0 0;
+            }
+            .diagram-container {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                overflow-x: auto;
+            }
+            .diagram-error {
+                color: var(--color-text-danger);
+            }
+
+            /* ---------- ステップリスト ---------- */
+            .steps {
+                list-style: none;
+                padding-left: 0;
+                counter-reset: step;
+            }
+            .steps > li {
+                counter-increment: step;
+                position: relative;
+                padding-left: 44px;
+                margin-bottom: 20px;
+            }
+            .steps > li::before {
+                content: counter(step);
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 30px;
+                height: 30px;
+                border-radius: var(--border-radius-md);
+                background: var(--color-background-tertiary);
+                border: 1px solid var(--color-border-secondary);
+                color: var(--color-text-info);
+                font-family: var(--font-mono);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .steps > li > strong {
+                display: block;
+                margin-bottom: 4px;
+            }
+
+            /* ---------- 参考文献カード ---------- */
+            .ref-grid {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+            .ref-card {
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
+                border: 1px solid var(--color-border-primary);
+                border-radius: var(--border-radius-lg);
+                padding: 14px 18px;
+                text-decoration: none;
+                transition: border-color 0.15s ease;
+            }
+            .ref-card:hover {
+                border-color: var(--accent);
+            }
+            .ref-tag {
+                color: var(--color-text-tertiary);
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+            }
+            .ref-title {
+                color: var(--color-text-primary);
+                font-weight: 500;
+            }
+            .ref-url {
+                color: var(--color-text-info);
+                word-break: break-all;
+            }
+
+            .footer {
+                border-top: 1px solid var(--color-border-primary);
+                padding-top: 24px;
+                color: var(--color-text-tertiary);
+            }
+
+            @media (max-width: 900px) {
+                .sidebar {
+                    position: static;
+                    width: 100%;
+                    height: auto;
+                    border-right: none;
+                    border-bottom: 1px solid var(--color-border-primary);
+                }
+                .sidebar-nav {
+                    flex-direction: row;
+                    flex-wrap: wrap;
+                }
+                .content {
+                    margin-left: 0;
+                    padding: 32px 24px 64px 24px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="layout">
+            <aside class="sidebar">
+                <p class="sidebar-eyebrow">Google Cloud Skills Boost</p>
+                <p class="sidebar-title">Lakehouse構築ラボ解説</p>
+                <p class="sidebar-sub">初学者向けステップバイステップガイド</p>
+                <nav class="sidebar-nav">
+                    <a class="nav-link" data-section="overview" href="#overview"
+                        ><span class="nav-badge">01</span>シナリオ全体像</a
+                    >
+                    <a class="nav-link" data-section="concepts" href="#concepts"
+                        ><span class="nav-badge">02</span>重要概念</a
+                    >
+                    <a class="nav-link" data-section="task1" href="#task1"
+                        ><span class="nav-badge">03</span>タスク1: テーブル作成</a
+                    >
+                    <a class="nav-link" data-section="task2" href="#task2"
+                        ><span class="nav-badge">04</span>タスク2: Aspect適用</a
+                    >
+                    <a class="nav-link" data-section="task3" href="#task3"
+                        ><span class="nav-badge">05</span>タスク3: IAM整理</a
+                    >
+                    <a class="nav-link" data-section="best-practices" href="#best-practices"
+                        ><span class="nav-badge">06</span>ベストプラクティス</a
+                    >
+                    <a class="nav-link" data-section="troubleshooting" href="#troubleshooting"
+                        ><span class="nav-badge">07</span>つまずきポイント</a
+                    >
+                    <a class="nav-link" data-section="references" href="#references"
+                        ><span class="nav-badge">08</span>参考文献</a
+                    >
+                </nav>
+            </aside>
+
+            <main class="content">
+                <header class="hero">
+                    <p class="hero-eyebrow">Challenge lab 解説</p>
+                    <h1>BigQuery Lakehouseテーブル構築チャレンジラボ 完全解説</h1>
+                    <p class="hero-lead">
+                        機密データを含むCloud
+                        Storageのファイルから、列単位でアクセスを可視化・管理できるBigLake
+                        Lakehouseテーブルを作り、移行完了後は不要になった直接アクセス権限を安全に取り除くまでを、背景にあるアーキテクチャとベストプラクティスとあわせて解説します。
+                    </p>
+                    <a
+                        class="hero-link"
+                        href="https://www.skills.google/course_templates/751/labs/629231"
+                        target="_blank"
+                        rel="noopener"
+                        >対象ラボを開く: skills.google/course_templates/751/labs/629231</a
+                    >
+                </header>
+
+                <section id="overview">
+                    <h2>0. シナリオ全体像</h2>
+                    <p>
+                        このラボのシナリオは「Cloud
+                        Storage上にあるユーザーの行動ログ(位置情報やIPアドレスなど機密情報を含む)を、BigQueryのLakehouseテーブルとして取り込み、列単位でアクセス制御をかけたうえで、移行前に使っていたCloud
+                        Storageへの直接アクセス権限を撤廃する」というものです。これは実際の企業でよくある「データレイクからデータウェアハウスへの安全な移行」パターンそのものです。
+                    </p>
+
+                    <div class="diagram-card">
+                        <div class="diagram-container" id="diagram-overview"></div>
+                        <p class="diagram-caption">
+                            全体アーキテクチャ: Cloud Storage上のデータはCloud
+                            Resource接続を経由してBigLakeテーブル化され、機密列にはAspectで注釈が付く。ユーザー2の直接アクセスはタスク3で遮断される。
+                        </p>
+                    </div>
+
+                    <p>
+                        ポイントは、<strong
+                            >アクセス制御の中心をCloud
+                            Storageのバケット権限からBigQueryのテーブル権限へ移す</strong
+                        >ことです。これにより、行・列単位のきめ細かいガバナンスをBigQuery側で一元的にかけられるようになります。
+                    </p>
+
+                    <div class="callout">
+                        <p class="callout-label">出典</p>
+                        <p>
+                            <a
+                                href="https://docs.cloud.google.com/bigquery/docs/biglake-intro"
+                                target="_blank"
+                                rel="noopener"
+                                >Introduction to BigLake tables</a
+                            >
+                        </p>
+                    </div>
+                </section>
+
+                <section id="concepts">
+                    <h2>1. 事前に理解しておきたい重要概念</h2>
+
+                    <div class="callout">
+                        <p class="callout-label">補足</p>
+                        <p>
+                            2026年4月10日以降、Google Cloudのドキュメント上で「Dataplex Universal
+                            Catalog」は「<strong>Knowledge Catalog</strong
+                            >」という名称に変わっています。API名・CLIコマンド名・IAMロール名は変更されていないため、本ラボのコンソール表記(Dataplex
+                            Universal Catalog)と最新ドキュメント(Knowledge
+                            Catalog)のどちらで読んでも同じ機能を指します。詳細は
+                            <a
+                                href="https://docs.cloud.google.com/dataplex/docs/transition-to-dataplex-catalog"
+                                target="_blank"
+                                rel="noopener"
+                                >Transition from Data Catalog to Knowledge Catalog</a
+                            >
+                            を参照してください。
+                        </p>
+                    </div>
+
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>用語</th>
+                                    <th>説明</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>BigLakeテーブル(Lakehouseテーブル)</strong></td>
+                                    <td>
+                                        Cloud
+                                        StorageなどBigQuery外部にあるデータを、あたかもBigQueryのネイティブテーブルのように扱える仕組み。アクセス制御をデータ本体から切り離す「アクセス委任(access
+                                        delegation)」が特徴。
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Cloud Resource接続</strong></td>
+                                    <td>
+                                        BigQueryがCloud
+                                        Storageなどの外部リソースにアクセスするための橋渡し役。接続を作成すると専用のサービスアカウントが自動生成される。
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong
+                                            >Dataplex Universal Catalog(Knowledge
+                                            Catalog)のAspect</strong
+                                        >
+                                    </td>
+                                    <td>
+                                        テーブルや列に付与できる構造化メタデータ。「この列は機密データを含む」といった情報をスキーマに準拠した形で記録・検索できる。
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Aspect Type</strong></td>
+                                    <td>
+                                        Aspectのひな形(テンプレート)。どんなフィールド(ブール値、文字列など)を持つかを定義する。
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>IAM(Identity and Access Management)</strong></td>
+                                    <td>
+                                        「誰が」「どのリソースに」「どんな操作を」できるかを管理する仕組み。今回はCloud
+                                        Storageバケットへの直接アクセス権限を扱う。
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="callout">
+                        <p class="callout-label">出典</p>
+                        <p>
+                            <a
+                                href="https://docs.cloud.google.com/bigquery/docs/biglake-intro"
+                                target="_blank"
+                                rel="noopener"
+                                >Introduction to BigLake tables</a
+                            >
+                            /
+                            <a
+                                href="https://docs.cloud.google.com/dataplex/docs/enrich-entries-metadata"
+                                target="_blank"
+                                rel="noopener"
+                                >Manage aspects and enrich metadata</a
+                            >
+                        </p>
+                    </div>
+                </section>
+
+                <section id="task1">
+                    <h2>2. タスク1: Cloud Resource接続を使ったLakehouseテーブルの作成</h2>
+
+                    <h3>2.1 なぜCloud Resource接続が必要か</h3>
+                    <p>
+                        BigQueryが直接ユーザーの認証情報でCloud
+                        Storageを読みに行く方式(非BigLakeの外部テーブル)だと、<strong>そのクエリを実行するユーザー自身がバケットへの読み取り権限を持っている必要</strong>があります。これでは「BigQuery上ではテーブルへのアクセスを絞ったのに、Cloud
+                        Storageには誰でも入れる」という抜け穴が残ってしまいます。
+                    </p>
+                    <p>
+                        Cloud Resource接続を使うと、実際にCloud
+                        Storageを読みに行くのは接続に紐づく<strong>専用のサービスアカウント</strong>になり、エンドユーザーはBigQueryのテーブル権限だけを見ればよくなります。これが後述のタスク3(IAM権限の削除)が成立する前提条件です。
+                    </p>
+
+                    <div class="callout">
+                        <p class="callout-label">出典</p>
+                        <p>
+                            <a
+                                href="https://docs.cloud.google.com/bigquery/docs/create-cloud-storage-table-biglake"
+                                target="_blank"
+                                rel="noopener"
+                                >Create Cloud Storage BigLake tables</a
+                            >
+                            /
+                            <a
+                                href="https://docs.cloud.google.com/bigquery/docs/biglake-intro"
+                                target="_blank"
+                                rel="noopener"
+                                >Introduction to BigLake tables</a
+                            >
+                        </p>
+                    </div>
+
+                    <h3>2.2 手順の全体フロー</h3>
+                    <div class="diagram-card">
+                        <div class="diagram-container" id="diagram-task1"></div>
+                        <p class="diagram-caption">
+                            タスク1の作業順序。API有効化からテーブル作成、検証までの一連の流れ。
+                        </p>
+                    </div>
+
+                    <h3>2.3 ステップバイステップ</h3>
+                    <ol class="steps">
+                        <li>
+                            <strong>BigQuery Connection APIを有効化する</strong
+                            >ラボのヒントにもある通り、接続を作成する前にAPIが有効になっている必要があります。Google
+                            Cloudコンソールで「APIとサービス」からBigQuery Connection
+                            APIを検索し、有効化します。
+                        </li>
+                        <li>
+                            <strong>データセットを作成する</strong>BigQuery
+                            Studioの「エクスプローラ」ペインからプロジェクトを選び、データセット
+                            <code>online_shop</code> を作成します。ロケーションタイプは
+                            Multi-region、リージョンは US を選択します(ラボの指示「Create all
+                            resources in the multiple regions in the United States」に従う)。
+                        </li>
+                        <li>
+                            <strong>Cloud Resource接続を作成する</strong
+                            >「接続を作成」から接続タイプに Vertex AI remote models, remote
+                            functions, BigLake and Spanner(Cloud resource) を選び、接続ID
+                            <code>user_data_connection</code>、ロケーションを US に設定します。
+                        </li>
+                        <li>
+                            <strong>サービスアカウントに権限を付与する</strong
+                            >作成した接続の詳細を開くと、<code
+                                >bq-connection-xxxxx@gcp-sa-bigquery-condel.iam.gserviceaccount.com</code
+                            >
+                            のようなサービスアカウントIDが表示されます。これをコピーし、Cloud
+                            Storageバケットの「アクセス権限」タブ、または「IAMと管理」から、このサービスアカウントに
+                            Storage Object
+                            Viewer(<code>roles/storage.objectViewer</code>)ロールを付与します。
+                        </li>
+                        <li>
+                            <strong>BigLakeテーブルを作成する</strong
+                            ><code>online_shop</code>
+                            データセットの「アクションを表示」から「テーブルを作成」を選び、作成元をGoogle
+                            Cloud Storage、ファイルパスを
+                            <code>gs://&lt;Project ID&gt;-bucket/user-online-sessions.csv</code
+                            >(<code>&lt;Project ID&gt;</code
+                            >は自分のプロジェクトIDに置き換える)に設定します。テーブルの種類は
+                            Create a BigLake table using a Cloud Resource connection
+                            を選び、接続IDに手順3で作成した
+                            <code>user_data_connection</code>、テーブル名を
+                            <code>user_online_sessions</code>、スキーマは Auto
+                            detect(自動検出)を有効化します。
+                        </li>
+                        <li>
+                            <strong>Check my progressで検証する</strong
+                            >ラボの指示通り進捗確認ボタンを押し、タスク1が完了しているかを確認します。
+                        </li>
+                    </ol>
+
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>付与先</th>
+                                    <th>付与するロール</th>
+                                    <th>目的</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>接続のサービスアカウント</td>
+                                    <td><code>roles/storage.objectViewer</code></td>
+                                    <td>バケット内のCSVファイルを読み取るため</td>
+                                </tr>
+                                <tr>
+                                    <td>作業ユーザー自身</td>
+                                    <td><code>roles/bigquery.connectionAdmin</code></td>
+                                    <td>
+                                        接続の作成に必要(Qwiklabsの学生アカウントには通常付与済み)
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="callout callout-warning">
+                        <p class="callout-label">注意</p>
+                        <p>
+                            IAM権限の反映には数分のタイムラグが発生することがあります。テーブル作成時に権限エラーが出た場合は、1〜2分待ってから再試行してください。
+                        </p>
+                    </div>
+
+                    <div class="callout">
+                        <p class="callout-label">出典</p>
+                        <p>
+                            <a
+                                href="https://docs.cloud.google.com/bigquery/docs/create-cloud-storage-table-biglake"
+                                target="_blank"
+                                rel="noopener"
+                                >Create Cloud Storage BigLake tables</a
+                            >
+                            /
+                            <a
+                                href="https://docs.cloud.google.com/bigquery/docs/create-cloud-resource-connection"
+                                target="_blank"
+                                rel="noopener"
+                                >Create and set up a Cloud resource connection</a
+                            >
+                            /
+                            <a
+                                href="https://docs.cloud.google.com/bigquery/docs/object-tables"
+                                target="_blank"
+                                rel="noopener"
+                                >Create object tables</a
+                            >
+                        </p>
+                    </div>
+                </section>
+
+                <section id="task2">
+                    <h2>3. タスク2: 機密データ列へのAspect作成・適用・検証</h2>
+
+                    <h3>3.1 AspectはIAMの代わりではない</h3>
+                    <p>
+                        ここで初学者がつまずきやすいポイントがあります。<strong>Aspectはアクセス制御そのものではなく、メタデータ(注釈)です。</strong>「この列は機密データを含む」という情報をカタログ上に記録し、検索やガバナンスレビューに使えるようにする仕組みであり、Aspectを付けただけでは列への閲覧権限が自動的に制限されるわけではありません。実際にアクセス制御を行いたい場合は、別途BigQueryの列レベルセキュリティ(ポリシータグ)やデータマスキングと組み合わせるのが一般的です。今回のラボではまず「機密データがどこにあるかをカタログ上で可視化する」ことがゴールです。
+                    </p>
+
+                    <h3>3.2 手順の全体フロー</h3>
+                    <div class="diagram-card">
+                        <div class="diagram-container" id="diagram-task2"></div>
+                        <p class="diagram-caption">
+                            タスク2の作業順序。Aspect Typeの定義から列への適用、検証までの流れ。
+                        </p>
+                    </div>
+
+                    <h3>3.3 ステップバイステップ</h3>
+                    <ol class="steps">
+                        <li>
+                            <strong>Aspect Typeを作成する</strong>Google Cloudコンソールで「Dataplex
+                            Universal Catalog」から「メタデータの種類(Metadata types)」の「Aspect
+                            types &amp; tag templates」タブ、さらに「Custom」タブを開き、「Create
+                            aspect type」をクリックします。Aspect type IDには
+                            <code>sensitive-data-aspect</code> のような一意なIDを、表示名には
+                            <code>Sensitive Data Aspect</code> を設定し、ロケーションは
+                            US(マルチリージョン)を選びます。
+                        </li>
+                        <li>
+                            <strong>フィールドを定義する</strong>フィールド追加画面でフィールド名を
+                            <code>Has Sensitive Data</code>、データ型を Boolean に設定します。
+                        </li>
+                        <li>
+                            <strong>対象テーブルのスキーマ画面を開く</strong>BigQuery
+                            Studioまたはカタログ検索で
+                            <code>user_online_sessions</code>
+                            テーブルを開き、「スキーマ」タブを表示します。列単位でAspectを追加できるUIが用意されています。
+                        </li>
+                        <li>
+                            <strong>各列にAspectを適用する</strong
+                            ><code>zip</code>、<code>latitude</code>、<code>ip_address</code>、<code
+                                >longitude</code
+                            >
+                            の4列それぞれに対して「Aspectを追加」から
+                            <code>Sensitive Data Aspect</code> を選択し、<code
+                                >Has Sensitive Data</code
+                            >
+                            の値を <code>True</code> に設定して保存します。
+                        </li>
+                        <li>
+                            <strong>適用結果を検証する</strong>Dataplex Universal
+                            Catalogの「検索(Search)」画面で検索プラットフォームを Dataplex Universal
+                            Catalog に切り替え、<code>user_online_sessions</code> を検索し、対象列に
+                            <code>Sensitive Data Aspect</code> が表示されていることを確認します。
+                        </li>
+                    </ol>
+
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>列名</th>
+                                    <th>Has Sensitive Data</th>
+                                    <th>理由(参考)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>zip</code></td>
+                                    <td>True</td>
+                                    <td>郵便番号は他情報と組み合わせて個人特定につながりうる</td>
+                                </tr>
+                                <tr>
+                                    <td><code>latitude</code></td>
+                                    <td>True</td>
+                                    <td>位置情報は直接的な行動追跡につながる</td>
+                                </tr>
+                                <tr>
+                                    <td><code>ip_address</code></td>
+                                    <td>True</td>
+                                    <td>ネットワーク識別子であり個人情報保護の対象になりやすい</td>
+                                </tr>
+                                <tr>
+                                    <td><code>longitude</code></td>
+                                    <td>True</td>
+                                    <td>位置情報は直接的な行動追跡につながる</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>3.4 Aspect Type作成に必要なロール</h3>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>権限レベル</th>
+                                    <th>ロール</th>
+                                    <th>できること</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>フル権限</td>
+                                    <td><code>roles/dataplex.catalogAdmin</code></td>
+                                    <td>Aspect Type / Aspectを含む全メタデータリソースの管理</td>
+                                </tr>
+                                <tr>
+                                    <td>作成・編集</td>
+                                    <td><code>roles/dataplex.catalogEditor</code></td>
+                                    <td>Aspect Type / Aspectの作成・編集</td>
+                                </tr>
+                                <tr>
+                                    <td>Aspect Typeのみ</td>
+                                    <td><code>roles/dataplex.aspectTypeOwner</code></td>
+                                    <td>カスタムAspect Typeのフル権限</td>
+                                </tr>
+                                <tr>
+                                    <td>参照のみ</td>
+                                    <td><code>roles/dataplex.catalogViewer</code></td>
+                                    <td>Aspect Typeとその権限の閲覧</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="callout">
+                        <p class="callout-label">出典</p>
+                        <p>
+                            <a
+                                href="https://docs.cloud.google.com/dataplex/docs/enrich-entries-metadata"
+                                target="_blank"
+                                rel="noopener"
+                                >Manage aspects and enrich metadata</a
+                            >
+                            /
+                            <a
+                                href="https://cloud.google.com/dataplex/docs/add-metadata-quickstart"
+                                target="_blank"
+                                rel="noopener"
+                                >Quickstart: Add metadata to a BigQuery table</a
+                            >
+                            /
+                            <a
+                                href="https://docs.cloud.google.com/dataplex/docs/samples/dataplex-create-aspect-type"
+                                target="_blank"
+                                rel="noopener"
+                                >Create aspect type(コードサンプル)</a
+                            >
+                        </p>
+                    </div>
+                </section>
+
+                <section id="task3">
+                    <h2>4. タスク3: Cloud Storageへの直接IAM権限の削除</h2>
+
+                    <h3>4.1 なぜ削除するのがベストプラクティスなのか</h3>
+                    <p>
+                        これがこのラボで最も重要な学びです。BigLakeの公式ドキュメントには明確な警告があります。
+                    </p>
+                    <div class="callout callout-danger">
+                        <p class="callout-label">公式ドキュメントの注意事項(要約)</p>
+                        <p class="callout-quote">
+                            データアナリストに、Cloud
+                            Storageのオブジェクトを直接読み取れる権限(Storage Object
+                            Viewerロールなど)を持たせてはいけません。それはデータウェアハウス管理者が設定したアクセス制御を迂回できてしまうためです。
+                        </p>
+                    </div>
+                    <p>
+                        出典:
+                        <a
+                            href="https://docs.cloud.google.com/bigquery/docs/biglake-intro"
+                            target="_blank"
+                            rel="noopener"
+                            >Introduction to BigLake tables</a
+                        >
+                    </p>
+                    <p>
+                        つまり、タスク1でCloud
+                        Resource接続の専用サービスアカウントに読み取り権限を持たせた時点で、<strong>ユーザー自身がバケットに直接アクセスできる権限はもう不要</strong>になります。むしろ残しておくと、タスク2で列にAspectを付けて可視化した機密データを、ユーザーがBigQueryを経由せず生のCSVファイルから読めてしまうという抜け道になります。
+                    </p>
+
+                    <h3>4.2 変更前後の比較</h3>
+                    <div class="diagram-card">
+                        <div class="diagram-container" id="diagram-task3"></div>
+                        <p class="diagram-caption">
+                            変更前はユーザー2がCloud
+                            Storageに直接アクセスできてしまう。変更後はBigQuery経由のアクセスのみが残る。
+                        </p>
+                    </div>
+
+                    <h3>4.3 ステップバイステップ</h3>
+                    <ol class="steps">
+                        <li>
+                            <strong>現在のIAM設定を確認する</strong>Cloud
+                            Storageのバケット詳細画面(または「IAMと管理」から「IAM」)を開き、ユーザー2に付与されているロールの一覧を確認します。プロジェクト閲覧者(Viewer)ロールと、Cloud
+                            Storage関連のロール(例: <code>roles/storage.objectViewer</code> や
+                            <code>roles/storage.objectAdmin</code> など)の両方が付いているはずです。
+                        </li>
+                        <li>
+                            <strong>Cloud Storageのロールだけを取り除く</strong
+                            >タスクの指示は「プロジェクト閲覧者(Viewer)ロールは残す」「Cloud
+                            Storageのロールだけを削除する」ことです。コンソールでは、ユーザー2の行にある鉛筆アイコンから該当ロールのみ削除するか、gcloudでは次のように操作します。
+                            <pre><code class="language-bash">gcloud storage buckets remove-iam-policy-binding gs://BUCKET_NAME \
+  --member="user:USER_2_EMAIL" \
+  --role="roles/storage.objectViewer"</code></pre>
+                            バケット単位ではなくプロジェクト単位でロールが付与されている場合は、<code
+                                >gcloud projects remove-iam-policy-binding</code
+                            >
+                            を使う必要があります。コンソールの「IAMと管理」から「IAM」画面で、そのユーザーの行にあるロールのうちCloud
+                            Storage関連のものだけを削除(ゴミ箱アイコン)し、Viewerロールは残す点に注意してください。
+                        </li>
+                        <li>
+                            <strong>Check my progressで検証する</strong
+                            >ラボの指示通り進捗確認ボタンを押し、タスク3が完了しているかを確認します。
+                        </li>
+                    </ol>
+
+                    <div class="callout">
+                        <p class="callout-label">出典</p>
+                        <p>
+                            <a
+                                href="https://docs.cloud.google.com/storage/docs/access-control/using-iam-permissions"
+                                target="_blank"
+                                rel="noopener"
+                                >Set and manage IAM policies on buckets</a
+                            >
+                            /
+                            <a
+                                href="https://cloud.google.com/sdk/gcloud/reference/storage/buckets/remove-iam-policy-binding"
+                                target="_blank"
+                                rel="noopener"
+                                >gcloud storage buckets remove-iam-policy-binding</a
+                            >
+                        </p>
+                    </div>
+                </section>
+
+                <section id="best-practices">
+                    <h2>5. ベストプラクティスまとめ</h2>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>原則</th>
+                                    <th>内容</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>アクセス委任</td>
+                                    <td>
+                                        データへの直接アクセスはサービスアカウントに集約し、ユーザーはテーブル権限だけを見ればよい状態にする
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>最小権限の原則</td>
+                                    <td>
+                                        Cloud
+                                        Storageへの直接読み取り権限は、移行完了後は速やかに削除する
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>メタデータでの可視化</td>
+                                    <td>
+                                        AspectはIAMの代わりにはならないが、機密データの所在を組織全体で検索・監査可能にする
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>リージョンの一貫性</td>
+                                    <td>
+                                        データセット・接続・Aspect
+                                        Typeのロケーションを揃えないと、接続時にエラーになることがある(本ラボはすべてUSマルチリージョンで統一)
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>権限伝播の待機</td>
+                                    <td>
+                                        サービスアカウントへの権限付与直後はテーブル作成が失敗することがあるため、数分待ってから再試行する
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section id="troubleshooting">
+                    <h2>6. よくあるつまずきポイント</h2>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>症状</th>
+                                    <th>原因</th>
+                                    <th>対処</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>テーブル作成時に <code>Permission denied</code></td>
+                                    <td>
+                                        サービスアカウントへの Storage Object Viewer
+                                        付与直後で権限がまだ伝播していない
+                                    </td>
+                                    <td>1〜2分待って再実行する</td>
+                                </tr>
+                                <tr>
+                                    <td>接続作成時にAPIエラー</td>
+                                    <td>BigQuery Connection APIが未有効化</td>
+                                    <td>「APIとサービス」から有効化を確認する</td>
+                                </tr>
+                                <tr>
+                                    <td>スキーマ自動検出でエラー</td>
+                                    <td>CSVのヘッダー行やエンコーディングの問題</td>
+                                    <td>CSVの1行目が列名になっているか確認する</td>
+                                </tr>
+                                <tr>
+                                    <td>Aspectが検索結果に出てこない</td>
+                                    <td>
+                                        検索プラットフォームが「Data Catalog」のままになっている
+                                    </td>
+                                    <td>
+                                        検索画面右上で「Dataplex Universal Catalog」に切り替える
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>ユーザー2がテーブルを見られなくなった</td>
+                                    <td>
+                                        Cloud
+                                        Storageロールと一緒にBigQuery側の権限も誤って削除してしまった
+                                    </td>
+                                    <td>
+                                        Viewerロールなど、BigQuery/プロジェクト閲覧に必要なロールは残す
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>
+                        出典:
+                        <a
+                            href="https://oneuptime.com/blog/post/2026-02-17-how-to-set-up-bigquery-external-tables-over-cloud-storage-files/view"
+                            target="_blank"
+                            rel="noopener"
+                            >How to Set Up BigQuery External Tables over Cloud Storage Files</a
+                        >
+                    </p>
+                </section>
+
+                <section id="references">
+                    <h2>7. 参考文献</h2>
+                    <div class="ref-grid">
+                        <a
+                            class="ref-card"
+                            href="https://docs.cloud.google.com/bigquery/docs/biglake-intro"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <span class="ref-tag">Lakehouseテーブル / 接続の概念</span>
+                            <span class="ref-title">Introduction to BigLake tables</span>
+                            <span class="ref-url"
+                                >docs.cloud.google.com/bigquery/docs/biglake-intro</span
+                            >
+                        </a>
+                        <a
+                            class="ref-card"
+                            href="https://docs.cloud.google.com/bigquery/docs/create-cloud-resource-connection"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <span class="ref-tag">Cloud Resource接続の作成</span>
+                            <span class="ref-title"
+                                >Create and set up a Cloud resource connection</span
+                            >
+                            <span class="ref-url"
+                                >docs.cloud.google.com/bigquery/docs/create-cloud-resource-connection</span
+                            >
+                        </a>
+                        <a
+                            class="ref-card"
+                            href="https://docs.cloud.google.com/bigquery/docs/create-cloud-storage-table-biglake"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <span class="ref-tag">BigLakeテーブルの作成手順</span>
+                            <span class="ref-title">Create Cloud Storage BigLake tables</span>
+                            <span class="ref-url"
+                                >docs.cloud.google.com/bigquery/docs/create-cloud-storage-table-biglake</span
+                            >
+                        </a>
+                        <a
+                            class="ref-card"
+                            href="https://docs.cloud.google.com/bigquery/docs/object-tables"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <span class="ref-tag">サービスアカウントへの権限付与例</span>
+                            <span class="ref-title">Create object tables</span>
+                            <span class="ref-url"
+                                >docs.cloud.google.com/bigquery/docs/object-tables</span
+                            >
+                        </a>
+                        <a
+                            class="ref-card"
+                            href="https://docs.cloud.google.com/dataplex/docs/enrich-entries-metadata"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <span class="ref-tag">Aspect / Aspect Typeの管理</span>
+                            <span class="ref-title">Manage aspects and enrich metadata</span>
+                            <span class="ref-url"
+                                >docs.cloud.google.com/dataplex/docs/enrich-entries-metadata</span
+                            >
+                        </a>
+                        <a
+                            class="ref-card"
+                            href="https://cloud.google.com/dataplex/docs/add-metadata-quickstart"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <span class="ref-tag">Aspect Type作成のクイックスタート</span>
+                            <span class="ref-title"
+                                >Quickstart: Add metadata to a BigQuery table</span
+                            >
+                            <span class="ref-url"
+                                >cloud.google.com/dataplex/docs/add-metadata-quickstart</span
+                            >
+                        </a>
+                        <a
+                            class="ref-card"
+                            href="https://docs.cloud.google.com/dataplex/docs/transition-to-dataplex-catalog"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <span class="ref-tag">Knowledge Catalogへの名称変更</span>
+                            <span class="ref-title"
+                                >Transition from Data Catalog to Knowledge Catalog</span
+                            >
+                            <span class="ref-url"
+                                >docs.cloud.google.com/dataplex/docs/transition-to-dataplex-catalog</span
+                            >
+                        </a>
+                        <a
+                            class="ref-card"
+                            href="https://docs.cloud.google.com/storage/docs/access-control/using-iam-permissions"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <span class="ref-tag">IAMポリシーの削除</span>
+                            <span class="ref-title">Set and manage IAM policies on buckets</span>
+                            <span class="ref-url"
+                                >docs.cloud.google.com/storage/docs/access-control/using-iam-permissions</span
+                            >
+                        </a>
+                        <a
+                            class="ref-card"
+                            href="https://cloud.google.com/sdk/gcloud/reference/storage/buckets/remove-iam-policy-binding"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <span class="ref-tag">gcloudコマンドリファレンス</span>
+                            <span class="ref-title"
+                                >gcloud storage buckets remove-iam-policy-binding</span
+                            >
+                            <span class="ref-url"
+                                >cloud.google.com/sdk/gcloud/reference/storage/buckets/remove-iam-policy-binding</span
+                            >
+                        </a>
+                    </div>
+                </section>
+
+                <footer class="footer">
+                    <p>
+                        本ガイドはGoogle Cloud Skills
+                        Boostのチャレンジラボ(course_templates/751/labs/629231)を題材にした学習補助資料です。実際の画面表記やAPI名は将来変更される可能性があるため、最終的な操作は必ず公式ドキュメントで確認してください。
+                    </p>
+                </footer>
+            </main>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.12.0/mermaid.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+        <script>
+            const DIAGRAMS = {
+                overview: `
+flowchart TD
+GCS["Cloud Storageバケット (CSVファイル)"] -->|"読み取りを委任"| CONN["Cloud Resource接続 (user_data_connection)"]
+CONN --> TABLE["BigLake Lakehouseテーブル (user_online_sessions)"]
+TABLE --> ASPECT["Dataplex Aspect (Sensitive Data Aspect)"]
+ASPECT --> ANALYST["データアナリスト (BigQuery経由のみ)"]
+USER2["ユーザー2"] -.->|"直接アクセス禁止 (タスク3で権限削除)"| GCS
+USER2 --> TABLE
+classDef highlight fill:#16233a,stroke:#7c9eff,color:#f5f8fc,stroke-width:1px;
+classDef warn fill:#2a2312,stroke:#f5c775,color:#f5f8fc,stroke-width:1px;
+class ASPECT highlight;
+class USER2 warn;
+`,
+                task1: `
+flowchart TD
+S1["BigQuery Connection APIを有効化"] --> S2["データセット online_shop を作成 (US)"]
+S2 --> S3["Cloud Resource接続 user_data_connection を作成 (US)"]
+S3 --> S4["接続のサービスアカウントIDを確認"]
+S4 --> S5["サービスアカウントに Storage Object Viewer を付与"]
+S5 --> S6["BigLakeテーブルを作成 (スキーマ自動検出)"]
+S6 --> S7["Check my progress で検証"]
+classDef done fill:#10261c,stroke:#7fe0b3,color:#f5f8fc,stroke-width:1px;
+class S7 done;
+`,
+                task2: `
+flowchart TD
+T1["Aspect Type を作成 (Sensitive Data Aspect, US)"] --> T2["ブール値フィールド Has Sensitive Data を定義"]
+T2 --> T3["対象テーブルの Schema タブを開く"]
+T3 --> T4["列 zip / latitude / ip_address / longitude を選択"]
+T4 --> T5["各列に Aspect を適用し True に設定"]
+T5 --> T6["Dataplex Catalog の検索で結果を確認"]
+classDef done fill:#10261c,stroke:#7fe0b3,color:#f5f8fc,stroke-width:1px;
+class T6 done;
+`,
+                task3: `
+flowchart LR
+subgraph before["変更前 (危険な状態)"]
+U1["ユーザー2"] -->|"Storage Object Viewer など"| G1["Cloud Storageバケット"]
+U1 --> B1["BigLakeテーブル"]
+end
+subgraph after["変更後 (ベストプラクティス適用後)"]
+U2["ユーザー2"] -.->|"Cloud StorageのIAMロールを削除"| G2["Cloud Storageバケット"]
+U2 --> B2["BigLakeテーブル"]
+end
+classDef danger fill:#2a1418,stroke:#ff8a8a,color:#f5f8fc,stroke-width:1px;
+classDef success fill:#10261c,stroke:#7fe0b3,color:#f5f8fc,stroke-width:1px;
+class G1 danger;
+class G2 success;
+`,
+            };
+
+            function setupSidebarObserver() {
+                const links = Array.from(document.querySelectorAll('.nav-link'));
+                const sections = links
+                    .map((l) => document.getElementById(l.getAttribute('href').slice(1)))
+                    .filter(Boolean);
+
+                const observer = new IntersectionObserver(
+                    (entries) => {
+                        entries.forEach((entry) => {
+                            if (!entry.isIntersecting) return;
+                            const id = entry.target.id;
+                            const activeLink = document.querySelector(
+                                '.nav-link[href="#' + id + '"]',
+                            );
+                            if (!activeLink) return;
+                            links.forEach((l) => l.classList.remove('active'));
+                            activeLink.classList.add('active');
+                        });
+                    },
+                    { rootMargin: '-20% 0px -70% 0px' },
+                );
+
+                sections.forEach((s) => observer.observe(s));
+                if (links[0]) links[0].classList.add('active');
+            }
+
+            async function renderDiagrams() {
+                mermaid.initialize({
+                    startOnLoad: false,
+                    theme: 'dark',
+                    securityLevel: 'loose',
+                    fontFamily: 'inherit',
+                    flowchart: {
+                        useMaxWidth: false,
+                        htmlLabels: true,
+                        nodeSpacing: 45,
+                        rankSpacing: 45,
+                    },
+                    themeVariables: {
+                        fontSize: '16px',
+                        primaryColor: '#182b42',
+                        primaryTextColor: '#f5f8fc',
+                        primaryBorderColor: '#3a5378',
+                        lineColor: '#7c9eff',
+                        secondaryColor: '#16233a',
+                        tertiaryColor: '#0d1826',
+                        background: '#07111e',
+                        mainBkg: '#182b42',
+                        nodeBorder: '#3a5378',
+                        clusterBkg: '#0d1826',
+                        clusterBorder: '#3a5378',
+                        edgeLabelBackground: '#0d1826',
+                        textColor: '#f5f8fc',
+                    },
+                });
+
+                if (document.fonts && document.fonts.ready) {
+                    await document.fonts.ready;
+                }
+
+                for (const [key, src] of Object.entries(DIAGRAMS)) {
+                    const target = document.getElementById('diagram-' + key);
+                    if (!target) continue;
+                    try {
+                        const { svg } = await mermaid.render('mermaid-svg-' + key, src.trim());
+                        target.innerHTML = svg;
+                        const svgEl = target.querySelector('svg');
+                        if (svgEl) {
+                            const viewBox = svgEl.getAttribute('viewBox');
+                            svgEl.removeAttribute('height');
+                            svgEl.style.maxWidth = '100%';
+                            svgEl.style.height = 'auto';
+                            svgEl.style.overflow = 'visible';
+                            if (viewBox) {
+                                const parts = viewBox.split(' ').map(Number);
+                                if (parts.length === 4) {
+                                    const w = parts[2];
+                                    const h = parts[3] + 15;
+                                    svgEl.setAttribute('viewBox', '0 0 ' + w + ' ' + h);
+                                    svgEl.style.width = w + 'px';
+                                }
+                            }
+                        }
+                    } catch (err) {
+                        target.innerHTML = '<p class="diagram-error">図の描画に失敗しました。</p>';
+                        console.error('mermaid render error for ' + key, err);
+                    }
+                }
+            }
+
+            document.addEventListener('DOMContentLoaded', async () => {
+                if (window.hljs) {
+                    hljs.highlightAll();
+                }
+                setupSidebarObserver();
+                await renderDiagrams();
+            });
+        </script>
+    </body>
+</html>

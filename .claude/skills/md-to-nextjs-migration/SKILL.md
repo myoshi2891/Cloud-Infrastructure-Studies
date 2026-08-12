@@ -17,11 +17,14 @@ description: >
 
 # MD → Next.js 移行ワークフロー（Infra リポジトリ）
 
+(最終更新日: 2026-08-10)
+
 **🚨 開発時の必須ルール（TDD & Step-by-step Commit） 🚨**
-全てのコード実装において、必ず `.claude/rules/tdd-commit-workflow.md` のルールに従うこと。
-1. `test:` 失敗するテストを先に書きコミットする
-2. `feat:` テストをPassさせる実装を行いコミットする
-3. `refactor/docs:` 統合を行いコミットする
+全てのコード実装において、必ず `.agents/rules/tdd-commit-workflow.md` のルールに従うこと。
+1. `test:` Red — 失敗するテストを先に作成しコミットする
+2. `feat:` Green — テストを Pass させる最小実装を行いコミットする
+3. `refactor:` Refactor / Integration — リファクタリングと統合を行いコミットする
+4. `docs:` Docs Sync — 進捗・仕様文書を同期しコミットする
 これらを1つの巨大なコミットにまとめることは厳禁である。
 
 ## 目的
@@ -103,10 +106,16 @@ app/
     - フェーズ一覧・各フェーズの成果物・完了基準を明記する
 2. **フェーズ単位でコミットする**
     - 各フェーズ完了後に `git commit` を実行する
-    - コミットメッセージ: `feat(<path>/SN): <内容の要約>`
+    - コミットメッセージの接頭辞は後述の各ステップに従う（Red は `test:`、Green は `feat:`、
+      Refactor / Integration は `refactor:`、Docs Sync は `docs:`）。プランモード専用の
+      コミット形式は設けず、Red / Green / Refactor / Integration をそれぞれ別コミットで完了させる
 3. **ステップバイステップで進める**
     - 全フェーズを一括実装しない
     - 1フェーズ完了 → テスト通過確認 → コミット → 次フェーズ の順を守る
+4. **進捗同期ゲートを設ける**（`.agents/rules/migration-progress-sync.md` に従う）
+    - 各ページ・各フェーズの完了時に `MIGRATION_PROGRESS.md` を実際の進捗へ更新する
+    - テスト通過を確認してから `docs:` コミットで同期し、その後に次フェーズへ進む
+    - Step 7 まで到達せず中断した場合でも、中断時点が正確に記録されている状態を保つ
 
 ### 計画 MD のテンプレート
 
@@ -146,26 +155,93 @@ app/
 両ソースを全読みし、実装すべきコンテンツ一覧を把握してから実装を開始する。
 **省略・要約は一切禁止**。MD の全行を JSX に組み込む前提でコンテンツ量を把握すること。
 
-### Step 1: テストを確認（RED）
+### 共通のステージングゲート（各コミット前に必ず実行）
+
+Red / Green / Refactor / Docs Sync のコミットを混在させないため、**すべての `git add` の前後**で
+次の 2 つの検査を行う。`assert_clean_stage` は `git add` の前、`assert_staged_scope` は `git add` の後に実行する。
+各 `git add` では許可ファイルを `--` の後に明示し、`git add -p` でそのステップに属する差分だけを選択する。
+許可ファイル内に別作業の変更があっても、ファイル全体をステージしてはならない。
+新規ファイルは通常の `git add -p` では選択対象にならないため、許可された対象ファイルごとに次の順序で扱う。
 
 ```bash
-bun run test __tests__/gcl/<exam>/page.test.tsx
+# git add の前: 別ステップの差分が既にステージされていないことを確認する
+assert_clean_stage() {
+  git diff --cached --quiet || {
+    echo '既存のステージ差分があります。コミットを中止します。' >&2
+    return 1
+  }
+}
+
+# git add の後: そのステップで許可したファイルだけがステージされていることを確認する
+assert_staged_scope() {
+  staged=$(git diff --cached --name-only) || return 1
+  for file in $staged; do
+    case " $* " in
+      *" $file "*) ;;
+      *) echo "許可されていないファイルがステージされています: $file" >&2; return 1 ;;
+    esac
+  done
+}
 ```
 
-失敗しているテストの期待テキストを確認し、実装対象とテキスト表記を把握する。
+```bash
+# 新規ファイルごとに状態を確認し、intent-to-add の後で必要な差分だけを選択する
+if ! git status --short -- <new-file>; then
+  echo '新規ファイルの状態を取得できません。コミットを中止します。' >&2
+  exit 1
+fi
+assert_clean_stage || exit 1
+git add -N -- <new-file> || exit 1
+git add -p -- <new-file> || exit 1
+assert_staged_scope <new-file> || exit 1
+```
+
+### Step 1: Red — 失敗するテストを作成してコミット
+
+```bash
+# 要件を網羅するテストを追加
+RED_TEST_NAME='renders the migrated SN requirement title'
+RED_EXPECTED_FAILURE='Unable to find an element with the text: SN requirement title'
+red_test_log=$(mktemp) || exit 1
+trap 'rm -f "$red_test_log"' EXIT
+if bun run test __tests__/gcl/<exam>/page.test.tsx -t "$RED_TEST_NAME" >"$red_test_log" 2>&1; then
+  cat "$red_test_log"
+  echo 'Red テストが成功しました。コミットを中止します。' >&2
+  exit 1
+fi
+cat "$red_test_log"
+if ! grep -F -- "$RED_EXPECTED_FAILURE" "$red_test_log" >/dev/null; then
+  echo '想定したアサーション失敗を確認できません。コミットを中止します。' >&2
+  exit 1
+fi
+if ! git status --short; then
+  echo 'worktree の状態を取得できません。コミットを中止します。' >&2
+  exit 1
+fi
+assert_clean_stage || exit 1
+git add -N -- __tests__/gcl/<exam>/page.test.tsx || exit 1
+git add -p -- __tests__/gcl/<exam>/page.test.tsx || exit 1
+assert_staged_scope __tests__/gcl/<exam>/page.test.tsx || exit 1
+git commit -m "test(gcl/<exam>/SN): add failing migration coverage"
+```
+
+`RED_TEST_NAME` は追加したテストだけに一致する固有名、`RED_EXPECTED_FAILURE` はそのテストの期待値を含む固有の失敗メッセージに置き換える。
+`AssertionError` などの一般的なエラー名だけで Red と判定しない。上記の失敗を確認できた場合に限り `test:` コミットへ進み、
+Red のテストを Green 実装と同じコミットに含めない。
 
 ### Step 2: constants.ts に型とデータを追加
 
 ```typescript
 // 型定義（export 必須）
 export type NewItem = {
+    id: string;
     field1: string;
     field2: string;
 };
 
 // データ配列（export 必須）
 export const NEW_ITEMS: NewItem[] = [
-    { field1: 'value1', field2: 'value2' },
+    { id: 'item-1', field1: 'value1', field2: 'value2' },
 ];
 ```
 
@@ -187,11 +263,11 @@ import {
     <div className="ctable-wrap">
         <table className="ctable">
             <thead>
-                <tr><th>列1</th><th>列2</th></tr>
+                <tr><th scope="col">列1</th><th scope="col">列2</th></tr>
             </thead>
             <tbody>
-                {NEW_ITEMS.map((row, i) => (
-                    <tr key={i}>
+                {NEW_ITEMS.map((row) => (
+                    <tr key={row.id}>
                         <td><strong>{row.field1}</strong></td>
                         <td>{row.field2}</td>
                     </tr>
@@ -213,18 +289,87 @@ import {
 
 ```bash
 bun run test __tests__/gcl/<exam>/page.test.tsx
+if ! git status --short; then
+  echo 'worktree の状態を取得できません。コミットを中止します。' >&2
+  exit 1
+fi
+assert_clean_stage || exit 1
+git add -p -- app/constants.ts app/gcl/<exam>/<changed-file-1> app/gcl/<exam>/<changed-file-2> || exit 1
+assert_staged_scope app/constants.ts app/gcl/<exam>/<changed-file-1> app/gcl/<exam>/<changed-file-2> || exit 1
+git diff --cached
+git commit -m "feat(gcl/<exam>/SN): implement migrated content"
 ```
 
-### Step 6: ビルド確認
+`git add` には実際に変更したファイルだけを列挙し、試験ディレクトリ全体を指定しない。
+
+### Step 6: Refactor / Integration を検証してコミット
 
 ```bash
+bun run test __tests__/gcl/<exam>/page.test.tsx
 bun run build
+bun run lint
+if ! git status --short; then
+  echo 'worktree の状態を取得できません。コミットを中止します。' >&2
+  exit 1
+fi
+assert_clean_stage || exit 1
+git add -p -- <refactored-files> || exit 1
+assert_staged_scope <refactored-files> || exit 1
+git commit -m "refactor(gcl/<exam>/SN): integrate migrated content"
 ```
 
-### Step 7: コミット
+Step 6 は実際にリファクタリングしたファイルだけをステージする。Green 実装や `app/constants.ts` を変更していない場合、それらを Refactor コミットへ重ねて含めない。
+
+### Step 7: Docs Sync を検証してコミット
+
+Docs Sync の必須成果物は次の6ファイルを正準一覧とする。
+
+- `docs/coverage-dashboard.html`
+- `docs/TEST_COVERAGE_PROGRESS.md`
+- `MIGRATION_PROGRESS.md`
+- `CLAUDE.md`
+- `GEMINI.md`
+- `README.md`
+
+テストを追加・変更しない移行に限り、`docs/coverage-dashboard.html` と `docs/TEST_COVERAGE_PROGRESS.md` を対象外にできる。その他4ファイルは必ず確認し、必要な更新をステージする。
 
 ```bash
-git commit -m "feat(gcl/<exam>/SN): add <内容の要約>"
+bun run test __tests__/gcl/<exam>/page.test.tsx
+if ! git status --short; then
+  echo 'worktree の状態を取得できません。コミットを中止します。' >&2
+  exit 1
+fi
+if [ "${COMMIT_AUTHORIZED:-}" != 'yes' ]; then
+  echo 'Docs Sync コミットには COMMIT_AUTHORIZED=yes による明示認可が必要です。' >&2
+  exit 1
+fi
+assert_clean_stage || exit 1
+docs_sync_files=(
+  docs/coverage-dashboard.html
+  docs/TEST_COVERAGE_PROGRESS.md
+  MIGRATION_PROGRESS.md
+  CLAUDE.md
+  GEMINI.md
+  README.md
+)
+if [ "${MIGRATION_HAS_TEST_CHANGES:-yes}" != 'yes' ]; then
+  docs_sync_files=(MIGRATION_PROGRESS.md CLAUDE.md GEMINI.md README.md)
+fi
+if ! git add -p -- "${docs_sync_files[@]}"; then
+  echo 'Docs Sync 対象のステージに失敗しました。コミットを中止します。' >&2
+  exit 1
+fi
+# 正準一覧（テスト変更なしの場合は4ファイル）以外がステージされていないことを確認する
+assert_staged_scope "${docs_sync_files[@]}" || exit 1
+if git diff --cached --quiet; then
+  echo 'Docs Sync のステージ差分が空です。コミットを中止します。' >&2
+  exit 1
+fi
+if ! git diff --cached --check || ! git diff --cached; then
+  echo 'ステージ差分を検証できません。コミットを中止します。' >&2
+  exit 1
+fi
+git commit -m "docs(gcl/<exam>/SN): sync migration progress"
 ```
 
 ---
@@ -234,13 +379,14 @@ git commit -m "feat(gcl/<exam>/SN): add <内容の要約>"
 - **テストランナーは bun**: `npm run test` ではなく `bun run test` を使う
 - **新ページ追加時**: `app/constants.ts` の `EXAMS` にエントリを追加する（`Header.tsx` は `toNavTree(EXAMS)` で自動反映されるため直接編集しない）
 - **ページ固有の共通定数**: `constants.ts` に集約する（グローバルに置かない）
-- **CSS テーマ**: ページ固有テーマは専用 `.css` ファイルに定義し、そのルートを所有する `page.tsx` または `layout.tsx` からインポートする。レイアウトスコープが不要な場合は `page.tsx` を優先し、不要な `layout.tsx` の作成を避ける（CLAUDE.md と整合）
+- **CSS テーマ**: ページ CSS では新規テーマ custom property を定義しない。`app/globals.css` の既存または追加済みの承認済み3層デザイントークンを参照し、ページ固有 CSS にはセレクタとスタイル規則だけを置く
 - **分割方針（第一選択）**: `page.tsx` が ~400〜600 行を超えた場合は、新規セクションを `components/sections/Section*.tsx` などの独立コンポーネントに切り出すこと。再利用可能なロジックは hooks / util モジュールへ分離する。「編集を小分けにする」運用で肥大化を温存しないこと
 - **Edit サイズ（補助ルール）**: コンポーネント分割後もやむを得ず大きな編集が発生する場合に限り、1 回の Edit は 300 行以内に収める
 - **SVG 移行品質**: オリジナルにリッチな SVG（チップ表示、ステータス、詳細な注釈等）が含まれる場合は簡略化せず全詳細を再現すること。プレースホルダーへの置き換えは禁止。属性は camelCase に変換し `style` はオブジェクト形式で記述すること
 - **`litellm` / `dspy` 追加禁止**（脆弱性懸念）
 - **Client/Server コンポーネント境界**: ページ固有のアンカーナビなど状態やブラウザAPIに依存するUIは `'use client'` ディレクティブを含む専用コンポーネントとして切り出し、メインの `page.tsx` を Server Component として維持すること。
-- **コードブロック内の改行 (`.code-block`)**: JSX変換時、コード内の改行に `{"\n"}` を使用せず、各行を `<div className="code-line">...</div>` でラップすること。
+- **コードブロック内の改行 (`.code-block`)**: JSX変換時、コード内の改行に `{"\n"}` を使用せず、各行を `<div className="code-line">...</div>` でラップすること。行を `map` で展開する場合は各要素へ安定した `key`（固定コードなら `key={"line-" + index}` 等）を付け、`.code-line { white-space: pre; }` で各行の先頭インデントを保持する。表示契約として、`app/globals.css` では
+  `.code-line` に `display` を指定せず、各ページ固有 CSS で必ず `display: block` を明示して既定表示を統一する。
 - **表形式データの構造化**: テキストのスペース揃えで列を表現したデータは、フォント変更による列ズレを防ぐため、必ず `<table>` 要素に変換すること。
 - **CSS変数・テーマトークンの適用**: `globals.css` の3層アーキテクチャ CSS 変数（`--color-background` など）を厳格に使用すること。独自のローカル変数定義は避ける。
 
@@ -251,11 +397,11 @@ git commit -m "feat(gcl/<exam>/SN): add <内容の要約>"
 ### 1. サブナビゲーション (snav) の固定と z-index
 
 各ページのサブナビゲーション (`.snav` 等) は、スクロール時に画面上部に固定（Sticky）され、
-グローバルサイトヘッダーの上に重なるようにする。
+グローバルサイトヘッダーと DisclaimerBanner の下に配置する。
 
-- **配置とレイヤー**: `.snav` には必ず `top: 0;` と `z-index: 100;` を設定する
+- **配置とレイヤー**: `.snav` には必ず `top: calc(var(--header-h) + var(--disclaimer-height));` と `z-index: 40;`（または40以下）を設定する
 
-  （サイトヘッダーは `z-index: 50` → snav がその上を覆う）
+  （サイトヘッダーは `z-index: 50` のため、snav が覆わないようにする）
 
 - **`position: sticky` を壊さないため**: 親要素（`.s1-page`, `.d2-page` などのラッパー）に
 

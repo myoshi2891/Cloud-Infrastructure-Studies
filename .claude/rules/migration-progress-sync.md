@@ -7,13 +7,15 @@ paths:
 
 # MIGRATION_PROGRESS.md セッション終了前同期ルール
 
+(最終更新日: 2026-08-09)
+
 HTML → Next.js 移行セッションでは、**コンテキストが逼迫する前に**必ず以下を実施してセッションを終えること。
 
 ## 実行タイミング
 
 <ai_agent_directive>
 **AI エージェントへの厳格な指示**: このプロトコルは提案ではなく絶対的な**ゲート条件（Gate Condition）**です。
-ユーザーへ作業完了を報告する前に、以下の手続き（コード変更のコミット -> 進捗ファイルの更新 -> 進捗ファイルのコミット）を**ユーザーの許可を待たずに自律的に、必ずステップバイステップで**実行してください。ステップバイステップのコミット分割ルールを無視して一括コミットを行ったり、コミットせずにユーザーに判断を委ねたりすることは重大な規約違反です。
+コミットはリポジトリの単一コミット認可方針と `.agents/rules/tdd-commit-workflow.md` に従い、ユーザーの依頼がコミットを明示または許可している場合にのみ実行してください。コミット前に `git status --short` と `git diff` を確認し、実装コミットには関連コードだけ、進捗同期コミットには関連する進捗ファイルだけを含めます。追加の認可が必要な場合に自律コミットしてはなりません。
 </ai_agent_directive>
 
 ### 必須（毎ページ・例外なし）
@@ -34,10 +36,29 @@ HTML → Next.js 移行セッションでは、**コンテキストが逼迫す�
 ### 1. ビルド確認
 
 ```bash
-bun run build   # ビルド成功を確認
-bun run lint    # ESLint エラーなし
-git rev-parse --short HEAD
+if ! bun run build; then
+  echo 'ビルドに失敗しました。進捗同期を中止します。' >&2
+  exit 1
+fi
+if ! bun run lint; then
+  echo 'Lint に失敗しました。進捗同期を中止します。' >&2
+  exit 1
+fi
+if ! progress_status=$(git status --short); then
+  echo 'worktree の状態を取得できません。進捗同期を中止します。' >&2
+  exit 1
+fi
+if [ -n "$progress_status" ]; then
+  echo '進捗同期前に worktree をクリーンにしてください。' >&2
+  exit 1
+fi
+if ! implementation_head=$(git rev-parse HEAD); then
+  echo '最新実装 HEAD を取得できません。進捗同期を中止します。' >&2
+  exit 1
+fi
 ```
+
+`implementation_head` は進捗ファイルを編集する前の最新実装コミットであり、後続の進捗同期コミットとは区別する。
 
 ### 2. `MIGRATION_PROGRESS.md` を更新
 
@@ -45,7 +66,8 @@ git rev-parse --short HEAD
 
 | フィールド | 更新内容 |
 |---|---|
-| `最新 HEAD` | `git rev-parse --short HEAD` の実値 + コミットメッセージ要約 |
+| `最新実装 HEAD` | 進捗ファイル編集前に保存した `implementation_head` + 実装コミットメッセージ要約 |
+| `前回進捗同期コミット` | 今回の更新前に完了していた直前の進捗同期コミット。新しい同期コミット自身の値ではなく、次回同期時に前回値として更新する |
 | `次の作業` | 次セッションで **最初に** 取り掛かるページ（例: `Gcp-ace-complete-advanced-guide.html 移行`） |
 | `ビルド状態` | `bun run build` / `bun run lint` の最新状態 |
 
@@ -53,16 +75,54 @@ git rev-parse --short HEAD
 
 `現在地` の値と一致するように再開プロンプト内の以下を書き換える:
 
-- `最新 HEAD: <hash>` の値
+- `最新実装 HEAD: <hash>` の値（`implementation_head` と一致）
+- `前回進捗同期コミット: <hash>` の値（今回の更新前に完了していた直前の進捗同期コミットと一致）
 - `次の作業:` の説明（ページ粒度で具体的に）
 - 未移行 HTML の残数
+
+編集後、変更が `MIGRATION_PROGRESS.md` だけであることを確認する:
+
+```bash
+if ! progress_status=$(git status --short); then
+  echo 'worktree の状態を取得できません。コミットを中止します。' >&2
+  exit 1
+fi
+if [ "$progress_status" != ' M MIGRATION_PROGRESS.md' ]; then
+  echo 'MIGRATION_PROGRESS.md 以外の変更が含まれています。' >&2
+  exit 1
+fi
+```
 
 ### 4. コミット
 
 ```bash
-git add MIGRATION_PROGRESS.md
-git commit -m "chore(docs): update MIGRATION_PROGRESS.md — <作業内容の1行要約>"
+if [ "${COMMIT_AUTHORIZED:-}" != 'yes' ]; then
+  echo '進捗同期コミットには COMMIT_AUTHORIZED=yes による明示認可が必要です。' >&2
+  exit 1
+fi
+if ! git status --short; then
+  echo 'worktree の状態を取得できません。コミットを中止します。' >&2
+  exit 1
+fi
+if ! git add MIGRATION_PROGRESS.md; then
+  echo '進捗ファイルをステージできません。コミットを中止します。' >&2
+  exit 1
+fi
+if ! git diff --cached -- MIGRATION_PROGRESS.md; then
+  echo 'ステージ差分を取得できません。コミットを中止します。' >&2
+  exit 1
+fi
+if ! git commit -m "chore(docs): update MIGRATION_PROGRESS.md — <作業内容の1行要約>"; then
+  echo '進捗同期コミットを作成できません。後続処理を中止します。' >&2
+  exit 1
+fi
+if ! new_progress_sync_commit=$(git rev-parse HEAD); then
+  echo '作成した進捗同期コミットを取得できません。後続処理を中止します。' >&2
+  exit 1
+fi
 ```
+
+各 Git 操作が失敗した場合は、その時点で編集・記録・後続処理を中止する。`new_progress_sync_commit` は `git commit` が成功した直後の `HEAD` を取得できた場合にのみ代入し、失敗前の古い `HEAD` を流用しない。今回作成した進捗同期コミットの識別子として実行結果・引き継ぎに記録し、今回コミットした `前回進捗同期コミット` や `最新実装 HEAD` を上書きしない。次回の進捗同期時に、この値を `前回進捗同期コミット` として記録する。
 
 ## 禁止
 

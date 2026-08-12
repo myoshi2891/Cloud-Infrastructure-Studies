@@ -2,17 +2,21 @@
  * apply_render_pipeline.mjs — 静的 HTML の Mermaid 描画パイプラインを冪等に適用する。
  *
  * 旧来の死蔵ワンオフ (fix_mermaid_config / fix_mermaid_css / fix_mermaid_size) を統合・汎用化。
- * 「DIAGRAMS をテンプレートリテラルで定義する」LLM 判断が必要な部分以外の機械的処理を 1 本に集約し、
+ * 「DIAGRAMS の図ソースを定義する」LLM 判断が必要な部分以外の機械的処理を 1 本に集約し、
  * 同種作業でボイラープレートを手書き再生成しなくて済むようにする。
  *
  * 使い方:
- *   bun run .claude/skills/fix-mermaid/scripts/apply_render_pipeline.mjs <file.html>
+ *   bun run .agents/skills/fix-mermaid/scripts/apply_render_pipeline.mjs <file.html>
  *
- * 前提: HTML の <script> 内に `const DIAGRAMS = { 'diag-1': ` ... ` }` が定義済みであること
- *       (無い場合は空スタブを挿入して警告する)。各図の <div class="mermaid">...</div> は
+ * 前提: HTML の <script> 内に `const DIAGRAMS = {...}` が定義済みであること。
+ *       未定義の場合は入力を書き換えず失敗する。各図の <div class="mermaid">...</div> は
  *       本スクリプトが連番 id 付きの空 div に変換する。
  */
 import fs from 'fs';
+import {
+    findDiagramsDeclaration,
+    maskCommentsAndStrings,
+} from './javascript_source.mjs';
 
 // --- 注入する正準ボイラープレート -------------------------------------------
 
@@ -90,8 +94,10 @@ const CENTERING_MARKER = 'mermaid-center (apply_render_pipeline.mjs)';
 // --- 各ステップ (純粋関数・冪等) --------------------------------------------
 
 /**
- * 各 `<div class="mermaid">…</div>` を `<div class="mermaid" id="diag-N"></div>` に置換する。
- * 既に id 付き (`class="mermaid" id=...`) の div は正規表現にマッチしないため自然に冪等。
+ * Replaces un-IDed Mermaid containers with sequential placeholder elements.
+ * Existing ID-bearing Mermaid containers remain unchanged.
+ * @param {string} html - The HTML to transform.
+ * @returns {{html: string, count: number}} The transformed HTML and number of replacements.
  */
 export function injectIds(html) {
     let count = 0;
@@ -106,52 +112,204 @@ export function injectIds(html) {
 }
 
 /**
- * `startOnLoad: true` を false にし、未指定なら `securityLevel: 'loose'` を付与する。
+ * Updates Mermaid initialization options for manual rendering.
+ * @param {string} html - The HTML containing the Mermaid initialization.
+ * @return {string} The HTML with `startOnLoad` set to `false` and `securityLevel` set to `'loose'` when required.
  */
 export function ensureInitFlags(html) {
-    let out = html;
-    if (/startOnLoad:\s*true/.test(out)) {
-        out = out.replace(/startOnLoad:\s*true\s*,?/, "startOnLoad: false,");
+    const initializeCall = findMermaidInitialize(html);
+    if (!initializeCall) return html;
+    const { maskedSource: maskedHtml, optionsStart } = initializeCall;
+    if (html[optionsStart] !== '{') return html;
+    const optionsEnd = findMatchingBrace(maskedHtml, optionsStart);
+    if (optionsEnd === -1) return html;
+
+    const startOnLoad = findTopLevelProperty(
+        html,
+        maskedHtml,
+        optionsStart,
+        optionsEnd,
+        'startOnLoad',
+    );
+    const securityLevel = findTopLevelProperty(
+        html,
+        maskedHtml,
+        optionsStart,
+        optionsEnd,
+        'securityLevel',
+    );
+    const startOnLoadValue = startOnLoad
+        ? /^(true|false)\b/.exec(maskedHtml.slice(startOnLoad.valueStart))
+        : null;
+    let insertionIndex = -1;
+
+    if (!securityLevel) {
+        let commaIndex = startOnLoadValue
+            ? startOnLoad.valueStart + startOnLoadValue[0].length
+            : -1;
+        while (commaIndex !== -1 && /\s/.test(maskedHtml[commaIndex] ?? '')) commaIndex += 1;
+        insertionIndex = commaIndex !== -1 && html[commaIndex] === ','
+            ? commaIndex + 1
+            : optionsStart + 1;
     }
-    // initialize 呼び出し内に securityLevel が無ければ注入する。
-    if (!/securityLevel\s*:/.test(out)) {
-        if (/startOnLoad:\s*false\s*,/.test(out)) {
-            // 従来どおり startOnLoad 行の直後に追加
-            out = out.replace(
-                /(startOnLoad:\s*false\s*,)/,
-                "$1\n                securityLevel: 'loose',",
-            );
-        } else {
-            // startOnLoad 不在/カンマ無し時は initialize の options ブロック先頭へ挿入
-            out = out.replace(
-                /(mermaid\.initialize\(\s*\{)/,
-                "$1 securityLevel: 'loose',",
-            );
-        }
+
+    let out = html;
+    if (startOnLoadValue?.[1] === 'true') {
+        out = out.slice(0, startOnLoad.valueStart) + 'false' + out.slice(startOnLoad.valueStart + 4);
+        if (insertionIndex > startOnLoad.valueStart) insertionIndex += 1;
+    }
+    if (insertionIndex !== -1) {
+        const insertion = insertionIndex === optionsStart + 1
+            ? " securityLevel: 'loose',"
+            : "\n                securityLevel: 'loose',";
+        out = out.slice(0, insertionIndex) + insertion + out.slice(insertionIndex);
     }
     return out;
 }
 
 /**
- * applySvgFixups + render ループを mermaid.initialize 後の </script> 直前に注入する。
- * 既に注入済み (マーカー検出) なら不変。
+ * Locates the first `mermaid.initialize` call in the source.
+ * @param {string} source - The HTML or script source to search.
+ * @return {{index: number, optionsStart: number, maskedSource: string}|null} The call position, options object start position, and comment- and string-masked source, or `null` if no call is found.
+ */
+function findMermaidInitialize(source) {
+    const scriptPattern = /<script\b[^>]*>([\s\S]*?)<\/script\s*>/gi;
+    const scripts = [...source.matchAll(scriptPattern)];
+    const segments = scripts.length > 0
+        ? scripts.map((script) => ({
+            offset: script.index + script[0].indexOf('>') + 1,
+            source: script[1],
+        }))
+        : [{ offset: 0, source }];
+
+    for (const segment of segments) {
+        const maskedSegment = maskCommentsAndStrings(segment.source);
+        const match = /(^|[^.$\w])mermaid\.initialize\(\s*/.exec(maskedSegment);
+        if (!match) continue;
+        const prefixLength = match[1].length;
+        const maskedSource = source.slice(0, segment.offset)
+            + maskedSegment
+            + source.slice(segment.offset + segment.source.length);
+        return {
+            index: segment.offset + match.index + prefixLength,
+            optionsStart: segment.offset + match.index + match[0].length,
+            maskedSource,
+        };
+    }
+    return null;
+}
+
+/**
+ * Finds the closing brace that matches an opening brace.
+ * @param {string} maskedSource - Source text with comments and strings masked.
+ * @param {number} openingIndex - Index of the opening brace.
+ * @return {number} The index of the matching closing brace, or -1 if none is found.
+ */
+function findMatchingBrace(maskedSource, openingIndex) {
+    let depth = 0;
+    for (let index = openingIndex; index < maskedSource.length; index += 1) {
+        const char = maskedSource[index];
+        if (char === '{') {
+            depth += 1;
+        } else if (char === '}') {
+            depth -= 1;
+            if (depth === 0) return index;
+        }
+    }
+    return -1;
+}
+
+/**
+ * Locates a direct property in an object literal.
+ * @param {string} source - The original source containing the property name.
+ * @param {string} maskedSource - The source with comments and strings masked for structural scanning.
+ * @param {number} openingIndex - The index of the object's opening brace.
+ * @param {number} closingIndex - The index of the object's closing brace.
+ * @param {string} propertyName - The property name to locate.
+ * @return {{valueStart: number}|null} The index of the property's value after leading whitespace, or `null` if the property is not found.
+ */
+function findTopLevelProperty(source, maskedSource, openingIndex, closingIndex, propertyName) {
+    let depth = 0;
+    for (let index = openingIndex; index <= closingIndex; index += 1) {
+        const char = maskedSource[index];
+        if (char === '{') {
+            depth += 1;
+        } else if (char === '}') {
+            depth -= 1;
+        } else if (depth === 1 && char === ':') {
+            if (readPropertyNameBeforeColon(source, index) === propertyName) {
+                return { valueStart: skipWhitespace(maskedSource, index + 1) };
+            }
+        }
+    }
+    return null;
+}
+
+/**
+ * Finds the first non-whitespace position at or after the specified index.
+ * @param {string} source - The string to scan.
+ * @param {number} start - The index at which to begin scanning.
+ * @return {number} The index of the first non-whitespace character.
+ */
+function skipWhitespace(source, start) {
+    let index = start;
+    while (/\s/.test(source[index] ?? '')) index += 1;
+    return index;
+}
+
+/**
+ * Reads a property name immediately before a colon.
+ * @param {string} source - The source text containing the property.
+ * @param {number} colonIndex - The index of the property's colon.
+ * @return {string|null} The property name, or `null` when a quoted name is unterminated.
+ */
+function readPropertyNameBeforeColon(source, colonIndex) {
+    let end = colonIndex;
+    while (/\s/.test(source[end - 1] ?? '')) end -= 1;
+    const last = source[end - 1];
+    if (last === "'" || last === '"') {
+        for (let start = end - 2; start >= 0; start -= 1) {
+            if (source[start] === last) {
+                let backslashes = 0;
+                for (let cursor = start - 1; source[cursor] === '\\'; cursor -= 1) backslashes += 1;
+                if (backslashes % 2 === 0) return source.slice(start + 1, end - 1);
+            }
+        }
+        return null;
+    }
+    let start = end;
+    while (/[\w$]/.test(source[start - 1] ?? '')) start -= 1;
+    return source.slice(start, end);
+}
+
+/**
+ * Adds the Mermaid rendering loop to the script containing Mermaid initialization.
+ * @param {string} html - The HTML document to update.
+ * @returns {string} The HTML document with the rendering loop inserted.
+ * @throws {Error} If Mermaid initialization or a subsequent closing script tag is missing.
  */
 export function injectRenderLoop(html) {
     if (html.includes(RENDER_LOOP_MARKER)) return html;
-    const initIdx = html.indexOf('mermaid.initialize(');
-    if (initIdx === -1) {
+    const initializeCall = findMermaidInitialize(html);
+    if (!initializeCall) {
         throw new Error('mermaid.initialize( が見つかりません。初期化ブロックを先に用意してください。');
     }
-    const closeIdx = html.indexOf('</script>', initIdx);
-    if (closeIdx === -1) {
+    const initIdx = initializeCall.index;
+    const closingScriptPattern = /<\/script\s*>/gi;
+    closingScriptPattern.lastIndex = initIdx;
+    const closingScript = closingScriptPattern.exec(html);
+    if (!closingScript) {
         throw new Error('mermaid.initialize 以降に </script> が見つかりません。');
     }
+    const closeIdx = closingScript.index;
     return html.slice(0, closeIdx) + '\n' + RENDER_LOOP + '        ' + html.slice(closeIdx);
 }
 
 /**
- * 中央寄せ CSS を最初の </style> 直前に注入する。既に注入済みなら不変。
- * </style> が無い場合は </head> 直前に <style> ごと挿入する。
+ * Adds Mermaid centering styles to the HTML document.
+ * @param {string} html - The HTML source to update.
+ * @returns {string} The HTML source with centering styles injected.
+ * @throws {Error} If the document contains neither a closing `</style>` nor `</head>` tag.
  */
 export function injectCenteringCss(html) {
     if (html.includes(CENTERING_MARKER)) return html;
@@ -168,11 +326,17 @@ export function injectCenteringCss(html) {
 }
 
 /**
- * 全ステップを冪等に適用する。
- * @returns {{ html: string, report: string[] }}
+ * Applies the Mermaid rendering pipeline to an HTML document.
+ * @param {string} html - The HTML document to process.
+ * @returns {{html: string, report: string[]}} The transformed HTML and a report describing applied changes.
+ * @throws {Error} If the document does not define `DIAGRAMS`.
  */
 export function applyPipeline(html) {
     const report = [];
+
+    if (!findDiagramsDeclaration(html)) {
+        throw new Error('DIAGRAMS が定義されていません。図ソースを定義してから再実行してください。');
+    }
 
     const ids = injectIds(html);
     let out = ids.html;
@@ -181,15 +345,6 @@ export function applyPipeline(html) {
             ? `div→id 置換: ${ids.count} 件`
             : 'div→id 置換: 対象なし (適用済みか div.mermaid 不在)',
     );
-
-    if (!/const\s+DIAGRAMS\s*=/.test(out)) {
-        // DIAGRAMS 未定義: 空スタブを初期化ブロック直前に挿入して警告
-        const initIdx = out.indexOf('mermaid.initialize(');
-        if (initIdx !== -1) {
-            out = out.slice(0, initIdx) + 'const DIAGRAMS = {};\n            ' + out.slice(initIdx);
-        }
-        report.push('⚠️ DIAGRAMS 未定義: 空スタブを挿入。各図のソースを手動で定義してください。');
-    }
 
     const beforeFlags = out;
     out = ensureInitFlags(out);

@@ -110,8 +110,7 @@ export const applySvgFixups = (
 
     const viewBox = svgEl.getAttribute('viewBox');
     if (!viewBox) {
-        // viewBox がない場合はコンテナに収まるよう max-width のフォールバックを設定して終了
-        svgEl.style.maxWidth = '100%';
+        // 横幅の上限は CSS の共通契約に委ねる
         return;
     }
 
@@ -134,9 +133,6 @@ export const applySvgFixups = (
         targetWidth = Math.min(650, Math.max(Math.round(w * 1.35), 480));
     }
     svgEl.style.width = `${targetWidth}px`;
-    // preserveNaturalScale=true のとき max-width:none でコンテナ縮小に追従させない。
-    // ラッパー(.mermaid-wrap)の overflow-x:auto が横スクロールを担う。
-    svgEl.style.maxWidth = preserveNaturalScale ? 'none' : '100%';
     svgEl.style.maxHeight = preserveNaturalScale ? 'none' : h > 550 ? '580px' : 'none';
     svgEl.setAttribute('viewBox', `${x} ${y} ${w} ${h + extraHeight}`);
 };

@@ -8,7 +8,12 @@ export default defineConfig({
         environment: 'jsdom',
         globals: true,
         setupFiles: ['./vitest.setup.ts'],
-        include: ['__tests__/**/*.test.{ts,tsx}'],
+        include: [
+            '__tests__/**/*.test.{ts,tsx}',
+            '.agents/skills/fix-mermaid/scripts/restore_diagrams.test.ts',
+            '.claude/skills/fix-mermaid/scripts/restore_diagrams.test.ts',
+            '.gemini/skills/fix-mermaid/scripts/restore_diagrams.test.ts',
+        ],
     },
     resolve: {
         alias: {

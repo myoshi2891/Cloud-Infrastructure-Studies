@@ -5,8 +5,10 @@ description: Audit and update all repository specifications (CLAUDE.md, GEMINI.m
 
 # 仕様書・テスト進捗同期スキル (spec-sync)
 
+(最終更新日: 2026-08-11)
+
 **🚨 開発時の必須ルール（TDD & Step-by-step Commit） 🚨**
-仕様書の更新やテスト進捗の更新作業においても、対応するコード修正（実装やテスト修正）を伴う場合は必ず `.claude/rules/tdd-commit-workflow.md` のステップバイステップ・コミットルールに従うこと。
+仕様書の更新やテスト進捗の更新作業においても、対応するコード修正（実装やテスト修正）を伴う場合は必ず `.agents/rules/tdd-commit-workflow.md` のステップバイステップ・コミットルールに従うこと。
 
 ## 目的
 
@@ -30,7 +32,7 @@ description: Audit and update all repository specifications (CLAUDE.md, GEMINI.m
 | `MIGRATION_PROGRESS.md` | `Updated YYYY-MM-DD`（現在地テーブル内） | 現在地テーブル内、または「最終 HEAD」欄 |
 | `docs/TEST_COVERAGE_PROGRESS.md` | `最終更新日: YYYY-MM-DD` | ファイル冒頭付近 |
 | `docs/coverage-dashboard.html` | `<time datetime="YYYY-MM-DD">YYYY-MM-DD</time>` | ヘッダーのメタ情報エリア（`Updated`）およびフッター |
-| 各個別 `SKILL.md` / `*.md` | `(最終更新日: YYYY-MM-DD)` または未移行HTMLリスト等の日付 | タイトル下、または進捗管理の日付欄 |
+| `.agents/AGENTS.md`、`.agents/rules/*.md`、各個別 `.agents/skills/*/SKILL.md` / `*.md` | `(最終更新日: YYYY-MM-DD)` または未移行HTMLリスト等の日付 | タイトル下、または進捗管理の日付欄。新規作成時から必須とし、既存ファイルは次回編集時に追記する |
 
 ---
 
@@ -54,6 +56,7 @@ description: Audit and update all repository specifications (CLAUDE.md, GEMINI.m
 **変更対象ファイル:**
 1. `app/constants.ts` — `EXAMS` に `Exam` エントリ追加（これが正本、他は自動反映）
 2. `app/globals.css` — `icon-theme-<id>` ユーティリティ追加
+3. `app/<provider>/<exam>/page.tsx` — 新試験のルートページ追加。試験追加時の標準統合経路であり、自動生成ナビゲーションのリンク先を有効なルートとして保持する
 
 **仕様書更新:**
 - [ ] `CLAUDE.md` のプロジェクト概要に試験名を追記
@@ -97,7 +100,7 @@ description: Audit and update all repository specifications (CLAUDE.md, GEMINI.m
 
 ### F. テストの実装・整備を行った場合（P レベル・フェーズ完了時の Definition of Done）
 
-`.claude/rules/tdd-commit-workflow.md` Step 3 から強制呼び出しされる、**フェーズ完了時に「漏れなく」更新する全ファイル一覧**。単発の Step 3 で `CLAUDE.md` だけ触って終わらせるのは禁止。以下を 1 フェーズ内で確定させること。
+`.agents/rules/tdd-commit-workflow.md` Step 3 から強制呼び出しされる、**フェーズ完了時に「漏れなく」更新する全ファイル一覧**。単発の Step 3 で `CLAUDE.md` だけ触って終わらせるのは禁止。以下を 1 フェーズ内で確定させること。
 
 **変更対象ファイルと観点:**
 
@@ -119,7 +122,7 @@ P レベル・フェーズキーワード（例: `P2`, `Performance テスト`, 
 
 ```bash
 # 完了したフェーズのキーワードで横断 grep（例: P2 横断品質完了時）
-grep -rn "P2\|横断品質" *.md docs/*.md .claude/rules/*.md .claude/skills/*/SKILL.md
+grep -rn "P2\|横断品質" *.md docs/*.md .agents/rules/*.md .agents/skills/*/SKILL.md
 ```
 
 ---
@@ -144,7 +147,7 @@ find app -name "page.tsx" 2>/dev/null | sed 's|app/||' | sed 's|/page.tsx||'
 find __tests__/ -name "*.test.ts" -o -name "*.test.tsx" 2>/dev/null | sort
 
 # D. テスト実行結果の取得
-bun test 2>&1 | tail -5
+set -o pipefail; bun run test 2>&1 | tail -5
 bun run lint 2>&1 | tail -5
 ```
 
@@ -163,9 +166,10 @@ bun run lint 2>&1 | tail -5
   - [ ] 起動手順、テストの実行、定義に変更はないか。
   - [ ] 最終更新日のタイムスタンプが最新化されているか。
 - [ ] **`MIGRATION_PROGRESS.md` 監査**
-  - [ ] `最新 HEAD` が `git rev-parse --short HEAD` の出力と完全に一致しているか。
-  - [ ] `ビルド状態` の `bun test` の pass 数が現在の実測値と一致しているか。
-  - [ ] `## 次回セッションでの再開プロンプト` の `最新 HEAD`、`テスト件数` が上記と同期しているか。
+  - [ ] `最新実装 HEAD` が、進捗同期コミットの直前に保存した実装コミットと完全に一致しているか。
+  - [ ] `前回進捗同期コミット` が、今回の更新前に完了していた直前の進捗同期コミットと完全に一致し、今回作成する同期コミットや `最新実装 HEAD` と混同されていないか。
+  - [ ] `ビルド状態` の `bun run test` の pass 数が現在の実測値と一致しているか。
+  - [ ] `## 次回セッションでの再開プロンプト` の `最新実装 HEAD`、`前回進捗同期コミット`、`テスト件数` が上記とそれぞれの意味で同期しているか。
   - [ ] 最終更新日（タイムスタンプ）が更新されているか。
 - [ ] **`docs/TEST_COVERAGE_PROGRESS.md` 監査**
   - [ ] Section 1 の全体サマリーが、最新の `dashboard` スクリプト出力値と同期しているか。
@@ -186,15 +190,112 @@ bun run lint 2>&1 | tail -5
 仕様書のみの同期更新のコミットには**ソースコードの変更を一切含めない**でください（TDD コミット分割ルール）。
 
 ```bash
-# 1. .claude 内のルール・スキル変更を .gemini に同期
-rm -rf .gemini/rules/* .gemini/skills/*
-cp -R .claude/rules/* .gemini/rules/
-cp -R .claude/skills/* .gemini/skills/
+# 1. 正本 .agents の共通ルール・スキルを、検証済み一時領域経由で同期
+# --delete は列挙した rules / skill ディレクトリ内だけに適用し、ミラー固有の他ディレクトリは保持する
+sync_skills=(fix-mermaid html-to-nextjs-migration markdown-formatter md-to-nextjs-migration spec-sync)
+sync_tmp=$(mktemp -d) || exit 1
+rollback_required=no
+rollback_mirrors() {
+  [ "$rollback_required" = 'yes' ] || return 0
+  for rollback_mirror in .claude .gemini; do
+    rsync -a --delete "$sync_tmp/backup/$rollback_mirror/rules/" "$rollback_mirror/rules/" || return 1
+    for rollback_skill in "${sync_skills[@]}"; do
+      rsync -a --delete "$sync_tmp/backup/$rollback_mirror/skills/$rollback_skill/" "$rollback_mirror/skills/$rollback_skill/" || return 1
+    done
+  done
+}
+cleanup_sync() {
+  rollback_mirrors || echo '同期前状態へのロールバックに失敗しました。手動復旧が必要です。' >&2
+  rm -f "${worktree_paths:-}" "${staged_paths:-}"
+  rm -rf "$sync_tmp"
+}
+trap cleanup_sync EXIT
 
-# 2. 変更された仕様書とルール・スキルをステージングしてコミット
-git add CLAUDE.md GEMINI.md README.md MIGRATION_PROGRESS.md docs/TEST_COVERAGE_PROGRESS.md docs/coverage-dashboard.html .claude/ .gemini/
-git commit -m "chore(docs): sync spec files — <具体的な更新理由や同期内容>"
+for mirror in .claude .gemini; do
+  mirror_skill_paths=()
+  for skill_name in "${sync_skills[@]}"; do
+    mirror_skill_paths+=("$mirror/skills/$skill_name")
+  done
+  if [ -n "$(git status --porcelain=v1 --ignored --untracked-files=all -- "$mirror/rules" "${mirror_skill_paths[@]}")" ]; then
+    echo "$mirror の同期対象に既存の tracked・untracked・ignored 差分があります。同期を中止します。" >&2
+    exit 1
+  fi
+  mkdir -p "$sync_tmp/staged/$mirror/rules" "$sync_tmp/backup/$mirror/rules"
+  rsync -a "$mirror/rules/" "$sync_tmp/backup/$mirror/rules/" || exit 1
+  rsync -a --delete .agents/rules/ "$sync_tmp/staged/$mirror/rules/" || exit 1
+  for skill_name in "${sync_skills[@]}"; do
+    mkdir -p "$sync_tmp/staged/$mirror/skills/$skill_name" "$sync_tmp/backup/$mirror/skills/$skill_name"
+    rsync -a "$mirror/skills/$skill_name/" "$sync_tmp/backup/$mirror/skills/$skill_name/" || exit 1
+    rsync -a --delete ".agents/skills/$skill_name/" "$sync_tmp/staged/$mirror/skills/$skill_name/" || exit 1
+  done
+done
+
+rollback_required=yes
+for mirror in .claude .gemini; do
+  rsync -a --delete "$sync_tmp/staged/$mirror/rules/" "$mirror/rules/" || exit 1
+  for skill_name in "${sync_skills[@]}"; do
+    rsync -a --delete "$sync_tmp/staged/$mirror/skills/$skill_name/" "$mirror/skills/$skill_name/" || exit 1
+  done
+done
+
+# 2. worktree とステージの変更対象が同期対象6ディレクトリだけであることを検証
+allowed_sync_path() {
+  case "$1" in
+    .agents/rules/*|.agents/skills/*|.claude/rules/*|.claude/skills/*|.gemini/rules/*|.gemini/skills/*) return 0 ;;
+    *) return 1 ;;
+  esac
+}
+worktree_paths=$(mktemp) || exit 1
+staged_paths=$(mktemp) || exit 1
+if ! git diff --name-only HEAD > "$worktree_paths"; then
+  echo 'worktree 差分を取得できません。ステージやコミットへ進みません。' >&2
+  exit 1
+fi
+if ! git ls-files --others --exclude-standard >> "$worktree_paths"; then
+  echo '未追跡ファイルを取得できません。ステージやコミットへ進みません。' >&2
+  exit 1
+fi
+while IFS= read -r changed_path; do
+  allowed_sync_path "$changed_path" || {
+    echo "同期対象外の worktree 変更があります: $changed_path" >&2
+    exit 1
+  }
+done < "$worktree_paths"
+while IFS= read -r changed_path; do
+  [ -n "$changed_path" ] || continue
+  if ! git add -- "$changed_path"; then
+    echo "今回の同期差分をステージできません: $changed_path" >&2
+    exit 1
+  fi
+done < "$worktree_paths"
+if ! git diff --cached --name-only > "$staged_paths"; then
+  echo 'ステージ対象の一覧を取得できません。コミットへ進みません。' >&2
+  exit 1
+fi
+while IFS= read -r staged_path; do
+  allowed_sync_path "$staged_path" || {
+    echo "同期対象外のステージ差分があります: $staged_path" >&2
+    exit 1
+  }
+done < "$staged_paths"
+if ! git diff --cached; then
+  echo 'ステージ差分を取得できません。コミットへ進みません。' >&2
+  exit 1
+fi
+
+# 3. ユーザーが今回のコミットを明示的に認可した場合だけコミット
+[ "${USER_AUTHORIZED_SPEC_COMMIT:-}" = 'yes' ] || {
+  echo 'ユーザーの明示認可がないため、コミットしません。' >&2
+  exit 1
+}
+if ! git commit -m "chore(docs): sync spec files — <具体的な更新理由や同期内容>"; then
+  echo '仕様同期コミットに失敗しました。後続処理を中止します。' >&2
+  exit 1
+fi
+rollback_required=no
 ```
+
+`rsync`、変更範囲検証、`git add`、ステージ差分検証、ユーザー認可確認のいずれかが失敗した場合は即時停止し、部分同期のまま後続の Git 操作へ進まない。コミットはすべての同期・検証・Git 操作が成功した場合に限る。
 
 ---
 

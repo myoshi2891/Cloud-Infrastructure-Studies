@@ -75,6 +75,69 @@ describe("ensureInitFlags", () => {
     const out = ensureInitFlags(input);
     expect(out.match(/securityLevel/g)?.length).toBe(1);
   });
+
+  test.each(["'startOnLoad'", '"startOnLoad"'])(
+    "quoted key %s の true を false にする",
+    (key) => {
+      const input = `mermaid.initialize({ ${key}: true, theme: 'dark' });`;
+      const out = ensureInitFlags(input);
+      expect(out).toContain(`${key}: false`);
+      expect(out).not.toContain(`${key}: true`);
+    },
+  );
+
+  test.each(["'securityLevel'", '"securityLevel"'])(
+    "quoted key %s が既存なら securityLevel を注入しない",
+    (key) => {
+      const input = `mermaid.initialize({ startOnLoad: false, ${key}: 'strict' });`;
+      const out = ensureInitFlags(input);
+      expect(out.match(/securityLevel/g)?.length).toBe(1);
+      expect(out).toContain(`${key}: 'strict'`);
+      expect(out).not.toContain("securityLevel: 'loose'");
+    },
+  );
+
+  test("後方の quoted securityLevel を注入値で上書きしない", () => {
+    const input = `mermaid.initialize({
+      startOnLoad: false,
+      theme: 'dark',
+      "securityLevel": 'strict',
+    });`;
+    const out = ensureInitFlags(input);
+    expect(out.match(/securityLevel/g)?.length).toBe(1);
+    expect(out).toContain('"securityLevel": \'strict\'');
+  });
+
+  test("nested startOnLoad は変更せず top-level securityLevel を注入する", () => {
+    const input = "mermaid.initialize({ flowchart: { startOnLoad: true } });";
+    const out = ensureInitFlags(input);
+    expect(out).toContain("flowchart: { startOnLoad: true }");
+    expect(out).toContain("securityLevel: 'loose'");
+  });
+
+  test.each([
+    '// mermaid.initialize({ startOnLoad: true });',
+    'const example = "mermaid.initialize({ startOnLoad: true });";',
+  ])("コメントや文字列の初期化候補を無視する: %s", (falseMatch) => {
+    const input = `${falseMatch}\nmermaid.initialize({ startOnLoad: true });`;
+    const out = ensureInitFlags(input);
+
+    expect(out).toContain(falseMatch);
+    expect(out).toMatch(/\nmermaid\.initialize\(\{[^}]*startOnLoad: false/);
+    expect(out.match(/securityLevel: 'loose'/g)?.length).toBe(1);
+  });
+
+  test("customMermaid.initialize を無視して実際の mermaid.initialize を更新する", () => {
+    const input = `customMermaid.initialize({ startOnLoad: true });
+custommermaid.initialize({ startOnLoad: true });
+mermaid.initialize({ startOnLoad: true });`;
+    const out = ensureInitFlags(input);
+
+    expect(out).toContain("customMermaid.initialize({ startOnLoad: true });");
+    expect(out).toContain("custommermaid.initialize({ startOnLoad: true });");
+    expect(out).toMatch(/\nmermaid\.initialize\(\{[^}]*startOnLoad: false/);
+    expect(out.match(/securityLevel: 'loose'/g)?.length).toBe(1);
+  });
 });
 
 describe("injectRenderLoop", () => {
@@ -101,6 +164,32 @@ describe("injectRenderLoop", () => {
     const twice = injectRenderLoop(once);
     expect(twice).toBe(once);
   });
+
+  test("customMermaid.initialize より後の実際の初期化スクリプトへ注入する", () => {
+    const input = `<script>customMermaid.initialize({});</script>
+<script>custommermaid.initialize({});</script>
+<script>mermaid.initialize({ startOnLoad: false });</script>`;
+    const out = injectRenderLoop(input);
+
+    expect(out.indexOf("function applySvgFixups")).toBeGreaterThan(
+      out.indexOf("mermaid.initialize({ startOnLoad: false })"),
+    );
+  });
+
+  test.each(["</script >", "</SCRIPT>"])(
+    "閉じタグの表記ゆれ %s の直前へ注入する",
+    (closingTag) => {
+      const input = `<script>mermaid.initialize({ startOnLoad: false });${closingTag}`;
+      const out = injectRenderLoop(input);
+
+      expect(out.indexOf("function applySvgFixups")).toBeGreaterThan(
+        out.indexOf("mermaid.initialize({ startOnLoad: false })"),
+      );
+      expect(out.indexOf("function applySvgFixups")).toBeLessThan(
+        out.toLowerCase().indexOf("</script"),
+      );
+    },
+  );
 });
 
 describe("injectCenteringCss", () => {
@@ -126,5 +215,35 @@ describe("applyPipeline (統合・冪等性)", () => {
 
     const second = applyPipeline(first.html);
     expect(second.html).toBe(first.html);
+  });
+
+  test.each([
+    "// const DIAGRAMS = {};",
+    "/* const DIAGRAMS = {}; */",
+    "const example = 'const DIAGRAMS = {};'",
+    'const example = "const DIAGRAMS = {};"',
+    "const example = `const DIAGRAMS = {};`",
+  ])("コメントや文字列だけの宣言候補を拒否する: %s", (falseMatch) => {
+    const input = FIXTURE.replace(/\s*const DIAGRAMS = \{[\s\S]*?\n\s*\};/, `\n      ${falseMatch}`);
+    expect(() => applyPipeline(input)).toThrow("DIAGRAMS が定義されていません");
+  });
+
+  test("コメントと文字列の候補より後にある実宣言を検出する", () => {
+    const input = FIXTURE.replace(
+      "      const DIAGRAMS = {",
+      `      // const DIAGRAMS = {};
+      const example = "const DIAGRAMS = {};";
+      const DIAGRAMS = {`,
+    );
+    expect(applyPipeline(input).html).toContain('id="diag-1"');
+  });
+
+  test("正規表現リテラル内の候補より後にある実宣言を検出する", () => {
+    const input = FIXTURE.replace(
+      "      const DIAGRAMS = {",
+      `      const declarationPattern = /const DIAGRAMS = \\{[^}]*\\}/g;
+      const DIAGRAMS = {`,
+    );
+    expect(applyPipeline(input).html).toContain('id="diag-1"');
   });
 });

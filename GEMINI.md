@@ -1,8 +1,8 @@
 # Project Overview: Cloud Infrastructure Studies
 
-Updated 2026-08-10
+Updated 2026-08-11
 
-このプロジェクトは、Google Cloud / AWS / Cisco のクラウド・ネットワーク資格試験対策（Associate Cloud Engineer, Generative AI Leader, Cloud Digital Leader, Associate Google Workspace Administrator, Professional Cloud Network Engineer, Cisco Certified Network Associate、AWS Certified Solutions Architect – Associate）を目的とした学習用 Next.js アプリケーションです。
+このプロジェクトは、Google Cloud / AWS / Cisco のクラウド・ネットワーク資格試験対策（Associate Cloud Engineer, Generative AI Leader, Cloud Digital Leader, Associate Google Workspace Administrator, Professional Cloud Network Engineer, Cisco Certified Network Associate, Cisco Certified Network Associate Automation、AWS Certified Solutions Architect – Associate）を目的とした学習用 Next.js アプリケーションです。
 試験ガイド、重要ポイントの解説、およびテスト対策コンテンツを提供します。
 
 ## 主な技術スタック
@@ -40,17 +40,23 @@ Updated 2026-08-10
   - `/app/cisco/ccde/complete-guide`: Cisco CCDE 認定 完全ガイド。
   - `/app/cisco/ccna/beginner-guide`: Cisco CCNA試験 完全ガイド。
   - `/app/cisco/ccna/automation-software-development-design`: CCNA Automation ソフトウェア開発と設計 完全ガイド。
+  - `/app/cisco/ccna/automation-api-guide`: CCNA Automation API 完全ガイド。
   - `/app/cisco/ccna/automation-application-deployment-security`: CCNA Automation アプリケーションの展開とセキュリティ 完全ガイド。
   - `/app/cisco/ccna/automation-cisco-platforms-and-development`: CCNA Automation Cisco Platforms and Development 徹底解説ガイド。
+  - `/app/cisco/ccna/automation-infrastructure-and-automation`: CCNA Automation 5.0 Infrastructure and Automation ステップバイステップ解説ガイド。
+  - `/app/cisco/ccna/automation-network-fundamentals`: CCNAAUTO 200-901 6.0 Network Fundamentals 完全ガイド。
+  - `/app/cisco/ccna/network-access-guide`: CCNA 200-301 Network Access 徹底解説ガイド。
   - `/app/cisco/ccna/ip-connectivity-guide`: CCNA 200-301 IP Connectivity 完全ガイド。
   - `/app/cisco/ccna/ip-services-guide`: CCNA 200-301 IP Services 完全ガイド。
+  - `/app/cisco/ccna/automation-programmability`: CCNA 200-301 6.0 自動化とプログラマビリティ 完全ガイド。
+  - `/app/cisco/ccna/security-fundamentals`: CCNA 200-301 Security Fundamentals 完全ガイド。
   - `/app/aws/solutions-architect-associate`: AWS Certified Solutions Architect – Associate (SAA-C03) 完全対策ガイド（`domain1` を含む）。
 - `/app/constants.ts`: 試験データ正本（EXAMS / STATS）。`provider: 'GCP' | 'AWS' | 'Cisco'` で分類され、`toNavTree` が自動グルーピング。
 - `/app/navigation.ts`: `toNavTree(EXAMS)` adapter。Header.tsx が参照し、provider 別にナビを自動生成。`status: 'coming-soon'` の試験はナビに「準備中」として表示。
 - AWS: `app/aws/` 配下（`solutions-architect-associate/page.tsx` 完全対策ガイド、`solutions-architect-associate/domain1/page.tsx` ドメイン1ガイド、`solutions-architect-associate/domain2/page.tsx` ドメイン2ガイド、`solutions-architect-associate/domain3/page.tsx` ドメイン3ガイド、`solutions-architect-associate/domain4/page.tsx` ドメイン4ガイド）
-- Cisco: `app/cisco/` 配下（`ccna/beginner-guide/page.tsx` 完全ガイド、`ccna/automation-software-development-design/page.tsx`、`ccna/automation-application-deployment-security/page.tsx`、`ccna/automation-cisco-platforms-and-development/page.tsx`、`ccna/ip-connectivity-guide/page.tsx`、`ccna/ip-services-guide/page.tsx` 含む）
+- Cisco: `app/cisco/` 配下（`ccna/beginner-guide/page.tsx` 完全ガイド、`ccna/automation-software-development-design/page.tsx`、`ccna/automation-application-deployment-security/page.tsx`、`ccna/automation-cisco-platforms-and-development/page.tsx`、`ccna/automation-infrastructure-and-automation/page.tsx`、`ccna/ip-connectivity-guide/page.tsx`、`ccna/ip-services-guide/page.tsx`、`ccna/automation-programmability/page.tsx` 含む）
 - `/components`: 共通コンポーネント（Header: ハンバーガー Drawer ナビ、Footer、DisclaimerBanner など）。
-- `/__tests__`: Vitest によるユニットテスト。
+- `/__tests__`: Vitest によるユニットテスト。`restore_diagrams.test.ts` はスキル配下から標準実行へ追加される。
 - `/e2e`: Playwright による E2E テスト。
 - `/archive`: 移行済みの旧式 HTML / Markdown 学習ガイド資料。Cisco 資料の正規保存先は `/archive/Cisco/html` および `/archive/Cisco/md` とし、`/Gcl_Archive/Cisco` は使用禁止。
 - `/Aws`: AWS 関連の古い資料（アーカイブ済み）。
@@ -84,10 +90,17 @@ Updated 2026-08-10
 - ASCIIダイアグラムの使用を避け、専用の SVG コンポーネント (`DiagramSVG.tsx` 等) に置き換えてください。型の制約（Discriminated Union）により、アクセシビリティを担保するための `ariaLabel="説明文"` または `decorative={true}` の指定が必須となります。
 - アクセシビリティ（`aria-label` 等の付与）を徹底し、コンポーネントやユーティリティ関数には Docstrings (JSDoc) を追加してください。
 - **移行作業の同期とHTMLファイルアーカイブルール**: HTMLの移行作業時には必ず `.claude/rules/migration-progress-sync.md` に従い進捗を同期してください。また、**移行元ファイルは絶対に削除せず、移行完了後に `archive/` 配下の適切なディレクトリへ移動（アーカイブ）してください。Cisco 資料は `archive/Cisco/html/` と `archive/Cisco/md/` を使用し、`Gcl_Archive/Cisco` は作成・使用しないでください**。
-- **移行の忠実性とコンテンツの網羅性 (絶対遵守・手抜き厳禁)**: 移行元の HTML/Markdown に含まれる情報は、**一切の省略・要約・抜粋・文言短縮を厳禁**とします。特に「詳細手順」「CSV フォーマット例」「複雑な表」「注釈」「解説文章」「JSDoc」「補足スキル項目」「全出典リンク」などは学習資料として極めて重要であるため、必ず全て TSX コンポーネントへ100%完全移植してください。
-  - **事前コンテンツ目録の作成**: 移行開始前に元ファイルの「見出し数・表の行数/セル文言・Mermaid図数・出典リンク数」を抽出・把握すること。
-  - **TDDでの網羅性テスト作成**: Step 1 (Red) の時点で大枠見出しだけでなく、表内の文言や補足スキルの記述が存在することを検証する厳密なテストを作成すること。
-  - **全量照合セルフレビュー**: Step 2 (Green) 完了時、元ファイルと作成した TSX をセルフレビューし、文字数や行数の大幅な乖離・省略がないことを照合してからコミットすること。
+- **Mermaid図解の幅・配置契約**: `Diagram` や `.mermaid-wrap` に個別の `maxWidth` インラインスタイル（`maxWidth: 800px` 等）を設定して幅を人工的に制限することは**絶対禁止**です。コンテンツ領域の全幅 (`width: 100%`) を活用し、`margin: 1.5rem auto 2rem` で親コンテナ内中央に配置してください。
+- **ユーザー手動確認ゼロ原則（手動・目視確認依頼の全廃）**:
+  - ユーザーに目視チェックやスクリーンショット撮影・確認作業を依頼することを**厳禁**とします。
+  - テキスト全量一致の検証は `bun scripts/verify-html-migration.mjs` および `bun test` による全自動 DOM 照合で 100% 合格を判定してください。
+  - レイアウト・スクロール被り・レスポンシブ崩れは `bun run test:e2e` (Playwright) で全自動検出・証明してください。
+- **移行の忠実性とコンテンツ・デザインの網羅性 (絶対遵守・手抜き・独自改変厳禁)**: 移行元の HTML/Markdown に含まれる情報・デザインは、**一切の省略・要約・抜粋・文言短縮・独自の補足列追加・装飾削除を厳禁**とします。
+  - **コンテンツの完全性**: 「詳細手順」「CSV フォーマット例」「全テーブルの列構成とセル文言」「注釈」「解説文章」「JSDoc」「補足スキル項目」「全出典リンク」「免責事項」などを100%そのまま全量移転すること。
+  - **ビジュアルデザインの完全性**: 元HTMLの `:root` CSSカラー変数、`h1` グラデーションテキスト (`background-clip: text`)、`h2` 左アクセントバー (`border-left`)、`th` 白文字・背景色、`.badge` ピル型 (`border-radius: 999px`)、`.callout` アクセントバー、インラインコード装飾、コードブロック構文ハイライト (`.code-comment`, `.code-keyword` 等) を100%全量移植すること。
+  - **事前コンテンツ目録の作成**: 移行開始前に元ファイルの「見出し数・表の行数/列構造/セル文言・Mermaid図数・出典リンク数・CSSスタイル要素」を抽出・把握すること。
+  - **TDDでの網羅性テスト作成**: Step 1 (Red) の時点で大枠見出しだけでなく、表内の文言、補足スキル、デザイン要素（CSS定義、構文ハイライトスパン、中央寄せ等）が存在することを検証する厳密なテストを作成すること。
+  - **全量照合セルフレビュー**: Step 2 (Green) 完了時、元ファイルと作成した TSX/CSS をセルフレビューし、文字数や行数・見た目の大幅な乖離・省略がないことを照合してからコミットすること。
 - **異常なトークン消費の防止とステップごとのコミット義務**: 無駄なループを防ぐため、複数のステップにまたがる複雑な実装を行う際は、必ず計画を立て、1つのステップ（またはコンポーネント）ごとに実装とテストを完了させ、**そのステップの完了と同時に必ず `git status`, `git add`, `git commit` を実行して作業を確定させてから**次のステップに進んでください。
 - **システムツールのパラメータ必須要件の厳守と自己レビュー義務 (`update_topic` 等)**: `update_topic` や `write_file` などのシステムツールを呼び出す際は、スキーマで要求されている**必須パラメーター（例: `strategic_intent` や `file_path` など）が全て含まれていることを実行前に必ず確認**してください。エラーとリトライの無限ループを防止するため、ツール呼び出し前の `<thought>` ブロック内で「これから使うツールの必須パラメータは何か？」「それらの値はセットされているか？」を明示的に自己レビューしてから実行してください。
 

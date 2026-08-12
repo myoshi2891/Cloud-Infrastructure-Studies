@@ -1,12 +1,12 @@
 # CLAUDE.md
 
-Updated 2026-08-10
+Updated 2026-08-11
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## プロジェクト概要
 
-GCP/AWS/Cisco 資格試験対策（Associate Cloud Engineer, Generative AI Leader, Cloud Digital Leader, Associate Google Workspace Administrator, Professional Cloud Network Engineer, Cisco Certified Network Associate、AWS Certified Solutions Architect – Associate ※準備中）を目的としたNext.js学習アプリ。
+GCP/AWS/Cisco 資格試験対策（Associate Cloud Engineer, Generative AI Leader, Cloud Digital Leader, Associate Google Workspace Administrator, Professional Cloud Network Engineer, Cisco Certified Network Associate, Cisco Certified Network Associate Automation、AWS Certified Solutions Architect – Associate ※準備中）を目的としたNext.js学習アプリ。
 
 試験データの正本は `app/constants.ts` の `EXAMS` 配列。ナビゲーションは `app/navigation.ts` の `toNavTree(EXAMS)` で自動生成されるため、新試験追加時は **`Header.tsx` を直接編集しない**。新試験追加の手順は ① `app/constants.ts` の `EXAMS` にエントリ追加、② `app/globals.css` に `icon-theme-<id>` ユーティリティ追加、③ 試験ページ作成 の 3 ファイルのみ変更すれば Header に自動反映される。
 
@@ -240,12 +240,30 @@ app/
         NavBar.tsx                  # サイドバーナビ（IntersectionObserver）
         constants.ts                # Mermaid 図定義（12図）
         page.css                    # ページ固有スタイル
+      automation-api-guide/
+        page.tsx                    # CCNA Automation API 完全ガイド（Server。メタデータ定義）
+      automation-application-deployment-security/
+        page.tsx                    # CCNA Automation Application Deployment and Security 完全ガイド
       automation-cisco-platforms-and-development/
         page.tsx                    # CCNA Automation Cisco Platforms and Development 徹底解説ガイド（Server。メタデータ定義）
         CcnaCiscoPlatformsDevelopmentGuide.tsx # 本文＋インタラクション（client。全13セクション、Mermaid等）
         NavBar.tsx                  # サイドバーナビ（IntersectionObserver）
         constants.ts                # Mermaid 図定義（10図）
         page.module.css             # ページ固有スタイル
+      automation-infrastructure-and-automation/
+        page.tsx                    # CCNA Automation 5.0 Infrastructure and Automation ステップバイステップ解説ガイド（Server。メタデータ定義）
+        CcnaInfraAutomationGuide.tsx # 本文＋インタラクション（client。全17セクション、15個のMermaid図等）
+        NavBar.tsx                  # サイドバーナビ（IntersectionObserver）
+        constants.ts                # Mermaid 図定義（15図）
+        page.css                    # ページ固有スタイル
+      automation-network-fundamentals/
+        page.tsx                    # CCNAAUTO 200-901 6.0 Network Fundamentals 完全ガイド
+      network-access-guide/
+        page.tsx                    # CCNA 200-301 Network Access 徹底解説ガイド（Server。メタデータ定義）
+        CcnaNetworkAccessGuide.tsx  # 本文＋インタラクション（client。全15セクション、17個のMermaid図等）
+        NavBar.tsx                  # サイドバーナビ（IntersectionObserver）
+        constants.ts                # Mermaid 図定義（17図）
+        page.css                    # ページ固有スタイル
       ip-connectivity-guide/
         page.tsx                    # CCNA 200-301 IP Connectivity 完全ガイド（Server。メタデータ定義）
         CcnaIpConnectivityGuide.tsx # 本文＋インタラクション（client。全6章＋まとめ、Mermaid等）
@@ -258,6 +276,14 @@ app/
         NavBar.tsx                  # サイドバーナビ
         constants.ts                # Mermaid 図定義（18図）
         page.css                    # ページ固有スタイル
+      automation-programmability/
+        page.tsx                    # CCNA 200-301 6.0 自動化とプログラマビリティ 完全ガイド（Server。メタデータ定義）
+        CcnaAutomationProgrammabilityGuide.tsx # 本文＋インタラクション（client。全10セクション、Mermaid等）
+        NavBar.tsx                  # サイドバーナビ
+        constants.ts                # Mermaid 図定義（7図）
+        page.css                    # ページ固有スタイル
+      security-fundamentals/
+        page.tsx                    # CCNA 200-301 Security Fundamentals 完全ガイド
   aws/
     solutions-architect-associate/
       page.tsx                      # AWS Certified Solutions Architect – Associate (SAA-C03) 完全対策ガイド (Server)
@@ -328,7 +354,7 @@ Aws/                                # AWS資料アーカイブ
 
 ## テスト構成
 
-- **Vitest:** `__tests__/**/*.test.{ts,tsx}`、jsdom環境、`@` エイリアスが `./` に解決される
+- **Vitest:** `__tests__/**/*.test.{ts,tsx}` と `.agents/skills/fix-mermaid/scripts/restore_diagrams.test.ts`、jsdom環境、`@` エイリアスが `./` に解決される
 - **Playwright:** `e2e/` 配下、Chromiumのみ、`baseURL: http://localhost:3000`、CIでは`bun run dev`を自動起動
 
 **🚨 開発時の必須ルール（TDD & Step-by-step Commit） 🚨**

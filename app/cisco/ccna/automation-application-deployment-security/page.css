@@ -1,8 +1,7 @@
 .ccna-app-deployment-security-page {
-    background: var(--color-background, #08090f);
-    color: var(--color-foreground, #e2e8f0);
-    font-family: var(--font-body, 'Noto Sans JP', sans-serif);
-    font-size: 16px;
+    background: var(--color-guide-background);
+    color: var(--color-ccna-automation-app-foreground);
+    font-family: 'Hiragino Sans', 'Noto Sans JP', 'Yu Gothic', system-ui, -apple-system, sans-serif;
     line-height: 1.85;
     min-height: 100vh;
 }
@@ -21,8 +20,8 @@
     bottom: 0;
     width: 280px;
     overflow-y: auto;
-    background: var(--color-card-secondary, #0d1b2e);
-    border-right: 1px solid var(--color-border, #1e2840);
+    background: var(--color-ccna-automation-app-panel);
+    border-right: 1px solid var(--color-ccna-automation-app-border);
     padding: 24px 18px 36px;
     z-index: 40;
 }
@@ -30,11 +29,18 @@
 .ccna-app-deployment-security-page .toc-title {
     font-family: var(--font-display, sans-serif);
     font-weight: 700;
-    font-size: 0.9rem;
-    color: var(--color-primary, #7c9eff);
-    margin-bottom: 12px;
-    padding-bottom: 6px;
-    border-bottom: 1px solid var(--color-border, #1e2840);
+    font-size: 0.95rem;
+    letter-spacing: 0.02em;
+    color: var(--color-guide-accent);
+    margin-bottom: 4px;
+}
+
+.ccna-app-deployment-security-page .toc-subtitle {
+    display: block;
+    font-size: 0.78rem;
+    color: var(--color-ccna-automation-app-foreground-muted);
+    margin-bottom: 24px;
+    line-height: 1.5;
 }
 
 .ccna-app-deployment-security-page .toc-list {
@@ -49,23 +55,34 @@
 .ccna-app-deployment-security-page .toc-link {
     display: block;
     padding: 6px 10px;
-    border-radius: 6px;
-    color: var(--color-muted-foreground, #94a3b8);
+    border-radius: 8px;
+    color: var(--color-ccna-automation-app-foreground-muted);
     text-decoration: none;
-    font-size: 0.82rem;
+    font-size: 0.86rem;
+    border-left: 2px solid transparent;
     line-height: 1.5;
-    transition: background 0.15s ease, color 0.15s ease;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
 }
 
 .ccna-app-deployment-security-page .toc-link:hover {
-    background: rgba(124, 158, 255, 0.08);
-    color: var(--color-foreground, #e2e8f0);
+    background: var(--color-accent-hover);
+    color: var(--color-ccna-automation-app-foreground);
 }
 
 .ccna-app-deployment-security-page .toc-link.active {
-    background: rgba(124, 158, 255, 0.15);
-    color: var(--color-primary, #7c9eff);
+    color: var(--color-guide-accent);
+    background: var(--color-accent-active);
+    border-left-color: var(--color-guide-accent);
     font-weight: 600;
+}
+
+.ccna-app-deployment-security-page .toc-label {
+    margin: 24px 0 8px;
+    padding: 0 10px;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-ccna-automation-app-foreground-muted);
 }
 
 /* ---------- Main Content ---------- */
@@ -83,163 +100,229 @@
 }
 
 .ccna-app-deployment-security-page .hero {
-    margin-bottom: 48px;
-    padding-bottom: 24px;
-    border-bottom: 1px solid var(--color-border, #1e2840);
+    margin-bottom: 2.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--color-ccna-automation-app-border);
 }
 
 .ccna-app-deployment-security-page .hero-eyebrow {
-    display: inline-block;
-    font-size: 0.8rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    color: var(--color-primary, #7c9eff);
+    color: var(--color-guide-accent);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
-    margin-bottom: 8px;
+    margin-bottom: 0.75rem;
+    display: inline-block;
 }
 
 .ccna-app-deployment-security-page .hero h1 {
-    font-family: var(--font-display, sans-serif);
-    font-size: 2.2rem;
+    font-size: clamp(1.6rem, 3vw, 2.5rem);
+    line-height: 1.4;
+    margin: 0 0 1rem;
+    background: linear-gradient(90deg, var(--color-guide-accent), var(--color-tip));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
     font-weight: 800;
-    line-height: 1.3;
-    color: var(--color-foreground, #f8fafc);
-    margin: 0 0 16px;
 }
 
 .ccna-app-deployment-security-page .hero-description {
-    font-size: 1.05rem;
-    color: var(--color-muted-foreground, #cbd5e1);
-    background: rgba(124, 158, 255, 0.05);
-    border-left: 4px solid var(--color-primary, #7c9eff);
-    padding: 16px 20px;
-    border-radius: 0 8px 8px 0;
-    margin-top: 16px;
+    color: var(--color-ccna-automation-app-foreground-muted);
+    font-size: 1.02rem;
+    line-height: 1.85;
+    margin-top: 1rem;
+}
+
+.ccna-app-deployment-security-page .badge-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+}
+
+.ccna-app-deployment-security-page .badge {
+    font-size: 0.78rem;
+    padding: 0.3rem 0.75rem;
+    border-radius: 999px;
+    background: var(--color-accent-active);
+    border: 1px solid var(--color-ccna-automation-app-accent-border);
+    color: var(--color-guide-accent);
 }
 
 /* ---------- Sections ---------- */
 .ccna-app-deployment-security-page .section-block {
     scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 24px);
-    margin-bottom: 56px;
+    margin-bottom: 3.5rem;
 }
 
 .ccna-app-deployment-security-page h2 {
-    font-family: var(--font-display, sans-serif);
-    font-size: 1.6rem;
+    font-size: 1.5rem;
+    color: var(--color-primary-foreground);
+    border-left: 4px solid var(--color-guide-accent);
+    padding-left: 0.75rem;
+    margin-bottom: 1.25rem;
     font-weight: 700;
-    color: var(--color-foreground, #f8fafc);
-    margin: 0 0 20px;
-    padding-bottom: 10px;
-    border-bottom: 2px solid var(--color-border, #1e2840);
-    display: flex;
-    align-items: center;
-    gap: 12px;
+    border-bottom: none;
+    display: block;
 }
 
 .ccna-app-deployment-security-page h3 {
-    font-size: 1.25rem;
+    font-size: 1.12rem;
+    color: var(--color-guide-accent);
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
     font-weight: 600;
-    color: var(--color-primary, #7c9eff);
-    margin: 32px 0 16px;
 }
 
 .ccna-app-deployment-security-page p {
-    margin-bottom: 16px;
-    color: var(--color-foreground, #e2e8f0);
+    margin: 0.75rem 0;
+    color: var(--color-ccna-automation-app-foreground);
 }
 
 .ccna-app-deployment-security-page ul,
 .ccna-app-deployment-security-page ol {
-    margin-bottom: 20px;
-    padding-left: 24px;
+    margin-bottom: 1.25rem;
+    padding-left: 1.4rem;
 }
 
 .ccna-app-deployment-security-page li {
-    margin-bottom: 8px;
+    margin-bottom: 0.4rem;
+}
+
+/* ---------- Inline Code ---------- */
+.ccna-app-deployment-security-page code {
+    font-family: var(--font-ccna-app-mono);
+    font-size: 0.87em;
+}
+
+.ccna-app-deployment-security-page :not(pre) > code {
+    background: var(--color-accent-active);
+    color: var(--color-ccna-automation-app-inline-code-foreground);
+    padding: 0.15em 0.4em;
+    border-radius: 5px;
 }
 
 /* ---------- Cards & Callouts ---------- */
 .ccna-app-deployment-security-page .card {
-    background: var(--color-card, #0f172a);
-    border: 1px solid var(--color-border, #1e2840);
-    border-radius: 12px;
+    background: var(--color-ccna-automation-app-panel);
+    border: 1px solid var(--color-ccna-automation-app-border);
+    border-radius: var(--radius-guide-card);
     padding: 24px;
     margin-bottom: 24px;
 }
 
 .ccna-app-deployment-security-page .callout {
-    background: rgba(124, 158, 255, 0.08);
-    border: 1px solid rgba(124, 158, 255, 0.2);
-    border-radius: 8px;
-    padding: 16px 20px;
-    margin-bottom: 24px;
+    background: var(--color-accent-hover);
+    border: 1px solid var(--color-ccna-automation-app-callout-border);
+    border-left: 4px solid var(--color-guide-accent);
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+    font-size: 0.94rem;
+}
+
+.ccna-app-deployment-security-page .callout .callout-title {
+    font-weight: 700;
+    color: var(--color-guide-accent);
+    margin-bottom: 0.4rem;
+    font-size: 0.9rem;
+}
+
+.ccna-app-deployment-security-page .callout p {
+    margin: 0.3rem 0;
+}
+
+.ccna-app-deployment-security-page .callout ul {
+    margin: 0.4rem 0;
 }
 
 .ccna-app-deployment-security-page .callout-warning {
-    background: rgba(245, 158, 11, 0.08);
-    border: 1px solid rgba(245, 158, 11, 0.3);
+    background: var(--color-ccna-automation-app-warning-background);
+    border: 1px solid var(--color-ccna-automation-app-warning-border);
+    border-left: 4px solid var(--color-ccna-automation-app-warning);
+}
+
+.ccna-app-deployment-security-page .callout-warning .callout-title {
+    color: var(--color-ccna-automation-app-warning);
 }
 
 /* ---------- Tables ---------- */
 .ccna-app-deployment-security-page .table-wrapper {
     overflow-x: auto;
     margin-bottom: 24px;
-    border-radius: 8px;
-    border: 1px solid var(--color-border, #1e2840);
+    border-radius: var(--radius-guide-card);
+    border: 1px solid var(--color-ccna-automation-app-border);
 }
 
 .ccna-app-deployment-security-page table {
     width: 100%;
     border-collapse: collapse;
+    margin: 1.25rem 0 1.75rem;
     font-size: 0.92rem;
+    background: var(--color-ccna-automation-app-panel);
+    border-radius: var(--radius-guide-card);
+    overflow: hidden;
     text-align: left;
+}
+
+.ccna-app-deployment-security-page thead tr {
+    background: var(--color-ccna-automation-app-table-header);
 }
 
 .ccna-app-deployment-security-page th,
 .ccna-app-deployment-security-page td {
-    padding: 12px 16px;
-    border-bottom: 1px solid var(--color-border, #1e2840);
+    text-align: left;
+    padding: 0.7rem 1rem;
+    border-bottom: 1px solid var(--color-ccna-automation-app-border);
+    vertical-align: top;
 }
 
 .ccna-app-deployment-security-page th {
-    background: var(--color-card-secondary, #0d1b2e);
-    color: var(--color-primary, #7c9eff);
+    color: var(--color-primary-foreground);
     font-weight: 600;
+    font-size: 0.85rem;
 }
 
 .ccna-app-deployment-security-page tr:last-child td {
     border-bottom: none;
 }
 
+.ccna-app-deployment-security-page tr.highlight-row td {
+    background: var(--color-ccna-automation-app-highlight-background);
+}
+
 .ccna-app-deployment-security-page tr:hover td {
-    background: rgba(255, 255, 255, 0.02);
+    background: var(--color-ccna-automation-app-row-hover);
 }
 
 /* ---------- Code Blocks ---------- */
 .ccna-app-deployment-security-page .code-block {
-    background: #0d1117;
-    border: 1px solid var(--color-border, #1e2840);
-    border-radius: 8px;
-    padding: 16px;
-    margin-bottom: 24px;
-    overflow-x: auto;
-    font-family: var(--font-mono, monospace);
-    font-size: 0.88rem;
-    line-height: 1.6;
+    margin: 1.25rem 0 1.75rem;
+    border-radius: var(--radius-guide-card);
+    overflow: hidden;
+    border: 1px solid var(--color-ccna-automation-app-border);
+    background: var(--color-ccna-automation-app-code-background);
 }
 
-.ccna-app-deployment-security-page .code-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 16px;
-    background: #161b22;
-    border-bottom: 1px solid #21262d;
-    border-radius: 8px 8px 0 0;
-    font-size: 0.78rem;
-    color: var(--color-muted-foreground, #8b949e);
-    font-family: var(--font-mono, monospace);
-    margin: -16px -16px 16px -16px;
+.ccna-app-deployment-security-page .code-header,
+.ccna-app-deployment-security-page .code-label {
+    background: var(--color-ccna-automation-app-code-header);
+    color: var(--color-ccna-automation-app-foreground-muted);
+    font-size: 0.75rem;
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid var(--color-ccna-automation-app-border);
+    letter-spacing: 0.03em;
+    margin: 0;
+}
+
+.ccna-app-deployment-security-page .code-content {
+    padding: 1.1rem 1.25rem;
+    overflow-x: auto;
+    font-family: var(--font-ccna-app-mono);
+    font-size: 0.88rem;
+    line-height: 1.6;
+    background: var(--color-ccna-automation-app-code-background);
 }
 
 .ccna-app-deployment-security-page .code-line {
@@ -247,27 +330,77 @@
 }
 
 .ccna-app-deployment-security-page .code-comment {
-    color: #8b949e;
+    color: var(--color-ccna-automation-app-code-comment);
+    font-style: italic;
 }
 
 .ccna-app-deployment-security-page .code-keyword {
-    color: #ff7b72;
+    color: var(--color-ccna-automation-app-code-keyword);
+    font-weight: 600;
 }
 
 .ccna-app-deployment-security-page .code-string {
-    color: #a5d6ff;
+    color: var(--color-ccna-automation-app-code-string);
 }
 
 .ccna-app-deployment-security-page .code-function {
-    color: #d2a8ff;
+    color: var(--color-ccna-automation-app-code-function);
+}
+
+/* ---------- Reference Footer ---------- */
+.ccna-app-deployment-security-page .reference-section {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-ccna-automation-app-border);
+    color: var(--color-ccna-automation-app-foreground-muted);
+    font-size: 0.85rem;
+}
+
+.ccna-app-deployment-security-page .reference-section h2 {
+    font-size: 1.3rem;
+    color: var(--color-primary-foreground);
+    border-left: 4px solid var(--color-guide-accent);
+    padding-left: 0.75rem;
+    margin-bottom: 1.25rem;
+}
+
+.ccna-app-deployment-security-page .reference-section a {
+    color: var(--color-guide-accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.ccna-app-deployment-security-page .reference-section a:hover {
+    color: var(--color-tip);
+}
+
+.ccna-app-deployment-security-page .reference-section ul {
+    padding-left: 1.2rem;
+}
+
+.ccna-app-deployment-security-page .reference-section li {
+    margin-bottom: 0.6rem;
+}
+
+.ccna-app-deployment-security-page .disclaimer-paragraph {
+    margin-top: 2rem;
+    font-size: 0.8rem;
+    color: var(--color-ccna-automation-app-foreground-muted);
+    font-style: italic;
 }
 
 /* ---------- Mermaid Diagram Wrapper ---------- */
+.ccna-app-deployment-security-page .mermaid-wrapper,
 .ccna-app-deployment-security-page .mermaid-wrap {
-    margin: 24px auto;
+    width: 100%;
+    overflow-x: auto;
+    margin: 1.5rem auto 2rem;
+    padding: 1.25rem 0;
+    background: var(--color-ccna-automation-app-panel);
+    border-radius: var(--radius-guide-card);
+    border: 1px solid var(--color-ccna-automation-app-border);
     display: flex;
     justify-content: center;
-    width: 100%;
 }
 
 /* ---------- Responsive ---------- */

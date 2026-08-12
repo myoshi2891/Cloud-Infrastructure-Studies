@@ -9,16 +9,18 @@ description: >
 
 # Mermaid 構文・描画修正スキル
 
+(最終更新日: 2026-08-11)
+
 ## 🚀 まず再利用スクリプトを使う（トークン節約・最優先）
 
 静的 HTML の Mermaid 描画崩れを直すときは、**ボイラープレート（render ループ・SVG 後処理・中央寄せ CSS）を手書きで再生成しないこと**。以下の再利用スクリプトで機械的処理を一括適用できる。
 
-1. **図ソースを JS テンプレートリテラルで定義**（LLM の判断が必要なのはここだけ）:
-   各図を 1 ステートメント 1 行・カラム 0・改行は `<br/>` で `const DIAGRAMS = { 'diag-1': \`flowchart TD ...\` }` として HTML の `<script>` 内に書く。
+1. **図ソースを JSON 互換の正準オブジェクトで定義**（LLM の判断が必要なのはここだけ）:
+   各図を 1 ステートメント 1 行・カラム 0・改行は `\n` または `<br/>` とし、`const DIAGRAMS = { "diag-1": "flowchart TD\nA --> B" };` の形式で HTML の `<script>` 内に書く。`restore_diagrams.mjs` はこの正準形式に加え、既存の JavaScript テンプレートリテラル形式も `eval` せず安全に解析する。
 2. **描画パイプラインを冪等適用**:
 
    ```bash
-   bun run .claude/skills/fix-mermaid/scripts/apply_render_pipeline.mjs <file.html>
+   bun run .agents/skills/fix-mermaid/scripts/apply_render_pipeline.mjs <file.html>
    ```
 
    これが `<div class="mermaid">…</div>` → 連番 id 付き空 div への置換、`startOnLoad:false`+`securityLevel:'loose'` 付与、`applySvgFixups`+render ループ注入、中央寄せ CSS 注入をまとめて行う（再実行しても二重適用しない）。
@@ -26,13 +28,13 @@ description: >
 3. **正本 Markdown から図を復元する場合**（HTML 側ソースが破壊された等）:
 
    ```bash
-   bun run .claude/skills/fix-mermaid/scripts/restore_diagrams.mjs <file.html> <source.md>
+   bun run .agents/skills/fix-mermaid/scripts/restore_diagrams.mjs <file.html> <source.md>
    ```
 
 4. **インデント汚染・行分断のみの修正**（`.html`/`.md`/`.tsx`）は `fix_mermaid.ts`:
 
    ```bash
-   bun run .claude/skills/fix-mermaid/scripts/fix_mermaid.ts <file>
+   bun run .agents/skills/fix-mermaid/scripts/fix_mermaid.ts <file>
    ```
 
 > **SVG 幅の鉄則**: `apply_render_pipeline.mjs` は SVG 幅に **viewBox 由来の自然 px 幅 + `maxWidth:100%`** を使う。`width:'100%'` も `width:'auto'`（viewBox のみで intrinsic サイズを持たない SVG ではコンテナ全幅へ伸びる）も、小さい flowchart LR 図を異常拡大させるため**使わない**。
@@ -68,7 +70,7 @@ HTMLやコードのフォーマッタ（Prettier等）による破壊パター�
 自動修正を行う場合は TypeScript 版スクリプト `fix_mermaid.ts` を `bun` で実行します:
 
 ```bash
-bun run .claude/skills/fix-mermaid/scripts/fix_mermaid.ts path/to/file.tsx
+bun run .agents/skills/fix-mermaid/scripts/fix_mermaid.ts path/to/file.tsx
 ```
 
 ## 変換例
@@ -227,6 +229,8 @@ mermaid.initialize({
     display: flex;
     justify-content: safe center; /* 親幅を超える場合は flex-start（左詰め）として扱い左見切れを防ぐ */
     overflow-x: auto;
+    width: 100%;
+    margin: 0 auto;
 }
 .mermaid {
     display: flex;
@@ -255,7 +259,11 @@ React (Next.js App Router) 移行に際して共通の `MermaidDiagram` コン�
 
 ```tsx
 <div id="diag-0" className={styles.mermaid}>
-  <MermaidDiagram chart={DIAGRAM_0} />
+  <MermaidDiagram
+    chart={DIAGRAM_0}
+    ariaLabel="クラウド構成と通信経路を示す図"
+    preserveNaturalScale
+  />
 </div>
 ```
 
@@ -265,6 +273,7 @@ React (Next.js App Router) 移行に際して共通の `MermaidDiagram` コン�
 .mermaid {
   display: block;
   width: 100%;
+  margin: 0 auto;
 }
 .mermaid > div {
   width: 100%;
@@ -302,23 +311,34 @@ React (Next.js App Router) 移行に際して共通の `MermaidDiagram` コン�
 **個別対応の正準手順**:
 
 1. 共通コンポーネントの既定動作を維持し、自然倍率を選べる任意propを追加する。
-2. ページ側に図IDごとの設定表を置き、カード幅と自然倍率の使用有無を個別指定する。
-3. 親は `display:block; width:100%` とし、図別 `max-width` で `viewBox幅 + 左右padding + border` 以上の表示領域を確保する。
+2. `MermaidDiagram` と `.mermaid-wrap` はコンテンツ領域の全幅を使い、ページ側で図ごとの `frameWidth` や `maxWidth` を指定しない。
+3. 親は `display:block; width:100%` とし、コンテンツ領域の幅をそのまま図の表示領域として使う。
 4. SVGは自然幅 + `max-width:100%` + `height:auto` を使う。図を広く見せたい場合はSVGを拡大せず、カード幅やMermaid DSLの `nodeSpacing` / `rankSpacing` をその図だけ調整する。
-5. TD、LR、state、pieを最低1枚ずつ確認し、修正対象外の図が縮小・拡大していないことを確認する。
+5. TD、LR、state、pieを最低1枚ずつ自動テストし、修正対象外の図が縮小・拡大していないことを確認する。
 
 ```tsx
-const DISPLAY = {
-  'vertical-flow': { frameWidth: measured.verticalFlowFrame, naturalScale: true },
-  'wide-topology': { frameWidth: measured.wideTopologyFrame, naturalScale: true },
-} as const;
+type DiagramId = 'vertical-flow' | 'wide-topology';
 
-<div style={{ maxWidth: DISPLAY[id].frameWidth, width: '100%' }}>
-  <MermaidDiagram preserveNaturalScale={DISPLAY[id].naturalScale} />
-</div>
+const DIAGRAMS: Record<DiagramId, string> = {
+  'vertical-flow': VERTICAL_FLOW,
+  'wide-topology': WIDE_TOPOLOGY,
+};
+
+function Diagram({ id }: { id: DiagramId }) {
+  const chart = DIAGRAMS[id];
+  return (
+    <div className="mermaid-wrap">
+      <MermaidDiagram
+        chart={chart}
+        ariaLabel="クラウド構成と通信経路を示す図"
+        preserveNaturalScale
+      />
+    </div>
+  );
+}
 ```
 
-自然倍率propのテストでは、`width === viewBox幅` かつ `maxHeight === 'none'` かつ `maxWidth === 'none'` を検証する。既定動作のテストも残し、他ページへの波及を防ぐ。
+自然倍率を使う場合も、React の `MermaidDiagram` と `.mermaid-wrap` は `width:100%` と中央寄せを維持し、SVG は `width === viewBox幅`、`max-width:100%`、`height:auto` とする。React 側で `maxWidth` をインライン上書きせず、自動テストで共通契約を固定する。静的 HTML の `apply_render_pipeline.mjs` は冒頭の鉄則どおり `maxWidth = '100%'` と既定動作を維持する。
 
 #### ⚠️ スクロール時の図解縮小・チカチカバグの防止（React.memo メモ化）
 
@@ -327,10 +347,10 @@ const DISPLAY = {
 
 **【対策】**:
 1. `MermaidDiagram` および各ガイドページの `Diagram` コンポーネントを必ず `React.memo` でラップする。
-2. `preserveNaturalScale=true` が指定されている場合、`applySvgFixups` で `targetWidth = viewBox幅` および `svgEl.style.maxWidth = 'none'` を設定し、コンテナ幅の変化に追従した自動縮小を防止する。小さい図でも600pxなどの最小幅へ拡大せず、`width === viewBox幅` を正準仕様とする。
+2. `preserveNaturalScale=true` が指定されている場合、`applySvgFixups` は `targetWidth = viewBox幅` を設定する。`max-width:100%` と `height:auto` は共通 CSS に委ね、小さい図でも600pxなどの最小幅へ拡大しない。
 
 ```tsx
-const Diagram = memo(function Diagram({ id, label }: { id: string; label: string }) {
+const Diagram = memo(function Diagram({ id, label }: { id: DiagramId; label: string }) {
     const chart = DIAGRAMS[id];
     if (!chart) return null;
     return (
@@ -340,7 +360,6 @@ const Diagram = memo(function Diagram({ id, label }: { id: string; label: string
     );
 });
 ```
-
 
 #### 2. テスト環境（Vitest）での MermaidDiagram のモック化
 
@@ -399,6 +418,8 @@ mermaid.initialize({
 
 **`innerHTML` 注入後の実 DOM 要素を直接操作**する（`apply_render_pipeline.mjs` も同方式）。React では `ref` + `svgStr` 依存の `useEffect` で、注入済み `<svg>` に対して後処理を適用する。
 
+以下の `applySvgFixups` は React の `MermaidDiagram` 実装例であり、静的 HTML の `RENDER_LOOP` へ `maxWidth: none` を適用するものではない。
+
 ```ts
 const applySvgFixups = (
     svgEl: SVGSVGElement,
@@ -413,7 +434,6 @@ const applySvgFixups = (
 
     const viewBox = svgEl.getAttribute('viewBox');
     if (!viewBox) {
-        svgEl.style.maxWidth = '100%';
         return;
     }
     const parts = viewBox.split(/\s+/).map(Number);
@@ -432,8 +452,6 @@ const applySvgFixups = (
         targetWidth = Math.min(650, Math.max(Math.round(w * 1.35), 480));
     }
     svgEl.style.width = `${targetWidth}px`;
-    // preserveNaturalScale=true のときは max-width:none でスクロール時・コンテナ幅変更時の縮小を防止
-    svgEl.style.maxWidth = preserveNaturalScale ? 'none' : '100%';
     svgEl.style.maxHeight = preserveNaturalScale ? 'none' : h > 550 ? '580px' : 'none';
     svgEl.setAttribute('viewBox', `${x} ${y} ${w} ${h + extraHeight}`);
 };
@@ -500,16 +518,19 @@ const applySvgFixups = (
 
 > `.edgeLabel *` に `fill:#fff` を当てない。エッジラベルの背景 `rect` が白く塗り潰される。色を当てるのは**ラベルテキストのみ・`color` のみ**に留める。
 
-### 確認手順（重要・順序厳守）
+### 完了確認（自動検証・順序厳守）
 
-1. `*.module.css` 変更時は `.claude/rules/css-cache-reset.md` に従う。`mermaid.initialize` がモジュール最上位＝ HMR で再実行されないため、**dev サーバーを完全再起動**する。
+1. CSS 変更時は `.agents/rules/css-cache-reset.md` に従い、稼働中の対象 dev サーバーを停止してから `.next` を削除し、検証用 dev サーバーを完全再起動する。`mermaid.initialize` がモジュール最上位にあるため、HMR だけでは変更が反映されない。
 
 ```bash
-kill $(lsof -ti:3000) 2>/dev/null; rm -rf .next; bun run dev
+# 対象 dev サーバーの停止・同一性確認は css-cache-reset.md の手順に従う
+rm -rf .next
+bun run dev
 ```
 
-2. ブラウザは**ハードリロード（⌘+Shift+R）**。通常リロードでは古い SVG/CSS が残る。
-3. 目視確認はユーザー側で実施する（このリポジトリでは Playwright/ブラウザ自動操作は使わない方針）。
+   `bun run dev` は別ターミナルで実行し、対象 URL の応答準備ができたことを確認してから、元のターミナルで後続の移行用 DOM テストと Playwright 検証を行う。検証後は別ターミナルで dev サーバーを停止する。
+2. `e2e/` 配下に Playwright テストを置き、設定済み `baseURL` と Chromium project を使って対象ページを検証する。
+3. DOM 上の SVG `viewBox`、`width`、`maxWidth`、`maxHeight`、ラッパー幅、クリッピング、重なりをアサーションし、移行用 DOM テストと Playwright の双方が成功したことを完了条件とする。ユーザーへの目視確認やスクリーンショット提供の依頼は完了条件にしない。
 
 ---
 

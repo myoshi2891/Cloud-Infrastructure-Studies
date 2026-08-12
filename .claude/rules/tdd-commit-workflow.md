@@ -7,9 +7,12 @@ paths:
   - "lib/**/*.ts"
   - "__tests__/**/*.test.ts"
   - "__tests__/**/*.test.tsx"
+  - ".agents/skills/*"
 ---
 
 # TDD & Step-by-Step Commit Workflow Rules
+
+(最終更新日: 2026-08-11)
 
 ## 目的 (Objective)
 
@@ -56,13 +59,13 @@ LLMエージェントがコードを実装する際、要件漏れや意図し�
 - [ ] Green 完了時に元資料と TSX の文字数・行数・内容を照合し、大幅な乖離がないか？
 - [ ] 意図的な要約や一部省略コードを実装してもテストが Pass してしまうような抜け穴がないか？
 
-- **実行**: `bun test` または `bun run test` で失敗（またはコンパイルエラー）を確認する（リファクタリングはパスを確認）。
+- **実行**: `bun run test` で失敗（またはコンパイルエラー）を確認する（リファクタリングはパスを確認）。
 - **コミット**: `test(<scope>): add failing tests for [機能名/バグID]` (または `test: add failing tests for ...`) — **テスト作成直後に必ずコミットすること。Step 2への繰り越しは禁止。**
 
 ### Step 2: Green（最小実装と成功）
 
 - テストをパスさせるための最小限のプロダクションコードを `app/` または `components/` 等に実装する。
-- **実行**: `bun test` でテストがPassすることを確認する。
+- **実行**: `bun run test` でテストがPassすることを確認する。
 - **コミット**: `feat(<scope>): implement [機能名] to pass tests` (または `feat/fix: implement ...`)
 
 ### Step 3: Refactor（リファクタリング・最適化・統合）
@@ -70,14 +73,17 @@ LLMエージェントがコードを実装する際、要件漏れや意図し�
 - コードの重複削除、読みやすさの向上、ビルド/リンターエラーの修正、CSSトークンのマッピングを行う。
 - **実行**: `bun run build` および `bun run lint` を実行し、既存機能が破壊されていないか確認する。
 - **🚨 ゲート条件（Pレベルタスクまたは複数コミットのフェーズ完了時）**:
-  - Pレベルタスク（`docs/TEST_COVERAGE_PROGRESS.md` の優先度別ネクストアクション）または複数コミットからなる「フェーズ」を完了する際は、必ず `.claude/skills/spec-sync/SKILL.md` の Section F「フェーズ完了時の Definition of Done」を適用してください。
+  - Pレベルタスク（`docs/TEST_COVERAGE_PROGRESS.md` の優先度別ネクストアクション）または複数コミットからなる「フェーズ」を完了する際は、必ず `.agents/skills/spec-sync/SKILL.md` の Section F「フェーズ完了時の Definition of Done」を適用してください。
   - 単発の Step 3 で `CLAUDE.md` だけを更新して終わらせることは禁止されています。
   - 同一フェーズ内で以下の成果物を確定させてください:
+    - `docs/coverage-dashboard.html` の再生成
+    - `docs/TEST_COVERAGE_PROGRESS.md` の全体サマリー、進捗、Section 7（次回セッションでの再開プロンプト）の更新
     - `MIGRATION_PROGRESS.md` の進捗チェックボックスの更新
-    - `docs/TEST_COVERAGE_PROGRESS.md` の Section 7（次回セッションでの再開プロンプト）の更新
-    - `GEMINI.md` / `README.md` のコマンド一覧や各種仕様書への反映
+    - `CLAUDE.md` / `GEMINI.md` / `README.md` のコマンド一覧や各種仕様書への反映
+  - 必須成果物の正準一覧と、テストを伴わない移行での例外は `.agents/skills/md-to-nextjs-migration/SKILL.md` Step 7 を参照してください。
 - **コミット対象とメッセージ (What to Commit)**:
-  - `Header.tsx` や `CLAUDE.md` 等へのルーティング統合および上記ドキュメント更新を含めます。
+  - 新しい試験の登録は `app/constants.ts` の `EXAMS` を正準データソースとし、ナビゲーションは `app/navigation.ts` の `toNavTree(EXAMS)` から生成します。新しい試験の追加時に `components/Header.tsx` を直接編集してはなりません。
+  - 上記のルーティング統合と `CLAUDE.md` 等のドキュメント更新を含めます。
   - コミット: `refactor(<scope>): integrate [機能名] into routing and update docs` (または `refactor/docs: ...`)
 
 ---
@@ -111,5 +117,5 @@ LLMエージェントがコードを実装する際、要件漏れや意図し�
 
 ## 各種スキル・仕様書での扱い (Integration with Skills & Specs)
 
-本プロジェクトにおける全ての「仕様書（`CLAUDE.md`, `GEMINI.md` 等）」や「スキルファイル（`.claude/skills/*`, `.gemini/skills/*`）」に基づく作業は、**本ワークフローファイルに定められた手順を常に最優先事項として適用**すること。
+本プロジェクトにおける全ての「仕様書（`CLAUDE.md`, `GEMINI.md` 等）」や「スキルファイル（`.agents/skills/*`, `.claude/skills/*`, `.gemini/skills/*`）」に基づく作業は、**本ワークフローファイルに定められた手順を常に最優先事項として適用**すること。
 「実装せよ」「移行せよ」という指示を受けた場合、エージェントは自動的にこのTDDとコミットのステップを計画（Plan）に組み込み、ユーザーの合意を経た上で、各ステップ完了ごとに必ずローカルコミットを実行しなければならない。

@@ -7,12 +7,151 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 ## 現在地
 
 - **ブランチ:** dev
-- **進行中タスク:** (なし)
-- **最新実装 HEAD:** `4a3f4c0` (`refactor(layout): fix guide CSS module and lint integration`)
-- **前回進捗同期コミット:** `226dc12` (`chore(docs): sync agent specifications and test dashboard`)
-- **次の作業:** 未追跡HTML 2件の移行要否・対象ルートを確認
-- **ビルド状態:** `bun run build` 成功（56ルート）、`bun run lint` 成功、レイアウト契約テスト 73件成功
-- **最終更新日時(UTC):** 2026-08-09T09:00:59.000Z
+- **進行中タスク:** CCNAレビュー指摘の検証・修正 (完了)
+- **最新実装 HEAD:** `2cd6be2` (`fix(ccna): memoize network fundamentals diagrams`)
+- **前回進捗同期コミット:** `2951b8a`
+- **次の作業:** 完了
+- **検証状態:** 対象Vitest 25件成功、`bun run lint` 成功。標準 `bun run test` は912件成功し、実行環境の localStorage 不備で既存30件が失敗。対象E2Eは4件成功し、既存のページタイトル二重付与との期待値不一致1件が失敗。ビルドは依頼により未実施。
+- **最終更新日時(UTC):** 2026-08-11T12:08:33.000Z
+
+## 2026-08-11: CCNAレビュー指摘の検証・修正 (完了)
+
+- [x] **Rules / Skills**: 正本とClaude/Geminiミラーの同期、安全なrsync、Docs Sync成果物、Mermaid自動検証規約を更新 (`835596f`)。
+- [x] **Mermaid parser Red / Green**: HTML外側の記号、Unicode/hex/行継続、型検証の回帰テストと実装 (`a21d9a0`, `9c9179a`)。
+- [x] **CSS tokens Red / Green**: CCNA Automationのローカルトークンをグローバル3層トークンへ移設し、モバイル配置とz-indexを修正 (`5390336`, `75a708f`)。
+- [x] **CCNA behavior Red / Green**: ARIA、参照リンク、JSON忠実性、200-901メタデータ、CCNA/CCNAAUTO分離を修正 (`270712e`, `1689b5c`)。
+- [x] **Refactor**: 対象TSXコンポーネントの責務をJSDoc化 (`8694b35`)。
+- [x] **レビュー追補テスト**: 色関数リテラル検査、ScrollSpyの状態待ち、逐次スクロール、モバイル境界検証を強化 (`7fe5306`)。
+- [x] **Diagram再描画 Red / Green**: ScrollSpy更新で11図が再描画される回帰テストを追加し、ページ固有Diagramを`React.memo`化 (`0632d9b`, `2cd6be2`)。
+- [x] **ガイド・スキル文書**: Mermaid / Docs Sync手順、Vision API curl案内、DLP IAMロール、リポジトリ相対リンクを修正 (`da12df2`, `c7ebd0a`, `46bb211`, `2951b8a`)。
+
+## 2026-08-11: Cisco「CCNA 200-301 Network Access 徹底解説」100%全量移行 (完了)
+
+### 目的
+
+`Ccna-network-access-guide.html` および同名 Markdown を、Next.js App Router 5ファイル構成 (`page.tsx`, `CcnaNetworkAccessGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/cisco/ccna/network-access-guide` ルートへ移行。文章・表・17個のMermaid図・コードブロック・参考文献・免責事項を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 1 (Red)**: `test(ccna): add failing unit tests for CCNA Network Access guide migration` (`deb435c`)
+- [x] **Step 2 (Green)**: `feat(ccna): implement CCNA Network Access guide page and components` (`12e767b`)
+- [x] **Step 3 (Refactor / Integration & Nav & Docs)**: `refactor(ccna): integrate CCNA Network Access guide into navigation and update docs` (`968e597`)
+- [x] **Step 4 (Archive & Sync)**: 元HTMLおよびMDを `archive/Cisco/html/ccna/` と `archive/Cisco/md/ccna/` へ移動し `MIGRATION_PROGRESS.md` を同期
+
+### 関連ファイル
+
+- [app/cisco/ccna/network-access-guide/page.tsx](app/cisco/ccna/network-access-guide/page.tsx)
+- [app/cisco/ccna/network-access-guide/CcnaNetworkAccessGuide.tsx](app/cisco/ccna/network-access-guide/CcnaNetworkAccessGuide.tsx)
+- [app/cisco/ccna/network-access-guide/NavBar.tsx](app/cisco/ccna/network-access-guide/NavBar.tsx)
+- [app/cisco/ccna/network-access-guide/constants.ts](app/cisco/ccna/network-access-guide/constants.ts)
+- [app/cisco/ccna/network-access-guide/page.css](app/cisco/ccna/network-access-guide/page.css)
+- [__tests__/cisco/ccna/network-access-guide/page.test.tsx](__tests__/cisco/ccna/network-access-guide/page.test.tsx)
+- [archive/Cisco/html/ccna/Ccna-network-access-guide.html](archive/Cisco/html/ccna/Ccna-network-access-guide.html)
+- [archive/Cisco/md/ccna/Ccna-network-access-guide.md](archive/Cisco/md/ccna/Ccna-network-access-guide.md)
+
+## 2026-08-11: Cisco「CCNA 6.0 自動化とプログラマビリティ (Automation and Programmability)」100%全量移行 (完了)
+
+### 目的
+
+`Ccna-automation-programmability.html` および同名 Markdown を、Next.js App Router 5ファイル構成 (`page.tsx`, `CcnaAutomationProgrammabilityGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/cisco/ccna/automation-programmability` ルートへ移行。文章・表・7個のMermaid図・コードブロック・参考文献・免責事項を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 1 (Red)**: `test: add failing unit and e2e tests for CCNA Automation and Programmability guide migration` (`5036c63`)
+- [x] **Step 2 (Green)**: `feat: implement CCNA Automation and Programmability guide page` (`5473d44`)
+- [x] **Step 3 (Refactor / Integration & Nav & Docs)**: `refactor: integrate CCNA Automation and Programmability guide into navigation and docs`
+- [x] **Step 4 (Archive & Sync)**: 元HTMLおよびMDを `archive/Cisco/html/ccna/` と `archive/Cisco/md/ccna/` へ移動し `MIGRATION_PROGRESS.md` を同期
+
+### 関連ファイル
+
+- [app/cisco/ccna/automation-programmability/page.tsx](app/cisco/ccna/automation-programmability/page.tsx)
+- [app/cisco/ccna/automation-programmability/CcnaAutomationProgrammabilityGuide.tsx](app/cisco/ccna/automation-programmability/CcnaAutomationProgrammabilityGuide.tsx)
+- [app/cisco/ccna/automation-programmability/NavBar.tsx](app/cisco/ccna/automation-programmability/NavBar.tsx)
+- [app/cisco/ccna/automation-programmability/constants.ts](app/cisco/ccna/automation-programmability/constants.ts)
+- [app/cisco/ccna/automation-programmability/page.css](app/cisco/ccna/automation-programmability/page.css)
+- [__tests__/cisco/ccna/automation-programmability/page.test.tsx](__tests__/cisco/ccna/automation-programmability/page.test.tsx)
+- [e2e/ccna-automation-programmability.spec.ts](e2e/ccna-automation-programmability.spec.ts)
+- [archive/Cisco/html/ccna/Ccna-automation-programmability.html](archive/Cisco/html/ccna/Ccna-automation-programmability.html)
+- [archive/Cisco/md/ccna/Ccna-automation-programmability.md](archive/Cisco/md/ccna/Ccna-automation-programmability.md)
+
+## 2026-08-11: Cisco「CCNA 6.0 Network Fundamentals ドメイン徹底解説」100%全量移行 (完了)
+
+### 目的
+
+`Ccna-automation-network-fundamentals.html`（1612行、11個のMermaid図、12個の表、13個の参考文献）を、Next.js App Router 5ファイル構成 (`page.tsx`, `CcnaNetworkFundamentalsGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/cisco/ccna/automation-network-fundamentals` ルートへ移行。文章・表・11個のMermaid図・コードブロック・13個の参考文献・免責事項を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 1 (Red)**: `test(ccna): add failing tests for Network Fundamentals guide migration` (`b6df393`), `test(ccna): update unit tests to strictly assert visual CSS classes and HTML structural hierarchy` (`457c0a6`), `test(ccna): add failing tests asserting 100% verbatim paragraph and text fidelity from source HTML` (`fd08a1b`), `test(ccna): add failing tests for exact H2 title fidelity and NavBar ScrollSpy active state` (`c386ba7`), `test(ccna): add failing tests for exact paragraph order and sequence in Overview section` (`1cf2733`), `test(ccna): add failing tests for exact 6 Summary items and 4 Reference links from original HTML` (`4a0a718`)
+- [x] **Step 2 (Green)**: `feat(ccna): implement Network Fundamentals guide page and components to pass tests` (`4fbda39`), `feat(ccna): fully restore original HTML design, styles, and structural elements for Network Fundamentals guide` (`2098561`), `feat(ccna): restore 100% verbatim paragraph texts, list items, and fix header layout offset` (`18e7c80`), `feat(ccna): restore exact H2 step titles and integrate IntersectionObserver ScrollSpy in sidebar` (`a65de47`), `feat(ccna): restore exact Overview section paragraph sequence and fix hero top layout padding` (`bc89c98`), `feat(ccna): restore exact Summary 6 items and 4 Reference links, and fix DisclaimerBanner background opacity` (`07df048`)
+- [x] **Step 3 (Refactor / Integration & Nav & Docs)**: `refactor(ccna): integrate Network Fundamentals guide into routing, archive html, and update docs` (`9779950`), 全13セクションの文言・順序・まとめ箇条書き6件・参考情報源リンク4件を100%全量逐字完全修復 & 免責バナー半透明透過・文字重なりを完全解消
+- [x] **Step 4 (Archive & Sync)**: 元HTMLを `archive/Cisco/html/ccna/Ccna-automation-network-fundamentals.html` へ移動し `MIGRATION_PROGRESS.md` を同期
+
+### 関連ファイル
+
+- [app/cisco/ccna/automation-network-fundamentals/page.tsx](app/cisco/ccna/automation-network-fundamentals/page.tsx)
+- [app/cisco/ccna/automation-network-fundamentals/CcnaNetworkFundamentalsGuide.tsx](app/cisco/ccna/automation-network-fundamentals/CcnaNetworkFundamentalsGuide.tsx)
+- [app/cisco/ccna/automation-network-fundamentals/NavBar.tsx](app/cisco/ccna/automation-network-fundamentals/NavBar.tsx)
+- [app/cisco/ccna/automation-network-fundamentals/constants.ts](app/cisco/ccna/automation-network-fundamentals/constants.ts)
+- [app/cisco/ccna/automation-network-fundamentals/page.css](app/cisco/ccna/automation-network-fundamentals/page.css)
+- [__tests__/cisco/ccna/automation-network-fundamentals/page.test.tsx](__tests__/cisco/ccna/automation-network-fundamentals/page.test.tsx)
+- [archive/Cisco/html/ccna/Ccna-automation-network-fundamentals.html](archive/Cisco/html/ccna/Ccna-automation-network-fundamentals.html)
+
+## 2026-08-11: Cisco「CCNA Automation ドメイン5.0 Infrastructure and Automation ステップバイステップ解説ガイド」100%全量移行 (完了)
+
+### 目的
+
+`Ccna-automation-infrastructure-and-automation.html`（2628行、15個のMermaid図、15個の表、13個の参考文献）および同名 Markdown を、Next.js App Router 5ファイル構成 (`page.tsx`, `CcnaInfraAutomationGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/cisco/ccna/automation-infrastructure-and-automation` ルートへ移行。文章・表・15個のMermaid図・コードブロック・13個の参考文献・免責事項を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 1 (Red)**: `test(cisco/ccna): add failing tests for complete HTML-faithful migration of automation-infrastructure-and-automation guide` (`ced08b6`)
+- [x] **Step 2 (Green)**: `feat(cisco/ccna): implement CCNA automation infrastructure and automation guide page components to pass tests` (`11f4cb2`)
+- [x] **Step 3 (Refactor / Integration & Nav & Docs)**: `refactor/docs(cisco/ccna): integrate CCNA automation infrastructure and automation guide into routing and update docs` (`4183329`)
+- [x] **Step 4 (Archive & Sync)**: 元HTMLおよびMDを `archive/Cisco/html/ccna/` と `archive/Cisco/md/ccna/` へ移動し `MIGRATION_PROGRESS.md` を同期
+
+### 関連ファイル
+
+- [app/cisco/ccna/automation-infrastructure-and-automation/page.tsx](app/cisco/ccna/automation-infrastructure-and-automation/page.tsx)
+- [app/cisco/ccna/automation-infrastructure-and-automation/CcnaInfraAutomationGuide.tsx](app/cisco/ccna/automation-infrastructure-and-automation/CcnaInfraAutomationGuide.tsx)
+- [app/cisco/ccna/automation-infrastructure-and-automation/NavBar.tsx](app/cisco/ccna/automation-infrastructure-and-automation/NavBar.tsx)
+- [app/cisco/ccna/automation-infrastructure-and-automation/constants.ts](app/cisco/ccna/automation-infrastructure-and-automation/constants.ts)
+- [app/cisco/ccna/automation-infrastructure-and-automation/page.css](app/cisco/ccna/automation-infrastructure-and-automation/page.css)
+- [__tests__/cisco/ccna/automation-infrastructure-and-automation/page.test.tsx](__tests__/cisco/ccna/automation-infrastructure-and-automation/page.test.tsx)
+- [archive/Cisco/html/ccna/Ccna-automation-infrastructure-and-automation.html](archive/Cisco/html/ccna/Ccna-automation-infrastructure-and-automation.html)
+- [archive/Cisco/md/ccna/Ccna-automation-infrastructure-and-automation.md](archive/Cisco/md/ccna/Ccna-automation-infrastructure-and-automation.md)
+
+## 2026-08-11: Cisco「CCNA Automation ドメイン4.0 Application Deployment and Security 完全ガイド」コンテンツ＆デザイン100%完全忠実移植 (完了)
+
+### 目的
+
+`Ccna-automation-application-deployment-security.html`（1944行）との全量照合およびデザインレビューにより、文章・表構造だけでなくCSS変数（`:root`）、`h1`グラデーションテキスト、`h2`左アクセントバー、`th`白文字＆半透明アクセント背景、`.badge`ピル型、`.callout`アクセントバー、インラインコード背景、コードブロック構文ハイライトの乖離を特定。さらに Mermaid 図解の人工的な幅制限（`maxWidth: 800px` 等）を排除してコンテンツエリア全幅 (`width: 100%`) かつ中央寄せ配置へ改善。デザイン・レイアウトテスト（Red）を追加し、`page.css`およびTSXコンポーネントを原本HTMLデザインに100%忠実に全面修復・完成させた（Green）。
+
+### 完了済みステップ
+
+- [x] **Step 1 (Red - コンテンツ)**: `test(cisco/ccna): add 24 failing tests for complete HTML-faithful migration of automation-app-deployment-security guide` (`4f36e15`)
+- [x] **Step 2 (Green - コンテンツ)**: `feat(cisco/ccna): rewrite automation-app-deployment-security guide with 100% HTML-faithful content` (`6ece372`)
+- [x] **Step 1 (Red - デザイン・CSS)**: `test(cisco/ccna): add 7 failing design-faithfulness tests for automation-app-deployment-security CSS migration` (`b324651`)
+- [x] **Step 2 (Green - デザイン・CSS)**: `feat(cisco/ccna): complete 100% faithful CSS style and code syntax highlighting migration for automation-app-deployment-security` (`4ef5a60`)
+- [x] **Step 1 (Red - 図解レイアウト)**: `test(cisco/ccna): add failing test for diagram centering (margin: 1.5rem auto 2rem)` (`3d2a578`) / `test(cisco/ccna): add failing test for full-width diagram wrapper without artificial maxWidth` (`540afa3`)
+- [x] **Step 2 (Green - 図解レイアウト)**: `feat(cisco/ccna): make diagram wrappers full-width without artificial maxWidth restrictions` (`fe5bc4e`)
+
+### 主な修正内容
+
+- ヒーロー: バッジ行（配点15%・サブトピック4.1〜4.12・試験時間120分・対応言語）を追加
+- 第2章4.1: 3列表→2列表（利点/説明）に修正、説明文を原本通りに
+- 第2章4.2: 列名を管理主体/主な特徴/典型的な用途に修正
+- 第3章: ul/liリスト（4.3.a/b/c）追加、属性比較表の列名修正
+- 第4章: CI/CDパイプライン表を2列8行に完全書き直し、説明文修正
+- 第5章: コード例をadd(a,b)関数に戻す、assertEqual/assertTrue/assertRaises段落追加
+- 第6章: DockerfileにENTRYPOINT追加（8行）、dockerコマンドをlogs/exec/stop+rm/push+pull含む8行に
+- 第7章: シークレット保護の箇条書き3点追加、暗号化表を種類/説明/代表例2列に、データ取り扱い段落修正
+- 第8章: 冒頭段落追加、表を要素/役割2列に修正
+- 第9章: OWASP Top 10 2025年版10カテゴリ表（A01〜A10）追加、詳細段落追加
+- 第10章: Bashコマンドを原本通り7+5+4行に復元（cd/rmdir/find/echo $HOME/unset含む）
+- 第11章: DevOps表を原本通り4行（文化/自動化/計測/共有）に修正（独自追加のLean削除）、詳細段落追加
+- 第12章: 冒頭段落追加、列名をNo./サブトピック/一言でいうと、12行に修正
+- 参考文献: 8リンク全て復元（認定概要/試験詳細/PDF/LN/OWASP/Dockerfile/unittest）＋免責事項段落
 
 ## 2026-08-09: サイドバー付き全ガイド画面のレイアウト統一 (完了)
 
@@ -962,10 +1101,10 @@ bun run test:e2e e2e/nav.spec.ts  # Chromium 2 件 pass
 ## 次回セッションでの再開プロンプト
 
 あなたは熟練したフロントエンドエンジニアであり、Next.js (App Router) の移行スペシャリストです。
-最新実装 HEAD は `4a3f4c0`、前回進捗同期コミットは `226dc12` です。
-サイドバー付き全24スタイルシートは、左端固定280pxサイドバーと残り幅いっぱいのメイン領域へ統一済みです。`__tests__/guide-content-widths.test.ts` の73ケース、ESLint、Next.js production build 56ルートが成功しています。
+最新実装 HEAD は `2cd6be2`、前回進捗同期コミットは `2951b8a` です。
+CCNAレビュー指摘の追補はカテゴリー別のRed / Green / Docsコミットで対応済みです。対象Vitest 25件と `bun run lint` が成功し、Network Fundamentals対象E2Eは5件中4件が成功しています。残る1件は既存のページタイトル二重付与と期待値の不一致です。ビルドは依頼により未実施です。
 
-ワークツリーには未追跡のHTMLが2件あります。次回は所有者の作業を保持したまま、移行要否と対象ルートを確認してから着手してください。既存の未追跡Markdownも変更しないでください。
+標準 `bun run test` は912件成功し、実行環境の `window.localStorage` 不備により、既存の `recentPages`、`RecentPageRecorder`、`Header.drawer-features` の計30件が失敗します。次回はアプリ実装を変更する前に、Node/jsdomのlocalStorage設定を切り分けてください。
 
 ---
 
