@@ -7,16 +7,17 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 ## 現在地
 
 - **ブランチ:** dev
-- **進行中タスク:** レビュー指摘の検証・ホーム/Cisco/ADKガイド改善 (完了)
-- **最終更新日時(UTC):** 2026-08-12T10:15:18.000Z
+- **進行中タスク:** レビュー指摘の実装完了・検証未完了
+- **最終更新日時(UTC):** 2026-08-12T13:48:16Z
 
-## 2026-08-12: レビュー指摘の検証・ホーム/Cisco/ADKガイド改善 (完了)
+## 2026-08-12: レビュー指摘のホーム/Cisco/ADKガイド改善（実装完了・検証未完了）
 
 - [x] **Home**: URL重複除外テストデータをカタログ順非依存にし、Hero / ExamCard / ExamCatalog / Statsを`components/sections/home/`へ分割。
 - [x] **Cisco content / a11y**: DevNet Associate目次のアクセシブル名、CCNA Network Fundamentalsの出典9リンク、CCNP Automationの公式Specialist名称を修正。
-- [x] **Theme / CSS Modules**: CCNA Network FundamentalsとDevNet Associateのトークンを各ガイドにスコープし、DevNet Professionalを`page.module.css`へ移行。
-- [x] **ADK guide**: Python 3.10ゲート、`google-adk>=1.17.0,<2.0.0`、本番ストリーミングAPIの検証手順を追加。
-- [x] **Validation**: 対象Vitest 115件、全体ESLint、Markdown lintが成功。全体Vitestは937件成功、36件失敗（既存スモーク1件、`localStorage`環境30件、並列タイムアウト5件）。ビルドはユーザー指定により未実施。
+- [x] **Theme / CSS Modules**: CCNA Network Fundamentals / DevNet Associate / DevNet Professionalのテーマトークンを`app/globals.css`へ集約し、各stylesheetのローカルcustom propertyを撤去。
+- [x] **ADK guide**: Python 3.10ゲート、`google-adk>=1.17.0,<2.0.0`、一意なセッションIDを再利用する本番ストリーミングAPI検証手順を追加。
+- [x] **Coverage dashboard**: CCNA / DevNetとCSS参照を分類対象に加え、P0判定と凡例を実装に同期してHTMLを再生成。
+- [ ] **Validation**: 今回の対象Vitestは成功。サンドボックス実行記録として、全体 `npm test -- --run` は `__tests__/smoke.test.tsx` の「Home ページがレンダリングされること」が失敗したため未完了。ビルドと目視確認はユーザー指定により未実施。
 
 ## 2026-08-12: Cisco「Cisco Certified DevNet Professional 認定 徹底解説ガイド」100%全量移行 (完了)
 
@@ -1174,10 +1175,10 @@ bun run test:e2e e2e/nav.spec.ts  # Chromium 2 件 pass
 ## 次回セッションでの再開プロンプト
 
 あなたは熟練したフロントエンドエンジニアであり、Next.js (App Router) の移行スペシャリストです。
-最新実装 HEAD は `cff7c7c`、前回進捗同期コミットは `2951b8a` です。
-ホーム分割、Ciscoガイドのテーマトークン所有権とCSS Modules、アクセシビリティ、公式資格名、ADKガイドのローカル/本番検証手順はカテゴリー別のRed / Greenコミットで対応済みです。対象Vitest 115件、`npm run lint`、Markdown lintが成功しています。ビルドと目視確認はユーザー指定により未実施です。
+最新実装 HEAD は `b567c20`、前回進捗同期コミットは `2951b8a` です。
+ホーム分割、Ciscoガイドのグローバルテーマトークン所有権とCSS Modules、アクセシビリティ、公式資格名、ADKガイドのローカル/本番検証手順、カバレッジ分類と凡例はカテゴリー別のRed / Greenコミットで対応済みです。対象Vitest、`bun run lint`、Markdown lintが成功しています。ビルドと目視確認はユーザー指定により未実施です。
 
-標準 `npm test` は937件成功し、36件が失敗します。内訳は、既存ホームと異なる見出しを期待するスモーク1件、Node/jsdomの `window.localStorage` 不備による30件、全体並列実行時の5秒タイムアウト5件です。次回はアプリ実装を変更する前に、スモーク期待値とNode/jsdomのlocalStorage設定を切り分けてください。
+標準コマンドは `bun run test` です。サンドボックス実行記録として、今回実行した `npm test -- --run` は既存ホームと異なる見出しを期待するスモーク1件が失敗しました。次回はアプリ実装を変更する前に、このスモーク期待値を切り分けてください。
 
 ---
 
