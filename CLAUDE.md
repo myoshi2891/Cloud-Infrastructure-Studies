@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-Updated 2026-08-11
+Updated 2026-08-12
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
@@ -66,7 +66,7 @@ bun run build   # NEXT_OUTPUT_MODE 未設定で実行
 ```text
 app/
   layout.tsx                        # ルートレイアウト（Header/DisclaimerBanner/Footer、フォント定義）
-  page.tsx                          # トップページ
+  page.tsx                          # トップページ（データ抽出とセクション合成）
   globals.css                       # グローバルスタイル（デザイントークン定義）
   constants.ts                      # 試験データ正本（EXAMS / STATS）。新試験はここに追加するだけ
   navigation.ts                     # toNavTree(EXAMS) adapter → NavGroup[] を生成し Header が参照
@@ -225,13 +225,13 @@ app/
       DevNetProfessionalGuide.tsx   # 本文＋インタラクション（client。全13セクション、Mermaid等）
       NavBar.tsx                    # サイドバーナビ（IntersectionObserver）
       constants.ts                  # Mermaid 図定義（6図）
-      page.css                      # ページ固有スタイル
+      page.module.css               # ページ固有スタイル（CSS Modules）
     devnet-associate/
       page.tsx                      # Cisco Certified DevNet Associate (200-901 / CCNA Automation) 完全対策ガイド（Server）
       DevNetAssociateGuide.tsx      # 本文＋インタラクション（client。全12セクション、Mermaid等）
       NavBar.tsx                    # サイドバーナビ（IntersectionObserver）
       constants.ts                  # Mermaid 図定義（4図）
-      page.css                      # ページ固有スタイル
+      page.module.css               # ページ固有スタイル（CSS Modules／ガイド固有トークン）
     ccde/
       complete-guide/
         page.tsx                    # Cisco CCDE試験 完全ガイド（Server。メタデータ定義）
@@ -347,6 +347,7 @@ components/
   DisclaimerBanner.tsx              # 免責事項バナー。Header 直下に sticky で貼り付き（top: var(--header-h)）、scroll 中も Header→Disclaimer→本文 の順序を保つ
   DiagramSVG.tsx                    # SVG ダイアグラム共通コンポーネント（ariaLabel または decorative 必須）
   RecentPageRecorder.tsx            # 'use client'、DOM レス。usePathname 監視で lib/recentPages.pushRecent を呼ぶ。layout.tsx に 1 度だけ配置
+  sections/home/                    # ホームの Hero / ExamCard / ExamCatalog / Stats
 
 lib/
   utils.ts                          # cn() (clsx + tailwind-merge)
@@ -369,7 +370,7 @@ Aws/                                # AWS資料アーカイブ
 
 - `--font-body`, `--font-mono`, `--radius-*`
 
-**Layer 3 – ページ固有テーマ** (各ページの `.css`):
+**Layer 3 – ページ固有テーマ** (各ページの `.css` / `.module.css`):
 
 - Aurora（ACE）、Sapphire/Laboratory/Gold/Executive（Generative AI Leader 各セクション）
 - テーマ変数は `--color-*` を上書きする形で定義

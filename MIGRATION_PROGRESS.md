@@ -7,14 +7,22 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 ## 現在地
 
 - **ブランチ:** dev
-- **進行中タスク:** Cisco Certified DevNet Professional 認定 徹底解説ガイド 100%全量移行 (完了)
-- **最終更新日時(UTC):** 2026-08-12T13:58:00.000Z
+- **進行中タスク:** レビュー指摘の検証・ホーム/Cisco/ADKガイド改善 (完了)
+- **最終更新日時(UTC):** 2026-08-12T10:15:18.000Z
+
+## 2026-08-12: レビュー指摘の検証・ホーム/Cisco/ADKガイド改善 (完了)
+
+- [x] **Home**: URL重複除外テストデータをカタログ順非依存にし、Hero / ExamCard / ExamCatalog / Statsを`components/sections/home/`へ分割。
+- [x] **Cisco content / a11y**: DevNet Associate目次のアクセシブル名、CCNA Network Fundamentalsの出典9リンク、CCNP Automationの公式Specialist名称を修正。
+- [x] **Theme / CSS Modules**: CCNA Network FundamentalsとDevNet Associateのトークンを各ガイドにスコープし、DevNet Professionalを`page.module.css`へ移行。
+- [x] **ADK guide**: Python 3.10ゲート、`google-adk>=1.17.0,<2.0.0`、本番ストリーミングAPIの検証手順を追加。
+- [x] **Validation**: 対象Vitest 115件、全体ESLint、Markdown lintが成功。全体Vitestは937件成功、36件失敗（既存スモーク1件、`localStorage`環境30件、並列タイムアウト5件）。ビルドはユーザー指定により未実施。
 
 ## 2026-08-12: Cisco「Cisco Certified DevNet Professional 認定 徹底解説ガイド」100%全量移行 (完了)
 
 ### 目的
 
-`Cisco-devnet-professional-guide.html` および `Cisco-devnet-professional-guide.md` を、Next.js App Router 5ファイル構成 (`page.tsx`, `DevNetProfessionalGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/cisco/devnet-professional` ルートへ移行。全13セクションの見出し、7個のテーブルセルテキスト、6個のMermaid図解、3個のコールアウト、16個の参考文献リンクを一切の省略・要約なしで100%全量移植。
+`Cisco-devnet-professional-guide.html` および `Cisco-devnet-professional-guide.md` を、Next.js App Router 5ファイル構成 (`page.tsx`, `DevNetProfessionalGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.module.css`) で `/cisco/devnet-professional` ルートへ移行。全13セクションの見出し、7個のテーブルセルテキスト、6個のMermaid図解、3個のコールアウト、16個の参考文献リンクを一切の省略・要約なしで100%全量移植。
 
 ### 完了済みステップ
 
@@ -28,7 +36,7 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 - [app/cisco/devnet-professional/DevNetProfessionalGuide.tsx](app/cisco/devnet-professional/DevNetProfessionalGuide.tsx)
 - [app/cisco/devnet-professional/NavBar.tsx](app/cisco/devnet-professional/NavBar.tsx)
 - [app/cisco/devnet-professional/constants.ts](app/cisco/devnet-professional/constants.ts)
-- [app/cisco/devnet-professional/page.css](app/cisco/devnet-professional/page.css)
+- [app/cisco/devnet-professional/page.module.css](app/cisco/devnet-professional/page.module.css)
 - [__tests__/cisco-devnet-professional.test.tsx](__tests__/cisco-devnet-professional.test.tsx)
 - [archive/Cisco/html/Cisco-devnet-professional-guide.html](archive/Cisco/html/Cisco-devnet-professional-guide.html)
 - [archive/Cisco/md/Cisco-devnet-professional-guide.md](archive/Cisco/md/Cisco-devnet-professional-guide.md)
@@ -37,7 +45,7 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 
 ### 目的
 
-`Cisco-devnet-associate-guide.html` および `Cisco-devnet-associate-guide.md` を、Next.js App Router 5ファイル構成 (`page.tsx`, `DevNetAssociateGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/cisco/devnet-associate` ルートへ移行。全12セクションの見出し、11個のテーブルセルテキスト、4個のMermaid図解、3個のコールアウト、13個の参考文献リンクを一切の省略・要約なしで100%全量移植。
+`Cisco-devnet-associate-guide.html` および `Cisco-devnet-associate-guide.md` を、Next.js App Router 5ファイル構成 (`page.tsx`, `DevNetAssociateGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.module.css`) で `/cisco/devnet-associate` ルートへ移行。全12セクションの見出し、11個のテーブルセルテキスト、4個のMermaid図解、3個のコールアウト、13個の参考文献リンクを一切の省略・要約なしで100%全量移植。
 
 ### 完了済みステップ
 
@@ -51,7 +59,7 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 - [app/cisco/devnet-associate/DevNetAssociateGuide.tsx](app/cisco/devnet-associate/DevNetAssociateGuide.tsx)
 - [app/cisco/devnet-associate/NavBar.tsx](app/cisco/devnet-associate/NavBar.tsx)
 - [app/cisco/devnet-associate/constants.ts](app/cisco/devnet-associate/constants.ts)
-- [app/cisco/devnet-associate/page.css](app/cisco/devnet-associate/page.css)
+- [app/cisco/devnet-associate/page.module.css](app/cisco/devnet-associate/page.module.css)
 - [__tests__/cisco-devnet-associate-guide.test.tsx](__tests__/cisco-devnet-associate-guide.test.tsx)
 - [archive/Cisco/html/devnet/Cisco-devnet-associate-guide.html](archive/Cisco/html/devnet/Cisco-devnet-associate-guide.html)
 - [archive/Cisco/md/devnet/Cisco-devnet-associate-guide.md](archive/Cisco/md/devnet/Cisco-devnet-associate-guide.md)
@@ -1166,10 +1174,10 @@ bun run test:e2e e2e/nav.spec.ts  # Chromium 2 件 pass
 ## 次回セッションでの再開プロンプト
 
 あなたは熟練したフロントエンドエンジニアであり、Next.js (App Router) の移行スペシャリストです。
-最新実装 HEAD は `2cd6be2`、前回進捗同期コミットは `2951b8a` です。
-CCNAレビュー指摘の追補はカテゴリー別のRed / Green / Docsコミットで対応済みです。対象Vitest 25件と `bun run lint` が成功し、Network Fundamentals対象E2Eは5件中4件が成功しています。残る1件は既存のページタイトル二重付与と期待値の不一致です。ビルドは依頼により未実施です。
+最新実装 HEAD は `cff7c7c`、前回進捗同期コミットは `2951b8a` です。
+ホーム分割、Ciscoガイドのテーマトークン所有権とCSS Modules、アクセシビリティ、公式資格名、ADKガイドのローカル/本番検証手順はカテゴリー別のRed / Greenコミットで対応済みです。対象Vitest 115件、`npm run lint`、Markdown lintが成功しています。ビルドと目視確認はユーザー指定により未実施です。
 
-標準 `bun run test` は912件成功し、実行環境の `window.localStorage` 不備により、既存の `recentPages`、`RecentPageRecorder`、`Header.drawer-features` の計30件が失敗します。次回はアプリ実装を変更する前に、Node/jsdomのlocalStorage設定を切り分けてください。
+標準 `npm test` は937件成功し、36件が失敗します。内訳は、既存ホームと異なる見出しを期待するスモーク1件、Node/jsdomの `window.localStorage` 不備による30件、全体並列実行時の5秒タイムアウト5件です。次回はアプリ実装を変更する前に、スモーク期待値とNode/jsdomのlocalStorage設定を切り分けてください。
 
 ---
 
