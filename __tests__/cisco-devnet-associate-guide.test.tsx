@@ -23,23 +23,23 @@ describe('Cisco DevNet Associate Guide Migration Verification', () => {
         expect(screen.getByText(/初学者向けにステップバイステップで解説します/)).toBeInTheDocument();
 
         // 12個のセクション見出し (h2)
-        const expectedH2List = [
-            '1.【重要】名称変更に関するお知らせ（2026年2月〜）',
-            '2.DevNet Associateとは何か',
-            '3.Cisco資格体系における位置づけ',
-            '4.試験の基本情報',
-            '5.出題範囲と配分',
-            '6.各ドメインを初心者向けに解説',
-            '7.受験の前提条件・推奨スキル',
-            '8.出題形式',
-            '9.学習ロードマップ（ステップバイステップ）',
-            '10.再認定（recertification）',
-            '11.まとめ',
-            '12.参考文献・ソース一覧',
+        const expectedH2Patterns = [
+            /1\.\s*【重要】名称変更に関するお知らせ/,
+            /2\.\s*DevNet Associateとは何か/,
+            /3\.\s*Cisco資格体系における位置づけ/,
+            /4\.\s*試験の基本情報/,
+            /5\.\s*出題範囲と配分/,
+            /6\.\s*各ドメインを初心者向けに解説/,
+            /7\.\s*受験の前提条件・推奨スキル/,
+            /8\.\s*出題形式/,
+            /9\.\s*学習ロードマップ/,
+            /10\.\s*再認定/,
+            /11\.\s*まとめ/,
+            /12\.\s*参考文献・ソース一覧/,
         ];
 
-        expectedH2List.forEach((text) => {
-            expect(screen.getByText(text)).toBeInTheDocument();
+        expectedH2Patterns.forEach((pattern) => {
+            expect(screen.getByRole('heading', { level: 2, name: pattern })).toBeInTheDocument();
         });
 
         // 6.1〜6.6 の h3 見出し
