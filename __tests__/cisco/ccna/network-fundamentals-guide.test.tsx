@@ -3,13 +3,21 @@ import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import React from 'react';
 import CcnaNetworkFundamentalsGuide from '@/app/cisco/ccna/network-fundamentals-guide/CcnaNetworkFundamentalsGuide';
-import Page from '@/app/cisco/ccna/network-fundamentals-guide/page';
+import Page, { metadata } from '@/app/cisco/ccna/network-fundamentals-guide/page';
 
 describe('CcnaNetworkFundamentalsGuide Page & Component', () => {
-  it('renders page metadata correctly', async () => {
-    // page.tsx (Server Component) export check
-    const pageObj = await Page();
-    expect(pageObj).toBeTruthy();
+  it('renders page metadata correctly', () => {
+    expect(metadata.title).toBe(
+      'Cisco CCNA試験対策：ネットワークの基礎 入門ガイド | Cloud Infrastructure Studies'
+    );
+    expect(metadata.description).toBe(
+      'Cisco CCNA（200-301）認定試験の「ネットワークの基礎」領域を、OSI参照モデル、TCP/IP、IPv4/IPv6、機器の動作などの完全図解と詳細表でわかりやすく解説します。'
+    );
+  });
+
+  it('renders the page component', () => {
+    render(<Page />);
+    expect(screen.getByRole('heading', { level: 1 })).toBeInTheDocument();
   });
 
   it('renders all 10 chapters and reference headers accurately', () => {
@@ -89,10 +97,23 @@ describe('CcnaNetworkFundamentalsGuide Page & Component', () => {
   });
 
   it('renders all 10 Mermaid diagrams with proper aria labels', () => {
-    const { container } = render(<CcnaNetworkFundamentalsGuide />);
-    
-    // Check for 10 diagram wraps or SVG/Mermaid components
-    const diagrams = container.querySelectorAll('.mermaid-wrap');
-    expect(diagrams.length).toBe(10);
+    render(<CcnaNetworkFundamentalsGuide />);
+
+    const expectedLabels = [
+      '図1-1：CCNA 200-301 出題ドメイン別の配点比率',
+      '図1-2：CCNA認定取得までの8ステップ',
+      '図2-1：スター型トポロジーとメッシュ型トポロジーの比較',
+      '図3-1：OSI参照モデル 7層の構造',
+      '図3-2：カプセル化のプロセスとPDU名称の変化',
+      '図4-1：スイッチとルーターの転送判断ロジックの違い',
+      '図6-1：192.168.1.0/24 を /26 で4分割するサブネッティング例',
+      '図8-1：TCPの3ウェイハンドシェイク',
+      '図9-1：ネットワークの基礎からCCNA受験までの学習ロードマップ',
+      '図10-1：CCNA 200-301 V1.1からV2.0への移行タイムライン',
+    ];
+    const diagrams = screen.getAllByRole('img');
+
+    expect(diagrams).toHaveLength(10);
+    expect(diagrams.map((diagram) => diagram.getAttribute('aria-label'))).toEqual(expectedLabels);
   });
 });

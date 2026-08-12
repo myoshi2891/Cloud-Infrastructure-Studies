@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
 import DevNetAssociateGuide from '../app/cisco/devnet-associate/DevNetAssociateGuide';
 import { DIAGRAMS } from '../app/cisco/devnet-associate/constants';
@@ -65,36 +66,25 @@ describe('Cisco DevNet Associate Guide Migration Verification', () => {
         expect(screen.getByText(/上表の「Cisco Catalyst Center」/)).toBeInTheDocument();
     });
 
-    it('11個のテーブル内の全データセル文言が網羅されていること', () => {
-        render(<DevNetAssociateGuide />);
+    it('11個のテーブルの全ヘッダー、全データセル、列構造が移行元と一致すること', () => {
+        const { container } = render(<DevNetAssociateGuide />);
+        const source = readFileSync(
+            'archive/Cisco/html/devnet/Cisco-devnet-associate-guide.html',
+            'utf8'
+        );
+        const sourceDocument = new DOMParser().parseFromString(source, 'text/html');
+        const normalize = (value: string | null) => value?.replace(/\s+/g, ' ').trim() ?? '';
+        const tableSnapshot = (table: Element) => ({
+            headers: Array.from(table.querySelectorAll('thead th'), (cell) => normalize(cell.textContent)),
+            rows: Array.from(table.querySelectorAll('tbody tr'), (row) =>
+                Array.from(row.querySelectorAll('td'), (cell) => normalize(cell.textContent))
+            ),
+        });
+        const expectedTables = Array.from(sourceDocument.querySelectorAll('main table'), tableSnapshot);
+        const renderedTables = Array.from(container.querySelectorAll('main table'), tableSnapshot);
 
-        // 名称変更表 (s1)
-        expect(screen.getByText('Associateレベル認定')).toBeInTheDocument();
-        expect(screen.getByText('200-901 CCNAAUTO')).toBeInTheDocument();
-        expect(screen.getByText('350-901 AUTOCOR')).toBeInTheDocument();
-
-        // 基本情報表 (s4)
-        expect(screen.getByText('Automating Networks Using Cisco Platforms')).toBeInTheDocument();
-        expect(screen.getByText('300 USD（税別・目安。国や為替により変動するためPearson VUE公式ページで要確認）')).toBeInTheDocument();
-
-        // 出題配分表 (s5)
-        expect(screen.getByText('ソフトウェア開発と設計')).toBeInTheDocument();
-        expect(screen.getByText('インフラストラクチャと自動化')).toBeInTheDocument();
-
-        // 各ドメイン詳細表 (s6.1 - s6.6)
-        expect(screen.getByText('データ形式（XML、JSON、YAML）')).toBeInTheDocument();
-        expect(screen.getByText('requestsライブラリ')).toBeInTheDocument();
-        expect(screen.getByText('YANG、RESTCONF、NETCONF')).toBeInTheDocument();
-        expect(screen.getByText('OWASP脅威')).toBeInTheDocument();
-        expect(screen.getByText('Infrastructure as Code（IaC）')).toBeInTheDocument();
-        expect(screen.getByText('管理・データ・制御プレーン')).toBeInTheDocument();
-
-        // 出題形式表 (s8)
-        expect(screen.getByText('選択問題（単一回答）')).toBeInTheDocument();
-        expect(screen.getByText('穴埋め（Fill in the blank）')).toBeInTheDocument();
-
-        // 再認定表 (s10)
-        expect(screen.getByText('同じ試験（200-901）に再合格する／より上位の認定を取得する／継続教育（CE）クレジットを積む')).toBeInTheDocument();
+        expect(expectedTables).toHaveLength(11);
+        expect(renderedTables).toEqual(expectedTables);
     });
 
     it('4つのMermaid図解のアクセシビリティラベルとDSLが正しく定義されていること', () => {

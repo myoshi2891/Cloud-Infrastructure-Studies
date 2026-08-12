@@ -1,11 +1,29 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen, within } from '@testing-library/react';
-import Home from '@/app/page';
+import Home, { countUniqueGuideUrls } from '@/app/page';
 import { EXAMS, STATS } from '@/app/constants';
 
 const VISIBLE_EXAMS = EXAMS.filter((e) => e.status !== 'coming-soon');
 
 describe('Home ページ', () => {
+    it('ヒーローのガイド数は試験ページとドメインページの重複 URL を除外すること', () => {
+        const firstExam = VISIBLE_EXAMS[0];
+        expect(firstExam).toBeDefined();
+        if (!firstExam) return;
+
+        const duplicateUrlsExam = {
+            ...firstExam,
+            href: firstExam.domains[0]?.href ?? firstExam.href,
+            domains: [...firstExam.domains, ...firstExam.domains],
+        };
+        const expected = new Set([
+            duplicateUrlsExam.href,
+            ...duplicateUrlsExam.domains.map((domain) => domain.href),
+        ]).size;
+
+        expect(countUniqueGuideUrls([duplicateUrlsExam])).toBe(expected);
+    });
+
     it('試験カードは公開済み (available) の試験数だけ表示されること', () => {
         const { container } = render(<Home />);
         const cards = container.querySelectorAll('.home-card');

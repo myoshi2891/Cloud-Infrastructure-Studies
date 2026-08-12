@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import DevNetProfessionalGuide from '../app/cisco/devnet-professional/DevNetProfessionalGuide';
 import { DIAGRAMS } from '../app/cisco/devnet-professional/constants';
-import DevNetProfessionalPage from '../app/cisco/devnet-professional/page';
+import DevNetProfessionalPage, { metadata } from '../app/cisco/devnet-professional/page';
 
 // MermaidDiagram をモック化
 vi.mock('@/components/MermaidDiagram', () => ({
@@ -30,9 +30,23 @@ vi.mock('@/components/MermaidDiagram', () => ({
 }));
 
 describe('Cisco DevNet Professional Guide Page', () => {
-  it('Server Page Component が正常にレンダリングされ metadata を含んでいること', () => {
-    const { container } = render(<DevNetProfessionalPage />);
-    expect(container).toBeTruthy();
+  it('ページ metadata が正しく定義されていること', () => {
+    expect(metadata.title).toBe(
+      'Cisco Certified DevNet Professional 認定 徹底解説ガイド | Cisco資格対策'
+    );
+    expect(metadata.description).toBe(
+      'Cisco公式情報に基づくDevNet Professional認定徹底解説ガイド。コア試験（350-901 DEVCOR）の出題トピック、8つのコンセントレーション試験の一覧と選び方、試験形式、合格ロードマップ、再認定制度を分かりやすく整理。'
+    );
+  });
+
+  it('Server Page Component が正常にレンダリングされること', () => {
+    render(<DevNetProfessionalPage />);
+    expect(
+      screen.getByRole('heading', {
+        level: 1,
+        name: 'Cisco Certified DevNet Professional 認定 徹底解説ガイド',
+      })
+    ).toBeInTheDocument();
   });
 
   it('Hero セクションが元HTMLと完全に一致するコンテンツとデザイン構造を持っていること', () => {

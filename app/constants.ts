@@ -464,7 +464,7 @@ export interface Stat {
 
 export const STATS: Stat[] = [
     {
-        value: String(ALL_EXAMS.filter((exam) => exam.status !== 'coming-soon').length),
+        value: String(EXAMS.filter((exam) => exam.status !== 'coming-soon').length),
         label: '対応試験数',
     },
     { value: '50+', label: '学習チャプター' },

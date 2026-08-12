@@ -40,8 +40,14 @@ const providerMeta: Record<Provider, { label: string; kicker: string; descriptio
 
 const providerOrder: Provider[] = ['GCP', 'AWS', 'Cisco'];
 
+/** Counts unique exam and domain guide URLs displayed in the hero summary. */
+export function countUniqueGuideUrls(exams: Exam[]) {
+    return new Set(exams.flatMap((exam) => [exam.href, ...exam.domains.map((domain) => domain.href)])).size;
+}
+
+/** Renders the landing hero and its guide/provider summary for the supplied exams. */
 function Hero({ exams }: { exams: Exam[] }) {
-    const guideCount = exams.reduce((total, exam) => total + exam.domains.length + 1, 0);
+    const guideCount = countUniqueGuideUrls(exams);
 
     return (
         <section className={styles.hero}>
@@ -95,6 +101,7 @@ function Hero({ exams }: { exams: Exam[] }) {
     );
 }
 
+/** Renders one exam and its associated study-guide links. */
 function ExamCard({ exam }: { exam: Exam }) {
     return (
         <article className={`home-card ${styles.card} ${cardColorMap[exam.color]}`}>
@@ -142,6 +149,7 @@ function ExamCard({ exam }: { exam: Exam }) {
     );
 }
 
+/** Groups the supplied exams into provider-specific catalog sections. */
 function ExamCatalog({ exams }: { exams: Exam[] }) {
     return (
         <section id="catalog" className={styles.catalog}>
@@ -185,6 +193,7 @@ function ExamCatalog({ exams }: { exams: Exam[] }) {
     );
 }
 
+/** Renders the site-wide statistics supplied for the landing page. */
 function Stats({ stats }: { stats: Stat[] }) {
     return (
         <section className={`home-stats-section ${styles.statsSection}`} aria-label="サイト統計">
@@ -204,6 +213,7 @@ function Stats({ stats }: { stats: Stat[] }) {
     );
 }
 
+/** Composes the public home page from visible exams and site statistics. */
 export default function Home() {
     const visibleExams = EXAMS.filter((exam) => exam.status !== 'coming-soon');
     return (
