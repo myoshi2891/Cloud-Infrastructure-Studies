@@ -343,10 +343,15 @@ const ALL_EXAMS: Exam[] = [
         level: 'Associate',
         score: '~90-120問 / 120分',
         color: 'card-ccna',
-        href: '/cisco/ccna/automation-software-development-design',
+        href: '/cisco/devnet-associate',
         description:
-            'Ciscoネットワークのソフトウェア開発、API、プラットフォーム、自動化、セキュリティ、ネットワーク基礎の知識を認定。',
+            'Ciscoネットワークのソフトウェア開発、API、プラットフォーム、自動化、セキュリティ、ネットワーク基礎の知識を認定（旧DevNet Associate）。',
         domains: [
+            {
+                label: '完全試験対策ガイド',
+                href: '/cisco/devnet-associate',
+                pct: '総合',
+            },
             {
                 label: '1.0 Software Development and Design',
                 href: '/cisco/ccna/automation-software-development-design',

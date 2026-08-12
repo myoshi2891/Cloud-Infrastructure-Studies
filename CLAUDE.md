@@ -220,6 +220,12 @@ app/
       page.tsx                      # PCNE ステップバイステップ実践ガイド
       components/                   # セクションコンポーネント（Section1-6）
   cisco/
+    devnet-associate/
+      page.tsx                      # Cisco Certified DevNet Associate (200-901 / CCNA Automation) 完全対策ガイド（Server）
+      DevNetAssociateGuide.tsx      # 本文＋インタラクション（client。全12セクション、Mermaid等）
+      NavBar.tsx                    # サイドバーナビ（IntersectionObserver）
+      constants.ts                  # Mermaid 図定義（4図）
+      page.css                      # ページ固有スタイル
     ccde/
       complete-guide/
         page.tsx                    # Cisco CCDE試験 完全ガイド（Server。メタデータ定義）

@@ -7,9 +7,32 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 ## 現在地
 
 - **ブランチ:** dev
-- **進行中タスク:** Cisco CCNA ネットワークの基礎 入門ガイド 100%全量移行 (完了)
-- **最新実装 HEAD:** `416fa0c` (`feat: implement CCNA network fundamentals guide page and components`)
-- **最終更新日時(UTC):** 2026-08-12T04:26:00.000Z
+- **進行中タスク:** Cisco Certified DevNet Associate (200-901 / CCNA Automation) 完全対策ガイド 100%全量移行 (完了)
+- **最新実装 HEAD:** `1c58598` (`test(cisco): update test assertions for heading elements`)
+- **最終更新日時(UTC):** 2026-08-12T04:48:00.000Z
+
+## 2026-08-12: Cisco「Cisco Certified DevNet Associate (200-901 / CCNA Automation) 完全対策ガイド」100%全量移行 (完了)
+
+### 目的
+
+`Cisco-devnet-associate-guide.html` および `Cisco-devnet-associate-guide.md` を、Next.js App Router 5ファイル構成 (`page.tsx`, `DevNetAssociateGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/cisco/devnet-associate` ルートへ移行。全12セクションの見出し、11個のテーブルセルテキスト、4個のMermaid図解、3個のコールアウト、13個の参考文献リンクを一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 1 (Red)**: `test(cisco): add failing tests for Cisco DevNet Associate guide migration` (`bae73c6`)
+- [x] **Step 2 (Green)**: `feat(cisco): implement Cisco DevNet Associate guide page to pass tests` (`784f400`)
+- [x] **Step 3 (Refactor / Integration & Nav & Docs)**: `app/constants.ts`, `CLAUDE.md`, `GEMINI.md` にルーティングを統合し、元ファイル (`HTML`/`MD`) を `archive/Cisco/html/devnet/` および `archive/Cisco/md/devnet/` へ移動
+
+### 関連ファイル
+
+- [app/cisco/devnet-associate/page.tsx](app/cisco/devnet-associate/page.tsx)
+- [app/cisco/devnet-associate/DevNetAssociateGuide.tsx](app/cisco/devnet-associate/DevNetAssociateGuide.tsx)
+- [app/cisco/devnet-associate/NavBar.tsx](app/cisco/devnet-associate/NavBar.tsx)
+- [app/cisco/devnet-associate/constants.ts](app/cisco/devnet-associate/constants.ts)
+- [app/cisco/devnet-associate/page.css](app/cisco/devnet-associate/page.css)
+- [__tests__/cisco-devnet-associate-guide.test.tsx](__tests__/cisco-devnet-associate-guide.test.tsx)
+- [archive/Cisco/html/devnet/Cisco-devnet-associate-guide.html](archive/Cisco/html/devnet/Cisco-devnet-associate-guide.html)
+- [archive/Cisco/md/devnet/Cisco-devnet-associate-guide.md](archive/Cisco/md/devnet/Cisco-devnet-associate-guide.md)
 
 ## 2026-08-12: Cisco「CCNA 200-301 Network Fundamentals ネットワークの基礎 入門ガイド」100%全量移行 (完了)
 
