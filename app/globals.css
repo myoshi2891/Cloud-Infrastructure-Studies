@@ -341,6 +341,88 @@ body {
     color: var(--color-theme-ace-fg);
 }
 
+/* Provider identity marks: メニューとホームで同じ視覚言語を共有する。 */
+.site-mark {
+    display: inline-grid;
+    width: 32px;
+    height: 32px;
+    flex: 0 0 auto;
+    place-items: center;
+    border: 1px solid rgba(137, 126, 255, 0.5);
+    border-radius: 10px;
+    background: linear-gradient(145deg, rgba(79, 142, 247, 0.26), rgba(139, 92, 246, 0.22));
+    color: #b9caff;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.site-mark svg {
+    width: 22px;
+    height: 22px;
+}
+
+.provider-mark {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+}
+
+.provider-mark-gcp {
+    gap: 3px;
+    width: 38px;
+    height: 24px;
+}
+
+.provider-mark-gcp > span {
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+}
+
+.provider-mark-gcp > span:nth-child(1) { background: var(--color-google-blue); }
+.provider-mark-gcp > span:nth-child(2) { background: var(--color-google-red); }
+.provider-mark-gcp > span:nth-child(3) { background: var(--color-google-yellow); }
+.provider-mark-gcp > span:nth-child(4) { background: var(--color-google-green); }
+
+.provider-mark-aws {
+    width: 42px;
+    height: 30px;
+    flex-direction: column;
+    color: var(--color-theme-aws-fg);
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 0.85;
+}
+
+.provider-mark-aws svg {
+    width: 32px;
+    height: 8px;
+}
+
+.provider-mark-cisco {
+    width: 46px;
+    height: 34px;
+    flex-direction: column;
+    gap: 1px;
+    color: var(--color-theme-cisco-fg);
+    font-family: Arial, sans-serif;
+    font-size: 7px;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+}
+
+.provider-mark-cisco svg {
+    width: 40px;
+    height: 19px;
+}
+
+.provider-mark[data-compact] {
+    transform: scale(0.82);
+    transform-origin: center;
+    margin-inline: -3px;
+}
+
 .code-line {
     white-space: pre;
     font-family: var(--font-mono);

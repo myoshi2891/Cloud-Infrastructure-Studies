@@ -73,9 +73,17 @@ describe('Home ページ', () => {
         expect(within(statsSection as HTMLElement).getByText('100%')).toBeInTheDocument();
     });
 
-    it('ヒーローセクションに "3試験対応" バッジが含まれること', () => {
+    it('ヒーローセクションがマルチベンダー対応を示すこと', () => {
         render(<Home />);
-        expect(screen.getByText(/3試験対応/)).toBeInTheDocument();
+        expect(screen.getByText(/Multi-vendor learning hub/i)).toBeInTheDocument();
+        expect(screen.getByText(/Google Cloud・AWS・Cisco/)).toBeInTheDocument();
+    });
+
+    it('Google Cloud・AWS・Cisco のカタログ見出しが表示されること', () => {
+        render(<Home />);
+        for (const provider of ['Google Cloud', 'Amazon Web Services', 'Cisco']) {
+            expect(screen.getByRole('heading', { name: provider })).toBeInTheDocument();
+        }
     });
 
     it('CDL カードのドメインリンク数が EXAMS.domains.length と一致し、CTA 1 本が加算される', () => {
