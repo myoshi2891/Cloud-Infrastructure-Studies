@@ -118,4 +118,14 @@ describe('CcnaNetworkFundamentalsGuide Page & Component', () => {
     expect(diagrams).toHaveLength(10);
     expect(diagrams.map((diagram) => diagram.getAttribute('aria-label'))).toEqual(expectedLabels);
   });
+
+  it('renders all nine source URLs as keyboard-accessible links', () => {
+    const { container } = render(<CcnaNetworkFundamentalsGuide />);
+    const sourceLinks = container.querySelectorAll('.source-list a.src-url');
+
+    expect(sourceLinks).toHaveLength(9);
+    sourceLinks.forEach((link) => {
+      expect(link).toHaveAttribute('href', link.textContent);
+    });
+  });
 });

@@ -154,6 +154,25 @@ describe('Cisco CCNP Automation Guide Page', () => {
     expect(screen.getByText('120 CEクレジット')).toBeInTheDocument();
   });
 
+  it('コアとコンセントレーション資格をCisco公式名称で統一すること', () => {
+    render(<AutomationProfessionalGuide />);
+
+    expect(
+      screen.getAllByText(/Cisco Certified Specialist - Automation Core/).length
+    ).toBeGreaterThanOrEqual(2);
+    expect(
+      screen.getByText(/Cisco Certified Specialist - Enterprise Automation/)
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/Cisco Certified Specialist - Data Center Automation/)
+    ).toBeInTheDocument();
+
+    expect(DIAGRAMS.levels).toContain('Cisco Certified Specialist - Automation Core');
+    expect(DIAGRAMS.levels).toContain('Cisco Certified Specialist - Enterprise Automation');
+    expect(DIAGRAMS.levels).toContain('Cisco Certified Specialist - Data Center Automation');
+    expect(DIAGRAMS.roadmap).toContain('Cisco Certified Specialist - Automation Core');
+  });
+
   it('全6つの Mermaid ダイアグラムが正確なDSLとariaLabelでレンダリングされ、preserveNaturalScaleがtrueであること', () => {
     render(<AutomationProfessionalGuide />);
 

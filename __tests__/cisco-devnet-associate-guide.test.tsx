@@ -108,6 +108,7 @@ describe('Cisco DevNet Associate Guide Migration Verification', () => {
     it('表ヘッダーと現在位置の目次リンクにアクセシビリティ属性があること', () => {
         const { container } = render(<DevNetAssociateGuide />);
 
+        expect(screen.getByRole('navigation', { name: '目次' })).toBeInTheDocument();
         expect(container.querySelectorAll('th:not([scope="col"])')).toHaveLength(0);
         expect(container.querySelectorAll('a[aria-current="location"]')).toHaveLength(1);
     });
