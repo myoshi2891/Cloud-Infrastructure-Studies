@@ -21,6 +21,12 @@ export const CATEGORIES = [
     'Security',
 ];
 
+export const CANONICAL_COMMON_TARGETS = [
+    'lib/recentPages.ts',
+    'lib/utils.ts',
+    'app/navigation.ts',
+];
+
 const OK_THRESHOLD = 0.8;
 
 /**
@@ -101,30 +107,30 @@ export function domainOf(filePath) {
  *   `domain` (string), `category` (string), `status` (string, e.g. "missing" | "ok" | "warn"),
  *   `sources` (number) and `coveredSources` (number).
  * @param {Object} [options] - Optional behaviour modifiers.
- * @param {number} [options.libSourceCount=0] - Number of canonical lib/ targets in the completed P0 scope.
- * @param {number} [options.libIntegrationCoveredCount=0] - Number of those targets covered by Integration tests.
+ * @param {number} [options.commonTargetCount=0] - Number of canonical shared targets in the completed P0 scope.
+ * @param {number} [options.commonIntegrationCoveredCount=0] - Number of those targets covered by Integration tests.
  * @returns {Array<Object>} Sorted action objects. Each action contains:
  *   `priority` (P0|P1|P2), `area` (string), `detail` (string), `tool` (string), `cost` (string),
  *   `effect` (string) and `impact` (number).
  */
 export function buildActions(cells, options = {}) {
-    const { libSourceCount = 0, libIntegrationCoveredCount = 0 } = options;
+    const { commonTargetCount = 0, commonIntegrationCoveredCount = 0 } = options;
     const actions = [];
 
     for (const cell of cells) {
         if (
             cell.domain === 'common'
             && cell.category === 'Integration'
-            && libSourceCount > libIntegrationCoveredCount
+            && commonTargetCount > commonIntegrationCoveredCount
         ) {
             actions.push({
                 priority: 'P0',
                 area: '共通 / lib カバレッジ補強',
-                detail: `lib/ の対象 ${libSourceCount} ファイル中 ${libIntegrationCoveredCount} ファイルが Integration テストでカバーされています`,
+                detail: `共通の正準対象 ${commonTargetCount} ファイル中 ${commonIntegrationCoveredCount} ファイルが Integration テストでカバーされています`,
                 tool: 'Vitest',
                 cost: '中',
-                effect: '主要ユーティリティ（recentPages, navigation, utils）の回帰防止',
-                impact: libSourceCount - libIntegrationCoveredCount,
+                effect: '共通基盤（recentPages, utils, navigation）の回帰防止',
+                impact: commonTargetCount - commonIntegrationCoveredCount,
             });
         }
         if (cell.domain === 'common' && cell.category === 'Unit' && cell.status === 'missing') {

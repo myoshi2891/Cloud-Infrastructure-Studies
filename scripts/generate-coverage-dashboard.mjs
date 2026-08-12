@@ -16,6 +16,7 @@ import {
     classifyCell,
     domainOf,
     buildActions,
+    CANONICAL_COMMON_TARGETS,
     DOMAINS,
     CATEGORIES,
 } from './lib/classifier.mjs';
@@ -134,15 +135,15 @@ function build() {
         .filter((s) => (sourceCovered.get(s)?.size || 0) === 0)
         .sort();
 
-    const canonicalLibTargets = ['lib/recentPages.ts', 'lib/utils.ts']
+    const canonicalCommonTargets = CANONICAL_COMMON_TARGETS
         .filter((source) => sourceSet.has(source));
-    const libIntegrationCoveredCount = canonicalLibTargets.filter((source) =>
+    const commonIntegrationCoveredCount = canonicalCommonTargets.filter((source) =>
         [...(sourceCovered.get(source) || [])]
             .some((test) => classifyTestCategory(test) === 'Integration')
     ).length;
     const actions = buildActions(cells, {
-        libSourceCount: canonicalLibTargets.length,
-        libIntegrationCoveredCount,
+        commonTargetCount: canonicalCommonTargets.length,
+        commonIntegrationCoveredCount,
     });
 
     return {

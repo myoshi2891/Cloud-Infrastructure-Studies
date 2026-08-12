@@ -3,7 +3,7 @@ import path from 'node:path';
 
 const IMPORT_RE = /from\s+['"](@\/[^'"]+)['"]/g;
 const GOTO_RE = /page\.goto\(\s*(['"])([^'"]+)\1\s*\)/g;
-const FILE_SOURCE_RE = /['"]((?:app|components|lib)\/[^'"]+\.(?:css|tsx?|mjs|jsx?))['"]/g;
+const FILE_SOURCE_RE = /\breadFile(?:Sync)?\s*\(\s*(?:(['"])((?:app|components|lib)\/[^'"]+\.(?:css|tsx?|mjs|jsx?))\1|(?:path\.)?join\s*\(\s*process\.cwd\(\)\s*,\s*(['"])((?:app|components|lib)\/[^'"]+\.(?:css|tsx?|mjs|jsx?))\3\s*\))/g;
 
 /**
  * Extract unique alias import paths from a source file.
@@ -27,7 +27,7 @@ export function extractImports(source) {
 export function extractReadFilePaths(source) {
     const seen = new Set();
     for (const match of source.matchAll(FILE_SOURCE_RE)) {
-        seen.add(match[1]);
+        seen.add(match[2] ?? match[4]);
     }
     return [...seen];
 }
@@ -149,9 +149,9 @@ export function listSourceFiles(rootDir) {
     const roots = ['app', 'components', 'lib'];
     for (const r of roots) {
         const abs = path.join(rootDir, r);
-        const sourcePattern = r === 'app'
-            ? /\.(css|tsx?|mjs|jsx?)$/
-            : /\.(tsx?|mjs|jsx?)$/;
+        const sourcePattern = r === 'lib'
+            ? /\.(tsx?|mjs|jsx?)$/
+            : /\.(css|tsx?|mjs|jsx?)$/;
         for (const f of walk(abs, (p) => sourcePattern.test(p))) {
             result.add(path.relative(rootDir, f).replace(/\\/g, '/'));
         }
