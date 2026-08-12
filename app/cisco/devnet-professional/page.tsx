@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import AutomationProfessionalGuide from './DevNetProfessionalGuide';
-import './page.css';
 
 export const metadata: Metadata = {
   title: 'CCNP Automation 認定 徹底解説ガイド | Cisco資格対策',

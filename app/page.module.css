@@ -148,7 +148,7 @@
 .providerCount { justify-self: end; padding: 5px 10px; border: 1px solid var(--color-border); border-radius: 999px; color: #7f8da5; font-family: var(--font-mono); font-size: 9px; text-transform: uppercase; }
 
 .cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; padding-top: 22px; }
-.card { display: flex; min-width: 0; flex-direction: column; border: 1px solid var(--color-border); border-radius: 14px; background: linear-gradient(145deg, rgba(255,255,255,.028), rgba(255,255,255,.008)); overflow: hidden; transition: border-color 180ms ease, transform 180ms ease, box-shadow 180ms ease; }
+.card { display: flex; min-width: 0; flex-direction: column; border: 1px solid var(--color-border); border-radius: 14px; background: linear-gradient(145deg, color-mix(in srgb, var(--color-foreground) 2.8%, transparent), color-mix(in srgb, var(--color-foreground) 0.8%, transparent)); overflow: hidden; transition: border-color 180ms ease, transform 180ms ease, box-shadow 180ms ease; }
 .card:hover { border-color: color-mix(in srgb, var(--card-accent) 42%, var(--color-border)); transform: translateY(-3px); box-shadow: 0 18px 40px rgba(0,0,0,.22); }
 .cardTopline { display: flex; align-items: center; justify-content: space-between; min-height: 56px; padding: 12px 18px; border-bottom: 1px solid var(--color-border); }
 .cardIcon { display: grid; width: 30px; height: 30px; place-items: center; border: 1px solid color-mix(in srgb, var(--card-accent) 28%, transparent); border-radius: 8px; background: color-mix(in srgb, var(--card-accent) 9%, transparent); font-size: 15px; }

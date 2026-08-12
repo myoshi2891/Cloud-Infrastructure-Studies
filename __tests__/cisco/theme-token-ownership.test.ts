@@ -19,11 +19,16 @@ describe('Cisco guide theme token ownership', () => {
         const ccnaCss = read('app/cisco/ccna/network-fundamentals-guide/page.css');
         const associateCss = read('app/cisco/devnet-associate/page.module.css');
         const homeCss = read('app/page.module.css');
+        const withoutTokenDefinitions = (css: string) => css.replace(/^\s*--[^;]+;\s*$/gm, '');
 
         expect(ccnaCss).not.toMatch(/background:\s*linear-gradient\(90deg,\s*#ffffff/);
-        expect(ccnaCss).not.toMatch(/(?:background|color):\s*(?:#[0-9a-f]{6}|rgba\()/i);
+        expect(withoutTokenDefinitions(ccnaCss)).not.toMatch(
+            /(?:background|color):\s*(?:#[0-9a-f]{6}|rgba\()/i
+        );
         expect(associateCss).not.toMatch(/background:\s*linear-gradient\(90deg,\s*#ffffff/);
-        expect(associateCss).not.toMatch(/(?:background|color):\s*(?:#cfe0ff|rgba\()/i);
+        expect(withoutTokenDefinitions(associateCss)).not.toMatch(
+            /(?:background|color):\s*(?:#cfe0ff|rgba\()/i
+        );
         expect(homeCss).not.toContain(
             'background: linear-gradient(145deg, rgba(255,255,255,.028), rgba(255,255,255,.008))'
         );

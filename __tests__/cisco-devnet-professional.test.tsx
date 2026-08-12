@@ -4,6 +4,7 @@ import { describe, expect, it, vi } from 'vitest';
 import AutomationProfessionalGuide from '../app/cisco/devnet-professional/DevNetProfessionalGuide';
 import { DIAGRAMS } from '../app/cisco/devnet-professional/constants';
 import AutomationProfessionalPage, { metadata } from '../app/cisco/devnet-professional/page';
+import styles from '../app/cisco/devnet-professional/page.module.css';
 
 // MermaidDiagram をモック化
 vi.mock('@/components/MermaidDiagram', () => ({
@@ -220,7 +221,7 @@ describe('Cisco CCNP Automation Guide Page', () => {
   it('全Callout（補足注釈コンポーネント）と注意事項フッターが元デザイン通りにレンダリングされること', () => {
     const { container } = render(<AutomationProfessionalGuide />);
 
-    const callouts = container.querySelectorAll('.callout');
+    const callouts = container.querySelectorAll(`.${styles.callout}`);
     expect(callouts.length).toBeGreaterThanOrEqual(3);
 
     expect(screen.getByText('補足（最新情報）：')).toBeInTheDocument();
@@ -228,7 +229,7 @@ describe('Cisco CCNP Automation Guide Page', () => {
     expect(screen.getByText('初学者向けポイント：')).toBeInTheDocument();
     expect(screen.getByText('不合格日の翌日から5暦日')).toBeInTheDocument();
 
-    const footerNotice = container.querySelector('.footer');
+    const footerNotice = container.querySelector(`.${styles.footer}`);
     expect(footerNotice).toBeInTheDocument();
     expect(footerNotice?.textContent).toContain('予告なく変更される場合があります');
   });

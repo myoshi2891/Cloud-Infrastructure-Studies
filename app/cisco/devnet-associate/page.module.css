@@ -1,4 +1,14 @@
 .page {
+    --color-devnet-associate-panel: #0d1b2e;
+    --color-devnet-associate-panel-alt: #0f2038;
+    --color-devnet-associate-accent-soft: rgba(124, 158, 255, 0.14);
+    --color-devnet-associate-accent-border: rgba(124, 158, 255, 0.3);
+    --color-devnet-associate-foreground: #e7edf8;
+    --color-devnet-associate-foreground-muted: #93a5c4;
+    --color-devnet-associate-border: rgba(124, 158, 255, 0.16);
+    --color-devnet-associate-warning: #ffb86b;
+    --color-devnet-associate-warning-soft: rgba(255, 184, 107, 0.12);
+
     background: var(--color-guide-background);
     color: var(--color-devnet-associate-foreground);
     font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', 'Yu Gothic', system-ui, -apple-system, sans-serif;
@@ -92,7 +102,7 @@
 .page h1 {
     font-size: 32px;
     margin: 0 0 12px;
-    background: linear-gradient(90deg, #ffffff 0%, var(--color-guide-accent) 100%);
+    background: linear-gradient(90deg, var(--color-guide-hero-start) 0%, var(--color-guide-accent) 100%);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -190,16 +200,16 @@
 }
 
 .page tr:nth-child(even) td {
-    background: rgba(255, 255, 255, 0.02);
+    background: color-mix(in srgb, var(--color-guide-foreground) 2%, transparent);
 }
 
 .page code {
-    background: rgba(255, 255, 255, 0.07);
+    background: color-mix(in srgb, var(--color-guide-foreground) 7%, transparent);
     padding: 2px 7px;
     border-radius: 5px;
     font-size: 0.88em;
     font-family: SFMono-Regular, Consolas, Menlo, monospace;
-    color: #cfe0ff;
+    color: var(--color-guide-code-foreground);
 }
 
 .page ul,

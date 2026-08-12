@@ -1,5 +1,5 @@
 /* TODO: Migrate the remaining scoped variables to the three-layer tokens in app/globals.css. */
-.devnet-pro-page {
+.page {
   --bg: #07111e;
   --bg-elevated: #0d1b2e;
   --bg-panel: #101f36;
@@ -18,20 +18,20 @@
   min-height: 100vh;
 }
 
-.devnet-pro-page a {
+.page a {
   color: var(--accent-strong);
   text-decoration: none;
 }
-.devnet-pro-page a:hover {
+.page a:hover {
   text-decoration: underline;
 }
 
 /* Layout */
-.devnet-pro-page .layout {
+.page .layout {
   display: block;
 }
 
-.devnet-pro-page .sidebar {
+.page .sidebar {
   position: fixed;
   top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px));
   left: 0;
@@ -44,19 +44,19 @@
   z-index: 40;
 }
 
-.devnet-pro-page .sidebar::-webkit-scrollbar {
+.page .sidebar::-webkit-scrollbar {
   width: 6px;
 }
-.devnet-pro-page .sidebar::-webkit-scrollbar-thumb {
+.page .sidebar::-webkit-scrollbar-thumb {
   background: var(--border);
   border-radius: 4px;
 }
-.devnet-pro-page .sidebar {
+.page .sidebar {
   scrollbar-width: thin;
   scrollbar-color: var(--border) transparent;
 }
 
-.devnet-pro-page .sidebar .brand {
+.page .sidebar .brand {
   font-size: 0.78rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -64,7 +64,7 @@
   margin-bottom: 0.4rem;
 }
 
-.devnet-pro-page .sidebar .brand-title {
+.page .sidebar .brandTitle {
   font-size: 1.05rem;
   font-weight: 700;
   color: var(--text);
@@ -72,15 +72,15 @@
   line-height: 1.5;
 }
 
-.devnet-pro-page .toc {
+.page .toc {
   list-style: none;
   margin: 0;
   padding: 0;
 }
-.devnet-pro-page .toc li {
+.page .toc li {
   margin: 0;
 }
-.devnet-pro-page .toc a {
+.page .toc a {
   display: block;
   padding: 0.5rem 0.7rem;
   margin-bottom: 0.15rem;
@@ -89,38 +89,38 @@
   font-size: 0.9rem;
   border-left: 2px solid transparent;
 }
-.devnet-pro-page .toc a:hover {
+.page .toc a:hover {
   background: var(--accent-soft);
   color: var(--text);
   text-decoration: none;
 }
-.devnet-pro-page .toc a.active {
+.page .toc a.active {
   background: var(--accent-soft);
   color: var(--accent-strong);
   border-left: 2px solid var(--accent);
   font-weight: 600;
 }
-.devnet-pro-page .toc .num {
+.page .toc .num {
   display: inline-block;
   width: 1.6em;
   color: var(--text-faint);
 }
 
 /* Main Content */
-.devnet-pro-page .main {
+.page .main {
   margin-left: var(--sidebar-width);
   padding: 3.2rem 4vw 6rem;
   max-width: none;
 }
 
-.devnet-pro-page .hero {
+.page .hero {
   border-bottom: 1px solid var(--border);
   padding-bottom: 2.6rem;
   margin-bottom: 2.6rem;
   max-width: none;
 }
 
-.devnet-pro-page .hero .eyebrow {
+.page .hero .eyebrow {
   display: inline-block;
   font-size: 0.78rem;
   letter-spacing: 0.14em;
@@ -133,7 +133,7 @@
   margin-bottom: 1.2rem;
 }
 
-.devnet-pro-page .hero h1 {
+.page .hero h1 {
   font-size: clamp(1.8rem, 3.4vw, 2.6rem);
   line-height: 1.35;
   margin: 0 0 0.8rem;
@@ -144,25 +144,25 @@
   color: var(--text);
 }
 
-.devnet-pro-page .hero p.lead {
+.page .hero p.lead {
   color: var(--text-dim);
   font-size: 1.05rem;
   max-width: 62em;
 }
 
-.devnet-pro-page .hero .source-line {
+.page .hero .sourceLine {
   margin-top: 1.2rem;
   font-size: 0.85rem;
   color: var(--text-faint);
 }
 
-.devnet-pro-page section.section {
+.page section.section {
   margin-bottom: 3.6rem;
   scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 16px);
   max-width: none;
 }
 
-.devnet-pro-page h2 {
+.page h2 {
   font-size: 1.5rem;
   color: var(--text);
   border-left: 4px solid var(--accent);
@@ -170,34 +170,34 @@
   margin: 0 0 1.4rem;
 }
 
-.devnet-pro-page h3 {
+.page h3 {
   font-size: 1.15rem;
   color: var(--accent-strong);
   margin: 2rem 0 0.9rem;
 }
 
-.devnet-pro-page p {
+.page p {
   color: var(--text);
   line-height: 1.85;
 }
-.devnet-pro-page .prose p {
+.page .section p {
   margin: 0 0 1rem;
 }
 
-.devnet-pro-page ul,
-.devnet-pro-page ol {
+.page ul,
+.page ol {
   padding-left: 1.4rem;
 }
-.devnet-pro-page li {
+.page li {
   margin-bottom: 0.4rem;
 }
 
-.devnet-pro-page strong {
+.page strong {
   color: var(--accent-strong);
 }
 
 /* Callouts */
-.devnet-pro-page .callout {
+.page .callout {
   background: var(--bg-panel);
   border: 1px solid var(--border);
   border-left: 3px solid var(--accent);
@@ -207,50 +207,50 @@
   font-size: 0.95rem;
   color: var(--text-dim);
 }
-.devnet-pro-page .callout strong.label {
+.page .callout strong.label {
   color: var(--accent-strong);
 }
 
-.devnet-pro-page .source-note {
+.page .sourceNote {
   font-size: 0.85rem;
   color: var(--text-faint);
   margin: 0.8rem 0 0;
   line-height: 1.7;
 }
-.devnet-pro-page .source-note a {
+.page .sourceNote a {
   color: var(--text-dim);
 }
 
 /* Tables */
-.devnet-pro-page .table-wrap {
+.page .tableWrap {
   overflow-x: auto;
   margin: 1.4rem 0;
 }
-.devnet-pro-page table {
+.page table {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.92rem;
   min-width: 560px;
 }
-.devnet-pro-page th,
-.devnet-pro-page td {
+.page th,
+.page td {
   border: 1px solid var(--border);
   padding: 0.7rem 1rem;
   text-align: left;
   vertical-align: top;
 }
-.devnet-pro-page th {
+.page th {
   background: var(--accent-soft);
   color: var(--accent-strong);
   font-weight: 600;
   white-space: nowrap;
 }
-.devnet-pro-page tr:nth-child(even) td {
+.page tr:nth-child(even) td {
   background: rgba(124, 158, 255, 0.03);
 }
 
 /* Mermaid Wrapper */
-.devnet-pro-page .mermaid-wrap {
+.page .mermaidWrap {
   display: flex;
   justify-content: center;
   background: var(--bg-panel);
@@ -262,7 +262,7 @@
   width: 100%;
 }
 
-.devnet-pro-page .diagram-caption {
+.page .diagramCaption {
   text-align: center;
   color: var(--text-faint);
   font-size: 0.85rem;
@@ -270,7 +270,7 @@
 }
 
 /* Footer */
-.devnet-pro-page .footer {
+.page .footer {
   border-top: 1px solid var(--border);
   padding-top: 2rem;
   margin-top: 3rem;
@@ -279,12 +279,12 @@
   max-width: none;
 }
 
-.devnet-pro-page .refs {
+.page .refs {
   list-style: none;
   padding: 0;
   margin: 1rem 0;
 }
-.devnet-pro-page .refs li {
+.page .refs li {
   padding: 0.5rem 0;
   border-bottom: 1px dashed var(--border);
   font-size: 0.92rem;
@@ -292,7 +292,7 @@
 
 /* Responsive */
 @media (max-width: 900px) {
-  .devnet-pro-page .sidebar {
+  .page .sidebar {
     position: relative;
     top: 0;
     width: 100%;
@@ -300,7 +300,7 @@
     border-right: none;
     border-bottom: 1px solid var(--border);
   }
-  .devnet-pro-page .main {
+  .page .main {
     margin-left: 0;
     padding: 2rem 5vw 4rem;
   }

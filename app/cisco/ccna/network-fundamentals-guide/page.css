@@ -1,4 +1,16 @@
 .ccna-network-fundamentals-page {
+  --color-ccna-fundamentals-elevated: #0d1a2e;
+  --color-ccna-fundamentals-card: #101f38;
+  --color-ccna-fundamentals-accent-soft: rgba(124, 158, 255, 0.14);
+  --color-ccna-fundamentals-foreground: #e6edf7;
+  --color-ccna-fundamentals-foreground-muted: #9fb0cc;
+  --color-ccna-fundamentals-border: rgba(124, 158, 255, 0.18);
+  --color-ccna-fundamentals-border-soft: rgba(230, 237, 247, 0.08);
+  --color-ccna-fundamentals-table-header: rgba(124, 158, 255, 0.10);
+  --color-ccna-fundamentals-row-hover: rgba(124, 158, 255, 0.05);
+  --color-ccna-fundamentals-code-background: #0a1626;
+  --color-ccna-fundamentals-code-foreground: #d7e3fb;
+
   background: var(--color-guide-background);
   color: var(--color-ccna-fundamentals-foreground);
   font-family: var(--font-body), "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
@@ -104,7 +116,7 @@
   font-size: 2.1rem;
   line-height: 1.4;
   margin: 0 0 14px;
-  background: linear-gradient(90deg, #ffffff, var(--color-guide-accent));
+  background: linear-gradient(90deg, var(--color-guide-hero-start), var(--color-guide-accent));
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -151,7 +163,7 @@
 }
 
 .ccna-network-fundamentals-page strong {
-  color: #ffffff;
+  color: var(--color-guide-hero-start);
 }
 
 .ccna-network-fundamentals-page ul,
@@ -186,7 +198,7 @@
 }
 
 .ccna-network-fundamentals-page th {
-  background: rgba(124, 158, 255, 0.10);
+  background: var(--color-ccna-fundamentals-table-header);
   color: var(--color-guide-accent);
   font-weight: 700;
   white-space: nowrap;
@@ -197,7 +209,7 @@
 }
 
 .ccna-network-fundamentals-page tr:hover td {
-  background: rgba(124, 158, 255, 0.05);
+  background: var(--color-ccna-fundamentals-row-hover);
 }
 
 .ccna-network-fundamentals-page .callout {
@@ -231,7 +243,7 @@
 .ccna-network-fundamentals-page code,
 .ccna-network-fundamentals-page .mono {
   font-family: var(--font-mono), SFMono-Regular, Consolas, monospace;
-  background: rgba(124, 158, 255, 0.10);
+  background: var(--color-ccna-fundamentals-table-header);
   color: var(--color-guide-accent);
   padding: 2px 6px;
   border-radius: 4px;
@@ -239,7 +251,7 @@
 }
 
 .ccna-network-fundamentals-page .code-block {
-  background: #0a1626;
+  background: var(--color-ccna-fundamentals-code-background);
   border: 1px solid var(--color-ccna-fundamentals-border-soft);
   border-radius: 8px;
   padding: 18px 20px;
@@ -249,7 +261,7 @@
 
 .ccna-network-fundamentals-page .code-line {
   white-space: pre;
-  color: #d7e3fb;
+  color: var(--color-ccna-fundamentals-code-foreground);
   font-family: var(--font-mono), monospace;
   font-size: 0.92rem;
 }

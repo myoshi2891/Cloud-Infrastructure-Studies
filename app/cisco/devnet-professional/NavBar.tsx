@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import styles from './page.module.css';
 
 const TOC_ITEMS = [
   { id: 'prereq', num: '01', text: '前提知識' },
@@ -45,23 +46,23 @@ export default function NavBar() {
   }, []);
 
   return (
-    <nav className="sidebar" aria-label="目次">
-      <div className="brand">Cisco 認定ガイド</div>
-      <div className="brand-title">
+    <nav className={styles.sidebar} aria-label="目次">
+      <div className={styles.brand}>Cisco 認定ガイド</div>
+      <div className={styles.brandTitle}>
         CCNP Automation
         <br />
         徹底解説
       </div>
-      <ul className="toc" id="toc">
+      <ul className={styles.toc} id="toc">
         {TOC_ITEMS.map((item) => (
           <li key={item.id}>
             <a
               href={`#${item.id}`}
-              className={activeId === item.id ? 'active' : ''}
+              className={activeId === item.id ? styles.active : undefined}
               aria-current={activeId === item.id ? 'true' : undefined}
               onClick={() => setActiveId(item.id)}
             >
-              <span className="num">{item.num}</span>
+              <span className={styles.num}>{item.num}</span>
               {item.text}
             </a>
           </li>
