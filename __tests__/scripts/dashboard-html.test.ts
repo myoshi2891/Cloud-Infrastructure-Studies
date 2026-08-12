@@ -72,6 +72,11 @@ describe('dashboard-html / renderDashboardHtml', () => {
         }
     });
 
+    it('should explain the category-specific ok thresholds used by classifyCell', () => {
+        expect(html).toContain('Visual・A11y・Performance・Security: 対応テストが1件以上');
+        expect(html).toContain('その他のカテゴリ: 80%以上カバー');
+    });
+
     it('should include a @media print rule for printing', () => {
         expect(html).toMatch(/@media\s+print/);
     });

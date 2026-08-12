@@ -3,6 +3,7 @@ import {
     classifyCell,
     domainOf,
     buildActions,
+    DOMAINS,
 } from '../../scripts/lib/classifier.mjs';
 
 describe('classifier / classifyCell', () => {
@@ -38,6 +39,19 @@ describe('classifier / classifyCell', () => {
 });
 
 describe('classifier / domainOf', () => {
+    it('declares CCNA and DevNet as first-class dashboard domains', () => {
+        expect(DOMAINS).toEqual(expect.arrayContaining([
+            expect.objectContaining({ id: 'ccna', provider: 'Cisco' }),
+            expect.objectContaining({ id: 'devnet', provider: 'Cisco' }),
+        ]));
+    });
+
+    it('maps Cisco CCNA and DevNet sources to their own domains', () => {
+        expect(domainOf('app/cisco/ccna/network-fundamentals-guide/page.tsx')).toBe('ccna');
+        expect(domainOf('app/cisco/devnet-associate/page.module.css')).toBe('devnet');
+        expect(domainOf('app/cisco/devnet-professional/DevNetProfessionalGuide.tsx')).toBe('devnet');
+    });
+
     it('should map app/gcl/associate-cloud-engineer/page.tsx to ace', () => {
         expect(domainOf('app/gcl/associate-cloud-engineer/page.tsx')).toBe('ace');
     });
@@ -81,12 +95,27 @@ describe('classifier / buildActions', () => {
         const cells = [
             { domain: 'common', category: 'Integration', status: 'missing', sources: 2, coveredSources: 0, tests: [] },
         ];
-        const actions = buildActions(cells, { libSourceCount: 2 });
+        const actions = buildActions(cells, { libSourceCount: 2, libIntegrationCoveredCount: 0 });
         const firstAction = actions[0];
         expect(firstAction).toBeDefined();
         if (!firstAction) return;
         expect(firstAction.priority).toBe('P0');
         expect(firstAction.area).toMatch(/lib|共通|common/i);
+    });
+
+    it('should not generate a P0 action when every canonical lib target is covered', () => {
+        const cells = [
+            { domain: 'common', category: 'Integration', status: 'warn', sources: 36, coveredSources: 4, tests: ['navigation', 'recentPages', 'utils'] },
+        ];
+
+        const actions = buildActions(cells, {
+            libSourceCount: 2,
+            libIntegrationCoveredCount: 2,
+        });
+
+        expect(actions).not.toEqual(expect.arrayContaining([
+            expect.objectContaining({ priority: 'P0' }),
+        ]));
     });
 
     it('should generate P1 action when exam domain has zero E2E tests', () => {
@@ -118,7 +147,7 @@ describe('classifier / buildActions', () => {
             { domain: 'common', category: 'Integration', status: 'missing', sources: 2, coveredSources: 0, tests: [] },
             { domain: 'ace', category: 'Visual', status: 'missing', sources: 5, coveredSources: 0, tests: [] },
         ];
-        const actions = buildActions(cells, { libSourceCount: 2 });
+        const actions = buildActions(cells, { libSourceCount: 2, libIntegrationCoveredCount: 0 });
         const priorities = actions.map((a) => a.priority);
         const firstPriority = priorities[0];
         const lastPriority = priorities[priorities.length - 1];
