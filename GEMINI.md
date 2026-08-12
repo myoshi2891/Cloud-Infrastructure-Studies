@@ -1,6 +1,6 @@
 # Project Overview: Cloud Infrastructure Studies
 
-Updated 2026-08-12
+Updated 2026-08-13
 
 このプロジェクトは、Google Cloud / AWS / Cisco のクラウド・ネットワーク資格試験対策（Associate Cloud Engineer, Generative AI Leader, Cloud Digital Leader, Associate Google Workspace Administrator, Professional Cloud Network Engineer, Cisco Certified Network Associate, Cisco Certified Network Associate Automation、AWS Certified Solutions Architect – Associate）を目的とした学習用 Next.js アプリケーションです。
 試験ガイド、重要ポイントの解説、およびテスト対策コンテンツを提供します。
@@ -39,7 +39,7 @@ Updated 2026-08-12
   - `/app/gcl/professional-cloud-network-engineer-step-by-step`: PCNE ステップバイステップ実践ガイド。
   - `/app/cisco/ccde/complete-guide`: Cisco CCDE 認定 完全ガイド。
   - `/app/cisco/devnet-professional`: Cisco Certified DevNet Professional 認定 徹底解説ガイド（CSS Modules）。
-  - `/app/cisco/devnet-associate`: Cisco Certified DevNet Associate (200-901 / CCNA Automation) 完全対策ガイド（CSS Modules／ページ固有トークン）。
+  - `/app/cisco/devnet-associate`: Cisco Certified DevNet Associate (200-901 / CCNA Automation) 完全対策ガイド（CSS Modules／グローバルテーマトークン参照）。
   - `/components/sections/home`: ホームの Hero / ExamCard / ExamCatalog / Stats セクション。
   - `/app/cisco/ccna/beginner-guide`: Cisco CCNA試験 完全ガイド。
   - `/app/cisco/ccna/automation-software-development-design`: CCNA Automation ソフトウェア開発と設計 完全ガイド。
@@ -87,7 +87,7 @@ Updated 2026-08-12
 - **Client/Server コンポーネント境界**: ページ固有のアンカーナビなど状態やブラウザAPIに依存するUIは `'use client'` ディレクティブを含む専用コンポーネントとして切り出し、メインの `page.tsx` を Server Component として維持してください。また、Client コンポーネント内でサーバー専用API (`fs`, `cookies`, `headers`) を参照することは禁止し、PropsはJSONシリアライズ可能なものに限定してください。
 - **コードブロック内の改行 (`.code-block`)**: JSX変換時、コード内の改行に `{"\n"}` を使用せず、各行を `<div className="code-line">...</div>` でラップしてください。`.code-line` は `white-space: pre` 等でインデントを保持し、`map` での展開時には安定した `key` を付与してください。
 - **表形式データの構造化**: テキストのスペース揃えで列を表現したデータは、フォント変更による列ズレを防ぐため、必ず `<table>` 要素に変換してください。その際、必ず `<thead>` を含め、見出しセルには `<th scope="col">` を使用してください。
-- **CSS変数・テーマトークンの適用**: `globals.css` の3層アーキテクチャ CSS 変数（`--color-background`, `--color-foreground`, `--color-card` など）を厳格に使用すること。コンポーネントの CSS 内で新しいカスタムプロパティ (`--*`) を定義することは禁止します（グローバルな `@theme` トークンのみを参照）。
+- **CSS変数・テーマトークンの適用**: `app/globals.css` の3層アーキテクチャ CSS 変数（`--color-background`, `--color-foreground`, `--color-card` など）を厳格に使用すること。テーマトークンと新しいテーマカラーはすべて同ファイルの `@theme` に集約し、ページ固有の CSS Modules は既存の `--color-*` トークンのみを参照する。コンポーネントの CSS 内で新しいカスタムプロパティ (`--*`) を定義したり、テーマごとのCSSファイルを追加・インポートしたりしない。
 - **サイドバーガイドのレイアウト契約**: サイドバーを持つガイド画面は、デスクトップでサイドバーを左端へ固定し幅を `280px` に統一してください。メイン領域は `margin-left: 280px`、`width: calc(100% - 280px)`、`max-width: none` で残り幅をすべて使用し、本文全体を再制限する `content-inner` 等の最大幅は設けません。レスポンシブ規則では `margin-left: 0`、`width: 100%` へ戻します。この契約は `__tests__/guide-content-widths.test.ts` で全24スタイルシートを検証します。
 - **グローバルメニューの運用（データ駆動）**: ナビゲーションは `app/constants.ts` の `EXAMS` を正本とし、`app/navigation.ts` の `toNavTree()` が provider 別グループを自動生成するため **`components/Header.tsx` は直接編集しない**。新試験追加時は `EXAMS` にエントリを追加し（`status: 'coming-soon'` → 完成後に省略）、`app/globals.css` に `icon-theme-<id>` を追加すれば Drawer に自動反映される。
 - ページコンポーネント（`page.tsx`）が巨大化するのを防ぐため、各セクションは必ず `components/sections/` に分割し、スタイリングには CSS Modules (`*.module.css`) を使用してください。セクション間で共通のスタイル（例: `SectionBase.module.css`）を利用する場合は、CSS 内での `@import` を避け、各 TSX ファイルから直接 `import baseStyles from './SectionBase.module.css'` のようにインポートして適用してください。

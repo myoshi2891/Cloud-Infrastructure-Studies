@@ -7,17 +7,18 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 ## 現在地
 
 - **ブランチ:** dev
-- **進行中タスク:** レビュー指摘の実装完了・検証未完了
-- **最終更新日時(UTC):** 2026-08-12T13:48:16Z
+- **進行中タスク:** レビュー指摘の実装・対象検証完了（全体テストの既知失敗を記録）
+- **最終更新日時(UTC):** 2026-08-12T15:40:25Z
 
-## 2026-08-12: レビュー指摘のホーム/Cisco/ADKガイド改善（実装完了・検証未完了）
+## 2026-08-13: レビュー指摘のホーム/Cisco/ADKガイド改善（対象検証完了）
 
 - [x] **Home**: URL重複除外テストデータをカタログ順非依存にし、Hero / ExamCard / ExamCatalog / Statsを`components/sections/home/`へ分割。
-- [x] **Cisco content / a11y**: DevNet Associate目次のアクセシブル名、CCNA Network Fundamentalsの出典9リンク、CCNP Automationの公式Specialist名称を修正。
+- [x] **Cisco content / layout**: CCNP Automationの現行Automation Specialist名称へ統一し、固定280pxサイドバーを除いた残り幅をメイン領域が使用する契約へ修正。
 - [x] **Theme / CSS Modules**: CCNA Network Fundamentals / DevNet Associate / DevNet Professionalのテーマトークンを`app/globals.css`へ集約し、各stylesheetのローカルcustom propertyを撤去。
 - [x] **ADK guide**: Python 3.10ゲート、`google-adk>=1.17.0,<2.0.0`、一意なセッションIDを再利用する本番ストリーミングAPI検証手順を追加。
-- [x] **Coverage dashboard**: CCNA / DevNetとCSS参照を分類対象に加え、P0判定と凡例を実装に同期してHTMLを再生成。
-- [ ] **Validation**: 今回の対象Vitestは成功。サンドボックス実行記録として、全体 `npm test -- --run` は `__tests__/smoke.test.tsx` の「Home ページがレンダリングされること」が失敗したため未完了。ビルドと目視確認はユーザー指定により未実施。
+- [x] **Coverage dashboard**: `readFile` / `readFileSync` 呼び出しだけを参照として抽出し、`components/` のCSSと3つの共通正準対象を集計してHTMLを再生成。
+- [x] **Home constants**: `cardColorMap`、`providerMeta`、`providerOrder` を `app/constants.ts` に集約し、旧 `components/sections/home/config.ts` を削除。
+- [x] **Validation**: 対象Vitest 112件とESLintは成功。全体Vitestは952件成功、既知のスモーク期待値1件とサンドボックスの `window.localStorage` 不備30件が失敗。ビルドと目視確認はユーザー指定により未実施。
 
 ## 2026-08-12: Cisco「Cisco Certified DevNet Professional 認定 徹底解説ガイド」100%全量移行 (完了)
 
@@ -1175,10 +1176,10 @@ bun run test:e2e e2e/nav.spec.ts  # Chromium 2 件 pass
 ## 次回セッションでの再開プロンプト
 
 あなたは熟練したフロントエンドエンジニアであり、Next.js (App Router) の移行スペシャリストです。
-最新実装 HEAD は `b567c20`、前回進捗同期コミットは `2951b8a` です。
-ホーム分割、Ciscoガイドのグローバルテーマトークン所有権とCSS Modules、アクセシビリティ、公式資格名、ADKガイドのローカル/本番検証手順、カバレッジ分類と凡例はカテゴリー別のRed / Greenコミットで対応済みです。対象Vitest、`bun run lint`、Markdown lintが成功しています。ビルドと目視確認はユーザー指定により未実施です。
+最新実装 HEAD は `234bd37`、前回進捗同期コミットは `3eedea9` です。
+Zooガイドの手順検証、Cisco Automation Specialist名称とサイドバーレイアウト、ホーム定数集約、カバレッジ抽出と共通正準対象はカテゴリー別コミットで対応済みです。対象Vitest 112件と `npm run lint` が成功しています。ビルドと目視確認はユーザー指定により未実施です。
 
-標準コマンドは `bun run test` です。サンドボックス実行記録として、今回実行した `npm test -- --run` は既存ホームと異なる見出しを期待するスモーク1件が失敗しました。次回はアプリ実装を変更する前に、このスモーク期待値を切り分けてください。
+標準コマンドは `bun run test` です。サンドボックス実行記録として、今回の `npm test` は952件成功し、既存ホームと異なる見出しを期待するスモーク1件と、`window.localStorage.clear` が利用できない環境依存30件が失敗しました。次回はアプリ実装を変更する前に、これらのテスト環境と期待値を切り分けてください。
 
 ---
 

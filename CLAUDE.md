@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-Updated 2026-08-12
+Updated 2026-08-13
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
@@ -370,12 +370,12 @@ Aws/                                # AWS資料アーカイブ
 
 - `--font-body`, `--font-mono`, `--radius-*`
 
-**Layer 3 – ページ固有テーマ** (各ページの `.css` / `.module.css`):
+**Layer 3 – ページ固有テーマ** (`app/globals.css` の `@theme`):
 
 - Aurora（ACE）、Sapphire/Laboratory/Gold/Executive（Generative AI Leader 各セクション）
-- テーマ変数は `--color-*` を上書きする形で定義
+- テーマトークンと新しいテーマカラーはすべてグローバルな `@theme` に集約
 
-新しいテーマカラーを追加する場合は、ページ固有 `.css` を作成し、そのルートを所有する `page.tsx` または `layout.tsx` からインポートする。レイアウトスコープが不要な場合は `page.tsx` へのインポートを優先し、不要な `layout.tsx` の作成を避ける。
+ページ固有の `.css` / `.module.css` は `app/globals.css` に存在する `--color-*` トークンのみを参照する。コンポーネントレベルで新しい `--*` を定義したり、テーマごとにCSSファイルを追加・インポートしたりしない。新しいテーマカラーが必要な場合は、先に `app/globals.css` の `@theme` へ追加する。
 
 ## テスト構成
 
