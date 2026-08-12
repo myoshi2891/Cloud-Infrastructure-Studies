@@ -1,8 +1,7 @@
-import type { Exam } from '@/app/constants';
+import { providerMeta, providerOrder, type Exam } from '@/app/constants';
 import { countUniqueGuideUrls } from '@/app/home-utils';
 import styles from '@/app/page.module.css';
 import { ProviderMark } from '@/components/ProviderMark';
-import { providerMeta, providerOrder } from './config';
 
 /** Renders the landing hero and its guide/provider summary for the supplied exams. */
 export function Hero({ exams }: { exams: Exam[] }) {

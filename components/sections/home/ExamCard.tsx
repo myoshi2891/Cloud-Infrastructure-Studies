@@ -1,7 +1,6 @@
 import Link from 'next/link';
-import type { Exam } from '@/app/constants';
+import { cardColorMap, type Exam } from '@/app/constants';
 import styles from '@/app/page.module.css';
-import { cardColorMap } from './config';
 
 /** Renders one exam and its associated study-guide links. */
 export function ExamCard({ exam }: { exam: Exam }) {

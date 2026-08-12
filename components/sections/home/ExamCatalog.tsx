@@ -1,8 +1,7 @@
-import type { Exam } from '@/app/constants';
+import { providerMeta, providerOrder, type Exam } from '@/app/constants';
 import styles from '@/app/page.module.css';
 import { ProviderMark } from '@/components/ProviderMark';
 import { ExamCard } from './ExamCard';
-import { providerMeta, providerOrder } from './config';
 
 /** Groups the supplied exams into provider-specific catalog sections. */
 export function ExamCatalog({ exams }: { exams: Exam[] }) {
