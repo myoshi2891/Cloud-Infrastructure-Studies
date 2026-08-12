@@ -259,10 +259,12 @@ describe('toNavTree', () => {
             expect(
                 ccna?.domains.every(({ href }) => !ccnaautoOnlyHrefs.has(href)),
             ).toBe(true);
-            expect(ccnaauto?.domains).toHaveLength(6);
-            expect(ccnaauto?.domains.every(({ href }) => href.includes('/automation-'))).toBe(
-                true,
-            );
+            expect(ccnaauto?.domains).toHaveLength(7);
+            expect(
+                ccnaauto?.domains.every(
+                    ({ href }) => href.includes('/automation-') || href.includes('/devnet-associate')
+                )
+            ).toBe(true);
         });
 
         it('GCP グループに ace, agwa, cdl, genai, pcne, hands-on 試験が含まれる', () => {
