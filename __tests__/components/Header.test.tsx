@@ -35,7 +35,7 @@ describe('Header (drawer nav)', () => {
         expect(trigger).toHaveAttribute('aria-expanded', 'false');
     });
 
-    it('Drawer 内に「Google Cloud」「Amazon Web Services」のプロバイダ見出しが描画されること', async () => {
+    it('Drawer 内に全プロバイダ見出しが描画されること', async () => {
         // Arrange
         const user = userEvent.setup();
         render(<Header />);
@@ -49,6 +49,8 @@ describe('Header (drawer nav)', () => {
         expect(
             within(dialog).getByRole('heading', { name: 'Amazon Web Services' }),
         ).toBeInTheDocument();
+        expect(within(dialog).getByRole('heading', { name: 'Cisco' })).toBeInTheDocument();
+        expect(dialog.querySelector('.provider-mark-cisco')).toBeInTheDocument();
     });
 
     it('Drawer に EXAMS の全試験（available 分）の概要リンクと domain リンクが網羅されること', async () => {
