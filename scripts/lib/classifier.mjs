@@ -125,7 +125,7 @@ export function buildActions(cells, options = {}) {
         ) {
             actions.push({
                 priority: 'P0',
-                area: '共通 / lib カバレッジ補強',
+                area: '共通 正準対象カバレッジ補強',
                 detail: `共通の正準対象 ${commonTargetCount} ファイル中 ${commonIntegrationCoveredCount} ファイルが Integration テストでカバーされています`,
                 tool: 'Vitest',
                 cost: '中',
