@@ -94,10 +94,8 @@ const CENTERING_MARKER = 'mermaid-center (apply_render_pipeline.mjs)';
 // --- 各ステップ (純粋関数・冪等) --------------------------------------------
 
 /**
- * Replaces un-IDed Mermaid containers with sequential placeholder elements.
- * Existing ID-bearing Mermaid containers remain unchanged.
- * @param {string} html - The HTML to transform.
- * @returns {{html: string, count: number}} The transformed HTML and number of replacements.
+ * 各 `<div class="mermaid">…</div>` を `<div class="mermaid" id="diag-N"></div>` に置換する。
+ * 既に id 付き (`class="mermaid" id=...`) の div は正規表現にマッチしないため自然に冪等。
  */
 export function injectIds(html) {
     let count = 0;
@@ -112,9 +110,7 @@ export function injectIds(html) {
 }
 
 /**
- * Updates Mermaid initialization options for manual rendering.
- * @param {string} html - The HTML containing the Mermaid initialization.
- * @return {string} The HTML with `startOnLoad` set to `false` and `securityLevel` set to `'loose'` when required.
+ * `startOnLoad: true` を false にし、未指定なら `securityLevel: 'loose'` を付与する。
  */
 export function ensureInitFlags(html) {
     const initializeCall = findMermaidInitialize(html);
@@ -167,11 +163,6 @@ export function ensureInitFlags(html) {
     return out;
 }
 
-/**
- * Locates the first `mermaid.initialize` call in the source.
- * @param {string} source - The HTML or script source to search.
- * @return {{index: number, optionsStart: number, maskedSource: string}|null} The call position, options object start position, and comment- and string-masked source, or `null` if no call is found.
- */
 function findMermaidInitialize(source) {
     const scriptPattern = /<script\b[^>]*>([\s\S]*?)<\/script\s*>/gi;
     const scripts = [...source.matchAll(scriptPattern)];
@@ -199,12 +190,6 @@ function findMermaidInitialize(source) {
     return null;
 }
 
-/**
- * Finds the closing brace that matches an opening brace.
- * @param {string} maskedSource - Source text with comments and strings masked.
- * @param {number} openingIndex - Index of the opening brace.
- * @return {number} The index of the matching closing brace, or -1 if none is found.
- */
 function findMatchingBrace(maskedSource, openingIndex) {
     let depth = 0;
     for (let index = openingIndex; index < maskedSource.length; index += 1) {
@@ -219,15 +204,6 @@ function findMatchingBrace(maskedSource, openingIndex) {
     return -1;
 }
 
-/**
- * Locates a direct property in an object literal.
- * @param {string} source - The original source containing the property name.
- * @param {string} maskedSource - The source with comments and strings masked for structural scanning.
- * @param {number} openingIndex - The index of the object's opening brace.
- * @param {number} closingIndex - The index of the object's closing brace.
- * @param {string} propertyName - The property name to locate.
- * @return {{valueStart: number}|null} The index of the property's value after leading whitespace, or `null` if the property is not found.
- */
 function findTopLevelProperty(source, maskedSource, openingIndex, closingIndex, propertyName) {
     let depth = 0;
     for (let index = openingIndex; index <= closingIndex; index += 1) {
@@ -245,24 +221,12 @@ function findTopLevelProperty(source, maskedSource, openingIndex, closingIndex, 
     return null;
 }
 
-/**
- * Finds the first non-whitespace position at or after the specified index.
- * @param {string} source - The string to scan.
- * @param {number} start - The index at which to begin scanning.
- * @return {number} The index of the first non-whitespace character.
- */
 function skipWhitespace(source, start) {
     let index = start;
     while (/\s/.test(source[index] ?? '')) index += 1;
     return index;
 }
 
-/**
- * Reads a property name immediately before a colon.
- * @param {string} source - The source text containing the property.
- * @param {number} colonIndex - The index of the property's colon.
- * @return {string|null} The property name, or `null` when a quoted name is unterminated.
- */
 function readPropertyNameBeforeColon(source, colonIndex) {
     let end = colonIndex;
     while (/\s/.test(source[end - 1] ?? '')) end -= 1;
@@ -283,10 +247,8 @@ function readPropertyNameBeforeColon(source, colonIndex) {
 }
 
 /**
- * Adds the Mermaid rendering loop to the script containing Mermaid initialization.
- * @param {string} html - The HTML document to update.
- * @returns {string} The HTML document with the rendering loop inserted.
- * @throws {Error} If Mermaid initialization or a subsequent closing script tag is missing.
+ * applySvgFixups + render ループを mermaid.initialize 後の </script> 直前に注入する。
+ * 既に注入済み (マーカー検出) なら不変。
  */
 export function injectRenderLoop(html) {
     if (html.includes(RENDER_LOOP_MARKER)) return html;
@@ -306,10 +268,8 @@ export function injectRenderLoop(html) {
 }
 
 /**
- * Adds Mermaid centering styles to the HTML document.
- * @param {string} html - The HTML source to update.
- * @returns {string} The HTML source with centering styles injected.
- * @throws {Error} If the document contains neither a closing `</style>` nor `</head>` tag.
+ * 中央寄せ CSS を最初の </style> 直前に注入する。既に注入済みなら不変。
+ * </style> が無い場合は </head> 直前に <style> ごと挿入する。
  */
 export function injectCenteringCss(html) {
     if (html.includes(CENTERING_MARKER)) return html;
@@ -326,10 +286,8 @@ export function injectCenteringCss(html) {
 }
 
 /**
- * Applies the Mermaid rendering pipeline to an HTML document.
- * @param {string} html - The HTML document to process.
- * @returns {{html: string, report: string[]}} The transformed HTML and a report describing applied changes.
- * @throws {Error} If the document does not define `DIAGRAMS`.
+ * 全ステップを冪等に適用する。
+ * @returns {{ html: string, report: string[] }}
  */
 export function applyPipeline(html) {
     const report = [];

@@ -4,7 +4,38 @@ import {
     extractGotoPaths,
     resolveAliasPath,
     classifyTestCategory,
+    extractReadFilePaths,
+    listSourceFiles,
 } from '../../scripts/lib/coverage-scanner.mjs';
+
+describe('coverage-scanner / file-backed source references', () => {
+    it('includes CSS files in dashboard source candidates', () => {
+        expect(listSourceFiles(process.cwd())).toContain(
+            'app/cisco/devnet-professional/page.module.css'
+        );
+        expect(listSourceFiles(process.cwd())).toContain(
+            'components/MermaidDiagram.module.css'
+        );
+    });
+
+    it('extracts CSS paths read directly or through join(process.cwd())', () => {
+        const src = [
+            "readFileSync('app/cisco/devnet-associate/page.module.css', 'utf8');",
+            "readFileSync(join(process.cwd(), 'app/cisco/ccna/network-fundamentals-guide/page.css'), 'utf8');",
+        ].join('\n');
+
+        expect(extractReadFilePaths(src)).toEqual([
+            'app/cisco/devnet-associate/page.module.css',
+            'app/cisco/ccna/network-fundamentals-guide/page.css',
+        ]);
+    });
+
+    it('ignores repository paths that are not readFile calls', () => {
+        expect(
+            extractReadFilePaths("domainOf('app/cisco/devnet-associate/page.module.css');")
+        ).toEqual([]);
+    });
+});
 
 describe('coverage-scanner / extractImports', () => {
     it('should extract single @/ alias import statement', () => {

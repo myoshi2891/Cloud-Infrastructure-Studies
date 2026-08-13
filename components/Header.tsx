@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils';
 import { EXAMS } from '@/app/constants';
 import { toNavTree, type NavExam, type NavGroup } from '@/app/navigation';
 import { getRecent, type RecentEntry } from '@/lib/recentPages';
+import { ProviderMark, SiteMark } from '@/components/ProviderMark';
 
 const NAV_TREE = toNavTree(EXAMS);
 
@@ -167,12 +168,7 @@ export function Header() {
                         href="/"
                         className="group flex items-center gap-2.5 text-[var(--color-foreground)] transition-opacity hover:opacity-85 md:gap-3"
                     >
-                        <span
-                            className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-aurora text-sm font-black md:h-8 md:w-8 md:text-base"
-                            aria-hidden
-                        >
-                            ☁
-                        </span>
+                        <SiteMark />
                         <span className="text-[15px] font-bold tracking-tight md:text-[17px] lg:text-[18px]">
                             Cloud Infrastructure{' '}
                             <span className="text-gradient-aurora">Studies</span>
@@ -270,12 +266,7 @@ export function Header() {
                                 }}
                             >
                                 <div className="flex items-center gap-3 md:gap-4">
-                                    <span
-                                        className="hidden h-9 w-9 items-center justify-center rounded-xl bg-gradient-aurora text-base font-black md:flex"
-                                        aria-hidden
-                                    >
-                                        ☁
-                                    </span>
+                                    <span className="hidden md:flex"><SiteMark /></span>
                                     <span className="text-sm font-semibold text-[var(--color-foreground)] md:text-xl md:font-bold md:tracking-tight">
                                         メニュー
                                     </span>
@@ -304,9 +295,16 @@ export function Header() {
                                 paddingTop: '2.5rem',
                             }}
                         >
-                            {/* Search */}
-                            <div className="mb-5 flex justify-end md:mb-8">
-                                <label className="relative block">
+                            <div className="mb-6 flex flex-col gap-4 md:mb-10 md:flex-row md:items-end md:justify-between">
+                                <div>
+                                    <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--color-primary)] md:text-[12px]">
+                                        Learning catalog
+                                    </p>
+                                    <p className="mt-1 text-[13px] text-[var(--color-muted-foreground)] md:text-[14px]">
+                                        ベンダーを横断して学習ガイドを探す
+                                    </p>
+                                </div>
+                                <label className="relative block w-full md:w-auto">
                                     <span className="sr-only">ナビゲーション検索</span>
                                     <svg
                                         aria-hidden="true"
@@ -334,7 +332,7 @@ export function Header() {
                                         placeholder="試験名・ドメインで検索..."
                                         value={query}
                                         onChange={(e) => setQuery(e.target.value)}
-                                        className="w-[30rem] rounded-xl border border-white/[0.08] bg-white/[0.03] py-2.5 pl-9 pr-3 text-[14px] text-[var(--color-foreground)] placeholder:text-[var(--color-muted-foreground)] focus:border-white/[0.18] focus:outline-none focus:ring-2 focus:ring-white/10 md:rounded-2xl md:py-3.5 md:pl-12 md:pr-4 md:text-[15px]"
+                                        className="w-full rounded-xl border border-white/[0.1] bg-white/[0.035] py-2.5 pl-9 pr-3 text-[14px] text-[var(--color-foreground)] placeholder:text-[var(--color-muted-foreground)] focus:border-[var(--color-primary)]/60 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/15 md:w-[30rem] md:rounded-2xl md:py-3.5 md:pl-12 md:pr-4 md:text-[15px]"
                                     />
                                 </label>
                             </div>
@@ -421,6 +419,7 @@ const ACCENT_CLASS: Record<string, string> = {
     'card-agwa': 'before:bg-[var(--color-theme-agwa-fg)]',
     'card-pcne': 'before:bg-[var(--color-theme-pcne-fg)]',
     'card-aws-saa': 'before:bg-[var(--color-theme-aws-fg)]',
+    'card-ccna': 'before:bg-[var(--color-theme-cisco-fg)]',
 };
 
 /**
@@ -456,21 +455,7 @@ function ProviderSection({
             {/* Hero strip */}
             <div className="flex items-center justify-between gap-3 border-b border-white/[0.06] pb-3 md:pb-4">
                 <div className="flex items-center gap-3 md:gap-4">
-                    {isGCP ? (
-                        <span className="flex gap-1" aria-hidden>
-                            <span className="h-2 w-2 rounded-full bg-[var(--color-google-blue)]" />
-                            <span className="h-2 w-2 rounded-full bg-[var(--color-google-red)]" />
-                            <span className="h-2 w-2 rounded-full bg-[var(--color-google-yellow)]" />
-                            <span className="h-2 w-2 rounded-full bg-[var(--color-google-green)]" />
-                        </span>
-                    ) : (
-                        <span
-                            aria-hidden
-                            className="flex h-5 w-5 items-center justify-center rounded-md bg-[var(--color-theme-aws-bg)] text-[10px] font-black text-[var(--color-theme-aws-fg)] md:h-6 md:w-6 md:text-[11px]"
-                        >
-                            aws
-                        </span>
-                    )}
+                    <ProviderMark provider={group.provider} compact />
                     <h2
                         id={`nav-group-${group.provider}`}
                         className="text-[13px] font-bold tracking-tight text-[var(--color-foreground)] md:text-[18px]"
@@ -483,11 +468,12 @@ function ProviderSection({
                 </span>
             </div>
 
-            {/* Exam list: GCP は md+ で 2 列、AWS は常に 1 列 (single coming-soon card を最大幅で見せる) */}
+            {/* 項目数の多い GCP / Cisco はデスクトップで2列に整理する。 */}
             <ul
                 className={cn(
                     'flex flex-col gap-2 md:gap-4',
-                    isGCP && 'md:grid md:grid-cols-2 md:gap-x-6 md:gap-y-3',
+                    group.provider !== 'AWS' &&
+                        'md:grid md:grid-cols-2 md:gap-x-6 md:gap-y-3',
                 )}
             >
                 {group.exams.map((exam) => (

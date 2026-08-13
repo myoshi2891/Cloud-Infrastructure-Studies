@@ -3,7 +3,10 @@ import {
     classifyCell,
     domainOf,
     buildActions,
+    CANONICAL_COMMON_TARGETS,
+    DOMAINS,
 } from '../../scripts/lib/classifier.mjs';
+import { extractReadFilePaths } from '../../scripts/lib/coverage-scanner.mjs';
 
 describe('classifier / classifyCell', () => {
     it('should return missing when no tests cover the cell', () => {
@@ -38,6 +41,19 @@ describe('classifier / classifyCell', () => {
 });
 
 describe('classifier / domainOf', () => {
+    it('declares CCNA and DevNet as first-class dashboard domains', () => {
+        expect(DOMAINS).toEqual(expect.arrayContaining([
+            expect.objectContaining({ id: 'ccna', provider: 'Cisco' }),
+            expect.objectContaining({ id: 'devnet', provider: 'Cisco' }),
+        ]));
+    });
+
+    it('maps Cisco CCNA and DevNet sources to their own domains', () => {
+        expect(domainOf('app/cisco/ccna/network-fundamentals-guide/page.tsx')).toBe('ccna');
+        expect(domainOf('app/cisco/devnet-associate/page.module.css')).toBe('devnet');
+        expect(domainOf('app/cisco/devnet-professional/DevNetProfessionalGuide.tsx')).toBe('devnet');
+    });
+
     it('should map app/gcl/associate-cloud-engineer/page.tsx to ace', () => {
         expect(domainOf('app/gcl/associate-cloud-engineer/page.tsx')).toBe('ace');
     });
@@ -77,11 +93,20 @@ describe('classifier / domainOf', () => {
 });
 
 describe('classifier / buildActions', () => {
+    it('does not treat domain classification strings as file-backed coverage', () => {
+        expect(
+            extractReadFilePaths("domainOf('app/cisco/devnet-professional/page.module.css')")
+        ).toEqual([]);
+    });
+
     it('should generate P0 action when lib Integration cell is missing', () => {
         const cells = [
             { domain: 'common', category: 'Integration', status: 'missing', sources: 2, coveredSources: 0, tests: [] },
         ];
-        const actions = buildActions(cells, { libSourceCount: 2 });
+        const actions = buildActions(cells, {
+            commonTargetCount: CANONICAL_COMMON_TARGETS.length,
+            commonIntegrationCoveredCount: 0,
+        });
         const firstAction = actions[0];
         expect(firstAction).toBeDefined();
         if (!firstAction) return;
@@ -89,11 +114,34 @@ describe('classifier / buildActions', () => {
         expect(firstAction.area).toMatch(/lib|共通|common/i);
     });
 
+    it('should not generate a P0 action when every canonical lib target is covered', () => {
+        const expectedTargets = [
+            'lib/recentPages.ts',
+            'lib/utils.ts',
+            'app/navigation.ts',
+        ];
+        const cells = [
+            { domain: 'common', category: 'Integration', status: 'warn', sources: 36, coveredSources: 4, tests: ['navigation', 'recentPages', 'utils'] },
+        ];
+
+        expect(CANONICAL_COMMON_TARGETS).toHaveLength(expectedTargets.length);
+        expect(CANONICAL_COMMON_TARGETS).toEqual(expectedTargets);
+
+        const actions = buildActions(cells, {
+            commonTargetCount: CANONICAL_COMMON_TARGETS.length,
+            commonIntegrationCoveredCount: CANONICAL_COMMON_TARGETS.length,
+        });
+
+        expect(actions).not.toEqual(expect.arrayContaining([
+            expect.objectContaining({ priority: 'P0' }),
+        ]));
+    });
+
     it('should generate P1 action when exam domain has zero E2E tests', () => {
         const cells = [
             { domain: 'agwa', category: 'E2E', status: 'missing', sources: 3, coveredSources: 0, tests: [] },
         ];
-        const actions = buildActions(cells, { libSourceCount: 0 });
+        const actions = buildActions(cells, { commonTargetCount: 0 });
         const p1 = actions.find((a) => a.priority === 'P1');
         expect(p1).toBeDefined();
         if (!p1) return;
@@ -105,7 +153,7 @@ describe('classifier / buildActions', () => {
             { domain: 'ace', category: 'Visual', status: 'missing', sources: 5, coveredSources: 0, tests: [] },
             { domain: 'agwa', category: 'Visual', status: 'missing', sources: 3, coveredSources: 0, tests: [] },
         ];
-        const actions = buildActions(cells, { libSourceCount: 0 });
+        const actions = buildActions(cells, { commonTargetCount: 0 });
         const p2 = actions.find((a) => a.priority === 'P2');
         expect(p2).toBeDefined();
         if (!p2) return;
@@ -118,7 +166,10 @@ describe('classifier / buildActions', () => {
             { domain: 'common', category: 'Integration', status: 'missing', sources: 2, coveredSources: 0, tests: [] },
             { domain: 'ace', category: 'Visual', status: 'missing', sources: 5, coveredSources: 0, tests: [] },
         ];
-        const actions = buildActions(cells, { libSourceCount: 2 });
+        const actions = buildActions(cells, {
+            commonTargetCount: CANONICAL_COMMON_TARGETS.length,
+            commonIntegrationCoveredCount: 0,
+        });
         const priorities = actions.map((a) => a.priority);
         const firstPriority = priorities[0];
         const lastPriority = priorities[priorities.length - 1];

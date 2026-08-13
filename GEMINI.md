@@ -1,6 +1,6 @@
 # Project Overview: Cloud Infrastructure Studies
 
-Updated 2026-08-11
+Updated 2026-08-13
 
 このプロジェクトは、Google Cloud / AWS / Cisco のクラウド・ネットワーク資格試験対策（Associate Cloud Engineer, Generative AI Leader, Cloud Digital Leader, Associate Google Workspace Administrator, Professional Cloud Network Engineer, Cisco Certified Network Associate, Cisco Certified Network Associate Automation、AWS Certified Solutions Architect – Associate）を目的とした学習用 Next.js アプリケーションです。
 試験ガイド、重要ポイントの解説、およびテスト対策コンテンツを提供します。
@@ -38,6 +38,9 @@ Updated 2026-08-11
   - `/app/gcl/professional-cloud-network-engineer`: PCNE 試験対策ページ（概要・ドメイン別解説）。
   - `/app/gcl/professional-cloud-network-engineer-step-by-step`: PCNE ステップバイステップ実践ガイド。
   - `/app/cisco/ccde/complete-guide`: Cisco CCDE 認定 完全ガイド。
+  - `/app/cisco/devnet-professional`: Cisco Certified DevNet Professional 認定 徹底解説ガイド（CSS Modules）。
+  - `/app/cisco/devnet-associate`: Cisco Certified DevNet Associate (200-901 / CCNA Automation) 完全対策ガイド（CSS Modules／グローバルテーマトークン参照）。
+  - `/components/sections/home`: ホームの Hero / ExamCard / ExamCatalog / Stats セクション。
   - `/app/cisco/ccna/beginner-guide`: Cisco CCNA試験 完全ガイド。
   - `/app/cisco/ccna/automation-software-development-design`: CCNA Automation ソフトウェア開発と設計 完全ガイド。
   - `/app/cisco/ccna/automation-api-guide`: CCNA Automation API 完全ガイド。
@@ -50,6 +53,7 @@ Updated 2026-08-11
   - `/app/cisco/ccna/ip-services-guide`: CCNA 200-301 IP Services 完全ガイド。
   - `/app/cisco/ccna/automation-programmability`: CCNA 200-301 6.0 自動化とプログラマビリティ 完全ガイド。
   - `/app/cisco/ccna/security-fundamentals`: CCNA 200-301 Security Fundamentals 完全ガイド。
+  - `/app/cisco/ccna/network-fundamentals-guide`: CCNA 200-301 Network Fundamentals ネットワークの基礎 入門ガイド。
   - `/app/aws/solutions-architect-associate`: AWS Certified Solutions Architect – Associate (SAA-C03) 完全対策ガイド（`domain1` を含む）。
 - `/app/constants.ts`: 試験データ正本（EXAMS / STATS）。`provider: 'GCP' | 'AWS' | 'Cisco'` で分類され、`toNavTree` が自動グルーピング。
 - `/app/navigation.ts`: `toNavTree(EXAMS)` adapter。Header.tsx が参照し、provider 別にナビを自動生成。`status: 'coming-soon'` の試験はナビに「準備中」として表示。
@@ -63,10 +67,13 @@ Updated 2026-08-11
 
 ## 開発コンベンション
 
-- **テスト駆動（絶対厳守）:** 実装の際は必ず `.claude/rules/tdd-commit-workflow.md` のルールに従い、以下の3ステップを厳格に繰り返すこと。各ステップ完了後に**即コミット（繰り越し禁止）**。
-  1. **Step 1 — Fail:** テストコードを先に作成し、失敗（Fail）することを確認してコミット (`test: add failing tests for ...`)
-  2. **Step 2 — Pass:** テストをPassさせる最小限の実装を行いコミット (`feat/fix: implement ... to pass tests`)
-  3. **Step 3 — Refactor:** コード整理・ルーティング統合・ビルド確認後にコミット (`refactor/docs: integrate ... into routing and update docs`)
+- **テスト駆動（絶対厳守）:** 実装の際は必ず正準の `.agents/rules/tdd-commit-workflow.md` に従うこと。`.claude/rules/tdd-commit-workflow.md` と `.gemini/rules/tdd-commit-workflow.md` は同期ミラーである。以下のステップを厳格に繰り返し、各ステップ完了後に**即コミット（繰り越し禁止）**する。ただしコミットはユーザーの認可がある場合のみ実行する。
+  1. **Step 0 — Inventory:** 移行タスクでは移行元から `docs/migration-inventory/<slug>.json` を機械抽出してコミット (`chore(migration): add content inventory for ...`)
+  2. **Step 1 — Fail:** インベントリを `import` した失敗テストを先に作成し、失敗を確認してコミット (`test: add failing tests for ...`)
+  3. **Step 2 — Pass:** テストをPassさせる実装を行いコミット (`feat/fix: implement ... to pass tests`)
+  4. **Step 3 — Refactor:** コード整理・ルーティング統合・`bun run lint` / `bun run build` 確認後にコミット (`refactor/docs: integrate ... into routing and update docs`)
+- **テスト強度（絶対厳守）:** 同ルール §2 の合格基準を満たすこと。特に **`getAllByText(regexp).length > 0` のみ**の検証と、件数の `toBeGreaterThan(0)` 検証は**禁止**（要約して移行してもパスしてしまうため）。件数は必ず `toBe(n)`、文言は空白除去後の完全部分文字列一致で全量検証する。テンプレートは同ルール §3 をコピーして使う。
+- **エージェント設定の3系統同期:** `.agents/` が正本、`.claude/` と `.gemini/` はその複製。片方だけ更新しないこと。`__tests__/skills/agent-mirror-sync.test.ts` が同一性を検証する。
 - **UI デザイン:** 各セクションごとに固有のテーマカラー（Aurora, Sapphire, Laboratory, Gold）が設定されています。
 - **スタイリング:** CSS 変数は `app/globals.css` で定義された 3層トークンアーキテクチャに従ってください。
 - **保守性:** 共通の定数（作成日など）は `app/gcl/genai-leader/constants.ts` に集約されています。
@@ -78,18 +85,19 @@ Updated 2026-08-11
 
 ## 注意事項
 
-- **`DisclaimerBanner`**: 全画面固定の免責事項バナー。`components/DisclaimerBanner.tsx` を編集すること。ResizeObserver で高さを `--disclaimer-height` に同期、`body { padding-top }` でコンテンツ隠れを防止。
+- **`DisclaimerBanner`**: `components/DisclaimerBanner.tsx`（`'use client'`）。**`position: sticky; top: var(--header-h)`** で Header 直下に貼り付き、flow 内に留まる。**`body { padding-top }` は使わない**（過去に `fixed` + `padding-top` としていた結果、sticky Header の natural position がずれ、スクロール開始まで Header と Disclaimer の縦並び順が入れ替わる不具合が発生したため修正済み）。ResizeObserver による `--disclaimer-height` の同期は継続する（ページ内 SectionNav が `--fixed-offset = calc(--header-h + --disclaimer-height)` を `top` 値として参照するため）。免責事項テキストの変更はこのファイルのみ編集する。
 - `litellm` や `dspy` は脆弱性の懸念があるため、プロジェクトへの追加は禁止されています。
+- **フォントは自己ホスト（`next/font/google` 禁止）**: `next/font/google` はビルド時に Google Fonts へ HTTP 取得を行うため、CDN が旧リビジョンの CSS（実体が削除済みの woff2 URL）を返すと `Failed to fetch <family> from Google Fonts.` でビルドが失敗します（Netlify CI で実際に発生）。全 11 ファミリは `@fontsource-variable/*` / `@fontsource/*` に移行済みで、`app/layout.tsx`（Noto Sans JP / JetBrains Mono / DM Sans）と `app/gcl/genai-leader/section1〜4/page.tsx` が該当 CSS を `import` します。**可変フォントのファミリ名は `'<Name> Variable'`**（例 `'Noto Sans JP Variable'`）であり、`app/globals.css` の `@theme` の `--font-*` トークンで `'<Name> Variable', '<Name>', <generic>` の順に指定します。フォントを追加する場合も `bun add @fontsource-variable/<name>` → CSS import → `@theme` にトークン追加の手順とし、`next/font` は使用しません。この制約は `__tests__/fonts/self-hosted-fonts.test.ts` が検証します。
 - **Client/Server コンポーネント境界**: ページ固有のアンカーナビなど状態やブラウザAPIに依存するUIは `'use client'` ディレクティブを含む専用コンポーネントとして切り出し、メインの `page.tsx` を Server Component として維持してください。また、Client コンポーネント内でサーバー専用API (`fs`, `cookies`, `headers`) を参照することは禁止し、PropsはJSONシリアライズ可能なものに限定してください。
 - **コードブロック内の改行 (`.code-block`)**: JSX変換時、コード内の改行に `{"\n"}` を使用せず、各行を `<div className="code-line">...</div>` でラップしてください。`.code-line` は `white-space: pre` 等でインデントを保持し、`map` での展開時には安定した `key` を付与してください。
 - **表形式データの構造化**: テキストのスペース揃えで列を表現したデータは、フォント変更による列ズレを防ぐため、必ず `<table>` 要素に変換してください。その際、必ず `<thead>` を含め、見出しセルには `<th scope="col">` を使用してください。
-- **CSS変数・テーマトークンの適用**: `globals.css` の3層アーキテクチャ CSS 変数（`--color-background`, `--color-foreground`, `--color-card` など）を厳格に使用すること。コンポーネントの CSS 内で新しいカスタムプロパティ (`--*`) を定義することは禁止します（グローバルな `@theme` トークンのみを参照）。
+- **CSS変数・テーマトークンの適用**: `app/globals.css` の3層アーキテクチャ CSS 変数（`--color-background`, `--color-foreground`, `--color-card` など）を厳格に使用すること。テーマトークンと新しいテーマカラーはすべて同ファイルの `@theme` に集約し、ページ固有の CSS Modules は既存の `--color-*` トークンのみを参照する。コンポーネントの CSS 内で新しいカスタムプロパティ (`--*`) を定義したり、テーマごとのCSSファイルを追加・インポートしたりしない。
 - **サイドバーガイドのレイアウト契約**: サイドバーを持つガイド画面は、デスクトップでサイドバーを左端へ固定し幅を `280px` に統一してください。メイン領域は `margin-left: 280px`、`width: calc(100% - 280px)`、`max-width: none` で残り幅をすべて使用し、本文全体を再制限する `content-inner` 等の最大幅は設けません。レスポンシブ規則では `margin-left: 0`、`width: 100%` へ戻します。この契約は `__tests__/guide-content-widths.test.ts` で全24スタイルシートを検証します。
 - **グローバルメニューの運用（データ駆動）**: ナビゲーションは `app/constants.ts` の `EXAMS` を正本とし、`app/navigation.ts` の `toNavTree()` が provider 別グループを自動生成するため **`components/Header.tsx` は直接編集しない**。新試験追加時は `EXAMS` にエントリを追加し（`status: 'coming-soon'` → 完成後に省略）、`app/globals.css` に `icon-theme-<id>` を追加すれば Drawer に自動反映される。
 - ページコンポーネント（`page.tsx`）が巨大化するのを防ぐため、各セクションは必ず `components/sections/` に分割し、スタイリングには CSS Modules (`*.module.css`) を使用してください。セクション間で共通のスタイル（例: `SectionBase.module.css`）を利用する場合は、CSS 内での `@import` を避け、各 TSX ファイルから直接 `import baseStyles from './SectionBase.module.css'` のようにインポートして適用してください。
 - ASCIIダイアグラムの使用を避け、専用の SVG コンポーネント (`DiagramSVG.tsx` 等) に置き換えてください。型の制約（Discriminated Union）により、アクセシビリティを担保するための `ariaLabel="説明文"` または `decorative={true}` の指定が必須となります。
 - アクセシビリティ（`aria-label` 等の付与）を徹底し、コンポーネントやユーティリティ関数には Docstrings (JSDoc) を追加してください。
-- **移行作業の同期とHTMLファイルアーカイブルール**: HTMLの移行作業時には必ず `.claude/rules/migration-progress-sync.md` に従い進捗を同期してください。また、**移行元ファイルは絶対に削除せず、移行完了後に `archive/` 配下の適切なディレクトリへ移動（アーカイブ）してください。Cisco 資料は `archive/Cisco/html/` と `archive/Cisco/md/` を使用し、`Gcl_Archive/Cisco` は作成・使用しないでください**。
+- **移行作業の同期とHTMLファイルアーカイブルール**: HTMLの移行作業時には必ず `.gemini/rules/migration-progress-sync.md`（3系統同一内容）に従い進捗を同期してください。また、**移行元ファイルは絶対に削除せず、移行完了後に `archive/` 配下の適切なディレクトリへ移動（アーカイブ）してください。Cisco 資料は `archive/Cisco/html/` と `archive/Cisco/md/` を使用し、`Gcl_Archive/Cisco` は作成・使用しないでください**。
 - **Mermaid図解の幅・配置契約**: `Diagram` や `.mermaid-wrap` に個別の `maxWidth` インラインスタイル（`maxWidth: 800px` 等）を設定して幅を人工的に制限することは**絶対禁止**です。コンテンツ領域の全幅 (`width: 100%`) を活用し、`margin: 1.5rem auto 2rem` で親コンテナ内中央に配置してください。
 - **ユーザー手動確認ゼロ原則（手動・目視確認依頼の全廃）**:
   - ユーザーに目視チェックやスクリーンショット撮影・確認作業を依頼することを**厳禁**とします。

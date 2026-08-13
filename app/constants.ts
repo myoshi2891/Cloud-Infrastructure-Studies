@@ -38,6 +38,39 @@ export interface Exam {
     overviewLabel?: string;
 }
 
+export const cardColorMap: Record<ColorKey, string> = {
+    'card-ace': 'card-ace',
+    'card-genai': 'card-genai',
+    'card-cdl': 'card-cdl',
+    'card-agwa': 'card-agwa',
+    'card-pcne': 'card-pcne',
+    'card-ccna': 'card-ccna',
+    'card-aws-saa': 'card-aws-saa',
+};
+
+export const providerMeta: Record<
+    Provider,
+    { label: string; kicker: string; description: string }
+> = {
+    GCP: {
+        label: 'Google Cloud',
+        kicker: 'Cloud & AI',
+        description: 'クラウド基盤、生成AI、Workspaceまでを体系的に学ぶ',
+    },
+    AWS: {
+        label: 'Amazon Web Services',
+        kicker: 'Cloud Architecture',
+        description: '可用性・セキュリティ・コストを意識した設計力を磨く',
+    },
+    Cisco: {
+        label: 'Cisco',
+        kicker: 'Network & Automation',
+        description: 'ネットワーク基礎から設計、自動化、DevNetまでを深掘りする',
+    },
+};
+
+export const providerOrder: Provider[] = ['GCP', 'AWS', 'Cisco'];
+
 const ALL_EXAMS: Exam[] = [
     {
         id: 'ace',
@@ -303,7 +336,7 @@ const ALL_EXAMS: Exam[] = [
         domains: [
             {
                 label: '1.0 Network Fundamentals（ネットワークの基礎）',
-                href: '/cisco/ccna/beginner-guide',
+                href: '/cisco/ccna/network-fundamentals-guide',
                 pct: '20%',
             },
             {
@@ -343,10 +376,15 @@ const ALL_EXAMS: Exam[] = [
         level: 'Associate',
         score: '~90-120問 / 120分',
         color: 'card-ccna',
-        href: '/cisco/ccna/automation-software-development-design',
+        href: '/cisco/devnet-associate',
         description:
-            'Ciscoネットワークのソフトウェア開発、API、プラットフォーム、自動化、セキュリティ、ネットワーク基礎の知識を認定。',
+            'Ciscoネットワークのソフトウェア開発、API、プラットフォーム、自動化、セキュリティ、ネットワーク基礎の知識を認定（旧CCNA Automation）。',
         domains: [
+            {
+                label: '完全試験対策ガイド',
+                href: '/cisco/devnet-associate',
+                pct: '総合',
+            },
             {
                 label: '1.0 Software Development and Design',
                 href: '/cisco/ccna/automation-software-development-design',
@@ -425,6 +463,27 @@ const ALL_EXAMS: Exam[] = [
         icon: '🏗️',
         provider: 'Cisco',
     },
+    {
+        id: 'cisco-devnet-professional',
+        label: 'CCNP Automation',
+        abbr: 'CCNP Automation',
+        level: 'Professional',
+        score: 'コア 120分 + コンセントレーション 90分',
+        color: 'card-ccna',
+        href: '/cisco/devnet-professional',
+        description:
+            'Ciscoプラットフォーム上のアプリケーション開発・運用・自動化プロフェッショナル認定。コア試験(350-901 AUTOCOR)と2つのコンセントレーション試験を徹底解説。',
+        domains: [
+            {
+                label: '徹底解説ガイド',
+                href: '/cisco/devnet-professional',
+                pct: '完全解説',
+            },
+        ],
+        badge: 'Automation プロフェッショナル',
+        icon: '🚀',
+        provider: 'Cisco',
+    },
 ];
 
 export const EXAMS: Exam[] = HANDS_ON_ENABLED
@@ -437,7 +496,10 @@ export interface Stat {
 }
 
 export const STATS: Stat[] = [
-    { value: '5', label: '対応試験数' },
+    {
+        value: String(EXAMS.filter((exam) => exam.status !== 'coming-soon').length),
+        label: '対応試験数',
+    },
     { value: '50+', label: '学習チャプター' },
     { value: '600+', label: 'コードブロック' },
     { value: '100%', label: '日本語解説' },

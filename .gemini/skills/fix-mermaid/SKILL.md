@@ -9,7 +9,27 @@ description: >
 
 # Mermaid 構文・描画修正スキル
 
-(最終更新日: 2026-08-11)
+(最終更新日: 2026-08-13)
+
+## 前提バージョンと正準実装（推測禁止）
+
+| 項目 | 確定値 |
+|---|---|
+| Mermaid | **`mermaid@^11.16.0`**（`package.json` の dependencies） |
+| React 共通コンポーネント | `components/MermaidDiagram.tsx` — **名前付きエクスポート** `export const MermaidDiagram` |
+| 併せてエクスポート | `applySvgFixups`（SVG 後処理の正準実装） |
+| スタイル | `components/MermaidDiagram.module.css` |
+| `mermaid.initialize` | モジュール最上位で `typeof window !== 'undefined'` ガード付きに**一度だけ**実行 |
+| テスト環境 | Vitest 4 / jsdom。`MermaidDiagram` は**必ずモックする**（§ テスト環境でのモック化） |
+
+> 以降の「Mermaid v10 の必須ルール」は **v11 でも有効な基本構文ルール**である（カラム0・1行1ステートメント等）。
+> v10 固有の記述であることを理由に読み飛ばさないこと。`references/mermaid-v10-guide.md` も同様に v11 で有効。
+
+## このスキルは3系統に複製されている
+
+`.agents/skills/fix-mermaid/` を**正本**とし、`.claude/` と `.gemini/` 配下は複製である。
+過去に3系統が乖離し、`.gemini/` だけが古いルール（図ごとの `maxWidth` インライン指定を許容する記述等）で
+残っていた実績がある。編集後は `.agents/rules/tdd-commit-workflow.md` §8 の `rsync` 手順で必ず同期すること。
 
 ## 🚀 まず再利用スクリプトを使う（トークン節約・最優先）
 
@@ -51,7 +71,7 @@ description: >
 2. 各ステートメントは**改行で分離**（1行に複数連結しない）
 3. ノードラベル `A["text"]` の内容は**1行に収める**
 4. `mindmap` のみ例外 — 内部インデントは階層構造を表すため保持する
-5. `block-beta` は**使用禁止** — v10.9.5 で全体クラッシュの原因になる。`graph TD` で代替する
+5. `block-beta` は**使用禁止** — v10.9.5 でページ全体のクラッシュを起こした実績があり、現行 v11 でも安全性を検証していない。`graph TD` で代替する
 
 ## よくある原因
 
@@ -218,7 +238,7 @@ mermaid.initialize({
 });
 ```
 
-このうえで、HTML のラッパー（`.mermaid-wrap` 等）のインラインスタイル（例: `style="max-width: 750px; margin: 0 auto;"`）で表示幅を制限することで、描画文字同士の被りを完全に回避しつつ、画面に収まる綺麗さでレスポンシブ表示できます。
+このうえで、HTML のラッパー（`.mermaid-wrap` 等）は共通の全幅・余白契約を使い、図ごとの `maxWidth` インラインスタイルは指定しない。必要な表示調整は Mermaid DSL の `chartWidth`、`chartHeight`、`nodeSpacing`、`rankSpacing` などで行う。
 
 ### HTML での Mermaid 図解の中央寄せ Flexbox スタイル（2026年6月追記）
 
@@ -230,7 +250,7 @@ mermaid.initialize({
     justify-content: safe center; /* 親幅を超える場合は flex-start（左詰め）として扱い左見切れを防ぐ */
     overflow-x: auto;
     width: 100%;
-    margin: 0 auto;
+    margin: 1.5rem auto 2rem;
 }
 .mermaid {
     display: flex;
@@ -324,8 +344,10 @@ const DIAGRAMS: Record<DiagramId, string> = {
   'wide-topology': WIDE_TOPOLOGY,
 };
 
-function Diagram({ id }: { id: DiagramId }) {
+// scroll spy による親の再レンダリングで SVG が縮むため memo は必須（後述）
+const Diagram = memo(function Diagram({ id }: { id: DiagramId }) {
   const chart = DIAGRAMS[id];
+  if (!chart) return null;
   return (
     <div className="mermaid-wrap">
       <MermaidDiagram
@@ -335,8 +357,14 @@ function Diagram({ id }: { id: DiagramId }) {
       />
     </div>
   );
-}
+});
 ```
+
+> **型に関する注意（`noUncheckedIndexedAccess: true`）**:
+> `Record<DiagramId, string>`（キーがリテラルのユニオン）はインデックスシグネチャを持たないため添字は `string` になる。
+> 一方 `Record<string, string>` は添字が `string | undefined` になり、ガード無しでは `MermaidDiagram` の
+> `chart: string` に代入できずコンパイルエラーになる。
+> **どちらの型でも動く `if (!chart) return null;` を常に書くこと**（実行時の id タイポも同時に防げる）。
 
 自然倍率を使う場合も、React の `MermaidDiagram` と `.mermaid-wrap` は `width:100%` と中央寄せを維持し、SVG は `width === viewBox幅`、`max-width:100%`、`height:auto` とする。React 側で `maxWidth` をインライン上書きせず、自動テストで共通契約を固定する。静的 HTML の `apply_render_pipeline.mjs` は冒頭の鉄則どおり `maxWidth = '100%'` と既定動作を維持する。
 
@@ -350,7 +378,7 @@ function Diagram({ id }: { id: DiagramId }) {
 2. `preserveNaturalScale=true` が指定されている場合、`applySvgFixups` は `targetWidth = viewBox幅` を設定する。`max-width:100%` と `height:auto` は共通 CSS に委ね、小さい図でも600pxなどの最小幅へ拡大しない。
 
 ```tsx
-const Diagram = memo(function Diagram({ id, label }: { id: string; label: string }) {
+const Diagram = memo(function Diagram({ id, label }: { id: DiagramId; label: string }) {
     const chart = DIAGRAMS[id];
     if (!chart) return null;
     return (
@@ -363,20 +391,48 @@ const Diagram = memo(function Diagram({ id, label }: { id: string; label: string
 
 #### 2. テスト環境（Vitest）での MermaidDiagram のモック化
 
-`MermaidDiagram` はクライアントサイドで動的に `mermaid` ライブラリを読み込んで動作するため、テスト環境での DOM レンダリング時にエラーを起こす原因となります。
-テストファイル（`page.test.tsx`）では、必ず `vi.mock` を使ってダミー要素にモック化してください。
+`MermaidDiagram` は `mermaid` を読み込み、描画前に `document.fonts.ready` を待つため、jsdom ではそのまま描画できません。
+テストファイル（`page.test.tsx`）では、必ず `vi.mock` でダミー要素に差し替えてください。
 
-```typescript
-vi.mock("@/components/MermaidDiagram", () => ({
-  default: function DummyMermaidDiagram({ chart }: { chart: string }) {
-    return <pre data-testid="mermaid">{chart}</pre>;
-  },
+**⚠️ エクスポート形態は「名前付き」です。`default` でモックすると `undefined` になり必ず落ちます。**
+
+```tsx
+// ✅ 正しい — components/MermaidDiagram.tsx は `export const MermaidDiagram`
+vi.mock('@/components/MermaidDiagram', () => ({
+    MermaidDiagram: ({ chart, ariaLabel, preserveNaturalScale }: {
+        chart: string;
+        ariaLabel: string;
+        preserveNaturalScale?: boolean;
+    }) => (
+        <div
+            data-testid="mermaid-diagram"
+            data-chart={chart}
+            data-preserve-natural-scale={String(preserveNaturalScale)}
+            aria-label={ariaLabel}
+        />
+    ),
 }));
 ```
 
+```tsx
+// ❌ 誤り — default エクスポートは存在しない
+vi.mock('@/components/MermaidDiagram', () => ({
+    default: function DummyMermaidDiagram({ chart }: { chart: string }) {
+        return <pre data-testid="mermaid">{chart}</pre>;
+    },
+}));
+```
+
+`ariaLabel` と `preserveNaturalScale` をテスト用属性としてダミーに透過させておくことで、
+**「全図に非空の `ariaLabel` があり、自然スケールが有効であること」を移行テストで機械検証できる**
+（`.agents/rules/tdd-commit-workflow.md` §3 の正準テストテンプレート参照）。
+
+モックのファイル名・`data-testid` はテンプレートと揃えて **`mermaid-diagram`** に統一すること。
+過去に `mermaid` / `mermaid-diagram` が混在し、件数アサーションが機能していないテストが生まれた。
+
 ## Mermaid v11 + React 共通コンポーネントの可読性・文字切れ・文字色対策（2026年6月追記）
 
-本リポジトリは `mermaid@^11.15.0` を使用し、図は共通コンポーネント [`components/MermaidDiagram.tsx`](../../../components/MermaidDiagram.tsx)（`'use client'`）で描画する。`mermaid.render()` が返す SVG 文字列を `dangerouslySetInnerHTML` で注入し、ページ固有スタイルは [`components/MermaidDiagram.module.css`](../../../components/MermaidDiagram.module.css) に置く。
+本リポジトリは `mermaid@^11.16.0` を使用し、図は共通コンポーネント [`components/MermaidDiagram.tsx`](../../../components/MermaidDiagram.tsx)（`'use client'`）で描画する。`mermaid.render()` が返す SVG 文字列を `dangerouslySetInnerHTML` で注入し、ページ固有スタイルは [`components/MermaidDiagram.module.css`](../../../components/MermaidDiagram.module.css) に置く。
 
 レンダリングの正準ロジック（`mermaid.initialize` 設定・`applySvgFixups`・render ループ・中央寄せ CSS）は再利用スクリプト [`scripts/apply_render_pipeline.mjs`](scripts/apply_render_pipeline.mjs) に集約されている。新たに不具合を直す際は **手書きで再現せず、このスクリプトを正として適用**すること（冒頭「🚀 まず再利用スクリプトを使う」を参照）。
 
@@ -520,12 +576,15 @@ const applySvgFixups = (
 
 ### 完了確認（自動検証・順序厳守）
 
-1. `*.module.css` 変更時は `.agents/rules/css-cache-reset.md` に従う。`mermaid.initialize` がモジュール最上位＝ HMR で再実行されないため、検証用 dev サーバーを完全再起動する。
+1. CSS 変更時は `.agents/rules/css-cache-reset.md` に従い、稼働中の対象 dev サーバーを停止してから `.next` を削除し、検証用 dev サーバーを完全再起動する。`mermaid.initialize` がモジュール最上位にあるため、HMR だけでは変更が反映されない。
 
 ```bash
+# 対象 dev サーバーの停止・同一性確認は css-cache-reset.md の手順に従う
+rm -rf .next
 bun run dev
 ```
 
+   `bun run dev` は別ターミナルで実行し、対象 URL の応答準備ができたことを確認してから、元のターミナルで後続検証を行う。検証後は別ターミナルで dev サーバーを停止する。
 2. `e2e/` 配下に Playwright テストを置き、設定済み `baseURL` と Chromium project を使って対象ページを検証する。
 3. DOM 上の SVG `viewBox`、`width`、`maxWidth`、`maxHeight`、ラッパー幅、クリッピング、重なりをアサーションし、移行用 DOM テストと Playwright の双方が成功したことを完了条件とする。ユーザーへの目視確認やスクリーンショット提供の依頼は完了条件にしない。
 

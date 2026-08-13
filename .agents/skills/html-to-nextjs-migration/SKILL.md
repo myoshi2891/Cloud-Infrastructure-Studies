@@ -14,7 +14,7 @@ description: >
 
 # HTML → Next.js Migration Workflow（本リポジトリ専用）
 
-(最終更新日: 2026-08-11)
+(最終更新日: 2026-08-13)
 
 ## Goal
 
@@ -33,6 +33,13 @@ Provide the complete, ordered workflow for converting a standalone HTML page (wi
 1. **`MIGRATION_PROGRESS.md`**（リポジトリ直下）— 現在地・残タスク・再開プロンプト
 2. **このファイル（`SKILL.md`）** — 移行手順・正準リファレンス・本リポジトリ固有ルール
 3. **`.agents/rules/tdd-commit-workflow.md`** — TDD必須サイクル & コミット分割ルール
+   — §0「現行スタック確定値」、§1「インベントリ作成」、§2「テスト強度の合格基準」、§3「正準テストテンプレート」は**このスキルの前提**であり、移行の可否判定に直結する。読まずに着手しないこと。
+
+## このスキルは3系統に複製されている
+
+`.agents/skills/html-to-nextjs-migration/SKILL.md` を**正本**とし、`.claude/` と `.gemini/` 配下は複製である。
+このファイルを編集した場合は、`.agents/rules/tdd-commit-workflow.md` §8 の `rsync` 手順で必ず両ミラーへ反映すること。
+乖離は `__tests__/skills/agent-mirror-sync.test.ts` が検出する。
 
 ## 未移行 HTML
 
@@ -121,18 +128,36 @@ HTML の `:root` ローカル変数を、本リポジトリの `globals.css` 既
 HTML 末尾 `<script>` の `DIAGRAMS` オブジェクト + `mermaid.render(...)` ループは**再実装しない**。
 共有コンポーネント `components/MermaidDiagram.tsx` がフォント待ち・viewBox 見切れ対策・SSRフォールバックを内蔵済み。
 
-- `import { MermaidDiagram } from '@/components/MermaidDiagram';`
+- **エクスポート形態は「名前付き」**: `import { MermaidDiagram } from '@/components/MermaidDiagram';`
+  （`components/MermaidDiagram.tsx` は `export const MermaidDiagram`。**default エクスポートではない**。
+  テストで `vi.mock` する際に `default:` を使うと必ず落ちる。§ Phase 6 のモック例を参照）
 - props は **`chart: string`**、**`ariaLabel: string`（必須）**、および **`preserveNaturalScale={true}`（必須：文字サイズが1rem未満に潰れるのを防ぐ）**。
 - `<script>` 内の `'graph LR\n...'` 文字列を `constants.ts` の `DIAGRAMS` に**テンプレートリテラル（`\n`→実改行）**で移植。`<br />` 等はそのまま。
 - 各 `<div class="mermaid" id="diag-N">` は直接インデックス参照せず、`DIAGRAMS[id]` の存在を検証した安全なコンポーネント（例: `<Diagram id="diag-N" label="..." />`）経由で `<MermaidDiagram chart={chart} ariaLabel="..." preserveNaturalScale />` に引き渡す（`.mermaid-wrap` で囲む）。
-- **TS strict（`noUncheckedIndexedAccess`）必須形**（Record の添字は `string | undefined` であるため、直接のインデックス参照を避け、以下のようになガード処理を行う）:
+- **`Diagram` は必ず `memo` でラップする。** ガイドページは scroll spy（`IntersectionObserver` + `setActiveSection`）でスクロール中に高頻度で再レンダリングされる。メモ化しないと `MermaidDiagram` の `useEffect` が再実行され、SVG に適用した `style.width` がリセットされて**スクロール中に図が豆粒に縮む/チカチカする**（`.agents/skills/fix-mermaid/SKILL.md` 参照）。
+- **TS strict（`noUncheckedIndexedAccess: true`）必須形** — `Record<string, string>` の添字は `string | undefined` になるため、直接インデックス参照せずガードする。`DiagramId` ユニオン型で id のタイポも防ぐ:
 
   ```tsx
-  function Diagram({ id, label }: { id: string; label: string }) {
+  import { memo } from 'react';
+  import { MermaidDiagram } from '@/components/MermaidDiagram';
+  import { DIAGRAMS, type DiagramId } from './constants';
+
+  const Diagram = memo(function Diagram({ id, label }: { id: DiagramId; label: string }) {
     const chart = DIAGRAMS[id];
     if (!chart) return null;
-    return <div className="mermaid-wrap"><MermaidDiagram chart={chart} ariaLabel={label} preserveNaturalScale /></div>;
-  }
+    return (
+      <div className="mermaid-wrap">
+        <MermaidDiagram chart={chart} ariaLabel={label} preserveNaturalScale />
+      </div>
+    );
+  });
+  ```
+
+  `constants.ts` 側:
+
+  ```ts
+  export type DiagramId = 'diag-1' | 'diag-2' | 'diag-3';
+  export const DIAGRAMS: Record<DiagramId, string> = { /* ... */ };
   ```
 
 - 壊れた Mermaid 構文（`__STR0__` プレースホルダ・重複エッジ等）は移植時に修正する → `.agents/skills/fix-mermaid`。
@@ -181,14 +206,81 @@ HTML 末尾 `<script>` の `DIAGRAMS` オブジェクト + `mermaid.render(...)`
 
 ### TDD 必須サイクルの適用（最重要）
 
-移行作業中は、常に `.agents/rules/tdd-commit-workflow.md` に定められた TDD サイクル（Red → Green → Refactor → Docs）を最優先で適用しなければなりません。
+移行作業中は、常に `.agents/rules/tdd-commit-workflow.md` に定められたサイクル
+（**Inventory → Red → Green → Refactor → Docs**）を最優先で適用しなければなりません。
 
-1. **タスク設計の段階（`task.md` の作成時）**:
-   - `task.md` 内のタスクを「Red（テスト失敗とコミット）」「Green（実装とコミット）」「Refactor（リファクタ/ビルド/Linter修正とコミット）」「Docs Sync（進捗同期とコミット）」のコミット単位に明確に構造化してください。
-2. **実装前のテスト作成（Red）**:
-   - 移行先のコード（`page.tsx` や `NavBar.tsx` 等）を実装する前に、必ず失敗するユニットテストを作成してコミットしてください。
-3. **一括コミットの厳禁**:
-   - テスト、実装、カバレッジ更新、ドキュメント更新を一つのコミットにまとめず、フェーズごとに分割コミットを行ってください。
+コミット単位は以下の5つに固定です。まとめてはいけません。
+
+| # | フェーズ | 成果物 | コミットメッセージ |
+|---|---|---|---|
+| 0 | **Inventory** | `docs/migration-inventory/<slug>.json` | `chore(migration): add content inventory for <slug>` |
+| 1 | **Red** | 失敗するテスト（インベントリを import） | `test(<scope>): add failing tests for <slug>` |
+| 2 | **Green** | `page.tsx` / `XxxGuide.tsx` / `NavBar.tsx` / `constants.ts` / `page.css` | `feat(<scope>): implement <slug> to pass tests` |
+| 3 | **Refactor** | ルーティング統合（`EXAMS`）・lint/build 修正・`CLAUDE.md` / `GEMINI.md` | `refactor(<scope>): integrate <slug> into routing and update docs` |
+| 4 | **Docs Sync** | `MIGRATION_PROGRESS.md` | `chore(docs): update MIGRATION_PROGRESS.md — <要約>` |
+
+1. **Phase 0 を飛ばさない。** インベントリが無い移行は、漏れの検知手段が無いため未着手と同義です。
+2. **実装前のテスト作成（Red）**: `page.tsx` や `NavBar.tsx` を書く前に、必ず失敗するテストを作成してコミットしてください。`bun run test` が**失敗する出力**を確認すること。成功してしまうテストは仕様を検証していません。
+3. **一括コミットの厳禁**: テスト、実装、カバレッジ更新、ドキュメント更新を一つのコミットにまとめないでください。
+4. **コミットはユーザーの認可がある場合のみ実行。** 認可が無ければコミット可能な状態で停止し、判断を仰ぐこと。
+
+### Phase 0: Inventory — 移行元を「数える」（省略禁止）
+
+**移行漏れの単一最大原因は、移行元に何件あるかを数えないまま書き始めることである。**
+コードを1行も書く前に、`.agents/rules/tdd-commit-workflow.md` §1 の抽出コマンドで
+`docs/migration-inventory/<page-slug>.json` を生成し、コミットする。
+
+```bash
+inventory_script=$(mktemp -t inventory.XXXXXX.mjs) || exit 1
+trap 'rm -f "$inventory_script"' EXIT
+cat > "$inventory_script" <<'EOF'
+import fs from 'node:fs';
+import { JSDOM } from 'jsdom';
+
+const [, , htmlPath] = process.argv;
+if (!htmlPath) {
+    throw new Error('usage: bun <script> <source.html>');
+}
+const doc = new JSDOM(fs.readFileSync(htmlPath, 'utf8')).window.document;
+const texts = (selector) =>
+    [...doc.querySelectorAll(selector)]
+        .map((element) => (element.textContent ?? '').replace(/\s+/g, ' ').trim())
+        .filter(Boolean);
+
+console.log(JSON.stringify({
+    source: htmlPath,
+    h1: texts('h1'), h2: texts('h2'), h3: texts('h3'), h4: texts('h4'),
+    th: texts('th'), td: texts('td'), listItems: texts('li'),
+    links: [...doc.querySelectorAll('a[href^="http"]')].map((anchor) => ({
+        text: (anchor.textContent ?? '').replace(/\s+/g, ' ').trim(),
+        href: anchor.getAttribute('href'),
+    })),
+    counts: {
+        table: doc.querySelectorAll('table').length,
+        diagram: doc.querySelectorAll('.mermaid, [id^="diag-"]').length,
+        codeBlock: doc.querySelectorAll('pre, .code-block').length,
+        figure: doc.querySelectorAll('img, svg').length,
+    },
+}, null, 2));
+EOF
+mkdir -p docs/migration-inventory
+bun "$inventory_script" <移行元HTMLのパス> > docs/migration-inventory/<page-slug>.json
+```
+
+生成された JSON を開き、以下を**声に出して確認する**（この確認を飛ばさない）:
+
+| 確認項目 | 見るキー | 移行完了時に一致すべき対象 |
+|---|---|---|
+| 見出し総数 | `h1` / `h2` / `h3` / `h4` の配列長 | TSX 内の対応する見出し要素数 |
+| 表の数とセル数 | `counts.table` / `th` / `td` | `<table>` 要素数と全セル文言 |
+| 外部リンク | `links[].href` | `<a href="http...">` の URL 集合 |
+| 図の数 | `counts.diagram` | `<Diagram />` の描画数 |
+| コードブロック | `counts.codeBlock` | `.code-block` の数 |
+
+- **インベントリは移行元の事実である。実装に合わせて書き換えることは改竄であり禁止。**
+- コミット: `chore(migration): add content inventory for <page-slug>`
+- 次に §「Phase 6」のテンプレートで**このインベントリを import する失敗テスト**を書き、コミットする（Red）。
+  実装を書き始めてよいのは、その後である。
 
 ### Phase 1: Analysis — Audit the Source HTML
 
@@ -357,29 +449,87 @@ If a page-specific CSS file was created, also document it.
 bun run dashboard   # = node scripts/generate-coverage-dashboard.mjs → docs/coverage-dashboard.html
 ```
 
-### Phase 6: Verification
+### Phase 6: Verification — すべて自動検証（目視チェックリストは廃止）
 
-#### Build Verification
+冒頭の「ユーザー手動確認ゼロ原則」に従い、**確認項目はすべて実行可能なアサーションに落とす**。
+「目視で確認する」「スクリーンショットを見て判断する」項目をここに書かないこと。
+
+#### 6a. 必須コマンド（順序厳守）
 
 ```bash
-rm -rf .next && bun run build
+bun run test          # Vitest: 全量移行の DOM 検証
+bun run lint          # ESLint: react/no-unescaped-entities 等
+rm -rf .next && bun run build   # 本番ビルド（webpack）。CSS 変更後は .next 削除が必須
+bun run test:e2e      # Playwright chromium: スクロール・固定要素・a11y
+bun run dashboard     # docs/coverage-dashboard.html 再生成
 ```
 
-#### Visual Verification Checklist
+> `.next` の削除条件は `.agents/rules/css-cache-reset.md` に従う。
+> `app/globals.css` / ページ固有 `.css` / `.module.css` を編集した場合は必須。
 
-- [ ] Page renders without console errors
-- [ ] All `<pre>` code blocks display as multi-line
-- [ ] Syntax highlighting colors render (`.kw`, `.str`, `.cm`, `.fn`, `.cls`, `.num`)
-- [ ] **`.code-block` 内の各行が正しく改行されている**（`{"\n"}` を使っている箇所がないか確認。あれば `<div className="code-line">` ラッパーに置換）
-- [ ] **デシジョンテーブル・行列データが列ズレなく表示されている**（テキストのスペース揃えではなく `<table>` を使用しているか）
-- [ ] Cards, badges, callouts display correctly
-- [ ] Fonts load properly (display, body, mono)
-- [ ] Navigation shows new page link and works
-- [ ] **ページ固有のスティッキーナビゲーションが Header の直下（60px もしくは `var(--fixed-offset)` 位置）に表示され、スクロール時にアクティブリンクが切り替わる**
-- [ ] Responsive layout at 768px and 640px breakpoints
-- [ ] No z-index conflicts with navigation (nav must stay on top)
-- [ ] Animations play correctly (fade-up, pulse-border)
-- [ ] Scrollbar styling matches (thin, styled thumb)
+#### 6b. Vitest（DOM 全量検証）
+
+テストは `.agents/rules/tdd-commit-workflow.md` §3 の**正準テストテンプレート**をコピーして作る。
+テンプレートが §2 の強度基準（全見出し・全表セル・全リンク href・図の件数厳密一致・a11y）を満たしている。
+
+**MermaidDiagram のモック（名前付きエクスポート）**:
+
+```tsx
+// ✅ 正しい: components/MermaidDiagram.tsx は export const MermaidDiagram
+vi.mock('@/components/MermaidDiagram', () => ({
+    MermaidDiagram: ({ chart, ariaLabel, preserveNaturalScale }: {
+        chart: string;
+        ariaLabel: string;
+        preserveNaturalScale?: boolean;
+    }) => (
+        <div
+            data-testid="mermaid-diagram"
+            data-chart={chart}
+            data-preserve-natural-scale={String(preserveNaturalScale)}
+            aria-label={ariaLabel}
+        />
+    ),
+}));
+
+// ❌ 誤り: default エクスポートではないため undefined になり描画時に落ちる
+vi.mock('@/components/MermaidDiagram', () => ({ default: /* ... */ }));
+```
+
+モックが必要な理由: `MermaidDiagram` は `mermaid` を読み込み `document.fonts.ready` を待つため、jsdom では描画できない。
+
+#### 6c. E2E（Playwright）で自動化する項目
+
+かつて目視チェックリストだった項目は、以下のアサーションに置き換える。
+
+| 検証したいこと | Playwright での自動アサーション |
+|---|---|
+| コンソールエラーが出ない | `page.on('console', ...)` で `error` を収集し `toHaveLength(0)` |
+| ページ固有 sticky ナビが Header に隠れない | ナビの `boundingBox().y` >= Header 実高さ（`--fixed-offset` 相当）を検証 |
+| scroll spy がアクティブリンクを切り替える | セクションへ `scrollIntoView` 後、`.active` を持つリンクの `href` が期待 id と一致 |
+| 文字重なり・固定ヘッダー遮蔽 | 主要見出しの `boundingBox()` が Header/Disclaimer の矩形と交差しないことを検証 |
+| レスポンシブ崩れ | `page.setViewportSize({ width: 768 })` / `640` で `document.scrollingElement.scrollWidth <= clientWidth`（横スクロール発生なし） |
+| a11y | `@axe-core/playwright`（導入済み）で violations が 0 |
+| Mermaid の縮小・見切れ | SVG の `viewBox` 幅と実 `getBoundingClientRect().width` を比較し、意図しない縮小がないことを検証 |
+
+#### 6d. コード品質の静的アサーション（Vitest / grep で機械検証）
+
+| 検証 | 方法 |
+|---|---|
+| `.code-block` 内に `{"\n"}` が残っていない | `grep -n '{"\\n"}' app/<route>/*.tsx` の結果が空 |
+| `class=` が JSX に残っていない | `grep -nE '<[a-zA-Z][^>]*\sclass=' app/<route>/*.tsx` が空 |
+| ページ CSS に新規 custom property が無い | `grep -nE '^\s*--[a-z-]+:' app/<route>/page.css` が空 |
+| `@layer components` を使っていない | `grep -n '@layer' app/<route>/page.css` が空 |
+| サイドバー幅契約 | `__tests__/guide-content-widths.test.ts` が全スタイルシートを検証（新規 CSS も自動的に対象） |
+| camelCase keyframes が無い | `grep -nE '@keyframes\s+[a-z]+[A-Z]' app/<route>/page.css` が空 |
+
+#### 6e. `scripts/verify-html-migration.mjs` について（現状の制約）
+
+このスクリプトは移行元 HTML と SSR 出力のテキストを順序比較するが、**現状は
+`app/cisco/ccna/automation-network-fundamentals/CcnaNetworkFundamentalsGuide.tsx` を
+ハードコードで import している**ため、そのままでは他ページに使えない。
+
+- 汎用の全量検証には使わず、`.agents/rules/tdd-commit-workflow.md` §3 のテストテンプレートを使うこと。
+- このスクリプトを他ページへ流用する場合は、対象コンポーネントを引数化する改修を**別コミット**で行う。
 
 ## セッション終了前同期（必須）
 

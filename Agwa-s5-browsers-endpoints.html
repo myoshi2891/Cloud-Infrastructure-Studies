@@ -1,0 +1,2064 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>
+            Section 5: ブラウザとエンドポイントの管理（Managing browsers and endpoints） |
+            AGWA試験対策ガイド
+        </title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.13.0/mermaid.min.js"></script>
+        <style>
+            :root {
+                --bg: #07111e;
+                --bg-elevated: #0d1a2b;
+                --bg-card: #101f33;
+                --border: #1f3350;
+                --border-soft: #172943;
+                --text: #e7edf7;
+                --text-dim: #9db0c9;
+                --accent: #7c9eff;
+                --accent-soft: #2a3d63;
+                --amber: #f9ab00;
+                --green: #34a853;
+                --red: #ea4335;
+                --sidebar-w: 300px;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            html,
+            body {
+                overflow-x: hidden;
+            }
+
+            body {
+                margin: 0;
+                background: var(--bg);
+                color: var(--text);
+                font-family:
+                    'Hiragino Kaku Gothic ProN',
+                    'Noto Sans JP',
+                    'Yu Gothic',
+                    system-ui,
+                    -apple-system,
+                    sans-serif;
+                line-height: 1.85;
+                font-size: 16px;
+            }
+
+            a {
+                color: var(--accent);
+                text-decoration: none;
+            }
+            a:hover {
+                text-decoration: underline;
+            }
+
+            .layout {
+                display: block;
+            }
+
+            /* ---------- Sidebar ---------- */
+            #sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: var(--sidebar-w);
+                height: 100vh;
+                overflow-y: auto;
+                background: var(--bg-elevated);
+                border-right: 1px solid var(--border);
+                padding: 28px 20px 40px;
+                z-index: 20;
+            }
+
+            .sidebar-brand {
+                font-size: 0.78rem;
+                color: var(--text-dim);
+                letter-spacing: 0.04em;
+                margin-bottom: 4px;
+            }
+
+            .sidebar-title {
+                font-size: 1.05rem;
+                font-weight: 700;
+                color: var(--text);
+                margin-bottom: 24px;
+                line-height: 1.5;
+            }
+
+            #sidebar nav ul {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+
+            #sidebar nav a {
+                display: block;
+                padding: 7px 10px;
+                border-radius: 6px;
+                color: var(--text-dim);
+                font-size: 0.88rem;
+                border-left: 2px solid transparent;
+                transition:
+                    background 0.15s,
+                    color 0.15s,
+                    border-color 0.15s;
+            }
+
+            #sidebar nav a.level-3 {
+                padding-left: 22px;
+                font-size: 0.82rem;
+            }
+
+            #sidebar nav a:hover {
+                background: var(--bg-card);
+                color: var(--text);
+                text-decoration: none;
+            }
+
+            #sidebar nav a.active {
+                background: var(--accent-soft);
+                color: var(--accent);
+                border-left-color: var(--accent);
+                font-weight: 600;
+            }
+
+            #sidebar-toggle {
+                display: none;
+            }
+
+            /* ---------- Main ---------- */
+            .main {
+                margin-left: var(--sidebar-w);
+                padding: 56px 64px 100px;
+            }
+
+            .hero {
+                margin-bottom: 36px;
+            }
+
+            .hero-eyebrow {
+                font-size: 0.85rem;
+                color: var(--accent);
+                font-weight: 600;
+                letter-spacing: 0.06em;
+                margin-bottom: 10px;
+            }
+
+            .hero h1 {
+                font-size: 2.1rem;
+                line-height: 1.4;
+                margin: 0 0 20px;
+                background: linear-gradient(90deg, #ffffff, var(--accent));
+                -webkit-background-clip: text;
+                background-clip: text;
+                -webkit-text-fill-color: transparent;
+                font-weight: 800;
+            }
+
+            .lede-card {
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-left: 3px solid var(--accent);
+                border-radius: 10px;
+                padding: 20px 24px;
+                color: var(--text-dim);
+                font-size: 0.95rem;
+            }
+
+            .lede-card p {
+                margin: 0 0 10px;
+            }
+            .lede-card p:last-child {
+                margin-bottom: 0;
+            }
+            .lede-card ul {
+                margin: 6px 0 0;
+                padding-left: 20px;
+            }
+            .lede-card a {
+                color: var(--accent);
+                overflow-wrap: break-word;
+                word-break: break-word;
+            }
+            .lede-card li {
+                overflow-wrap: break-word;
+                word-break: break-word;
+            }
+
+            .main h2 {
+                font-size: 1.55rem;
+                margin: 56px 0 20px;
+                padding-top: 8px;
+                border-top: 1px solid var(--border-soft);
+                color: var(--text);
+                font-weight: 700;
+                scroll-margin-top: 24px;
+            }
+
+            .main h2:first-of-type {
+                border-top: none;
+                margin-top: 0;
+            }
+
+            .main h3 {
+                font-size: 1.22rem;
+                margin: 40px 0 16px;
+                color: var(--text);
+                font-weight: 700;
+                scroll-margin-top: 24px;
+            }
+
+            .main h4 {
+                font-size: 1.04rem;
+                margin: 30px 0 12px;
+                color: var(--accent);
+                font-weight: 700;
+                scroll-margin-top: 24px;
+            }
+
+            .main h5 {
+                font-size: 0.92rem;
+                margin: 26px 0 10px;
+                color: var(--text-dim);
+                text-transform: uppercase;
+                letter-spacing: 0.06em;
+                font-weight: 700;
+            }
+
+            .main p,
+            .main li {
+                color: var(--text);
+            }
+
+            .main a {
+                overflow-wrap: break-word;
+                word-break: break-word;
+            }
+
+            .main p {
+                margin: 0 0 16px;
+            }
+
+            .main ul,
+            .main ol {
+                padding-left: 26px;
+                margin: 0 0 18px;
+            }
+
+            .main li {
+                margin-bottom: 6px;
+            }
+
+            .main hr {
+                border: none;
+                border-top: 1px solid var(--border-soft);
+                margin: 44px 0;
+            }
+
+            .main strong {
+                color: #ffffff;
+                font-weight: 700;
+            }
+
+            /* inline code */
+            .main code:not(pre code) {
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-radius: 4px;
+                padding: 2px 6px;
+                font-size: 0.86em;
+                color: #ffd479;
+                font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+                overflow-wrap: break-word;
+                word-break: break-word;
+            }
+
+            /* ---------- Tables ---------- */
+            .table-scroll {
+                overflow-x: auto;
+                margin: 0 0 24px;
+                border: 1px solid var(--border);
+                border-radius: 10px;
+            }
+
+            table {
+                border-collapse: collapse;
+                width: 100%;
+                min-width: 600px;
+                font-size: 0.9rem;
+            }
+
+            th,
+            td {
+                padding: 11px 16px;
+                text-align: left;
+                border-bottom: 1px solid var(--border-soft);
+                overflow-wrap: break-word;
+            }
+
+            th {
+                background: var(--bg-elevated);
+                color: var(--accent);
+                font-weight: 700;
+                white-space: nowrap;
+            }
+
+            tr:last-child td {
+                border-bottom: none;
+            }
+            tbody tr:hover {
+                background: var(--bg-card);
+            }
+
+            /* ---------- Mermaid ---------- */
+            pre.mermaid {
+                width: 100%;
+                display: flex;
+                justify-content: safe center;
+                overflow-x: auto;
+                background: var(--bg-elevated);
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                padding: 24px 12px;
+                margin: 28px 0;
+            }
+
+            pre.mermaid p {
+                color: inherit;
+                margin: 0;
+            }
+
+            /* ---------- Lede blockquote-derived card already handled above ---------- */
+
+            /* ---------- Warning card ---------- */
+            .warning-card {
+                display: flex;
+                gap: 12px;
+                align-items: flex-start;
+                background: rgba(234, 67, 53, 0.08);
+                border: 1px solid rgba(234, 67, 53, 0.35);
+                border-left: 3px solid var(--red);
+                border-radius: 8px;
+                padding: 16px 18px;
+                margin: 0 0 22px;
+            }
+
+            .warning-icon {
+                font-size: 1.1rem;
+                line-height: 1.6;
+                flex-shrink: 0;
+            }
+
+            .warning-card p {
+                margin: 0;
+                color: var(--text);
+            }
+
+            /* ---------- Checklist ---------- */
+            .checklist-card {
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                padding: 8px 24px 20px;
+            }
+
+            .checklist-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 14px 0;
+                border-bottom: 1px solid var(--border-soft);
+                margin-bottom: 12px;
+                font-weight: 700;
+                color: var(--text);
+            }
+
+            .checklist-counter {
+                color: var(--accent);
+                font-variant-numeric: tabular-nums;
+            }
+
+            ul.checklist-list {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+
+            ul.checklist-list li {
+                border-radius: 8px;
+                padding: 4px 8px;
+                margin-bottom: 2px;
+                transition: background 0.15s;
+            }
+
+            ul.checklist-list li:hover {
+                background: var(--bg-elevated);
+            }
+
+            ul.checklist-list label {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                cursor: pointer;
+                padding: 8px 4px;
+                color: var(--text);
+            }
+
+            ul.checklist-list input[type='checkbox'] {
+                appearance: none;
+                -webkit-appearance: none;
+                width: 20px;
+                height: 20px;
+                flex-shrink: 0;
+                border: 1.5px solid var(--border);
+                border-radius: 5px;
+                background: var(--bg-elevated);
+                position: relative;
+                cursor: pointer;
+            }
+
+            ul.checklist-list input[type='checkbox']:checked {
+                background: var(--accent);
+                border-color: var(--accent);
+            }
+
+            ul.checklist-list input[type='checkbox']:checked::after {
+                content: '';
+                position: absolute;
+                left: 6px;
+                top: 2px;
+                width: 5px;
+                height: 10px;
+                border: solid #07111e;
+                border-width: 0 2px 2px 0;
+                transform: rotate(45deg);
+            }
+
+            ul.checklist-list li:has(input:checked) label {
+                text-decoration: line-through;
+                color: var(--text-dim);
+            }
+
+            /* ---------- Reference cards ---------- */
+            .ref-grid {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 18px;
+                margin: 0 0 24px;
+            }
+
+            .ref-card {
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                padding: 18px 20px;
+                min-width: 0;
+            }
+
+            .ref-card h3 {
+                margin: 0 0 12px;
+                font-size: 1rem;
+                color: var(--text);
+            }
+
+            .ref-card ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+
+            .ref-card li {
+                margin-bottom: 4px;
+            }
+
+            .ref-card a {
+                display: flex;
+                gap: 8px;
+                align-items: baseline;
+                padding: 7px 8px;
+                border-radius: 6px;
+                color: var(--text-dim);
+                font-size: 0.87rem;
+                overflow-wrap: break-word;
+                word-break: break-word;
+                min-width: 0;
+            }
+
+            .ref-card a:hover {
+                background: var(--bg-elevated);
+                color: var(--accent);
+                text-decoration: none;
+            }
+
+            .ref-icon {
+                color: var(--accent);
+                flex-shrink: 0;
+            }
+
+            /* ---------- Footer ---------- */
+            .page-footer {
+                margin-top: 48px;
+                padding-top: 24px;
+                border-top: 1px solid var(--border-soft);
+                color: var(--text-dim);
+                font-size: 0.85rem;
+            }
+
+            /* ---------- Mobile ---------- */
+            @media (max-width: 900px) {
+                #sidebar {
+                    position: fixed;
+                    transform: translateX(-100%);
+                    transition: transform 0.2s ease;
+                    width: 82vw;
+                    max-width: 320px;
+                    box-shadow: 8px 0 24px rgba(0, 0, 0, 0.4);
+                }
+                #sidebar.open {
+                    transform: translateX(0);
+                }
+
+                .main {
+                    margin-left: 0;
+                    padding: 76px 20px 80px;
+                }
+
+                #sidebar-toggle {
+                    display: flex;
+                    position: fixed;
+                    top: 14px;
+                    left: 14px;
+                    z-index: 30;
+                    width: 44px;
+                    height: 44px;
+                    align-items: center;
+                    justify-content: center;
+                    background: var(--bg-card);
+                    border: 1px solid var(--border);
+                    border-radius: 10px;
+                    color: var(--text);
+                    font-size: 1.2rem;
+                    cursor: pointer;
+                }
+
+                #sidebar-overlay {
+                    display: none;
+                    position: fixed;
+                    inset: 0;
+                    background: rgba(0, 0, 0, 0.5);
+                    z-index: 15;
+                }
+                #sidebar-overlay.open {
+                    display: block;
+                }
+
+                .ref-grid {
+                    grid-template-columns: minmax(0, 1fr);
+                }
+                .hero h1 {
+                    font-size: 1.6rem;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <button id="sidebar-toggle" aria-label="メニューを開く">&#9776;</button>
+        <div id="sidebar-overlay"></div>
+
+        <div class="layout">
+            <aside id="sidebar">
+                <div class="sidebar-brand">Associate Google Workspace Administrator</div>
+                <div class="sidebar-title">Section 5<br />ブラウザとエンドポイントの管理</div>
+                <nav>
+                    <ul>
+                        <li><a class="level-2" href="#section-5の全体像">Section 5の全体像</a></li>
+                        <li>
+                            <a class="level-2" href="#51-モバイルデバイスの管理"
+                                >5.1 モバイルデバイスの管理</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                class="level-3"
+                                href="#511-基本高度サードパーティ管理ソリューションの使い分け"
+                                >5.1.1 基本・高度・サードパーティ管理ソリューションの使い分け</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                class="level-3"
+                                href="#512-google基本モバイル管理によるセキュリティポリシーの適用"
+                                >5.1.2 Google基本モバイル管理によるセキュリティポリシーの適用</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                class="level-3"
+                                href="#513-登録済みデバイスの可視性と制御の維持会社所有byod"
+                                >5.1.3 登録済みデバイスの可視性と制御の維持（会社所有・BYOD）</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                class="level-3"
+                                href="#514-退職者のモバイルデバイスのオフボーディング"
+                                >5.1.4 退職者のモバイルデバイスのオフボーディング</a
+                            >
+                        </li>
+                        <li>
+                            <a class="level-2" href="#52-chromeブラウザの管理"
+                                >5.2 Chromeブラウザの管理</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                class="level-3"
+                                href="#521-chromeブラウザポリシーの適用オフラインアクセス更新ポリシー"
+                                >5.2.1
+                                Chromeブラウザポリシーの適用（オフラインアクセス・更新ポリシー）</a
+                            >
+                        </li>
+                        <li>
+                            <a class="level-3" href="#522-ブラウザの登録とポリシーの適用"
+                                >5.2.2 ブラウザの登録とポリシーの適用</a
+                            >
+                        </li>
+                        <li>
+                            <a class="level-3" href="#523-拡張機能とアプリの管理"
+                                >5.2.3 拡張機能とアプリの管理</a
+                            >
+                        </li>
+                        <li>
+                            <a class="level-2" href="#学習チェックリスト">学習チェックリスト</a>
+                        </li>
+                        <li><a class="level-2" href="#参考文献">参考文献</a></li>
+                        <li>
+                            <a class="level-3" href="#google公式認定試験ガイド"
+                                >Google公式（認定・試験ガイド）</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                class="level-3"
+                                href="#モバイルデバイス管理google-workspace-help--knowledgeworkspacegooglecom"
+                                >モバイルデバイス管理（Google Workspace Help /
+                                knowledge.workspace.google.com）</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                class="level-3"
+                                href="#chromeブラウザ管理chrome-enterprise-and-education-help"
+                                >Chromeブラウザ管理（Chrome Enterprise and Education Help）</a
+                            >
+                        </li>
+                        <li>
+                            <a class="level-3" href="#オフラインアクセスdrive--docs"
+                                >オフラインアクセス（Drive &amp; Docs）</a
+                            >
+                        </li>
+                    </ul>
+                </nav>
+            </aside>
+
+            <main class="main">
+                <div class="hero">
+                    <div class="hero-eyebrow">
+                        Associate Google Workspace Administrator 試験対策ガイド
+                    </div>
+                    <h1>
+                        Section 5: ブラウザとエンドポイントの管理（Managing browsers and endpoints）
+                    </h1>
+                    <div class="lede-card">
+                        <p>
+                            出題比率: 約10%（公式Exam
+                            Guideより。全6セクション中最も比率が低いが、モバイルデバイスとChromeブラウザという「エンドユーザーが日常的に触れる接点」を扱うため、実務では頻出するトピック群である）
+                        </p>
+                        <p>対応タスク: 5.1 モバイルデバイスの管理 / 5.2 Chromeブラウザの管理</p>
+                        <p>公式ソース:</p>
+                        <ul>
+                            <li>
+                                認定ページ:
+                                <a
+                                    href="https://cloud.google.com/learn/certification/associate-google-workspace-administrator?hl=en"
+                                    >https://cloud.google.com/learn/certification/associate-google-workspace-administrator?hl=en</a
+                                >
+                            </li>
+                            <li>
+                                公式Exam Guide（PDF）:
+                                <a
+                                    href="https://services.google.com/fh/files/misc/associate_google_workspace_administrator_exam_guide_english.pdf"
+                                    >https://services.google.com/fh/files/misc/associate_google_workspace_administrator_exam_guide_english.pdf</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h2 id="section-5の全体像">Section 5の全体像</h2>
+                <p>
+                    Section 5は「Google endpoint management（旧称: Google Mobile
+                    Management）」と「Chrome Enterprise Core（旧称: Chrome Browser Cloud Management,
+                    CBCM）」という、Google
+                    Workspaceのデバイス管理機構の中核をなす2つの柱で構成される。両者は密接に連携しており、Devices（デバイス）メニュー配下の
+                    Mobile &amp; endpoints と Chrome という隣接する設定領域から管理する。
+                </p>
+                <pre class="mermaid">
+flowchart TB
+    S5["Section 5&lt;br/&gt;ブラウザとエンドポイントの管理&lt;br/&gt;出題比率 約10%"]
+    S5 --&gt; T1["5.1 モバイルデバイスの管理"]
+    S5 --&gt; T2["5.2 Chromeブラウザの管理"]
+
+    T1 --&gt; T1a["管理方式の選択&lt;br/&gt;基本 / 高度 / サードパーティ"]
+    T1 --&gt; T1b["セキュリティポリシーの適用"]
+    T1 --&gt; T1c["登録済みデバイスの可視性と制御"]
+    T1 --&gt; T1d["退職者デバイスのオフボーディング"]
+
+    T2 --&gt; T2a["ブラウザポリシーの適用&lt;br/&gt;オフラインアクセス・更新ポリシー"]
+    T2 --&gt; T2b["ブラウザの登録&lt;br/&gt;Chrome Enterprise Core"]
+    T2 --&gt; T2c["拡張機能とアプリの管理&lt;br/&gt;OU・グループ単位"]
+
+    classDef sectionFill fill:#4285f4,color:#ffffff
+    classDef taskFill fill:#e8f0fe,color:#0b1220
+    classDef itemFill fill:#f9ab00,color:#000000
+    class S5 sectionFill
+    class T1,T2 taskFill
+    class T1a,T1b,T1c,T1d,T2a,T2b,T2c itemFill</pre
+                >
+                <p>
+                    Section
+                    5は2タスクのみとシンプルだが、出題範囲は「モバイルデバイス（スマートフォン・タブレット）」と「Chromeブラウザが動く任意のコンピューター（Windows
+                    / macOS / Linux /
+                    ChromeOS）」という異なる2種類のエンドポイントにまたがる。試験対策では、この2系統の管理機構が<strong>別々の設定画面・別々のライセンス要件・別々の登録トークン方式</strong>を持つことを明確に区別して理解することが重要である。
+                </p>
+                <hr />
+                <h2 id="51-モバイルデバイスの管理">5.1 モバイルデバイスの管理</h2>
+                <p>
+                    Google Workspaceにおけるモバイルデバイス管理は、公式には「Google endpoint
+                    management」と総称される機能群の一部であり、Android・iPhone・iPadを対象とする。管理レベルは大きく「基本（Basic）」「高度（Advanced）」の2段階に分かれ、これに加えて外部のUEM（統合エンドポイント管理）製品と連携する「サードパーティ管理」という選択肢がある。
+                </p>
+                <h3 id="511-基本高度サードパーティ管理ソリューションの使い分け">
+                    5.1.1 基本・高度・サードパーティ管理ソリューションの使い分け
+                </h3>
+                <h4 id="基本モバイル管理basic-mobile-management">
+                    基本モバイル管理（Basic mobile management）
+                </h4>
+                <p>
+                    組織では既定で基本モバイル管理が有効になっている。この機能は、デバイスにエージェントアプリを一切インストールすることなく、ユーザーが仕事用アカウントでモバイルデバイスにアクセスする際の基礎的な保護を提供する。
+                </p>
+                <p>基本管理の特徴は次のとおりである。</p>
+                <ul>
+                    <li>Android・iPhone・iPadに対応する。</li>
+                    <li>
+                        <strong>エージェントレス管理</strong
+                        >（デバイス側にアプリのインストールが不要）である。
+                    </li>
+                    <li>
+                        OSバージョンや暗号化ステータスの同期には数日かかる場合があり、この間はContext-Aware
+                        Accessを使用しているとアクセスに影響が出ることがある。
+                    </li>
+                    <li>
+                        設定は Devices &gt; Mobile &amp; endpoints &gt; Settings &gt; Universal &gt;
+                        General &gt; Mobile management
+                        から行い、Basicを選択して保存する。この操作には「Mobile Device
+                        Management」管理者権限が必要である。
+                    </li>
+                </ul>
+                <h4 id="高度モバイル管理advanced-mobile-management">
+                    高度モバイル管理（Advanced mobile management）
+                </h4>
+                <p>
+                    基本管理では組織のセキュリティ要件を満たせない場合に、高度管理へ切り替える。高度管理では、デバイスへの「デバイスポリシーアプリ」のインストールが必要になる（Androidユーザーは手動インストールせず、画面の案内に従う。iOSでは登録時にプロファイルのインストールを促される）。
+                </p>
+                <p>
+                    高度管理を有効にすると、デバイスポリシー・パスワードに対するより強力な制御、Android・iOS双方でのアプリ管理、デバイス全体のリモートワイプが可能になる。ただし、Business
+                    Starter・Business Standard、Education Fundamentals、Essentials、Cloud Identity
+                    Freeのエディションでは利用できない点に注意する。
+                </p>
+                <h4 id="基本管理と高度管理の機能比較">基本管理と高度管理の機能比較</h4>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>機能</th>
+                                <th>基本管理</th>
+                                <th>高度管理</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>エージェントレス管理（アプリ不要）</td>
+                                <td>✔</td>
+                                <td>—</td>
+                            </tr>
+                            <tr class="even">
+                                <td>デバイスインベントリ</td>
+                                <td>✔</td>
+                                <td>✔</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>基本のパスコード適用</td>
+                                <td>✔</td>
+                                <td>✔</td>
+                            </tr>
+                            <tr class="even">
+                                <td>モバイルレポート</td>
+                                <td>✔</td>
+                                <td>✔</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>ハイジャック防止</td>
+                                <td>✔</td>
+                                <td>✔</td>
+                            </tr>
+                            <tr class="even">
+                                <td>リモートアカウントワイプ</td>
+                                <td>✔</td>
+                                <td>✔</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>Androidアプリ管理</td>
+                                <td>✔</td>
+                                <td>✔</td>
+                            </tr>
+                            <tr class="even">
+                                <td>デバイス監査とアラート</td>
+                                <td>✔（一部エディションのみ）</td>
+                                <td>✔（一部エディションのみ）</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>デバイス管理ルール</td>
+                                <td>✔</td>
+                                <td>✔</td>
+                            </tr>
+                            <tr class="even">
+                                <td>デバイスのブロック・ブロック解除</td>
+                                <td>✔</td>
+                                <td>✔</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>標準/強力なパスコード適用</td>
+                                <td>—</td>
+                                <td>✔</td>
+                            </tr>
+                            <tr class="even">
+                                <td>デバイス承認（Device approvals）</td>
+                                <td>—</td>
+                                <td>✔</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>リモートデバイスワイプ（全データ）</td>
+                                <td>—</td>
+                                <td>✔</td>
+                            </tr>
+                            <tr class="even">
+                                <td>iOSアプリ管理</td>
+                                <td>—</td>
+                                <td>✔</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>Androidワークプロファイル</td>
+                                <td>—</td>
+                                <td>✔</td>
+                            </tr>
+                            <tr class="even">
+                                <td>セキュリティポリシー</td>
+                                <td>—</td>
+                                <td>✔</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>会社所有デスクトップの一括登録</td>
+                                <td>—</td>
+                                <td>✔</td>
+                            </tr>
+                            <tr class="even">
+                                <td>会社所有Androidの一括登録（ゼロタッチ）</td>
+                                <td>—</td>
+                                <td>✔</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>会社所有iOSデバイス管理</td>
+                                <td>—</td>
+                                <td>✔</td>
+                            </tr>
+                            <tr class="even">
+                                <td>デバイス証明書の配布</td>
+                                <td>—</td>
+                                <td>✔</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>
+                    <em
+                        >出典:
+                        <a
+                            href="https://knowledge.workspace.google.com/admin/devices/compare-mobile-management-features"
+                            >Compare mobile management features</a
+                        ></em
+                    >
+                </p>
+                <h4 id="サードパーティ管理beyondcorp-alliance">
+                    サードパーティ管理（BeyondCorp Alliance）
+                </h4>
+                <p>
+                    組織が既にUEM製品や脅威対策製品を運用している場合、Google WorkspaceはBeyondCorp
+                    Allianceパートナーとの統合をサポートする。対応パートナーは
+                    <strong
+                        >Check Point・CrowdStrike・Jamf・Lookout・Microsoft
+                        Intune（デスクトップデバイスのみ）・Omnissa</strong
+                    >
+                    である。連携後は、パートナー製品が収集したデバイス情報をGoogle側のデバイスインベントリに取り込み、Context-Aware
+                    Accessの条件として利用できる。
+                </p>
+                <p>
+                    サードパーティ連携を利用するには、前提として基本または高度モバイル管理（モバイルデバイス向け）、またはエンドポイント検証（コンピューター向け）を有効にしておく必要がある。なお、Googleはサードパーティが送信するデバイスデータの正確性については責任を負わない点も押さえておきたい。
+                </p>
+                <pre class="mermaid">
+flowchart TD
+    Start["組織のモバイルデバイス管理方針を検討"] --&gt; Q1{"画面ロック・パスコード適用と&lt;br/&gt;リモートアカウントワイプで&lt;br/&gt;要件を満たせるか?"}
+    Q1 --&gt;|"満たせる"| Basic["基本モバイル管理&lt;br/&gt;エージェント不要・即時利用可"]
+    Q1 --&gt;|"満たせない"| Q2{"アプリ管理・デバイス監査・&lt;br/&gt;強力なパスコード適用など&lt;br/&gt;高度な制御が必要か?"}
+    Q2 --&gt;|"必要"| Q3{"Google純正機能の範囲で&lt;br/&gt;十分か?"}
+    Q2 --&gt;|"不要"| Basic
+    Q3 --&gt;|"十分"| Advanced["高度モバイル管理&lt;br/&gt;デバイスポリシーアプリの導入が必要"]
+    Q3 --&gt;|"不十分&lt;br/&gt;UEM/脅威対策製品を既に運用中"| ThirdParty["サードパーティ管理&lt;br/&gt;BeyondCorp Alliance連携&lt;br/&gt;Check Point / CrowdStrike / Jamf /&lt;br/&gt;Lookout / Microsoft Intune / Omnissa"]
+
+    Basic --&gt; End1["Devices &gt; Mobile &amp; endpoints &gt;&lt;br/&gt;Settings &gt; Universal で設定"]
+    Advanced --&gt; End1
+    ThirdParty --&gt; End2["基本/高度管理を前提に&lt;br/&gt;Third-party integrations で接続"]
+
+    classDef startFill fill:#4285f4,color:#ffffff
+    classDef qFill fill:#f9ab00,color:#000000
+    classDef resultFill fill:#34a853,color:#ffffff
+    class Start startFill
+    class Q1,Q2,Q3 qFill
+    class Basic,Advanced,ThirdParty,End1,End2 resultFill</pre
+                >
+                <h5 id="ベストプラクティス">ベストプラクティス</h5>
+                <ul>
+                    <li>
+                        特別な要件がない限り、まず基本管理を使い続け、必要になった時点で高度管理へ段階的に移行する。高度管理はデバイス側の操作（デバイスポリシーアプリのインストール）をユーザーに要求するため、展開前に十分な周知期間を設ける。
+                    </li>
+                    <li>
+                        高度管理へ切り替える際は対応エディションを事前に確認する（Business
+                        Starter・Business Standardなど一部エディションは非対応）。
+                    </li>
+                    <li>
+                        既存のUEM/EDR製品への投資がある場合は、Google純正の高度管理を重複導入するのではなく、BeyondCorp
+                        Alliance連携によって既存投資を活かす選択肢を優先的に検討する。
+                    </li>
+                    <li>
+                        高度管理から基本管理へダウングレードする場合は専用の手順（Downgrade device
+                        management from advanced to
+                        basic）に従う。Android端末では、直前まで高度管理下にあった端末はアカウントではなくデバイス全体のワイプしかできなくなる場合がある点に注意する。
+                    </li>
+                </ul>
+                <hr />
+                <h3 id="512-google基本モバイル管理によるセキュリティポリシーの適用">
+                    5.1.2 Google基本モバイル管理によるセキュリティポリシーの適用
+                </h3>
+                <p>基本モバイル管理を有効にした後、管理者は以下の設定をカスタマイズできる。</p>
+                <ol type="1">
+                    <li>
+                        <strong>パスワード要件のカスタマイズ</strong>:
+                        管理対象モバイルデバイスに対して、画面ロックまたはパスワードの設定を必須にする。パスワードの最小文字数などを指定できる。
+                    </li>
+                    <li>
+                        <strong>Android向けの管理対象アプリのセットアップ</strong>: Web and mobile
+                        appsリストに追加することで、業務用Androidアプリを「管理対象」にし、不正アクセスを防止する。
+                    </li>
+                </ol>
+                <p>基本管理下でも次の操作が可能である。</p>
+                <ul>
+                    <li>
+                        デバイスが紛失・盗難に遭った場合、ユーザーのアカウントをモバイルデバイスからワイプする。
+                    </li>
+                    <li>モバイルデバイスのアクティビティアラートを設定する。</li>
+                    <li>組織のデータにアクセスするモバイルデバイスを定期的にレビューする。</li>
+                </ul>
+                <p>
+                    基本管理は「エージェントレス」であるがゆえに、OSバージョン・暗号化ステータスなどのデバイス属性の同期に数日単位の遅延が生じうる。この遅延は、Context-Aware
+                    Accessでデバイス属性を条件に使っている場合、一時的なアクセス不能や誤判定につながる可能性があるため、高度管理への切り替えを検討する材料となる。
+                </p>
+                <h5 id="ベストプラクティス-1">ベストプラクティス</h5>
+                <ul>
+                    <li>
+                        Device management security
+                        checklist（デバイス管理セキュリティチェックリスト）に沿って、まず「パスワード要件の設定」と「紛失デバイスからのデータのロックダウン/ワイプ」の2点を最優先で有効化する。
+                    </li>
+                    <li>
+                        管理対象Androidアプリのリストは、業務上必須なアプリのみに絞り込み、強制インストールするセキュリティアプリ（マルウェア対策など）を明確に区別して管理する。
+                    </li>
+                    <li>
+                        モバイルデバイスのアクティビティアラート（デバイス監査とアラート）は、Frontline
+                        Standard/Plus、Enterprise Standard/Plus、Business Plus、Education
+                        Standard/Plus、G Suite Business、Cloud Identity
+                        Premiumなど対応エディションでのみ利用可能な点に留意する。
+                    </li>
+                </ul>
+                <hr />
+                <h3 id="513-登録済みデバイスの可視性と制御の維持会社所有byod">
+                    5.1.3 登録済みデバイスの可視性と制御の維持（会社所有・BYOD）
+                </h3>
+                <p>
+                    管理者は、組織のデータにアクセスする全デバイス（会社所有・BYODの両方）について、一元的な可視性を維持する必要がある。この可視性を支える仕組みは複数存在し、デバイスの種類によって使い分ける。
+                </p>
+                <pre class="mermaid">
+flowchart LR
+    subgraph Sources["デバイス情報の収集経路"]
+        Mobile["基本/高度モバイル管理&lt;br/&gt;Android・iOS"]
+        EV["エンドポイント検証&lt;br/&gt;Endpoint Verification&lt;br/&gt;ChromeOS・Chromeブラウザ搭載PC"]
+        CBCM["Chrome Enterprise Core&lt;br/&gt;登録済みブラウザ"]
+        Partner["BeyondCorp Alliance&lt;br/&gt;サードパーティ製品"]
+    end
+
+    Sources --&gt; Inventory["Devices &gt; Overview &gt;&lt;br/&gt;Endpoints 一覧&lt;br/&gt;会社所有 / BYOD を統合表示"]
+    Inventory --&gt; Owner{"所有区分"}
+    Owner --&gt;|"会社所有"| Company["Company-owned devices&lt;br/&gt;インベントリへ登録・一括管理"]
+    Owner --&gt;|"BYOD"| Personal["個人所有デバイス&lt;br/&gt;ワークプロファイル等で業務データを分離"]
+
+    Inventory --&gt; CAA["Context-Aware Access の&lt;br/&gt;アクセスレベル条件として活用"]
+
+    classDef sourceFill fill:#e8f0fe,color:#0b1220
+    classDef mainFill fill:#4285f4,color:#ffffff
+    classDef qFill fill:#f9ab00,color:#000000
+    classDef resultFill fill:#34a853,color:#ffffff
+    class Mobile,EV,CBCM,Partner sourceFill
+    class Inventory mainFill
+    class Owner qFill
+    class Company,Personal,CAA resultFill</pre
+                >
+                <h4 id="エンドポイント検証endpoint-verification">
+                    エンドポイント検証（Endpoint Verification）
+                </h4>
+                <p>
+                    エンドポイント検証は、ChromeOSまたはChromeブラウザが動作するコンピューター（macOS
+                    El Capitan以降、ChromeOS 110以降、Linux Debian/Ubuntu、Windows
+                    10/11）について、OS・デバイス・ユーザーに関する詳細情報を取得する仕組みである。個人所有・組織所有のいずれのデバイスにも利用できる。
+                </p>
+                <p>セットアップは次の4ステップで構成される。</p>
+                <ol type="1">
+                    <li>
+                        Admin
+                        consoleでエンドポイント検証を有効化する（既定でオンになっていることが多い）。
+                    </li>
+                    <li>
+                        エンドポイント検証拡張機能をデバイスにインストールする（ユーザー自身によるインストール、Admin
+                        consoleからの強制インストール、ポリシーによる配布のいずれか）。
+                    </li>
+                    <li>
+                        必要に応じてヘルパーアプリをインストールする（CrowdStrike Falcon
+                        ZTA連携や証明書ベースアクセスを使う場合など）。
+                    </li>
+                    <li>任意でデバイス承認を設定する。</li>
+                </ol>
+                <h4 id="デバイス承認require-admin-approval-for-device-access">
+                    デバイス承認（Require admin approval for device access）
+                </h4>
+                <p>
+                    高度管理下のAndroid・iOSデバイスでは、ユーザー所有デバイスが仕事用/学校用アカウントへ初めてアクセスしようとした際に、管理者による個別承認を要求できる。
+                </p>
+                <pre class="mermaid">
+flowchart TD
+    A["ユーザーが仕事用/学校アカウントを&lt;br/&gt;デバイスに追加"] --&gt; B{"管理者承認&lt;br/&gt;Require admin approval&lt;br/&gt;が有効か?"}
+    B --&gt;|"無効"| C["自動的に承認され&lt;br/&gt;仕事用データにアクセス可能"]
+    B --&gt;|"有効"| D{"自動承認の対象デバイスか?"}
+    D --&gt;|"シリアル番号登録済みの&lt;br/&gt;会社所有デバイス"| C
+    D --&gt;|"該当なし"| E["承認待ち Pending approval&lt;br/&gt;としてデバイス一覧に表示"]
+    E --&gt; F["管理者に通知メールが送信される"]
+    F --&gt; G{"管理者が確認"}
+    G --&gt;|"承認"| H["Approved&lt;br/&gt;仕事用データへのアクセスを許可"]
+    G --&gt;|"ブロック"| I["Blocked&lt;br/&gt;アクセスを拒否"]
+    H --&gt; J["Context-Aware Access の&lt;br/&gt;条件としてデバイス状態を利用可能"]
+    I --&gt; J
+
+    classDef actionFill fill:#4285f4,color:#ffffff
+    classDef qFill fill:#f9ab00,color:#000000
+    classDef resultFill fill:#34a853,color:#ffffff
+    classDef blockFill fill:#ea4335,color:#ffffff
+    class A,F actionFill
+    class B,D,G qFill
+    class C,H,J resultFill
+    class E,I blockFill</pre
+                >
+                <p>
+                    シリアル番号によって会社所有デバイスとして事前登録されているデバイス（ワークプロファイル付きAndroidを除く）は、承認要求の対象であっても自動的に承認される。またDrive
+                    for
+                    desktopを「承認済みデバイスのみ」に制限している場合、その条件を満たす会社所有デバイスも自動承認の対象になる。
+                </p>
+                <h4 id="サードパーティ連携によるデバイス情報の統合">
+                    サードパーティ連携によるデバイス情報の統合
+                </h4>
+                <p>BeyondCorp Allianceパートナーとの連携フローは次のとおりである。</p>
+                <pre class="mermaid">
+flowchart TD
+    A["前提: 基本/高度モバイル管理を設定&lt;br/&gt;またはエンドポイント検証を有効化"] --&gt; B["Devices &gt; Mobile &amp; endpoints &gt;&lt;br/&gt;Settings &gt; Third-party integrations"]
+    B --&gt; C["Security and MDM partners &gt; Manage"]
+    C --&gt; D["対象パートナーの行で&lt;br/&gt;Open connection をクリック"]
+    D --&gt; E["パートナー側サイトで&lt;br/&gt;接続処理を完了"]
+    E --&gt; F["OUを選択しパートナーの&lt;br/&gt;チェックボックスをオン"]
+    F --&gt; G["Save&lt;br/&gt;最大24時間で反映"]
+    G --&gt; H["パートナーがデバイス情報を&lt;br/&gt;Googleへ送信"]
+    H --&gt; I["Google Cloud Console の&lt;br/&gt;Access Context Manager で&lt;br/&gt;device.vendors 属性を条件に&lt;br/&gt;カスタムアクセスレベルを作成"]
+    I --&gt; J["Context-Aware Access レベルを&lt;br/&gt;アプリ・サービスに割り当て"]
+
+    classDef stepFill fill:#4285f4,color:#ffffff
+    classDef resultFill fill:#34a853,color:#ffffff
+    class A,B,C,D,E,F,G stepFill
+    class H,I,J resultFill</pre
+                >
+                <p>
+                    接続作業はSuper
+                    Admin権限で行う必要がある。パートナー接続を有効化しただけでは特定のOUに適用されず、Step
+                    2の「OUごとの有効化」を別途行って初めてそのOU配下のユーザーに反映される点は誤解しやすいポイントである。
+                </p>
+                <h5 id="ベストプラクティス-2">ベストプラクティス</h5>
+                <ul>
+                    <li>
+                        BYODを許容する組織では、デバイス承認（Require admin
+                        approval）を有効にし、承認待ち/ブロック状態をContext-Aware
+                        Accessの条件に組み込むことで、「野良デバイス」からのアクセスを構造的に防止する。
+                    </li>
+                    <li>
+                        エンドポイント検証は、モバイルデバイス向けの基本/高度管理ではカバーされない「Chromeブラウザが動くPC」の可視性を補完する位置づけであることを理解し、両者を併用する。
+                    </li>
+                    <li>
+                        iOSデバイスでサードパーティ連携を使う場合、Safariの有効化状態によって重複デバイスエントリが発生しうるため、Context-Aware
+                        Accessによる意図しないブロックが起きていないか定期的に確認する。
+                    </li>
+                </ul>
+                <hr />
+                <h3 id="514-退職者のモバイルデバイスのオフボーディング">
+                    5.1.4 退職者のモバイルデバイスのオフボーディング
+                </h3>
+                <p>
+                    従業員の退職時や、デバイスの紛失・盗難時には、組織データを保護するための迅速な対応が求められる。Google
+                    Workspaceは「デバイスをワイプする」ことと「アカウントをワイプする」ことを明確に区別しており、この区別を正しく理解することが実務・試験の両面で重要である。
+                </p>
+                <pre class="mermaid">
+flowchart TD
+    A["従業員の退職・デバイス紛失/盗難が発生"] --&gt; B{"デバイスの所有区分"}
+    B --&gt;|"会社所有デバイス&lt;br/&gt;または紛失/盗難"| C["デバイスをワイプ&lt;br/&gt;Wipe a device"]
+    B --&gt;|"個人所有デバイス&lt;br/&gt;かつ退職のみ"| D["アカウントをワイプ&lt;br/&gt;Wipe an account"]
+
+    C --&gt; C1["ワークプロファイルのない&lt;br/&gt;Androidとデバイス登録済みiOSは&lt;br/&gt;個人データも含め全データを削除"]
+    D --&gt; D1["デバイス上の仕事用データ・&lt;br/&gt;仕事用アプリのみ削除&lt;br/&gt;個人データは保持"]
+
+    C1 --&gt; E{"Androidが&lt;br/&gt;基本管理下&lt;br/&gt;かつ過去に高度管理下だったか?"}
+    E --&gt;|"はい かつ Device Ownerモード"| F["アカウントではなく&lt;br/&gt;デバイスのみワイプ可能"]
+    E --&gt;|"いいえ"| G["通常どおりワイプ実行"]
+
+    D1 --&gt; H["管理対象Googleアカウントから&lt;br/&gt;サインアウト&lt;br/&gt;サインインCookieをリセット"]
+    F --&gt; H
+    G --&gt; H
+
+    H --&gt; I["アカウントを保留/アーカイブ/削除&lt;br/&gt;Driveデータの所有権移転"]
+    I --&gt; J["デバイス一覧から確認・削除"]
+
+    classDef eventFill fill:#4285f4,color:#ffffff
+    classDef qFill fill:#f9ab00,color:#000000
+    classDef actionFill fill:#e8f0fe,color:#0b1220
+    classDef resultFill fill:#34a853,color:#ffffff
+    class A eventFill
+    class B,E qFill
+    class C,D,C1,D1,F,G actionFill
+    class H,I,J resultFill</pre
+                >
+                <h4 id="ワイプの2種類">ワイプの2種類</h4>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>操作</th>
+                                <th>用途</th>
+                                <th>削除対象</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>デバイスをワイプ（Wipe a device）</td>
+                                <td>
+                                    会社所有デバイス、または個人所有で紛失・盗難に遭ったデバイス
+                                </td>
+                                <td>
+                                    仕事用データ・アプリを削除。ワークプロファイルのないAndroidやデバイス登録済みiOSでは個人データ・個人アプリも含め全削除
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>アカウントをワイプ（Wipe an account）</td>
+                                <td>個人所有デバイスを使う従業員が退職する場合</td>
+                                <td>
+                                    デバイス上の仕事用アカウントとそれに紐づくデータのみ削除。個人データは保持される
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>
+                    Android端末が「現在は基本管理下だが、過去に高度管理下にあり、かつDevice
+                    Ownerモード（会社所有デバイスまたは『仕事専用』として設定された個人デバイス）」という条件を満たす場合は、アカウント単位ではなくデバイス全体のワイプしかできない点に注意する。
+                </p>
+                <h4 id="サインアウトによる即時アクセス遮断">サインアウトによる即時アクセス遮断</h4>
+                <p>
+                    デバイスワイプに加えて、管理対象Googleアカウントのサインインクッキーをリセットすることで、モバイルデバイス・ブラウザなど全デバイスから即座にサインアウトさせることができる。ユーザーを一時停止（Suspend）すると、サインインクッキーは自動的にリセットされる。ただし、この操作はGmail・Google
+                    Drive for
+                    desktopなどアプリレベルのセッションまでは切断しないため、必要に応じてアプリのサインアウトも別途行う。
+                </p>
+                <h5 id="ベストプラクティス-3">ベストプラクティス</h5>
+                <ul>
+                    <li>
+                        オフボーディング手順は「デバイスワイプ/アカウントワイプの実行」「サインインCookieのリセット（またはアカウント一時停止）」「Driveデータの所有権移転」「ライセンス解除・アカウントの保留orアーカイブor削除」という順序をテンプレート化し、都度の判断のばらつきを防ぐ。
+                    </li>
+                    <li>
+                        退職が確定した時点で速やかにユーザーを一時停止し、その後にワイプや所有権移転などのデータ保全作業を行う（アクセス遮断とデータ保全の順序を誤ると、退職者による意図的なデータ持ち出しリスクが残る）。
+                    </li>
+                    <li>
+                        BYODで働く従業員の退職では「アカウントのワイプ」を選択し、私物データを誤って削除しないよう区別を徹底する。
+                    </li>
+                    <li>
+                        モバイルデバイス一覧を定期的に棚卸しし、退職済みユーザーや長期間非アクティブなデバイスが残っていないか確認する。
+                    </li>
+                </ul>
+                <hr />
+                <h2 id="52-chromeブラウザの管理">5.2 Chromeブラウザの管理</h2>
+                <p>
+                    Chromeブラウザの管理は、Google Workspace自体の機能ではなく、<strong
+                        >Chrome Enterprise Core</strong
+                    >（旧称: Chrome Browser Cloud Management,
+                    CBCM）というChrome専用の管理レイヤーを通じて行う。Windows・macOS・Linuxで動作するChromeブラウザは、OSやデバイスがGoogle
+                    Workspaceに登録されていなくても、Chrome Enterprise
+                    Coreに個別に登録することでクラウドから一元管理できる点が最大の特徴である。
+                </p>
+                <h3 id="521-chromeブラウザポリシーの適用オフラインアクセス更新ポリシー">
+                    5.2.1 Chromeブラウザポリシーの適用（オフラインアクセス・更新ポリシー）
+                </h3>
+                <h4 id="ポリシーの適用範囲と優先順位">ポリシーの適用範囲と優先順位</h4>
+                <p>
+                    Chromeポリシーには4種類の適用経路があり、既定では次の優先順位で適用される（同じポリシーが複数の経路で設定されている場合、上位の経路が優先され、下位は無視される）。
+                </p>
+                <pre class="mermaid">
+flowchart TB
+    A["プラットフォームポリシー&lt;br/&gt;Windows GPO / macOS 管理対象プリファレンス /&lt;br/&gt;Linux 管理ツール / ChromeOS管理コンソール&lt;br/&gt;デバイス上の全ユーザーに適用"]
+    B["マシンクラウドポリシー&lt;br/&gt;Chrome Enterprise Core 登録済みブラウザ&lt;br/&gt;サインイン不要で適用"]
+    C["OSユーザーポリシー&lt;br/&gt;管理対象デバイスで&lt;br/&gt;社内アカウントにサインイン時に適用"]
+    D["クラウドユーザーポリシー&lt;br/&gt;Chromeプロファイル&lt;br/&gt;管理対象アカウントでのサインインに紐づく"]
+
+    A --&gt;|"既定では最優先"| B --&gt; C --&gt; D
+
+    D -.-&gt;|"Policy precedence設定または&lt;br/&gt;CloudPolicyOverridesPlatformPolicy等で&lt;br/&gt;優先順位を変更可能&lt;br/&gt;(要 Chrome Enterprise Core)"| A
+
+    classDef top fill:#4285f4,color:#ffffff
+    classDef mid fill:#34a853,color:#ffffff
+    classDef low fill:#f9ab00,color:#000000
+    classDef lowest fill:#e8f0fe,color:#0b1220
+    class A top
+    class B mid
+    class C low
+    class D lowest</pre
+                >
+                <p>
+                    Chrome Enterprise Coreでブラウザフリートを管理している場合に限り、Admin
+                    consoleの「Policy
+                    precedence」設定、またはCloudPolicyOverridesPlatformPolicy／CloudUserPolicyOverridesCloudMachinePolicyポリシーによって、この優先順位を4通りの組み合わせに変更できる。また、リストやディクショナリ形式のポリシー（ExtensionSettingsなど）は「Policy
+                    mergelist」設定やワイルドカード<code>*</code>を使うことで、複数ソースからの値をマージすることも可能である。
+                </p>
+                <h4 id="オフラインアクセス">オフラインアクセス</h4>
+                <p>
+                    「オフラインアクセス」は、Google
+                    Docs・Sheets・Slidesをインターネット未接続のコンピューターから利用できるようにする機能で、既定で組織に対して有効になっており、ユーザーは自分のアカウントで個別にオン/オフを切り替えられる。Chrome
+                    BrowserとMicrosoft Edgeブラウザで利用でき、Google Drive for
+                    desktopには適用されない別機能である。
+                </p>
+                <p>管理者は次の2つの方式から選択する。</p>
+                <ul>
+                    <li>
+                        <strong
+                            >オプション1（推奨）:
+                            ユーザーにオフラインアクセスの有効化を許可する</strong
+                        >
+                        — Apps &gt; Google Workspace &gt; Drive and Docs &gt; Features and
+                        Applicationsで「Allow users to enable offline
+                        access」を選択する。最も簡便な方法。
+                    </li>
+                    <li>
+                        <strong>オプション2: デバイスポリシーでオフラインアクセスを制御する</strong>
+                        — Windows/macOS/Linuxの管理対象コンピューターに、Google Docs
+                        Offline拡張機能（ID:
+                        <code>ghbmnnjooekpmoecnnnilnnbdlolhkhi</code
+                        >）を許可するポリシー（ADMX/plist/設定ファイル）を配布したうえで、Admin
+                        console側で「Control offline access using device
+                        policies」を選択する。ポリシーが導入されていないコンピューターではオフラインアクセスがブロックされる。
+                    </li>
+                </ul>
+                <div class="warning-card">
+                    <span class="warning-icon">⚠</span>
+                    <p>
+                        <strong>注意</strong>:
+                        オプション2へ切り替える前にポリシーを導入しておかないと、既にオフラインアクセスを利用していたユーザーは24時間後にアクセスを失う。
+                    </p>
+                </div>
+                <h4 id="更新ポリシー">更新ポリシー</h4>
+                <p>
+                    Chromeブラウザの自動更新は既定で有効であり、Googleはセキュリティ修正・新機能を継続的に届けるためオンのままにすることを推奨している。管理者が更新の挙動を調整する主な手段は次のとおりである。
+                </p>
+                <pre class="mermaid">
+flowchart TD
+    A["Chromeブラウザの更新方針を検討"] --&gt; B{"原則として&lt;br/&gt;自動更新を許可するか?"}
+    B --&gt;|"推奨: 許可する"| C["Allow updates&lt;br/&gt;常に最新の安定版を維持し&lt;br/&gt;セキュリティ修正を即時反映"]
+    B --&gt;|"特定バージョンに&lt;br/&gt;固定したい"| D["Target version prefix を設定&lt;br/&gt;例: 124.0.6367.&lt;br/&gt;直近3メジャーリリースまで&lt;br/&gt;ロールバック可能"]
+
+    C --&gt; E{"業務時間中の&lt;br/&gt;更新を避けたいか?"}
+    E --&gt;|"はい"| F["Schedule auto-updates&lt;br/&gt;outside of work hours&lt;br/&gt;で更新時間帯を制御"]
+    E --&gt;|"いいえ"| G["既定の自動更新スケジュールを利用"]
+
+    C --&gt; H{"大規模展開で&lt;br/&gt;同時ダウンロードを&lt;br/&gt;分散したいか?"}
+    H --&gt;|"はい"| I["Randomly scatter auto-updates&lt;br/&gt;で更新日数を分散&lt;br/&gt;短い日数を推奨"]
+
+    D --&gt; J["重要: Target version prefixは&lt;br/&gt;定期的に更新しないと&lt;br/&gt;セキュリティ更新が&lt;br/&gt;適用されなくなるリスク"]
+
+    C --&gt; K{"リリースチャンネルを&lt;br/&gt;指定したいか?"}
+    K --&gt;|"はい"| L["Stable / Extended stable /&lt;br/&gt;Beta / Dev から選択"]
+
+    classDef startFill fill:#4285f4,color:#ffffff
+    classDef qFill fill:#f9ab00,color:#000000
+    classDef resultFill fill:#34a853,color:#ffffff
+    classDef warnFill fill:#ea4335,color:#ffffff
+    class A startFill
+    class B,E,H,K qFill
+    class C,D,F,G,I,L resultFill
+    class J warnFill</pre
+                >
+                <ul>
+                    <li>
+                        <strong>Target version prefix</strong>: 特定バージョン（例:
+                        <code>124.</code
+                        >）を指定して更新を留め置く／ロールバックする設定。直近3メジャーリリースまでロールバック可能。設定したままにするとセキュリティ更新が適用されなくなるため、定期的な見直しが前提となる。
+                    </li>
+                    <li>
+                        <strong>更新のスキャッター（分散）</strong>:
+                        大量のデバイスが同時に更新をダウンロードして帯域を圧迫しないよう、数日間にわたって更新タイミングを分散させる。分散期間を長くしすぎると、一部ユーザーが複数バージョン遅れる可能性があるため、できるだけ短い日数を選ぶ。
+                    </li>
+                    <li>
+                        <strong>業務時間外への更新スケジューリング</strong>:
+                        自動更新が業務のピーク時間帯に発生しないよう制御する。
+                    </li>
+                    <li>
+                        <strong>コンポーネント更新の無効化</strong>:
+                        特定コンポーネントの自動更新のみを止めることも可能（一部のコンポーネントは対象外）。
+                    </li>
+                    <li>
+                        <strong>リリースチャンネル</strong>: Stable・Extended
+                        stable・Beta・Devから選択できる（Chrome 90以降でGoogle Software
+                        Updateがサポート）。
+                    </li>
+                </ul>
+                <h5 id="ベストプラクティス-4">ベストプラクティス</h5>
+                <ul>
+                    <li>
+                        特別な理由がない限り自動更新は常にオンにしておく。バージョン固定はセキュリティリスクとのトレードオフであることを常に念頭に置く。
+                    </li>
+                    <li>
+                        Target version
+                        prefixで特定バージョンに固定する場合は、固定解除の担当者・レビュー周期をあらかじめ運用ルールとして定めておく。
+                    </li>
+                    <li>
+                        オフラインアクセスは「全ユーザー許可」を既定の推奨パスとし、コンプライアンス上デバイス単位の制御が必要な場合のみポリシー配布方式に切り替える。
+                    </li>
+                    <li>
+                        ポリシーの優先順位について、既存のグループポリシー（GPO）などプラットフォームポリシーとAdmin
+                        console側のマシンクラウドポリシーが競合していないか、<code>chrome://policy</code>で実際の適用結果を確認する習慣をつける。
+                    </li>
+                </ul>
+                <hr />
+                <h3 id="522-ブラウザの登録とポリシーの適用">
+                    5.2.2 ブラウザの登録とポリシーの適用
+                </h3>
+                <p>
+                    Chrome Enterprise
+                    Coreでブラウザを管理するには、まず対象デバイスの「登録（Enrollment）」を行う必要がある。登録することで、そのデバイス上でChromeブラウザを開いた全ユーザーにポリシーを適用できるようになる。
+                </p>
+                <pre class="mermaid">
+sequenceDiagram
+    participant Admin as 管理者
+    participant Console as Admin console
+    participant Device as 管理対象デバイス
+    participant Chrome as Chromeブラウザ
+
+    Admin-&gt;&gt;Console: Devices &gt; Chrome &gt; Managed browsers
+    Admin-&gt;&gt;Console: 対象OUを選択し Enroll をクリック
+    Console--&gt;&gt;Admin: 登録トークンを発行
+    Admin-&gt;&gt;Device: OS別の方法でトークンを配布&lt;br/&gt;Windows: GPO/レジストリ&lt;br/&gt;macOS: 構成プロファイル/テキストファイル&lt;br/&gt;Linux: 設定ファイル
+    Admin-&gt;&gt;Chrome: ブラウザを再起動
+    Chrome-&gt;&gt;Console: 登録トークンを用いて&lt;br/&gt;デバイスIDなどを送信
+    Console--&gt;&gt;Admin: Managed browsers 一覧に&lt;br/&gt;登録済みブラウザとして表示
+    Admin-&gt;&gt;Console: Chrome browser reporting を有効化
+    Admin-&gt;&gt;Console: Devices &gt; Chrome &gt; Settings で&lt;br/&gt;ポリシーをOU/グループに適用
+    Console--&gt;&gt;Chrome: ポリシーを配信&lt;br/&gt;数分〜最大24時間で反映</pre
+                >
+                <h4 id="ステップ1-登録トークンの生成">ステップ1: 登録トークンの生成</h4>
+                <p>
+                    Devices &gt; Chrome &gt; Managed
+                    browsersで対象のOU（トップレベルまたは特定の子OU）を選択し、Enrollをクリックする。初回登録時にはChrome
+                    Enterprise CoreのTerms of
+                    Serviceへの同意が求められる。生成されたトークンはOUごとに1つのみアクティブにできる（無効化して再生成すると、以前のトークンで登録済みのブラウザはそのまま登録状態を維持する）。
+                </p>
+                <h4 id="ステップ2-os別の登録方法">ステップ2: OS別の登録方法</h4>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>OS</th>
+                                <th>主な登録方法</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>Windows</td>
+                                <td>
+                                    グループポリシー管理エディタで<code>CloudManagementEnrollmentToken</code>ポリシーを設定、またはレジストリを直接編集、または配布用.regファイルを利用
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>macOS</td>
+                                <td>
+                                    Apple Profile Manager・Jamf・Omnissa Workspace
+                                    ONEなどのMDMツールでポリシーとして配布、またはテキストファイルとして<code>/Library/Google/Chrome/</code>に配置
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>Linux</td>
+                                <td>
+                                    <code>/etc/opt/chrome/policies/enrollment</code
+                                    >にトークンのみを記載したテキストファイルを配置
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>Android / iOS</td>
+                                <td>
+                                    Google endpoint management経由でChrome Enterprise
+                                    Coreの登録トークンを配布
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>
+                    Windows・macOSでは、登録が失敗した場合に「Chromeを未管理状態のまま起動させる」か「起動自体をブロックする」かを<code>CloudManagementEnrollmentMandatory</code>ポリシーで選択できる。
+                </p>
+                <h4 id="ステップ3-登録の確認とポリシー適用">ステップ3: 登録の確認とポリシー適用</h4>
+                <p>
+                    登録後、Managed
+                    browsersの一覧に対象ブラウザが表示される（Windowsではシステムレベルのインストールのみサポート）。詳細なレポート情報を得るには、別途Chromeブラウザレポートを有効化する必要がある。
+                </p>
+                <p>
+                    ポリシーはDevices &gt; Chrome &gt; Settings（Chrome Enterprise
+                    Coreに申し込んでいる場合はChrome browser &gt;
+                    Settings）から、OUまたはグループ単位で設定する。設定は数分で反映されることが多いが、最大24時間かかる場合がある。異なるOUに移したいブラウザは、Managed
+                    browsers一覧からMoveで移動できる。
+                </p>
+                <h5 id="ベストプラクティス-5">ベストプラクティス</h5>
+                <ul>
+                    <li>
+                        登録トークンはOUと1対1で紐づくため、部門・拠点ごとに異なるポリシーを適用したい場合は、登録前にOU設計（Section
+                        1.2）を完了させておく。
+                    </li>
+                    <li>
+                        Windows環境でMDMツールを持たない組織は「レジストリ編集」または「.regファイル配布」、既にActive
+                        Directoryを運用している組織は「グループポリシー」を選ぶという判断基準を持つ。
+                    </li>
+                    <li>
+                        同一ソースからのイメージでWindows端末を大量展開する場合は、Sysprepの<code>/generalize</code>オプションを使い、各端末のMachineGUIDが重複しないようにする（重複するとChrome
+                        Enterprise Coreが個別デバイスとして認識できない）。
+                    </li>
+                    <li>
+                        登録トークンは一度登録が完了すれば失効させても既存の登録状態には影響しないため、トークン漏洩時は速やかに無効化・再生成する運用を徹底する。
+                    </li>
+                </ul>
+                <hr />
+                <h3 id="523-拡張機能とアプリの管理">5.2.3 拡張機能とアプリの管理</h3>
+                <p>
+                    管理者は、OUまたはグループ単位で、Chromeウェブストアの拡張機能・アプリのインストールを許可・ブロック・強制インストールできる。設定は<code>ExtensionSettings</code>ポリシーで管理され、拡張機能IDごと、またはワイルドカード<code>*</code>による既定値として指定する。
+                </p>
+                <pre class="mermaid">
+flowchart TD
+    A["対象の拡張機能/アプリについて&lt;br/&gt;OU・グループ単位で方針を決定"] --&gt; B{"全ユーザーに&lt;br/&gt;必須で導入させたいか?"}
+    B --&gt;|"はい"| C{"ユーザーに無効化を&lt;br/&gt;許可するか?"}
+    C --&gt;|"許可しない"| D["force_installed&lt;br/&gt;強制インストール&lt;br/&gt;ユーザーは無効化・削除不可"]
+    C --&gt;|"許可する"| E["normal_installed&lt;br/&gt;自動インストール&lt;br/&gt;ユーザーは無効化可能"]
+
+    B --&gt;|"いいえ"| F{"利用を許可するか?"}
+    F --&gt;|"許可"| G["allowed&lt;br/&gt;Chromeウェブストアから&lt;br/&gt;ユーザー自身がインストール可"]
+    F --&gt;|"禁止"| H["blocked&lt;br/&gt;インストール不可&lt;br/&gt;任意でブロック時メッセージを表示"]
+
+    D --&gt; I["ExtensionSettings ポリシーで&lt;br/&gt;拡張機能IDごとに設定&lt;br/&gt;ワイルドカード * で既定値も設定可"]
+    E --&gt; I
+    G --&gt; I
+    H --&gt; I
+
+    I --&gt; J["Devices &gt; Chrome &gt;&lt;br/&gt;Apps &amp; extensions で&lt;br/&gt;OU/グループに適用"]
+
+    classDef startFill fill:#4285f4,color:#ffffff
+    classDef qFill fill:#f9ab00,color:#000000
+    classDef modeFill fill:#34a853,color:#ffffff
+    classDef resultFill fill:#e8f0fe,color:#0b1220
+    class A startFill
+    class B,C,F qFill
+    class D,E,G,H modeFill
+    class I,J resultFill</pre
+                >
+                <h4 id="インストールモード">インストールモード</h4>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>installation_mode</th>
+                                <th>説明</th>
+                                <th>ユーザーによる無効化・削除</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td><code>allowed</code>（既定値）</td>
+                                <td>Chromeウェブストアからユーザー自身がインストール可能</td>
+                                <td>可能（そもそも任意インストール）</td>
+                            </tr>
+                            <tr class="even">
+                                <td><code>blocked</code></td>
+                                <td>
+                                    インストール不可。カスタムのブロックメッセージ（最大1,000文字）を表示できる
+                                </td>
+                                <td>—</td>
+                            </tr>
+                            <tr class="odd">
+                                <td><code>force_installed</code></td>
+                                <td>ユーザー操作なしで自動インストール</td>
+                                <td>不可（強制インストールされたものは無効化・削除できない）</td>
+                            </tr>
+                            <tr class="even">
+                                <td><code>normal_installed</code></td>
+                                <td>ユーザー操作なしで自動インストール</td>
+                                <td>可能（インストール後にユーザーが無効化できる）</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>代表的な運用パターンは次の2つである。</p>
+                <ul>
+                    <li>
+                        <strong>「原則許可、一部ブロック」</strong>:
+                        既定を<code>allowed</code>にしたうえで、危険と判断した特定の拡張機能のみ<code>blocked</code>に設定する。
+                    </li>
+                    <li>
+                        <strong>「原則禁止、許可リスト運用」</strong>:
+                        既定を<code>blocked</code>にし、業務上必要な拡張機能のみを個別に<code>allowed</code>または<code>force_installed</code>に設定する。ユーザーからの拡張機能リクエストを受け付ける「Extension
+                        workflows」機能と組み合わせることもできる。
+                    </li>
+                </ul>
+                <p>
+                    強制インストールされた拡張機能・アプリは、Chromeウェブストアサービス自体がオフになっていても引き続き自動インストールされ、ブロック設定よりも優先される。設定はUsers
+                    &amp; browsers単位のほか、User app
+                    settings画面からも構成でき、グループとアプリ数の組み合わせで500件という上限がある点にも注意する。
+                </p>
+                <p>
+                    自社サーバーでホストする独自拡張機能（Chromeウェブストア外）を自動インストールする場合は、パッケージ済みの<code>.crx</code>ファイルをダウンロードできるURLを<code>update_url</code>として指定する。Windowsで独自拡張機能を自動インストールするには、コンピューターがMicrosoft
+                    Active Directoryドメインに参加している必要がある。
+                </p>
+                <h5 id="ベストプラクティス-6">ベストプラクティス</h5>
+                <ul>
+                    <li>
+                        業務に必須の拡張機能（例: オフラインアクセス用のGoogle Docs
+                        Offline）は<code>force_installed</code>で確実に配布し、ユーザーが誤って無効化する事故を防ぐ。
+                    </li>
+                    <li>
+                        セキュリティ上のリスクが高い組織（規制業種など）では「原則禁止、許可リスト運用」を採用し、拡張機能の来歴を管理しやすくする。
+                    </li>
+                    <li>
+                        ブロックする拡張機能にはカスタムメッセージを設定し、なぜブロックされているのか・どこに問い合わせればよいのかをユーザーに明示することで、ヘルプデスクへの問い合わせを削減する。
+                    </li>
+                    <li>
+                        拡張機能・アプリの使用状況レポート（View app and extension usage
+                        details）を定期的に確認し、許可リストの棚卸しに活用する。
+                    </li>
+                </ul>
+                <hr />
+                <h2 id="学習チェックリスト">学習チェックリスト</h2>
+                <div class="checklist-card">
+                    <div class="checklist-header">
+                        <span>学習進捗</span
+                        ><span class="checklist-counter" id="checklist-counter">0 / 10 完了</span>
+                    </div>
+                    <ul class="task-list checklist-list">
+                        <li>
+                            <label
+                                ><input
+                                    type="checkbox"
+                                />基本モバイル管理と高度モバイル管理の機能差分（エージェントの要否、パスコード強度、デバイス承認、アプリ管理の対象OSなど）を表で説明できる</label
+                            >
+                        </li>
+                        <li>
+                            <label
+                                ><input type="checkbox" />BeyondCorp Allianceパートナー（Check
+                                Point・CrowdStrike・Jamf・Lookout・Microsoft
+                                Intune・Omnissa）を挙げられる</label
+                            >
+                        </li>
+                        <li>
+                            <label
+                                ><input type="checkbox" />デバイス承認（Require admin
+                                approval）で自動承認されるデバイスの条件を説明できる</label
+                            >
+                        </li>
+                        <li>
+                            <label
+                                ><input type="checkbox" />エンドポイント検証（Endpoint
+                                Verification）が対象とするOSと、モバイル管理との違いを説明できる</label
+                            >
+                        </li>
+                        <li>
+                            <label
+                                ><input
+                                    type="checkbox"
+                                />「デバイスをワイプ」と「アカウントをワイプ」の違いと、それぞれを使うべき場面を判断できる</label
+                            >
+                        </li>
+                        <li>
+                            <label
+                                ><input
+                                    type="checkbox"
+                                />Chromeポリシーの4つの適用経路（プラットフォーム・マシンクラウド・OSユーザー・クラウドユーザー）とその既定の優先順位を説明できる</label
+                            >
+                        </li>
+                        <li>
+                            <label
+                                ><input
+                                    type="checkbox"
+                                />オフラインアクセスの2つの設定方式（全ユーザー許可 vs
+                                デバイスポリシー制御）の違いを説明できる</label
+                            >
+                        </li>
+                        <li>
+                            <label
+                                ><input type="checkbox" />Target version
+                                prefixによるバージョン固定のメリットとリスクを説明できる</label
+                            >
+                        </li>
+                        <li>
+                            <label
+                                ><input type="checkbox" />Chrome Enterprise
+                                Coreへのブラウザ登録手順（トークン生成→OS別配布→確認）を説明できる</label
+                            >
+                        </li>
+                        <li>
+                            <label
+                                ><input
+                                    type="checkbox"
+                                />拡張機能の4つのインストールモード（allowed/blocked/force_installed/normal_installed）の違いを説明できる</label
+                            >
+                        </li>
+                    </ul>
+                </div>
+                <hr />
+                <h2 id="参考文献">参考文献</h2>
+                <div class="ref-grid">
+                    <div class="ref-card">
+                        <h3 id="google公式認定試験ガイド">Google公式（認定・試験ガイド）</h3>
+                        <ul>
+                            <li>
+                                <a
+                                    href="https://cloud.google.com/learn/certification/associate-google-workspace-administrator?hl=en"
+                                    rel="noopener noreferrer"
+                                    target="_blank"
+                                    ><span class="ref-icon">↗</span>Associate Google Workspace
+                                    Administrator 認定ページ</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://services.google.com/fh/files/misc/associate_google_workspace_administrator_exam_guide_english.pdf"
+                                    rel="noopener noreferrer"
+                                    target="_blank"
+                                    ><span class="ref-icon">↗</span>公式Exam Guide（PDF）</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="ref-card">
+                        <h3
+                            id="モバイルデバイス管理google-workspace-help--knowledgeworkspacegooglecom"
+                        >
+                            モバイルデバイス管理（Google Workspace Help /
+                            knowledge.workspace.google.com）
+                        </h3>
+                        <ul>
+                            <li>
+                                <a
+                                    href="https://knowledge.workspace.google.com/admin/devices/set-up-basic-mobile-device-management"
+                                    rel="noopener noreferrer"
+                                    target="_blank"
+                                    ><span class="ref-icon">↗</span>Set up basic mobile device
+                                    management</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://knowledge.workspace.google.com/admin/devices/set-up-advanced-mobile-management"
+                                    rel="noopener noreferrer"
+                                    target="_blank"
+                                    ><span class="ref-icon">↗</span>Set up advanced mobile
+                                    management</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://knowledge.workspace.google.com/admin/devices/compare-mobile-management-features"
+                                    rel="noopener noreferrer"
+                                    target="_blank"
+                                    ><span class="ref-icon">↗</span>Compare mobile management
+                                    features</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://knowledge.workspace.google.com/admin/devices/set-up-third-party-partner-integrations"
+                                    rel="noopener noreferrer"
+                                    target="_blank"
+                                    ><span class="ref-icon">↗</span>Set up third-party partner
+                                    integrations</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://knowledge.workspace.google.com/admin/devices/turn-endpoint-verification-on-or-off"
+                                    rel="noopener noreferrer"
+                                    target="_blank"
+                                    ><span class="ref-icon">↗</span>Turn endpoint verification on or
+                                    off</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://knowledge.workspace.google.com/admin/devices/require-admin-approval-for-device-access"
+                                    rel="noopener noreferrer"
+                                    target="_blank"
+                                    ><span class="ref-icon">↗</span>Require admin approval for
+                                    device access</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://knowledge.workspace.google.com/admin/devices/wipe-corporate-data-from-a-device"
+                                    rel="noopener noreferrer"
+                                    target="_blank"
+                                    ><span class="ref-icon">↗</span>Wipe corporate data from a
+                                    device</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://knowledge.workspace.google.com/admin/devices/sign-a-user-out-of-a-managed-google-account"
+                                    rel="noopener noreferrer"
+                                    target="_blank"
+                                    ><span class="ref-icon">↗</span>Sign a user out of a managed
+                                    Google Account</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://knowledge.workspace.google.com/admin/devices/device-management-security-checklist"
+                                    rel="noopener noreferrer"
+                                    target="_blank"
+                                    ><span class="ref-icon">↗</span>Device management security
+                                    checklist</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="ref-card">
+                        <h3 id="chromeブラウザ管理chrome-enterprise-and-education-help">
+                            Chromeブラウザ管理（Chrome Enterprise and Education Help）
+                        </h3>
+                        <ul>
+                            <li>
+                                <a
+                                    href="https://support.google.com/chrome/a/answer/9301891?hl=en"
+                                    rel="noopener noreferrer"
+                                    target="_blank"
+                                    ><span class="ref-icon">↗</span>2. Enroll cloud-managed Chrome
+                                    browsers</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://support.google.com/chrome/a/answer/9301892?hl=en"
+                                    rel="noopener noreferrer"
+                                    target="_blank"
+                                    ><span class="ref-icon">↗</span>4. Set policies for enrolled
+                                    Chrome browsers</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://support.google.com/chrome/a/answer/9037717?hl=en"
+                                    rel="noopener noreferrer"
+                                    target="_blank"
+                                    ><span class="ref-icon">↗</span>Understand Chrome policy
+                                    management</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://support.google.com/chrome/a/answer/6177431?hl=en"
+                                    rel="noopener noreferrer"
+                                    target="_blank"
+                                    ><span class="ref-icon">↗</span>Allow or block apps and
+                                    extensions</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://support.google.com/chrome/a/answer/6306504?hl=en"
+                                    rel="noopener noreferrer"
+                                    target="_blank"
+                                    ><span class="ref-icon">↗</span>Automatically install apps and
+                                    extensions</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://support.google.com/chrome/a/answer/7532015?hl=en"
+                                    rel="noopener noreferrer"
+                                    target="_blank"
+                                    ><span class="ref-icon">↗</span>Set Chrome app and extension
+                                    policies (Windows)</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://support.google.com/chrome/a/answer/9838774?hl=en"
+                                    rel="noopener noreferrer"
+                                    target="_blank"
+                                    ><span class="ref-icon">↗</span>Manage Chrome updates (Chrome
+                                    Enterprise Core)</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://support.google.com/chrome/a/answer/7591084?hl=en"
+                                    rel="noopener noreferrer"
+                                    target="_blank"
+                                    ><span class="ref-icon">↗</span>Manage Chrome updates (Mac)</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="ref-card">
+                        <h3 id="オフラインアクセスdrive--docs">
+                            オフラインアクセス（Drive &amp; Docs）
+                        </h3>
+                        <ul>
+                            <li>
+                                <a
+                                    href="https://knowledge.workspace.google.com/admin/drive/set-up-offline-access-to-docs-sheets-and-slides"
+                                    rel="noopener noreferrer"
+                                    target="_blank"
+                                    ><span class="ref-icon">↗</span>Set up offline access to Docs,
+                                    Sheets &amp; Slides</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="page-footer">
+                    本ガイドは2026年8月時点のGoogle公式ヘルプセンター・Exam
+                    Guideの内容に基づいて作成されている。Admin
+                    consoleのUIやポリシー名は将来的に変更される可能性があるため、実際の設定作業の際は必ず公式ヘルプの最新版を確認すること。
+                </div>
+            </main>
+        </div>
+
+        <script>
+            function dedent(str) {
+                const lines = str.replace(/^\n/, '').split('\n');
+                let minIndent = Infinity;
+                for (const line of lines) {
+                    if (line.trim().length === 0) continue;
+                    const m = line.match(/^(\s*)/);
+                    minIndent = Math.min(minIndent, m[1].length);
+                }
+                if (!isFinite(minIndent)) minIndent = 0;
+                return lines
+                    .map((l) => l.slice(minIndent))
+                    .join('\n')
+                    .trim();
+            }
+
+            // ---------- Mermaid ----------
+            (function initMermaid() {
+                try {
+                    if (typeof mermaid === 'undefined') {
+                        console.error('mermaid failed to load from CDN');
+                        return;
+                    }
+                    mermaid.initialize({
+                        startOnLoad: false,
+                        theme: 'base',
+                        themeVariables: {
+                            darkMode: true,
+                            background: '#07111e',
+                            primaryColor: '#101f33',
+                            primaryTextColor: '#e7edf7',
+                            primaryBorderColor: '#1f3350',
+                            lineColor: '#4a6089',
+                            secondaryColor: '#0d1a2b',
+                            tertiaryColor: '#0d1a2b',
+                            textColor: '#e7edf7',
+                            edgeLabelBackground: '#0d1a2b',
+                            fontFamily:
+                                '"Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic",system-ui,sans-serif',
+                            fontSize: '16px',
+                            actorBkg: '#101f33',
+                            actorBorder: '#1f3350',
+                            actorTextColor: '#e7edf7',
+                            actorLineColor: '#4a6089',
+                            signalColor: '#9db0c9',
+                            signalTextColor: '#e7edf7',
+                            labelBoxBkgColor: '#101f33',
+                            labelBoxBorderColor: '#1f3350',
+                            labelTextColor: '#e7edf7',
+                            loopTextColor: '#e7edf7',
+                            noteBkgColor: '#2a3d63',
+                            noteTextColor: '#e7edf7',
+                            noteBorderColor: '#1f3350',
+                        },
+                        flowchart: {
+                            htmlLabels: true,
+                            useMaxWidth: false,
+                            subGraphTitleMargin: { top: 12, bottom: 18 },
+                        },
+                        sequence: {
+                            useMaxWidth: false,
+                        },
+                    });
+
+                    document.querySelectorAll('pre.mermaid').forEach(function (el) {
+                        el.textContent = dedent(el.textContent);
+                    });
+
+                    var render = function () {
+                        mermaid.run({ querySelector: 'pre.mermaid' }).catch(function (err) {
+                            console.error('mermaid render error', err);
+                        });
+                    };
+
+                    if (document.fonts && document.fonts.ready) {
+                        document.fonts.ready.then(render);
+                    } else {
+                        render();
+                    }
+                } catch (err) {
+                    console.error('mermaid init error', err);
+                }
+            })();
+
+            // ---------- Sidebar toggle (mobile) ----------
+            (function initSidebarToggle() {
+                var toggle = document.getElementById('sidebar-toggle');
+                var sidebar = document.getElementById('sidebar');
+                var overlay = document.getElementById('sidebar-overlay');
+                if (!toggle || !sidebar || !overlay) return;
+
+                function closeSidebar() {
+                    sidebar.classList.remove('open');
+                    overlay.classList.remove('open');
+                }
+
+                toggle.addEventListener('click', function () {
+                    sidebar.classList.toggle('open');
+                    overlay.classList.toggle('open');
+                });
+                overlay.addEventListener('click', closeSidebar);
+                sidebar.querySelectorAll('a').forEach(function (a) {
+                    a.addEventListener('click', closeSidebar);
+                });
+            })();
+
+            // ---------- Scroll-spy ----------
+            (function initScrollSpy() {
+                var navLinks = Array.from(document.querySelectorAll('#sidebar nav a'));
+                if (navLinks.length === 0) return;
+
+                var hrefToLink = new Map();
+                navLinks.forEach(function (a) {
+                    hrefToLink.set(a.getAttribute('href'), a);
+                });
+
+                var headingToHref = new Map();
+                navLinks.forEach(function (a) {
+                    var hash = a.getAttribute('href');
+                    var id = decodeURIComponent(hash.slice(1));
+                    var el = document.getElementById(id);
+                    if (el) headingToHref.set(el, hash);
+                });
+
+                var targets = Array.from(headingToHref.keys());
+                if (targets.length === 0) return;
+
+                var activeHref = null;
+
+                function setActive(href) {
+                    if (href === activeHref) return;
+                    activeHref = href;
+                    navLinks.forEach(function (a) {
+                        a.classList.remove('active');
+                    });
+                    var link = hrefToLink.get(href);
+                    if (link) link.classList.add('active');
+                }
+
+                var spyObserver = new IntersectionObserver(
+                    function (entries) {
+                        entries.forEach(function (entry) {
+                            if (entry.isIntersecting) {
+                                var href = headingToHref.get(entry.target);
+                                if (href) setActive(href);
+                            }
+                        });
+                    },
+                    { root: null, rootMargin: '-15% 0px -75% 0px', threshold: 0 },
+                );
+
+                targets.forEach(function (t) {
+                    spyObserver.observe(t);
+                });
+            })();
+
+            // ---------- Checklist progress counter ----------
+            (function initChecklistCounter() {
+                var counter = document.getElementById('checklist-counter');
+                var checkboxes = document.querySelectorAll(
+                    'ul.checklist-list input[type="checkbox"]',
+                );
+                if (!counter || checkboxes.length === 0) return;
+
+                function update() {
+                    var checked = Array.from(checkboxes).filter(function (c) {
+                        return c.checked;
+                    }).length;
+                    counter.textContent = checked + ' / ' + checkboxes.length + ' 完了';
+                }
+
+                checkboxes.forEach(function (c) {
+                    c.addEventListener('change', update);
+                });
+                update();
+            })();
+        </script>
+    </body>
+</html>

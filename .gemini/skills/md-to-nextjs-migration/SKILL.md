@@ -182,6 +182,14 @@ assert_staged_scope() {
     esac
   done
 }
+
+# ステージ失敗時: working tree を保持したまま、このステップの index を解除する
+cleanup_stage() {
+  git reset --mixed --quiet HEAD || {
+    echo 'ステージ差分の cleanup に失敗しました。index を確認してください。' >&2
+    return 1
+  }
+}
 ```
 
 ```bash
@@ -199,6 +207,10 @@ assert_staged_scope <new-file> || exit 1
 ### Step 1: Red — 失敗するテストを作成してコミット
 
 ```bash
+# 移行開始時の HEAD を、Step 7 の変更検出まで同じシェルで保持する
+MIGRATION_BASELINE_COMMIT=$(git rev-parse HEAD) || exit 1
+export MIGRATION_BASELINE_COMMIT
+
 # 要件を網羅するテストを追加
 RED_TEST_NAME='renders the migrated SN requirement title'
 RED_EXPECTED_FAILURE='Unable to find an element with the text: SN requirement title'
@@ -288,14 +300,25 @@ import {
 ### Step 5: テストを GREEN にする
 
 ```bash
+set -euo pipefail
 bun run test __tests__/gcl/<exam>/page.test.tsx
 if ! git status --short; then
   echo 'worktree の状態を取得できません。コミットを中止します。' >&2
   exit 1
 fi
+[ "${COMMIT_AUTHORIZED:-}" = 'yes' ] || {
+  echo 'ユーザーの明示認可がないため、コミットしません。' >&2
+  exit 1
+}
 assert_clean_stage || exit 1
-git add -p -- app/constants.ts app/gcl/<exam>/<changed-file-1> app/gcl/<exam>/<changed-file-2> || exit 1
-assert_staged_scope app/constants.ts app/gcl/<exam>/<changed-file-1> app/gcl/<exam>/<changed-file-2> || exit 1
+if ! git add -p -- app/constants.ts app/gcl/<exam>/<changed-file-1> app/gcl/<exam>/<changed-file-2>; then
+  cleanup_stage || true
+  exit 1
+fi
+if ! assert_staged_scope app/constants.ts app/gcl/<exam>/<changed-file-1> app/gcl/<exam>/<changed-file-2>; then
+  cleanup_stage || true
+  exit 1
+fi
 git diff --cached
 git commit -m "feat(gcl/<exam>/SN): implement migrated content"
 ```
@@ -305,6 +328,7 @@ git commit -m "feat(gcl/<exam>/SN): implement migrated content"
 ### Step 6: Refactor / Integration を検証してコミット
 
 ```bash
+set -euo pipefail
 bun run test __tests__/gcl/<exam>/page.test.tsx
 bun run build
 bun run lint
@@ -312,9 +336,19 @@ if ! git status --short; then
   echo 'worktree の状態を取得できません。コミットを中止します。' >&2
   exit 1
 fi
+[ "${COMMIT_AUTHORIZED:-}" = 'yes' ] || {
+  echo 'ユーザーの明示認可がないため、コミットしません。' >&2
+  exit 1
+}
 assert_clean_stage || exit 1
-git add -p -- <refactored-files> || exit 1
-assert_staged_scope <refactored-files> || exit 1
+if ! git add -p -- <refactored-files>; then
+  cleanup_stage || true
+  exit 1
+fi
+if ! assert_staged_scope <refactored-files>; then
+  cleanup_stage || true
+  exit 1
+fi
 git commit -m "refactor(gcl/<exam>/SN): integrate migrated content"
 ```
 
@@ -334,6 +368,7 @@ Docs Sync の必須成果物は次の6ファイルを正準一覧とする。
 テストを追加・変更しない移行に限り、`docs/coverage-dashboard.html` と `docs/TEST_COVERAGE_PROGRESS.md` を対象外にできる。その他4ファイルは必ず確認し、必要な更新をステージする。
 
 ```bash
+set -euo pipefail
 bun run test __tests__/gcl/<exam>/page.test.tsx
 if ! git status --short; then
   echo 'worktree の状態を取得できません。コミットを中止します。' >&2
@@ -352,7 +387,46 @@ docs_sync_files=(
   GEMINI.md
   README.md
 )
-if [ "${MIGRATION_HAS_TEST_CHANGES:-yes}" != 'yes' ]; then
+migration_has_test_changes=${MIGRATION_HAS_TEST_CHANGES:-yes}
+case "$migration_has_test_changes" in
+  yes | no) ;;
+  *)
+    echo 'MIGRATION_HAS_TEST_CHANGES は yes または no を指定してください。' >&2
+    exit 1
+    ;;
+esac
+test_change_paths=$(mktemp) || exit 1
+trap 'rm -f "$test_change_paths"' EXIT
+if [ -z "${MIGRATION_BASELINE_COMMIT:-}" ]; then
+  echo 'MIGRATION_BASELINE_COMMIT が未設定です。Docs Sync を中止します。' >&2
+  exit 1
+fi
+if ! git diff --name-only "$MIGRATION_BASELINE_COMMIT" HEAD > "$test_change_paths"; then
+  echo '移行開始から HEAD までの変更一覧を取得できません。Docs Sync を中止します。' >&2
+  exit 1
+fi
+if ! git diff --name-only HEAD >> "$test_change_paths"; then
+  echo '現在の working tree の変更一覧を取得できません。Docs Sync を中止します。' >&2
+  exit 1
+fi
+if ! git ls-files --others --exclude-standard >> "$test_change_paths"; then
+  echo 'untracked ファイルの変更一覧を取得できません。Docs Sync を中止します。' >&2
+  exit 1
+fi
+actual_test_changes=no
+while IFS= read -r changed_path; do
+  case "$changed_path" in
+    __tests__/*|e2e/*|*/__tests__/*|*.test.ts|*.test.tsx|*.spec.ts|*.spec.tsx)
+      actual_test_changes=yes
+      break
+      ;;
+  esac
+done < "$test_change_paths"
+if [ "$actual_test_changes" = 'yes' ] && [ "$migration_has_test_changes" = 'no' ]; then
+  echo '実際の tracked または untracked テスト変更があるため、MIGRATION_HAS_TEST_CHANGES=no では Docs Sync を実行できません。' >&2
+  exit 1
+fi
+if [ "$migration_has_test_changes" = 'no' ]; then
   docs_sync_files=(MIGRATION_PROGRESS.md CLAUDE.md GEMINI.md README.md)
 fi
 if ! git add -p -- "${docs_sync_files[@]}"; then

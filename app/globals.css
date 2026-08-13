@@ -77,6 +77,39 @@
     --color-guide-meta: #5f7291;
     --color-guide-hero-start: #ffffff;
 
+    /* Cisco guide page themes */
+    --color-ccna-fundamentals-elevated: #0d1a2e;
+    --color-ccna-fundamentals-card: #101f38;
+    --color-ccna-fundamentals-accent-soft: rgba(124, 158, 255, 0.14);
+    --color-ccna-fundamentals-foreground: #e6edf7;
+    --color-ccna-fundamentals-foreground-muted: #9fb0cc;
+    --color-ccna-fundamentals-border: rgba(124, 158, 255, 0.18);
+    --color-ccna-fundamentals-border-soft: rgba(230, 237, 247, 0.08);
+    --color-ccna-fundamentals-table-header: rgba(124, 158, 255, 0.10);
+    --color-ccna-fundamentals-row-hover: rgba(124, 158, 255, 0.05);
+    --color-ccna-fundamentals-code-background: #0a1626;
+    --color-ccna-fundamentals-code-foreground: #d7e3fb;
+    --color-devnet-associate-panel: #0d1b2e;
+    --color-devnet-associate-panel-alt: #0f2038;
+    --color-devnet-associate-accent-soft: rgba(124, 158, 255, 0.14);
+    --color-devnet-associate-accent-border: rgba(124, 158, 255, 0.3);
+    --color-devnet-associate-foreground: #e7edf8;
+    --color-devnet-associate-foreground-muted: #93a5c4;
+    --color-devnet-associate-border: rgba(124, 158, 255, 0.16);
+    --color-devnet-associate-warning: #ffb86b;
+    --color-devnet-associate-warning-soft: rgba(255, 184, 107, 0.12);
+    --color-devnet-professional-background: #07111e;
+    --color-devnet-professional-elevated: #0d1b2e;
+    --color-devnet-professional-panel: #101f36;
+    --color-devnet-professional-accent: #7c9eff;
+    --color-devnet-professional-accent-strong: #a9c1ff;
+    --color-devnet-professional-accent-soft: rgba(124, 158, 255, 0.14);
+    --color-devnet-professional-border: rgba(124, 158, 255, 0.18);
+    --color-devnet-professional-foreground: #e6ecf5;
+    --color-devnet-professional-foreground-muted: #93a3bd;
+    --color-devnet-professional-foreground-faint: #6c7d9a;
+    --color-devnet-professional-row-even: rgba(124, 158, 255, 0.03);
+
     /* CCNA Platforms and Development guide (source-design fidelity) */
     --color-ccna-platforms-surface-1: #0d1b2c;
     --color-ccna-platforms-surface-2: #101f34;
@@ -219,13 +252,22 @@
     --color-shadow-subtle: rgba(var(--color-shadow-rgb), 0.06);
     --color-surface-subtle: rgba(255, 255, 255, 0.05);
 
-    --font-display: 'DM Sans', sans-serif;
-    --font-body: 'Noto Sans JP', sans-serif;
-    --font-mono: 'JetBrains Mono', monospace;
-    --font-ccna-platforms-sans: 'Noto Sans JP', 'Inter', -apple-system, 'BlinkMacSystemFont', 'Segoe UI', sans-serif;
+    /* @fontsource で自己ホストするフォント。可変フォントのファミリ名は `<Name> Variable` である */
+    --font-display: 'DM Sans Variable', 'DM Sans', sans-serif;
+    --font-body: 'Noto Sans JP Variable', 'Noto Sans JP', sans-serif;
+    --font-mono: 'JetBrains Mono Variable', 'JetBrains Mono', monospace;
+    --font-fraunces: 'Fraunces Variable', 'Noto Sans JP Variable', georgia, serif;
+    --font-azeret-mono: 'Azeret Mono Variable', monospace;
+    --font-sora: 'Sora Variable', 'Noto Sans JP Variable', sans-serif;
+    --font-outfit: 'Outfit Variable', 'Noto Sans JP Variable', sans-serif;
+    --font-fira-code: 'Fira Code Variable', monospace;
+    --font-playfair-display: 'Playfair Display Variable', 'Noto Sans JP Variable', serif;
+    --font-ibm-plex-mono: 'IBM Plex Mono', monospace;
+    --font-dm-mono: 'DM Mono', monospace;
+    --font-ccna-platforms-sans: 'Noto Sans JP Variable', 'Noto Sans JP', 'Inter', -apple-system, 'BlinkMacSystemFont', 'Segoe UI', sans-serif;
     --font-ccna-platforms-mono: ui-monospace, 'SFMono-Regular', 'Menlo', 'Consolas', 'Liberation Mono', monospace;
-    --font-ccna-automation-sans: 'Noto Sans JP', -apple-system, 'BlinkMacSystemFont', 'Hiragino Sans', sans-serif;
-    --font-ccna-automation-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', 'Menlo', 'Consolas', monospace;
+    --font-ccna-automation-sans: 'Noto Sans JP Variable', 'Noto Sans JP', -apple-system, 'BlinkMacSystemFont', 'Hiragino Sans', sans-serif;
+    --font-ccna-automation-mono: 'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, 'SFMono-Regular', 'Menlo', 'Consolas', monospace;
     --font-ccna-app-mono: 'SFMono-Regular', 'Menlo', 'Consolas', monospace;
     --font-ccna-network-mono: 'SFMono-Regular', 'Consolas', 'Liberation Mono', 'Menlo', monospace;
 
@@ -278,6 +320,14 @@ body {
 @utility bg-gradient-aurora {
     background: linear-gradient(135deg, var(--color-brand-start), var(--color-brand-end));
 }
+
+.card-ace { --card-accent: var(--color-theme-ace-fg); }
+.card-genai { --card-accent: var(--color-theme-genai-fg); }
+.card-cdl { --card-accent: var(--color-theme-cdl-fg); }
+.card-agwa { --card-accent: var(--color-theme-agwa-fg); }
+.card-pcne { --card-accent: var(--color-theme-pcne-fg); }
+.card-ccna { --card-accent: var(--color-theme-cisco-fg); }
+.card-aws-saa { --card-accent: var(--color-theme-aws-fg); }
 
 @utility text-gradient-aurora {
     background: linear-gradient(135deg, var(--color-brand-text-start), var(--color-brand-text-end));
@@ -339,6 +389,88 @@ body {
 @utility icon-theme-hands-on {
     background: var(--color-theme-ace-bg);
     color: var(--color-theme-ace-fg);
+}
+
+/* Provider identity marks: メニューとホームで同じ視覚言語を共有する。 */
+.site-mark {
+    display: inline-grid;
+    width: 32px;
+    height: 32px;
+    flex: 0 0 auto;
+    place-items: center;
+    border: 1px solid rgba(137, 126, 255, 0.5);
+    border-radius: 10px;
+    background: linear-gradient(145deg, rgba(79, 142, 247, 0.26), rgba(139, 92, 246, 0.22));
+    color: #b9caff;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.site-mark svg {
+    width: 22px;
+    height: 22px;
+}
+
+.provider-mark {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+}
+
+.provider-mark-gcp {
+    gap: 3px;
+    width: 38px;
+    height: 24px;
+}
+
+.provider-mark-gcp > span {
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+}
+
+.provider-mark-gcp > span:nth-child(1) { background: var(--color-google-blue); }
+.provider-mark-gcp > span:nth-child(2) { background: var(--color-google-red); }
+.provider-mark-gcp > span:nth-child(3) { background: var(--color-google-yellow); }
+.provider-mark-gcp > span:nth-child(4) { background: var(--color-google-green); }
+
+.provider-mark-aws {
+    width: 42px;
+    height: 30px;
+    flex-direction: column;
+    color: var(--color-theme-aws-fg);
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 0.85;
+}
+
+.provider-mark-aws svg {
+    width: 32px;
+    height: 8px;
+}
+
+.provider-mark-cisco {
+    width: 46px;
+    height: 34px;
+    flex-direction: column;
+    gap: 1px;
+    color: var(--color-theme-cisco-fg);
+    font-family: Arial, sans-serif;
+    font-size: 7px;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+}
+
+.provider-mark-cisco svg {
+    width: 40px;
+    height: 19px;
+}
+
+.provider-mark[data-compact] {
+    transform: scale(0.82);
+    transform-origin: center;
+    margin-inline: -3px;
 }
 
 .code-line {

@@ -7,12 +7,102 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 ## 現在地
 
 - **ブランチ:** dev
-- **進行中タスク:** CCNAレビュー指摘の検証・修正 (完了)
-- **最新実装 HEAD:** `2cd6be2` (`fix(ccna): memoize network fundamentals diagrams`)
-- **前回進捗同期コミット:** `2951b8a`
-- **次の作業:** 完了
-- **検証状態:** 対象Vitest 25件成功、`bun run lint` 成功。標準 `bun run test` は912件成功し、実行環境の localStorage 不備で既存30件が失敗。対象E2Eは4件成功し、既存のページタイトル二重付与との期待値不一致1件が失敗。ビルドは依頼により未実施。
-- **最終更新日時(UTC):** 2026-08-11T12:08:33.000Z
+- **進行中タスク:** レビュー指摘のカテゴリー別修正・検証・コミット完了
+- **最終更新日時(UTC):** 2026-08-13T07:49:25Z
+
+## 2026-08-13: レビュー追補の認可・インベントリ・Drive復元修正（完了）
+
+- [x] **Commit authorization**: Step 5 / 6の認可確認をステージ前へ移し、拒否時にindexを汚さないフローへ修正（`71a03d2`）。
+- [x] **Migration inventory**: 本文順序、注釈、画像alt、コード全文、表ヘッダー、コード行、全図形式とa11y契約を厳密検証し、入力元をリポジトリ相対パスへ正規化。3ミラーを同期（`461f071`）。
+- [x] **AGWA Section 6**: My Drive、共有ドライブ内ファイル、削除済み共有ドライブの復元経路・期限・所有権モデルを分離し、状態図・総括・チェックリストを同期（`3dbc0fa`）。
+- [x] **Validation**: 全体ESLint、対象Markdown lint、3ミラーの完全一致、インベントリスクリプトの相対パス出力とリポジトリ外入力拒否、Agwa-section6.md内Mermaid 10ブロックの構文解析に成功。E2E、Visualテスト、ビルドは未実施。
+
+## 2026-08-13: レビュー指摘のテスト・ワークフロー・ガイド修正（完了）
+
+- [x] **Test quality**: ワークスペース読込ヘルパーへJSDocを追加し、エージェントミラーをUTF-8文字列ではなくraw Bufferで比較。
+- [x] **Agent workflow**: インベントリ実行をbunへ統一し、DOM要素・リンク集合・コードブロック件数・`preserveNaturalScale` の検証を厳密化。Step 5 / 6へコミット認可ガードを追加し、3系統を同期。
+- [x] **AGWA Section 6**: Status Dashboard、Drive/Gmail復元、Meet匿名参加の説明をGoogle公式資料に合わせ、MD022 / MD047を解消。
+- [x] **Chrome Enterprise Premium guide**: Owner / EditorのIAP自動アクセス前提を削除し、Owner / Tester双方のロール付与手順をHTML/Markdownで同期。CDN4資産へSRIを追加。
+- [x] **Validation**: 対象Vitest 35件・94件、全体ESLint、対象Markdown lint、CDN4資産のSHA-384照合は成功。全体Vitestは987件成功、既知のスモーク期待値1件とサンドボックスの`window.localStorage`不備30件が失敗。`npm run test:e2e`、Visualテスト、ビルドは未実施。
+
+## 2026-08-12: レビュー指摘のホーム/Cisco/ADKガイド改善（対象検証完了）
+
+- [x] **Home**: URL重複除外テストデータをカタログ順非依存にし、Hero / ExamCard / ExamCatalog / Statsを`components/sections/home/`へ分割。
+- [x] **Cisco content / layout**: CCNP Automationの現行Automation Specialist名称へ統一し、固定280pxサイドバーを除いた残り幅をメイン領域が使用する契約へ修正。
+- [x] **Theme / CSS Modules**: CCNA Network Fundamentals / DevNet Associate / DevNet Professionalのテーマトークンを`app/globals.css`へ集約し、各stylesheetのローカルcustom propertyを撤去。
+- [x] **ADK guide**: Python 3.10ゲート、`google-adk>=1.17.0,<2.0.0`、一意なセッションIDを再利用する本番ストリーミングAPI検証手順を追加。
+- [x] **Coverage dashboard**: `readFile` / `readFileSync` 呼び出しだけを参照として抽出し、`components/` のCSSと3つの共通正準対象を集計してHTMLを再生成。
+- [x] **Home constants**: `cardColorMap`、`providerMeta`、`providerOrder` を `app/constants.ts` に集約し、旧 `components/sections/home/config.ts` を削除。
+- [x] **Validation**: 対象Vitest 112件とESLintは成功。全体Vitestは952件成功、既知のスモーク期待値1件とサンドボックスの `window.localStorage` 不備30件が失敗。ビルドとVisualテストは未実施。
+
+## 2026-08-12: Cisco「Cisco Certified DevNet Professional 認定 徹底解説ガイド」100%全量移行 (完了)
+
+### 目的
+
+`Cisco-devnet-professional-guide.html` および `Cisco-devnet-professional-guide.md` を、Next.js App Router 5ファイル構成 (`page.tsx`, `DevNetProfessionalGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.module.css`) で `/cisco/devnet-professional` ルートへ移行。全13セクションの見出し、7個のテーブルセルテキスト、6個のMermaid図解、3個のコールアウト、16個の参考文献リンクを一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 1 (Red)**: `test: add failing tests for DevNet Professional guide migration` (`4bb2249`)
+- [x] **Step 2 (Green)**: `feat: implement DevNet Professional guide page to pass tests` (`cd2d3fb`)
+- [x] **Step 3 (Refactor / Integration & Nav & Docs)**: `app/constants.ts`, `CLAUDE.md`, `GEMINI.md` にルーティングを統合し、元ファイル (`HTML`/`MD`) を `archive/Cisco/html/` および `archive/Cisco/md/` へ移動
+
+### 関連ファイル
+
+- [app/cisco/devnet-professional/page.tsx](app/cisco/devnet-professional/page.tsx)
+- [app/cisco/devnet-professional/DevNetProfessionalGuide.tsx](app/cisco/devnet-professional/DevNetProfessionalGuide.tsx)
+- [app/cisco/devnet-professional/NavBar.tsx](app/cisco/devnet-professional/NavBar.tsx)
+- [app/cisco/devnet-professional/constants.ts](app/cisco/devnet-professional/constants.ts)
+- [app/cisco/devnet-professional/page.module.css](app/cisco/devnet-professional/page.module.css)
+- [__tests__/cisco-devnet-professional.test.tsx](__tests__/cisco-devnet-professional.test.tsx)
+- [archive/Cisco/html/Cisco-devnet-professional-guide.html](archive/Cisco/html/Cisco-devnet-professional-guide.html)
+- [archive/Cisco/md/Cisco-devnet-professional-guide.md](archive/Cisco/md/Cisco-devnet-professional-guide.md)
+
+## 2026-08-12: Cisco「Cisco Certified DevNet Associate (200-901 / CCNA Automation) 完全対策ガイド」100%全量移行 (完了)
+
+### 目的
+
+`Cisco-devnet-associate-guide.html` および `Cisco-devnet-associate-guide.md` を、Next.js App Router 5ファイル構成 (`page.tsx`, `DevNetAssociateGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.module.css`) で `/cisco/devnet-associate` ルートへ移行。全12セクションの見出し、11個のテーブルセルテキスト、4個のMermaid図解、3個のコールアウト、13個の参考文献リンクを一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 1 (Red)**: `test(cisco): add failing tests for Cisco DevNet Associate guide migration` (`bae73c6`)
+- [x] **Step 2 (Green)**: `feat(cisco): implement Cisco DevNet Associate guide page to pass tests` (`784f400`)
+- [x] **Step 3 (Refactor / Integration & Nav & Docs)**: `app/constants.ts`, `CLAUDE.md`, `GEMINI.md` にルーティングを統合し、元ファイル (`HTML`/`MD`) を `archive/Cisco/html/devnet/` および `archive/Cisco/md/devnet/` へ移動
+
+### 関連ファイル
+
+- [app/cisco/devnet-associate/page.tsx](app/cisco/devnet-associate/page.tsx)
+- [app/cisco/devnet-associate/DevNetAssociateGuide.tsx](app/cisco/devnet-associate/DevNetAssociateGuide.tsx)
+- [app/cisco/devnet-associate/NavBar.tsx](app/cisco/devnet-associate/NavBar.tsx)
+- [app/cisco/devnet-associate/constants.ts](app/cisco/devnet-associate/constants.ts)
+- [app/cisco/devnet-associate/page.module.css](app/cisco/devnet-associate/page.module.css)
+- [__tests__/cisco-devnet-associate-guide.test.tsx](__tests__/cisco-devnet-associate-guide.test.tsx)
+- [archive/Cisco/html/devnet/Cisco-devnet-associate-guide.html](archive/Cisco/html/devnet/Cisco-devnet-associate-guide.html)
+- [archive/Cisco/md/devnet/Cisco-devnet-associate-guide.md](archive/Cisco/md/devnet/Cisco-devnet-associate-guide.md)
+
+## 2026-08-12: Cisco「CCNA 200-301 Network Fundamentals ネットワークの基礎 入門ガイド」100%全量移行 (完了)
+
+### 目的
+
+`Ccna-network-fundamentals-guide.html` および `Ccna-network-fundamentals-guide.md` を、Next.js App Router 5ファイル構成 (`page.tsx`, `CcnaNetworkFundamentalsGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/cisco/ccna/network-fundamentals-guide` ルートへ移行。文章・全10章・10個のMermaid図・表・コードブロック・参考文献を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 1 (Red)**: `test: add failing tests for CCNA network fundamentals guide` (`56db16b`)
+- [x] **Step 2 (Green)**: `feat: implement CCNA network fundamentals guide page and components` (`416fa0c`)
+- [x] **Step 3 (Refactor / Integration & Nav & Docs)**: `app/constants.ts`, `CLAUDE.md`, `GEMINI.md` にルーティングを統合し、元ファイル (`HTML`/`MD`) を `archive/Cisco/html/ccna/` および `archive/Cisco/md/ccna/` へ移動
+
+### 関連ファイル
+
+- [app/cisco/ccna/network-fundamentals-guide/page.tsx](app/cisco/ccna/network-fundamentals-guide/page.tsx)
+- [app/cisco/ccna/network-fundamentals-guide/CcnaNetworkFundamentalsGuide.tsx](app/cisco/ccna/network-fundamentals-guide/CcnaNetworkFundamentalsGuide.tsx)
+- [app/cisco/ccna/network-fundamentals-guide/NavBar.tsx](app/cisco/ccna/network-fundamentals-guide/NavBar.tsx)
+- [app/cisco/ccna/network-fundamentals-guide/constants.ts](app/cisco/ccna/network-fundamentals-guide/constants.ts)
+- [app/cisco/ccna/network-fundamentals-guide/page.css](app/cisco/ccna/network-fundamentals-guide/page.css)
+- [__tests__/cisco/ccna/network-fundamentals-guide.test.tsx](__tests__/cisco/ccna/network-fundamentals-guide.test.tsx)
+- [archive/Cisco/html/ccna/Ccna-network-fundamentals-guide.html](archive/Cisco/html/ccna/Ccna-network-fundamentals-guide.html)
+- [archive/Cisco/md/ccna/Ccna-network-fundamentals-guide.md](archive/Cisco/md/ccna/Ccna-network-fundamentals-guide.md)
 
 ## 2026-08-11: CCNAレビュー指摘の検証・修正 (完了)
 
@@ -877,7 +967,7 @@ HTMLから移行されたガイド画面ごとに異なっていたサイドバ�
   - `CLAUDE.md` に section1 構成を追記。`bun run build` / `bun run lint` パス。
 - [x] **Step 4 (Docs Sync)**: `chore(docs): update MIGRATION_PROGRESS.md — ACE section1 移行完了`
 
-### コンテンツ補正（ユーザー確認済み）
+### コンテンツ補正（完了）
 
 公式 PDF ファイル名 `063026_..._exam_guide`（= 2026/06/30）および Google 公式アナウンスに基づき、HTML本文の誤記を修正:
 
@@ -1076,7 +1166,7 @@ bun run test:e2e e2e/nav.spec.ts  # Chromium 2 件 pass
 
 ### 残課題 / 次回着手候補
 
-- 手動確認: `bun run dev` で実機の Drawer アニメーション・スクロールロック挙動を最終チェック
+- Visualテスト: 未実施
 - AWS 試験ページ群の実装（`app/aws/solutions-architect-associate/page.tsx`）。adapter は完成しているので constants の `status` を `'available'` に変えるだけで Drawer に自動反映される
 
 ---
@@ -1085,7 +1175,7 @@ bun run test:e2e e2e/nav.spec.ts  # Chromium 2 件 pass
 
 ### 目的
 
-ユーザーによって確認されたオリジナル HTML との乖離（情報の省略・簡略化）を解消するため、残りのセクション（1.1, 1.2, 1.3, 1.4, 1.6）の内容をオリジナルに準拠したリッチな内容に復元・補完する。
+検出されたオリジナル HTML との乖離（情報の省略・簡略化）を解消するため、残りのセクション（1.1, 1.2, 1.3, 1.4, 1.6）の内容をオリジナルに準拠したリッチな内容に復元・補完する。
 
 ### ステータス
 
@@ -1101,10 +1191,17 @@ bun run test:e2e e2e/nav.spec.ts  # Chromium 2 件 pass
 ## 次回セッションでの再開プロンプト
 
 あなたは熟練したフロントエンドエンジニアであり、Next.js (App Router) の移行スペシャリストです。
-最新実装 HEAD は `2cd6be2`、前回進捗同期コミットは `2951b8a` です。
-CCNAレビュー指摘の追補はカテゴリー別のRed / Green / Docsコミットで対応済みです。対象Vitest 25件と `bun run lint` が成功し、Network Fundamentals対象E2Eは5件中4件が成功しています。残る1件は既存のページタイトル二重付与と期待値の不一致です。ビルドは依頼により未実施です。
+最新実装 HEAD は `3dbc0fa`、前回進捗同期コミットは `7ec1df8` です。
+コミット認可フロー、移行インベントリ契約、AGWA Section 6のDrive復元分岐はカテゴリー別コミットで対応済みです。全体ESLint、対象Markdown lint、3ミラー一致、インベントリスクリプト、Mermaid構文解析は成功しています。E2E、Visualテスト、ビルドは未実施です。
 
-標準 `bun run test` は912件成功し、実行環境の `window.localStorage` 不備により、既存の `recentPages`、`RecentPageRecorder`、`Header.drawer-features` の計30件が失敗します。次回はアプリ実装を変更する前に、Node/jsdomのlocalStorage設定を切り分けてください。
+標準ワークフローの正準は `.agents/rules/tdd-commit-workflow.md` で、`.claude` / `.gemini` は同期ミラーです。次回は次の4ステップを維持してください。
+
+1. **Step 0 — Inventory:** 移行元からインベントリを機械抽出し、実装前に確定する。
+2. **Step 1 — Fail:** 失敗テストを作成し、失敗を確認する。
+3. **Step 2 — Pass:** 最小実装でテストを成功させる。
+4. **Step 3 — Refactor:** 整理・統合後に対象検証を再実行する。
+
+各ステップのコミットは、ユーザーが明示的に認可した場合だけ実行してください。未認可ならコミット可能な状態で停止します。サンドボックス実行記録として、今回の `npm test` は987件成功し、既存ホームと異なる見出しを期待するスモーク1件と、`window.localStorage.clear` が利用できない環境依存30件が失敗しました。次回はアプリ実装を変更する前に、これらのテスト環境と期待値を切り分けてください。
 
 ---
 

@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-Updated 2026-08-11
+Updated 2026-08-13
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
@@ -66,7 +66,7 @@ bun run build   # NEXT_OUTPUT_MODE 未設定で実行
 ```text
 app/
   layout.tsx                        # ルートレイアウト（Header/DisclaimerBanner/Footer、フォント定義）
-  page.tsx                          # トップページ
+  page.tsx                          # トップページ（データ抽出とセクション合成）
   globals.css                       # グローバルスタイル（デザイントークン定義）
   constants.ts                      # 試験データ正本（EXAMS / STATS）。新試験はここに追加するだけ
   navigation.ts                     # toNavTree(EXAMS) adapter → NavGroup[] を生成し Header が参照
@@ -220,6 +220,18 @@ app/
       page.tsx                      # PCNE ステップバイステップ実践ガイド
       components/                   # セクションコンポーネント（Section1-6）
   cisco/
+    devnet-professional/
+      page.tsx                      # Cisco Certified DevNet Professional 認定 徹底解説ガイド（Server）
+      DevNetProfessionalGuide.tsx   # 本文＋インタラクション（client。全13セクション、Mermaid等）
+      NavBar.tsx                    # サイドバーナビ（IntersectionObserver）
+      constants.ts                  # Mermaid 図定義（6図）
+      page.module.css               # ページ固有スタイル（CSS Modules）
+    devnet-associate/
+      page.tsx                      # Cisco Certified DevNet Associate (200-901 / CCNA Automation) 完全対策ガイド（Server）
+      DevNetAssociateGuide.tsx      # 本文＋インタラクション（client。全12セクション、Mermaid等）
+      NavBar.tsx                    # サイドバーナビ（IntersectionObserver）
+      constants.ts                  # Mermaid 図定義（4図）
+      page.module.css               # ページ固有スタイル（CSS Modules／ガイド固有トークン）
     ccde/
       complete-guide/
         page.tsx                    # Cisco CCDE試験 完全ガイド（Server。メタデータ定義）
@@ -258,6 +270,18 @@ app/
         page.css                    # ページ固有スタイル
       automation-network-fundamentals/
         page.tsx                    # CCNAAUTO 200-901 6.0 Network Fundamentals 完全ガイド
+      security-fundamentals/
+        page.tsx                    # CCNA 200-301 Security Fundamentals 完全ガイド（Server。メタデータ定義）
+        CcnaSecurityFundamentalsGuide.tsx # 本文＋インタラクション（client。全12章、10個のMermaid図等）
+        NavBar.tsx                  # サイドバーナビ（IntersectionObserver）
+        constants.ts                # Mermaid 図定義（10図）
+        page.css                    # ページ固有スタイル
+      network-fundamentals-guide/
+        page.tsx                    # CCNA 200-301 Network Fundamentals ネットワークの基礎 入門ガイド（Server。メタデータ定義）
+        CcnaNetworkFundamentalsGuide.tsx # 本文＋インタラクション（client。全10章、10個のMermaid図等）
+        NavBar.tsx                  # サイドバーナビ（IntersectionObserver）
+        constants.ts                # Mermaid 図定義（10図）
+        page.css                    # ページ固有スタイル
       network-access-guide/
         page.tsx                    # CCNA 200-301 Network Access 徹底解説ガイド（Server。メタデータ定義）
         CcnaNetworkAccessGuide.tsx  # 本文＋インタラクション（client。全15セクション、17個のMermaid図等）
@@ -282,8 +306,6 @@ app/
         NavBar.tsx                  # サイドバーナビ
         constants.ts                # Mermaid 図定義（7図）
         page.css                    # ページ固有スタイル
-      security-fundamentals/
-        page.tsx                    # CCNA 200-301 Security Fundamentals 完全ガイド
   aws/
     solutions-architect-associate/
       page.tsx                      # AWS Certified Solutions Architect – Associate (SAA-C03) 完全対策ガイド (Server)
@@ -323,6 +345,7 @@ components/
   DisclaimerBanner.tsx              # 免責事項バナー。Header 直下に sticky で貼り付き（top: var(--header-h)）、scroll 中も Header→Disclaimer→本文 の順序を保つ
   DiagramSVG.tsx                    # SVG ダイアグラム共通コンポーネント（ariaLabel または decorative 必須）
   RecentPageRecorder.tsx            # 'use client'、DOM レス。usePathname 監視で lib/recentPages.pushRecent を呼ぶ。layout.tsx に 1 度だけ配置
+  sections/home/                    # ホームの Hero / ExamCard / ExamCatalog / Stats
 
 lib/
   utils.ts                          # cn() (clsx + tailwind-merge)
@@ -330,8 +353,12 @@ lib/
 
 __tests__/                          # Vitest（jsdom環境）
 e2e/                                # Playwright（Chromiumのみ）
-Gcl_Archive/                        # 旧HTML資料（参照・移行元アーカイブ）
-Aws/                                # AWS資料アーカイブ
+archive/                            # 移行済み資料の正規アーカイブ
+  Cisco/
+    html/                           # Cisco HTML資料
+    md/                             # Cisco Markdown資料
+  Gcl_Archive/                      # Cisco以外の旧GCP資料
+  Aws/                              # AWS資料
 ```
 
 ## CSSデザイントークン（3層アーキテクチャ）
@@ -345,12 +372,12 @@ Aws/                                # AWS資料アーカイブ
 
 - `--font-body`, `--font-mono`, `--radius-*`
 
-**Layer 3 – ページ固有テーマ** (各ページの `.css`):
+**Layer 3 – ページ固有テーマ** (`app/globals.css` の `@theme`):
 
 - Aurora（ACE）、Sapphire/Laboratory/Gold/Executive（Generative AI Leader 各セクション）
-- テーマ変数は `--color-*` を上書きする形で定義
+- テーマトークンと新しいテーマカラーはすべてグローバルな `@theme` に集約
 
-新しいテーマカラーを追加する場合は、ページ固有 `.css` を作成し、そのルートを所有する `page.tsx` または `layout.tsx` からインポートする。レイアウトスコープが不要な場合は `page.tsx` へのインポートを優先し、不要な `layout.tsx` の作成を避ける。
+ページ固有の `.css` / `.module.css` は `app/globals.css` に存在する `--color-*` トークンのみを参照する。コンポーネントレベルで新しい `--*` を定義したり、テーマごとにCSSファイルを追加・インポートしたりしない。新しいテーマカラーが必要な場合は、先に `app/globals.css` の `@theme` へ追加する。
 
 ## テスト構成
 
@@ -358,10 +385,11 @@ Aws/                                # AWS資料アーカイブ
 - **Playwright:** `e2e/` 配下、Chromiumのみ、`baseURL: http://localhost:3000`、CIでは`bun run dev`を自動起動
 
 **🚨 開発時の必須ルール（TDD & Step-by-step Commit） 🚨**
-全てのコード実装において、`.claude/rules/tdd-commit-workflow.md` に定義されたルールを厳守すること。
-1. プロダクションコードを書く前に、必ずFailするテストを書いてコミットする。
-2. テストをPassさせる実装を行いコミットする。
-3. リファクタリング/統合を行いコミットする。
+全てのコード実装において、正準の `.agents/rules/tdd-commit-workflow.md` に定義されたルールを厳守すること。`.claude/rules/tdd-commit-workflow.md` と `.gemini/rules/tdd-commit-workflow.md` は同期ミラーである。
+1. **Step 0 — Inventory:** 移行タスクでは移行元からインベントリを機械抽出し、実装前にコミットする。
+2. **Step 1 — Fail:** プロダクションコードを書く前に、必ずFailするテストを書いてコミットする。
+3. **Step 2 — Pass:** テストをPassさせる実装を行いコミットする。
+4. **Step 3 — Refactor:** リファクタリング/統合を行いコミットする。
 ※ LLMはタスク実行前に必ずこのルールをPlanに組み込み、まとめて実装・コミットすることを避けること。
 
 **HTML → Next.js 移行タスク時**: まず `.claude/skills/html-to-nextjs-migration/SKILL.md` の「正準リファレンス」を読むこと。GCPトークンマップ・サイドバー配置値・MermaidDiagram契約・ガイドページのファイル構成が前出しされており、参照 `page.tsx`/`NavBar.tsx`/`MermaidDiagram.tsx`/`page.css` や `globals.css` の再読込・再 grep が不要になる（ソースHTMLは100%読む — 要約・スキップ厳禁）。
@@ -372,12 +400,14 @@ Aws/                                # AWS資料アーカイブ
 - **Docker dev コンテナの `.next` 権限**: `Dockerfile.dev` で `mkdir -p /app/.next` を `chown` より前に実行し、named volume (`dev_next_cache`) を `nextjs` ユーザー所有で初期化すること。ボリューム再作成が必要な場合は `docker volume rm infra_dev_next_cache`。
 - **`DisclaimerBanner`**: `components/DisclaimerBanner.tsx` は `'use client'` の Client Component。**`position: sticky; top: var(--header-h)`** で Header 直下に貼り付き、flow 内に居続けるため `body { padding-top }` は不要（過去 fixed 配置で `padding-top: calc(--header-h + --disclaimer-height)` を盛っていた結果、sticky Header の natural position が下にずれて scroll 開始まで Disclaimer と縦並び順が入れ替わる不具合が発生していたため修正済）。ResizeObserver は `--disclaimer-height` の動的同期を継続（ページ内 SectionNav が `--fixed-offset = calc(--header-h + --disclaimer-height)` を `top` 値として参照しているため、合計実高さは引き続き必要）。免責事項テキストの変更はこのファイルのみ編集する。
 - `litellm` / `dspy` の追加禁止（脆弱性懸念）
+- **フォントは自己ホスト（`next/font/google` 禁止）**: `next/font/google` はビルド時に Google Fonts へ HTTP 取得を行い、CDN が旧リビジョンの CSS（実体削除済みの woff2 URL）を返すと `Failed to fetch <family> from Google Fonts.` で **ビルドが失敗**する（Netlify CI で実際に発生）。全 11 ファミリは `@fontsource-variable/*` / `@fontsource/*` へ移行済みで、`app/layout.tsx`（Noto Sans JP / JetBrains Mono / DM Sans）と `app/gcl/genai-leader/section1〜4/page.tsx` が該当 CSS を `import` する。**可変フォントのファミリ名は `'<Name> Variable'`**（例 `'Noto Sans JP Variable'`）であり、`app/globals.css` の `@theme` の `--font-*` トークンで `'<Name> Variable', '<Name>', <generic>` の順に指定する。新しいフォントを追加する場合も `bun add @fontsource-variable/<name>` → CSS import → `@theme` にトークン追加の手順を踏み、`next/font` を使わない。この制約は `__tests__/fonts/self-hosted-fonts.test.ts` が検証する。
 - **Client/Server コンポーネント境界**: ページ固有のアンカーナビなど状態やブラウザAPIに依存するUIは `'use client'` ディレクティブを含む専用コンポーネントとして切り出し、メインの `page.tsx` を Server Component として維持すること。Client コンポーネント内でサーバー専用 API（`fs`, `cookies`, `headers` など）を呼び出すことは明示的に禁止し、渡す Props は JSON シリアライズ可能なものに限定すること。
 - **コードブロック内の改行 (`.code-block`)**: JSX変換時、コード内の改行に `{"\n"}` を使用せず、各行を `<div className="code-line">...</div>` でラップすること。`.code-line` は `white-space: pre` を適用してインデントを保持し、`map` 展開時は安定した `key` を付与すること。
 - **表形式データの構造化**: テキストのスペース揃えで列を表現したデータは、フォント変更による列ズレを防ぐため、必ず `<table>` 要素に変換すること。その際、必ず `<thead>` と `<th scope="col">` を用いたセマンティックな構造にすること。
 - **CSS変数・テーマトークンの適用**: `globals.css` の3層アーキテクチャ CSS 変数（`--color-background`, `--color-foreground`, `--color-border` など）を厳格に使用すること。独自のローカル変数定義や `--color-bg-primary` のような実在しないトークンの使用は避ける。コンポーネントレベルの CSS 内で新たなカスタムプロパティ（`--*`）を定義することは禁止する。
 - **サイドバーガイドのレイアウト契約**: サイドバーを持つガイド画面は、デスクトップでサイドバーを左端へ固定し幅を `280px` に統一する。メイン領域は `margin-left: 280px`、`width: calc(100% - 280px)`、`max-width: none` で残り幅をすべて使い、本文全体を再制限する `content-inner` 等の最大幅は設けない。レスポンシブ規則では `margin-left: 0`、`width: 100%` へ戻す。この契約は `__tests__/guide-content-widths.test.ts` で全24スタイルシートを検証する。
 - **グローバルメニューの運用（データ駆動）**: ナビゲーションは `app/constants.ts` の `EXAMS` を正本としている。新ページ追加時は `EXAMS` に `Exam` エントリを追加し（`status: 'coming-soon'` → ページ完成後 `'available'` または省略）、`app/navigation.ts` の `toNavTree` が自動でグルーピングするため **`components/Header.tsx` は直接編集しない**。
+- **移行元ファイルのアーカイブ**: 移行元は削除せず `archive/` 配下へ移動する。Cisco資料の正規保存先は `archive/Cisco/html/` と `archive/Cisco/md/` とし、`Gcl_Archive/Cisco` は作成・使用しない。
 - 新試験を追加する場合: ① `app/constants.ts` の `EXAMS` にエントリ追加 ② `app/globals.css` に `icon-theme-<id>` ユーティリティ追加 ③ 試験ページ作成 — この 3 ファイルのみ変更すれば Header に自動反映される。
 - ページ固有の共通定数は `constants.ts` に集約する（`app/gcl/genai-leader/constants.ts` 参照）
 - **z-index レイヤリング**: グローバル UI のスタッキング順は `Header (sticky z-50)` → `DisclaimerBanner (sticky z-40, top: var(--header-h))` → ページ内 sticky/fixed (`z-index: 100` を使うページが多い、`top: var(--fixed-offset)`) → `Header ドロワー (z-[200])`。Header と Disclaimer は両方 sticky で flow 内、ドロワーは fixed inset-0 で全画面オーバーレイ。ページ側で 100 を超える z-index を新規に導入する場合は、ドロワーを覆い隠さないか必ず確認すること。

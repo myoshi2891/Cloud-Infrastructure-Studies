@@ -1,0 +1,261 @@
+.page {
+    background: var(--color-guide-background);
+    color: var(--color-devnet-associate-foreground);
+    font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', 'Yu Gothic', system-ui, -apple-system, sans-serif;
+    line-height: 1.85;
+    font-size: 16px;
+    min-height: 100vh;
+}
+
+.page .layout {
+    display: block;
+    position: relative;
+}
+
+/* サイドバーレイアウト契約準拠 */
+.page .sidebar {
+    position: fixed;
+    top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px));
+    left: 0;
+    bottom: 0;
+    width: 280px;
+    overflow-y: auto;
+    background: var(--color-devnet-associate-panel);
+    border-right: 1px solid var(--color-devnet-associate-border);
+    padding: 32px 22px 40px;
+    z-index: 40;
+}
+
+.page .sidebar .brand {
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    color: var(--color-guide-accent);
+    margin-bottom: 4px;
+    font-weight: 700;
+}
+
+.page .sidebar .brandSub {
+    font-size: 12px;
+    color: var(--color-devnet-associate-foreground-muted);
+    margin-bottom: 28px;
+}
+
+.page .sidebar h2 {
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    color: var(--color-devnet-associate-foreground-muted);
+    text-transform: uppercase;
+    margin: 0 0 14px 4px;
+    font-weight: 600;
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.page .sidebar a {
+    display: block;
+    padding: 9px 12px;
+    border-radius: 8px;
+    color: var(--color-devnet-associate-foreground-muted);
+    text-decoration: none;
+    font-size: 13.5px;
+    margin-bottom: 2px;
+    transition: background 0.15s, color 0.15s;
+    border-left: 2px solid transparent;
+}
+
+.page .sidebar a:hover {
+    color: var(--color-devnet-associate-foreground);
+    background: var(--color-devnet-associate-accent-soft);
+}
+
+.page .sidebar a.active {
+    color: var(--color-guide-accent);
+    background: var(--color-devnet-associate-accent-soft);
+    border-left: 2px solid var(--color-guide-accent);
+    font-weight: 600;
+}
+
+/* メインコンテンツ領域レイアウト契約準拠 */
+.page .main {
+    margin-left: 280px;
+    width: calc(100% - 280px);
+    max-width: none;
+    padding: 64px 72px 96px;
+}
+
+.page .section {
+    max-width: none;
+    margin-bottom: 72px;
+    scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 24px);
+}
+
+.page h1 {
+    font-size: 32px;
+    margin: 0 0 12px;
+    background: linear-gradient(90deg, var(--color-guide-hero-start) 0%, var(--color-guide-accent) 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+    font-weight: 700;
+}
+
+.page h2 {
+    font-size: 24px;
+    color: var(--color-devnet-associate-foreground);
+    border-bottom: 1px solid var(--color-devnet-associate-border);
+    padding-bottom: 10px;
+    margin: 0 0 20px;
+    font-weight: 700;
+}
+
+.page h2 .num {
+    color: var(--color-guide-accent);
+    margin-right: 8px;
+}
+
+.page h3 {
+    font-size: 18px;
+    color: var(--color-guide-accent);
+    margin: 32px 0 12px;
+    font-weight: 600;
+}
+
+.page p {
+    color: var(--color-devnet-associate-foreground);
+    margin: 0 0 16px;
+}
+
+.page .lead {
+    color: var(--color-devnet-associate-foreground-muted);
+    font-size: 15px;
+}
+
+.page a {
+    color: var(--color-guide-accent);
+}
+
+.page .badge {
+    display: inline-block;
+    padding: 3px 12px;
+    border-radius: 999px;
+    background: var(--color-devnet-associate-accent-soft);
+    border: 1px solid var(--color-devnet-associate-accent-border);
+    color: var(--color-guide-accent);
+    font-size: 12.5px;
+    margin: 0 6px 6px 0;
+}
+
+.page .callout {
+    background: var(--color-devnet-associate-accent-soft);
+    border-left: 3px solid var(--color-guide-accent);
+    padding: 18px 22px;
+    border-radius: 10px;
+    margin: 20px 0;
+    color: var(--color-devnet-associate-foreground);
+}
+
+.page .callout.warn {
+    background: var(--color-devnet-associate-warning-soft);
+    border-left: 3px solid var(--color-devnet-associate-warning);
+}
+
+.page .callout p:last-child {
+    margin-bottom: 0;
+}
+
+.page table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 18px 0 28px;
+    font-size: 14px;
+    background: var(--color-devnet-associate-panel-alt);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.page th,
+.page td {
+    border: 1px solid var(--color-devnet-associate-border);
+    padding: 11px 16px;
+    text-align: left;
+    vertical-align: top;
+}
+
+.page th {
+    background: var(--color-devnet-associate-accent-soft);
+    color: var(--color-guide-accent);
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.page tr:nth-child(even) td {
+    background: color-mix(in srgb, var(--color-guide-foreground) 2%, transparent);
+}
+
+.page code {
+    background: color-mix(in srgb, var(--color-guide-foreground) 7%, transparent);
+    padding: 2px 7px;
+    border-radius: 5px;
+    font-size: 0.88em;
+    font-family: SFMono-Regular, Consolas, Menlo, monospace;
+    color: var(--color-guide-code-foreground);
+}
+
+.page ul,
+.page ol {
+    padding-left: 22px;
+}
+
+.page li {
+    margin-bottom: 6px;
+}
+
+.page .mermaidWrap {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    background: transparent;
+    margin: 28px 0;
+}
+
+.page .tocIndex {
+    color: var(--color-devnet-associate-foreground-muted);
+    font-size: 13px;
+    margin-bottom: 8px;
+}
+
+.page .footer {
+    border-top: 1px solid var(--color-devnet-associate-border);
+    padding-top: 28px;
+    color: var(--color-devnet-associate-foreground-muted);
+    font-size: 13px;
+}
+
+.page .footer ul {
+    padding-left: 18px;
+}
+
+.page .footer li {
+    margin-bottom: 10px;
+    word-break: break-all;
+}
+
+.page .footer a {
+    color: var(--color-guide-accent);
+}
+
+@media (max-width: 900px) {
+    .page .sidebar {
+        display: none;
+        transform: translateX(-100%);
+    }
+    .page .main {
+        margin-left: 0;
+        width: 100%;
+        padding: 40px 24px;
+    }
+    .page th {
+        white-space: normal;
+    }
+}

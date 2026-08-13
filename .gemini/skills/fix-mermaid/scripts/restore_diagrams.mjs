@@ -16,7 +16,7 @@ import {
 
 /**
  * Extract Mermaid code blocks from Markdown content.
- * @param {string} md - The Markdown content to search.
+ * @param {string} md - The Markdown content to scan.
  * @return {string[]} The trimmed contents of each Mermaid code block.
  */
 export function extractMdMermaidBlocks(md) {
@@ -32,7 +32,7 @@ export function extractMdMermaidBlocks(md) {
 /**
  * Extracts search keywords from a damaged diagram source.
  * @param {string} brokenCode - The damaged diagram source.
- * @returns {string[]} Quoted strings longer than three characters, or alphabetic words containing at least five characters when no such strings are found.
+ * @return {string[]} Quoted strings longer than three characters, or alphabetic words containing at least five characters when no such strings are found.
  */
 function extractKeywords(brokenCode) {
     const keywords = [];
@@ -48,10 +48,10 @@ function extractKeywords(brokenCode) {
 }
 
 /**
- * Restores each diagram by selecting the Markdown block with the strongest keyword match.
- * @param {Record<string, string>} diagrams - The diagram identifiers and broken source code.
- * @param {string[]} mdBlocks - Candidate Markdown diagram blocks.
- * @return {{ diagrams: Record<string, string>, warnings: string[] }} The restored diagrams and warnings for diagrams without a match.
+ * Restores each diagram using the most closely matching Mermaid block.
+ * @param {Record<string, string>} diagrams - The diagram identifiers and their current code.
+ * @param {string[]} mdBlocks - Mermaid blocks extracted from the Markdown source.
+ * @returns {{ diagrams: Record<string, string>, warnings: string[] }} The restored diagrams and warnings for entries without a match.
  */
 export function restoreDiagrams(diagrams, mdBlocks) {
     const restored = {};
@@ -82,9 +82,9 @@ export function restoreDiagrams(diagrams, mdBlocks) {
 }
 
 /**
- * Finds the closing brace matching an object opening brace within the containing script element.
+ * Finds the closing brace matching an object opening brace, including objects within script elements.
  * @param {string} source - The source text containing the object.
- * @param {number} openingIndex - The index of the object's opening brace.
+ * @param {number} openingIndex - The index of the object's opening brace in the source.
  * @return {number} The index of the matching closing brace, or `-1` if none is found.
  */
 function findObjectEnd(source, openingIndex) {
@@ -116,10 +116,10 @@ function findObjectEnd(source, openingIndex) {
 
 /**
  * Decodes an escape sequence from the specified position.
- * @param {string} source - The source string containing the escape sequence.
- * @param {number} start - The index of the character following the escape character.
- * @return {{value: string, next: number}} The decoded value and the index immediately after the escape sequence.
- * @throws {Error} If a Unicode or hexadecimal escape is malformed or specifies an out-of-range code point.
+ * @param {string} source - The source text containing the escape sequence.
+ * @param {number} start - The index of the character following the escape marker.
+ * @returns {{value: string, next: number}} The decoded value and the index following the escape sequence.
+ * @throws {Error} If a Unicode or hexadecimal escape has invalid digits or an out-of-range code point.
  */
 function decodeEscape(source, start) {
     const char = source[start];
@@ -171,12 +171,12 @@ function decodeEscape(source, start) {
 }
 
 /**
- * Reads a quoted string and decodes its escape sequences.
+ * Parses a quoted string literal and decodes its escape sequences.
  * @param {string} source - The source text containing the string literal.
  * @param {number} start - The index of the opening quote.
- * @param {string} allowedQuotes - Quote characters permitted at the starting index.
+ * @param {string} allowedQuotes - The quote characters permitted to start and end the literal.
  * @returns {{value: string, end: number}} The decoded string and the index immediately after its closing quote.
- * @throws {Error} If the opening quote is not allowed, the string is unterminated, or it contains an invalid escape sequence.
+ * @throws {Error} If the literal has an invalid quote, escape sequence, or no closing quote.
  */
 function readString(source, start, allowedQuotes) {
     const quote = source[start];
@@ -199,10 +199,10 @@ function readString(source, start, allowedQuotes) {
 }
 
 /**
- * Parses a diagram definition object without evaluating its contents.
- * @param {string} objectSource - The source of the diagram definition object.
- * @return {Object<string, string>} The parsed diagram definitions.
- * @throws {Error} If the object contains invalid syntax, an unterminated comment, or an invalid string.
+ * Parses a diagram definition object with quoted keys and string values.
+ * @param {string} objectSource - The object source, including its surrounding braces.
+ * @return {Record<string, string>} The parsed diagram definitions.
+ * @throws {Error} If the object contains invalid syntax or an unterminated comment or string.
  */
 function parseTemplateLiteralObject(objectSource) {
     const diagrams = {};
@@ -249,10 +249,10 @@ function parseTemplateLiteralObject(objectSource) {
 }
 
 /**
- * Validates a diagram definition object and its string values.
- * @param {Object} diagrams - The diagram definitions to validate.
- * @returns {Object} The validated diagram definitions.
- * @throws {TypeError} If the value is null, an array, or contains a non-string value.
+ * Validates a DIAGRAMS value and returns it when all entries are strings.
+ * @param {*} diagrams - The value to validate.
+ * @return {Record<string, string>} The validated DIAGRAMS object.
+ * @throws {TypeError} If the value is not an object, is null, is an array, or contains a non-string value.
  */
 function validateDiagrams(diagrams) {
     if (
@@ -267,11 +267,10 @@ function validateDiagrams(diagrams) {
 }
 
 /**
- * Extracts and validates the `DIAGRAMS` object definition from HTML without evaluating it.
- * @param {string} html - The HTML containing the `DIAGRAMS` definition.
- * @returns {{diagrams: Object<string, string>, start: number, end: number}} The validated diagrams and the definition range, with `end` exclusive.
- * @throws {Error} If the definition is missing, malformed, or unterminated.
- * @throws {TypeError} If the definition is not an object with string values.
+ * Extracts and validates the `DIAGRAMS` object definition from HTML.
+ * @param {string} html - The HTML source containing the `DIAGRAMS` declaration.
+ * @returns {{diagrams: Record<string, string>, start: number, end: number}} The validated diagram definitions and the definition's source range, with `end` exclusive.
+ * @throws {Error} If the declaration is missing, is not a closed object literal, or contains invalid data.
  */
 export function extractDiagramsDefinition(html) {
     const declaration = findDiagramsDeclaration(html);
@@ -292,7 +291,7 @@ export function extractDiagramsDefinition(html) {
 }
 
 /**
- * Serializes diagram definitions as a two-space-indented JSON string.
+ * Serializes diagram definitions as indented JSON.
  * @param {Object} diagrams - The diagram definitions to serialize.
  * @return {string} The JSON representation of the diagram definitions.
  */
