@@ -91,7 +91,7 @@ import { JSDOM } from 'jsdom';
 
 const [, , htmlPath] = process.argv;
 if (!htmlPath) {
-    throw new Error('usage: node <script> <source.html>');
+    throw new Error('usage: bun <script> <source.html>');
 }
 const doc = new JSDOM(fs.readFileSync(htmlPath, 'utf8')).window.document;
 const texts = (sel) =>
@@ -127,7 +127,7 @@ console.log(
 );
 EOF
 mkdir -p docs/migration-inventory
-node "$inventory_script" <移行元HTMLのパス> > docs/migration-inventory/<page-slug>.json
+bun "$inventory_script" <移行元HTMLのパス> > docs/migration-inventory/<page-slug>.json
 ```
 
 Markdown ソースの場合は `marked`（導入済み）で HTML 化してから同じスクリプトに通す。
@@ -199,8 +199,17 @@ import Page from '@/app/<route>/page';
 
 // MermaidDiagram は名前付きエクスポート。default でモックすると必ず落ちる。
 vi.mock('@/components/MermaidDiagram', () => ({
-    MermaidDiagram: ({ chart, ariaLabel }: { chart: string; ariaLabel: string }) => (
-        <div data-testid="mermaid-diagram" data-chart={chart} aria-label={ariaLabel} />
+    MermaidDiagram: ({ chart, ariaLabel, preserveNaturalScale }: {
+        chart: string;
+        ariaLabel: string;
+        preserveNaturalScale?: boolean;
+    }) => (
+        <div
+            data-testid="mermaid-diagram"
+            data-chart={chart}
+            data-preserve-natural-scale={String(preserveNaturalScale)}
+            aria-label={ariaLabel}
+        />
     ),
 }));
 
@@ -210,7 +219,7 @@ const squash = (value: string): string => value.replace(/\s+/g, '');
 describe('<page-slug> — 移行元コンテンツの全量移行', () => {
     const renderPage = () => {
         const { container } = render(<Page />);
-        return { container, body: squash(container.textContent ?? '') };
+        return container;
     };
 
     it.each([
@@ -218,42 +227,47 @@ describe('<page-slug> — 移行元コンテンツの全量移行', () => {
         ['h2', inventory.h2],
         ['h3', inventory.h3],
         ['h4', inventory.h4],
-    ])('%s の全見出しが欠落なく存在する', (_level, headings) => {
-        const { body } = renderPage();
-        const missing = headings.filter((text) => !body.includes(squash(text)));
-        expect(missing).toEqual([]);
+    ])('%s の件数・順序・テキストが移行元と一致する', (selector, headings) => {
+        const container = renderPage();
+        const rendered = [...container.querySelectorAll(selector)].map((element) =>
+            squash(element.textContent ?? ''),
+        );
+        expect(rendered).toEqual(headings.map(squash));
     });
 
     it.each([
-        ['表ヘッダー', inventory.th],
-        ['表データセル', inventory.td],
-        ['リスト項目', inventory.listItems],
-    ])('%s が1件も欠落していない', (_label, items) => {
-        const { body } = renderPage();
-        const missing = items.filter((text) => !body.includes(squash(text)));
-        expect(missing).toEqual([]);
+        ['th', inventory.th],
+        ['td', inventory.td],
+        ['li', inventory.listItems],
+    ])('%s の件数・順序・テキストが移行元と一致する', (selector, items) => {
+        const container = renderPage();
+        const rendered = [...container.querySelectorAll(selector)].map((element) =>
+            squash(element.textContent ?? ''),
+        );
+        expect(rendered).toEqual(items.map(squash));
     });
 
     it('外部リンクの URL 集合が移行元と一致する', () => {
-        const { container } = renderPage();
-        const rendered = new Set(
+        const container = renderPage();
+        const rendered = [...new Set(
             [...container.querySelectorAll('a[href^="http"]')].map((a) => a.getAttribute('href')),
-        );
-        const missing = inventory.links.map((l) => l.href).filter((href) => !rendered.has(href));
-        expect(missing).toEqual([]);
+        )].sort();
+        const expected = [...new Set(inventory.links.map((link) => link.href))].sort();
+        expect(rendered).toEqual(expected);
     });
 
     it('図の件数が移行元と厳密に一致し、全図に ariaLabel がある', () => {
-        const { container } = renderPage();
+        const container = renderPage();
         const diagrams = [...container.querySelectorAll('[data-testid="mermaid-diagram"]')];
         expect(diagrams).toHaveLength(inventory.counts.diagram);
         diagrams.forEach((el) => {
             expect(el.getAttribute('aria-label')).toBeTruthy();
+            expect(el.getAttribute('data-preserve-natural-scale')).toBe('true');
         });
     });
 
     it('テーブルが件数どおり存在し、thead と th[scope=col] を持つ', () => {
-        const { container } = renderPage();
+        const container = renderPage();
         const tables = [...container.querySelectorAll('table')];
         expect(tables).toHaveLength(inventory.counts.table);
         tables.forEach((table) => {
@@ -263,9 +277,9 @@ describe('<page-slug> — 移行元コンテンツの全量移行', () => {
     });
 
     it('コードブロックが .code-line でラップされている', () => {
-        const { container } = renderPage();
+        const container = renderPage();
         const blocks = [...container.querySelectorAll('.code-block')];
-        expect(blocks.length).toBeGreaterThan(0);
+        expect(blocks).toHaveLength(inventory.counts.codeBlock);
         blocks.forEach((block) => {
             expect(block.querySelectorAll('.code-line').length).toBeGreaterThan(0);
         });

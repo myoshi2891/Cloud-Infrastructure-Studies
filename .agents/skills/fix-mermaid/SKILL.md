@@ -399,8 +399,17 @@ const Diagram = memo(function Diagram({ id, label }: { id: DiagramId; label: str
 ```tsx
 // ✅ 正しい — components/MermaidDiagram.tsx は `export const MermaidDiagram`
 vi.mock('@/components/MermaidDiagram', () => ({
-    MermaidDiagram: ({ chart, ariaLabel }: { chart: string; ariaLabel: string }) => (
-        <div data-testid="mermaid-diagram" data-chart={chart} aria-label={ariaLabel} />
+    MermaidDiagram: ({ chart, ariaLabel, preserveNaturalScale }: {
+        chart: string;
+        ariaLabel: string;
+        preserveNaturalScale?: boolean;
+    }) => (
+        <div
+            data-testid="mermaid-diagram"
+            data-chart={chart}
+            data-preserve-natural-scale={String(preserveNaturalScale)}
+            aria-label={ariaLabel}
+        />
     ),
 }));
 ```
@@ -414,8 +423,8 @@ vi.mock('@/components/MermaidDiagram', () => ({
 }));
 ```
 
-`ariaLabel` を `aria-label` としてダミーに透過させておくことで、
-**「全図に非空の `ariaLabel` があること」を移行テストで機械検証できる**
+`ariaLabel` と `preserveNaturalScale` をテスト用属性としてダミーに透過させておくことで、
+**「全図に非空の `ariaLabel` があり、自然スケールが有効であること」を移行テストで機械検証できる**
 （`.agents/rules/tdd-commit-workflow.md` §3 の正準テストテンプレート参照）。
 
 モックのファイル名・`data-testid` はテンプレートと揃えて **`mermaid-diagram`** に統一すること。

@@ -231,9 +231,40 @@ HTML 末尾 `<script>` の `DIAGRAMS` オブジェクト + `mermaid.render(...)`
 `docs/migration-inventory/<page-slug>.json` を生成し、コミットする。
 
 ```bash
+inventory_script=$(mktemp -t inventory.XXXXXX.mjs) || exit 1
+trap 'rm -f "$inventory_script"' EXIT
+cat > "$inventory_script" <<'EOF'
+import fs from 'node:fs';
+import { JSDOM } from 'jsdom';
+
+const [, , htmlPath] = process.argv;
+if (!htmlPath) {
+    throw new Error('usage: bun <script> <source.html>');
+}
+const doc = new JSDOM(fs.readFileSync(htmlPath, 'utf8')).window.document;
+const texts = (selector) =>
+    [...doc.querySelectorAll(selector)]
+        .map((element) => (element.textContent ?? '').replace(/\s+/g, ' ').trim())
+        .filter(Boolean);
+
+console.log(JSON.stringify({
+    source: htmlPath,
+    h1: texts('h1'), h2: texts('h2'), h3: texts('h3'), h4: texts('h4'),
+    th: texts('th'), td: texts('td'), listItems: texts('li'),
+    links: [...doc.querySelectorAll('a[href^="http"]')].map((anchor) => ({
+        text: (anchor.textContent ?? '').replace(/\s+/g, ' ').trim(),
+        href: anchor.getAttribute('href'),
+    })),
+    counts: {
+        table: doc.querySelectorAll('table').length,
+        diagram: doc.querySelectorAll('.mermaid, [id^="diag-"]').length,
+        codeBlock: doc.querySelectorAll('pre, .code-block').length,
+        figure: doc.querySelectorAll('img, svg').length,
+    },
+}, null, 2));
+EOF
 mkdir -p docs/migration-inventory
-# 抽出スクリプトは tdd-commit-workflow.md §1-1 の heredoc をそのまま使う
-node "$inventory_script" <移行元HTMLのパス> > docs/migration-inventory/<page-slug>.json
+bun "$inventory_script" <移行元HTMLのパス> > docs/migration-inventory/<page-slug>.json
 ```
 
 生成された JSON を開き、以下を**声に出して確認する**（この確認を飛ばさない）:
@@ -446,8 +477,17 @@ bun run dashboard     # docs/coverage-dashboard.html 再生成
 ```tsx
 // ✅ 正しい: components/MermaidDiagram.tsx は export const MermaidDiagram
 vi.mock('@/components/MermaidDiagram', () => ({
-    MermaidDiagram: ({ chart, ariaLabel }: { chart: string; ariaLabel: string }) => (
-        <div data-testid="mermaid-diagram" data-chart={chart} aria-label={ariaLabel} />
+    MermaidDiagram: ({ chart, ariaLabel, preserveNaturalScale }: {
+        chart: string;
+        ariaLabel: string;
+        preserveNaturalScale?: boolean;
+    }) => (
+        <div
+            data-testid="mermaid-diagram"
+            data-chart={chart}
+            data-preserve-natural-scale={String(preserveNaturalScale)}
+            aria-label={ariaLabel}
+        />
     ),
 }));
 
