@@ -118,6 +118,7 @@ describe('CompTIA Network+ Guide — 移行元コンテンツの全量移行', (
             const isDecorative = element.getAttribute('data-decorative') === 'true'
                 || element.getAttribute('aria-hidden') === 'true';
             expect(hasLabel || isDecorative).toBe(true);
+            expect(element.getAttribute('data-preserve-natural-scale')).toBe('true');
         });
     });
 
