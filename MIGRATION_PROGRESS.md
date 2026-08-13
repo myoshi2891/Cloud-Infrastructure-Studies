@@ -7,8 +7,34 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 ## 現在地
 
 - **ブランチ:** dev
-- **進行中タスク:** CompTIA Network+ 完全ガイド Next.js App Router への移行完了
-- **最終更新日時(UTC):** 2026-08-13T14:47:00Z
+- **進行中タスク:** Google Cloud PCNE Section 1: VPCネットワーク設計ガイド 100%全量移行完了
+- **最終更新日時(UTC):** 2026-08-14T00:10:00Z
+
+## 2026-08-14: Google Cloud「PCNE Section 1: VPCネットワーク設計 完全ガイド」100%全量移行・デザイン完全復元 (完了)
+
+### 目的
+
+`Pcne-section1-vpc-design.html` および `Pcne-section1-vpc-design.md` を、Next.js App Router 5ファイル構成 (`page.tsx`, `PcneSection1VpcDesignGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/gcl/professional-cloud-network-engineer/section1-vpc-design` ルートへ移行。全10セクションの見出し(h1:1, h2:10, h3:36, h4:5)、全30個のテーブル、31個のMermaid図解、133個の外部リンクを一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for pcne-section1-vpc-design` (`3fa0a19`)
+- [x] **Step 1 (Red)**: `test(gcl): add failing tests for pcne section 1 vpc design guide` (`d1ee0fe`)
+- [x] **Step 2 (Green)**: `feat(gcl): implement pcne section 1 vpc design guide page to pass tests` (`e8f3929`)
+- [x] **Step 3 (Refactor / Integration & Nav & Docs)**: `refactor(gcl): integrate pcne section 1 vpc design guide into routing and update docs` (`58039f1`)
+- [x] **Step 4 (Archive & Sync)**: 元HTML/MDを `archive/Gcl_Archive/Professional-Cloud-Network-Engineer/` へ移動し `MIGRATION_PROGRESS.md` を同期
+
+### 関連ファイル
+
+- [app/gcl/professional-cloud-network-engineer/section1-vpc-design/page.tsx](app/gcl/professional-cloud-network-engineer/section1-vpc-design/page.tsx)
+- [app/gcl/professional-cloud-network-engineer/section1-vpc-design/PcneSection1VpcDesignGuide.tsx](app/gcl/professional-cloud-network-engineer/section1-vpc-design/PcneSection1VpcDesignGuide.tsx)
+- [app/gcl/professional-cloud-network-engineer/section1-vpc-design/NavBar.tsx](app/gcl/professional-cloud-network-engineer/section1-vpc-design/NavBar.tsx)
+- [app/gcl/professional-cloud-network-engineer/section1-vpc-design/constants.ts](app/gcl/professional-cloud-network-engineer/section1-vpc-design/constants.ts)
+- [app/gcl/professional-cloud-network-engineer/section1-vpc-design/page.css](app/gcl/professional-cloud-network-engineer/section1-vpc-design/page.css)
+- [__tests__/gcl/pcne-section1-vpc-design.test.tsx](__tests__/gcl/pcne-section1-vpc-design.test.tsx)
+- [docs/migration-inventory/pcne-section1-vpc-design.json](docs/migration-inventory/pcne-section1-vpc-design.json)
+- [archive/Gcl_Archive/Professional-Cloud-Network-Engineer/Pcne-section1-vpc-design.html](archive/Gcl_Archive/Professional-Cloud-Network-Engineer/Pcne-section1-vpc-design.html)
+- [archive/Gcl_Archive/Professional-Cloud-Network-Engineer/Pcne-section1-vpc-design.md](archive/Gcl_Archive/Professional-Cloud-Network-Engineer/Pcne-section1-vpc-design.md)
 
 ## 2026-08-13: CompTIA「CompTIA Network+ (N10-009 / V9) 完全ガイド」100%全量移行・デザイン完全復元 (完了)
 
