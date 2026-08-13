@@ -15,6 +15,55 @@ const Diagram = memo(function Diagram({ id, label }: { id: DiagramId; label: str
   );
 });
 
+
+const CHECKLIST_ITEMS = [
+  "VPCはCustom modeで作成し、リージョン・CIDRを明示的に設計した",
+  "Private Services Access用の予約範囲に将来の拡張余地を確保した",
+  "Cloud Buildの私有プールをVPC Service Controlsパリメータ内に構成した(該当する場合)",
+  "VPC Peeringの相手が3つ以上になる場合、NCCへの移行を検討した",
+  "カスタムルート交換時に広範な未タグルート(0/1等)が誤ってインポートされないか確認した",
+  "Shared VPCのNetwork Userをプロジェクト単位ではなくサブネット単位で最小権限付与した",
+  "ホストプロジェクトの課金アカウント解除リスクを運用手順に明記した",
+  "限定公開Googleアクセスをサブネット単位で漏れなく設定した",
+  "サブネット拡張(縮小不可)を前提にIPAM設計でスーパーネットを予約した",
+  "VPC Service Controlsをdry runモードで検証してからenforcedへ切り替えた",
+  "VPC accessible servicesで許可リストを明示し、意図しない広範アクセスを防いだ",
+  "動的ルートと静的ルートが競合する場合の優先度(priority)を明示的に設計した",
+  "マルチリージョン構成では動的ルーティングモードをグローバルに設定した(IPv6は依然リージョナルスコープである点に注意)",
+  "ポリシーベースルート(PBR)とBGP route policiesの役割の違いを整理し、適切な方を選定した",
+  "BGP route policiesがfail open既定であることを踏まえ、必要な場合は明示的なdropポリシーを追加した",
+  "内部LBネクストホップ構成でIP転送(can-ip-forward)を有効化した",
+  "トランジットVPC経由のカスタムルート交換で、戻り経路(オンプレ→ワークロードVPC)の広告も設計した",
+  "NCCの制御プレーン(スポークステータス・ルート伝播)とデータプレーン(疎通)を切り分けて監視する体制を整えた",
+  "BGPセッションフラップとスポークステータス変化にCloud Monitoringアラートを設定した",
+  "GKE Pod用セカンダリレンジは将来の最大ノード数から逆算した余裕あるサイズにした",
+  "Shared VPC環境でのGKEクラスタ用IAMロール(Network User + Kubernetes Engine Admin等)を確認した",
+  "プライベートクラスタのコントロールプレーンアクセスはDNSベースエンドポイント(IAM)を優先検討した",
+  "GKE Dataplane V2使用時、ip-masq-agentの--nomasq-all-reserved-ranges設定を確認した",
+  "Pod IP枯渇時はdiscontiguous multi-Pod CIDRでの追加レンジ付与を第一選択とする方針を確認した",
+  "高頻度DNSクエリが想定されるクラスタでNodeLocal DNSCacheの要否を検討した"
+];
+
+function ChecklistSection() {
+  const [checkedState, setCheckedState] = useState<boolean[]>(
+    new Array(CHECKLIST_ITEMS.length).fill(false)
+  );
+
+  const toggleCheck = (index: number) => {
+    setCheckedState((prev) => {
+      const next = [...prev];
+      next[index] = !next[index];
+      return next;
+    });
+  };
+
+  const checkedCount = checkedState.filter(Boolean).length;
+
+  return (
+    <ChecklistSection />
+  );
+}
+
 export default function PcneSection2VpcImplementationGuide() {
   const [showScrollTop, setShowScrollTop] = useState(false);
 
