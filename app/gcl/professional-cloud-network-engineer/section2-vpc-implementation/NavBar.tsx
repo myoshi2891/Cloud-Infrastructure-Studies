@@ -31,23 +31,24 @@ export default function NavBar() {
 
   return (
     <aside className="sidebar" aria-label="サイドバー目次">
-      <div className="brand">Google Cloud PCNE</div>
-      <div className="brand-title">S2: VPCネットワークの実装</div>
+      <div className="brand">GOOGLE CLOUD PCNE 学習ガイド</div>
+      <div className="brand-title">S2:VPCネットワークの実装</div>
       <nav>
         <ul className="nav-list">
           {NAV_ITEMS.map((item) => {
+            const hasSub = item.subItems && item.subItems.length > 0;
             const isActive = activeId === item.id;
             return (
-              <li key={item.id} className="nav-item">
+              <li key={item.id} className={`nav-item ${hasSub ? 'nav-h2' : ''}`}>
                 <a
                   href={`#${item.id}`}
                   className={`nav-link ${isActive ? 'active' : ''}`}
                 >
                   {item.label}
                 </a>
-                {item.subItems && item.subItems.length > 0 && (
+                {hasSub && (
                   <ul className="nav-sub">
-                    {item.subItems.map((sub) => {
+                    {item.subItems!.map((sub) => {
                       const isSubActive = activeId === sub.id;
                       return (
                         <li key={sub.id}>
