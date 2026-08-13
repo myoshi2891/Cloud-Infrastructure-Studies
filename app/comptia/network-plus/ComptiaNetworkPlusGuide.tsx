@@ -210,6 +210,7 @@ export default function ComptiaNetworkPlusGuide() {
                                 <MermaidDiagram
                                     chart={DIAGRAMS['dg-pie']}
                                     ariaLabel="ドメイン配点比率の円グラフ"
+                                    preserveNaturalScale={true}
                                 />
                             </div>
                         </div>
@@ -378,6 +379,7 @@ export default function ComptiaNetworkPlusGuide() {
                                     <MermaidDiagram
                                         chart={DIAGRAMS['dg-troubleshoot']}
                                         ariaLabel="トラブルシューティング6ステップのフロー図"
+                                        preserveNaturalScale={true}
                                     />
                                 </div>
                             </div>
@@ -495,6 +497,7 @@ export default function ComptiaNetworkPlusGuide() {
                                 <MermaidDiagram
                                     chart={DIAGRAMS['dg-roadmap']}
                                     ariaLabel="学習ロードマップのフェーズ図"
+                                    preserveNaturalScale={true}
                                 />
                             </div>
                         </div>
@@ -585,6 +588,7 @@ export default function ComptiaNetworkPlusGuide() {
                                 <MermaidDiagram
                                     chart={DIAGRAMS['dg-examday']}
                                     ariaLabel="試験当日の時間配分とPBQ攻略の戦略図"
+                                    preserveNaturalScale={true}
                                 />
                             </div>
                         </div>
