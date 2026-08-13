@@ -3,38 +3,51 @@
 import React, { useEffect, useState } from 'react';
 
 export function NavBar() {
-    const [activeId, setActiveId] = useState('');
+    const [activeId, setActiveId] = useState('この章について');
 
     useEffect(() => {
         if (typeof window === 'undefined') return;
 
         const updateActiveId = () => {
-            const headingElements = Array.from(document.querySelectorAll('h2[id], h3[id]'));
+            const headingElements = Array.from(
+                document.querySelectorAll('h2[id], h3[id]')
+            ) as HTMLElement[];
+
             if (headingElements.length === 0) return;
 
-            const scrollPosition = window.scrollY + 140;
+            // ビューポート上部からの判定閾値（Header + Disclaimer オフセットの直下付近）
+            const triggerTop = 180;
 
             let currentId = headingElements[0]?.id ?? '';
 
             for (const el of headingElements) {
-                const htmlEl = el as HTMLElement;
-                if (htmlEl.offsetTop <= scrollPosition) {
-                    currentId = htmlEl.id;
+                const rect = el.getBoundingClientRect();
+                if (rect.top <= triggerTop) {
+                    currentId = el.id;
                 } else {
                     break;
                 }
             }
 
-            if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 50) {
+            // ページ最下部付近にスクロールしている場合は、最後の見出し（例: 参考文献・出典）を強制的にアクティブに
+            const isBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 100;
+            if (isBottom) {
                 currentId = headingElements[headingElements.length - 1]?.id ?? currentId;
             }
 
-            setActiveId(currentId);
+            if (currentId) {
+                setActiveId(currentId);
+            }
         };
 
+        // 初回実行
         updateActiveId();
-        window.addEventListener('scroll', updateActiveId, { passive: true });
 
+        // scroll と resize イベントで更新
+        window.addEventListener('scroll', updateActiveId, { passive: true });
+        window.addEventListener('resize', updateActiveId, { passive: true });
+
+        // IntersectionObserver による高精度バックアップ
         let observer: IntersectionObserver | null = null;
         if (typeof IntersectionObserver !== 'undefined') {
             observer = new IntersectionObserver(
@@ -45,7 +58,7 @@ export function NavBar() {
                         }
                     });
                 },
-                { rootMargin: '-15% 0px -70% 0px' }
+                { rootMargin: '-10% 0px -70% 0px' }
             );
 
             const headings = document.querySelectorAll('h2[id], h3[id]');
@@ -54,6 +67,7 @@ export function NavBar() {
 
         return () => {
             window.removeEventListener('scroll', updateActiveId);
+            window.removeEventListener('resize', updateActiveId);
             observer?.disconnect();
         };
     }, []);
@@ -80,19 +94,22 @@ export function NavBar() {
             {' '}
             <nav>
                 <ul>
-                    {links.map((link) => (
-                        <React.Fragment key={link.href}>
-                            <li>
-                                <a
-                                    href={link.href}
-                                    className={activeId === link.target ? 'active' : ''}
-                                >
-                                    {link.text}
-                                </a>
-                            </li>
-                            {' '}
-                        </React.Fragment>
-                    ))}
+                    {links.map((link) => {
+                        const isSelected = activeId === link.target;
+                        return (
+                            <React.Fragment key={link.href}>
+                                <li>
+                                    <a
+                                        href={link.href}
+                                        className={isSelected ? 'active' : ''}
+                                    >
+                                        {link.text}
+                                    </a>
+                                </li>
+                                {' '}
+                            </React.Fragment>
+                        );
+                    })}
                 </ul>
             </nav>
         </aside>

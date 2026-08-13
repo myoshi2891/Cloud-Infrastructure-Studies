@@ -149,14 +149,16 @@
                     border-color 0.15s ease;
             }
             .sidebar nav a:hover {
-                background: rgba(124, 158, 255, 0.08);
-                color: var(--text);
+                background: rgba(124, 158, 255, 0.12);
+                color: var(--text, #eef4ff);
             }
             .sidebar nav a.active {
-                background: rgba(124, 158, 255, 0.14);
-                color: var(--accent-soft);
-                border-left-color: var(--accent);
-                font-weight: 600;
+                background: #1d3356 !important;
+                background: linear-gradient(90deg, rgba(124, 158, 255, 0.28), rgba(124, 158, 255, 0.16)) !important;
+                color: #ffffff !important;
+                border-left: 3px solid var(--accent, #7c9eff) !important;
+                font-weight: 600 !important;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
             }
 
             .sidebar-toggle {

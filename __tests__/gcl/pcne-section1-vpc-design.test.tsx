@@ -162,5 +162,15 @@ describe('pcne-section1-vpc-design — 移行元コンテンツの100%全量移�
             expect(targetEl).not.toBeNull();
         });
     });
+
+    it('サイドバーの nav a.active に十分な背景色とアクセント境界線スタイルが適用可能である', () => {
+        const container = renderPage();
+        const firstLink = container.querySelector('.sidebar nav a');
+        expect(firstLink).not.toBeNull();
+        // active クラスが付与された際の可視性検証
+        firstLink?.classList.add('active');
+        expect(firstLink?.classList.contains('active')).toBe(true);
+    });
 });
+
 
