@@ -1,0 +1,1846 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Get Started with Pub/Sub: Challenge Lab 完全攻略ガイド</title>
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"
+        />
+        <style>
+            :root {
+                --bg-primary: #07111e;
+                --bg-secondary: #0d1b2e;
+                --color-background-primary: #07111e;
+                --color-background-secondary: #0d1b2e;
+                --color-background-tertiary: #13233a;
+                --color-background-info: #16283f;
+                --color-background-danger: #2a1418;
+                --color-background-success: #10241c;
+                --color-background-warning: #2a2214;
+                --color-text-primary: #e8edf5;
+                --color-text-secondary: #a8b6cc;
+                --color-text-tertiary: #6f7f99;
+                --color-text-info: #7c9eff;
+                --color-text-danger: #ff8a8a;
+                --color-text-success: #6fd3a5;
+                --color-text-warning: #e8c26a;
+                --color-border-primary: #22314a;
+                --color-border-secondary: #1a273b;
+                --color-border-tertiary: #16223a;
+                --font-sans:
+                    -apple-system, BlinkMacSystemFont, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans',
+                    'Noto Sans JP', 'Segoe UI', sans-serif;
+                --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+                --border-radius-md: 8px;
+                --border-radius-lg: 12px;
+                --border-radius-xl: 16px;
+                --accent: #7c9eff;
+            }
+            * {
+                box-sizing: border-box;
+            }
+            html {
+                scroll-behavior: smooth;
+            }
+            body {
+                margin: 0;
+                background: var(--color-background-primary);
+                color: var(--color-text-primary);
+                font-family: var(--font-sans);
+                font-size: 16px;
+                line-height: 1.75;
+                font-weight: 400;
+            }
+            .layout {
+                display: block;
+            }
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                width: 288px;
+                background: var(--color-background-secondary);
+                border-right: 1px solid var(--color-border-primary);
+                overflow-y: auto;
+                padding: 32px 22px;
+                z-index: 10;
+            }
+            .sidebar-title {
+                font-size: 16px;
+                font-weight: 500;
+                color: var(--color-text-primary);
+                margin: 0 0 4px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+            .sidebar-sub {
+                font-size: 16px;
+                color: var(--color-text-tertiary);
+                margin: 0 0 28px;
+                line-height: 1.5;
+            }
+            .sidebar-nav {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+            }
+            .sidebar-nav a {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 8px 10px;
+                border-radius: var(--border-radius-md);
+                color: var(--color-text-secondary);
+                text-decoration: none;
+                font-size: 16px;
+                border-left: 2px solid transparent;
+            }
+            .sidebar-nav a i {
+                font-size: 16px;
+                color: var(--color-text-tertiary);
+                width: 18px;
+                text-align: center;
+            }
+            .sidebar-nav a:hover {
+                background: var(--color-background-tertiary);
+                color: var(--color-text-primary);
+            }
+            .sidebar-nav a.active {
+                color: var(--accent);
+                background: var(--color-background-tertiary);
+                border-left: 2px solid var(--accent);
+            }
+            .sidebar-nav a.active i {
+                color: var(--accent);
+            }
+            main {
+                margin-left: 288px;
+                padding: 56px 64px 96px;
+            }
+            .hero {
+                border-bottom: 1px solid var(--color-border-primary);
+                padding-bottom: 32px;
+                margin-bottom: 8px;
+            }
+            .hero-eyebrow {
+                font-size: 16px;
+                color: var(--color-text-info);
+                margin: 0 0 10px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+            .hero h1 {
+                font-size: 22px;
+                font-weight: 500;
+                margin: 0 0 14px;
+                line-height: 1.45;
+            }
+            .hero p {
+                color: var(--color-text-secondary);
+                max-width: 800px;
+                margin: 0 0 8px;
+            }
+            section {
+                padding-top: 28px;
+                margin-top: 28px;
+                border-top: 1px solid var(--color-border-tertiary);
+                scroll-margin-top: 24px;
+            }
+            section:first-of-type {
+                border-top: none;
+            }
+            h2 {
+                font-size: 18px;
+                font-weight: 500;
+                margin: 0 0 18px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+            h2 i {
+                color: var(--accent);
+                font-size: 18px;
+            }
+            h3 {
+                font-size: 16px;
+                font-weight: 500;
+                margin: 28px 0 12px;
+                color: var(--color-text-primary);
+            }
+            h3:first-child {
+                margin-top: 0;
+            }
+            p {
+                color: var(--color-text-secondary);
+                margin: 0 0 14px;
+            }
+            a {
+                color: var(--accent);
+            }
+            strong {
+                color: var(--color-text-primary);
+                font-weight: 500;
+            }
+            .callout {
+                border: 1px solid var(--color-border-primary);
+                background: var(--color-background-secondary);
+                border-radius: var(--border-radius-lg);
+                padding: 18px 22px;
+                margin: 18px 0;
+                display: flex;
+                gap: 14px;
+            }
+            .callout i {
+                font-size: 18px;
+                color: var(--color-text-info);
+                margin-top: 2px;
+            }
+            .callout.warning i {
+                color: var(--color-text-warning);
+            }
+            .callout p:last-child {
+                margin-bottom: 0;
+            }
+            table.data-table {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 16px 0 24px;
+                font-size: 16px;
+            }
+            table.data-table th,
+            table.data-table td {
+                text-align: left;
+                padding: 11px 14px;
+                border-bottom: 1px solid var(--color-border-primary);
+                vertical-align: top;
+            }
+            table.data-table th {
+                color: var(--color-text-primary);
+                font-weight: 500;
+                background: var(--color-background-secondary);
+            }
+            table.data-table td {
+                color: var(--color-text-secondary);
+            }
+            pre {
+                background: var(--color-background-secondary);
+                border: 1px solid var(--color-border-primary);
+                border-radius: var(--border-radius-lg);
+                padding: 18px 22px;
+                overflow-x: auto;
+                margin: 16px 0 24px;
+            }
+            pre code.hljs {
+                font-family: var(--font-mono);
+                font-size: 16px;
+                color: var(--color-text-primary);
+                background: none !important;
+                padding: 0;
+            }
+            code {
+                font-family: var(--font-mono);
+                font-size: 16px;
+                background: var(--color-background-tertiary);
+                padding: 2px 6px;
+                border-radius: 4px;
+                color: var(--color-text-info);
+            }
+            pre code {
+                background: none;
+                padding: 0;
+                color: inherit;
+            }
+            .diagram-wrap {
+                border: 1px solid var(--color-border-primary);
+                background: var(--color-background-secondary);
+                border-radius: var(--border-radius-lg);
+                padding: 28px;
+                margin: 20px 0 28px;
+            }
+            .mermaid-target {
+                display: flex;
+                justify-content: center;
+            }
+            .diagram-caption {
+                font-size: 16px;
+                color: var(--color-text-tertiary);
+                margin-top: 16px;
+                margin-bottom: 0;
+                text-align: center;
+            }
+            .diagram-error {
+                color: var(--color-text-danger);
+                font-size: 16px;
+                text-align: center;
+            }
+            .checklist {
+                list-style: none;
+                margin: 0 0 8px;
+                padding: 0;
+            }
+            .checklist li {
+                display: flex;
+                gap: 12px;
+                align-items: flex-start;
+                padding: 10px 0;
+                border-bottom: 1px solid var(--color-border-tertiary);
+                color: var(--color-text-secondary);
+            }
+            .checklist li:last-child {
+                border-bottom: none;
+            }
+            .checklist i {
+                color: var(--color-text-success);
+                margin-top: 3px;
+                font-size: 16px;
+            }
+            .ref-list {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+            .ref-item {
+                display: flex;
+                gap: 16px;
+                align-items: flex-start;
+                border: 1px solid var(--color-border-primary);
+                background: var(--color-background-secondary);
+                border-radius: var(--border-radius-lg);
+                padding: 16px 20px;
+            }
+            .ref-num {
+                color: var(--color-text-tertiary);
+                font-family: var(--font-mono);
+                font-size: 16px;
+                min-width: 26px;
+            }
+            .ref-body {
+                flex: 1;
+                min-width: 0;
+            }
+            .ref-title {
+                font-weight: 500;
+                font-size: 16px;
+            }
+            .ref-title a {
+                color: var(--color-text-primary);
+                text-decoration: none;
+            }
+            .ref-title a:hover {
+                color: var(--accent);
+            }
+            .ref-url {
+                color: var(--color-text-tertiary);
+                font-size: 16px;
+                word-break: break-all;
+                margin-top: 2px;
+            }
+            .ref-item i {
+                color: var(--color-text-info);
+                margin-top: 2px;
+                font-size: 16px;
+            }
+            .source-line {
+                font-size: 16px;
+                color: var(--color-text-tertiary);
+                margin: -8px 0 24px;
+            }
+            .source-line a {
+                color: var(--color-text-tertiary);
+            }
+            .source-line a:hover {
+                color: var(--accent);
+            }
+            footer.page-footer {
+                margin-top: 64px;
+                padding-top: 28px;
+                border-top: 1px solid var(--color-border-primary);
+                color: var(--color-text-tertiary);
+                font-size: 16px;
+            }
+            footer.page-footer p {
+                color: var(--color-text-tertiary);
+            }
+            @media (max-width: 900px) {
+                .sidebar {
+                    position: static;
+                    width: auto;
+                    border-right: none;
+                    border-bottom: 1px solid var(--color-border-primary);
+                    padding: 24px 20px;
+                }
+                main {
+                    margin-left: 0;
+                    padding: 36px 20px 72px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="layout">
+            <aside class="sidebar">
+                <p class="sidebar-title"><i class="ti ti-cloud"></i>Pub/Sub Challenge Lab</p>
+                <p class="sidebar-sub">Get Started with Pub/Sub<br />攻略ガイド</p>
+                <ul class="sidebar-nav">
+                    <li>
+                        <a href="#overview"><i class="ti ti-list-details"></i>ガイドの使い方</a>
+                    </li>
+                    <li>
+                        <a href="#architecture"><i class="ti ti-sitemap"></i>全体像</a>
+                    </li>
+                    <li>
+                        <a href="#prep"><i class="ti ti-settings"></i>事前準備</a>
+                    </li>
+                    <li>
+                        <a href="#pattern-a"><i class="ti ti-clock"></i>パターンA: Scheduler</a>
+                    </li>
+                    <li>
+                        <a href="#pattern-b"><i class="ti ti-braces"></i>パターンB: Schema</a>
+                    </li>
+                    <li>
+                        <a href="#pattern-c"><i class="ti ti-camera"></i>パターンC: Snapshot</a>
+                    </li>
+                    <li>
+                        <a href="#pattern-d"><i class="ti ti-bolt"></i>パターンD: Pub/Sub Lite</a>
+                    </li>
+                    <li>
+                        <a href="#pattern-e"><i class="ti ti-webhook"></i>パターンE: Eventarc</a>
+                    </li>
+                    <li>
+                        <a href="#scoring"><i class="ti ti-checkbox"></i>採点の考え方</a>
+                    </li>
+                    <li>
+                        <a href="#troubleshooting"
+                            ><i class="ti ti-alert-triangle"></i>トラブルシューティング</a
+                        >
+                    </li>
+                    <li>
+                        <a href="#best-practices"
+                            ><i class="ti ti-checklist"></i>ベストプラクティス</a
+                        >
+                    </li>
+                    <li>
+                        <a href="#references"><i class="ti ti-link"></i>参考ソース</a>
+                    </li>
+                </ul>
+            </aside>
+
+            <main>
+                <div class="hero">
+                    <p class="hero-eyebrow">
+                        <i class="ti ti-shield-check"></i>インフラエンジニア / Google Cloud
+                        スペシャリスト監修
+                    </p>
+                    <h1>
+                        Google Cloud Skills Boost「Get Started with Pub/Sub: Challenge Lab」<br />完全攻略ガイド
+                    </h1>
+                    <p>
+                        対象ラボ: <code>Get Started with Pub/Sub: Challenge Lab</code>（Course
+                        template 728 / Lab
+                        625116）。初学者でも迷わないよう、出題されうる全パターンをステップバイステップで解説します。
+                    </p>
+                </div>
+
+                <section id="overview">
+                    <h2><i class="ti ti-list-details"></i>0. このガイドの使い方（重要）</h2>
+                    <p>
+                        このラボは
+                        <strong>チャレンジラボ</strong>
+                        形式です。ラボ開始時に採点システムが<strong>タスクプールの中からランダムに1〜3個のタスクを選んで出題</strong>します。そのため、実際に表示されるTask
+                        1〜3の内容は人によって異なります。
+                    </p>
+                    <p>ラボ概要文には次の内容が含まれる可能性があると明記されています。</p>
+                    <ul class="checklist">
+                        <li>
+                            <i class="ti ti-circle-check"></i>Cloud Scheduler で cron
+                            ジョブを作成し、Pub/Sub トピックにメッセージをPublishする
+                        </li>
+                        <li>
+                            <i class="ti ti-circle-check"></i>Pub/Sub の
+                            Schema（スキーマ）を作成する
+                        </li>
+                        <li>
+                            <i class="ti ti-circle-check"></i>Pub/Sub の
+                            Snapshot（スナップショット）を作成する
+                        </li>
+                        <li><i class="ti ti-circle-check"></i>Pub/Sub Lite をセットアップする</li>
+                    </ul>
+                    <p>
+                        本ガイドは、本ラボの公開されている解答例と Google Cloud
+                        公式ドキュメントを突き合わせて、<strong>出題されうる全パターンを網羅的に</strong>解説します。実際に表示されたタスク文言と照らし合わせ、該当するセクションを読み進めてください。
+                    </p>
+
+                    <div class="diagram-wrap">
+                        <div class="mermaid-target" id="diagram-pool"></div>
+                        <p class="diagram-caption">図1: タスク出題の全体像</p>
+                    </div>
+
+                    <div class="callout warning">
+                        <i class="ti ti-alert-triangle"></i>
+                        <div>
+                            <p>
+                                ラボページ本体（skills.google/course_templates/728/labs/625116）はサインイン必須のため、本ガイドはラボ概要文と公式ドキュメント、公開解答例の記述内容を突き合わせて構成しています。実際に表示されたタスクの文言・リソース名は必ず優先してください。
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="architecture">
+                    <h2><i class="ti ti-sitemap"></i>1. Pub/Sub と関連サービスの全体像</h2>
+
+                    <h3>1.1 用語整理</h3>
+                    <table class="data-table">
+                        <tr>
+                            <th>用語</th>
+                            <th>説明</th>
+                        </tr>
+                        <tr>
+                            <td>Topic（トピック）</td>
+                            <td>
+                                メッセージの送り先となる名前付きリソース。Publisher
+                                はTopicにメッセージを送る
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Subscription（サブスクリプション）</td>
+                            <td>
+                                Topicに送られたメッセージを受け取るための窓口。Pull型・Push型がある
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Publisher</td>
+                            <td>メッセージを発行する側（アプリ、gcloud、Cloud Scheduler など）</td>
+                        </tr>
+                        <tr>
+                            <td>Subscriber</td>
+                            <td>メッセージを受信して処理する側</td>
+                        </tr>
+                        <tr>
+                            <td>Schema（スキーマ）</td>
+                            <td>
+                                メッセージ本文（dataフィールド）の形式を強制する契約。Avro または
+                                Protocol Buffer 形式で定義する
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Snapshot（スナップショット）</td>
+                            <td>
+                                あるSubscriptionのack（確認応答）状態をある時点で保存したもの。Seekと組み合わせてメッセージを再生できる
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Seek</td>
+                            <td>
+                                Subscriptionのack状態を過去のタイムスタンプやSnapshotの状態に巻き戻す操作
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Cloud Scheduler</td>
+                            <td>
+                                cron形式でジョブを定期実行するフルマネージドサービス。ターゲットとしてPub/SubトピックへのPublishを指定できる
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Pub/Sub Lite</td>
+                            <td>
+                                パーティション方式の低コスト版Pub/Sub。スループットを事前にプロビジョニングする必要がある
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Eventarc</td>
+                            <td>
+                                Pub/Subメッセージなどのイベントをトリガーに Cloud Run
+                                function（旧Cloud Functions）を起動する仕組み
+                            </td>
+                        </tr>
+                    </table>
+
+                    <h3>1.2 コアアーキテクチャ</h3>
+                    <div class="diagram-wrap">
+                        <div class="mermaid-target" id="diagram-arch"></div>
+                        <p class="diagram-caption">図2: Pub/Sub のコアアーキテクチャ</p>
+                    </div>
+
+                    <h3>1.3 Pub/Sub と Pub/Sub Lite の違い</h3>
+                    <table class="data-table">
+                        <tr>
+                            <th>観点</th>
+                            <th>Pub/Sub</th>
+                            <th>Pub/Sub Lite</th>
+                        </tr>
+                        <tr>
+                            <td>スケーリング</td>
+                            <td>自動（容量を意識しなくてよい）</td>
+                            <td>
+                                手動プロビジョニング（パーティション数・Reservationのスループットを事前設定）
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>リソースのスコープ</td>
+                            <td>グローバル/リージョナル</td>
+                            <td>ゾーンまたはリージョン単位</td>
+                        </tr>
+                        <tr>
+                            <td>配信方式</td>
+                            <td>Pull / Push / StreamingPull / REST</td>
+                            <td>gRPC StreamingPullのみ</td>
+                        </tr>
+                        <tr>
+                            <td>コスト特性</td>
+                            <td>従量課金（運用は楽だが単価は高め）</td>
+                            <td>
+                                事前確保した容量に対する課金（大量データを安定して流す場合に安価）
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>典型用途</td>
+                            <td>一般的な非同期メッセージング全般</td>
+                            <td>高スループットなログ/イベント基盤で、コスト最適化を重視する場合</td>
+                        </tr>
+                    </table>
+                    <p class="source-line">
+                        <i class="ti ti-external-link"></i> 出典:
+                        <a
+                            href="https://cloud.google.com/pubsub/docs/choosing-pubsub-or-lite"
+                            target="_blank"
+                            rel="noopener"
+                            >Choose Pub/Sub or Pub/Sub Lite</a
+                        >
+                    </p>
+                </section>
+
+                <section id="prep">
+                    <h2><i class="ti ti-settings"></i>2. 事前準備（共通）</h2>
+                    <p>
+                        チャレンジラボでは、ラボ開始時に発行される一時プロジェクトを使います。Cloud
+                        Shell を開き、以下を実行してください。
+                    </p>
+                    <pre><code class="language-bash"># プロジェクトIDとリージョンを変数化しておく(タスク画面で指定されたリージョンに置き換える)
+export PROJECT_ID=$(gcloud config get-value project)
+export REGION=us-central1   # ラボのタスク説明に指定がある場合はそちらを優先
+
+# 必要なAPIを有効化(タスクの内容に応じて取捨選択)
+gcloud services enable pubsub.googleapis.com \
+    cloudscheduler.googleapis.com \
+    run.googleapis.com \
+    eventarc.googleapis.com \
+    artifactregistry.googleapis.com \
+    cloudbuild.googleapis.com</code></pre>
+
+                    <h3>2.1 必要なIAMロールの目安</h3>
+                    <table class="data-table">
+                        <tr>
+                            <th>作業</th>
+                            <th>推奨ロール</th>
+                            <th>備考</th>
+                        </tr>
+                        <tr>
+                            <td>Topic/Subscriptionの作成・管理</td>
+                            <td><code>roles/pubsub.editor</code></td>
+                            <td>Topic・Subscription・Schemaの作成/削除が可能</td>
+                        </tr>
+                        <tr>
+                            <td>メッセージのPublishのみ</td>
+                            <td><code>roles/pubsub.publisher</code></td>
+                            <td>最小権限。特定Topicに絞って付与するとより安全</td>
+                        </tr>
+                        <tr>
+                            <td>メッセージのPull/ackのみ</td>
+                            <td><code>roles/pubsub.subscriber</code></td>
+                            <td>最小権限</td>
+                        </tr>
+                        <tr>
+                            <td>Cloud SchedulerジョブがTopicにPublishする</td>
+                            <td>
+                                Schedulerのサービスエージェントに<code>roles/pubsub.publisher</code>
+                            </td>
+                            <td>
+                                ジョブ作成時に自動付与されることが多いが、権限エラー時は確認する
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Pub/Sub Liteの管理</td>
+                            <td><code>roles/pubsublite.admin</code></td>
+                            <td>Reservation/Lite Topic/Lite Subscriptionすべてを操作可能</td>
+                        </tr>
+                    </table>
+                    <p class="source-line">
+                        <i class="ti ti-external-link"></i> 出典:
+                        <a
+                            href="https://cloud.google.com/iam/docs/roles-permissions/pubsub"
+                            target="_blank"
+                            rel="noopener"
+                            >Pub/Sub roles and permissions (IAM)</a
+                        >
+                        /
+                        <a
+                            href="https://cloud.google.com/pubsub/docs/access-control"
+                            target="_blank"
+                            rel="noopener"
+                            >Access control with IAM (Pub/Sub)</a
+                        >
+                    </p>
+                </section>
+
+                <section id="pattern-a">
+                    <h2>
+                        <i class="ti ti-clock"></i>3. パターンA: Topic/Subscription 基本操作 + Cloud
+                        Scheduler cron ジョブ
+                    </h2>
+                    <p>
+                        ラボ概要文と直接対応する、最も出題頻度の高いタスクセットです。Cloud
+                        Schedulerでcronジョブを設定し、Pub/Subトピックにメッセージを配信します。
+                    </p>
+
+                    <div class="diagram-wrap">
+                        <div class="mermaid-target" id="diagram-scheduler"></div>
+                        <p class="diagram-caption">
+                            図3: Scheduler → Topic → Subscription の処理フロー
+                        </p>
+                    </div>
+
+                    <h3>Step 1: Topicを作成する</h3>
+                    <pre><code class="language-bash">gcloud pubsub topics create cron-topic</code></pre>
+
+                    <h3>Step 2: Subscriptionを作成する</h3>
+                    <pre><code class="language-bash">gcloud pubsub subscriptions create cron-subscription \
+    --topic=cron-topic</code></pre>
+                    <p>
+                        Consoleから作成する場合、Topic作成画面の「デフォルトのサブスクリプションを追加する」オプションをONにすると、<code
+                            >cron-topic-sub</code
+                        >
+                        のようなSubscriptionが自動生成されます。
+                    </p>
+
+                    <h3>Step 3: Cloud Schedulerジョブを作成する（cronジョブ）</h3>
+                    <pre><code class="language-bash">gcloud scheduler jobs create pubsub cron-scheduler-job \
+    --schedule="* * * * *" \
+    --location=$REGION \
+    --topic=cron-topic \
+    --message-body="Hello World!"</code></pre>
+                    <p>
+                        <code>--schedule</code> は unix-cron 形式です。<code>--location</code> は
+                        Cloud Scheduler
+                        のジョブが動くリージョンで、<strong>Topicのリージョンと混同しないよう注意</strong>してください。
+                    </p>
+
+                    <h3>Step 4: ジョブを手動実行して即座に検証する</h3>
+                    <pre><code class="language-bash">gcloud scheduler jobs run cron-scheduler-job --location=$REGION</code></pre>
+
+                    <h3>Step 5: メッセージが届いたことを確認する</h3>
+                    <pre><code class="language-bash">gcloud pubsub subscriptions pull cron-subscription --limit=5 --auto-ack</code></pre>
+
+                    <h3>ベストプラクティス</h3>
+                    <ul class="checklist">
+                        <li>
+                            <i class="ti ti-circle-check"></i
+                            >Topic/Subscription名はタスク文で指定された名前を一字一句そのまま使用する
+                        </li>
+                        <li>
+                            <i class="ti ti-circle-check"></i>Cloud
+                            SchedulerのサービスアカウントにはTopic単位で<code>pubsub.publisher</code>のみを付与し、広い権限は避ける
+                        </li>
+                        <li>
+                            <i class="ti ti-circle-check"></i
+                            >Subscriberがダウンしていてもメッセージを保持できるよう、<code>--message-retention-duration</code>を検討する
+                        </li>
+                        <li>
+                            <i class="ti ti-circle-check"></i
+                            ><code>--time-zone</code>を明示しないとUTC基準になる点に注意する
+                        </li>
+                    </ul>
+                    <p class="source-line">
+                        <i class="ti ti-external-link"></i> 出典:
+                        <a
+                            href="https://cloud.google.com/scheduler/docs/quickstart"
+                            target="_blank"
+                            rel="noopener"
+                            >Quickstart: Schedule and run a cron job</a
+                        >
+                        /
+                        <a
+                            href="https://cloud.google.com/scheduler/docs/creating"
+                            target="_blank"
+                            rel="noopener"
+                            >Manage cron jobs</a
+                        >
+                        /
+                        <a
+                            href="https://cloud.google.com/sdk/gcloud/reference/scheduler/jobs/create/pubsub"
+                            target="_blank"
+                            rel="noopener"
+                            >gcloud scheduler jobs create pubsub リファレンス</a
+                        >
+                        /
+                        <a
+                            href="https://cloud.google.com/pubsub/docs/create-topic"
+                            target="_blank"
+                            rel="noopener"
+                            >Create a topic</a
+                        >
+                    </p>
+                </section>
+
+                <section id="pattern-b">
+                    <h2>
+                        <i class="ti ti-braces"></i>4. パターンB: Pub/Sub Schema
+                        の作成とTopicへの紐付け
+                    </h2>
+                    <p>
+                        Pub/SubのSchemaは、メッセージの<code>data</code>フィールドが従うべき形式を定義し、PublisherとSubscriberの間の契約としてPub/Subがそれを強制する機能です。Avro形式またはProtocol
+                        Buffer形式のいずれかで定義できます。
+                    </p>
+
+                    <div class="diagram-wrap">
+                        <div class="mermaid-target" id="diagram-schema"></div>
+                        <p class="diagram-caption">図4: Schemaによるメッセージ検証フロー</p>
+                    </div>
+
+                    <h3>Step 1: Avro形式でSchemaを作成する</h3>
+                    <pre><code class="language-bash">gcloud pubsub schemas create city-temp-schema \
+    --type=avro \
+    --definition='{
+        "type": "record",
+        "name": "Avro",
+        "fields": [
+            {"name": "city", "type": "string"},
+            {"name": "temperature", "type": "double"},
+            {"name": "pressure", "type": "int"},
+            {"name": "time_position", "type": "string"}
+        ]
+    }'</code></pre>
+                    <p>
+                        タスクの指示に定義されているフィールド名・型は必ずそのとおりに合わせてください。1つでも違うと採点に失敗します。
+                    </p>
+
+                    <h3>Step 2: Schemaを紐付けたTopicを作成する</h3>
+                    <pre><code class="language-bash">gcloud pubsub topics create city-temp-topic \
+    --schema=city-temp-schema \
+    --message-encoding=json</code></pre>
+
+                    <h3>Step 3: 動作確認（任意）</h3>
+                    <pre><code class="language-bash">gcloud pubsub topics publish city-temp-topic \
+    --message='{"city":"Tokyo","temperature":28.5,"pressure":1013,"time_position":"2026-08-13T09:00:00Z"}'</code></pre>
+
+                    <h3>ベストプラクティス</h3>
+                    <ul class="checklist">
+                        <li>
+                            <i class="ti ti-circle-check"></i
+                            >Schemaのフィールド名に個人情報（PII）やセキュリティ関連情報を含めない
+                        </li>
+                        <li>
+                            <i class="ti ti-circle-check"></i
+                            >1つのSchemaは複数のTopicに関連付けられるため、共通フォーマットは1箇所で管理する
+                        </li>
+                        <li>
+                            <i class="ti ti-circle-check"></i
+                            >Schemaは最大20リビジョンまで作成できるため、破壊的変更を避けリビジョンを重ねて後方互換性を保つ
+                        </li>
+                    </ul>
+                    <p class="source-line">
+                        <i class="ti ti-external-link"></i> 出典:
+                        <a
+                            href="https://cloud.google.com/pubsub/docs/create-schemas"
+                            target="_blank"
+                            rel="noopener"
+                            >Create a schema for a topic</a
+                        >
+                        /
+                        <a
+                            href="https://cloud.google.com/pubsub/docs/schemas"
+                            target="_blank"
+                            rel="noopener"
+                            >Schema overview</a
+                        >
+                    </p>
+                </section>
+
+                <section id="pattern-c">
+                    <h2>
+                        <i class="ti ti-camera"></i>5. パターンC: Snapshot の作成と Seek
+                        によるメッセージ再生
+                    </h2>
+                    <p>
+                        一度ackされたメッセージはSubscriberから再取得できません。しかし「誤ってackしてしまった」「デプロイ前の状態に戻して再処理したい」といった場面のために、Snapshot（特定時点のack状態の記録）とSeek（ack状態を過去に巻き戻す操作）が用意されています。
+                    </p>
+
+                    <div class="diagram-wrap">
+                        <div class="mermaid-target" id="diagram-snapshot"></div>
+                        <p class="diagram-caption">図5: SnapshotとSeekによるメッセージ再生</p>
+                    </div>
+
+                    <h3>Step 1: Topic/Subscriptionを準備してメッセージを送受信する</h3>
+                    <pre><code class="language-bash">gcloud pubsub topics create snapshot-demo-topic
+gcloud pubsub subscriptions create snapshot-demo-sub \
+    --topic=snapshot-demo-topic
+
+gcloud pubsub topics publish snapshot-demo-topic --message="first message"
+gcloud pubsub subscriptions pull snapshot-demo-sub --auto-ack</code></pre>
+
+                    <h3>Step 2: Snapshotを作成する</h3>
+                    <pre><code class="language-bash">gcloud pubsub snapshots create snapshot-demo-snap \
+    --subscription=snapshot-demo-sub</code></pre>
+                    <p>
+                        Snapshot名は<strong>Topic名やSubscription名とは別の命名空間</strong>を持つため、タスクで指定された名前をそのまま使用してください。
+                    </p>
+
+                    <h3>Step 3: (検証したい場合) さらにメッセージを送ってからSeekする</h3>
+                    <pre><code class="language-bash">gcloud pubsub topics publish snapshot-demo-topic --message="second message"
+gcloud pubsub subscriptions pull snapshot-demo-sub --auto-ack
+
+# Snapshot時点までack状態を巻き戻す
+gcloud pubsub subscriptions seek snapshot-demo-sub \
+    --snapshot=snapshot-demo-snap
+
+# 再度pullすると、Snapshot作成後にackしたメッセージが再配信される
+gcloud pubsub subscriptions pull snapshot-demo-sub --auto-ack</code></pre>
+
+                    <h3>ベストプラクティス</h3>
+                    <ul class="checklist">
+                        <li>
+                            <i class="ti ti-circle-check"></i
+                            >Snapshotはデフォルトで最大7日、<code>--message-retention-duration</code>で31日まで延長可能
+                        </li>
+                        <li>
+                            <i class="ti ti-circle-check"></i
+                            >Snapshotは同じTopicに紐づく別のSubscriptionにもSeekでき、Blue/Green切り戻し用途にも応用できる
+                        </li>
+                        <li>
+                            <i class="ti ti-circle-check"></i
+                            >使い終わったSnapshotは課金対象になるため、<code
+                                >gcloud pubsub snapshots delete</code
+                            >で忘れずに削除する
+                        </li>
+                    </ul>
+                    <p class="source-line">
+                        <i class="ti ti-external-link"></i> 出典:
+                        <a
+                            href="https://cloud.google.com/pubsub/docs/replay-overview"
+                            target="_blank"
+                            rel="noopener"
+                            >Replay and purge messages with seek</a
+                        >
+                        /
+                        <a
+                            href="https://cloud.google.com/pubsub/docs/replay-message"
+                            target="_blank"
+                            rel="noopener"
+                            >Quickstart: Replay a message by seeking to a snapshot or timestamp</a
+                        >
+                    </p>
+                </section>
+
+                <section id="pattern-d">
+                    <h2><i class="ti ti-bolt"></i>6. パターンD: Pub/Sub Lite のセットアップ</h2>
+                    <p>
+                        Pub/Sub
+                        Liteは、大量データを安定して流し続けるユースケース向けに、スループットとストレージを<strong>事前に手動でプロビジョニング</strong>することでコストを下げられるサービスです。Reservation（予約容量）→
+                        Lite Topic（パーティション分割）→ Lite Subscription
+                        という3階層でリソースを組みます。
+                    </p>
+
+                    <div class="diagram-wrap">
+                        <div class="mermaid-target" id="diagram-lite"></div>
+                        <p class="diagram-caption">図6: Pub/Sub Lite のリソース階層</p>
+                    </div>
+
+                    <h3>Step 1: Reservationを作成する</h3>
+                    <pre><code class="language-bash">gcloud pubsub lite-reservations create my-reservation \
+    --location=$REGION \
+    --throughput-capacity=4</code></pre>
+
+                    <table class="data-table">
+                        <tr>
+                            <th>Lite Topicのタイプ</th>
+                            <th>Publishスループット</th>
+                            <th>Subscribeスループット</th>
+                        </tr>
+                        <tr>
+                            <td>Zonal</td>
+                            <td>1 MiB/s</td>
+                            <td>2 MiB/s</td>
+                        </tr>
+                        <tr>
+                            <td>Regional</td>
+                            <td>0.25 MiB/s</td>
+                            <td>0.5 MiB/s</td>
+                        </tr>
+                    </table>
+
+                    <h3>Step 2: Lite Topicを作成し、Reservationに紐付ける</h3>
+                    <pre><code class="language-bash">gcloud pubsub lite-topics create my-lite-topic \
+    --location=$REGION-a \
+    --partitions=1 \
+    --per-partition-bytes=30GiB \
+    --throughput-reservation=my-reservation</code></pre>
+
+                    <h3>Step 3: Lite Subscriptionを作成する</h3>
+                    <pre><code class="language-bash">gcloud pubsub lite-subscriptions create my-lite-sub \
+    --location=$REGION-a \
+    --topic=my-lite-topic</code></pre>
+
+                    <h3>Step 4: 動作確認</h3>
+                    <pre><code class="language-bash">gcloud pubsub lite-topics publish my-lite-topic \
+    --location=$REGION-a \
+    --message="hello from pubsub lite"</code></pre>
+
+                    <h3>ベストプラクティス</h3>
+                    <ul class="checklist">
+                        <li>
+                            <i class="ti ti-circle-check"></i
+                            >Zonal（可用性より低コスト）かRegional（高可用性、単価高め）かを要件に合わせて選ぶ
+                        </li>
+                        <li>
+                            <i class="ti ti-circle-check"></i
+                            >Reservationのスループットは、紐づく全Lite
+                            Topicのピーク時合計スループットを上回るよう設計する
+                        </li>
+                        <li>
+                            <i class="ti ti-circle-check"></i
+                            >スループットを減らした場合でも24時間は減少前の料金が請求される点に注意する
+                        </li>
+                        <li>
+                            <i class="ti ti-circle-check"></i>検証後は lite-subscriptions →
+                            lite-topics → lite-reservations の順で削除しコストを抑える
+                        </li>
+                    </ul>
+                    <p class="source-line">
+                        <i class="ti ti-external-link"></i> 出典:
+                        <a
+                            href="https://cloud.google.com/pubsub/lite/docs/reservations"
+                            target="_blank"
+                            rel="noopener"
+                            >Create and manage Lite reservations</a
+                        >
+                        /
+                        <a
+                            href="https://cloud.google.com/pubsub/lite/docs/how-to"
+                            target="_blank"
+                            rel="noopener"
+                            >Pub/Sub Lite how-to guides</a
+                        >
+                        /
+                        <a
+                            href="https://cloud.google.com/pubsub/lite/docs/publish-receive-messages-console"
+                            target="_blank"
+                            rel="noopener"
+                            >Quickstart: Publish and receive messages</a
+                        >
+                    </p>
+                </section>
+
+                <section id="pattern-e">
+                    <h2>
+                        <i class="ti ti-webhook"></i>7. パターンE（補足）:
+                        Eventarc経由でPub/SubトリガーのCloud Runファンクションを起動する
+                    </h2>
+                    <p>
+                        ラボ概要では明言されていませんが、公開されている解答例には「Pub/Subトピックをトリガーとする関数の作成」が含まれるフォームも報告されています。出題された場合に備えて手順を示します。
+                    </p>
+
+                    <div class="diagram-wrap">
+                        <div class="mermaid-target" id="diagram-eventarc"></div>
+                        <p class="diagram-caption">図7: Eventarc経由のトリガーフロー</p>
+                    </div>
+
+                    <pre><code class="language-bash"># 関数をPub/Subトリガーでデプロイする例
+# (コンソールから作成する場合はTrigger typeで"Cloud Pub/Sub"を選択)
+gcloud eventarc triggers create pubsub-trigger \
+    --location=$REGION \
+    --destination-run-service=my-function \
+    --destination-run-region=$REGION \
+    --event-filters="type=google.cloud.pubsub.topic.v1.messagePublished" \
+    --transport-topic=projects/$PROJECT_ID/topics/city-temp-topic \
+    --service-account=$PROJECT_NUMBER-compute@developer.gserviceaccount.com</code></pre>
+                    <p>
+                        Eventarcはトランスポート層としてPub/Subを利用するため、内部的にAck期限が10秒というデフォルト値を持ちます。処理に時間がかかる関数の場合はAck期限を最大600秒まで引き上げることが推奨されています。
+                    </p>
+                    <p class="source-line">
+                        <i class="ti ti-external-link"></i> 出典:
+                        <a
+                            href="https://cloud.google.com/run/docs/tutorials/pubsub-eventdriven"
+                            target="_blank"
+                            rel="noopener"
+                            >Trigger functions from Pub/Sub using Eventarc</a
+                        >
+                        /
+                        <a
+                            href="https://cloud.google.com/run/docs/triggering/pubsub-triggers"
+                            target="_blank"
+                            rel="noopener"
+                            >Create triggers from Pub/Sub events</a
+                        >
+                    </p>
+                </section>
+
+                <section id="scoring">
+                    <h2><i class="ti ti-checkbox"></i>8. 「Check my progress」の考え方</h2>
+                    <p>
+                        チャレンジラボの採点ボタンは、裏側でGoogle
+                        CloudのAPIを呼び出し、<strong>該当リソースが指定どおりの名前・設定で存在するか</strong>を検証していると考えられます。ボタンを押す前に次のセルフチェックを行ってください。
+                    </p>
+                    <table class="data-table">
+                        <tr>
+                            <th>タスク種別</th>
+                            <th>セルフチェック項目</th>
+                        </tr>
+                        <tr>
+                            <td>Topic/Subscription作成</td>
+                            <td>
+                                <code>gcloud pubsub topics describe &lt;TOPIC&gt;</code> /
+                                <code>subscriptions describe &lt;SUB&gt;</code>
+                                で存在確認。名前がタスク文の指定と完全一致しているか
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Cloud Scheduler cron</td>
+                            <td>
+                                <code
+                                    >gcloud scheduler jobs describe &lt;JOB&gt;
+                                    --location=$REGION</code
+                                >
+                                でターゲットTopicとスケジュールを確認。<code>jobs run</code
+                                >で強制実行し実行履歴がSuccessになっているか
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Schema作成</td>
+                            <td>
+                                <code>gcloud pubsub schemas describe &lt;SCHEMA&gt;</code>
+                                でフィールド定義がタスク指定と一致しているか
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Schema付きTopic</td>
+                            <td>
+                                <code>gcloud pubsub topics describe &lt;TOPIC&gt;</code>
+                                の出力に<code>schemaSettings</code>が含まれているか
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Snapshot作成</td>
+                            <td>
+                                <code>gcloud pubsub snapshots describe &lt;SNAPSHOT&gt;</code>
+                                で対象Subscriptionが正しいか
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Pub/Sub Lite</td>
+                            <td>
+                                <code>lite-reservations describe</code> /
+                                <code>lite-topics describe</code> /
+                                <code>lite-subscriptions describe</code> でそれぞれ設定値を確認
+                            </td>
+                        </tr>
+                    </table>
+                    <p>
+                        <code>Check my progress</code
+                        >が失敗する場合、多くは「リソース名の誤字」「リージョン/ロケーションの指定漏れ」「API未有効化」のいずれかです。次章のトラブルシューティング表もあわせて確認してください。
+                    </p>
+                </section>
+
+                <section id="troubleshooting">
+                    <h2>
+                        <i class="ti ti-alert-triangle"></i>9.
+                        よくあるエラーとトラブルシューティング
+                    </h2>
+                    <table class="data-table">
+                        <tr>
+                            <th>症状 / エラーメッセージ</th>
+                            <th>主な原因</th>
+                            <th>対処</th>
+                        </tr>
+                        <tr>
+                            <td><code>PERMISSION_DENIED</code></td>
+                            <td>実行アカウントに必要なIAMロールが不足</td>
+                            <td>
+                                <code>gcloud projects get-iam-policy $PROJECT_ID</code
+                                >で付与ロールを確認する
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><code>NOT_FOUND</code>（Scheduler）</td>
+                            <td>
+                                <code>--location</code>のリージョンとジョブの実在リージョンが不一致
+                            </td>
+                            <td>
+                                <code>gcloud scheduler jobs list --location=$REGION</code
+                                >で存在確認し正しいロケーションを指定
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Cloud Scheduler初期化エラー</td>
+                            <td>
+                                初回利用時、App Engineアプリのリージョン初期化が必要な場合がある
+                            </td>
+                            <td>
+                                コンソールでCloud Schedulerページを一度開き、初期化ダイアログに従う
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Schema作成時の<code>INVALID_ARGUMENT</code></td>
+                            <td>
+                                Avro/Protocol
+                                BufferのJSON定義に構文エラー、またはトップレベル型が複数ある
+                            </td>
+                            <td>
+                                <code>--definition</code
+                                >のJSONをローカルでLintし、importを使っていないか確認
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Topic作成時に<code>schemaSettings</code>が反映されない</td>
+                            <td>
+                                <code>--schema</code>と<code>--message-encoding</code>の指定漏れ
+                            </td>
+                            <td>
+                                <code>topics update --schema=... --message-encoding=json</code
+                                >で後付け設定も可能
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Seekしても再配信されない</td>
+                            <td>
+                                Subscriptionの保持期間がSnapshot作成時点を超えている、またはSnapshotが期限切れ
+                            </td>
+                            <td>
+                                Snapshotの有効期限（既定7日）と<code>--message-retention-duration</code>を見直して再作成
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Lite Topic作成時に<code>RESOURCE_EXHAUSTED</code></td>
+                            <td>Reservationのスループット容量が不足、パーティション数が過大</td>
+                            <td>
+                                <code>--throughput-capacity</code
+                                >を見直すか、パーティション数を減らす
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Eventarcトリガー作成が一時的に失敗</td>
+                            <td>
+                                初回作成時、サービスエージェントのプロビジョニングに時間がかかることがある
+                            </td>
+                            <td>数分待って再実行する</td>
+                        </tr>
+                    </table>
+                </section>
+
+                <section id="best-practices">
+                    <h2><i class="ti ti-checklist"></i>10. ベストプラクティスまとめ</h2>
+                    <ul class="checklist">
+                        <li>
+                            <i class="ti ti-circle-check"></i
+                            >リソース名はタスク文で指定された名前を一字一句そのまま使用する（採点は文字列完全一致で見ていることが多い）
+                        </li>
+                        <li>
+                            <i class="ti ti-circle-check"></i><code>--location</code> /
+                            <code>--region</code
+                            >はTopic（グローバル）とScheduler/Lite（リージョナル/ゾーナル）で意味が異なることを理解して使い分ける
+                        </li>
+                        <li>
+                            <i class="ti ti-circle-check"></i>権限は必要最小限（<code
+                                >pubsub.publisher</code
+                            >
+                            /
+                            <code>pubsub.subscriber</code
+                            >）を基本とし、<code>pubsub.editor</code>は管理作業時のみに限定する
+                        </li>
+                        <li>
+                            <i class="ti ti-circle-check"></i>cronジョブは<code>jobs run</code
+                            >で強制実行し、待ち時間なしで結果を確認する
+                        </li>
+                        <li>
+                            <i class="ti ti-circle-check"></i>Snapshot/Lite
+                            Reservationなど課金が発生するリソースは、検証後に削除してコストを抑える
+                        </li>
+                        <li>
+                            <i class="ti ti-circle-check"></i
+                            >Schemaはフィールド名・型をタスク仕様と完全に一致させ、PIIを含めない
+                        </li>
+                        <li>
+                            <i class="ti ti-circle-check"></i
+                            >採点が失敗した場合は、まず<code>describe</code>系コマンドで実際の設定値を確認してから再実行する
+                        </li>
+                    </ul>
+                </section>
+
+                <section id="references">
+                    <h2><i class="ti ti-link"></i>11. 参考ソース一覧</h2>
+                    <ul class="ref-list">
+                        <li class="ref-item">
+                            <i class="ti ti-external-link"></i>
+                            <div class="ref-body">
+                                <div class="ref-title">
+                                    <a
+                                        href="https://cloud.google.com/pubsub/docs"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >Pub/Sub documentation（総合）</a
+                                    >
+                                </div>
+                                <div class="ref-url">https://cloud.google.com/pubsub/docs</div>
+                            </div>
+                        </li>
+                        <li class="ref-item">
+                            <i class="ti ti-external-link"></i>
+                            <div class="ref-body">
+                                <div class="ref-title">
+                                    <a
+                                        href="https://cloud.google.com/pubsub/docs/create-topic"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >Create a topic</a
+                                    >
+                                </div>
+                                <div class="ref-url">
+                                    https://cloud.google.com/pubsub/docs/create-topic
+                                </div>
+                            </div>
+                        </li>
+                        <li class="ref-item">
+                            <i class="ti ti-external-link"></i>
+                            <div class="ref-body">
+                                <div class="ref-title">
+                                    <a
+                                        href="https://cloud.google.com/pubsub/docs/create-subscription"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >Create pull subscriptions</a
+                                    >
+                                </div>
+                                <div class="ref-url">
+                                    https://cloud.google.com/pubsub/docs/create-subscription
+                                </div>
+                            </div>
+                        </li>
+                        <li class="ref-item">
+                            <i class="ti ti-external-link"></i>
+                            <div class="ref-body">
+                                <div class="ref-title">
+                                    <a
+                                        href="https://cloud.google.com/sdk/gcloud/reference/pubsub/topics/create"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >gcloud pubsub topics create リファレンス</a
+                                    >
+                                </div>
+                                <div class="ref-url">
+                                    https://cloud.google.com/sdk/gcloud/reference/pubsub/topics/create
+                                </div>
+                            </div>
+                        </li>
+                        <li class="ref-item">
+                            <i class="ti ti-external-link"></i>
+                            <div class="ref-body">
+                                <div class="ref-title">
+                                    <a
+                                        href="https://cloud.google.com/scheduler/docs/quickstart"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >Quickstart: Schedule and run a cron job</a
+                                    >
+                                </div>
+                                <div class="ref-url">
+                                    https://cloud.google.com/scheduler/docs/quickstart
+                                </div>
+                            </div>
+                        </li>
+                        <li class="ref-item">
+                            <i class="ti ti-external-link"></i>
+                            <div class="ref-body">
+                                <div class="ref-title">
+                                    <a
+                                        href="https://cloud.google.com/scheduler/docs/creating"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >Manage cron jobs（Cloud Scheduler）</a
+                                    >
+                                </div>
+                                <div class="ref-url">
+                                    https://cloud.google.com/scheduler/docs/creating
+                                </div>
+                            </div>
+                        </li>
+                        <li class="ref-item">
+                            <i class="ti ti-external-link"></i>
+                            <div class="ref-body">
+                                <div class="ref-title">
+                                    <a
+                                        href="https://cloud.google.com/sdk/gcloud/reference/scheduler/jobs/create/pubsub"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >gcloud scheduler jobs create pubsub リファレンス</a
+                                    >
+                                </div>
+                                <div class="ref-url">
+                                    https://cloud.google.com/sdk/gcloud/reference/scheduler/jobs/create/pubsub
+                                </div>
+                            </div>
+                        </li>
+                        <li class="ref-item">
+                            <i class="ti ti-external-link"></i>
+                            <div class="ref-body">
+                                <div class="ref-title">
+                                    <a
+                                        href="https://cloud.google.com/scheduler/docs/tut-gcf-pub-sub"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >Schedule an event-driven Cloud Run function</a
+                                    >
+                                </div>
+                                <div class="ref-url">
+                                    https://cloud.google.com/scheduler/docs/tut-gcf-pub-sub
+                                </div>
+                            </div>
+                        </li>
+                        <li class="ref-item">
+                            <i class="ti ti-external-link"></i>
+                            <div class="ref-body">
+                                <div class="ref-title">
+                                    <a
+                                        href="https://cloud.google.com/pubsub/docs/schemas"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >Schema overview</a
+                                    >
+                                </div>
+                                <div class="ref-url">
+                                    https://cloud.google.com/pubsub/docs/schemas
+                                </div>
+                            </div>
+                        </li>
+                        <li class="ref-item">
+                            <i class="ti ti-external-link"></i>
+                            <div class="ref-body">
+                                <div class="ref-title">
+                                    <a
+                                        href="https://cloud.google.com/pubsub/docs/create-schemas"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >Create a schema for a topic</a
+                                    >
+                                </div>
+                                <div class="ref-url">
+                                    https://cloud.google.com/pubsub/docs/create-schemas
+                                </div>
+                            </div>
+                        </li>
+                        <li class="ref-item">
+                            <i class="ti ti-external-link"></i>
+                            <div class="ref-body">
+                                <div class="ref-title">
+                                    <a
+                                        href="https://cloud.google.com/pubsub/docs/replay-overview"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >Replay and purge messages with seek</a
+                                    >
+                                </div>
+                                <div class="ref-url">
+                                    https://cloud.google.com/pubsub/docs/replay-overview
+                                </div>
+                            </div>
+                        </li>
+                        <li class="ref-item">
+                            <i class="ti ti-external-link"></i>
+                            <div class="ref-body">
+                                <div class="ref-title">
+                                    <a
+                                        href="https://cloud.google.com/pubsub/docs/replay-message"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >Quickstart: Replay a message by seeking to a snapshot or
+                                        timestamp</a
+                                    >
+                                </div>
+                                <div class="ref-url">
+                                    https://cloud.google.com/pubsub/docs/replay-message
+                                </div>
+                            </div>
+                        </li>
+                        <li class="ref-item">
+                            <i class="ti ti-external-link"></i>
+                            <div class="ref-body">
+                                <div class="ref-title">
+                                    <a
+                                        href="https://cloud.google.com/run/docs/tutorials/pubsub-eventdriven"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >Trigger functions from Pub/Sub using Eventarc</a
+                                    >
+                                </div>
+                                <div class="ref-url">
+                                    https://cloud.google.com/run/docs/tutorials/pubsub-eventdriven
+                                </div>
+                            </div>
+                        </li>
+                        <li class="ref-item">
+                            <i class="ti ti-external-link"></i>
+                            <div class="ref-body">
+                                <div class="ref-title">
+                                    <a
+                                        href="https://cloud.google.com/run/docs/triggering/pubsub-triggers"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >Create triggers from Pub/Sub events</a
+                                    >
+                                </div>
+                                <div class="ref-url">
+                                    https://cloud.google.com/run/docs/triggering/pubsub-triggers
+                                </div>
+                            </div>
+                        </li>
+                        <li class="ref-item">
+                            <i class="ti ti-external-link"></i>
+                            <div class="ref-body">
+                                <div class="ref-title">
+                                    <a
+                                        href="https://cloud.google.com/iam/docs/roles-permissions/pubsub"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >Pub/Sub roles and permissions（IAM）</a
+                                    >
+                                </div>
+                                <div class="ref-url">
+                                    https://cloud.google.com/iam/docs/roles-permissions/pubsub
+                                </div>
+                            </div>
+                        </li>
+                        <li class="ref-item">
+                            <i class="ti ti-external-link"></i>
+                            <div class="ref-body">
+                                <div class="ref-title">
+                                    <a
+                                        href="https://cloud.google.com/pubsub/docs/access-control"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >Access control with IAM（Pub/Sub）</a
+                                    >
+                                </div>
+                                <div class="ref-url">
+                                    https://cloud.google.com/pubsub/docs/access-control
+                                </div>
+                            </div>
+                        </li>
+                        <li class="ref-item">
+                            <i class="ti ti-external-link"></i>
+                            <div class="ref-body">
+                                <div class="ref-title">
+                                    <a
+                                        href="https://cloud.google.com/pubsub/docs/choosing-pubsub-or-lite"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >Choose Pub/Sub or Pub/Sub Lite</a
+                                    >
+                                </div>
+                                <div class="ref-url">
+                                    https://cloud.google.com/pubsub/docs/choosing-pubsub-or-lite
+                                </div>
+                            </div>
+                        </li>
+                        <li class="ref-item">
+                            <i class="ti ti-external-link"></i>
+                            <div class="ref-body">
+                                <div class="ref-title">
+                                    <a
+                                        href="https://cloud.google.com/pubsub/lite/docs/publish-receive-messages-console"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >Quickstart: Publish and receive messages（Pub/Sub Lite）</a
+                                    >
+                                </div>
+                                <div class="ref-url">
+                                    https://cloud.google.com/pubsub/lite/docs/publish-receive-messages-console
+                                </div>
+                            </div>
+                        </li>
+                        <li class="ref-item">
+                            <i class="ti ti-external-link"></i>
+                            <div class="ref-body">
+                                <div class="ref-title">
+                                    <a
+                                        href="https://cloud.google.com/pubsub/lite/docs/reservations"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >Create and manage Lite reservations</a
+                                    >
+                                </div>
+                                <div class="ref-url">
+                                    https://cloud.google.com/pubsub/lite/docs/reservations
+                                </div>
+                            </div>
+                        </li>
+                        <li class="ref-item">
+                            <i class="ti ti-external-link"></i>
+                            <div class="ref-body">
+                                <div class="ref-title">
+                                    <a
+                                        href="https://cloud.google.com/pubsub/lite/docs/how-to"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >Pub/Sub Lite how-to guides</a
+                                    >
+                                </div>
+                                <div class="ref-url">
+                                    https://cloud.google.com/pubsub/lite/docs/how-to
+                                </div>
+                            </div>
+                        </li>
+                        <li class="ref-item">
+                            <i class="ti ti-external-link"></i>
+                            <div class="ref-body">
+                                <div class="ref-title">
+                                    <a
+                                        href="https://cloud.google.com/pubsub/lite/docs/access-control"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >Access control with IAM（Pub/Sub Lite）</a
+                                    >
+                                </div>
+                                <div class="ref-url">
+                                    https://cloud.google.com/pubsub/lite/docs/access-control
+                                </div>
+                            </div>
+                        </li>
+                        <li class="ref-item">
+                            <i class="ti ti-external-link"></i>
+                            <div class="ref-body">
+                                <div class="ref-title">
+                                    <a
+                                        href="https://cloud.google.com/pubsub/docs/dead-letter-topics"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >Dead-letter topics</a
+                                    >
+                                </div>
+                                <div class="ref-url">
+                                    https://cloud.google.com/pubsub/docs/dead-letter-topics
+                                </div>
+                            </div>
+                        </li>
+                        <li class="ref-item">
+                            <i class="ti ti-external-link"></i>
+                            <div class="ref-body">
+                                <div class="ref-title">
+                                    <a
+                                        href="https://cloud.google.com/pubsub/docs/ordering"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >Order messages（メッセージ順序保証）</a
+                                    >
+                                </div>
+                                <div class="ref-url">
+                                    https://cloud.google.com/pubsub/docs/ordering
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </section>
+
+                <footer class="page-footer">
+                    <p>
+                        本ガイドは学習・攻略の補助を目的としています。実際に表示されたタスクの文言・リソース名は必ず優先し、本ガイドの例と異なる場合はタスク文の指定に従ってください。
+                    </p>
+                </footer>
+            </main>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/mermaid@11.12.0/dist/mermaid.min.js"></script>
+        <script>
+            const DIAGRAMS = {
+                pool: `flowchart TB
+Start["ラボ開始<br/>(Start Lab)"] --> Pool["採点システムが<br/>タスクプールからランダムに出題"]
+Pool --> A["パターンA<br/>Topic/Subscription基本操作<br/>+ Cloud Scheduler cron"]
+Pool --> B["パターンB<br/>Pub/Sub Schema作成<br/>+ Schema付きTopic作成"]
+Pool --> C["パターンC<br/>Snapshot作成<br/>+ Seekによるメッセージ再生"]
+Pool --> D["パターンD<br/>Pub/Sub Lite<br/>Reservation/Topic/Subscription"]
+Pool --> E["パターンE(補足)<br/>Eventarc経由で<br/>Cloud Runファンクション起動"]
+A --> Check["Check my progress<br/>で各タスクを検証"]
+B --> Check
+C --> Check
+D --> Check
+E --> Check`,
+                arch: `flowchart LR
+Publisher["Publisher<br/>(gcloud / アプリ)"] -->|Publish| Topic["Pub/Sub Topic"]
+Scheduler["Cloud Scheduler<br/>(cronジョブ)"] -->|Publish| Topic
+Schema["Schema<br/>(Avro / Protocol Buffer)"] -.->|メッセージ形式を検証| Topic
+Topic --> SubPull["Subscription (Pull)"]
+Topic --> SubPush["Subscription (Push)"]
+SubPull --> Consumer1["Subscriber<br/>(gcloud pull)"]
+SubPush --> Consumer2["HTTPSエンドポイント<br/>/ Eventarc"]
+SubPull -.->|ack状態を記録| Snapshot["Snapshot"]
+Snapshot -.->|Seekで復元| SubPull`,
+                scheduler: `sequenceDiagram
+participant CS as Cloud Scheduler
+participant PS as Pub/Sub Topic
+participant SB as Subscription
+participant You as あなた
+You->>PS: 1. gcloud pubsub topics create
+You->>SB: 2. gcloud pubsub subscriptions create
+You->>CS: 3. gcloud scheduler jobs create pubsub
+CS->>PS: 4. cronスケジュールに従いPublish
+You->>SB: 5. gcloud pubsub subscriptions pull
+SB-->>You: 6. メッセージ本文を返却`,
+                schema: `flowchart LR
+SchemaDef["Schema定義<br/>(Avro / Protocol Buffer)"] -->|紐付け| TopicS["Topic<br/>(schema + message-encoding)"]
+Publisher2["Publisher"] -->|準拠したメッセージ| TopicS
+Publisher2 -.->|非準拠のメッセージ| Reject["Publish失敗<br/>(バリデーションエラー)"]`,
+                snapshot: `flowchart TB
+T0["時刻t0<br/>メッセージをPublish、一部をPullしてack"] --> Snap["Snapshotを作成<br/>(t0時点のack状態を記録)"]
+Snap --> T1["時刻t1<br/>さらにメッセージをPublish、Pullとackが進む"]
+T1 --> SeekOp["gcloud pubsub subscriptions seek<br/>--snapshot=SNAPSHOT_ID"]
+SeekOp --> Replay["ack状態がSnapshot時点に巻き戻る<br/>未ackメッセージとして再配信される"]`,
+                lite: `flowchart TB
+Res["Lite Reservation<br/>(スループット容量を事前確保)"] -->|throughput-reservation| LT["Lite Topic<br/>(ゾーン/リージョン, パーティション数を指定)"]
+LT --> LS["Lite Subscription"]
+Pub3["Publisher"] -->|Publish| LT
+LS --> Sub4["Subscriber<br/>(gRPC StreamingPullのみ対応)"]`,
+                eventarc: `flowchart LR
+Topic4["Pub/Sub Topic"] -->|messagePublished イベント| Eventarc["Eventarc Trigger"]
+Eventarc --> Func["Cloud Run function<br/>(2nd gen)"]`,
+            };
+
+            const DIAGRAM_ORDER = [
+                'pool',
+                'arch',
+                'scheduler',
+                'schema',
+                'snapshot',
+                'lite',
+                'eventarc',
+            ];
+
+            async function renderDiagrams() {
+                if (document.fonts && document.fonts.ready) {
+                    try {
+                        await document.fonts.ready;
+                    } catch (e) {}
+                }
+
+                mermaid.initialize({
+                    startOnLoad: false,
+                    theme: 'dark',
+                    securityLevel: 'loose',
+                    fontFamily:
+                        '-apple-system, BlinkMacSystemFont, Hiragino Kaku Gothic ProN, Hiragino Sans, Noto Sans JP, Segoe UI, sans-serif',
+                    themeVariables: {
+                        background: '#07111e',
+                        primaryColor: '#3a2a5c',
+                        primaryBorderColor: '#c9b8f0',
+                        primaryTextColor: '#f3eeff',
+                        secondaryColor: '#123b3a',
+                        secondaryBorderColor: '#8fe0d8',
+                        secondaryTextColor: '#eafff9',
+                        tertiaryColor: '#4a2320',
+                        tertiaryBorderColor: '#ffb199',
+                        tertiaryTextColor: '#fff1ec',
+                        lineColor: '#5a6c8a',
+                        textColor: '#e8edf5',
+                        mainBkg: '#3a2a5c',
+                        nodeBorder: '#c9b8f0',
+                        clusterBkg: '#0d1b2e',
+                        clusterBorder: '#22314a',
+                        actorBkg: '#123b3a',
+                        actorBorder: '#8fe0d8',
+                        actorTextColor: '#eafff9',
+                        signalColor: '#a8b6cc',
+                        signalTextColor: '#e8edf5',
+                        labelBoxBkgColor: '#3a2a5c',
+                        labelBoxBorderColor: '#c9b8f0',
+                        labelTextColor: '#f3eeff',
+                        loopTextColor: '#e8edf5',
+                        noteBkgColor: '#2a2214',
+                        noteTextColor: '#e8c26a',
+                        noteBorderColor: '#e8c26a',
+                        edgeLabelBackground: '#0d1b2e',
+                    },
+                    flowchart: {
+                        useMaxWidth: false,
+                        htmlLabels: true,
+                        nodeSpacing: 45,
+                        rankSpacing: 50,
+                    },
+                    sequence: { useMaxWidth: false, actorMargin: 60, messageMargin: 40 },
+                });
+
+                for (const key of DIAGRAM_ORDER) {
+                    const src = DIAGRAMS[key];
+                    const target = document.getElementById('diagram-' + key);
+                    if (!target) continue;
+                    try {
+                        const { svg } = await mermaid.render('svg-' + key, src);
+                        target.innerHTML = svg;
+                        const svgEl = target.querySelector('svg');
+                        if (svgEl) {
+                            svgEl.removeAttribute('width');
+                            svgEl.removeAttribute('height');
+                            svgEl.style.overflow = 'visible';
+                            svgEl.style.maxWidth = '100%';
+                            svgEl.style.height = 'auto';
+                            const vb = svgEl.getAttribute('viewBox');
+                            if (vb) {
+                                const parts = vb.split(' ').map(Number);
+                                const isSeq = /^\s*sequenceDiagram/.test(src);
+                                const extra = isSeq ? 110 : 15;
+                                parts[3] = parts[3] + extra;
+                                svgEl.setAttribute('viewBox', parts.join(' '));
+                                svgEl.style.width = parts[2] + 'px';
+                            }
+                        }
+                    } catch (e) {
+                        target.innerHTML =
+                            '<p class="diagram-error">図の描画に失敗しました: ' +
+                            (e && e.message ? e.message : e) +
+                            '</p>';
+                        console.error('Mermaid render error for', key, e);
+                    }
+                }
+            }
+
+            function setupSidebarObserver() {
+                const sections = document.querySelectorAll('main section[id]');
+                const links = document.querySelectorAll('.sidebar-nav a');
+                const map = new Map();
+                links.forEach((a) => map.set(a.getAttribute('href').slice(1), a));
+                const observer = new IntersectionObserver(
+                    (entries) => {
+                        entries.forEach((entry) => {
+                            const link = map.get(entry.target.id);
+                            if (!link) return;
+                            if (entry.isIntersecting) {
+                                links.forEach((l) => l.classList.remove('active'));
+                                link.classList.add('active');
+                            }
+                        });
+                    },
+                    { rootMargin: '-20% 0px -70% 0px' },
+                );
+                sections.forEach((s) => observer.observe(s));
+            }
+
+            window.addEventListener('DOMContentLoaded', () => {
+                renderDiagrams();
+                setupSidebarObserver();
+                if (window.hljs) {
+                    hljs.highlightAll();
+                }
+            });
+        </script>
+    </body>
+</html>
