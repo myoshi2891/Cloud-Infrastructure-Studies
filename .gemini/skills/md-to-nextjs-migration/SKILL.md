@@ -319,6 +319,11 @@ if ! assert_staged_scope app/constants.ts app/gcl/<exam>/<changed-file-1> app/gc
   cleanup_stage || true
   exit 1
 fi
+if git diff --cached --quiet; then
+  echo 'Green 実装のステージ差分が空です。コミットを中止します。' >&2
+  cleanup_stage || true
+  exit 1
+fi
 git diff --cached
 git commit -m "feat(gcl/<exam>/SN): implement migrated content"
 ```
@@ -346,6 +351,11 @@ if ! git add -p -- <refactored-files>; then
   exit 1
 fi
 if ! assert_staged_scope <refactored-files>; then
+  cleanup_stage || true
+  exit 1
+fi
+if git diff --cached --quiet; then
+  echo 'Refactor のステージ差分が空です。コミットを中止します。' >&2
   cleanup_stage || true
   exit 1
 fi
