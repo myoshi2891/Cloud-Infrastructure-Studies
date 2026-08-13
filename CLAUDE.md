@@ -229,6 +229,12 @@ app/
         NavBar.tsx                  # サイドバーナビ (IntersectionObserver)
         constants.ts                # Mermaid 図定義 (31図)
         page.css                    # ページ固有スタイル
+      section2-vpc-implementation/
+        page.tsx                    # Section 2: VPCネットワークの実装 完全ガイド (Server)
+        PcneSection2VpcImplementationGuide.tsx # 本文＋インタラクション (Client。全9セクション、17 Mermaid図等)
+        NavBar.tsx                  # サイドバーナビ (IntersectionObserver)
+        constants.ts                # Mermaid 図定義 (17図)
+        page.css                    # ページ固有スタイル
     professional-cloud-network-engineer-step-by-step/
       page.tsx                      # PCNE ステップバイステップ実践ガイド
       components/                   # セクションコンポーネント（Section1-6）
