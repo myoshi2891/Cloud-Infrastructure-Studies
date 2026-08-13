@@ -7,8 +7,16 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 ## 現在地
 
 - **ブランチ:** dev
-- **進行中タスク:** レビュー指摘の実装・対象検証完了（全体テストの既知失敗を記録）
-- **最終更新日時(UTC):** 2026-08-12T15:40:25Z
+- **進行中タスク:** レビュー指摘のカテゴリー別修正・検証・コミット完了
+- **最終更新日時(UTC):** 2026-08-13T05:46:15Z
+
+## 2026-08-13: レビュー指摘のテスト・ワークフロー・ガイド修正（完了）
+
+- [x] **Test quality**: ワークスペース読込ヘルパーへJSDocを追加し、エージェントミラーをUTF-8文字列ではなくraw Bufferで比較。
+- [x] **Agent workflow**: インベントリ実行をbunへ統一し、DOM要素・リンク集合・コードブロック件数・`preserveNaturalScale` の検証を厳密化。Step 5 / 6へコミット認可ガードを追加し、3系統を同期。
+- [x] **AGWA Section 6**: Status Dashboard、Drive/Gmail復元、Meet匿名参加の説明をGoogle公式資料に合わせ、MD022 / MD047を解消。
+- [x] **Chrome Enterprise Premium guide**: Owner / EditorのIAP自動アクセス前提を削除し、Owner / Tester双方のロール付与手順をHTML/Markdownで同期。CDN4資産へSRIを追加。
+- [x] **Validation**: 対象Vitest 35件・94件、全体ESLint、対象Markdown lint、CDN4資産のSHA-384照合は成功。全体Vitestは987件成功、既知のスモーク期待値1件とサンドボックスの`window.localStorage`不備30件が失敗。`npm run test:e2e`、Visualテスト、ビルドは今回のユーザー指示に従い未実施。目視確認はユーザーが実施。
 
 ## 2026-08-12: レビュー指摘のホーム/Cisco/ADKガイド改善（対象検証完了）
 
@@ -1176,10 +1184,17 @@ bun run test:e2e e2e/nav.spec.ts  # Chromium 2 件 pass
 ## 次回セッションでの再開プロンプト
 
 あなたは熟練したフロントエンドエンジニアであり、Next.js (App Router) の移行スペシャリストです。
-最新実装 HEAD は `234bd37`、前回進捗同期コミットは `3eedea9` です。
-Zooガイドの手順検証、Cisco Automation Specialist名称とサイドバーレイアウト、ホーム定数集約、カバレッジ抽出と共通正準対象はカテゴリー別コミットで対応済みです。対象Vitest 112件と `npm run lint` が成功しています。ビルドと目視確認はユーザー指定により未実施です。
+最新実装 HEAD は `774ff71`、前回進捗同期コミットは `cfeac2b` です。
+ミラーのraw Buffer比較、移行ワークフロー契約、AGWA Section 6、Chrome Enterprise Premiumガイドはカテゴリー別コミットで対応済みです。対象Vitest 35件・94件と `npm run lint` が成功しています。全体Vitestは987件成功・31件既知失敗です。E2E、Visual、ビルドはユーザー指定により未実施で、目視確認はユーザーが実施します。
 
-標準コマンドは `bun run test` です。サンドボックス実行記録として、今回の `npm test` は952件成功し、既存ホームと異なる見出しを期待するスモーク1件と、`window.localStorage.clear` が利用できない環境依存30件が失敗しました。次回はアプリ実装を変更する前に、これらのテスト環境と期待値を切り分けてください。
+標準ワークフローの正準は `.agents/rules/tdd-commit-workflow.md` で、`.claude` / `.gemini` は同期ミラーです。次回は次の4ステップを維持してください。
+
+1. **Step 0 — Inventory:** 移行元からインベントリを機械抽出し、実装前に確定する。
+2. **Step 1 — Fail:** 失敗テストを作成し、失敗を確認する。
+3. **Step 2 — Pass:** 最小実装でテストを成功させる。
+4. **Step 3 — Refactor:** 整理・統合後に対象検証を再実行する。
+
+各ステップのコミットは、ユーザーが明示的に認可した場合だけ実行してください。未認可ならコミット可能な状態で停止します。サンドボックス実行記録として、今回の `npm test` は987件成功し、既存ホームと異なる見出しを期待するスモーク1件と、`window.localStorage.clear` が利用できない環境依存30件が失敗しました。次回はアプリ実装を変更する前に、これらのテスト環境と期待値を切り分けてください。
 
 ---
 

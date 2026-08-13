@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-Updated 2026-08-12
+Updated 2026-08-13
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
@@ -383,10 +383,11 @@ Aws/                                # AWS資料アーカイブ
 - **Playwright:** `e2e/` 配下、Chromiumのみ、`baseURL: http://localhost:3000`、CIでは`bun run dev`を自動起動
 
 **🚨 開発時の必須ルール（TDD & Step-by-step Commit） 🚨**
-全てのコード実装において、`.claude/rules/tdd-commit-workflow.md` に定義されたルールを厳守すること。
-1. プロダクションコードを書く前に、必ずFailするテストを書いてコミットする。
-2. テストをPassさせる実装を行いコミットする。
-3. リファクタリング/統合を行いコミットする。
+全てのコード実装において、正準の `.agents/rules/tdd-commit-workflow.md` に定義されたルールを厳守すること。`.claude/rules/tdd-commit-workflow.md` と `.gemini/rules/tdd-commit-workflow.md` は同期ミラーである。
+1. **Step 0 — Inventory:** 移行タスクでは移行元からインベントリを機械抽出し、実装前にコミットする。
+2. **Step 1 — Fail:** プロダクションコードを書く前に、必ずFailするテストを書いてコミットする。
+3. **Step 2 — Pass:** テストをPassさせる実装を行いコミットする。
+4. **Step 3 — Refactor:** リファクタリング/統合を行いコミットする。
 ※ LLMはタスク実行前に必ずこのルールをPlanに組み込み、まとめて実装・コミットすることを避けること。
 
 **HTML → Next.js 移行タスク時**: まず `.claude/skills/html-to-nextjs-migration/SKILL.md` の「正準リファレンス」を読むこと。GCPトークンマップ・サイドバー配置値・MermaidDiagram契約・ガイドページのファイル構成が前出しされており、参照 `page.tsx`/`NavBar.tsx`/`MermaidDiagram.tsx`/`page.css` や `globals.css` の再読込・再 grep が不要になる（ソースHTMLは100%読む — 要約・スキップ厳禁）。

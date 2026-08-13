@@ -1,6 +1,6 @@
 # Project Overview: Cloud Infrastructure Studies
 
-Updated 2026-08-12
+Updated 2026-08-13
 
 このプロジェクトは、Google Cloud / AWS / Cisco のクラウド・ネットワーク資格試験対策（Associate Cloud Engineer, Generative AI Leader, Cloud Digital Leader, Associate Google Workspace Administrator, Professional Cloud Network Engineer, Cisco Certified Network Associate, Cisco Certified Network Associate Automation、AWS Certified Solutions Architect – Associate）を目的とした学習用 Next.js アプリケーションです。
 試験ガイド、重要ポイントの解説、およびテスト対策コンテンツを提供します。
@@ -67,7 +67,7 @@ Updated 2026-08-12
 
 ## 開発コンベンション
 
-- **テスト駆動（絶対厳守）:** 実装の際は必ず `.gemini/rules/tdd-commit-workflow.md`（`.agents/` / `.claude/` にも同一内容で配置）のルールに従い、以下のステップを厳格に繰り返すこと。各ステップ完了後に**即コミット（繰り越し禁止）**。ただしコミットはユーザーの認可がある場合のみ実行する。
+- **テスト駆動（絶対厳守）:** 実装の際は必ず正準の `.agents/rules/tdd-commit-workflow.md` に従うこと。`.claude/rules/tdd-commit-workflow.md` と `.gemini/rules/tdd-commit-workflow.md` は同期ミラーである。以下のステップを厳格に繰り返し、各ステップ完了後に**即コミット（繰り越し禁止）**する。ただしコミットはユーザーの認可がある場合のみ実行する。
   1. **Step 0 — Inventory:** 移行タスクでは移行元から `docs/migration-inventory/<slug>.json` を機械抽出してコミット (`chore(migration): add content inventory for ...`)
   2. **Step 1 — Fail:** インベントリを `import` した失敗テストを先に作成し、失敗を確認してコミット (`test: add failing tests for ...`)
   3. **Step 2 — Pass:** テストをPassさせる実装を行いコミット (`feat/fix: implement ... to pass tests`)
