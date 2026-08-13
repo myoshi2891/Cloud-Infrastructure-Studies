@@ -60,7 +60,28 @@ function ChecklistSection() {
   const checkedCount = checkedState.filter(Boolean).length;
 
   return (
-    <ChecklistSection />
+    <div className="checklist-wrapper">
+      <div className="checklist-header">
+        <span className="checklist-progress">{checkedCount} / {CHECKLIST_ITEMS.length} 完了</span>
+      </div>
+      <ul className="task-list checklist-card">
+        {CHECKLIST_ITEMS.map((item, idx) => {
+          const isChecked = checkedState[idx];
+          return (
+            <li key={idx}>
+              <label className={isChecked ? 'checked' : ''}>
+                <input
+                  type="checkbox"
+                  checked={isChecked}
+                  onChange={() => toggleCheck(idx)}
+                />
+                <span className="checklist-text">{item}</span>
+              </label>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
   );
 }
 

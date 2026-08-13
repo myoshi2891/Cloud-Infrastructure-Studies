@@ -406,10 +406,10 @@
 }
 
 .pcne-s2-vpc-implementation-page ul.checklist-card label {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  padding: 9px 8px;
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 12px !important;
+  padding: 9px 8px !important;
   border-radius: 8px;
   cursor: pointer;
   font-size: 14.5px;
@@ -418,6 +418,51 @@
 
 .pcne-s2-vpc-implementation-page ul.checklist-card label:hover {
   background: rgba(124, 158, 255, 0.05) !important;
+}
+
+.pcne-s2-vpc-implementation-page ul.checklist-card input[type='checkbox'] {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  width: 18px !important;
+  height: 18px !important;
+  min-width: 18px !important;
+  margin-top: 3px !important;
+  border: 1.5px solid var(--pcne-border) !important;
+  border-radius: 5px !important;
+  background: var(--pcne-bg) !important;
+  position: relative !important;
+  cursor: pointer !important;
+  flex-shrink: 0 !important;
+  display: inline-block !important;
+}
+
+.pcne-s2-vpc-implementation-page ul.checklist-card input[type='checkbox']:checked {
+  background: var(--pcne-accent) !important;
+  border-color: var(--pcne-accent) !important;
+}
+
+.pcne-s2-vpc-implementation-page ul.checklist-card input[type='checkbox']:checked::after {
+  content: '' !important;
+  position: absolute !important;
+  left: 5px !important;
+  top: 1px !important;
+  width: 5px !important;
+  height: 9px !important;
+  border: solid var(--pcne-bg) !important;
+  border-width: 0 2px 2px 0 !important;
+  transform: rotate(45deg) !important;
+}
+
+.pcne-s2-vpc-implementation-page ul.checklist-card label.checked .checklist-text,
+.pcne-s2-vpc-implementation-page ul.checklist-card li:has(input:checked) .checklist-text {
+  text-decoration: line-through !important;
+  color: var(--pcne-text-faint) !important;
+}
+
+.pcne-s2-vpc-implementation-page .checklist-text {
+  flex: 1;
+  line-height: 1.6;
+  color: var(--pcne-text-dim);
 }
 
 /* ---------------- Mermaid ---------------- */
