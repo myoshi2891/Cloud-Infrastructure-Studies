@@ -126,4 +126,13 @@ describe('CompTIA Network+ Guide — 移行元コンテンツの全量移行', (
         const tables = [...container.querySelectorAll('table')];
         expect(tables).toHaveLength(inventory.counts.table);
     });
+
+    it('ビジュアルデザイン要素（stat-grid, domain-card, ref-box）とTabler Iconsが存在する', () => {
+        const container = renderPage();
+        expect(container.querySelector('.stat-grid')).not.toBeNull();
+        expect(container.querySelectorAll('.stat-card')).toHaveLength(4);
+        expect(container.querySelectorAll('.domain-card')).toHaveLength(5);
+        expect(container.querySelector('.ref-box')).not.toBeNull();
+        expect(container.querySelectorAll('.ti').length).toBeGreaterThan(15);
+    });
 });
