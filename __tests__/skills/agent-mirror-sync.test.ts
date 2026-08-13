@@ -77,9 +77,8 @@ describe('エージェント設定の3系統ミラー同期', () => {
             }
             const sourceContent = fs.readFileSync(
                 path.join(REPO_ROOT, SOURCE_DIR, relativePath),
-                'utf8',
             );
-            return fs.readFileSync(mirrorPath, 'utf8') !== sourceContent;
+            return !fs.readFileSync(mirrorPath).equals(sourceContent);
         });
         expect(divergent).toEqual([]);
     });

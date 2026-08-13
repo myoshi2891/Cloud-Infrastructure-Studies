@@ -11,6 +11,7 @@ import { describe, expect, it } from 'vitest';
 
 const ROOT = process.cwd();
 
+/** ワークスペース内の指定ファイルを読み込み、UTF-8 文字列として返す */
 const readWorkspaceFile = (path: string): string => readFileSync(join(ROOT, path), 'utf8');
 
 /** 指定拡張子のファイルをディレクトリ配下から再帰列挙し、リポジトリ相対パスで返す */
