@@ -1,4 +1,5 @@
 # Associate Google Workspace Administrator 試験対策ガイド
+
 ## Section 6: 監視とトラブルシューティング（Monitoring and troubleshooting common issues）
 
 > 出題比率: 約13%（Google公式Exam Guideに基づく）
@@ -147,12 +148,12 @@ Google Workspace Status Dashboardは、Gmail、Google Calendar、Google Meet、G
 
 | 確認方法 | 特徴 |
 |---|---|
-| Status Dashboardページの直接閲覧 | 最大5年分の履歴を確認可能（View historyから） |
+| Status Dashboardページの直接閲覧 | ページ下部の「View history」で過去365日分のインシデントを一覧し、サービス名の「See more」からサービスごとに最大5年分を確認できる |
 | RSSフィード購読 | Gmailサービス自体が影響を受けていても、メールに依存せず最速で障害通知を受け取れる |
 | JSON History | 監視システムへのプログラム的な統合に利用可能 |
 | システム定義ルール（Apps outage alert） | 管理コンソールのRulesページから設定し、アラートセンターやメールで通知を受け取れる。ただしRSSより通知が遅れる場合がある |
 
-> **ベストプラクティス:** RSSフィードの購読を強く推奨します。Gmailサービス自体が障害の影響を受けている状況では、メール通知よりもRSSやシステム定義ルールのほうが確実に障害情報を届けられます。super administratorアカウントでサインインしていれば、5年分の履歴からインシデントの再発パターンを分析することも可能です。
+> **ベストプラクティス:** RSSフィードの購読を強く推奨します。Gmailサービス自体が障害の影響を受けている状況では、メール通知よりもRSSやシステム定義ルールのほうが確実に障害情報を届けられます。Status Dashboardと履歴ページは公開されているため、履歴確認にsuper administratorでのサインインは不要です。過去365日の一覧と、サービスごとの最大5年分の履歴を使ってインシデントの再発パターンを分析できます。
 
 ### 6.1.4 メール配信問題に関する解決策の提案
 
@@ -512,7 +513,7 @@ Drive for desktop（旧Drive File Stream）は、クラウド上のDriveファ�
 
 ### 6.2.10 誤って削除されたファイル・メールの復元
 
-データ復元には、「ユーザーがゴミ箱を空にした場合」と「管理者がユーザーアカウントごと削除した場合」という2つの独立したシナリオがあり、それぞれ復元可能な期限が異なります。
+DriveファイルとGmailメッセージは、どちらもユーザーのゴミ箱に30日間保持され、完全削除後は管理者が25日以内に復元できます。ただし、復元対象・制約・削除済みユーザーの扱いはサービスごとに異なるため、手順を分けて判断します。
 
 ```mermaid
 stateDiagram-v2
@@ -525,7 +526,7 @@ stateDiagram-v2
     完全削除済み25日以内 --> アクティブ: 管理者が<br/>Restore dataで復元
     完全削除済み25日以内 --> 復元不可: 25日経過
 
-    アクティブ --> ユーザー削除済み20日以内: 管理者が<br/>ユーザーアカウントを削除
+    アクティブ --> ユーザー削除済み20日以内: 管理者が<br/>ユーザーアカウントを削除（Drive）
     ユーザー削除済み20日以内 --> アクティブ: 管理者がユーザーを復元し<br/>所有権を移転
     ユーザー削除済み20日以内 --> 復元不可: 20日経過
 
@@ -538,18 +539,23 @@ stateDiagram-v2
     end note
 ```
 
-2つのシナリオの違いを表にまとめます。
+#### Driveファイルの復元
 
-| シナリオ | 復元可能期限 | 復元手順の起点 | 制約 |
-|---|---|---|---|
-| アクティブなユーザーがゴミ箱を空にした（完全削除） | 完全削除から25日以内 | Directory > Users で対象ユーザーを選び、More options > Restore dataから日付範囲とデータ種別（Drive/Gmail）を指定して復元 | 個別のファイル・フォルダ単位ではなく、指定した日付範囲内に削除されたすべてのデータが復元対象になる。復元後、ユーザーがストレージ上限を超える場合は、上限に達した時点で処理が停止する |
-| 管理者がユーザーアカウントごと削除した | アカウント削除から20日以内 | 削除されたユーザーを復元し、その後ファイルの所有権をアクティブなユーザーへ移転する | 20日を過ぎるとデータはGoogleのシステムから完全にパージされ、復元不可能になる |
+Driveのファイルやフォルダはゴミ箱で30日間保持されます。ユーザーがゴミ箱を空にした場合、または30日が経過して完全削除された場合、User management権限を持つ管理者は完全削除から25日以内にDirectory > Users > More options > Restore dataを開き、日付範囲とDriveを指定して復元します。
 
-復元操作にはUser management権限が必要です。また、フォルダ構造の完全な復元は保証されない場合があります。たとえば、あるフォルダ自体を削除した場合、元のフォルダ構造をそのまま再現できないことがあります。
+Driveの管理者復元は個別のファイル・フォルダを選択できず、指定期間に完全削除された全データが対象です。復元先は削除前と同じ場所ですが、共有相手へ再共有する必要があります。ユーザーまたは組織のストレージ上限に達すると復元は停止します。
 
-Vaultを利用している組織では、上記のGoogle Drive/Gmail標準の復元期限とは別に、保持ルール（Retention rules）やホールド（Hold）によってデータがより長期間アーカイブに保持されている場合があります。復元依頼を受けた際、まず標準の復元期限内かどうかを確認し、期限を過ぎている場合はVaultのアーカイブに保持されているデータがないかを併せて確認することが重要です。
+ユーザーアカウント自体を削除した場合は、削除から20日以内にユーザーを復元するか、削除時にDriveファイルの所有権を別のアクティブユーザーへ移転します。この20日制限、所有権移転、フォルダ構造、ストレージ上限に関する注意はDriveデータに限定され、Gmailメッセージの復元手順には適用しません。
 
-> **ベストプラクティス:** 「ファイルが消えた」という問い合わせを受けたら、まずユーザー自身のゴミ箱（30日間保持）を確認するよう案内します。ゴミ箱が空の場合や既に完全削除されている場合にのみ、管理者によるRestore data操作（25日以内）に進みます。この順序を踏むことで、不要な管理者権限の行使を避け、監査ログをシンプルに保てます。
+#### Gmailメッセージの復元
+
+Gmailメッセージもゴミ箱で30日間保持され、その間はユーザー自身が復元できます。30日経過またはゴミ箱からの完全削除後は、管理者に追加で25日間の復元期間があります。管理者はDirectory > Users > More options > Restore dataで過去25日以内の日付範囲とGmailを選び、復元後にユーザーの受信トレイを確認します。
+
+Gmailでは、25日を超えて完全削除されたデータ、迷惑メールから削除されたメッセージ、削除済みの下書き、ラベルやラベル階層を復元できません。復元処理は開始後に停止・一時停止できず、データ量によって反映まで数日かかる場合があります。
+
+Vaultを利用している組織では、DriveとGmailの標準復元期限を過ぎても、保持ルールやホールドの対象データを検索・エクスポートできる場合があります。ただし、Vaultから元のDriveやGmailアカウントへ直接復元する機能ではありません。
+
+> **ベストプラクティス:** DriveとGmailのどちらも、まずユーザー自身のゴミ箱（30日間保持）を確認し、完全削除済みの場合だけ管理者のRestore data（完全削除後25日以内）へ進みます。Driveでは対象期間の全データとストレージ、Gmailでは復元不可のメッセージ種別を事前に確認します。
 
 ### 6.2.11 Driveオフラインアクセスの問題
 
@@ -628,7 +634,7 @@ Meet Hardware（会議室のデバイス）については、別途「Monitor th
 
 | 症状 | 確認ポイント |
 |---|---|
-| 会議に参加できない | サポートされているブラウザを使用しているか。正しい会議コード・リンクを使用しているか。会議に招待されているか（匿名参加は管理者が例外を申請しない限り不可） |
+| 会議に参加できない | サポートされているブラウザ、正しい会議コード・リンク、招待状況を確認する。匿名参加の可否は組織ポリシー、会議単位のアクセス設定（Open / Trusted / Restricted）、会議種別、参加者の認証状態で決まる。Education環境では匿名ユーザーが制限される場合があり、クライアントサイド暗号化会議では認証済みの招待参加者に限定される |
 | 音声が聞こえない/相手に届かない | Meet設定で正しいマイク・スピーカーが選択されているか。macOSの場合、Chrome/Firefoxにマイクへのアクセス権限が付与されているか（システム環境設定 > プライバシーとセキュリティ） |
 | 映像品質が悪い | 受信解像度をHDに設定しているか。ネットワークが不安定な場合は帯域・遅延を測定する。有線Ethernet接続や5GHz帯Wi-Fiへの切り替えを試す |
 | ハードウェアファイアウォール/セキュリティ機器の影響 | Meetトラフィックを検査・改変するセキュリティ機器が映像品質を低下させることがある。管理者はPrepare your networkのガイドラインに従いネットワークを構成する |
@@ -808,7 +814,7 @@ Section 6全体を横断する重要な判断原則を一覧にまとめます�
 | 3 | SPF/DKIM/DMARCの検証にはメッセージヘッダーとAdmin Toolboxを組み合わせる | 6.2.3 |
 | 4 | GWSMOなどのクライアント同期問題は、まずネットワーク接続とオフラインモードという低コストな確認から始める | 6.2.5 |
 | 5 | カレンダー・Driveの共有権限は「組織全体の上限設定」と「個別の共有設定」の2層で考える | 6.2.6, 6.2.8 |
-| 6 | データ復元は「ゴミ箱からの復元（25日）」と「アカウント復元（20日）」で期限が異なる | 6.2.10 |
+| 6 | DriveとGmailはゴミ箱で30日間保持され、完全削除後は管理者が25日以内に復元できる。Driveの削除済みアカウント復元は20日以内 | 6.2.10 |
 | 7 | Meetの品質問題は送信側/受信側のどちらで発生しているかをまず切り分ける | 6.2.12 |
 | 8 | ストレージ問題は上限を上げる前に消費の内訳（共有ドライブ、個人ユーザー）を分析する | 6.3.2 |
 | 9 | サポートケースを開く前に既知の問題ページとStatus Dashboardを必ず確認する | 6.4.3 |
@@ -827,7 +833,7 @@ Section 6全体を横断する重要な判断原則を一覧にまとめます�
 - [ ] 2SVロックアウト時のバックアップコード発行手順と、子OUの2SV設定が設定グループの免除に優先する仕組みを説明できる
 - [ ] Calendar Interopで空き時間が正しく相互参照できない場合の主要な原因パターンを列挙できる
 - [ ] カレンダー・Driveの共有権限における「組織レベルの上限」と「個別設定」の関係を説明できる
-- [ ] Drive標準の削除データ復元期限（ゴミ箱25日、アカウント削除20日）を正確に説明できる
+- [ ] DriveとGmailの復元期限（ゴミ箱30日、完全削除後の管理者復元25日）と、Driveのアカウント削除20日制限を正確に説明できる
 - [ ] Meet quality toolの特性（事後分析ツールであること、30日間のデータ保持）を説明できる
 - [ ] Reports overview、Apps usageレポート、Storageページの役割の違いを説明できる
 - [ ] サポートケースを開く前に確認すべき情報源（Known Issues、Status Dashboard）の順序を説明できる
@@ -839,10 +845,12 @@ Section 6全体を横断する重要な判断原則を一覧にまとめます�
 ## 参考文献
 
 ### 公式認定情報
+
 - [Associate Google Workspace Administrator 認定ページ](https://cloud.google.com/learn/certification/associate-google-workspace-administrator?hl=en)
 - [Associate Google Workspace Administrator Exam Guide（公式PDF）](https://services.google.com/fh/files/misc/associate_google_workspace_administrator_exam_guide_english.pdf)
 
 ### 監査ログ・レポート
+
 - [Admin log events（Google Workspace Help）](https://support.google.com/a/answer/4579579?hl=en)
 - [Admin log events（knowledge.workspace.google.com）](https://knowledge.workspace.google.com/admin/reports/admin-log-events)
 - [Admin auditing for the security center](https://support.google.com/a/answer/7632917?hl=en)
@@ -854,11 +862,13 @@ Section 6全体を横断する重要な判断原則を一覧にまとめます�
 - [Reports API Overview（Admin SDK）](https://developers.google.com/workspace/admin/reports/v1/overview)
 
 ### Status Dashboard
+
 - [Check the status of a Google Workspace service](https://support.google.com/a/answer/139569?hl=en)
 - [Check the status of a Google Workspace service（knowledge.workspace.google.com）](https://knowledge.workspace.google.com/admin/reports/check-the-status-of-a-google-workspace-service?hl=en)
 - [Google Workspace Status Dashboard](https://www.google.com/appsstatus/dashboard/)
 
 ### メール配信トラブルシューティング
+
 - [Troubleshoot message delivery with Email Log Search](https://support.google.com/a/answer/7513679?hl=en)
 - [Understand Email Log Search results](https://support.google.com/a/answer/2618876)
 - [Find messages with Email Log Search](https://knowledge.workspace.google.com/admin/support/troubleshooting/find-messages-with-email-log-search)
@@ -868,6 +878,7 @@ Section 6全体を横断する重要な判断原則を一覧にまとめます�
 - [SMTP relay service error messages](https://support.google.com/a/answer/6140680?hl=en)
 
 ### SPF / DKIM / DMARC・Admin Toolbox
+
 - [Troubleshoot SPF issues](https://support.google.com/a/answer/10685928?hl=en)
 - [Troubleshoot DKIM issues](https://support.google.com/a/answer/11612790?hl=en)
 - [Troubleshoot DMARC issues](https://support.google.com/a/answer/10032578?hl=en)
@@ -878,11 +889,13 @@ Section 6全体を横断する重要な判断原則を一覧にまとめます�
 - [Admin Toolbox: Messageheader](https://toolbox.googleapps.com/apps/messageheader/)
 
 ### ユーザーアクセス・2SVトラブルシューティング
+
 - [Troubleshoot login challenges, 2-Step Verification, & sign-in issues](https://support.google.com/a/answer/10710447?hl=en)
 - [Recover an account protected by 2-Step Verification](https://support.google.com/a/answer/9176734?hl=en)
 - [Avoid account lockouts when 2-Step Verification is enforced by your organization](https://support.google.com/a/answer/9176805?hl=en)
 
 ### カレンダートラブルシューティング
+
 - [Troubleshoot Calendar Interop issues](https://knowledge.workspace.google.com/admin/sync/troubleshoot-calendar-interop-issues)
 - [Synchronization issues（GWSMO）](https://support.google.com/a/users/answer/163644?hl=en)
 - [Share room and resource calendars](https://support.google.com/a/answer/1034381?hl=en)
@@ -890,6 +903,7 @@ Section 6全体を横断する重要な判断原則を一覧にまとめます�
 - [Allow Free/Busy Google Calendar room booking](https://support.google.com/a/answer/6262207?hl=en)
 
 ### Driveトラブルシューティング
+
 - [Troubleshoot shared drives for your users](https://support.google.com/a/answer/7337638?hl=en)
 - [Troubleshoot issues with shared drives](https://support.google.com/a/users/answer/12382709?hl=en)
 - [Fix problems in Drive for desktop](https://support.google.com/drive/answer/2565956?hl=en)
@@ -899,14 +913,23 @@ Section 6全体を横断する重要な判断原則を一覧にまとめます�
 - [Set up offline access to Docs, Sheets & Slides](https://support.google.com/a/answer/1642623?hl=en)
 - [Turn Google Drive and Docs on or off for users](https://support.google.com/a/answer/6115117?hl=en)
 
+### Gmailデータ復元
+
+- [Restore a user's permanently deleted email](https://knowledge.workspace.google.com/admin/support/troubleshooting/restore-a-users-permanently-deleted-email?hl=en)
+- [Delete or recover deleted Gmail messages](https://support.google.com/mail/answer/7401?hl=en)
+
 ### Meetトラブルシューティング
+
 - [Track meeting quality & statistics（Meet quality tool）](https://support.google.com/a/answer/9204857?hl=en)
 - [Troubleshoot Meet network, audio, & video issues](https://knowledge.workspace.google.com/admin/support/troubleshooting/troubleshoot-meet-network-audio-and-video-issues)
 - [What admins can do before contacting Meet support](https://support.google.com/a/answer/7322168?hl=en)
 - [Troubleshoot video & audio quality in a meeting](https://support.google.com/meet/answer/10620583?hl=en)
 - [Monitor the health of devices（Meet hardware）](https://support.google.com/a/answer/6386674?hl=en-EN)
+- [Join a meeting](https://support.google.com/meet/answer/9303069?hl=en)
+- [Tips to control meeting access and participation](https://support.google.com/a/users/answer/11989526?hl=en)
 
 ### サポートリソース
+
 - [Before you contact support: Gather key information](https://knowledge.workspace.google.com/admin/support/before-you-contact-support-gather-key-information)
 - [File & review support cases](https://support.google.com/a/answer/10759436?hl=en)
 - [Contact Google Workspace support](https://knowledge.workspace.google.com/admin/support/contact-google-workspace-support)
