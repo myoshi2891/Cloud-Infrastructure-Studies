@@ -181,9 +181,9 @@ gcloud services enable iap.googleapis.com
 
 **重要な依存関係:** OAuth consent screen(Task 2)が未設定のままここに進むと、コンソールから consent screen の設定を促されます。Task の順番どおりに進めていれば、この画面はスムーズに通過できます。
 
-### 6-4. 動作検証:Owner と Tester の違いを確認する
+### 6-4. 動作検証:Owner と Tester のアクセス拒否を確認する
 
-IAP をオンにした直後、Owner アカウント(プロジェクトの管理権限を持つ)はまだ問題なくアクセスできますが、これは Owner が既にプロジェクトレベルで十分な権限を持っているためです。一方、Tester アカウントはこの時点では IAP 用の IAM ロールを持っていないため、アクセスが拒否されます。この「意図的な失敗」を確認することが Task 3 の検証ポイントです。
+IAP をオンにしても、Project Owner や Editor にアプリへのアクセス権が自動付与されるわけではありません。`roles/iap.httpsResourceAccessor` をまだ持たない Owner と Tester の両アカウントでアプリへアクセスし、どちらも拒否されることを確認します。この「意図的な失敗」が Task 3 の検証ポイントです。
 
 ```mermaid
 sequenceDiagram
@@ -194,15 +194,19 @@ sequenceDiagram
 
     Owner->>IAP: アプリのURLにアクセス
     IAP->>IAP: IAMポリシーを確認
-    IAP-->>Owner: 認証OK
-    IAP->>App: リクエストを転送
-    App-->>Owner: 200 OK - Hello World
+    IAP-->>Owner: 403 Forbidden - ロール未付与
 
     Tester->>IAP: アプリのURLにアクセス
     IAP->>IAP: IAMポリシーを確認
     IAP-->>Tester: 403 Forbidden - ロール未付与
 
-    Note over Owner,Tester: Task 4でOwnerがTesterにロールを付与
+    Note over Owner,Tester: Task 4で両アカウントにアクセスロールを付与
+
+    Owner->>IAP: 再度アクセス
+    IAP->>IAP: IAMポリシーを確認
+    IAP-->>Owner: 認証OK
+    IAP->>App: リクエストを転送
+    App-->>Owner: 200 OK - Hello World
 
     Tester->>IAP: 再度アクセス
     IAP->>IAP: IAMポリシーを確認
@@ -218,28 +222,35 @@ sequenceDiagram
 
 ---
 
-## 7. Task 4: Tester アカウントへのアクセス権限付与
+## 7. Task 4: Owner と Tester へのアクセス権限付与
 
 ### 7-1. IAP 関連の主要 IAM ロール
 
 | ロール名 | ロールID | 役割 |
 |---|---|---|
 | IAP-secured Web App User | `roles/iap.httpsResourceAccessor` | IAP保護されたリソースへのHTTPSアクセスを許可する、エンドユーザー向けの最小権限ロール |
-| Project Editor など | (プロジェクトレベルの既存ロール) | IAPのオン/オフ自体は切り替えられるが、アクセス権限の付与はできない |
+| Project Owner / Editor など | (プロジェクトレベルの既存ロール) | IAPの管理権限があっても、IAP保護アプリへのアクセス権は自動付与されない |
 
-このLabで Tester アカウントに付与すべきロールは **IAP-secured Web App User** です。Project Editor などのより広いロールを付与するのは過剰権限であり、最小権限の原則に反するため避けるべきです。
+このLabで Owner と Tester の両アカウントに付与すべきロールは **IAP-secured Web App User** です。アクセスのために Project Editor などの広いロールを追加するのは過剰権限であり、`roles/iap.httpsResourceAccessor` を明示的に付与します。
 
 ### 7-2. Principal の追加手順
 
 1. **Security > Identity-Aware Proxy** ページで対象リソースのチェックボックスを選択する
 2. 右側パネルの **Add principal** をクリック
-3. **Add principals** ダイアログで Tester アカウントのメールアドレスを入力する
+3. **Add principals** ダイアログで Owner アカウントのメールアドレスを入力する
 4. **Roles** から **Cloud IAP > IAP-secured Web App User** を選択する
 5. **Save** をクリック
+6. 同じ手順を Tester アカウントにも繰り返す
 
 CLI から付与する場合は以下のようになります。
 
 ```bash
+gcloud iap web add-iam-policy-binding \
+  --resource-type=app-engine \
+  --member="user:OWNER_EMAIL" \
+  --role="roles/iap.httpsResourceAccessor" \
+  --project=PROJECT_ID
+
 gcloud iap web add-iam-policy-binding \
   --resource-type=app-engine \
   --member="user:TESTER_EMAIL" \
@@ -249,7 +260,7 @@ gcloud iap web add-iam-policy-binding \
 
 ### 7-3. 再検証
 
-Tester アカウントで再度アプリの URL にアクセスし、今度は正常に "Hello World!" が表示されることを確認します。これでアクセス制御の一連の流れ(公開 → IAP保護 → 特定アカウントへの許可)が完成します。
+ロール付与後に Owner と Tester の各アカウントでアプリの URL にアクセスし、両方で "Hello World!" が表示されることを確認します。成功確認は `roles/iap.httpsResourceAccessor` の付与後にだけ行います。これでアクセス制御の一連の流れ(公開 → IAP保護 → 特定アカウントへの許可)が完成します。
 
 **ベストプラクティス:** 個々のユーザーに直接ロールを付与するのではなく、実運用では Google グループ(例: `testers@example.com`)にロールを付与し、メンバーシップでアクセス管理する方が運用負荷が低くなります。このLabでは学習目的のため個別アカウントへの付与で問題ありません。
 
@@ -280,10 +291,11 @@ Tester アカウントで再度アプリの URL にアクセスし、今度は�
 | 1 | サンプルアプリが App Engine にデプロイされ、URLでアクセスできる | ☐ |
 | 2 | OAuth consent screen が External / no scopes / no users で設定済み | ☐ |
 | 3 | IAP API が有効化され、App Engine アプリに IAP が適用されている | ☐ |
-| 4 | Owner アカウントでのアクセスが成功する | ☐ |
+| 4 | ロール付与前は Owner アカウントでアクセス拒否される | ☐ |
 | 5 | ロール付与前は Tester アカウントでアクセス拒否される | ☐ |
-| 6 | Tester アカウントに `roles/iap.httpsResourceAccessor` が付与されている | ☐ |
-| 7 | ロール付与後、Tester アカウントでのアクセスが成功する | ☐ |
+| 6 | Owner と Tester に `roles/iap.httpsResourceAccessor` が付与されている | ☐ |
+| 7 | ロール付与後、Owner アカウントでのアクセスが成功する | ☐ |
+| 8 | ロール付与後、Tester アカウントでのアクセスが成功する | ☐ |
 
 ---
 

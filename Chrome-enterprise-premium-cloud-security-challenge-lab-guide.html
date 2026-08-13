@@ -7,6 +7,8 @@
         <link
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/atom-one-dark.min.css"
+            integrity="sha384-oaMLBGEzBOJx3UHwac0cVndtX5fxGQIfnAeFZ35RTgqPcYlbprH9o9PUV/F8Le07"
+            crossorigin="anonymous"
         />
         <style>
             :root {
@@ -892,15 +894,14 @@ cd python-docs-samples/appengine/standard_python3/hello_world/</code></pre>
                         </p>
                     </div>
 
-                    <h3>6-4. 動作検証:Owner と Tester の違いを確認する</h3>
+                    <h3>6-4. 動作検証:Owner と Tester のアクセス拒否を確認する</h3>
                     <div class="prose">
                         <p>
-                            IAP をオンにした直後、Owner
-                            アカウント(プロジェクトの管理権限を持つ)はまだ問題なくアクセスできますが、これは
-                            Owner
-                            が既にプロジェクトレベルで十分な権限を持っているためです。一方、Tester
-                            アカウントはこの時点では IAP 用の IAM
-                            ロールを持っていないため、アクセスが拒否されます。この「意図的な失敗」を確認することが
+                            IAP をオンにしても、Project Owner や Editor
+                            にアプリへのアクセス権が自動付与されるわけではありません。<code
+                                >roles/iap.httpsResourceAccessor</code
+                            >をまだ持たない Owner と Tester
+                            の両アカウントでアプリへアクセスし、どちらも拒否されることを確認します。この「意図的な失敗」が
                             Task 3 の検証ポイントです。
                         </p>
                     </div>
@@ -920,15 +921,19 @@ cd python-docs-samples/appengine/standard_python3/hello_world/</code></pre>
 
                             Owner->>IAP: アプリのURLにアクセス
                             IAP->>IAP: IAMポリシーを確認
-                            IAP-->>Owner: 認証OK
-                            IAP->>App: リクエストを転送
-                            App-->>Owner: 200 OK - Hello World
+                            IAP-->>Owner: 403 Forbidden - ロール未付与
 
                             Tester->>IAP: アプリのURLにアクセス
                             IAP->>IAP: IAMポリシーを確認
                             IAP-->>Tester: 403 Forbidden - ロール未付与
 
-                            Note over Owner,Tester: Task 4でOwnerがTesterにロールを付与
+                            Note over Owner,Tester: Task 4で両アカウントにアクセスロールを付与
+
+                            Owner->>IAP: 再度アクセス
+                            IAP->>IAP: IAMポリシーを確認
+                            IAP-->>Owner: 認証OK
+                            IAP->>App: リクエストを転送
+                            App-->>Owner: 200 OK - Hello World
 
                             Tester->>IAP: 再度アクセス
                             IAP->>IAP: IAMポリシーを確認
@@ -964,7 +969,7 @@ cd python-docs-samples/appengine/standard_python3/hello_world/</code></pre>
                 </section>
 
                 <section id="task4">
-                    <h2>7. Task 4: Tester アカウントへのアクセス権限付与</h2>
+                    <h2>7. Task 4: Owner と Tester へのアクセス権限付与</h2>
 
                     <h3>7-1. IAP 関連の主要 IAM ロール</h3>
                     <table>
@@ -981,18 +986,21 @@ cd python-docs-samples/appengine/standard_python3/hello_world/</code></pre>
                             </td>
                         </tr>
                         <tr>
-                            <td>Project Editor など</td>
+                            <td>Project Owner / Editor など</td>
                             <td>(プロジェクトレベルの既存ロール)</td>
                             <td>
-                                IAPのオン/オフ自体は切り替えられるが、アクセス権限の付与はできない
+                                IAPの管理権限があっても、IAP保護アプリへのアクセス権は自動付与されない
                             </td>
                         </tr>
                     </table>
                     <div class="prose">
                         <p>
-                            このLabで Tester アカウントに付与すべきロールは
-                            <strong>IAP-secured Web App User</strong> です。Project Editor
-                            などのより広いロールを付与するのは過剰権限であり、最小権限の原則に反するため避けるべきです。
+                            このLabで Owner と Tester の両アカウントに付与すべきロールは
+                            <strong>IAP-secured Web App User</strong>
+                            です。アクセスのために Project Editor
+                            などの広いロールを追加するのは過剰権限であり、<code
+                                >roles/iap.httpsResourceAccessor</code
+                            >を明示的に付与します。
                         </p>
                     </div>
 
@@ -1004,7 +1012,7 @@ cd python-docs-samples/appengine/standard_python3/hello_world/</code></pre>
                         </li>
                         <li>右側パネルの <strong>Add principal</strong> をクリック</li>
                         <li>
-                            <strong>Add principals</strong> ダイアログで Tester
+                            <strong>Add principals</strong> ダイアログで Owner
                             アカウントのメールアドレスを入力する
                         </li>
                         <li>
@@ -1012,12 +1020,19 @@ cd python-docs-samples/appengine/standard_python3/hello_world/</code></pre>
                             <strong>Cloud IAP &gt; IAP-secured Web App User</strong> を選択する
                         </li>
                         <li><strong>Save</strong> をクリック</li>
+                        <li>同じ手順を Tester アカウントにも繰り返す</li>
                     </ol>
 
                     <div class="prose">
                         <p>CLI から付与する場合は以下のようになります。</p>
                     </div>
                     <pre><code class="language-bash">gcloud iap web add-iam-policy-binding \
+  --resource-type=app-engine \
+  --member="user:OWNER_EMAIL" \
+  --role="roles/iap.httpsResourceAccessor" \
+  --project=PROJECT_ID
+
+gcloud iap web add-iam-policy-binding \
   --resource-type=app-engine \
   --member="user:TESTER_EMAIL" \
   --role="roles/iap.httpsResourceAccessor" \
@@ -1026,10 +1041,12 @@ cd python-docs-samples/appengine/standard_python3/hello_world/</code></pre>
                     <h3>7-3. 再検証</h3>
                     <div class="prose">
                         <p>
-                            Tester アカウントで再度アプリの URL にアクセスし、今度は正常に "Hello
-                            World!"
-                            が表示されることを確認します。これでアクセス制御の一連の流れ(公開 →
-                            IAP保護 → 特定アカウントへの許可)が完成します。
+                            ロール付与後に Owner と Tester の各アカウントでアプリの URL
+                            にアクセスし、両方で "Hello World!"
+                            が表示されることを確認します。成功確認は
+                            <code>roles/iap.httpsResourceAccessor</code>
+                            の付与後にだけ行います。これでアクセス制御の一連の流れ(公開 → IAP保護
+                            → 特定アカウントへの許可)が完成します。
                         </p>
                     </div>
 
@@ -1145,7 +1162,7 @@ cd python-docs-samples/appengine/standard_python3/hello_world/</code></pre>
                         </tr>
                         <tr>
                             <td>4</td>
-                            <td>Owner アカウントでのアクセスが成功する</td>
+                            <td>ロール付与前は Owner アカウントでアクセス拒否される</td>
                         </tr>
                         <tr>
                             <td>5</td>
@@ -1154,12 +1171,16 @@ cd python-docs-samples/appengine/standard_python3/hello_world/</code></pre>
                         <tr>
                             <td>6</td>
                             <td>
-                                Tester アカウントに
+                                Owner と Tester に
                                 <code>roles/iap.httpsResourceAccessor</code> が付与されている
                             </td>
                         </tr>
                         <tr>
                             <td>7</td>
+                            <td>ロール付与後、Owner アカウントでのアクセスが成功する</td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
                             <td>ロール付与後、Tester アカウントでのアクセスが成功する</td>
                         </tr>
                     </table>
@@ -1368,9 +1389,21 @@ cd python-docs-samples/appengine/standard_python3/hello_world/</code></pre>
             </main>
         </div>
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.12.0/mermaid.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/bash.min.js"></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.12.0/mermaid.min.js"
+            integrity="sha384-o+g/BxPwhi0C3RK7oQBxQuNimeafQ3GE/ST4iT2BxVI4Wzt60SH4pq9iXVYujjaS"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"
+            integrity="sha384-RH2xi4eIQ/gjtbs9fUXM68sLSi99C7ZWBRX1vDrVv6GQXRibxXLbwO2NGZB74MbU"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/bash.min.js"
+            integrity="sha384-BbT8tZtvkh8HPXIvL5RtzuljBwI3gR5KIdYxZyYSyI5C/+KNAGdzAiexvmxuroag"
+            crossorigin="anonymous"
+        ></script>
         <script>
             mermaid.initialize({
                 startOnLoad: false,
