@@ -298,14 +298,14 @@ if ! git status --short; then
   echo 'worktree の状態を取得できません。コミットを中止します。' >&2
   exit 1
 fi
-assert_clean_stage || exit 1
-git add -p -- app/constants.ts app/gcl/<exam>/<changed-file-1> app/gcl/<exam>/<changed-file-2> || exit 1
-assert_staged_scope app/constants.ts app/gcl/<exam>/<changed-file-1> app/gcl/<exam>/<changed-file-2> || exit 1
-git diff --cached
 [ "${COMMIT_AUTHORIZED:-}" = 'yes' ] || {
   echo 'ユーザーの明示認可がないため、コミットしません。' >&2
   exit 1
 }
+assert_clean_stage || exit 1
+git add -p -- app/constants.ts app/gcl/<exam>/<changed-file-1> app/gcl/<exam>/<changed-file-2> || exit 1
+assert_staged_scope app/constants.ts app/gcl/<exam>/<changed-file-1> app/gcl/<exam>/<changed-file-2> || exit 1
+git diff --cached
 git commit -m "feat(gcl/<exam>/SN): implement migrated content"
 ```
 
@@ -322,13 +322,13 @@ if ! git status --short; then
   echo 'worktree の状態を取得できません。コミットを中止します。' >&2
   exit 1
 fi
-assert_clean_stage || exit 1
-git add -p -- <refactored-files> || exit 1
-assert_staged_scope <refactored-files> || exit 1
 [ "${COMMIT_AUTHORIZED:-}" = 'yes' ] || {
   echo 'ユーザーの明示認可がないため、コミットしません。' >&2
   exit 1
 }
+assert_clean_stage || exit 1
+git add -p -- <refactored-files> || exit 1
+assert_staged_scope <refactored-files> || exit 1
 git commit -m "refactor(gcl/<exam>/SN): integrate migrated content"
 ```
 
