@@ -16,7 +16,7 @@ const Diagram = memo(function Diagram({ id, label }: { id: DiagramId; label: str
 });
 
 
-const CHECKLIST_ITEMS = [
+const CHECKLIST_ITEMS: React.ReactNode[] = [
   "VPCはCustom modeで作成し、リージョン・CIDRを明示的に設計した",
   "Private Services Access用の予約範囲に将来の拡張余地を確保した",
   "Cloud Buildの私有プールをVPC Service Controlsパリメータ内に構成した(該当する場合)",
@@ -39,7 +39,7 @@ const CHECKLIST_ITEMS = [
   "GKE Pod用セカンダリレンジは将来の最大ノード数から逆算した余裕あるサイズにした",
   "Shared VPC環境でのGKEクラスタ用IAMロール(Network User + Kubernetes Engine Admin等)を確認した",
   "プライベートクラスタのコントロールプレーンアクセスはDNSベースエンドポイント(IAM)を優先検討した",
-  "GKE Dataplane V2使用時、ip-masq-agentの--nomasq-all-reserved-ranges設定を確認した",
+  <>GKE Dataplane V2使用時、ip-masq-agentの<code>--nomasq-all-reserved-ranges</code>設定を確認した</>,
   "Pod IP枯渇時はdiscontiguous multi-Pod CIDRでの追加レンジ付与を第一選択とする方針を確認した",
   "高頻度DNSクエリが想定されるクラスタでNodeLocal DNSCacheの要否を検討した"
 ];
