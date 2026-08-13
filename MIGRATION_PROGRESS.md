@@ -10,19 +10,19 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 - **進行中タスク:** CompTIA Network+ 完全ガイド Next.js App Router への移行完了
 - **最終更新日時(UTC):** 2026-08-13T14:47:00Z
 
-## 2026-08-13: CompTIA「CompTIA Network+ (N10-009 / V9) 完全ガイド」100%全量移行 (完了)
+## 2026-08-13: CompTIA「CompTIA Network+ (N10-009 / V9) 完全ガイド」100%全量移行・デザイン完全復元 (完了)
 
 ### 目的
 
-`Comptia-network-plus-guide.html` および `Comptia-network-plus-guide.md` を、Next.js App Router 5ファイル構成 (`page.tsx`, `ComptiaNetworkPlusGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/comptia/network-plus` ルートへ移行。全13セクションの見出し、6個のテーブルセルテキスト、4個のMermaid図解、4個のコールアウト、参考文献リンクを一切の省略・要約なしで100%全量移植。
+`Comptia-network-plus-guide.html` および `Comptia-network-plus-guide.md` を、Next.js App Router 5ファイル構成 (`page.tsx`, `ComptiaNetworkPlusGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/comptia/network-plus` ルートへ移行。全13セクションの見出し、全6個のテーブルセルテキスト、4個のMermaid図解、4個のコールアウト、4つの情報カード (`stat-grid`)、5つのドメインカード (`domain-card`)、参考文献カード (`ref-box`)、および Tabler Icons アイコン群を一切の省略・漏れなく100%完全移植。
 
 ### 完了済みステップ
 
 - [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for comptia-network-plus-guide` (`4924bdd`)
-- [x] **Step 1 (Red)**: `test(comptia): add failing tests for comptia network plus guide migration` (`b56f078`)
-- [x] **Step 2 (Green)**: `feat(comptia): implement comptia network plus guide page components to pass tests` (`b1f15c5`)
+- [x] **Step 1 (Red)**: `test(comptia): add failing tests for comptia network plus guide migration` (`b56f078` / `17b2753`)
+- [x] **Step 2 (Green)**: `feat(comptia): implement comptia network plus guide page components to pass tests` (`b1f15c5` / `04a29e8`)
 - [x] **Step 3 (Refactor / Integration & Nav & Docs)**: `refactor(comptia): integrate comptia network plus guide into routing and update docs` (`0643cfa`)
-- [x] **Step 4 (Archive & Sync)**: 元HTML/MDを `archive/CompTIA/html/` および `archive/CompTIA/md/` へ移動し `MIGRATION_PROGRESS.md` を同期
+- [x] **Step 4 (Archive & Sync)**: 元HTML/MDを `archive/CompTIA/html/` および `archive/CompTIA/md/` へ移動し `MIGRATION_PROGRESS.md` を同期 (`0fece63`)
 
 ### 関連ファイル
 
