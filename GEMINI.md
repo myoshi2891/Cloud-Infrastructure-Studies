@@ -67,10 +67,13 @@ Updated 2026-08-12
 
 ## 開発コンベンション
 
-- **テスト駆動（絶対厳守）:** 実装の際は必ず `.claude/rules/tdd-commit-workflow.md` のルールに従い、以下の3ステップを厳格に繰り返すこと。各ステップ完了後に**即コミット（繰り越し禁止）**。
-  1. **Step 1 — Fail:** テストコードを先に作成し、失敗（Fail）することを確認してコミット (`test: add failing tests for ...`)
-  2. **Step 2 — Pass:** テストをPassさせる最小限の実装を行いコミット (`feat/fix: implement ... to pass tests`)
-  3. **Step 3 — Refactor:** コード整理・ルーティング統合・ビルド確認後にコミット (`refactor/docs: integrate ... into routing and update docs`)
+- **テスト駆動（絶対厳守）:** 実装の際は必ず `.gemini/rules/tdd-commit-workflow.md`（`.agents/` / `.claude/` にも同一内容で配置）のルールに従い、以下のステップを厳格に繰り返すこと。各ステップ完了後に**即コミット（繰り越し禁止）**。ただしコミットはユーザーの認可がある場合のみ実行する。
+  1. **Step 0 — Inventory:** 移行タスクでは移行元から `docs/migration-inventory/<slug>.json` を機械抽出してコミット (`chore(migration): add content inventory for ...`)
+  2. **Step 1 — Fail:** インベントリを `import` した失敗テストを先に作成し、失敗を確認してコミット (`test: add failing tests for ...`)
+  3. **Step 2 — Pass:** テストをPassさせる実装を行いコミット (`feat/fix: implement ... to pass tests`)
+  4. **Step 3 — Refactor:** コード整理・ルーティング統合・`bun run lint` / `bun run build` 確認後にコミット (`refactor/docs: integrate ... into routing and update docs`)
+- **テスト強度（絶対厳守）:** 同ルール §2 の合格基準を満たすこと。特に **`getAllByText(regexp).length > 0` のみ**の検証と、件数の `toBeGreaterThan(0)` 検証は**禁止**（要約して移行してもパスしてしまうため）。件数は必ず `toBe(n)`、文言は空白除去後の完全部分文字列一致で全量検証する。テンプレートは同ルール §3 をコピーして使う。
+- **エージェント設定の3系統同期:** `.agents/` が正本、`.claude/` と `.gemini/` はその複製。片方だけ更新しないこと。`__tests__/skills/agent-mirror-sync.test.ts` が同一性を検証する。
 - **UI デザイン:** 各セクションごとに固有のテーマカラー（Aurora, Sapphire, Laboratory, Gold）が設定されています。
 - **スタイリング:** CSS 変数は `app/globals.css` で定義された 3層トークンアーキテクチャに従ってください。
 - **保守性:** 共通の定数（作成日など）は `app/gcl/genai-leader/constants.ts` に集約されています。
@@ -82,8 +85,9 @@ Updated 2026-08-12
 
 ## 注意事項
 
-- **`DisclaimerBanner`**: 全画面固定の免責事項バナー。`components/DisclaimerBanner.tsx` を編集すること。ResizeObserver で高さを `--disclaimer-height` に同期、`body { padding-top }` でコンテンツ隠れを防止。
+- **`DisclaimerBanner`**: `components/DisclaimerBanner.tsx`（`'use client'`）。**`position: sticky; top: var(--header-h)`** で Header 直下に貼り付き、flow 内に留まる。**`body { padding-top }` は使わない**（過去に `fixed` + `padding-top` としていた結果、sticky Header の natural position がずれ、スクロール開始まで Header と Disclaimer の縦並び順が入れ替わる不具合が発生したため修正済み）。ResizeObserver による `--disclaimer-height` の同期は継続する（ページ内 SectionNav が `--fixed-offset = calc(--header-h + --disclaimer-height)` を `top` 値として参照するため）。免責事項テキストの変更はこのファイルのみ編集する。
 - `litellm` や `dspy` は脆弱性の懸念があるため、プロジェクトへの追加は禁止されています。
+- **フォントは自己ホスト（`next/font/google` 禁止）**: `next/font/google` はビルド時に Google Fonts へ HTTP 取得を行うため、CDN が旧リビジョンの CSS（実体が削除済みの woff2 URL）を返すと `Failed to fetch <family> from Google Fonts.` でビルドが失敗します（Netlify CI で実際に発生）。全 11 ファミリは `@fontsource-variable/*` / `@fontsource/*` に移行済みで、`app/layout.tsx`（Noto Sans JP / JetBrains Mono / DM Sans）と `app/gcl/genai-leader/section1〜4/page.tsx` が該当 CSS を `import` します。**可変フォントのファミリ名は `'<Name> Variable'`**（例 `'Noto Sans JP Variable'`）であり、`app/globals.css` の `@theme` の `--font-*` トークンで `'<Name> Variable', '<Name>', <generic>` の順に指定します。フォントを追加する場合も `bun add @fontsource-variable/<name>` → CSS import → `@theme` にトークン追加の手順とし、`next/font` は使用しません。この制約は `__tests__/fonts/self-hosted-fonts.test.ts` が検証します。
 - **Client/Server コンポーネント境界**: ページ固有のアンカーナビなど状態やブラウザAPIに依存するUIは `'use client'` ディレクティブを含む専用コンポーネントとして切り出し、メインの `page.tsx` を Server Component として維持してください。また、Client コンポーネント内でサーバー専用API (`fs`, `cookies`, `headers`) を参照することは禁止し、PropsはJSONシリアライズ可能なものに限定してください。
 - **コードブロック内の改行 (`.code-block`)**: JSX変換時、コード内の改行に `{"\n"}` を使用せず、各行を `<div className="code-line">...</div>` でラップしてください。`.code-line` は `white-space: pre` 等でインデントを保持し、`map` での展開時には安定した `key` を付与してください。
 - **表形式データの構造化**: テキストのスペース揃えで列を表現したデータは、フォント変更による列ズレを防ぐため、必ず `<table>` 要素に変換してください。その際、必ず `<thead>` を含め、見出しセルには `<th scope="col">` を使用してください。
@@ -93,7 +97,7 @@ Updated 2026-08-12
 - ページコンポーネント（`page.tsx`）が巨大化するのを防ぐため、各セクションは必ず `components/sections/` に分割し、スタイリングには CSS Modules (`*.module.css`) を使用してください。セクション間で共通のスタイル（例: `SectionBase.module.css`）を利用する場合は、CSS 内での `@import` を避け、各 TSX ファイルから直接 `import baseStyles from './SectionBase.module.css'` のようにインポートして適用してください。
 - ASCIIダイアグラムの使用を避け、専用の SVG コンポーネント (`DiagramSVG.tsx` 等) に置き換えてください。型の制約（Discriminated Union）により、アクセシビリティを担保するための `ariaLabel="説明文"` または `decorative={true}` の指定が必須となります。
 - アクセシビリティ（`aria-label` 等の付与）を徹底し、コンポーネントやユーティリティ関数には Docstrings (JSDoc) を追加してください。
-- **移行作業の同期とHTMLファイルアーカイブルール**: HTMLの移行作業時には必ず `.claude/rules/migration-progress-sync.md` に従い進捗を同期してください。また、**移行元ファイルは絶対に削除せず、移行完了後に `archive/` 配下の適切なディレクトリへ移動（アーカイブ）してください。Cisco 資料は `archive/Cisco/html/` と `archive/Cisco/md/` を使用し、`Gcl_Archive/Cisco` は作成・使用しないでください**。
+- **移行作業の同期とHTMLファイルアーカイブルール**: HTMLの移行作業時には必ず `.gemini/rules/migration-progress-sync.md`（3系統同一内容）に従い進捗を同期してください。また、**移行元ファイルは絶対に削除せず、移行完了後に `archive/` 配下の適切なディレクトリへ移動（アーカイブ）してください。Cisco 資料は `archive/Cisco/html/` と `archive/Cisco/md/` を使用し、`Gcl_Archive/Cisco` は作成・使用しないでください**。
 - **Mermaid図解の幅・配置契約**: `Diagram` や `.mermaid-wrap` に個別の `maxWidth` インラインスタイル（`maxWidth: 800px` 等）を設定して幅を人工的に制限することは**絶対禁止**です。コンテンツ領域の全幅 (`width: 100%`) を活用し、`margin: 1.5rem auto 2rem` で親コンテナ内中央に配置してください。
 - **ユーザー手動確認ゼロ原則（手動・目視確認依頼の全廃）**:
   - ユーザーに目視チェックやスクリーンショット撮影・確認作業を依頼することを**厳禁**とします。
