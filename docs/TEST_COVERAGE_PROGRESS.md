@@ -1,8 +1,8 @@
 # テストカバレッジ・網羅性進捗レポート
 
-最終更新日: 2026-08-13
+最終更新日: 2026-08-12
 
-[coverage-dashboard.html](coverage-dashboard.html)（2026年8月13日更新）のデータを基に、現在のテスト網羅性と進捗状況を整理したレポートです。
+[coverage-dashboard.html](coverage-dashboard.html)（2026年8月12日更新）のデータを基に、現在のテスト網羅性と進捗状況を整理したレポートです。
 
 ---
 
@@ -20,6 +20,8 @@
 ## 2. ドメイン別カバレッジマトリクス
 
 各試験対策ページおよび共通モジュールのテストカテゴリ別の網羅状況です。
+
+> **集計スコープ:** 本マトリクスは `scripts/lib/classifier.mjs` の `DOMAINS` / `domainOf()` が分類する 9 ドメイン **386 ファイル（カバー済み 99 ファイル / 26%）** のみを対象とします。全体サマリー（471 ファイル / 127 ファイル）との差分 **85 ファイル（うちカバー済み 28 ファイル）** は、現時点で `domainOf()` が `null` を返す未分類ソースです。内訳は `app/gcl/hands-on/` 46、`app/aws/solutions-architect-associate/` 25、`app/cisco/ccde/` 5、`app/cisco/ccie/` 5、`app/api/health/` 1、`app/globals.css` 1、`app/home-utils.ts` 1、`app/page.module.css` 1。これらをドメイン行として集計するには `classifier.mjs` の `DOMAINS` / `domainOf()` へのドメイン追加が必要です。
 
 | ドメイン | 進捗 (カバー数/総数) | 達成率 | Unit | Integration | E2E | Smoke | Visual | A11y | Perf | Security |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |

@@ -10,7 +10,7 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 - **進行中タスク:** レビュー指摘の実装・対象検証完了（全体テストの既知失敗を記録）
 - **最終更新日時(UTC):** 2026-08-12T15:40:25Z
 
-## 2026-08-13: レビュー指摘のホーム/Cisco/ADKガイド改善（対象検証完了）
+## 2026-08-12: レビュー指摘のホーム/Cisco/ADKガイド改善（対象検証完了）
 
 - [x] **Home**: URL重複除外テストデータをカタログ順非依存にし、Hero / ExamCard / ExamCatalog / Statsを`components/sections/home/`へ分割。
 - [x] **Cisco content / layout**: CCNP Automationの現行Automation Specialist名称へ統一し、固定280pxサイドバーを除いた残り幅をメイン領域が使用する契約へ修正。
