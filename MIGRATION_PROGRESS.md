@@ -8,7 +8,14 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 
 - **ブランチ:** dev
 - **進行中タスク:** レビュー指摘のカテゴリー別修正・検証・コミット完了
-- **最終更新日時(UTC):** 2026-08-13T05:46:15Z
+- **最終更新日時(UTC):** 2026-08-13T07:49:25Z
+
+## 2026-08-13: レビュー追補の認可・インベントリ・Drive復元修正（完了）
+
+- [x] **Commit authorization**: Step 5 / 6の認可確認をステージ前へ移し、拒否時にindexを汚さないフローへ修正（`71a03d2`）。
+- [x] **Migration inventory**: 本文順序、注釈、画像alt、コード全文、表ヘッダー、コード行、全図形式とa11y契約を厳密検証し、入力元をリポジトリ相対パスへ正規化。3ミラーを同期（`461f071`）。
+- [x] **AGWA Section 6**: My Drive、共有ドライブ内ファイル、削除済み共有ドライブの復元経路・期限・所有権モデルを分離し、状態図・総括・チェックリストを同期（`3dbc0fa`）。
+- [x] **Validation**: 全体ESLint、対象Markdown lint、3ミラーの完全一致、インベントリスクリプトの相対パス出力とリポジトリ外入力拒否、Agwa-section6.md内Mermaid 10ブロックの構文解析に成功。E2E、Visualテスト、ビルドは未実施。
 
 ## 2026-08-13: レビュー指摘のテスト・ワークフロー・ガイド修正（完了）
 
@@ -16,7 +23,7 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 - [x] **Agent workflow**: インベントリ実行をbunへ統一し、DOM要素・リンク集合・コードブロック件数・`preserveNaturalScale` の検証を厳密化。Step 5 / 6へコミット認可ガードを追加し、3系統を同期。
 - [x] **AGWA Section 6**: Status Dashboard、Drive/Gmail復元、Meet匿名参加の説明をGoogle公式資料に合わせ、MD022 / MD047を解消。
 - [x] **Chrome Enterprise Premium guide**: Owner / EditorのIAP自動アクセス前提を削除し、Owner / Tester双方のロール付与手順をHTML/Markdownで同期。CDN4資産へSRIを追加。
-- [x] **Validation**: 対象Vitest 35件・94件、全体ESLint、対象Markdown lint、CDN4資産のSHA-384照合は成功。全体Vitestは987件成功、既知のスモーク期待値1件とサンドボックスの`window.localStorage`不備30件が失敗。`npm run test:e2e`、Visualテスト、ビルドは今回のユーザー指示に従い未実施。目視確認はユーザーが実施。
+- [x] **Validation**: 対象Vitest 35件・94件、全体ESLint、対象Markdown lint、CDN4資産のSHA-384照合は成功。全体Vitestは987件成功、既知のスモーク期待値1件とサンドボックスの`window.localStorage`不備30件が失敗。`npm run test:e2e`、Visualテスト、ビルドは未実施。
 
 ## 2026-08-12: レビュー指摘のホーム/Cisco/ADKガイド改善（対象検証完了）
 
@@ -26,7 +33,7 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 - [x] **ADK guide**: Python 3.10ゲート、`google-adk>=1.17.0,<2.0.0`、一意なセッションIDを再利用する本番ストリーミングAPI検証手順を追加。
 - [x] **Coverage dashboard**: `readFile` / `readFileSync` 呼び出しだけを参照として抽出し、`components/` のCSSと3つの共通正準対象を集計してHTMLを再生成。
 - [x] **Home constants**: `cardColorMap`、`providerMeta`、`providerOrder` を `app/constants.ts` に集約し、旧 `components/sections/home/config.ts` を削除。
-- [x] **Validation**: 対象Vitest 112件とESLintは成功。全体Vitestは952件成功、既知のスモーク期待値1件とサンドボックスの `window.localStorage` 不備30件が失敗。ビルドと目視確認はユーザー指定により未実施。
+- [x] **Validation**: 対象Vitest 112件とESLintは成功。全体Vitestは952件成功、既知のスモーク期待値1件とサンドボックスの `window.localStorage` 不備30件が失敗。ビルドとVisualテストは未実施。
 
 ## 2026-08-12: Cisco「Cisco Certified DevNet Professional 認定 徹底解説ガイド」100%全量移行 (完了)
 
@@ -960,7 +967,7 @@ HTMLから移行されたガイド画面ごとに異なっていたサイドバ�
   - `CLAUDE.md` に section1 構成を追記。`bun run build` / `bun run lint` パス。
 - [x] **Step 4 (Docs Sync)**: `chore(docs): update MIGRATION_PROGRESS.md — ACE section1 移行完了`
 
-### コンテンツ補正（ユーザー確認済み）
+### コンテンツ補正（完了）
 
 公式 PDF ファイル名 `063026_..._exam_guide`（= 2026/06/30）および Google 公式アナウンスに基づき、HTML本文の誤記を修正:
 
@@ -1159,7 +1166,7 @@ bun run test:e2e e2e/nav.spec.ts  # Chromium 2 件 pass
 
 ### 残課題 / 次回着手候補
 
-- 手動確認: `bun run dev` で実機の Drawer アニメーション・スクロールロック挙動を最終チェック
+- Visualテスト: 未実施
 - AWS 試験ページ群の実装（`app/aws/solutions-architect-associate/page.tsx`）。adapter は完成しているので constants の `status` を `'available'` に変えるだけで Drawer に自動反映される
 
 ---
@@ -1168,7 +1175,7 @@ bun run test:e2e e2e/nav.spec.ts  # Chromium 2 件 pass
 
 ### 目的
 
-ユーザーによって確認されたオリジナル HTML との乖離（情報の省略・簡略化）を解消するため、残りのセクション（1.1, 1.2, 1.3, 1.4, 1.6）の内容をオリジナルに準拠したリッチな内容に復元・補完する。
+検出されたオリジナル HTML との乖離（情報の省略・簡略化）を解消するため、残りのセクション（1.1, 1.2, 1.3, 1.4, 1.6）の内容をオリジナルに準拠したリッチな内容に復元・補完する。
 
 ### ステータス
 
@@ -1184,8 +1191,8 @@ bun run test:e2e e2e/nav.spec.ts  # Chromium 2 件 pass
 ## 次回セッションでの再開プロンプト
 
 あなたは熟練したフロントエンドエンジニアであり、Next.js (App Router) の移行スペシャリストです。
-最新実装 HEAD は `774ff71`、前回進捗同期コミットは `cfeac2b` です。
-ミラーのraw Buffer比較、移行ワークフロー契約、AGWA Section 6、Chrome Enterprise Premiumガイドはカテゴリー別コミットで対応済みです。対象Vitest 35件・94件と `npm run lint` が成功しています。全体Vitestは987件成功・31件既知失敗です。E2E、Visual、ビルドはユーザー指定により未実施で、目視確認はユーザーが実施します。
+最新実装 HEAD は `3dbc0fa`、前回進捗同期コミットは `7ec1df8` です。
+コミット認可フロー、移行インベントリ契約、AGWA Section 6のDrive復元分岐はカテゴリー別コミットで対応済みです。全体ESLint、対象Markdown lint、3ミラー一致、インベントリスクリプト、Mermaid構文解析は成功しています。E2E、Visualテスト、ビルドは未実施です。
 
 標準ワークフローの正準は `.agents/rules/tdd-commit-workflow.md` で、`.claude` / `.gemini` は同期ミラーです。次回は次の4ステップを維持してください。
 

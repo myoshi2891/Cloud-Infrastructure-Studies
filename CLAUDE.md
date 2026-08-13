@@ -306,8 +306,6 @@ app/
         NavBar.tsx                  # サイドバーナビ
         constants.ts                # Mermaid 図定義（7図）
         page.css                    # ページ固有スタイル
-      security-fundamentals/
-        page.tsx                    # CCNA 200-301 Security Fundamentals 完全ガイド
   aws/
     solutions-architect-associate/
       page.tsx                      # AWS Certified Solutions Architect – Associate (SAA-C03) 完全対策ガイド (Server)
@@ -355,8 +353,12 @@ lib/
 
 __tests__/                          # Vitest（jsdom環境）
 e2e/                                # Playwright（Chromiumのみ）
-Gcl_Archive/                        # 旧HTML資料（参照・移行元アーカイブ）
-Aws/                                # AWS資料アーカイブ
+archive/                            # 移行済み資料の正規アーカイブ
+  Cisco/
+    html/                           # Cisco HTML資料
+    md/                             # Cisco Markdown資料
+  Gcl_Archive/                      # Cisco以外の旧GCP資料
+  Aws/                              # AWS資料
 ```
 
 ## CSSデザイントークン（3層アーキテクチャ）
@@ -405,6 +407,7 @@ Aws/                                # AWS資料アーカイブ
 - **CSS変数・テーマトークンの適用**: `globals.css` の3層アーキテクチャ CSS 変数（`--color-background`, `--color-foreground`, `--color-border` など）を厳格に使用すること。独自のローカル変数定義や `--color-bg-primary` のような実在しないトークンの使用は避ける。コンポーネントレベルの CSS 内で新たなカスタムプロパティ（`--*`）を定義することは禁止する。
 - **サイドバーガイドのレイアウト契約**: サイドバーを持つガイド画面は、デスクトップでサイドバーを左端へ固定し幅を `280px` に統一する。メイン領域は `margin-left: 280px`、`width: calc(100% - 280px)`、`max-width: none` で残り幅をすべて使い、本文全体を再制限する `content-inner` 等の最大幅は設けない。レスポンシブ規則では `margin-left: 0`、`width: 100%` へ戻す。この契約は `__tests__/guide-content-widths.test.ts` で全24スタイルシートを検証する。
 - **グローバルメニューの運用（データ駆動）**: ナビゲーションは `app/constants.ts` の `EXAMS` を正本としている。新ページ追加時は `EXAMS` に `Exam` エントリを追加し（`status: 'coming-soon'` → ページ完成後 `'available'` または省略）、`app/navigation.ts` の `toNavTree` が自動でグルーピングするため **`components/Header.tsx` は直接編集しない**。
+- **移行元ファイルのアーカイブ**: 移行元は削除せず `archive/` 配下へ移動する。Cisco資料の正規保存先は `archive/Cisco/html/` と `archive/Cisco/md/` とし、`Gcl_Archive/Cisco` は作成・使用しない。
 - 新試験を追加する場合: ① `app/constants.ts` の `EXAMS` にエントリ追加 ② `app/globals.css` に `icon-theme-<id>` ユーティリティ追加 ③ 試験ページ作成 — この 3 ファイルのみ変更すれば Header に自動反映される。
 - ページ固有の共通定数は `constants.ts` に集約する（`app/gcl/genai-leader/constants.ts` 参照）
 - **z-index レイヤリング**: グローバル UI のスタッキング順は `Header (sticky z-50)` → `DisclaimerBanner (sticky z-40, top: var(--header-h))` → ページ内 sticky/fixed (`z-index: 100` を使うページが多い、`top: var(--fixed-offset)`) → `Header ドロワー (z-[200])`。Header と Disclaimer は両方 sticky で flow 内、ドロワーは fixed inset-0 で全画面オーバーレイ。ページ側で 100 を超える z-index を新規に導入する場合は、ドロワーを覆い隠さないか必ず確認すること。
