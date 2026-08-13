@@ -80,29 +80,70 @@ HTML / Markdown からのページ移行では、実装にもテスト作成に�
 
 ### 1-1. 抽出コマンド（HTML ソースの場合）
 
-`jsdom` は devDependency として既に導入済み。一時スクリプトはリポジトリ外に作り、実行後に削除する。
+`jsdom` は devDependency として既に導入済み。モジュール解決をリポジトリ基準にするため、一時スクリプトはリポジトリ直下に作り、実行後に削除する。
 
 ```bash
-inventory_script=$(mktemp -t inventory.XXXXXX.mjs) || exit 1
+inventory_script=$(mktemp "$PWD/.inventory.XXXXXX.mjs") || exit 1
 trap 'rm -f "$inventory_script"' EXIT
 cat > "$inventory_script" <<'EOF'
 import fs from 'node:fs';
+import path from 'node:path';
 import { JSDOM } from 'jsdom';
 
 const [, , htmlPath] = process.argv;
 if (!htmlPath) {
     throw new Error('usage: bun <script> <source.html>');
 }
-const doc = new JSDOM(fs.readFileSync(htmlPath, 'utf8')).window.document;
+const repositoryRoot = process.cwd();
+const absoluteHtmlPath = path.resolve(repositoryRoot, htmlPath);
+const source = path.relative(repositoryRoot, absoluteHtmlPath).split(path.sep).join('/');
+if (!source || source.startsWith('../') || path.isAbsolute(source)) {
+    throw new Error('source.html must be inside the repository');
+}
+const doc = new JSDOM(fs.readFileSync(absoluteHtmlPath, 'utf8')).window.document;
+const normalize = (value) => value.replace(/\s+/g, ' ').trim();
 const texts = (sel) =>
     [...doc.querySelectorAll(sel)]
-        .map((el) => (el.textContent ?? '').replace(/\s+/g, ' ').trim())
+        .map((el) => normalize(el.textContent ?? ''))
         .filter(Boolean);
+const diagramSelector = '[data-testid="mermaid-diagram"], .mermaid, [id^="diag-"]';
+const diagrams = [...doc.querySelectorAll(diagramSelector)].filter(
+    (element) => !element.querySelector(diagramSelector),
+);
+const codeBlockSelector = 'pre:not(.mermaid), .code-block';
+const codeBlocks = [...doc.querySelectorAll(codeBlockSelector)].filter(
+    (element) => !element.parentElement?.closest(codeBlockSelector),
+);
+const bodySelector = `p, aside, .annotation, [class*="callout"], img[alt], ${codeBlockSelector}`;
+const bodyElements = [...doc.body.querySelectorAll(bodySelector)].filter(
+    (element) => !element.parentElement?.closest(bodySelector),
+);
+const bodyContent = bodyElements
+    .map((element) => ({
+        kind: element.matches('img[alt]')
+            ? 'imageAlt'
+            : element.matches(codeBlockSelector)
+                ? 'code'
+                : element.matches('aside, .annotation, [class*="callout"]')
+                    ? 'annotation'
+                    : 'paragraph',
+        text: normalize(
+            element.matches('img[alt]')
+                ? element.getAttribute('alt') ?? ''
+                : element.textContent ?? '',
+        ),
+    }))
+    .filter((entry) => entry.text);
+const codeLineCount = (block) => {
+    const explicitLines = block.querySelectorAll(':scope > .code-line').length;
+    if (explicitLines > 0) return explicitLines;
+    return (block.textContent ?? '').replace(/\r\n?/g, '\n').split('\n').length;
+};
 
 console.log(
     JSON.stringify(
         {
-            source: htmlPath,
+            source,
             h1: texts('h1'),
             h2: texts('h2'),
             h3: texts('h3'),
@@ -111,14 +152,21 @@ console.log(
             td: texts('td'),
             listItems: texts('li'),
             links: [...doc.querySelectorAll('a[href^="http"]')].map((a) => ({
-                text: (a.textContent ?? '').replace(/\s+/g, ' ').trim(),
+                text: normalize(a.textContent ?? ''),
                 href: a.getAttribute('href'),
             })),
+            bodyContent,
             counts: {
                 table: doc.querySelectorAll('table').length,
-                diagram: doc.querySelectorAll('.mermaid, [id^="diag-"]').length,
-                codeBlock: doc.querySelectorAll('pre, .code-block').length,
+                diagram: diagrams.length,
+                codeBlock: codeBlocks.length,
                 figure: doc.querySelectorAll('img, svg').length,
+            },
+            structures: {
+                tableColumnHeaders: [...doc.querySelectorAll('table')].map(
+                    (table) => table.querySelectorAll('thead th[scope="col"]').length,
+                ),
+                codeLines: codeBlocks.map(codeLineCount),
             },
         },
         null,
@@ -135,6 +183,7 @@ Markdown ソースの場合は `marked`（導入済み）で HTML 化してか�
 ### 1-2. インベントリの扱い
 
 - 生成した `docs/migration-inventory/<page-slug>.json` は**コミット対象**とする。テストがこれを `import` して件数・文言を突き合わせる。
+- `source` は常にリポジトリ相対パスとし、リポジトリ外の入力を拒否する。本文は段落、注釈・コールアウト、画像 alt、コードブロック内のコメントを含む全文を出現順で保持する。
 - インベントリは**移行元の状態**を表す。実装に合わせてインベントリを書き換えることは**改竄であり禁止**。移行元に誤りがある場合のみ、理由をコミットメッセージに明記して修正する。
 - コミット: `chore(migration): add content inventory for <page-slug>`
 
@@ -199,22 +248,46 @@ import Page from '@/app/<route>/page';
 
 // MermaidDiagram は名前付きエクスポート。default でモックすると必ず落ちる。
 vi.mock('@/components/MermaidDiagram', () => ({
-    MermaidDiagram: ({ chart, ariaLabel, preserveNaturalScale }: {
+    MermaidDiagram: ({ chart, ariaLabel, decorative, preserveNaturalScale }: {
         chart: string;
-        ariaLabel: string;
+        ariaLabel?: string;
+        decorative?: boolean;
         preserveNaturalScale?: boolean;
     }) => (
         <div
             data-testid="mermaid-diagram"
             data-chart={chart}
+            data-decorative={String(decorative === true)}
             data-preserve-natural-scale={String(preserveNaturalScale)}
             aria-label={ariaLabel}
+            aria-hidden={decorative || undefined}
         />
     ),
 }));
 
 /** 空白差・改行差を無視して比較するための正規化 */
 const squash = (value: string): string => value.replace(/\s+/g, '');
+const normalize = (value: string): string => value.replace(/\s+/g, ' ').trim();
+const codeBlockSelector = 'pre:not(.mermaid), .code-block';
+const bodySelector = `p, aside, .annotation, [class*="callout"], img[alt], ${codeBlockSelector}`;
+const extractBodyContent = (container: HTMLElement) =>
+    [...container.querySelectorAll(bodySelector)]
+        .filter((element) => !element.parentElement?.closest(bodySelector))
+        .map((element) => ({
+            kind: element.matches('img[alt]')
+                ? 'imageAlt'
+                : element.matches(codeBlockSelector)
+                    ? 'code'
+                    : element.matches('aside, .annotation, [class*="callout"]')
+                        ? 'annotation'
+                        : 'paragraph',
+            text: normalize(
+                element.matches('img[alt]')
+                    ? element.getAttribute('alt') ?? ''
+                    : element.textContent ?? '',
+            ),
+        }))
+        .filter((entry) => entry.text);
 
 describe('<page-slug> — 移行元コンテンツの全量移行', () => {
     const renderPage = () => {
@@ -256,32 +329,53 @@ describe('<page-slug> — 移行元コンテンツの全量移行', () => {
         expect(rendered).toEqual(expected);
     });
 
-    it('図の件数が移行元と厳密に一致し、全図に ariaLabel がある', () => {
+    it('本文・注釈・画像 alt・コード全文が移行元の順序どおり一致する', () => {
         const container = renderPage();
-        const diagrams = [...container.querySelectorAll('[data-testid="mermaid-diagram"]')];
+        expect(extractBodyContent(container)).toEqual(inventory.bodyContent);
+    });
+
+    it('全形式の図が件数どおり存在し、説明または装飾指定を持つ', () => {
+        const container = renderPage();
+        const diagramSelector = '[data-testid="mermaid-diagram"], .mermaid, [id^="diag-"]';
+        const diagrams = [...container.querySelectorAll(diagramSelector)].filter(
+            (element) => !element.querySelector(diagramSelector),
+        );
         expect(diagrams).toHaveLength(inventory.counts.diagram);
-        diagrams.forEach((el) => {
-            expect(el.getAttribute('aria-label')).toBeTruthy();
-            expect(el.getAttribute('data-preserve-natural-scale')).toBe('true');
+        diagrams.forEach((element) => {
+            const hasLabel = Boolean(element.getAttribute('aria-label')?.trim());
+            const isDecorative = element.getAttribute('data-decorative') === 'true'
+                || element.getAttribute('aria-hidden') === 'true';
+            expect(hasLabel || isDecorative).toBe(true);
         });
+    });
+
+    it('静的な画像と SVG が移行元の件数と一致する', () => {
+        const container = renderPage();
+        expect(container.querySelectorAll('img, svg')).toHaveLength(inventory.counts.figure);
     });
 
     it('テーブルが件数どおり存在し、thead と th[scope=col] を持つ', () => {
         const container = renderPage();
         const tables = [...container.querySelectorAll('table')];
         expect(tables).toHaveLength(inventory.counts.table);
-        tables.forEach((table) => {
+        tables.forEach((table, index) => {
             expect(table.querySelector('thead')).not.toBeNull();
-            expect(table.querySelectorAll('th[scope="col"]').length).toBeGreaterThan(0);
+            expect(table.querySelectorAll('thead th[scope="col"]').length).toBe(
+                inventory.structures.tableColumnHeaders[index],
+            );
         });
     });
 
     it('コードブロックが .code-line でラップされている', () => {
         const container = renderPage();
-        const blocks = [...container.querySelectorAll('.code-block')];
+        const blocks = [...container.querySelectorAll(codeBlockSelector)].filter(
+            (element) => !element.parentElement?.closest(codeBlockSelector),
+        );
         expect(blocks).toHaveLength(inventory.counts.codeBlock);
-        blocks.forEach((block) => {
-            expect(block.querySelectorAll('.code-line').length).toBeGreaterThan(0);
+        blocks.forEach((block, index) => {
+            expect(block.querySelectorAll(':scope > .code-line').length).toBe(
+                inventory.structures.codeLines[index],
+            );
         });
     });
 });
@@ -329,7 +423,10 @@ describe('<page-slug> — 移行元コンテンツの全量移行', () => {
   bun run lint
   bun run build
   bun run test
+  bun run test:e2e
   ```
+
+  `bun run test:e2e` は移行または UI 変更で必須とする。文書・ルール・非 UI データだけの変更で画面挙動に影響しない場合に限り省略でき、その理由を検証記録へ明記する。
 
 - **🚨 ゲート条件（P レベルタスクまたは複数コミットのフェーズ完了時）**:
   - `.agents/skills/spec-sync/SKILL.md` の Section F「フェーズ完了時の Definition of Done」を適用する。
