@@ -1,38 +1,61 @@
 'use client';
 
-import { memo } from 'react';
 import { MermaidDiagram } from '@/components/MermaidDiagram';
 import NavBar from './NavBar';
-import { DIAGRAMS, type DiagramId } from './constants';
-
-const Diagram = memo(function Diagram({ id, label }: { id: DiagramId; label: string }) {
-    const chart = DIAGRAMS[id];
-    if (!chart) return null;
-    return (
-        <div className="mermaid-wrap">
-            <MermaidDiagram chart={chart} ariaLabel={label} preserveNaturalScale />
-        </div>
-    );
-});
+import { DIAGRAMS } from './constants';
 
 export default function ComptiaNetworkPlusGuide() {
     return (
         <div className="comptia-network-plus-page">
             <NavBar />
             <main className="main">
-                <header className="doc-header" id="top">
+                <header className="doc-header">
                     <div className="doc-eyebrow">
-                        <span>CompTIA N10-009 / V9 対応</span>
+                        <i className="ti ti-certificate" aria-hidden="true" />
+                        N10-009 / V9 対応
                     </div>
                     <h1>CompTIA Network+ 試験 完全ガイド</h1>
-                    <p className="doc-subtitle">
+                    <p className="subtitle">
                         初学者のためのステップバイステップ解説 ― 最新の公式試験情報（V9 / 試験コード N10-009）に基づいています
                     </p>
+
+                    <div className="stat-grid">
+                        <div className="stat-card" style={{ '--stat-accent': 'var(--c-purple-200)' } as React.CSSProperties}>
+                            <div className="stat-card-top">
+                                <i className="ti ti-list-details" aria-hidden="true" />
+                                <span>出題ドメイン</span>
+                            </div>
+                            <div className="stat-card-value">5 分野</div>
+                        </div>
+                        <div className="stat-card" style={{ '--stat-accent': 'var(--c-teal-200)' } as React.CSSProperties}>
+                            <div className="stat-card-top">
+                                <i className="ti ti-help-circle" aria-hidden="true" />
+                                <span>問題数（最大）</span>
+                            </div>
+                            <div className="stat-card-value">90問</div>
+                        </div>
+                        <div className="stat-card" style={{ '--stat-accent': 'var(--c-coral-200)' } as React.CSSProperties}>
+                            <div className="stat-card-top">
+                                <i className="ti ti-clock-hour-4" aria-hidden="true" />
+                                <span>試験時間</span>
+                            </div>
+                            <div className="stat-card-value">90分</div>
+                        </div>
+                        <div className="stat-card" style={{ '--stat-accent': 'var(--c-amber-200)' } as React.CSSProperties}>
+                            <div className="stat-card-top">
+                                <i className="ti ti-target-arrow" aria-hidden="true" />
+                                <span>合格ライン</span>
+                            </div>
+                            <div className="stat-card-value">720 / 900</div>
+                        </div>
+                    </div>
                 </header>
 
                 <section id="overview" className="section-block">
                     <h2>
-                        <span className="h2-icon" aria-hidden="true"></span>
+                        <span className="h2-icon">
+                            <i className="ti ti-network" aria-hidden="true" />
+                        </span>
                         1. CompTIA Network+ とは何か
                     </h2>
                     <p>
@@ -47,13 +70,15 @@ export default function ComptiaNetworkPlusGuide() {
                         <li>基本的なセキュリティ対策を実装できる</li>
                     </ul>
                     <p>
-                        Network+ は「CompTIA Core」シリーズの一部で、前段の A+（PCやOSの基礎）から一歩進み、次段の Security+ や Cloud+、CCNA などへの橋渡し役を担う、いわばネットワークエンジニアとしての最初の共通言語を身につける資格です。
+                        Network+ は「CompTIA Core」シリーズの一部で、前段の A+（PCやOSの基礎）から一歩進み、次段の Security+ や Cloud+、CCNA などへの橋渡し役を担う、いわば<strong>ネットワークエンジニアとしての最初の共通言語</strong>を身につける資格です。
                     </p>
                 </section>
 
                 <section id="target-audience" className="section-block">
                     <h2>
-                        <span className="h2-icon" aria-hidden="true"></span>
+                        <span className="h2-icon">
+                            <i className="ti ti-users" aria-hidden="true" />
+                        </span>
                         2. この資格はどんな人に向いているか
                     </h2>
                     <table>
@@ -66,7 +91,9 @@ export default function ComptiaNetworkPlusGuide() {
                         <tbody>
                             <tr>
                                 <td>主な対象者</td>
-                                <td>未経験からネットワーク・インフラ分野を目指す人、社内SE、ヘルプデスク担当者、サーバー/インフラエンジニア志望者</td>
+                                <td>
+                                    未経験からネットワーク・インフラ分野を目指す人、社内SE、ヘルプデスク担当者、サーバー/インフラエンジニア志望者
+                                </td>
                             </tr>
                             <tr>
                                 <td>推奨される前提資格</td>
@@ -74,11 +101,20 @@ export default function ComptiaNetworkPlusGuide() {
                             </tr>
                             <tr>
                                 <td>推奨される実務経験</td>
-                                <td>ジュニアネットワーク管理者・ネットワークサポート技術者として9〜12ヶ月程度の実務経験</td>
+                                <td>
+                                    ジュニアネットワーク管理者・ネットワークサポート技術者として9〜12ヶ月程度の実務経験
+                                </td>
                             </tr>
                             <tr>
-                                <td>取得後に想定される職務（NICE/DoD 8140の職務区分に基づく）</td>
-                                <td>テクニカルサポートスペシャリスト、ネットワークオペレーションスペシャリスト、システム管理者</td>
+                                <td>
+                                    取得後に想定される職務<br />
+                                    <span style={{ color: 'var(--color-text-tertiary)', fontSize: '12px' }}>
+                                        （NICE/DoD 8140の職務区分に基づく）
+                                    </span>
+                                </td>
+                                <td>
+                                    テクニカルサポートスペシャリスト、ネットワークオペレーションスペシャリスト、システム管理者
+                                </td>
                             </tr>
                             <tr>
                                 <td>次のステップとして繋がる資格例</td>
@@ -93,11 +129,13 @@ export default function ComptiaNetworkPlusGuide() {
 
                 <section id="exam-info" className="section-block">
                     <h2>
-                        <span className="h2-icon" aria-hidden="true"></span>
+                        <span className="h2-icon">
+                            <i className="ti ti-info-circle" aria-hidden="true" />
+                        </span>
                         3. 試験の基本情報
                     </h2>
                     <p>
-                        2026年7月時点で最新の試験バージョンは V9（試験コード N10-009） です。旧バージョン N10-008 からの改訂版として、2024年6月20日にリリースされました。
+                        2026年7月時点で最新の試験バージョンは <strong>V9（試験コード N10-009）</strong> です。旧バージョン N10-008 からの改訂版として、2024年6月20日にリリースされました。
                     </p>
                     <table>
                         <thead>
@@ -142,15 +180,20 @@ export default function ComptiaNetworkPlusGuide() {
                         </tbody>
                     </table>
                     <div className="callout callout-info">
-                        <p className="annotation">
-                            パフォーマンスベース問題とは、選択肢から選ぶだけでなく、シミュレーション画面上でネットワーク構成やコマンド操作を実際に行わせるタイプの実技系設問です。知識の暗記だけでなく、実際の操作手順を体で覚えておく必要があります。
-                        </p>
+                        <i className="ti ti-bulb" aria-hidden="true" />
+                        <div>
+                            <p>
+                                <strong>パフォーマンスベース問題</strong>とは、選択肢から選ぶだけでなく、シミュレーション画面上でネットワーク構成やコマンド操作を実際に行わせるタイプの実技系設問です。知識の暗記だけでなく、実際の操作手順を体で覚えておく必要があります。
+                            </p>
+                        </div>
                     </div>
                 </section>
 
                 <section id="domains" className="section-block">
                     <h2>
-                        <span className="h2-icon" aria-hidden="true"></span>
+                        <span className="h2-icon">
+                            <i className="ti ti-chart-pie" aria-hidden="true" />
+                        </span>
                         4. 出題範囲と配点（5つのドメイン）
                     </h2>
                     <p>
@@ -158,50 +201,73 @@ export default function ComptiaNetworkPlusGuide() {
                     </p>
 
                     <div className="diagram-block">
-                        <div className="diagram-head">
+                        <div className="diagram-head" style={{ '--diagram-accent': 'var(--c-purple-200)' } as React.CSSProperties}>
+                            <i className="ti ti-chart-pie" aria-hidden="true" />
                             <span>図: ドメイン別の配点比率</span>
                         </div>
-                        <Diagram id="dg-pie" label="Network+ ドメイン別配点比率パイチャート" />
+                        <div className="diagram-body">
+                            <div className="mermaid-wrap">
+                                <MermaidDiagram
+                                    chart={DIAGRAMS['dg-pie']}
+                                    ariaLabel="ドメイン配点比率の円グラフ"
+                                />
+                            </div>
+                        </div>
                     </div>
 
                     <table>
                         <thead>
                             <tr>
-                                <th scope="col">No.</th>
+                                <th scope="col" className="num">No.</th>
                                 <th scope="col">ドメイン名</th>
-                                <th scope="col">配点比率</th>
+                                <th scope="col" className="pct">配点比率</th>
                                 <th scope="col">ひとことで言うと</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td className="num">1</td>
-                                <td>ネットワークの概念</td>
-                                <td>23%</td>
+                                <td>
+                                    <span className="domain-dot" style={{ background: 'var(--c-purple-200)' }} />
+                                    ネットワークの概念
+                                </td>
+                                <td className="pct">23%</td>
                                 <td>用語・OSIモデル・プロトコル・トポロジーなどの土台知識</td>
                             </tr>
                             <tr>
                                 <td className="num">2</td>
-                                <td>ネットワークの実装</td>
-                                <td>20%</td>
+                                <td>
+                                    <span className="domain-dot" style={{ background: 'var(--c-teal-200)' }} />
+                                    ネットワークの実装
+                                </td>
+                                <td className="pct">20%</td>
                                 <td>ルーティング・スイッチング・無線設定など「構築する力」</td>
                             </tr>
                             <tr>
                                 <td className="num">3</td>
-                                <td>ネットワークの運用</td>
-                                <td>19%</td>
+                                <td>
+                                    <span className="domain-dot" style={{ background: 'var(--c-coral-200)' }} />
+                                    ネットワークの運用
+                                </td>
+                                <td className="pct">19%</td>
                                 <td>ドキュメント化・監視・災害復旧など「運用する力」</td>
                             </tr>
                             <tr>
                                 <td className="num">4</td>
-                                <td>ネットワークセキュリティ</td>
-                                <td>14%</td>
+                                <td>
+                                    <span className="domain-dot" style={{ background: 'var(--c-pink-200)' }} />
+                                    ネットワークセキュリティ
+                                </td>
+                                <td className="pct">14%</td>
                                 <td>認証・攻撃手法・防御策など「守る力」</td>
                             </tr>
                             <tr>
                                 <td className="num">5</td>
-                                <td>ネットワークのトラブルシューティング</td>
-                                <td>24%</td>
+                                <td>
+                                    <span className="domain-dot" style={{ background: 'var(--c-amber-200)' }} />
+                                    ネットワークのトラブルシューティング
+                                </td>
+                                <td className="pct">24%</td>
                                 <td>障害を切り分け、直す「診断する力」</td>
                             </tr>
                         </tbody>
@@ -213,89 +279,134 @@ export default function ComptiaNetworkPlusGuide() {
 
                 <section id="domain-details" className="section-block">
                     <h2>
-                        <span className="h2-icon" aria-hidden="true"></span>
+                        <span className="h2-icon">
+                            <i className="ti ti-list-details" aria-hidden="true" />
+                        </span>
                         5. 各ドメインの詳細解説
                     </h2>
 
-                    <h3>ネットワークの概念</h3>
-                    <p>ネットワークを理解するための「語彙」と「地図」にあたる分野です。</p>
-                    <ul>
-                        <li>OSI参照モデルの7層（第6章で詳しく解説）</li>
-                        <li>ネットワーク機器：ルーター、スイッチ、ファイアウォール、IDS/IPS、ロードバランサー、プロキシ、NAS、SANなど</li>
-                        <li>クラウドの基礎概念：NFV（ネットワーク機能仮想化）、VPC、クラウドゲートウェイ、デプロイモデル（パブリック/プライベート/ハイブリッド）、サービスモデル（SaaS/IaaS/PaaS）</li>
-                        <li>ポートとプロトコル：FTP、SFTP、SSH、Telnet、SMTP、DNS、DHCP、HTTP/HTTPS、SNMP、LDAP、RDP、SIPなど</li>
-                        <li>トラフィックの種類：ユニキャスト、マルチキャスト、エニーキャスト、ブロードキャスト</li>
-                        <li>伝送メディア：無線（802.11、セルラー、衛星）、有線（光ファイバー、同軸ケーブル、DACケーブル）</li>
-                        <li>コネクタ・トランシーバー：SC、LC、ST、MPO、RJ11、RJ45、F型、BNCなど</li>
-                        <li>ネットワークトポロジー：メッシュ、ハイブリッド、スター型、スパイン&amp;リーフ、ポイントツーポイント、3層構造、コラプスドコアなど</li>
-                    </ul>
-
-                    <h3>ネットワークの実装</h3>
-                    <p>実際に「動くネットワーク」を組み立てる分野です。</p>
-                    <ul>
-                        <li>IPv4アドレッシング：パブリック/プライベートアドレス、APIPA、RFC1918、ループバック、サブネット化（VLSM、CIDR）、アドレスクラス（A〜E）</li>
-                        <li>ルーティング技術：静的/動的ルーティング（BGP、EIGRP、OSPF）、経路選択、NAT、PAT、FHRP、VIP、サブインターフェース</li>
-                        <li>スイッチング技術：VLAN、インターフェース設定、スパニングツリー、MTU、ジャンボフレーム</li>
-                        <li>無線機器の設定：チャネル、周波数帯、SSID、ネットワークタイプ、暗号化方式、ゲストネットワーク、認証方式、アンテナ、アクセスポイント</li>
-                        <li>物理的な設置：設置上の注意点、電源要件、環境要因</li>
-                    </ul>
-
-                    <h3>ネットワークの運用</h3>
-                    <p>構築したネットワークを「維持し続ける」ための分野です。</p>
-                    <ul>
-                        <li>ドキュメント管理：物理図/論理図、ラック図、ケーブルマップ、ネットワーク図、資産管理、IPAM、SLA、無線サーベイ</li>
-                        <li>ライフサイクル管理：EOL（提供終了）、EOS（サポート終了）、ソフトウェア管理、廃棄・撤去</li>
-                        <li>変更管理：変更申請プロセスの追跡</li>
-                        <li>構成管理：本番構成、バックアップ構成、ベースライン構成</li>
-                        <li>ネットワーク監視：SNMP、フローデータ、パケットキャプチャ、ベースラインメトリクス、ログ集約、API連携、ポートミラーリング</li>
-                        <li>災害復旧：RPO、RTO、MTTR、MTBF、コールド/ウォーム/ホットサイト、アクティブ-アクティブ/アクティブ-パッシブ構成、復旧テスト</li>
-                        <li>ネットワークサービス：DHCP、SLAAC、DNS、NTP、PTP、NTS</li>
-                        <li>アクセス管理：VPN、SSH、GUI、API、コンソール接続</li>
-                    </ul>
-
-                    <h3>ネットワークセキュリティ</h3>
-                    <p>配点は最も低いですが、実務では最重要とも言える分野です。</p>
-                    <ul>
-                        <li>論理的セキュリティ：暗号化（通信中/保管中データ）、PKI、IAM、多要素認証（MFA）、SSO、RADIUS、LDAP、SAML、TACACS+、時間ベース認証、最小権限の原則、ロールベースアクセス制御、ジオフェンシング</li>
-                        <li>物理的セキュリティ：監視カメラ、施錠管理</li>
-                        <li>欺瞞技術：ハニーポット、ハニーネット</li>
-                        <li>セキュリティ用語：リスク、脆弱性、エクスプロイト、脅威、CIAトライアド（機密性・完全性・可用性）</li>
-                        <li>監査とコンプライアンス：データローカリティ、PCI DSS、GDPR</li>
-                        <li>ネットワークセグメンテーション：IoT、IIoT、SCADA、ICS、OT、ゲストネットワーク、BYOD</li>
-                        <li>攻撃の種類：DoS/DDoS、VLANホッピング、MACフラッディング、ARPポイズニング、DNSポイズニング、不正機器・不正サービス、Evil Twin、中間者攻撃、ソーシャルエンジニアリング（フィッシング、ダンプスター・ダイビング、ショルダーサーフィン、テールゲーティング）</li>
-                        <li>防御機能：デバイスハードニング、NAC、鍵管理、ACL、URL/コンテンツフィルタリング、信頼/非信頼ゾーン、スクリーンドサブネット</li>
-                    </ul>
-
-                    <h3>ネットワークのトラブルシューティング ― 最重要ドメイン</h3>
-                    <p>
-                        配点が最も高いこのドメインの核心は、体系立った障害切り分けの手順（トラブルシューティング方法論）です。CompTIAが定義する手順は以下の流れで進みます。
-                    </p>
-
-                    <div className="diagram-block">
-                        <div className="diagram-head">
-                            <span>図: CompTIA標準のトラブルシューティング方法論（6ステップ）</span>
+                    <div className="domain-card" style={{ '--domain-accent': 'var(--c-purple-200)', '--domain-accent-bg': 'var(--c-purple-800)', '--domain-accent-text': 'var(--c-purple-100)' } as React.CSSProperties}>
+                        <div className="domain-card-head">
+                            <div className="domain-num">1</div>
+                            <h3>ネットワークの概念</h3>
+                            <span className="domain-weight">23%</span>
                         </div>
-                        <Diagram id="dg-troubleshoot" label="トラブルシューティング方法論 6ステップフローチャート" />
+                        <p>ネットワークを理解するための「語彙」と「地図」にあたる分野です。</p>
+                        <ul>
+                            <li><strong>OSI参照モデルの7層</strong>（第6章で詳しく解説）</li>
+                            <li><strong>ネットワーク機器</strong>：ルーター、スイッチ、ファイアウォール、IDS/IPS、ロードバランサー、プロキシ、NAS、SANなど</li>
+                            <li><strong>クラウドの基礎概念</strong>：NFV（ネットワーク機能仮想化）、VPC、クラウドゲートウェイ、デプロイモデル（パブリック/プライベート/ハイブリッド）、サービスモデル（SaaS/IaaS/PaaS）</li>
+                            <li><strong>ポートとプロトコル</strong>：FTP、SFTP、SSH、Telnet、SMTP、DNS、DHCP、HTTP/HTTPS、SNMP、LDAP、RDP、SIPなど</li>
+                            <li><strong>トラフィックの種類</strong>：ユニキャスト、マルチキャスト、エニーキャスト、ブロードキャスト</li>
+                            <li><strong>伝送メディア</strong>：無線（802.11、セルラー、衛星）、有線（光ファイバー、同軸ケーブル、DACケーブル）</li>
+                            <li><strong>コネクタ・トランシーバー</strong>：SC、LC、ST、MPO、RJ11、RJ45、F型、BNCなど</li>
+                            <li><strong>ネットワークトポロジー</strong>：メッシュ、ハイブリッド、スター型、スパイン&amp;リーフ、ポイントツーポイント、3層構造、コラプスドコアなど</li>
+                            <li><strong>IPv4アドレッシング</strong>：パブリック/プライベートアドレス、APIPA、RFC1918、ループバック、サブネット化（VLSM、CIDR）、アドレスクラス（A〜E）</li>
+                        </ul>
                     </div>
 
-                    <div className="callout callout-warning">
-                        <p className="annotation">
-                            この6ステップは Network+ に限らず、A+ や Security+ でも共通する CompTIA 標準の障害対応フレームワークであり、実務でも極めて有効な思考の型です。
+                    <div className="domain-card" style={{ '--domain-accent': 'var(--c-teal-200)', '--domain-accent-bg': 'var(--c-teal-800)', '--domain-accent-text': 'var(--c-teal-100)' } as React.CSSProperties}>
+                        <div className="domain-card-head">
+                            <div className="domain-num">2</div>
+                            <h3>ネットワークの実装</h3>
+                            <span className="domain-weight">20%</span>
+                        </div>
+                        <p>実際に「動くネットワーク」を組み立てる分野です。</p>
+                        <ul>
+                            <li><strong>ルーティング技術</strong>：静的/動的ルーティング（BGP、EIGRP、OSPF）、経路選択、NAT、PAT、FHRP、VIP、サブインターフェース</li>
+                            <li><strong>スイッチング技術</strong>：VLAN、インターフェース設定、スパニングツリー、MTU、ジャンボフレーム</li>
+                            <li><strong>無線機器の設定</strong>：チャネル、周波数帯、SSID、ネットワークタイプ、暗号化方式、ゲストネットワーク、認証方式、アンテナ、アクセスポイント</li>
+                            <li><strong>物理的な設置</strong>：設置上の注意点、電源要件、環境要因</li>
+                        </ul>
+                    </div>
+
+                    <div className="domain-card" style={{ '--domain-accent': 'var(--c-coral-200)', '--domain-accent-bg': 'var(--c-coral-800)', '--domain-accent-text': 'var(--c-coral-100)' } as React.CSSProperties}>
+                        <div className="domain-card-head">
+                            <div className="domain-num">3</div>
+                            <h3>ネットワークの運用</h3>
+                            <span className="domain-weight">19%</span>
+                        </div>
+                        <p>構築したネットワークを「維持し続ける」ための分野です。</p>
+                        <ul>
+                            <li><strong>ドキュメント管理</strong>：物理図/論理図、ラック図、ケーブルマップ、ネットワーク図、資産管理、IPAM、SLA、無線サーベイ</li>
+                            <li><strong>ライフサイクル管理</strong>：EOL（提供終了）、EOS（サポート終了）、ソフトウェア管理、廃棄・撤去</li>
+                            <li><strong>変更管理</strong>：変更申請プロセスの追跡</li>
+                            <li><strong>構成管理</strong>：本番構成、バックアップ構成、ベースライン構成</li>
+                            <li><strong>ネットワーク監視</strong>：SNMP、フローデータ、パケットキャプチャ、ベースラインメトリクス、ログ集約、API連携、ポートミラーリング</li>
+                            <li><strong>災害復旧</strong>：RPO、RTO、MTTR、MTBF、コールド/ウォーム/ホットサイト、アクティブ-アクティブ/アクティブ-パッシブ構成、復旧テスト</li>
+                            <li><strong>ネットワークサービス</strong>：DHCP、SLAAC、DNS、NTP、PTP、NTS</li>
+                            <li><strong>アクセス管理</strong>：VPN、SSH、GUI、API、コンソール接続</li>
+                        </ul>
+                    </div>
+
+                    <div className="domain-card" style={{ '--domain-accent': 'var(--c-pink-200)', '--domain-accent-bg': 'var(--c-pink-800)', '--domain-accent-text': 'var(--c-pink-100)' } as React.CSSProperties}>
+                        <div className="domain-card-head">
+                            <div className="domain-num">4</div>
+                            <h3>ネットワークセキュリティ</h3>
+                            <span className="domain-weight">14%</span>
+                        </div>
+                        <p>配点は最も低いですが、実務では最重要とも言える分野です。</p>
+                        <ul>
+                            <li><strong>論理的セキュリティ</strong>：暗号化（通信中/保管中データ）、PKI、IAM、多要素認証（MFA）、SSO、RADIUS、LDAP、SAML、TACACS+、時間ベース認証、最小権限の原則、ロールベースアクセス制御、ジオフェンシング</li>
+                            <li><strong>物理的セキュリティ</strong>：監視カメラ、施錠管理</li>
+                            <li><strong>欺瞞技術</strong>：ハニーポット、ハニーネット</li>
+                            <li><strong>セキュリティ用語</strong>：リスク、脆弱性、エクスプロイト、脅威、CIAトライアド（機密性・完全性・可用性）</li>
+                            <li><strong>監査とコンプライアンス</strong>：データローカリティ、PCI DSS、GDPR</li>
+                            <li><strong>ネットワークセグメンテーション</strong>：IoT、IIoT、SCADA、ICS、OT、ゲストネットワーク、BYOD</li>
+                            <li><strong>攻撃の種類</strong>：DoS/DDoS、VLANホッピング、MACフラッディング、ARPポイズニング、DNSポイズニング、不正機器・不正サービス、Evil Twin、中間者攻撃、ソーシャルエンジニアリング（フィッシング、ダンプスター・ダイビング、ショルダーサーフィン、テールゲーティング）</li>
+                            <li><strong>防御機能</strong>：デバイスハードニング、NAC、鍵管理、ACL、URL/コンテンツフィルタリング、信頼/非信頼ゾーン、スクリーンドサブネット</li>
+                        </ul>
+                    </div>
+
+                    <div className="domain-card" style={{ '--domain-accent': 'var(--c-amber-200)', '--domain-accent-bg': 'var(--c-amber-800)', '--domain-accent-text': 'var(--c-amber-100)' } as React.CSSProperties}>
+                        <div className="domain-card-head">
+                            <div className="domain-num">5</div>
+                            <h3>ネットワークのトラブルシューティング ― 最重要ドメイン</h3>
+                            <span className="domain-weight">24%</span>
+                        </div>
+                        <p>
+                            配点が最も高いこのドメインの核心は、<strong>体系立った障害切り分けの手順（トラブルシューティング方法論）</strong>です。CompTIAが定義する手順は以下の流れで進みます。
                         </p>
-                    </div>
 
-                    <p>このドメインでは、この方法論に加えて以下も問われます。</p>
-                    <ul>
-                        <li>ケーブル・物理層の問題：ケーブル種別の誤り、信号劣化、終端処理の不良、TX/RXの入れ違い、インターフェースのエラーカウンタ増加、PoE不良、トランシーバーの規格不一致</li>
-                        <li>ネットワークサービスの問題：STPやVLAN割り当ての不備、ACL設定ミス、ルーティングテーブルやデフォルトゲートウェイの誤り、アドレスプールの枯渇</li>
-                        <li>性能問題：輻輳、レイテンシ、パケットロス、無線干渉</li>
-                        <li>診断ツール：プロトコルアナライザー、コマンドラインツール（ping、tracert/traceroute、nslookupなど）、ケーブルテスター、Wi-Fiアナライザー</li>
-                    </ul>
+                        <div className="diagram-block">
+                            <div className="diagram-head" style={{ '--diagram-accent': 'var(--c-amber-200)' } as React.CSSProperties}>
+                                <i className="ti ti-list-numbers" aria-hidden="true" />
+                                <span>図: CompTIA標準のトラブルシューティング方法論（6ステップ）</span>
+                            </div>
+                            <div className="diagram-body">
+                                <div className="mermaid-wrap">
+                                    <MermaidDiagram
+                                        chart={DIAGRAMS['dg-troubleshoot']}
+                                        ariaLabel="トラブルシューティング6ステップのフロー図"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="callout callout-warning">
+                            <i className="ti ti-alert-triangle" aria-hidden="true" />
+                            <div>
+                                <p>
+                                    この6ステップは Network+ に限らず、A+ や Security+ でも共通する CompTIA 標準の障害対応フレームワークであり、実務でも極めて有効な思考の型です。
+                                </p>
+                            </div>
+                        </div>
+
+                        <p>このドメインでは、この方法論に加えて以下も問われます。</p>
+                        <ul>
+                            <li><strong>ケーブル・物理層の問題</strong>：ケーブル種別の誤り、信号劣化、終端処理の不良、TX/RXの入れ違い、インターフェースのエラーカウンタ増加、PoE不良、トランシーバーの規格不一致</li>
+                            <li><strong>ネットワークサービスの問題</strong>：STPやVLAN割り当ての不備、ACL設定ミス、ルーティングテーブルやデフォルトゲートウェイの誤り、アドレスプールの枯渇</li>
+                            <li><strong>性能問題</strong>：輻輳、レイテンシ、パケットロス、無線干渉</li>
+                            <li><strong>診断ツール</strong>：プロトコルアナライザー、コマンドラインツール（ping、tracert/traceroute、nslookupなど）、ケーブルテスター、Wi-Fiアナライザー</li>
+                        </ul>
+                    </div>
                 </section>
 
                 <section id="osi" className="section-block">
                     <h2>
-                        <span className="h2-icon" aria-hidden="true"></span>
+                        <span className="h2-icon">
+                            <i className="ti ti-stack-2" aria-hidden="true" />
+                        </span>
                         6. 基礎知識：OSI参照モデル
                     </h2>
                     <p>
@@ -356,24 +467,37 @@ export default function ComptiaNetworkPlusGuide() {
                         </tbody>
                     </table>
                     <div className="callout callout-info">
-                        <p className="annotation">
-                            学習のコツとして、上位層（7〜5）は「アプリやセッションの世界」、中位層（4〜3）は「データを届ける仕組み」、下位層（2〜1）は「物理的な配線の世界」と大まかに区分して覚えると整理しやすくなります。
-                        </p>
+                        <i className="ti ti-bulb" aria-hidden="true" />
+                        <div>
+                            <p>
+                                学習のコツとして、上位層（7〜5）は「アプリやセッションの世界」、中位層（4〜3）は「データを届ける仕組み」、下位層（2〜1）は「物理的な配線の世界」と大まかに区分して覚えると整理しやすくなります。
+                            </p>
+                        </div>
                     </div>
                 </section>
 
                 <section id="roadmap" className="section-block">
                     <h2>
-                        <span className="h2-icon" aria-hidden="true"></span>
+                        <span className="h2-icon">
+                            <i className="ti ti-route" aria-hidden="true" />
+                        </span>
                         7. 学習を始めるステップバイステップ
                     </h2>
                     <p>以下は、初学者がゼロから合格までたどる標準的な学習ロードマップです。</p>
 
                     <div className="diagram-block">
-                        <div className="diagram-head">
+                        <div className="diagram-head" style={{ '--diagram-accent': 'var(--c-purple-200)' } as React.CSSProperties}>
+                            <i className="ti ti-route" aria-hidden="true" />
                             <span>図: 初学者向け学習ロードマップ</span>
                         </div>
-                        <Diagram id="dg-roadmap" label="初学者向け学習ロードマップ フローチャート" />
+                        <div className="diagram-body">
+                            <div className="mermaid-wrap">
+                                <MermaidDiagram
+                                    chart={DIAGRAMS['dg-roadmap']}
+                                    ariaLabel="学習ロードマップのフェーズ図"
+                                />
+                            </div>
+                        </div>
                     </div>
 
                     <p>
@@ -383,7 +507,9 @@ export default function ComptiaNetworkPlusGuide() {
 
                 <section id="materials" className="section-block">
                     <h2>
-                        <span className="h2-icon" aria-hidden="true"></span>
+                        <span className="h2-icon">
+                            <i className="ti ti-books" aria-hidden="true" />
+                        </span>
                         8. 学習教材の選び方
                     </h2>
                     <p>
@@ -402,13 +528,17 @@ export default function ComptiaNetworkPlusGuide() {
                             <tr>
                                 <td>CertMaster Perform</td>
                                 <td>実務経験ゼロから、実技力もまとめて身につけたい人</td>
-                                <td>講義・動画・インタラクティブ教材・実機/シミュレーション両方のラボ・模擬試験</td>
+                                <td>
+                                    講義・動画・インタラクティブ教材・実機/シミュレーション両方のラボ・模擬試験
+                                </td>
                                 <td>30〜60時間</td>
                             </tr>
                             <tr>
                                 <td>CertMaster Learn</td>
                                 <td>基礎知識をゼロから体系的に積み上げたい人</td>
-                                <td>講義・動画・インタラクティブ教材・シミュレーションラボ・模擬試験</td>
+                                <td>
+                                    講義・動画・インタラクティブ教材・シミュレーションラボ・模擬試験
+                                </td>
                                 <td>25〜40時間</td>
                             </tr>
                             <tr>
@@ -428,22 +558,36 @@ export default function ComptiaNetworkPlusGuide() {
                     <h3>独学で進める場合の考え方</h3>
                     <ul>
                         <li>知識ゼロに近い場合 → Learn（またはPerform）で基礎から積み上げる</li>
-                        <li>ある程度知識がある場合 → Practiceで弱点を把握してから、必要な範囲だけLearnで補強する</li>
-                        <li>手を動かす経験が不足している場合 → Labsやホームラボ（中古スイッチ・ルーター、あるいはGNS3/Packet Tracerなどのシミュレーターソフト）を併用する</li>
+                        <li>
+                            ある程度知識がある場合 → Practiceで弱点を把握してから、必要な範囲だけLearnで補強する
+                        </li>
+                        <li>
+                            手を動かす経験が不足している場合 → Labsやホームラボ（中古スイッチ・ルーター、あるいはGNS3/Packet Tracerなどのシミュレーターソフト）を併用する
+                        </li>
                     </ul>
                 </section>
 
                 <section id="exam-day" className="section-block">
                     <h2>
-                        <span className="h2-icon" aria-hidden="true"></span>
+                        <span className="h2-icon">
+                            <i className="ti ti-calendar-event" aria-hidden="true" />
+                        </span>
                         9. 試験当日の流れ
                     </h2>
 
                     <div className="diagram-block">
-                        <div className="diagram-head">
+                        <div className="diagram-head" style={{ '--diagram-accent': 'var(--c-coral-200)' } as React.CSSProperties}>
+                            <i className="ti ti-calendar-event" aria-hidden="true" />
                             <span>図: 試験当日の流れ（合格ライン: 720/900点）</span>
                         </div>
-                        <Diagram id="dg-examday" label="試験当日の流れ フローチャート" />
+                        <div className="diagram-body">
+                            <div className="mermaid-wrap">
+                                <MermaidDiagram
+                                    chart={DIAGRAMS['dg-examday']}
+                                    ariaLabel="試験当日の時間配分とPBQ攻略の戦略図"
+                                />
+                            </div>
+                        </div>
                     </div>
 
                     <p>
@@ -453,7 +597,9 @@ export default function ComptiaNetworkPlusGuide() {
 
                 <section id="study-time" className="section-block">
                     <h2>
-                        <span className="h2-icon" aria-hidden="true"></span>
+                        <span className="h2-icon">
+                            <i className="ti ti-clock-hour-4" aria-hidden="true" />
+                        </span>
                         10. 学習時間の目安
                     </h2>
                     <p>
@@ -485,38 +631,59 @@ export default function ComptiaNetworkPlusGuide() {
                             </tr>
                         </tbody>
                     </table>
-                    <div className="callout callout-info">
-                        <p className="annotation">
-                            1日1〜2時間の学習ペースであれば、未経験者でもおおむね1〜2ヶ月程度で一巡できる計算になります。ただし、トラブルシューティング（24%）と概念（23%）は反復学習が必要なため、余裕を持ったスケジュールを組むことをおすすめします。
-                        </p>
+                    <div className="callout callout-success">
+                        <i className="ti ti-circle-check" aria-hidden="true" />
+                        <div>
+                            <p>
+                                1日1〜2時間の学習ペースであれば、未経験者でもおおむね1〜2ヶ月程度で一巡できる計算になります。ただし、トラブルシューティング（24%）と概念（23%）は反復学習が必要なため、余裕を持ったスケジュールを組むことをおすすめします。
+                            </p>
+                        </div>
                     </div>
                 </section>
 
                 <section id="faq" className="section-block">
                     <h2>
-                        <span className="h2-icon" aria-hidden="true"></span>
+                        <span className="h2-icon">
+                            <i className="ti ti-help-circle" aria-hidden="true" />
+                        </span>
                         11. よくある質問（FAQ）
                     </h2>
+
                     <div className="faq-item">
-                        <div className="faq-q">Q1. A+ を取得していなくても Network+ をいきなり受けて大丈夫ですか？</div>
+                        <div className="faq-q">
+                            <i className="ti ti-message-circle-2" aria-hidden="true" />
+                            <span>Q1. CompTIA A+ を先に取っていないと受験できませんか？</span>
+                        </div>
                         <p className="faq-a">
                             A+ は必須の前提資格ではありません。ただし公式には「A+相当の知識 + 9〜12ヶ月の実務経験」が推奨レベルとして示されているため、未経験者はA+の内容（PCやOSの基礎）に軽く触れておくと理解がスムーズです。
                         </p>
                     </div>
+
                     <div className="faq-item">
-                        <div className="faq-q">Q2. パフォーマンスベース問題（PBQ）とは具体的にどんな問題ですか？</div>
+                        <div className="faq-q">
+                            <i className="ti ti-message-circle-2" aria-hidden="true" />
+                            <span>Q2. パフォーマンスベース問題とは何ですか？</span>
+                        </div>
                         <p className="faq-a">
                             選択肢を選ぶだけの設問とは異なり、シミュレーション画面上でネットワーク構成やコマンド操作を実際に行わせる実技形式の設問です。知識だけでなく操作手順の習熟が求められます。
                         </p>
                     </div>
+
                     <div className="faq-item">
-                        <div className="faq-q">Q3. 万が一不合格だった場合、どうすればいいですか？</div>
+                        <div className="faq-q">
+                            <i className="ti ti-message-circle-2" aria-hidden="true" />
+                            <span>Q3. 不合格だった場合はどうすればよいですか？</span>
+                        </div>
                         <p className="faq-a">
                             試験後に配布されるスコアレポートで、ドメインごとの得点傾向を確認できます。弱点ドメインを重点的に復習し、再受験の計画を立てましょう（第7章の学習ロードマップのループを参照）。
                         </p>
                     </div>
+
                     <div className="faq-item">
-                        <div className="faq-q">Q4. Network+ 取得後の次のステップとしておすすめの資格は？</div>
+                        <div className="faq-q">
+                            <i className="ti ti-message-circle-2" aria-hidden="true" />
+                            <span>Q4. Network+ の次に取得すべき資格は？</span>
+                        </div>
                         <p className="faq-a">
                             セキュリティ分野に進みたい場合は CompTIA Security+、クラウド分野に進みたい場合は CompTIA Cloud+、特定ベンダー技術を深めたい場合は Cisco CCNA などが一般的な進路として挙げられます。
                         </p>
@@ -525,19 +692,21 @@ export default function ComptiaNetworkPlusGuide() {
 
                 <section id="summary" className="section-block">
                     <h2>
-                        <span className="h2-icon" aria-hidden="true"></span>
+                        <span className="h2-icon">
+                            <i className="ti ti-checklist" aria-hidden="true" />
+                        </span>
                         12. まとめ
                     </h2>
                     <p>
                         CompTIA Network+ (N10-009) は、以下の5ドメインから幅広く出題される、ベンダーニュートラルなネットワーク基礎資格です。
                     </p>
-                    <ul>
+                    <ol>
                         <li>ネットワークの概念（23%）</li>
                         <li>ネットワークの実装（20%）</li>
                         <li>ネットワークの運用（19%）</li>
                         <li>ネットワークセキュリティ（14%）</li>
                         <li>ネットワークのトラブルシューティング（24%）</li>
-                    </ul>
+                    </ol>
                     <p>
                         配点の高い「トラブルシューティング」と「概念」を学習の軸に据え、「学習 → 模擬試験 → 弱点復習」のループを回すことが、効率的な合格への近道です。OSI参照モデルのような基礎的な地図を最初に頭に入れておくことで、以降の学習全体の理解速度が大きく変わります。
                     </p>
@@ -545,16 +714,22 @@ export default function ComptiaNetworkPlusGuide() {
 
                 <section id="references" className="section-block">
                     <h2>
-                        <span className="h2-icon" aria-hidden="true"></span>
+                        <span className="h2-icon">
+                            <i className="ti ti-link" aria-hidden="true" />
+                        </span>
                         13. 参考文献・出典
                     </h2>
                     <p>
                         本ガイドの試験詳細・出題範囲・学習教材情報は、以下のCompTIA公式ページの内容に基づいています（アクセス日: 2026年7月21日）。
                     </p>
-                    <div className="ref-card">
-                        <div className="ref-card-main">
-                            <div className="ref-info">
-                                <div className="ref-box-title">CompTIA公式サイト「Network+ (Plus) Certification」</div>
+
+                    <div className="ref-box">
+                        <div className="ref-box-left">
+                            <i className="ti ti-external-link" aria-hidden="true" />
+                            <div>
+                                <div className="ref-box-title">
+                                    CompTIA公式サイト「Network+ (Plus) Certification」
+                                </div>
                                 <div className="ref-box-sub">comptia.org</div>
                             </div>
                         </div>
@@ -567,11 +742,16 @@ export default function ComptiaNetworkPlusGuide() {
                             開く
                         </a>
                     </div>
+
                     <div className="callout callout-warning">
-                        <p className="annotation">
-                            試験内容・配点・料金・退役時期などは予告なく変更される場合があります。受験前に必ず公式サイトで最新情報をご確認ください。
-                        </p>
+                        <i className="ti ti-alert-triangle" aria-hidden="true" />
+                        <div>
+                            <p>
+                                試験内容・配点・料金・退役時期などは予告なく変更される場合があります。受験前に必ず公式サイトで最新情報をご確認ください。
+                            </p>
+                        </div>
                     </div>
+
                     <div className="footer-note">
                         CompTIA Network+ 試験 完全ガイド ― 初学者のためのステップバイステップ解説
                     </div>
