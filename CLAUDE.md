@@ -223,6 +223,12 @@ app/
     professional-cloud-network-engineer/
       page.tsx                      # PCNE 試験対策ページ（概要・ドメイン別解説）
       components/                   # セクションコンポーネント（Section1-6 + Summary）
+      section1-vpc-design/
+        page.tsx                    # Section 1: VPCネットワーク設計 完全ガイド (Server)
+        PcneSection1VpcDesignGuide.tsx # 本文＋インタラクション (Client。全10セクション、31 Mermaid図等)
+        NavBar.tsx                  # サイドバーナビ (IntersectionObserver)
+        constants.ts                # Mermaid 図定義 (31図)
+        page.css                    # ページ固有スタイル
     professional-cloud-network-engineer-step-by-step/
       page.tsx                      # PCNE ステップバイステップ実践ガイド
       components/                   # セクションコンポーネント（Section1-6）

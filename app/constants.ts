@@ -221,6 +221,7 @@ const ALL_EXAMS: Exam[] = [
             'Google Cloud のネットワークインフラの設計・実装・管理能力を認定。VPC・ハイブリッド接続・ロードバランシング・セキュリティなどを網羅。',
         domains: [
             { label: '試験対策ガイド', href: '/gcl/professional-cloud-network-engineer', pct: '概要' },
+            { label: 'Section 1: VPCネットワーク設計', href: '/gcl/professional-cloud-network-engineer/section1-vpc-design', pct: '~21%' },
             { label: 'ステップバイステップガイド', href: '/gcl/professional-cloud-network-engineer-step-by-step', pct: '詳細' },
         ],
         badge: 'ネットワーク特化',
