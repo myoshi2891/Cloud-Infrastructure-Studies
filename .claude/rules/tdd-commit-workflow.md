@@ -100,7 +100,18 @@ const source = path.relative(repositoryRoot, absoluteHtmlPath).split(path.sep).j
 if (!source || source.startsWith('../') || path.isAbsolute(source)) {
     throw new Error('source.html must be inside the repository');
 }
-const doc = new JSDOM(fs.readFileSync(absoluteHtmlPath, 'utf8')).window.document;
+const repositoryRealPath = fs.realpathSync(repositoryRoot);
+const htmlRealPath = fs.realpathSync(absoluteHtmlPath);
+const realSource = path.relative(repositoryRealPath, htmlRealPath);
+if (
+    !realSource
+    || realSource === '..'
+    || realSource.startsWith(`..${path.sep}`)
+    || path.isAbsolute(realSource)
+) {
+    throw new Error('source.html must resolve inside the repository');
+}
+const doc = new JSDOM(fs.readFileSync(htmlRealPath, 'utf8')).window.document;
 const normalize = (value) => value.replace(/\s+/g, ' ').trim();
 const texts = (sel) =>
     [...doc.querySelectorAll(sel)]
@@ -114,6 +125,17 @@ const codeBlockSelector = 'pre:not(.mermaid), .code-block';
 const codeBlocks = [...doc.querySelectorAll(codeBlockSelector)].filter(
     (element) => !element.parentElement?.closest(codeBlockSelector),
 );
+const codeLines = (block) => {
+    const explicitLines = [...block.querySelectorAll(':scope > .code-line')];
+    if (explicitLines.length > 0) {
+        return explicitLines.map((line) => line.textContent ?? '');
+    }
+    const text = (block.textContent ?? '')
+        .replace(/\r\n?/g, '\n')
+        .replace(/^\n|\n$/g, '');
+    return text ? text.split('\n') : [];
+};
+const codeText = (block) => codeLines(block).join('\n');
 const bodySelector = `p, aside, .annotation, [class*="callout"], img[alt], ${codeBlockSelector}`;
 const bodyElements = [...doc.body.querySelectorAll(bodySelector)].filter(
     (element) => !element.parentElement?.closest(bodySelector),
@@ -127,18 +149,16 @@ const bodyContent = bodyElements
                 : element.matches('aside, .annotation, [class*="callout"]')
                     ? 'annotation'
                     : 'paragraph',
-        text: normalize(
-            element.matches('img[alt]')
-                ? element.getAttribute('alt') ?? ''
-                : element.textContent ?? '',
-        ),
+        text: element.matches(codeBlockSelector)
+            ? codeText(element)
+            : normalize(
+                element.matches('img[alt]')
+                    ? element.getAttribute('alt') ?? ''
+                    : element.textContent ?? '',
+            ),
     }))
     .filter((entry) => entry.text);
-const codeLineCount = (block) => {
-    const explicitLines = block.querySelectorAll(':scope > .code-line').length;
-    if (explicitLines > 0) return explicitLines;
-    return (block.textContent ?? '').replace(/\r\n?/g, '\n').split('\n').length;
-};
+const codeLineCount = (block) => codeLines(block).length;
 
 console.log(
     JSON.stringify(
@@ -269,6 +289,18 @@ vi.mock('@/components/MermaidDiagram', () => ({
 const squash = (value: string): string => value.replace(/\s+/g, '');
 const normalize = (value: string): string => value.replace(/\s+/g, ' ').trim();
 const codeBlockSelector = 'pre:not(.mermaid), .code-block';
+const codeLines = (block: Element): string[] => {
+    const explicitLines = [...block.querySelectorAll(':scope > .code-line')];
+    if (explicitLines.length > 0) {
+        return explicitLines.map((line) => line.textContent ?? '');
+    }
+    const text = (block.textContent ?? '')
+        .replace(/\r\n?/g, '\n')
+        .replace(/^\n|\n$/g, '');
+    return text ? text.split('\n') : [];
+};
+const codeText = (block: Element): string => codeLines(block).join('\n');
+const codeLineCount = (block: Element): number => codeLines(block).length;
 const bodySelector = `p, aside, .annotation, [class*="callout"], img[alt], ${codeBlockSelector}`;
 const extractBodyContent = (container: HTMLElement) =>
     [...container.querySelectorAll(bodySelector)]
@@ -281,11 +313,13 @@ const extractBodyContent = (container: HTMLElement) =>
                     : element.matches('aside, .annotation, [class*="callout"]')
                         ? 'annotation'
                         : 'paragraph',
-            text: normalize(
-                element.matches('img[alt]')
-                    ? element.getAttribute('alt') ?? ''
-                    : element.textContent ?? '',
-            ),
+            text: element.matches(codeBlockSelector)
+                ? codeText(element)
+                : normalize(
+                    element.matches('img[alt]')
+                        ? element.getAttribute('alt') ?? ''
+                        : element.textContent ?? '',
+                ),
         }))
         .filter((entry) => entry.text);
 
@@ -373,9 +407,8 @@ describe('<page-slug> — 移行元コンテンツの全量移行', () => {
         );
         expect(blocks).toHaveLength(inventory.counts.codeBlock);
         blocks.forEach((block, index) => {
-            expect(block.querySelectorAll(':scope > .code-line').length).toBe(
-                inventory.structures.codeLines[index],
-            );
+            expect(block.querySelector(':scope > .code-line')).not.toBeNull();
+            expect(codeLineCount(block)).toBe(inventory.structures.codeLines[index]);
         });
     });
 });
