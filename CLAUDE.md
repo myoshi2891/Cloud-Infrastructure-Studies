@@ -120,6 +120,13 @@ app/
         constants.ts                # Domain 4 固有定数
         domain4.css                 # ページ固有スタイル
         layout.tsx                  # Domain 4 レイアウト
+  comptia/
+    network-plus/
+      page.tsx                      # CompTIA Network+ (N10-009 / V9) 完全ガイド (Server)
+      ComptiaNetworkPlusGuide.tsx   # 本文＋インタラクション (Client。全13セクション、Mermaid等)
+      NavBar.tsx                    # サイドバーナビ (IntersectionObserver)
+      constants.ts                  # Mermaid 図定義（4図）
+      page.css                      # ページ固有スタイル（サイドバー幅280px契約準拠）
       architecture-guide/page.tsx   # アーキテクチャガイドページ
     hands-on/
       cloud-load-balancing-guide/
