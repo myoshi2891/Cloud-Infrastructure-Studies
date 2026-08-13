@@ -75,7 +75,7 @@ function ChecklistSection() {
                   checked={isChecked}
                   onChange={() => toggleCheck(idx)}
                 />
-                <span className="checklist-text">{item}</span>
+                <span className={`checklist-text ${isChecked ? 'is-completed' : ''}`}>{item}</span>
               </label>
             </li>
           );
@@ -1088,104 +1088,7 @@ export default function PcneSection2VpcImplementationGuide() {
                 </blockquote>
                 <hr />
                 <h2 className="" id="設計実装チェックリスト">設計・実装チェックリスト</h2>
-                <div className="checklist-wrapper">
-                    <div className="checklist-header">
-                        <span className="checklist-progress">0 / N 完了</span>
-                    </div>
-                    <ul className="task-list checklist-card">
-                        <li>
-                            <label><input type="checkbox" />VPCはCustom
-                                modeで作成し、リージョン・CIDRを明示的に設計した</label>
-                        </li>
-                        <li>
-                            <label><input type="checkbox" />Private Services
-                                Access用の予約範囲に将来の拡張余地を確保した</label>
-                        </li>
-                        <li>
-                            <label><input type="checkbox" />Cloud Buildの私有プールをVPC Service
-                                Controlsパリメータ内に構成した(該当する場合)</label>
-                        </li>
-                        <li>
-                            <label><input type="checkbox" />VPC
-                                Peeringの相手が3つ以上になる場合、NCCへの移行を検討した</label>
-                        </li>
-                        <li>
-                            <label><input type="checkbox" />カスタムルート交換時に広範な未タグルート(0/1等)が誤ってインポートされないか確認した</label>
-                        </li>
-                        <li>
-                            <label><input type="checkbox" />Shared VPCのNetwork
-                                Userをプロジェクト単位ではなくサブネット単位で最小権限付与した</label>
-                        </li>
-                        <li>
-                            <label><input type="checkbox" />ホストプロジェクトの課金アカウント解除リスクを運用手順に明記した</label>
-                        </li>
-                        <li>
-                            <label><input type="checkbox" />限定公開Googleアクセスをサブネット単位で漏れなく設定した</label>
-                        </li>
-                        <li>
-                            <label><input type="checkbox" />サブネット拡張(縮小不可)を前提にIPAM設計でスーパーネットを予約した</label>
-                        </li>
-                        <li>
-                            <label><input type="checkbox" />VPC Service Controlsをdry
-                                runモードで検証してからenforcedへ切り替えた</label>
-                        </li>
-                        <li>
-                            <label><input type="checkbox" />VPC accessible
-                                servicesで許可リストを明示し、意図しない広範アクセスを防いだ</label>
-                        </li>
-                        <li>
-                            <label><input type="checkbox" />動的ルートと静的ルートが競合する場合の優先度(priority)を明示的に設計した</label>
-                        </li>
-                        <li>
-                            <label><input type="checkbox" />マルチリージョン構成では動的ルーティングモードをグローバルに設定した(IPv6は依然リージョナルスコープである点に注意)</label>
-                        </li>
-                        <li>
-                            <label><input type="checkbox" />ポリシーベースルート(PBR)とBGP route
-                                policiesの役割の違いを整理し、適切な方を選定した</label>
-                        </li>
-                        <li>
-                            <label><input type="checkbox" />BGP route policiesがfail
-                                open既定であることを踏まえ、必要な場合は明示的なdropポリシーを追加した</label>
-                        </li>
-                        <li>
-                            <label><input type="checkbox" />内部LBネクストホップ構成でIP転送(can-ip-forward)を有効化した</label>
-                        </li>
-                        <li>
-                            <label><input type="checkbox" />トランジットVPC経由のカスタムルート交換で、戻り経路(オンプレ→ワークロードVPC)の広告も設計した</label>
-                        </li>
-                        <li>
-                            <label><input type="checkbox" />NCCの制御プレーン(スポークステータス・ルート伝播)とデータプレーン(疎通)を切り分けて監視する体制を整えた</label>
-                        </li>
-                        <li>
-                            <label><input type="checkbox" />BGPセッションフラップとスポークステータス変化にCloud
-                                Monitoringアラートを設定した</label>
-                        </li>
-                        <li>
-                            <label><input type="checkbox" />GKE
-                                Pod用セカンダリレンジは将来の最大ノード数から逆算した余裕あるサイズにした</label>
-                        </li>
-                        <li>
-                            <label><input type="checkbox" />Shared
-                                VPC環境でのGKEクラスタ用IAMロール(Network User + Kubernetes Engine
-                                Admin等)を確認した</label>
-                        </li>
-                        <li>
-                            <label><input type="checkbox" />プライベートクラスタのコントロールプレーンアクセスはDNSベースエンドポイント(IAM)を優先検討した</label>
-                        </li>
-                        <li>
-                            <label><input type="checkbox" />GKE Dataplane
-                                V2使用時、ip-masq-agentの<code>--nomasq-all-reserved-ranges</code>設定を確認した</label>
-                        </li>
-                        <li>
-                            <label><input type="checkbox" />Pod IP枯渇時はdiscontiguous multi-Pod
-                                CIDRでの追加レンジ付与を第一選択とする方針を確認した</label>
-                        </li>
-                        <li>
-                            <label><input type="checkbox" />高頻度DNSクエリが想定されるクラスタでNodeLocal
-                                DNSCacheの要否を検討した</label>
-                        </li>
-                    </ul>
-                </div>
+                <ChecklistSection />
                 <h2 className="" id="まとめ">まとめ</h2>
                 <p>
                     本ガイド(S3)では、PCNE試験の Section

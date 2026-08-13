@@ -453,10 +453,12 @@
   transform: rotate(45deg) !important;
 }
 
+.pcne-s2-vpc-implementation-page .checklist-text.is-completed,
 .pcne-s2-vpc-implementation-page ul.checklist-card label.checked .checklist-text,
 .pcne-s2-vpc-implementation-page ul.checklist-card li:has(input:checked) .checklist-text {
   text-decoration: line-through !important;
   color: var(--pcne-text-faint) !important;
+  opacity: 0.7;
 }
 
 .pcne-s2-vpc-implementation-page .checklist-text {
