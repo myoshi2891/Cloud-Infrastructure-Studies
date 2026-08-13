@@ -9,7 +9,27 @@ description: >
 
 # Mermaid 構文・描画修正スキル
 
-(最終更新日: 2026-08-11)
+(最終更新日: 2026-08-13)
+
+## 前提バージョンと正準実装（推測禁止）
+
+| 項目 | 確定値 |
+|---|---|
+| Mermaid | **`mermaid@^11.16.0`**（`package.json` の dependencies） |
+| React 共通コンポーネント | `components/MermaidDiagram.tsx` — **名前付きエクスポート** `export const MermaidDiagram` |
+| 併せてエクスポート | `applySvgFixups`（SVG 後処理の正準実装） |
+| スタイル | `components/MermaidDiagram.module.css` |
+| `mermaid.initialize` | モジュール最上位で `typeof window !== 'undefined'` ガード付きに**一度だけ**実行 |
+| テスト環境 | Vitest 4 / jsdom。`MermaidDiagram` は**必ずモックする**（§ テスト環境でのモック化） |
+
+> 以降の「Mermaid v10 の必須ルール」は **v11 でも有効な基本構文ルール**である（カラム0・1行1ステートメント等）。
+> v10 固有の記述であることを理由に読み飛ばさないこと。`references/mermaid-v10-guide.md` も同様に v11 で有効。
+
+## このスキルは3系統に複製されている
+
+`.agents/skills/fix-mermaid/` を**正本**とし、`.claude/` と `.gemini/` 配下は複製である。
+過去に3系統が乖離し、`.gemini/` だけが古いルール（図ごとの `maxWidth` インライン指定を許容する記述等）で
+残っていた実績がある。編集後は `.agents/rules/tdd-commit-workflow.md` §8 の `rsync` 手順で必ず同期すること。
 
 ## 🚀 まず再利用スクリプトを使う（トークン節約・最優先）
 
@@ -51,7 +71,7 @@ description: >
 2. 各ステートメントは**改行で分離**（1行に複数連結しない）
 3. ノードラベル `A["text"]` の内容は**1行に収める**
 4. `mindmap` のみ例外 — 内部インデントは階層構造を表すため保持する
-5. `block-beta` は**使用禁止** — v10.9.5 で全体クラッシュの原因になる。`graph TD` で代替する
+5. `block-beta` は**使用禁止** — v10.9.5 でページ全体のクラッシュを起こした実績があり、現行 v11 でも安全性を検証していない。`graph TD` で代替する
 
 ## よくある原因
 
@@ -324,8 +344,10 @@ const DIAGRAMS: Record<DiagramId, string> = {
   'wide-topology': WIDE_TOPOLOGY,
 };
 
-function Diagram({ id }: { id: DiagramId }) {
+// scroll spy による親の再レンダリングで SVG が縮むため memo は必須（後述）
+const Diagram = memo(function Diagram({ id }: { id: DiagramId }) {
   const chart = DIAGRAMS[id];
+  if (!chart) return null;
   return (
     <div className="mermaid-wrap">
       <MermaidDiagram
@@ -335,8 +357,14 @@ function Diagram({ id }: { id: DiagramId }) {
       />
     </div>
   );
-}
+});
 ```
+
+> **型に関する注意（`noUncheckedIndexedAccess: true`）**:
+> `Record<DiagramId, string>`（キーがリテラルのユニオン）はインデックスシグネチャを持たないため添字は `string` になる。
+> 一方 `Record<string, string>` は添字が `string | undefined` になり、ガード無しでは `MermaidDiagram` の
+> `chart: string` に代入できずコンパイルエラーになる。
+> **どちらの型でも動く `if (!chart) return null;` を常に書くこと**（実行時の id タイポも同時に防げる）。
 
 自然倍率を使う場合も、React の `MermaidDiagram` と `.mermaid-wrap` は `width:100%` と中央寄せを維持し、SVG は `width === viewBox幅`、`max-width:100%`、`height:auto` とする。React 側で `maxWidth` をインライン上書きせず、自動テストで共通契約を固定する。静的 HTML の `apply_render_pipeline.mjs` は冒頭の鉄則どおり `maxWidth = '100%'` と既定動作を維持する。
 
@@ -363,20 +391,39 @@ const Diagram = memo(function Diagram({ id, label }: { id: DiagramId; label: str
 
 #### 2. テスト環境（Vitest）での MermaidDiagram のモック化
 
-`MermaidDiagram` はクライアントサイドで動的に `mermaid` ライブラリを読み込んで動作するため、テスト環境での DOM レンダリング時にエラーを起こす原因となります。
-テストファイル（`page.test.tsx`）では、必ず `vi.mock` を使ってダミー要素にモック化してください。
+`MermaidDiagram` は `mermaid` を読み込み、描画前に `document.fonts.ready` を待つため、jsdom ではそのまま描画できません。
+テストファイル（`page.test.tsx`）では、必ず `vi.mock` でダミー要素に差し替えてください。
 
-```typescript
-vi.mock("@/components/MermaidDiagram", () => ({
-  default: function DummyMermaidDiagram({ chart }: { chart: string }) {
-    return <pre data-testid="mermaid">{chart}</pre>;
-  },
+**⚠️ エクスポート形態は「名前付き」です。`default` でモックすると `undefined` になり必ず落ちます。**
+
+```tsx
+// ✅ 正しい — components/MermaidDiagram.tsx は `export const MermaidDiagram`
+vi.mock('@/components/MermaidDiagram', () => ({
+    MermaidDiagram: ({ chart, ariaLabel }: { chart: string; ariaLabel: string }) => (
+        <div data-testid="mermaid-diagram" data-chart={chart} aria-label={ariaLabel} />
+    ),
 }));
 ```
 
+```tsx
+// ❌ 誤り — default エクスポートは存在しない
+vi.mock('@/components/MermaidDiagram', () => ({
+    default: function DummyMermaidDiagram({ chart }: { chart: string }) {
+        return <pre data-testid="mermaid">{chart}</pre>;
+    },
+}));
+```
+
+`ariaLabel` を `aria-label` としてダミーに透過させておくことで、
+**「全図に非空の `ariaLabel` があること」を移行テストで機械検証できる**
+（`.agents/rules/tdd-commit-workflow.md` §3 の正準テストテンプレート参照）。
+
+モックのファイル名・`data-testid` はテンプレートと揃えて **`mermaid-diagram`** に統一すること。
+過去に `mermaid` / `mermaid-diagram` が混在し、件数アサーションが機能していないテストが生まれた。
+
 ## Mermaid v11 + React 共通コンポーネントの可読性・文字切れ・文字色対策（2026年6月追記）
 
-本リポジトリは `mermaid@^11.15.0` を使用し、図は共通コンポーネント [`components/MermaidDiagram.tsx`](../../../components/MermaidDiagram.tsx)（`'use client'`）で描画する。`mermaid.render()` が返す SVG 文字列を `dangerouslySetInnerHTML` で注入し、ページ固有スタイルは [`components/MermaidDiagram.module.css`](../../../components/MermaidDiagram.module.css) に置く。
+本リポジトリは `mermaid@^11.16.0` を使用し、図は共通コンポーネント [`components/MermaidDiagram.tsx`](../../../components/MermaidDiagram.tsx)（`'use client'`）で描画する。`mermaid.render()` が返す SVG 文字列を `dangerouslySetInnerHTML` で注入し、ページ固有スタイルは [`components/MermaidDiagram.module.css`](../../../components/MermaidDiagram.module.css) に置く。
 
 レンダリングの正準ロジック（`mermaid.initialize` 設定・`applySvgFixups`・render ループ・中央寄せ CSS）は再利用スクリプト [`scripts/apply_render_pipeline.mjs`](scripts/apply_render_pipeline.mjs) に集約されている。新たに不具合を直す際は **手書きで再現せず、このスクリプトを正として適用**すること（冒頭「🚀 まず再利用スクリプトを使う」を参照）。
 
