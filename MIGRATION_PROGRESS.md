@@ -20,7 +20,7 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 
 - [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for pcne-s2-vpc-implementation` (`f40abbc`)
 - [x] **Step 1 (Red)**: `test(pcne): add failing tests for section2-vpc-implementation` (`2285158`)
-- [x] **Step 2 (Green)**: `feat(pcne): implement section2-vpc-implementation to pass tests` (`d0333e0`) & `fix(pcne): restore 100% exact visual design and CSS variables for section2-vpc-implementation` (`c8f9c3d`)
+- [x] **Step 2 (Green)**: `feat(pcne): implement section2-vpc-implementation to pass tests` (`d0333e0`), `fix(pcne): restore 100% exact visual design and CSS variables for section2-vpc-implementation` (`c8f9c3d`) & `fix(pcne): ensure h3 accent title color and sidebar nav-h2 hierarchy matching original design` (`eddce49`)
 - [x] **Step 3 (Refactor / Integration & Nav & Docs)**: `refactor(pcne): integrate section2-vpc-implementation into routing and update docs` (`732cf94`)
 - [x] **Step 4 (Archive & Sync)**: 元HTMLを `archive/Gcl_Archive/Professional-Cloud-Network-Engineer/` へ移動し `MIGRATION_PROGRESS.md` を同期
 
