@@ -77,28 +77,11 @@
             * {
                 box-sizing: border-box;
             }
-            html,
-            body {
-                overflow-x: hidden;
-            }
+            
 
-            html {
-                scroll-behavior: smooth;
-            }
+            
 
-            body {
-                margin: 0;
-                background: var(--bg);
-                background-image:
-                    radial-gradient(circle at 15% 8%, rgba(124, 158, 255, 0.1), transparent 45%),
-                    radial-gradient(circle at 85% 92%, rgba(95, 212, 168, 0.07), transparent 50%);
-                background-attachment: fixed;
-                color: var(--text-dim);
-                font-family: var(--font-body);
-                line-height: 1.85;
-                font-size: 16px;
-                -webkit-font-smoothing: antialiased;
-            }
+            
 
             a {
                 color: var(--accent-soft);
@@ -604,3 +587,4 @@
                 }
             }
         
+.pcne-vpc-design-page [id] { scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 24px); }

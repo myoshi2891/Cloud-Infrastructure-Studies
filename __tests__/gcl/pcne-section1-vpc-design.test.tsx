@@ -150,4 +150,17 @@ describe('pcne-section1-vpc-design — 移行元コンテンツの100%全量移�
             expect(codeLineCount(block)).toBe(inventory.structures.codeLines[index]);
         });
     });
+
+    it('サイドバーの全てのアンカーリンクの target ID が DOM 内の要素と1対1で対応する', () => {
+        const container = renderPage();
+        const sidebarLinks = [...container.querySelectorAll('.sidebar nav a[href^="#"]')];
+        expect(sidebarLinks.length).toBeGreaterThan(0);
+        sidebarLinks.forEach((link) => {
+            const href = link.getAttribute('href') ?? '';
+            const targetId = href.replace(/^#/, '');
+            const targetEl = container.querySelector(`[id="${targetId}"]`);
+            expect(targetEl).not.toBeNull();
+        });
+    });
 });
+
