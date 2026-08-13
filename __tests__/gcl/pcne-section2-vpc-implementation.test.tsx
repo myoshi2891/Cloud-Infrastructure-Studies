@@ -1,6 +1,6 @@
 // __tests__/gcl/pcne-section2-vpc-implementation.test.tsx
 // @vitest-environment jsdom
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import inventory from '@/docs/migration-inventory/pcne-s2-vpc-implementation.json';
 import Page from '@/app/gcl/professional-cloud-network-engineer/section2-vpc-implementation/page';
@@ -67,5 +67,14 @@ describe('PCNE Section 2 VPC Implementation Migration Verification', () => {
         // 5. アクセシビリティ・ランドマーク検証
         expect(container.querySelector('main')).not.toBeNull();
         expect(container.querySelector('aside')).not.toBeNull();
+
+        // 6. デザイン構造要素の全量移転検証 (元HTMLのキーとなるCSSクラス構造)
+        expect(container.querySelector('.hero-eyebrow')).not.toBeNull();
+        expect(container.querySelector('.main > blockquote')).not.toBeNull();
+        expect(container.querySelectorAll('.table-scroll').length).toBeGreaterThan(0);
+        expect(container.querySelectorAll('.ref-grid').length).toBeGreaterThan(0);
+        expect(container.querySelectorAll('.ref-card').length).toBeGreaterThan(0);
+        expect(container.querySelectorAll('.checklist-wrapper').length).toBeGreaterThan(0);
+        expect(container.querySelectorAll('blockquote.source-card').length).toBeGreaterThan(0);
     });
 });
