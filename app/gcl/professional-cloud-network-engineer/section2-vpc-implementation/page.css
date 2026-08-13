@@ -1,0 +1,328 @@
+/* app/gcl/professional-cloud-network-engineer/section2-vpc-implementation/page.css */
+
+.pcne-s2-vpc-implementation-page {
+  --pcne-bg: var(--color-background, #07111e);
+  --pcne-bg-elevated: var(--color-card, #0d1a2e);
+  --pcne-bg-card: var(--color-card, #0f1f36);
+  --pcne-border: var(--color-border, #1c2b42);
+  --pcne-border-soft: #16233a;
+  --pcne-text: var(--color-foreground, #e6edf7);
+  --pcne-text-dim: var(--color-muted-foreground, #9fb0c9);
+  --pcne-text-faint: #6b7c99;
+  --pcne-accent: var(--color-google-blue, #7c9eff);
+  --pcne-accent-soft: #3d5490;
+  --pcne-accent-glow: rgba(124, 158, 255, 0.15);
+  --pcne-warn: #ffb454;
+  --pcne-warn-bg: rgba(255, 180, 84, 0.08);
+  --pcne-good: #6bd6a8;
+
+  background-color: var(--pcne-bg);
+  color: var(--pcne-text);
+  font-family: var(--font-body, system-ui, sans-serif);
+  min-height: 100vh;
+}
+
+/* ---------------- Layout & Sidebar ---------------- */
+.pcne-s2-vpc-implementation-page .layout {
+  display: block;
+}
+
+.pcne-s2-vpc-implementation-page .sidebar {
+  position: fixed;
+  top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px));
+  left: 0;
+  width: 280px;
+  bottom: 0;
+  overflow-y: auto;
+  background-color: var(--pcne-bg-elevated);
+  border-right: 1px solid var(--pcne-border);
+  padding: 24px 16px 40px;
+  z-index: 40;
+  transition: transform 0.25s ease;
+  scrollbar-width: thin;
+}
+
+.pcne-s2-vpc-implementation-page .brand {
+  font-size: 12px;
+  color: var(--pcne-accent);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+
+.pcne-s2-vpc-implementation-page .brand-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--pcne-text);
+  margin-bottom: 20px;
+  line-height: 1.4;
+}
+
+.pcne-s2-vpc-implementation-page .nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pcne-s2-vpc-implementation-page .nav-item {
+  margin-bottom: 6px;
+}
+
+.pcne-s2-vpc-implementation-page .nav-link {
+  display: block;
+  padding: 6px 10px;
+  font-size: 13px;
+  color: var(--pcne-text-dim);
+  text-decoration: none;
+  border-radius: 6px;
+  transition: all 0.15s ease;
+}
+
+.pcne-s2-vpc-implementation-page .nav-link:hover,
+.pcne-s2-vpc-implementation-page .nav-link.active {
+  color: var(--pcne-text);
+  background-color: rgba(124, 158, 255, 0.1);
+}
+
+.pcne-s2-vpc-implementation-page .nav-link.active {
+  color: var(--pcne-accent);
+  font-weight: 600;
+  border-left: 3px solid var(--pcne-accent);
+}
+
+.pcne-s2-vpc-implementation-page .nav-sub {
+  list-style: none;
+  padding-left: 14px;
+  margin: 4px 0 0;
+}
+
+.pcne-s2-vpc-implementation-page .nav-sub .nav-link {
+  font-size: 12px;
+  padding: 4px 8px;
+}
+
+/* ---------------- Main Content ---------------- */
+.pcne-s2-vpc-implementation-page .main {
+  margin-left: 280px;
+  padding: 40px 48px 80px;
+  width: calc(100% - 280px);
+  max-width: none;
+}
+
+@media (max-width: 900px) {
+  .pcne-s2-vpc-implementation-page .sidebar {
+    transform: translateX(-100%);
+  }
+  .pcne-s2-vpc-implementation-page .main {
+    margin-left: 0;
+    width: 100%;
+    padding: 24px 16px 60px;
+  }
+}
+
+.pcne-s2-vpc-implementation-page .section-block {
+  scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 16px);
+  margin-bottom: 48px;
+}
+
+.pcne-s2-vpc-implementation-page h1 {
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--pcne-text);
+  margin-bottom: 24px;
+  line-height: 1.3;
+  background: linear-gradient(135deg, #ffffff 0%, var(--pcne-accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.pcne-s2-vpc-implementation-page h2 {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--pcne-text);
+  margin: 36px 0 20px;
+  padding-left: 12px;
+  border-left: 4px solid var(--pcne-accent);
+  line-height: 1.4;
+}
+
+.pcne-s2-vpc-implementation-page h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--pcne-accent);
+  margin: 28px 0 16px;
+  line-height: 1.4;
+}
+
+.pcne-s2-vpc-implementation-page p {
+  margin-bottom: 16px;
+  color: var(--pcne-text-dim);
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+/* ---------------- Tables & Callouts ---------------- */
+.pcne-s2-vpc-implementation-page .table-wrapper {
+  overflow-x: auto;
+  margin: 20px 0 28px;
+  border-radius: 8px;
+  border: 1px solid var(--pcne-border);
+}
+
+.pcne-s2-vpc-implementation-page table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  text-align: left;
+}
+
+.pcne-s2-vpc-implementation-page th {
+  background-color: var(--pcne-bg-elevated);
+  color: var(--pcne-text);
+  font-weight: 600;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--pcne-border);
+}
+
+.pcne-s2-vpc-implementation-page td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--pcne-border-soft);
+  color: var(--pcne-text-dim);
+  background-color: var(--pcne-bg-card);
+}
+
+.pcne-s2-vpc-implementation-page tr:last-child td {
+  border-bottom: none;
+}
+
+.pcne-s2-vpc-implementation-page .callout {
+  padding: 16px 20px;
+  border-radius: 8px;
+  margin: 20px 0;
+  background-color: var(--pcne-bg-elevated);
+  border-left: 4px solid var(--pcne-accent);
+}
+
+.pcne-s2-vpc-implementation-page .callout-warn {
+  border-left-color: var(--pcne-warn);
+  background-color: var(--pcne-warn-bg);
+}
+
+.pcne-s2-vpc-implementation-page .callout-good {
+  border-left-color: var(--pcne-good);
+  background-color: rgba(107, 214, 168, 0.08);
+}
+
+/* ---------------- Mermaid ---------------- */
+.pcne-s2-vpc-implementation-page .mermaid-wrap {
+  width: 100%;
+  margin: 1.5rem auto 2rem;
+  display: flex;
+  justify-content: center;
+  overflow-x: auto;
+}
+
+/* ---------------- Code Blocks ---------------- */
+.pcne-s2-vpc-implementation-page .code-block {
+  background-color: #050b14;
+  border: 1px solid var(--pcne-border);
+  border-radius: 8px;
+  padding: 16px;
+  margin: 20px 0;
+  font-family: var(--font-mono, monospace);
+  font-size: 13.5px;
+  overflow-x: auto;
+}
+
+.pcne-s2-vpc-implementation-page .code-line {
+  white-space: pre;
+  line-height: 1.6;
+  color: var(--pcne-text);
+}
+
+.pcne-s2-vpc-implementation-page .code-comment {
+  color: var(--pcne-text-faint);
+  font-style: italic;
+}
+
+.pcne-s2-vpc-implementation-page .code-prompt {
+  color: var(--pcne-accent);
+  user-select: none;
+}
+
+.pcne-s2-vpc-implementation-page .code-keyword {
+  color: #ff7b72;
+}
+
+.pcne-s2-vpc-implementation-page .code-param {
+  color: #79c0ff;
+}
+
+/* ---------------- Checklist & Buttons ---------------- */
+.pcne-s2-vpc-implementation-page .checklist {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+}
+
+.pcne-s2-vpc-implementation-page .checklist-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
+  padding: 12px;
+  background-color: var(--pcne-bg-card);
+  border: 1px solid var(--pcne-border-soft);
+  border-radius: 6px;
+}
+
+.pcne-s2-vpc-implementation-page .check-box {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  border: 2px solid var(--pcne-text-faint);
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.pcne-s2-vpc-implementation-page .check-box.checked {
+  background-color: var(--pcne-accent);
+  border-color: var(--pcne-accent);
+}
+
+.pcne-s2-vpc-implementation-page .check-box.checked::after {
+  content: '✓';
+  color: #000;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.pcne-s2-vpc-implementation-page .scroll-top-btn {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: var(--pcne-accent);
+  color: #000;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.pcne-s2-vpc-implementation-page .scroll-top-btn:hover {
+  transform: translateY(-2px);
+}
