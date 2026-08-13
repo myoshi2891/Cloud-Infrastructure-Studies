@@ -1,5 +1,8 @@
 import type { Metadata } from 'next';
-import { Sora, IBM_Plex_Mono } from 'next/font/google';
+// フォントは @fontsource で自己ホストする（ビルド時に Google Fonts へ取得しない）。
+import '@fontsource-variable/sora/index.css';
+import '@fontsource/ibm-plex-mono/400.css';
+import '@fontsource/ibm-plex-mono/600.css';
 import './section2.css';
 import Section21 from './components/Section21';
 import Section22 from './components/Section22';
@@ -7,20 +10,6 @@ import Section23 from './components/Section23';
 import Section24 from './components/Section24';
 import Section25 from './components/Section25';
 import SummarySection from './components/SummarySection';
-
-const sora = Sora({
-    subsets: ['latin'],
-    weight: ['300', '400', '600', '700', '800'],
-    variable: '--font-sora',
-    display: 'swap',
-});
-
-const ibmPlexMono = IBM_Plex_Mono({
-    subsets: ['latin'],
-    weight: ['400', '600'],
-    variable: '--font-ibm-plex-mono',
-    display: 'swap',
-});
 
 export const metadata: Metadata = {
     title: 'Section 2: Google Cloud の Gen AI サービス | Generative AI Leader',
@@ -36,10 +25,8 @@ export const metadata: Metadata = {
  * @returns The JSX element for the Section 2 page layout
  */
 export default function Section2Page() {
-    const fontClasses = `${sora.variable} ${ibmPlexMono.variable}`;
-
     return (
-        <div className={`s2-page ${fontClasses}`}>
+        <div className="s2-page">
             {/* HERO */}
             <header className="hero">
                 <div className="orb orb-1" />

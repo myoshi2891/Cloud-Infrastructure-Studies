@@ -46,6 +46,17 @@
     "vitest": "^4.1.10"
   },
   "dependencies": {
+    "@fontsource-variable/azeret-mono": "5.3.0",
+    "@fontsource-variable/dm-sans": "5.3.0",
+    "@fontsource-variable/fira-code": "5.3.0",
+    "@fontsource-variable/fraunces": "5.3.0",
+    "@fontsource-variable/jetbrains-mono": "5.3.0",
+    "@fontsource-variable/noto-sans-jp": "5.3.0",
+    "@fontsource-variable/outfit": "5.3.0",
+    "@fontsource-variable/playfair-display": "5.3.0",
+    "@fontsource-variable/sora": "5.3.0",
+    "@fontsource/dm-mono": "5.3.0",
+    "@fontsource/ibm-plex-mono": "5.3.0",
     "@tabler/icons-webfont": "2.47.0",
     "clsx": "^2.1.1",
     "mermaid": "^11.16.0",

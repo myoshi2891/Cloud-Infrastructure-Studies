@@ -1,21 +1,9 @@
 import type { Metadata } from 'next';
-import { Outfit, Fira_Code } from 'next/font/google';
+// フォントは @fontsource で自己ホストする（ビルド時に Google Fonts へ取得しない）。
+import '@fontsource-variable/outfit/index.css';
+import '@fontsource-variable/fira-code/index.css';
 import { getFormattedCreationDate } from '../constants';
 import './section3.css';
-
-const outfit = Outfit({
-    subsets: ['latin'],
-    weight: ['300', '400', '600', '700', '800'],
-    variable: '--font-outfit',
-    display: 'swap',
-});
-
-const firaCode = Fira_Code({
-    subsets: ['latin'],
-    weight: ['400', '500', '600'],
-    variable: '--font-fira-code',
-    display: 'swap',
-});
 
 export const metadata: Metadata = {
     title: 'Section 3: モデル出力改善技術 | Generative AI Leader',
@@ -1152,10 +1140,8 @@ function SummarySection() {
  * @returns The React element for the complete Section 3 page, including header, navigation, main subsections, and footer.
  */
 export default function Section3Page() {
-    const fontClasses = `${outfit.variable} ${firaCode.variable}`;
-
     return (
-        <div className={`s3-page ${fontClasses}`}>
+        <div className="s3-page">
             {/* HERO */}
             <header className="hero">
                 <div className="hero-corner tl" />

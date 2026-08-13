@@ -1,13 +1,5 @@
 import type { Metadata } from 'next';
-import { Space_Mono } from 'next/font/google';
 import './genai-leader.css';
-
-const spaceMono = Space_Mono({
-    subsets: ['latin'],
-    weight: ['400', '700'],
-    variable: '--font-display-mono',
-    display: 'swap',
-});
 
 export const metadata: Metadata = {
     title: 'Generative AI Leader',
@@ -483,7 +475,7 @@ function Section4() {
  */
 export default function GenaiLeaderPage() {
     return (
-        <div className={`genai-leader-page ${spaceMono.variable}`}>
+        <div className="genai-leader-page">
             <main className="wrapper">
                 {/* Hero */}
                 <section className="hero">

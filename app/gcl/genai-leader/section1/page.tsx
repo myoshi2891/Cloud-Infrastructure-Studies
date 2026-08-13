@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
-import { Fraunces, Azeret_Mono } from 'next/font/google';
+// フォントは @fontsource で自己ホストする（ビルド時に Google Fonts へ取得しない）。
+import '@fontsource-variable/fraunces/index.css';
+import '@fontsource-variable/azeret-mono/index.css';
 import './section1.css';
 import Section11 from './components/Section11';
 import Section11b from './components/Section11b';
@@ -7,20 +9,6 @@ import Section11c from './components/Section11c';
 import Section12 from './components/Section12';
 import Section13 from './components/Section13';
 import Section14 from './components/Section14';
-
-const fraunces = Fraunces({
-    subsets: ['latin'],
-    axes: ['opsz'],
-    variable: '--font-fraunces',
-    display: 'swap',
-});
-
-const azeretMono = Azeret_Mono({
-    subsets: ['latin'],
-    weight: ['300', '400', '500', '600'],
-    variable: '--font-azeret-mono',
-    display: 'swap',
-});
 
 export const metadata: Metadata = {
     title: 'Section 1: Gen AI 基礎知識 | Generative AI Leader',
@@ -39,10 +27,8 @@ export const metadata: Metadata = {
  * @returns The JSX element representing the complete Section 1 page layout.
  */
 export default function Section1Page() {
-    const fontClasses = `${fraunces.variable} ${azeretMono.variable}`;
-
     return (
-        <div className={`s1-page ${fontClasses}`}>
+        <div className="s1-page">
             {/* HERO */}
             <header className="hero">
                 <div className="hero-label">Generative AI Leader 試験対策 — Section 1 深掘り</div>

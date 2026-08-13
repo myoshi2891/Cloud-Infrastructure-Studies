@@ -1,21 +1,11 @@
 import type { Metadata } from 'next';
-import { Playfair_Display, DM_Mono } from 'next/font/google';
+// フォントは @fontsource で自己ホストする（ビルド時に Google Fonts へ取得しない）。
+import '@fontsource-variable/playfair-display/index.css';
+import '@fontsource/dm-mono/300.css';
+import '@fontsource/dm-mono/400.css';
+import '@fontsource/dm-mono/500.css';
 import { getFormattedCreationDate } from '../constants';
 import './section4.css';
-
-const playfairDisplay = Playfair_Display({
-    subsets: ['latin'],
-    weight: ['400', '700', '800'],
-    variable: '--font-playfair-display',
-    display: 'swap',
-});
-
-const dmMono = DM_Mono({
-    subsets: ['latin'],
-    weight: ['300', '400', '500'],
-    variable: '--font-dm-mono',
-    display: 'swap',
-});
 
 export const metadata: Metadata = {
     title: 'Section 4: Gen AI ビジネス戦略 | Generative AI Leader',
@@ -1010,10 +1000,8 @@ function SummarySection() {
  * @returns The JSX element for the complete Section 4 layout
  */
 export default function Section4Page() {
-    const fontClasses = `${playfairDisplay.variable} ${dmMono.variable}`;
-
     return (
-        <div className={`s4-page ${fontClasses}`}>
+        <div className="s4-page">
             {/* HERO */}
             <header className="hero">
                 <div className="ornament tl" />

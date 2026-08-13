@@ -1,31 +1,14 @@
 import type { Metadata } from 'next';
-import { Noto_Sans_JP, JetBrains_Mono, DM_Sans } from 'next/font/google';
+// フォントは @fontsource で自己ホストする（ビルド時に Google Fonts へ取得しない）。
+// ファミリ名は globals.css の @theme の --font-* トークン側で解決する。
+import '@fontsource-variable/noto-sans-jp/index.css';
+import '@fontsource-variable/jetbrains-mono/index.css';
+import '@fontsource-variable/dm-sans/index.css';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { DisclaimerBanner } from '@/components/DisclaimerBanner';
 import { RecentPageRecorder } from '@/components/RecentPageRecorder';
 import './globals.css';
-
-const notoSansJP = Noto_Sans_JP({
-    subsets: ['latin'],
-    weight: ['300', '400', '500', '700', '900'],
-    variable: '--font-body',
-    display: 'swap',
-});
-
-const jetBrainsMono = JetBrains_Mono({
-    subsets: ['latin'],
-    weight: ['400', '700'],
-    variable: '--font-mono',
-    display: 'swap',
-});
-
-const dmSans = DM_Sans({
-    subsets: ['latin'],
-    weight: ['400', '500', '700'],
-    variable: '--font-display',
-    display: 'swap',
-});
 
 export const metadata: Metadata = {
     title: {
@@ -36,12 +19,12 @@ export const metadata: Metadata = {
 };
 
 /**
- * Root layout component that applies configured font CSS variables and composes site chrome around page content.
+ * Root layout component that loads the self-hosted fonts and composes site chrome around page content.
  *
- * This layout renders the document root (<html lang="ja">) with font variables and a body containing the Header, DisclaimerBanner, RecentPageRecorder, the provided page `children`, and the Footer.
+ * This layout renders the document root (<html lang="ja">) and a body containing the Header, DisclaimerBanner, RecentPageRecorder, the provided page `children`, and the Footer.
  *
  * @param children - The page content to render within the layout
- * @returns A React element representing the HTML root with font CSS variables and the site's header, banners, content, and footer
+ * @returns A React element representing the HTML root with the site's header, banners, content, and footer
  */
 export default function RootLayout({
     children,
@@ -49,7 +32,7 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="ja" className={`${notoSansJP.variable} ${jetBrainsMono.variable} ${dmSans.variable}`}>
+        <html lang="ja">
             <body>
                 <Header />
                 <DisclaimerBanner />
