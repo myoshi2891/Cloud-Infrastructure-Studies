@@ -1,5 +1,6 @@
 # Network Connectivity Center チャレンジラボ完全攻略ガイド
-### ― オンプレミスとマルチVPCをハブ&スポークで統合する実践アーキテクチャ ―
+
+― オンプレミスとマルチVPCをハブ&スポークで統合する実践アーキテクチャ ―
 
 > 対象ラボ: [Reduce Operational Complexity with Network Connectivity Center: Challenge Lab](https://www.skills.google/course_templates/1364/labs/616120)
 > 対象読者: Google Cloud ネットワーキング初学者〜中級者
@@ -216,6 +217,17 @@ flowchart TD
    - VPN tunnel: 該当するトンネルを2本選択(冗長化のため)
 3. Office 2 についても同様に `office-2-spoke` を作成します。
 
+**前提: ルーティングVPCのBGP動的ルーティングモードを `global` にする**
+
+Office 1 (`us-central1`) と Office 2 (`europe-west2`) のように**リージョンをまたいでハイブリッドスポークを接続する場合**、ルーティングVPCの動的ルーティングモードが `regional` のままだと、各Cloud Routerが学習したルートは自リージョン内にしか伝播しません。VPNスポーク作成前に `global` へ変更しておきます。
+
+```bash
+gcloud compute networks update <ROUTING_VPC> \
+  --bgp-routing-mode=global
+```
+
+> 出典: [Dynamic routing mode](https://docs.cloud.google.com/vpc/docs/vpc#routing_for_hybrid_networks) — 「グローバル動的ルーティングでは、Cloud Router が学習したルートをVPCネットワーク内の全リージョンへ適用する」
+
 **gcloud での作成例:**
 
 ```bash
@@ -299,7 +311,7 @@ gcloud network-connectivity spokes linked-vpc-network create workload-2-spoke \
 |---|---|---|
 | ハブのトポロジーがメッシュであることを事前確認する | スタートポロジーではエッジグループ同士のVPCスポーク間通信が遮断される | [Hub-and-spoke network architecture](https://docs.cloud.google.com/architecture/deploy-hub-spoke-vpc-network-topology) |
 | VPCネットワークは事前にカスタムモードへ変更しておく | 自動モードVPCはVPCスポークとして非対応(変更は不可逆) | [VPC spokes overview](https://docs.cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/vpc-spokes-overview) |
-| VPCスポークはIPv4のみ対応と理解しておく | IPv6動的ルート交換は非対応 | [VPC spokes overview](https://docs.cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/vpc-spokes-overview) |
+| VPCスポークのサブネット範囲交換はIPv4/IPv6の両方に対応、動的ルート交換はIPv4のみと理解しておく | IPv6の動的ルート交換は非対応のため、IPv6経路をBGPで学習させる設計は成立しない | [VPC spokes overview](https://docs.cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/vpc-spokes-overview) |
 
 ---
 
@@ -335,7 +347,6 @@ flowchart TD
 
 ```bash
 gcloud network-connectivity spokes linked-vpn-tunnels update office-1-hybrid-spoke \
-  --hub=globaltech-hub \
   --region=us-central1 \
   --include-import-ranges=ALL_IPV4_RANGES
 ```

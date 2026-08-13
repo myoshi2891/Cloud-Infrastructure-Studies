@@ -1055,6 +1055,36 @@ gcloud services enable compute.googleapis.com</code></pre>
                         </li>
                     </ol>
 
+                    <p>
+                        <strong>前提: ルーティングVPCのBGP動的ルーティングモードを <code>global</code> にする</strong>
+                    </p>
+                    <p>
+                        Office 1 (<code>us-central1</code>) と Office 2 (<code>europe-west2</code>)
+                        のようにリージョンをまたいでハイブリッドスポークを接続する場合、ルーティングVPCの動的ルーティングモードが
+                        <code>regional</code>
+                        のままだと、各Cloud Routerが学習したルートは自リージョン内にしか伝播しません。VPNスポーク作成前に
+                        <code>global</code> へ変更しておきます。
+                    </p>
+                    <pre><code class="language-bash">gcloud compute networks update &lt;ROUTING_VPC&gt; \
+  --bgp-routing-mode=global</code></pre>
+
+                    <div class="callout callout-info">
+                        <i class="ti ti-external-link"></i>
+                        <div class="callout-body">
+                            <p>
+                                出典:
+                                <a
+                                    href="https://docs.cloud.google.com/vpc/docs/vpc#routing_for_hybrid_networks"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >Dynamic routing mode</a
+                                >
+                                — 「グローバル動的ルーティングでは、Cloud Router
+                                が学習したルートをVPCネットワーク内の全リージョンへ適用する」
+                            </p>
+                        </div>
+                    </div>
+
                     <p><strong>gcloud での作成例:</strong></p>
                     <pre><code class="language-bash">gcloud network-connectivity spokes linked-vpn-tunnels create office-1-hybrid-spoke \
   --hub=globaltech-hub \
@@ -1246,8 +1276,12 @@ gcloud network-connectivity spokes linked-vpc-network create workload-2-spoke \
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>VPCスポークはIPv4のみ対応と理解しておく</td>
-                                    <td>IPv6動的ルート交換は非対応</td>
+                                    <td>
+                                        VPCスポークのサブネット範囲交換はIPv4/IPv6の両方に対応、動的ルート交換はIPv4のみと理解しておく
+                                    </td>
+                                    <td>
+                                        IPv6の動的ルート交換は非対応のため、IPv6経路をBGPで学習させる設計は成立しない
+                                    </td>
                                     <td>
                                         <a
                                             href="https://docs.cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/vpc-spokes-overview"
@@ -1335,7 +1369,6 @@ gcloud network-connectivity spokes linked-vpc-network create workload-2-spoke \
                     </div>
 
                     <pre><code class="language-bash">gcloud network-connectivity spokes linked-vpn-tunnels update office-1-hybrid-spoke \
-  --hub=globaltech-hub \
   --region=us-central1 \
   --include-import-ranges=ALL_IPV4_RANGES</code></pre>
 
