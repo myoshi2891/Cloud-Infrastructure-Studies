@@ -201,7 +201,7 @@ function readString(source, start, allowedQuotes) {
 /**
  * Parses a diagram definition object with quoted keys and string values.
  * @param {string} objectSource - The object source, including its surrounding braces.
- * @return {Object<string, string>} The parsed diagram definitions.
+ * @return {Record<string, string>} The parsed diagram definitions.
  * @throws {Error} If the object contains invalid syntax or an unterminated comment or string.
  */
 function parseTemplateLiteralObject(objectSource) {
@@ -251,7 +251,7 @@ function parseTemplateLiteralObject(objectSource) {
 /**
  * Validates a DIAGRAMS value and returns it when all entries are strings.
  * @param {*} diagrams - The value to validate.
- * @return {Object} The validated DIAGRAMS object.
+ * @return {Record<string, string>} The validated DIAGRAMS object.
  * @throws {TypeError} If the value is not an object, is null, is an array, or contains a non-string value.
  */
 function validateDiagrams(diagrams) {
@@ -269,7 +269,7 @@ function validateDiagrams(diagrams) {
 /**
  * Extracts and validates the `DIAGRAMS` object definition from HTML.
  * @param {string} html - The HTML source containing the `DIAGRAMS` declaration.
- * @returns {{diagrams: Object<string, string>, start: number, end: number}} The validated diagram definitions and the definition's source range, with `end` exclusive.
+ * @returns {{diagrams: Record<string, string>, start: number, end: number}} The validated diagram definitions and the definition's source range, with `end` exclusive.
  * @throws {Error} If the declaration is missing, is not a closed object literal, or contains invalid data.
  */
 export function extractDiagramsDefinition(html) {
