@@ -7,8 +7,33 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 ## 現在地
 
 - **ブランチ:** dev
-- **進行中タスク:** Google Cloud PCNE Section 1: VPCネットワーク設計ガイド 100%全量移行完了
-- **最終更新日時(UTC):** 2026-08-14T00:10:00Z
+- **進行中タスク:** Google Cloud PCNE Section 2: VPCネットワークの実装ガイド 100%全量移行完了
+- **最終更新日時(UTC):** 2026-08-14T01:08:00Z
+
+## 2026-08-14: Google Cloud「PCNE Section 2: VPCネットワークの実装 完全ガイド」100%全量移行・デザイン完全復元 (完了)
+
+### 目的
+
+`Pcne-s2-vpc-implementation.html` を、Next.js App Router 5ファイル構成 (`page.tsx`, `PcneSection2VpcImplementationGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/gcl/professional-cloud-network-engineer/section2-vpc-implementation` ルートへ移行。全9セクションの見出し(h1:1, h2:8, h3:23)、全10個のテーブル、17個のMermaid図解、全外部リンクを一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for pcne-s2-vpc-implementation` (`f40abbc`)
+- [x] **Step 1 (Red)**: `test(pcne): add failing tests for section2-vpc-implementation` (`2285158`)
+- [x] **Step 2 (Green)**: `feat(pcne): implement section2-vpc-implementation to pass tests` (`d0333e0`)
+- [x] **Step 3 (Refactor / Integration & Nav & Docs)**: `refactor(pcne): integrate section2-vpc-implementation into routing and update docs` (`732cf94`)
+- [x] **Step 4 (Archive & Sync)**: 元HTMLを `archive/Gcl_Archive/Professional-Cloud-Network-Engineer/` へ移動し `MIGRATION_PROGRESS.md` を同期
+
+### 関連ファイル
+
+- [app/gcl/professional-cloud-network-engineer/section2-vpc-implementation/page.tsx](app/gcl/professional-cloud-network-engineer/section2-vpc-implementation/page.tsx)
+- [app/gcl/professional-cloud-network-engineer/section2-vpc-implementation/PcneSection2VpcImplementationGuide.tsx](app/gcl/professional-cloud-network-engineer/section2-vpc-implementation/PcneSection2VpcImplementationGuide.tsx)
+- [app/gcl/professional-cloud-network-engineer/section2-vpc-implementation/NavBar.tsx](app/gcl/professional-cloud-network-engineer/section2-vpc-implementation/NavBar.tsx)
+- [app/gcl/professional-cloud-network-engineer/section2-vpc-implementation/constants.ts](app/gcl/professional-cloud-network-engineer/section2-vpc-implementation/constants.ts)
+- [app/gcl/professional-cloud-network-engineer/section2-vpc-implementation/page.css](app/gcl/professional-cloud-network-engineer/section2-vpc-implementation/page.css)
+- [__tests__/gcl/pcne-section2-vpc-implementation.test.tsx](__tests__/gcl/pcne-section2-vpc-implementation.test.tsx)
+- [docs/migration-inventory/pcne-s2-vpc-implementation.json](docs/migration-inventory/pcne-s2-vpc-implementation.json)
+- [archive/Gcl_Archive/Professional-Cloud-Network-Engineer/Pcne-s2-vpc-implementation.html](archive/Gcl_Archive/Professional-Cloud-Network-Engineer/Pcne-s2-vpc-implementation.html)
 
 ## 2026-08-14: Google Cloud「PCNE Section 1: VPCネットワーク設計 完全ガイド」100%全量移行・デザイン完全復元 (完了)
 
