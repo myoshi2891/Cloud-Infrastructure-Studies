@@ -9,5 +9,5 @@ export const metadata: Metadata = {
 
 /** PCNE Section 1 の VPC ネットワーク設計・計画ガイドを表示するページ。 */
 export default function PcneSection1VpcDesignPage() {
-    return <PcneSection1VpcDesignGuide rootClassName={styles.root} />;
+    return <PcneSection1VpcDesignGuide rootClassName={styles.root!} />;
 }
