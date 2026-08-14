@@ -444,9 +444,10 @@ images:
 ### 8.1 やること
 
 - Dockerfile のベースイメージを、サポート中の`python:3.12-alpine`などへ更新
-- Flask 3.0.3 / Gunicorn 23.0.0 / Werkzeug 3.0.4 へ依存パッケージを更新
+- Flask 3.1.3 / Werkzeug 3.1.8 へ更新し、Python・アプリとの互換性を確認したサポート中の Gunicorn（Python 3.12 なら 26.0.0 など）を選んで固定
+- 本番用の推移的依存関係まで完全に解決し、`pip-audit`で既知脆弱性がないことを確認
 - 新しいPythonベースイメージと本番向け依存関係の互換性テストを実行
-- パイプラインを再実行し、成功を確認
+- パイプラインを再実行し、再ビルドしたdigestの Artifact Analysis 再スキャンで CRITICAL が0件であることを確認
 - ID トークンを使った認証済みリクエストで動作確認
 
 ### 8.2 ベストプラクティスと根拠
@@ -458,6 +459,19 @@ Alpine は必要最小限のパッケージのみで構成された軽量な Lin
 **依存パッケージのバージョンをピン留めして更新する理由**
 `Flask`、`Gunicorn`、`Werkzeug` はいずれも Web サーバーの根幹に関わるパッケージです。バージョンを明示的に固定することで「ビルドのたびに異なるバージョンが解決され、再現性がなくなる」問題を防ぎつつ、既知の CVE が修正されたバージョンへ確実にアップグレードできます。
 
+Gunicorn は特定の版を安全と仮定せず、使用する Python のサポート範囲とアプリの互換性を確認して選びます。クリーンな仮想環境で本番用依存関係をインストールし、テスト後に完全解決したセットを監査します。
+
+```bash
+python -m pip install -r requirements.txt
+python -m pip freeze --local > requirements.lock
+python -m pip install pip-audit
+python -m pip_audit --strict --no-deps -r requirements.lock
+```
+
+`pip-audit`の成功だけではベースイメージやOSパッケージの脆弱性は判定できません。更新後のイメージを新しいdigestとしてpushし、パイプラインの On-Demand Scanning を再実行して、Artifact Analysis の結果に CRITICAL がないことを確認してから署名・昇格します。
+
+出典: [Flask releases](https://pypi.org/project/Flask/) / [Werkzeug releases](https://pypi.org/project/Werkzeug/) / [Gunicorn releases and Python requirements](https://pypi.org/project/gunicorn/) / [pip-audit](https://github.com/pypa/pip-audit) / [Artifact Analysis automatic scanning](https://docs.cloud.google.com/artifact-analysis/docs/scan-os-automatically)
+
 **認証必須のまま動作確認する**
 
 ```bash
@@ -465,7 +479,8 @@ SERVICE_URL=$(gcloud run services describe auth-service \
   --region=REGION \
   --format='value(status.url)')
 
-curl -H "Authorization: Bearer $(gcloud auth print-identity-token)" \
+curl --fail --silent --show-error \
+  -H "Authorization: Bearer $(gcloud auth print-identity-token)" \
   "$SERVICE_URL"
 ```
 
