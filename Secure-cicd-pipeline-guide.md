@@ -283,20 +283,21 @@ Attestation の作成は、ペイロード生成・署名・Attestation の登�
 git clone https://github.com/GoogleCloudPlatform/cloud-builders-community.git
 cd cloud-builders-community/binauthz-attestation
 # チームでレビュー済みの不変コミットを指定する
-git checkout <REVIEWED_COMMIT_SHA>
+REVIEWED_COMMIT_SHA="<REVIEWED_COMMIT_SHA>"
+git checkout --detach "$REVIEWED_COMMIT_SHA"
 REVIEWED_COMMIT_SHA=$(git rev-parse HEAD)
 BUILDER_IMAGE="REGION-docker.pkg.dev/$PROJECT_ID/attestation-builders/binauthz-attestation:$REVIEWED_COMMIT_SHA"
 gcloud builds submit . --tag "$BUILDER_IMAGE"
 
 # ビルド結果を不変digestで記録し、cloudbuild.yamlの
-# ATTESTATION_BUILDER_DIGESTへ設定する
+# ATTESTATION_BUILDER_DIGESTへ完全なsha256:...形式のまま設定する
 gcloud artifacts docker images describe "$BUILDER_IMAGE" \
   --format='value(image_summary.digest)'
 cd ../..
 rm -rf cloud-builders-community
 ```
 
-以後は`REGION-docker.pkg.dev/$PROJECT_ID/attestation-builders/binauthz-attestation@sha256:ATTESTATION_BUILDER_DIGEST`の形式で参照し、レビュー済みコミット固有タグから取得した不変digestだけを実行時に使用します。
+以後は`REGION-docker.pkg.dev/$PROJECT_ID/attestation-builders/binauthz-attestation@ATTESTATION_BUILDER_DIGEST`の形式で参照し、レビュー済みコミット固有タグから取得した完全な`sha256:...`形式の不変digestだけを実行時に使用します。
 
 出典: [cloud-builders-community/binauthz-attestation (GitHub)](https://github.com/GoogleCloudPlatform/cloud-builders-community/tree/master/binauthz-attestation)、[Create a Binary Authorization attestation in a Cloud Build pipeline](https://docs.cloud.google.com/binary-authorization/docs/cloud-build)
 
@@ -366,17 +367,14 @@ steps:
 
 # 6. 検査を通過したイメージにのみ Attestation を発行
 - id: 'create-attestation'
-  name: 'gcr.io/cloud-builders/docker'
-  entrypoint: 'bash'
+  name: 'REGION-docker.pkg.dev/$PROJECT_ID/attestation-builders/binauthz-attestation@ATTESTATION_BUILDER_DIGEST'
   args:
-  - '-c'
-  - |
-    set -euo pipefail
-    docker run --rm \
-      REGION-docker.pkg.dev/$PROJECT_ID/attestation-builders/binauthz-attestation@sha256:ATTESTATION_BUILDER_DIGEST \
-      --artifact-url "$(cat /workspace/image_ref.txt)" \
-      --attestor "projects/$PROJECT_ID/attestors/vulnerability-attestor" \
-      --keyversion "projects/$PROJECT_ID/locations/global/keyRings/binauthz-keys/cryptoKeys/lab-key/cryptoKeyVersions/1"
+  - '--artifact-url'
+  - 'REGION-docker.pkg.dev/$PROJECT_ID/artifact-scanning-repo/sample-image:$BUILD_ID'
+  - '--attestor'
+  - 'projects/$PROJECT_ID/attestors/vulnerability-attestor'
+  - '--keyversion'
+  - 'projects/$PROJECT_ID/locations/global/keyRings/binauthz-keys/cryptoKeys/lab-key/cryptoKeyVersions/1'
 
 # 7. 署名済みイメージだけを本番リポジトリへ昇格させる
 - id: "push-to-prod"
