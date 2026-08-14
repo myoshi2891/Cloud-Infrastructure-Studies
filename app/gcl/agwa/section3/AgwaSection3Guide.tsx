@@ -4,6 +4,7 @@ import { memo, useState } from 'react';
 import { MermaidDiagram } from '@/components/MermaidDiagram';
 import { DIAGRAMS, type DiagramId } from './constants';
 import { NavBar } from './NavBar';
+import styles from './AgwaSection3Guide.module.css';
 
 const Diagram = memo(function Diagram({ id, label }: { id: DiagramId; label: string }) {
     const chart = DIAGRAMS[id];
@@ -49,7 +50,7 @@ export function AgwaSection3Guide() {
     const checkedCount = checkedItems.filter(Boolean).length;
 
     return (
-        <div className="agwa-s3-page">
+        <div className={styles.page}>
             <div className="layout">
                 <NavBar />
                 <main className="main">

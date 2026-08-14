@@ -4,6 +4,7 @@
    ========================================== */
 
 .agwa-s4-page {
+    /* TODO(theme): migrate these page-scoped color tokens to app/globals.css @theme. */
     --bg: #07111e;
     --bg-elevated: #0d1a2b;
     --bg-card: #0f1f33;
@@ -81,6 +82,15 @@
     display: flex;
     flex-direction: column;
     gap: 2px;
+}
+
+.agwa-s4-page nav.toc .toc-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
 .agwa-s4-page nav.toc a,
@@ -275,9 +285,8 @@
     padding: 2px 6px;
     border-radius: 4px;
     font-size: 0.88em;
-    font-family: 'SFMono-Regular', Consolas, Menlo, monospace;
+    font-family: SFMono-Regular, Consolas, Menlo, monospace;
     overflow-wrap: break-word;
-    word-break: break-word;
 }
 
 /* ---------- Tables ---------- */
@@ -357,29 +366,15 @@
     fill: #ffffff;
 }
 
-/* Force dark text on all light/pastel/bright fill nodes (#e8f0fe, #fce8e6, #e6f4ea, #f1f3f4, #ffe08a, etc) */
+/* Force dark text on classDef-based light nodes. Add a classDef selector for future light colors. */
 .agwa-s4-page .mermaid-wrap svg .node.lightBlueFill .nodeLabel,
 .agwa-s4-page .mermaid-wrap svg .node.lightRedFill .nodeLabel,
 .agwa-s4-page .mermaid-wrap svg .node.lightGreenFill .nodeLabel,
 .agwa-s4-page .mermaid-wrap svg .node.grayFill .nodeLabel,
-.agwa-s4-page .mermaid-wrap svg .node[style*="fill:#e"] .nodeLabel,
-.agwa-s4-page .mermaid-wrap svg .node[style*="fill:#E"] .nodeLabel,
-.agwa-s4-page .mermaid-wrap svg .node[style*="fill:#f"] .nodeLabel,
-.agwa-s4-page .mermaid-wrap svg .node[style*="fill:#F"] .nodeLabel,
-.agwa-s4-page .mermaid-wrap svg .node[style*="fill: #e"] .nodeLabel,
-.agwa-s4-page .mermaid-wrap svg .node[style*="fill: #f"] .nodeLabel,
-.agwa-s4-page .mermaid-wrap svg .node rect[style*="fill:#e"] ~ g .nodeLabel,
-.agwa-s4-page .mermaid-wrap svg .node rect[style*="fill:#f"] ~ g .nodeLabel,
-.agwa-s4-page .mermaid-wrap svg .node rect[style*="fill: #e"] ~ g .nodeLabel,
-.agwa-s4-page .mermaid-wrap svg .node rect[style*="fill: #f"] ~ g .nodeLabel,
-.agwa-s4-page .mermaid-wrap svg .node polygon[style*="fill:#e"] ~ g .nodeLabel,
-.agwa-s4-page .mermaid-wrap svg .node polygon[style*="fill:#f"] ~ g .nodeLabel,
 .agwa-s4-page .mermaid-wrap svg .node.lightBlueFill foreignObject div,
 .agwa-s4-page .mermaid-wrap svg .node.lightRedFill foreignObject div,
 .agwa-s4-page .mermaid-wrap svg .node.lightGreenFill foreignObject div,
-.agwa-s4-page .mermaid-wrap svg .node.grayFill foreignObject div,
-.agwa-s4-page .mermaid-wrap svg .node[style*="#e"] foreignObject div,
-.agwa-s4-page .mermaid-wrap svg .node[style*="#f"] foreignObject div {
+.agwa-s4-page .mermaid-wrap svg .node.grayFill foreignObject div {
     color: #0b1220 !important;
     fill: #0b1220 !important;
     font-weight: normal;
@@ -405,7 +400,7 @@
     border-radius: 8px;
     padding: 14px 18px;
     margin: 16px 0;
-    font-family: 'SFMono-Regular', Consolas, Menlo, monospace;
+    font-family: SFMono-Regular, Consolas, Menlo, monospace;
     font-size: 13.5px;
 }
 
@@ -563,7 +558,6 @@
     color: var(--text-dim);
     border-bottom: none;
     overflow-wrap: break-word;
-    word-break: break-word;
     min-width: 0;
 }
 

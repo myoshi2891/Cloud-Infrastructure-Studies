@@ -311,24 +311,6 @@ export const NavBar: React.FC = () => {
         aria-label="Section 2の目次メニューを切り替える"
         aria-expanded={isOpen}
         aria-controls="sidebarNav"
-        style={{
-          position: "fixed",
-          bottom: "1.5rem",
-          right: "1.5rem",
-          zIndex: 50,
-          background: "var(--accent)",
-          color: "#000",
-          border: "none",
-          borderRadius: "50%",
-          width: "48px",
-          height: "48px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          fontWeight: "bold",
-          boxShadow: "0 4px 12px rgba(0,0,0,0.4)",
-          cursor: "pointer"
-        }}
       >
         ≡
       </button>

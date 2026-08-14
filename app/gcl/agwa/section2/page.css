@@ -1,5 +1,6 @@
 /* app/gcl/agwa/section2/page.css */
 .agwa-section2-page {
+  /* TODO(theme): migrate these page-scoped tokens to app/globals.css @theme. */
   --bg: #07111e;
   --bg-elevated: #0d1a2c;
   --bg-elevated-2: #101f34;
@@ -54,7 +55,6 @@
   font-size: 0.88em;
   color: #ffd08a;
   overflow-wrap: break-word;
-  word-break: break-word;
 }
 
 .agwa-section2-page hr {
@@ -69,7 +69,7 @@
   left: 0;
   top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px));
   bottom: 0;
-  width: 280px;
+  width: var(--sidebar-w);
   z-index: 40;
   overflow-y: auto;
   background: var(--sidebar-bg);
@@ -78,9 +78,9 @@
 }
 
 .agwa-section2-page .main {
-  margin-left: 280px;
+  margin-left: var(--sidebar-w);
   padding: 3.5rem 4.5rem 6rem;
-  width: calc(100% - 280px);
+  width: calc(100% - var(--sidebar-w));
   max-width: none;
 }
 
@@ -99,58 +99,9 @@
   }
 }
 
-
-            
-
-            .agwa-section2-page * {
-                box-sizing: border-box;
-            }
-            
-            
-            .agwa-section2-page h1,
-            .agwa-section2-page h2,
-            .agwa-section2-page h3,
-            .agwa-section2-page h4 {
-                font-family:
-                    'Hiragino Sans',
-                    'Hiragino Kaku Gothic ProN',
-                    'Noto Sans JP',
-                    'Yu Gothic',
-                    -apple-system,
-                    BlinkMacSystemFont,
-                    'Segoe UI',
-                    sans-serif;
-                font-weight: 700;
-                line-height: 1.4;
-                color: var(--text);
-                scroll-margin-top: 2rem;
-            }
-            .agwa-section2-page a {
-                color: var(--accent);
-                text-decoration: none;
-            }
-            .agwa-section2-page a:hover {
-                text-decoration: underline;
-            }
-            .agwa-section2-page code {
-                font-family: 'SF Mono', Menlo, Consolas, monospace;
-                background: var(--bg-elevated-2);
-                padding: 0.15em 0.4em;
-                border-radius: 5px;
-                font-size: 0.88em;
-                color: #ffd08a;
-                overflow-wrap: break-word;
-                word-break: break-word;
-            }
-            .agwa-section2-page hr {
-                border: none;
-                border-top: 1px solid var(--border);
-                margin: 3rem 0;
-            }
-
             /* ---------- Layout ---------- */
-            
-            
+
+
             .agwa-section2-page .sidebar-title {
                 font-size: 1.02rem;
                 font-weight: 800;
@@ -204,7 +155,7 @@
                 font-weight: 400;
             }
 
-            
+
 
             /* ---------- Hero ---------- */
             .agwa-section2-page .hero {
@@ -347,7 +298,6 @@
                 text-align: left;
                 border-bottom: 1px solid var(--border-soft);
                 overflow-wrap: break-word;
-                word-break: break-word;
                 vertical-align: top;
             }
             .agwa-section2-page th {
@@ -554,7 +504,6 @@
                 color: var(--text-dim);
                 line-height: 1.5;
                 overflow-wrap: break-word;
-                word-break: break-word;
                 min-width: 0;
             }
             .agwa-section2-page ul.ref-list a:hover {
@@ -577,42 +526,26 @@
                 font-style: italic;
             }
 
-            /* ---------- Mobile ---------- */
-            .agwa-section2-page .sidebar-toggle {
-                display: none;
+            .agwa-section2-page .sidebar-toggle-btn {
                 position: fixed;
-                top: 1rem;
-                left: 1rem;
-                z-index: 200;
-                background: var(--bg-elevated-2);
-                border: 1px solid var(--border);
-                color: var(--text);
-                border-radius: 8px;
-                width: 2.6rem;
-                height: 2.6rem;
-                font-size: 1.2rem;
+                bottom: 1.5rem;
+                right: 1.5rem;
+                z-index: 50;
+                width: 48px;
+                height: 48px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: var(--accent);
+                color: #000;
+                border: none;
+                border-radius: 50%;
+                font-weight: 700;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
                 cursor: pointer;
-            }
-            .agwa-section2-page .sidebar-backdrop {
-                display: none;
-                position: fixed;
-                inset: 0;
-                background: rgba(0, 0, 0, 0.55);
-                z-index: 99;
             }
 
             @media (max-width: 900px) {
-                
-                .agwa-section2-page .sidebar.open {
-                    transform: translateX(0);
-                }
-                .agwa-section2-page .sidebar-backdrop.open {
-                    display: block;
-                }
-                .agwa-section2-page .sidebar-toggle {
-                    display: block;
-                }
-                
                 .agwa-section2-page .hero-title {
                     font-size: 1.65rem;
                 }
@@ -655,4 +588,4 @@
                 fill: #000000 !important;
             }
 
-        
+

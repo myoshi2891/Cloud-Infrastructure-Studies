@@ -1,4 +1,5 @@
 .agwa-s1-page {
+    /* TODO(theme): migrate these page-scoped color tokens to app/globals.css @theme. */
     --bg: #07111e;
     --bg-elevated: #0d1b2f;
     --bg-card: #101f36;
@@ -13,10 +14,10 @@
     --warn: #ffb15c;
     --warn-soft: rgba(255, 177, 92, 0.12);
     --ok: #6fe3a8;
-    --sidebar-w: 320px;
+    --sidebar-w: 280px;
     --radius: 12px;
     --font-sans: var(--font-body), 'Noto Sans JP', sans-serif;
-    --font-mono: var(--font-mono), 'JetBrains Mono', monospace;
+    --font-code: var(--font-mono), 'JetBrains Mono', monospace;
 
     min-height: 100vh;
     background: var(--bg);
@@ -156,8 +157,10 @@
 
 /* ---------- Main content ---------- */
 .agwa-s1-page .main {
-    margin-left: var(--sidebar-w);
+    margin-left: 280px;
     padding: 56px 64px 100px;
+    width: calc(100% - 280px);
+    max-width: none;
 }
 
 .agwa-s1-page .hero {
@@ -247,11 +250,10 @@
     border: 1px solid var(--border-soft);
     border-radius: 5px;
     padding: 0.1em 0.4em;
-    font-family: var(--font-mono);
+    font-family: var(--font-code);
     font-size: 0.88em;
     color: var(--accent-strong);
     overflow-wrap: break-word;
-    word-break: break-word;
 }
 
 .agwa-s1-page hr {
@@ -330,7 +332,6 @@
     text-align: left;
     border-bottom: 1px solid var(--border-soft);
     overflow-wrap: break-word;
-    word-break: break-word;
 }
 .agwa-s1-page th {
     background: var(--bg-elevated);
@@ -394,7 +395,6 @@
     font-size: 0.82rem;
     line-height: 1.5;
     overflow-wrap: break-word;
-    word-break: break-word;
 }
 
 /* ---------- Reference grid ---------- */
@@ -441,7 +441,6 @@
     color: var(--text-dim);
     font-size: 0.86rem;
     overflow-wrap: break-word;
-    word-break: break-word;
     min-width: 0;
 }
 .agwa-s1-page .ref-items a:hover {
@@ -531,7 +530,6 @@
     color: var(--text);
     font-size: 0.95rem;
     overflow-wrap: break-word;
-    word-break: break-word;
 }
 
 /* ---------- Footer ---------- */
@@ -561,6 +559,7 @@
     }
     .agwa-s1-page .main {
         margin-left: 0;
+        width: 100%;
         padding: 88px 20px 80px;
     }
     .agwa-s1-page .hero h1 {
