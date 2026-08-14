@@ -537,7 +537,7 @@
                 align-items: center;
                 justify-content: center;
                 background: var(--accent);
-                color: #000;
+                color: var(--color-guide-on-accent);
                 border: none;
                 border-radius: 50%;
                 font-weight: 700;
@@ -587,5 +587,4 @@
                 color: #000000 !important;
                 fill: #000000 !important;
             }
-
 
