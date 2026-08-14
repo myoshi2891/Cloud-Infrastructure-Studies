@@ -1,6 +1,34 @@
 # 移行作業進捗管理ドキュメント (Migration Progress)
 
-(最終更新日: 2026-08-14)
+(最終更新日: 2026-08-15)
+
+---
+
+## 2026-08-15: AGWA Section 5「ブラウザとエンドポイントの管理」100%全量移行 (完了)
+
+### 目的
+
+`Agwa-s5-browsers-endpoints.html` を、Next.js App Router 5ファイル構成 (`page.tsx`, `AgwaSection5Guide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/gcl/agwa/section5` ルートへ移行。見出し(h1:1, h2:5, h3:11, h4:16)、全4個のテーブル、10個のMermaid図解、全リスト、全外部リンク・本文・注釈を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for agwa-s5-browsers-endpoints` (`17f26d4`)
+- [x] **Step 1 (Red)**: `test(agwa): add failing tests for agwa section 5` (`a2f2542`)
+- [x] **Step 2 (Green)**: `feat(agwa): implement section 5 browsers and endpoints guide to pass tests` (`a81f7b2`)
+- [x] **Step 3 (Refactor)**: `refactor(agwa): integrate section 5 into routing and update docs` (`349aaa7`)
+- [x] **Step 4 (Archive & Sync)**: `chore(docs): update MIGRATION_PROGRESS.md — agwa section 5 complete`
+
+### 関連ファイル
+
+- [app/gcl/agwa/section5/page.tsx](app/gcl/agwa/section5/page.tsx)
+- [app/gcl/agwa/section5/AgwaSection5Guide.tsx](app/gcl/agwa/section5/AgwaSection5Guide.tsx)
+- [app/gcl/agwa/section5/NavBar.tsx](app/gcl/agwa/section5/NavBar.tsx)
+- [app/gcl/agwa/section5/constants.ts](app/gcl/agwa/section5/constants.ts)
+- [app/gcl/agwa/section5/page.css](app/gcl/agwa/section5/page.css)
+- [`__tests__/gcl/agwa/section5/page.test.tsx`](__tests__/gcl/agwa/section5/page.test.tsx)
+- [docs/migration-inventory/agwa-s5-browsers-endpoints.json](docs/migration-inventory/agwa-s5-browsers-endpoints.json)
+- [archive/Gcl/Associate-Google-Workspace-Administrator/html/Agwa-s5-browsers-endpoints.html](archive/Gcl/Associate-Google-Workspace-Administrator/html/Agwa-s5-browsers-endpoints.html)
+- [archive/Gcl/Associate-Google-Workspace-Administrator/md/Agwa-s5-browsers-endpoints.md](archive/Gcl/Associate-Google-Workspace-Administrator/md/Agwa-s5-browsers-endpoints.md)
 
 ---
 
