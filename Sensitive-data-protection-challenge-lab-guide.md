@@ -458,11 +458,13 @@ def generate_guarded_response(prompt: str, model, project_id: str) -> str:
 
 出典: [InfoType detector reference](https://docs.cloud.google.com/sensitive-data-protection/docs/infotypes-reference) / [Redacting sensitive data from text](https://docs.cloud.google.com/sensitive-data-protection/docs/redacting-sensitive-data) / [De-identify sensitive data by replacing with infoType](https://docs.cloud.google.com/sensitive-data-protection/docs/samples/dlp-deidentify-replace-infotype) / [Listing built-in infoType detectors](https://docs.cloud.google.com/sensitive-data-protection/docs/listing-infotypes)
 
-### 5-3. 固定応答でガード処理をテストする理由
+### 5-3. 固定応答で DLP API 統合テストを実行する理由
 
-**何をするか**: 固定の VIN 含有文字列を DLP で直接検査する単体テストと、その文字列を `response.text` として返すスタブモデルを使った統合テストを実行します。
+**何をするか**: 固定の VIN 含有文字列を実際の DLP API で直接検査する統合テストと、その文字列を`response.text`として返すスタブモデルからガード処理を通して DLP API を呼ぶ統合テストを実行します。
 
-生成モデルの出力内容には依存しません。DLP 検出器の単体テストでは固定文字列を直接渡し、ガード処理の統合テストでは同じ文字列を返すスタブを使います。
+生成モデルの出力内容には依存しませんが、どちらも実際の DLP API、認証情報、プロジェクト設定に依存するため、単体テストではなく DLP API 統合テストとして扱います。
+
+実行前に、前のセルで定義した`contains_sensitive_info`と`generate_guarded_response`を実行してください。また、DLP API が有効で、実行ユーザーに DLP API の呼び出し権限があるプロジェクトの ID を`PROJECT_ID`に設定してから、次の VIN テストを実行します。
 
 ```python
 from types import SimpleNamespace
@@ -471,7 +473,7 @@ VIN = "4Y1SL65848Z411439"
 VIN_INFO_TYPE = "US_VEHICLE_IDENTIFICATION_NUMBER"
 BLOCKED_RESPONSE = "[このレスポンスは機密情報を含むためブロックされました]"
 
-# 単体テスト: モデルを介さず、固定の VIN 含有文字列を直接検査する
+# DLP API 統合テスト: 固定の VIN 含有文字列を実際の DLP API で検査する
 assert contains_sensitive_info(PROJECT_ID, f"Vehicle VIN: {VIN}", [VIN_INFO_TYPE])
 
 
@@ -484,14 +486,15 @@ class StubModel:
         )
 
 
-# 統合テスト: プロンプトの再出力ではなく、スタブの response.text を検査する
+# DLP API 統合テスト: モデルだけをスタブ化し、ガード処理から実際の DLP API を呼ぶ
 result = generate_guarded_response("safe prompt", StubModel(), PROJECT_ID)
 assert result == BLOCKED_RESPONSE
 ```
 
 **ベストプラクティス**
 
-- **検出器とガード処理を分けてテストする**: DLP へ固定文字列を渡すテストと、スタブモデルを使う統合テストを分けると、モデル出力の揺らぎと検出ロジックの不具合を切り分けられます。
+- **検出器とガード処理を分けて統合テストする**: DLP API へ固定文字列を渡すテストと、スタブモデルからガード処理を通して DLP API を呼ぶテストを分けると、モデル出力の揺らぎと検出ロジックの不具合を切り分けられます。
+- **単体テストでは DLP クライアントをモックする**: API に依存しない単体テストとして実行する場合は、`DlpServiceClient`をモックし、`inspect_content`の検出結果を固定してください。
 - **ブロックされたモデル応答も検証する**: `candidates` がない場合、`prompt_feedback.block_reason` が設定された場合、または `finish_reason` が正常終了でない場合に、DLP 検査前にブロックメッセージを返すことも確認してください。
 
 ---
