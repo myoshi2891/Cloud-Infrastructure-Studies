@@ -7,8 +7,21 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 ## 現在地
 
 - **ブランチ:** dev
-- **最新完了タスク:** AGWA Section 3: データガバナンスとコンプライアンスの管理 100%全量移行完了
-- **最終更新日時(UTC):** 2026-08-14T23:55:00Z
+- **最新完了タスク:** AGWA Section 1: ユーザーアカウント・ドメイン・ディレクトリの管理 100%全量移行完了
+- **最終更新日時(UTC):** 2026-08-15T00:31:00Z
+
+## 2026-08-15: AGWA Section 1「ユーザーアカウント・ドメイン・ディレクトリの管理」100%全量移行 (完了)
+
+### 目的
+
+`Associate-google-workspace-admin-s1.html` を、Next.js App Router 構成 (`page.tsx`, `AgwaSection1Guide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/gcl/agwa/section1` ルートへ移行。見出し(h1:1, h2:9, h3:19, h4:5)、全テーブル、10個のMermaid図解、全外部リンク・全本文・注釈を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- **Step 0 — Inventory:** `docs/migration-inventory/agwa-section1.json` を生成・保存 (`6c1427f`)。
+- **Step 1 — Red (失敗テスト):** `__tests__/gcl/agwa/section1/page.test.tsx` を作成し、全要素（見出し・本文・表セル・リスト・外部リンク・Mermaid図・コードブロック）のアサーションで失敗を確認 (`8f4f8a1`)。
+- **Step 2 — Green (実装):** `app/gcl/agwa/section1/` 配下を実装・修正し、13件全テストのPASSを確認 (`23a5efb`)。
+- **Step 3 — Refactor:** `app/constants.ts` ルーティング統合 (`pct: '20%'`) を完了。
 
 ## 2026-08-14: AGWA Section 3「データガバナンスとコンプライアンスの管理」100%全量移行 (完了)
 
