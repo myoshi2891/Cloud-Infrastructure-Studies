@@ -407,7 +407,7 @@ export function AgwaSection4Guide() {
                                 target="_blank"
                                 rel="noreferrer"
                             >
-                                Manage a user's security settings
+                                Manage a user&apos;s security settings
                             </a>{' '}
                             /{' '}
                             <a
@@ -1572,7 +1572,7 @@ export function AgwaSection4Guide() {
                     </h4>
                     <p>
                         一部の追加サービスには専用のON/OFFトグルがなく、「Manage access to services that
-                        aren't controlled
+                        aren&apos;t controlled
                         individually」という共通の管理画面から一括制御します。この場合、サービスをOFFにしてもユーザーのデータは削除されないため、データを保持させたい場合は事前にGoogle
                         Takeoutでのエクスポートをユーザーに案内することが推奨されます。
                     </p>
@@ -1622,7 +1622,7 @@ export function AgwaSection4Guide() {
                                 target="_blank"
                                 rel="noreferrer"
                             >
-                                Manage your organization's YouTube settings
+                                Manage your organization&apos;s YouTube settings
                             </a>{' '}
                             /{' '}
                             <a
@@ -1630,7 +1630,7 @@ export function AgwaSection4Guide() {
                                 target="_blank"
                                 rel="noreferrer"
                             >
-                                Manage access to services that aren't controlled individually
+                                Manage access to services that aren&apos;t controlled individually
                             </a>
                         </p>
                     </blockquote>
@@ -1868,7 +1868,7 @@ export function AgwaSection4Guide() {
                                         target="_blank"
                                         rel="noreferrer"
                                     >
-                                        <span className="ref-icon">↗</span>Manage a user's security
+                                        <span className="ref-icon">↗</span>Manage a user&apos;s security
                                         settings
                                     </a>
                                 </li>
@@ -2136,7 +2136,7 @@ export function AgwaSection4Guide() {
                                         target="_blank"
                                         rel="noreferrer"
                                     >
-                                        <span className="ref-icon">↗</span>Manage your organization's
+                                        <span className="ref-icon">↗</span>Manage your organization&apos;s
                                         YouTube settings
                                     </a>
                                 </li>
@@ -2148,7 +2148,7 @@ export function AgwaSection4Guide() {
                                         rel="noreferrer"
                                     >
                                         <span className="ref-icon">↗</span>Manage access to services that
-                                        aren't controlled individually
+                                        aren&apos;t controlled individually
                                     </a>
                                 </li>
                             </ul>
