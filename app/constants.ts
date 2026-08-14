@@ -204,6 +204,7 @@ const ALL_EXAMS: Exam[] = [
         domains: [
             { label: 'Section 1: ユーザー・ドメイン・ディレクトリ管理', href: '/gcl/agwa/section1', pct: '—' },
             { label: 'Section 2: コアサービス管理', href: '/gcl/agwa/section2', pct: '—' },
+            { label: 'Section 3: データガバナンスとコンプライアンスの管理', href: '/gcl/agwa/section3', pct: '—' },
         ],
         badge: 'Workspace 管理向け',
         icon: '💼',

@@ -220,6 +220,12 @@ app/
       section2/
         page.tsx                    # Section 2: コアサービス管理
         page.css                    # ページ固有スタイル
+      section3/
+        page.tsx                    # Section 3: データガバナンスとコンプライアンスの管理
+        AgwaSection3Guide.tsx       # 本文＋全Mermaid図＋インタラクション
+        NavBar.tsx                  # サイドバーナビ
+        constants.ts                # Mermaid図定義
+        page.css                    # ページ固有スタイル
     professional-cloud-network-engineer/
       page.tsx                      # PCNE 試験対策ページ（概要・ドメイン別解説）
       components/                   # セクションコンポーネント（Section1-6 + Summary）
