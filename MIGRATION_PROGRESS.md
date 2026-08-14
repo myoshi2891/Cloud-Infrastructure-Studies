@@ -1,4 +1,35 @@
-# Migration Progress
+# 移行作業進捗管理ドキュメント (Migration Progress)
+
+(最終更新日: 2026-08-15)
+
+---
+
+## 2026-08-15: AGWA Section 4「セキュリティポリシーとアクセス制御の管理」100%全量移行 (完了)
+
+### 目的
+
+`S4-security-access-control.html` を、Next.js App Router 5ファイル構成 (`page.tsx`, `AgwaSection4Guide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/gcl/agwa/section4` ルートへ移行。見出し(h1:1, h2:6, h3:20, h4:53)、全20個のテーブル、10個のMermaid図解、全71要素のリスト、全外部リンク・本文・注釈を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for agwa-section4` (`be48454`)
+- [x] **Step 1 (Red)**: `test(gcl): add failing tests for agwa-section4` (`df2f55f`)
+- [x] **Step 2 (Green)**: `feat(gcl): implement agwa-section4 to pass tests` (`83c9f88`)
+- [x] **Step 3 (Refactor)**: `refactor(gcl): integrate agwa-section4 into routing and update docs` (`b20096c`)
+- [x] **Step 4 (Archive & Sync)**: `chore(docs): update MIGRATION_PROGRESS.md — migrate S4-security-access-control.html to Next.js`
+
+### 関連ファイル
+
+- [app/gcl/agwa/section4/page.tsx](app/gcl/agwa/section4/page.tsx)
+- [app/gcl/agwa/section4/AgwaSection4Guide.tsx](app/gcl/agwa/section4/AgwaSection4Guide.tsx)
+- [app/gcl/agwa/section4/NavBar.tsx](app/gcl/agwa/section4/NavBar.tsx)
+- [app/gcl/agwa/section4/constants.ts](app/gcl/agwa/section4/constants.ts)
+- [app/gcl/agwa/section4/page.css](app/gcl/agwa/section4/page.css)
+- [__tests__/gcl/agwa/section4/page.test.tsx](__tests__/gcl/agwa/section4/page.test.tsx)
+- [docs/migration-inventory/agwa-section4.json](docs/migration-inventory/agwa-section4.json)
+- [archive/Gcl_Archive/Associate-Google-Workspace-Administrator/html/S4-security-access-control.html](archive/Gcl_Archive/Associate-Google-Workspace-Administrator/html/S4-security-access-control.html)
+
+---
 
 <!-- markdownlint-disable MD050 -->
 
