@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-Updated 2026-08-13
+Updated 2026-08-15
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
@@ -223,6 +223,12 @@ app/
       section3/
         page.tsx                    # Section 3: データガバナンスとコンプライアンスの管理
         AgwaSection3Guide.tsx       # 本文＋全Mermaid図＋インタラクション
+        NavBar.tsx                  # サイドバーナビ
+        constants.ts                # Mermaid図定義
+        AgwaSection3Guide.module.css # ページ固有スタイル（CSS Modules）
+      section4/
+        page.tsx                    # Section 4: セキュリティポリシーとアクセス制御の管理
+        AgwaSection4Guide.tsx       # 本文＋全Mermaid図＋インタラクション
         NavBar.tsx                  # サイドバーナビ
         constants.ts                # Mermaid図定義
         page.css                    # ページ固有スタイル

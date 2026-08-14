@@ -25,7 +25,7 @@
 - [app/gcl/agwa/section4/NavBar.tsx](app/gcl/agwa/section4/NavBar.tsx)
 - [app/gcl/agwa/section4/constants.ts](app/gcl/agwa/section4/constants.ts)
 - [app/gcl/agwa/section4/page.css](app/gcl/agwa/section4/page.css)
-- [__tests__/gcl/agwa/section4/page.test.tsx](__tests__/gcl/agwa/section4/page.test.tsx)
+- [`__tests__/gcl/agwa/section4/page.test.tsx`](__tests__/gcl/agwa/section4/page.test.tsx)
 - [docs/migration-inventory/agwa-section4.json](docs/migration-inventory/agwa-section4.json)
 - [archive/Gcl_Archive/Associate-Google-Workspace-Administrator/html/S4-security-access-control.html](archive/Gcl_Archive/Associate-Google-Workspace-Administrator/html/S4-security-access-control.html)
 
@@ -38,8 +38,16 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 ## 現在地
 
 - **ブランチ:** dev
-- **最新完了タスク:** AGWA Section 1: ユーザーアカウント・ドメイン・ディレクトリの管理 100%全量移行完了
-- **最終更新日時(UTC):** 2026-08-15T00:31:00Z
+- **最新完了タスク:** AGWA Section 1〜4 レビュー指摘対応・移行検証共通化完了
+- **最終更新日時(UTC):** 2026-08-14T16:50:02Z
+
+## 2026-08-15: AGWA Section 1〜4 レビュー指摘対応 (完了)
+
+- [x] **テスト検証基盤:** Section 3 テストを正規配置へ移動し、移行抽出ヘルパーと Mermaid モックを共通化 (`5740b43`)。
+- [x] **ナビゲーション:** Section 1〜4 の目次データ、IntersectionObserver、モバイル状態、フォーカス・URL履歴を改善 (`7df21cf`)。
+- [x] **インベントリ:** Section 3 の9テーブルについて列見出し数を厳密化し、生成処理とテストの抽出ロジックを共有 (`0a7e24a`)。
+- [x] **CSS:** サイドバー幅、非推奨宣言、Section 2 重複定義、Section 3 CSS Modules、Section 4 Mermaid セレクタを整理 (`5bf90b5`)。
+- [x] **検証:** `npm test` で127ファイル・1099件成功、`npm run lint` 成功。ユーザー指示に従いビルドと目視確認は未実施。
 
 ## 2026-08-15: AGWA Section 1「ユーザーアカウント・ドメイン・ディレクトリの管理」100%全量移行 (完了)
 
@@ -1363,8 +1371,8 @@ bun run test:e2e e2e/nav.spec.ts  # Chromium 2 件 pass
 ## 次回セッションでの再開プロンプト
 
 あなたは熟練したフロントエンドエンジニアであり、Next.js (App Router) の移行スペシャリストです。
-最新実装 HEAD は `3dbc0fa`、前回進捗同期コミットは `7ec1df8` です。
-コミット認可フロー、移行インベントリ契約、AGWA Section 6のDrive復元分岐はカテゴリー別コミットで対応済みです。全体ESLint、対象Markdown lint、3ミラー一致、インベントリスクリプト、Mermaid構文解析は成功しています。E2E、Visualテスト、ビルドは未実施です。
+最新実装 HEAD は `5bf90b5`、前回進捗同期コミットは `0b19826` です。
+AGWA Section 1〜4 のレビュー指摘は、テスト共有化、ナビゲーション、インベントリ、CSSのカテゴリー別コミットで対応済みです。全体ESLintと全127テストファイル（1099件）は成功しています。E2E、Visualテスト、ビルドは未実施です。
 
 標準ワークフローの正準は `.agents/rules/tdd-commit-workflow.md` で、`.claude` / `.gemini` は同期ミラーです。次回は次の4ステップを維持してください。
 
@@ -1373,7 +1381,7 @@ bun run test:e2e e2e/nav.spec.ts  # Chromium 2 件 pass
 3. **Step 2 — Pass:** 最小実装でテストを成功させる。
 4. **Step 3 — Refactor:** 整理・統合後に対象検証を再実行する。
 
-各ステップのコミットは、ユーザーが明示的に認可した場合だけ実行してください。未認可ならコミット可能な状態で停止します。サンドボックス実行記録として、今回の `npm test` は987件成功し、既存ホームと異なる見出しを期待するスモーク1件と、`window.localStorage.clear` が利用できない環境依存30件が失敗しました。次回はアプリ実装を変更する前に、これらのテスト環境と期待値を切り分けてください。
+各ステップのコミットは、ユーザーが明示的に認可した場合だけ実行してください。未認可ならコミット可能な状態で停止します。サンドボックス実行記録として、今回の `npm test` は127ファイル・1099件すべて成功しました。
 
 ---
 
