@@ -11,7 +11,7 @@ const Diagram = memo(function Diagram({ id, label }: { id: DiagramId; label: str
     if (!chart) return null;
     return (
         <div className="mermaid-wrap">
-            <MermaidDiagram chart={chart} ariaLabel={label} preserveNaturalScale />
+            <MermaidDiagram chart={chart} ariaLabel={label} />
         </div>
     );
 });
@@ -35,7 +35,7 @@ export function AgwaSection4Guide() {
                             試験対策ガイド &middot; Section 4 &middot; 出題比率 約20%
                         </div>
                         <h1>セキュリティポリシーとアクセス制御の管理</h1>
-                        <p className="subtitle">Managing security policies and access controls</p>
+                        <p className="hero-tagline">Managing security policies and access controls</p>
                     </div>
 
                     <h2 id="この章について">この章について</h2>
