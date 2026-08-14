@@ -28,7 +28,7 @@ const NAV_ITEMS = [
 ];
 
 export function NavBar() {
-    const [activeId, setActiveId] = useState<string>('hero');
+    const [activeId, setActiveId] = useState<string>(NAV_ITEMS[0].id);
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
     useEffect(() => {
@@ -58,6 +58,8 @@ export function NavBar() {
         const el = document.getElementById(id);
         if (el) {
             el.scrollIntoView({ behavior: 'smooth' });
+            el.focus({ preventScroll: true });
+            window.history.pushState(null, '', `#${id}`);
         }
     };
 
@@ -73,13 +75,11 @@ export function NavBar() {
             </button>
             <aside className={`sidebar ${isOpen ? 'open' : ''}`} id="sidebar">
                 <div className="sidebar-brand">Associate Google Workspace Administrator</div>
-                {' '}
                 <div className="sidebar-title">Section 4: セキュリティポリシーとアクセス制御</div>
-                {' '}
                 <nav className="toc" id="tocNav">
-                    {NAV_ITEMS.map((item, index) => (
-                        <span key={item.id}>
-                            {index > 0 && ' '}
+                    <ul className="toc-list">
+                        {NAV_ITEMS.map((item) => (
+                            <li key={item.id}>
                             <a
                                 href={`#${item.id}`}
                                 className={`nav-link nav-${item.level} ${activeId === item.id ? 'active' : ''}`}
@@ -90,8 +90,9 @@ export function NavBar() {
                             >
                                 {item.text}
                             </a>
-                        </span>
-                    ))}
+                            </li>
+                        ))}
+                    </ul>
                 </nav>
             </aside>
         </>

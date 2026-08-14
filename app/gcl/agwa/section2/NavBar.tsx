@@ -187,7 +187,7 @@ const NAV_ITEMS = [
   {
     "type": "l3",
     "id": "243-meetビデオ設定の構成画質録画文字起こしノートテイキング",
-    "label": "2.4.3\n                            Meetビデオ設定の構成（画質・録画・文字起こし・ノートテイキング）"
+    "label": "2.4.3 Meetビデオ設定の構成（画質・録画・文字起こし・ノートテイキング）"
   },
   {
     "type": "l2",
@@ -276,54 +276,41 @@ export const NavBar: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    if (typeof IntersectionObserver === "undefined") return;
 
-    const updateActiveId = () => {
-      const headingElements = Array.from(
-        document.querySelectorAll(".main h2[id], .main h3[id]")
-      ) as HTMLElement[];
+    const headingElements = Array.from(
+      document.querySelectorAll<HTMLElement>(".main h2[id], .main h3[id]")
+    );
+    if (headingElements.length === 0) return;
 
-      if (headingElements.length === 0) return;
-
-      const triggerTop = 180;
-      let currentId = headingElements[0]?.id ?? "";
-
-      for (const el of headingElements) {
-        const rect = el.getBoundingClientRect();
-        if (rect.top <= triggerTop) {
-          currentId = el.id;
-        } else {
-          break;
-        }
-      }
-
-      const isBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 100;
+    const observer = new IntersectionObserver((entries) => {
+      const isBottom = window.innerHeight + window.scrollY
+        >= document.documentElement.scrollHeight - 100;
       if (isBottom) {
-        currentId = headingElements[headingElements.length - 1]?.id ?? currentId;
+        setActiveId(headingElements[headingElements.length - 1]?.id ?? NAV_ITEMS[0].id);
+        return;
       }
 
-      if (currentId) {
-        setActiveId(currentId);
-      }
-    };
+      const visibleHeading = entries.find((entry) => entry.isIntersecting);
+      if (visibleHeading) setActiveId(visibleHeading.target.id);
+    }, { rootMargin: "-15% 0px -75% 0px", threshold: 0 });
 
-    updateActiveId();
-
-    window.addEventListener("scroll", updateActiveId, { passive: true });
-    window.addEventListener("resize", updateActiveId, { passive: true });
+    headingElements.forEach((heading) => observer.observe(heading));
 
     return () => {
-      window.removeEventListener("scroll", updateActiveId);
-      window.removeEventListener("resize", updateActiveId);
+      observer.disconnect();
     };
   }, []);
 
   return (
     <>
       <button
+        type="button"
         className="sidebar-toggle-btn"
         onClick={() => setIsOpen(!isOpen)}
-        aria-label="Toggle navigation menu"
+        aria-label="Section 2の目次メニューを切り替える"
+        aria-expanded={isOpen}
+        aria-controls="sidebarNav"
         style={{
           position: "fixed",
           bottom: "1.5rem",
@@ -346,7 +333,11 @@ export const NavBar: React.FC = () => {
         ≡
       </button>
 
-      <nav className={`sidebar ${isOpen ? "open" : ""}`} id="sidebarNav">
+      <nav
+        className={`sidebar ${isOpen ? "open" : ""}`}
+        id="sidebarNav"
+        aria-label="AGWA Section 2の目次"
+      >
         <div className="sidebar-title">AGWA Section 2</div>
         <div className="sidebar-subtitle">コアWorkspaceサービスの管理</div>
         <ul className="nav-list">

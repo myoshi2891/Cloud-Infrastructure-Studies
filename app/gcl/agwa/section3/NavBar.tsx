@@ -40,6 +40,9 @@ const NAV_ITEMS = [
     { id: '参考文献', text: '参考文献', level: 'h2' },
 ];
 
+/**
+ * Section 3 の目次を表示し、見出し監視、スムーススクロール、モバイル開閉を管理する。
+ */
 export function NavBar() {
     const [activeId, setActiveId] = useState<string>('hero');
     const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -81,6 +84,8 @@ export function NavBar() {
                 className="sidebar-toggle"
                 onClick={() => setIsOpen(!isOpen)}
                 aria-label="目次メニュー切替"
+                aria-expanded={isOpen}
+                aria-controls="sidebar"
             >
                 ☰
             </button>

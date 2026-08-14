@@ -8,6 +8,7 @@ export const metadata: Metadata = {
         'Google Vault、DLP（データ損失防止）、Drive信頼ルール、データエクスポート、および分類ラベルの設定・運用を徹底解説する試験対策ガイドです。',
 };
 
+/** Section 3 のデータガバナンス学習ガイドを提供するページ。 */
 export default function AgwaSection3Page() {
     return <AgwaSection3Guide />;
 }

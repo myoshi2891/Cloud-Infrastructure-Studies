@@ -38,7 +38,7 @@ export function AgwaSection4Guide() {
                         <p className="hero-tagline">Managing security policies and access controls</p>
                     </div>
 
-                    <h2 id="この章について">この章について</h2>
+                    <h2 tabIndex={-1} id="この章について">この章について</h2>
                     <p>
                         Section 4 は Associate Google Workspace Administrator 試験の中でも Section
                         1(ユーザー・ドメイン・ディレクトリ管理、約20%)と並んで最大の出題比率を占める分野です。公式Exam
@@ -100,8 +100,8 @@ export function AgwaSection4Guide() {
                         </p>
                     </blockquote>
                     <hr />
-                    <h2 id="41-ユーザーアクセスの保護">4.1 ユーザーアクセスの保護</h2>
-                    <h3 id="411-強力なパスワードポリシーと2svルールの適用">
+                    <h2 tabIndex={-1} id="41-ユーザーアクセスの保護">4.1 ユーザーアクセスの保護</h2>
+                    <h3 tabIndex={-1} id="411-強力なパスワードポリシーと2svルールの適用">
                         4.1.1 強力なパスワードポリシーと2SVルールの適用
                     </h3>
                     <p>
@@ -206,7 +206,7 @@ export function AgwaSection4Guide() {
                         </p>
                     </blockquote>
                     <hr />
-                    <h3 id="412-パスワードポリシーと復旧オプションの設定">
+                    <h3 tabIndex={-1} id="412-パスワードポリシーと復旧オプションの設定">
                         4.1.2 パスワードポリシーと復旧オプションの設定
                     </h3>
                     <p>
@@ -306,7 +306,7 @@ export function AgwaSection4Guide() {
                         </p>
                     </blockquote>
                     <hr />
-                    <h3 id="413-2sv方式の設定">4.1.3 2SV方式の設定</h3>
+                    <h3 tabIndex={-1} id="413-2sv方式の設定">4.1.3 2SV方式の設定</h3>
                     <p>
                         2SVで選択できる主な認証方式は次の通りです。それぞれの仕組みとセキュリティレベルの違いを理解しておくことが重要です。
                     </p>
@@ -420,7 +420,7 @@ export function AgwaSection4Guide() {
                         </p>
                     </blockquote>
                     <hr />
-                    <h3 id="414-コンテキストアウェアアクセスの使用場面">
+                    <h3 tabIndex={-1} id="414-コンテキストアウェアアクセスの使用場面">
                         4.1.4 コンテキストアウェアアクセスの使用場面
                     </h3>
                     <p>
@@ -542,7 +542,7 @@ export function AgwaSection4Guide() {
                         </p>
                     </blockquote>
                     <hr />
-                    <h3 id="415-ユーザーとグループへのセキュリティポリシー適用">
+                    <h3 tabIndex={-1} id="415-ユーザーとグループへのセキュリティポリシー適用">
                         4.1.5 ユーザーとグループへのセキュリティポリシー適用
                     </h3>
                     <p>
@@ -620,7 +620,7 @@ export function AgwaSection4Guide() {
                         </p>
                     </blockquote>
                     <hr />
-                    <h3 id="416-管理者ロールの割り当てとタスクの委任">
+                    <h3 tabIndex={-1} id="416-管理者ロールの割り当てとタスクの委任">
                         4.1.6 管理者ロールの割り当てとタスクの委任
                     </h3>
                     <p>
@@ -784,7 +784,7 @@ export function AgwaSection4Guide() {
                         </p>
                     </blockquote>
                     <hr />
-                    <h3 id="417-google-session-controlによるユーザーサインアウト設定">
+                    <h3 tabIndex={-1} id="417-google-session-controlによるユーザーサインアウト設定">
                         4.1.7 Google Session Controlによるユーザーサインアウト設定
                     </h3>
                     <p>
@@ -873,10 +873,10 @@ export function AgwaSection4Guide() {
                         </p>
                     </blockquote>
                     <hr />
-                    <h2 id="42-セキュリティリスクとイベントのレポート監査調査">
+                    <h2 tabIndex={-1} id="42-セキュリティリスクとイベントのレポート監査調査">
                         4.2 セキュリティリスクとイベントのレポート・監査・調査
                     </h2>
-                    <h3 id="421-監査と調査ツールによるログの調査分析">
+                    <h3 tabIndex={-1} id="421-監査と調査ツールによるログの調査分析">
                         4.2.1 監査と調査ツールによるログの調査分析
                     </h3>
                     <p>
@@ -973,7 +973,7 @@ export function AgwaSection4Guide() {
                         </p>
                     </blockquote>
                     <hr />
-                    <h3 id="422-セキュリティセンターによるリスク脅威の特定">
+                    <h3 tabIndex={-1} id="422-セキュリティセンターによるリスク脅威の特定">
                         4.2.2 セキュリティセンターによるリスク・脅威の特定
                     </h3>
                     <p>
@@ -1019,7 +1019,7 @@ export function AgwaSection4Guide() {
                         </p>
                     </blockquote>
                     <hr />
-                    <h3 id="423-セキュリティ健全性ページによる設定ギャップの特定">
+                    <h3 tabIndex={-1} id="423-セキュリティ健全性ページによる設定ギャップの特定">
                         4.2.3 セキュリティ健全性ページによる設定ギャップの特定
                     </h3>
                     <p>
@@ -1118,7 +1118,7 @@ export function AgwaSection4Guide() {
                         </p>
                     </blockquote>
                     <hr />
-                    <h3 id="424-アクティビティルールとアラートの作成">
+                    <h3 tabIndex={-1} id="424-アクティビティルールとアラートの作成">
                         4.2.4 アクティビティルールとアラートの作成
                     </h3>
                     <p>
@@ -1206,10 +1206,10 @@ export function AgwaSection4Guide() {
                         </p>
                     </blockquote>
                     <hr />
-                    <h2 id="43-追加のgoogleおよびサードパーティアプリケーションの有効化">
+                    <h2 tabIndex={-1} id="43-追加のgoogleおよびサードパーティアプリケーションの有効化">
                         4.3 追加のGoogleおよびサードパーティアプリケーションの有効化
                     </h2>
-                    <h3 id="431-marketplaceアローリストの管理">4.3.1 Marketplaceアローリストの管理</h3>
+                    <h3 tabIndex={-1} id="431-marketplaceアローリストの管理">4.3.1 Marketplaceアローリストの管理</h3>
                     <p>
                         Google Workspace
                         Marketplaceのアローリスト(allowlist)は、ユーザーが自身でインストールできるアプリの範囲を管理者が事前承認する仕組みです。アローリストは「Manage
@@ -1284,7 +1284,7 @@ export function AgwaSection4Guide() {
                         </p>
                     </blockquote>
                     <hr />
-                    <h3 id="432-marketplaceとplayストアアプリのデプロイと制限">
+                    <h3 tabIndex={-1} id="432-marketplaceとplayストアアプリのデプロイと制限">
                         4.3.2 MarketplaceとPlayストアアプリのデプロイと制限
                     </h3>
                     <p>
@@ -1392,7 +1392,7 @@ export function AgwaSection4Guide() {
                         </p>
                     </blockquote>
                     <hr />
-                    <h3 id="433-サードパーティアプリケーションでのsso設定">
+                    <h3 tabIndex={-1} id="433-サードパーティアプリケーションでのsso設定">
                         4.3.3 サードパーティアプリケーションでのSSO設定
                     </h3>
                     <p>
@@ -1523,7 +1523,7 @@ export function AgwaSection4Guide() {
                         </p>
                     </blockquote>
                     <hr />
-                    <h3 id="434-特定ユーザーへの追加googleサービスのアクセス管理">
+                    <h3 tabIndex={-1} id="434-特定ユーザーへの追加googleサービスのアクセス管理">
                         4.3.4 特定ユーザーへの追加Googleサービスのアクセス管理
                     </h3>
                     <p>
@@ -1635,7 +1635,7 @@ export function AgwaSection4Guide() {
                         </p>
                     </blockquote>
                     <hr />
-                    <h3 id="435-接続済みアプリケーションとサイトの削除">
+                    <h3 tabIndex={-1} id="435-接続済みアプリケーションとサイトの削除">
                         4.3.5 接続済みアプリケーションとサイトの削除
                     </h3>
                     <p>
@@ -1758,7 +1758,7 @@ export function AgwaSection4Guide() {
                         </p>
                     </blockquote>
                     <hr />
-                    <h2 id="試験対策チェックリスト">試験対策チェックリスト</h2>
+                    <h2 tabIndex={-1} id="試験対策チェックリスト">試験対策チェックリスト</h2>
                     <div className="checklist-card">
                         <div className="checklist-header">
                             <span>習熟度セルフチェック</span>
@@ -1802,7 +1802,7 @@ export function AgwaSection4Guide() {
                         </ul>
                     </div>
                     <hr />
-                    <h2 id="参考文献">参考文献</h2>
+                    <h2 tabIndex={-1} id="参考文献">参考文献</h2>
                     <div className="ref-grid">
                         <div className="ref-card">
                             <h3>公式試験情報</h3>
