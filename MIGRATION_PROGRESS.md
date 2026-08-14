@@ -7,8 +7,33 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 ## 現在地
 
 - **ブランチ:** dev
-- **最新完了タスク:** Google Cloud PCNE Section 2: VPCネットワークの実装ガイド 100%全量移行完了
-- **最終更新日時(UTC):** 2026-08-14T02:53:47Z
+- **最新完了タスク:** AGWA Section 2: コアWorkspaceサービスの管理 100%全量移行完了
+- **最終更新日時(UTC):** 2026-08-14T14:30:00Z
+
+## 2026-08-14: AGWA Section 2「コアWorkspaceサービスの管理」100%全量移行 (完了)
+
+### 目的
+
+`Agwa-section2.html` を、Next.js App Router 5ファイル構成 (`page.tsx`, `AgwaSection2Guide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/gcl/agwa/section2` ルートへ移行。見出し(h1:1, h2:11, h3:50)、全16個のテーブル、13個のMermaid図解、全外部リンク・全本文・注釈を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for agwa-section2`
+- [x] **Step 1 (Red)**: `test(gcl): add failing tests for agwa-section2`
+- [x] **Step 2 (Green)**: `feat(gcl): implement agwa-section2 to pass tests`
+- [x] **Step 3 (Refactor)**: `refactor(gcl): integrate agwa-section2 into routing and update docs`
+- [x] **Step 4 (Archive & Sync)**: `chore(docs): update MIGRATION_PROGRESS.md — migrate Agwa-section2.html to Next.js`
+
+### 関連ファイル
+
+- [app/gcl/agwa/section2/page.tsx](app/gcl/agwa/section2/page.tsx)
+- [app/gcl/agwa/section2/AgwaSection2Guide.tsx](app/gcl/agwa/section2/AgwaSection2Guide.tsx)
+- [app/gcl/agwa/section2/NavBar.tsx](app/gcl/agwa/section2/NavBar.tsx)
+- [app/gcl/agwa/section2/constants.ts](app/gcl/agwa/section2/constants.ts)
+- [app/gcl/agwa/section2/page.css](app/gcl/agwa/section2/page.css)
+- [__tests__/gcl/agwa/section2.test.tsx](__tests__/gcl/agwa/section2.test.tsx)
+- [docs/migration-inventory/agwa-section2.json](docs/migration-inventory/agwa-section2.json)
+- [archive/Gcl_Archive/Associate-Google-Workspace-Administrator/html/Agwa-section2.html](archive/Gcl_Archive/Associate-Google-Workspace-Administrator/html/Agwa-section2.html)
 
 ## 2026-08-14: Google Cloud「PCNE Section 2: VPCネットワークの実装 完全ガイド」100%全量移行・デザイン完全復元 (完了)
 
