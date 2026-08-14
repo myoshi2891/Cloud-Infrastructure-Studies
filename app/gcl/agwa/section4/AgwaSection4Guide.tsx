@@ -11,7 +11,7 @@ const Diagram = memo(function Diagram({ id, label }: { id: DiagramId; label: str
     if (!chart) return null;
     return (
         <div className="mermaid-wrap">
-            <MermaidDiagram chart={chart} ariaLabel={label} />
+            <MermaidDiagram chart={chart} ariaLabel={label} preserveNaturalScale />
         </div>
     );
 });

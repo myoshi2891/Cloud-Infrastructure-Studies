@@ -320,14 +320,21 @@
 /* ---------- Mermaid ---------- */
 .agwa-s4-page .mermaid-wrap {
     width: 100%;
-    display: flex;
-    justify-content: safe center;
     overflow-x: auto;
     margin: 32px 0;
-    padding: 20px 8px;
+    padding: 24px 16px;
     background: var(--bg-card);
     border: 1px solid var(--border-soft);
     border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+/* Allow preserveNaturalScale SVG to maintain full natural width */
+.agwa-s4-page .mermaid-wrap svg {
+    max-width: none !important;
+    height: auto !important;
+    display: block;
+    margin: 0 auto;
 }
 
 .agwa-s4-page .mermaid-wrap p {
@@ -335,20 +342,53 @@
     margin: 0;
 }
 
-/* High Contrast Black Labels for Light/Yellow/Pink Nodes in Mermaid */
-.agwa-s4-page .mermaid-wrap svg .node[style*="fill:#ff"] .nodeLabel,
-.agwa-s4-page .mermaid-wrap svg .node[style*="fill:#FF"] .nodeLabel,
-.agwa-s4-page .mermaid-wrap svg .node[style*="background:#ff"] .nodeLabel,
-.agwa-s4-page .mermaid-wrap svg .node[style*="background:#FF"] .nodeLabel,
-.agwa-s4-page .mermaid-wrap svg .node rect[style*="fill:#ff"] ~ g .nodeLabel,
-.agwa-s4-page .mermaid-wrap svg .node rect[style*="fill:#FF"] ~ g .nodeLabel,
-.agwa-s4-page .mermaid-wrap svg .node rect[style*="#ff"] + g .nodeLabel,
-.agwa-s4-page .mermaid-wrap svg .node rect[style*="#FF"] + g .nodeLabel,
-.agwa-s4-page .mermaid-wrap svg .node polygon[style*="#ff"] + g .nodeLabel,
-.agwa-s4-page .mermaid-wrap svg .node polygon[style*="#FF"] + g .nodeLabel {
-    color: #000000 !important;
-    fill: #000000 !important;
-    font-weight: 600;
+/* Base text color inside Mermaid nodes */
+.agwa-s4-page .mermaid-wrap svg .node .nodeLabel,
+.agwa-s4-page .mermaid-wrap svg .node foreignObject div,
+.agwa-s4-page .mermaid-wrap svg .node text {
+    color: #ffffff;
+    fill: #ffffff;
+}
+
+/* Force dark text on all light/pastel/bright fill nodes (#e8f0fe, #fce8e6, #e6f4ea, #f1f3f4, #ffe08a, etc) */
+.agwa-s4-page .mermaid-wrap svg .node.lightBlueFill .nodeLabel,
+.agwa-s4-page .mermaid-wrap svg .node.lightRedFill .nodeLabel,
+.agwa-s4-page .mermaid-wrap svg .node.lightGreenFill .nodeLabel,
+.agwa-s4-page .mermaid-wrap svg .node.grayFill .nodeLabel,
+.agwa-s4-page .mermaid-wrap svg .node[style*="fill:#e"] .nodeLabel,
+.agwa-s4-page .mermaid-wrap svg .node[style*="fill:#E"] .nodeLabel,
+.agwa-s4-page .mermaid-wrap svg .node[style*="fill:#f"] .nodeLabel,
+.agwa-s4-page .mermaid-wrap svg .node[style*="fill:#F"] .nodeLabel,
+.agwa-s4-page .mermaid-wrap svg .node[style*="fill: #e"] .nodeLabel,
+.agwa-s4-page .mermaid-wrap svg .node[style*="fill: #f"] .nodeLabel,
+.agwa-s4-page .mermaid-wrap svg .node rect[style*="fill:#e"] ~ g .nodeLabel,
+.agwa-s4-page .mermaid-wrap svg .node rect[style*="fill:#f"] ~ g .nodeLabel,
+.agwa-s4-page .mermaid-wrap svg .node rect[style*="fill: #e"] ~ g .nodeLabel,
+.agwa-s4-page .mermaid-wrap svg .node rect[style*="fill: #f"] ~ g .nodeLabel,
+.agwa-s4-page .mermaid-wrap svg .node polygon[style*="fill:#e"] ~ g .nodeLabel,
+.agwa-s4-page .mermaid-wrap svg .node polygon[style*="fill:#f"] ~ g .nodeLabel,
+.agwa-s4-page .mermaid-wrap svg .node.lightBlueFill foreignObject div,
+.agwa-s4-page .mermaid-wrap svg .node.lightRedFill foreignObject div,
+.agwa-s4-page .mermaid-wrap svg .node.lightGreenFill foreignObject div,
+.agwa-s4-page .mermaid-wrap svg .node.grayFill foreignObject div,
+.agwa-s4-page .mermaid-wrap svg .node[style*="#e"] foreignObject div,
+.agwa-s4-page .mermaid-wrap svg .node[style*="#f"] foreignObject div {
+    color: #0b1220 !important;
+    fill: #0b1220 !important;
+    font-weight: 700 !important;
+}
+
+/* Clear contrast for edge labels (Yes/No line labels) */
+.agwa-s4-page .mermaid-wrap svg .edgeLabel,
+.agwa-s4-page .mermaid-wrap svg .edgeLabel foreignObject div,
+.agwa-s4-page .mermaid-wrap svg .edgeLabel span {
+    color: #dbe6f5 !important;
+    fill: #dbe6f5 !important;
+    background: #0d1a2b !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    padding: 2px 6px !important;
+    border-radius: 4px !important;
 }
 
 /* ---------- Code & Pre Block ---------- */
