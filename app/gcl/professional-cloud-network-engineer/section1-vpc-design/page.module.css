@@ -79,10 +79,8 @@
 
             :global(.sidebar) {
                 position: fixed;
-                top: 0;
                 left: 0;
                 width: 280px;
-                height: 100vh;
                 overflow-y: auto;
                 background: var(--color-pcne-design-elevated);
                 border-right: 1px solid var(--color-pcne-design-border);
