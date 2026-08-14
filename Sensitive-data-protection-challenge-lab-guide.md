@@ -286,7 +286,7 @@ flowchart TD
 
 ### 4-2. タグベースの条件付きアクセス付与
 
-**何をするか**: Username 2 に対して、BigQuery Data Viewer ロールを「SPII タグの値が `No` であるデータセットに対してのみ」有効になるよう、IAM 条件（Condition）を追加します。あわせて、既存の Viewer ロールを Browser ロールに置き換えます。
+**何をするか**: Username 2 に対して、BigQuery Data Viewer ロールを「SPII タグの値が `No` であるデータセットに対してのみ」有効になるよう、IAM 条件（Condition）を追加します。あわせて、既存の Viewer ロールを Browser ロールに置き換え、クエリ実行プロジェクトで `bigquery.jobs.create` を持つ BigQuery Job User ロールをプロジェクトレベルで付与します。
 
 ```mermaid
 sequenceDiagram
@@ -308,7 +308,7 @@ sequenceDiagram
 
 | 項目 | 値 |
 |---|---|
-| IAM Roles for Username 2 | Viewer を Browser に置き換え、BigQuery Data Viewer は条件付きで維持 |
+| IAM Roles for Username 2 | Viewer を Browser に置き換え、BigQuery Data Viewer は条件付きで維持し、BigQuery Job User はプロジェクトレベルで付与 |
 | Condition title | No SPII Access Only |
 | Condition type 1 と operator | Tag / has value |
 | Value path for condition type 1 | `<ORGANIZATION>/SPII/No` |
@@ -317,12 +317,13 @@ sequenceDiagram
 
 1. **IAM & Admin > IAM** で Username 2 のロールを編集します。
 2. 既存の Viewer ロールを削除し、代わりに **Browser** ロールを付与します（プロジェクトの基本的な閲覧権限を維持しつつ、Viewer の広範な権限を絞り込むため）。
-3. **BigQuery Data Viewer** ロールを維持したまま、**Add condition** をクリックします。
-4. Condition title に `No SPII Access Only` と入力します。
-5. Condition builder で、Condition type を **Resource > Tag**、Operator を **has value** に設定します。
-6. Value path に `<ORGANIZATION>/SPII/No` の形式でタグバリューのパスを入力します。
-7. 条件を保存し、IAM ポリシー全体を保存します。
-8. （任意テストとして）Username 2 でログインし、BigQuery コンソールをリロードして `orders` データセットのみが表示されることを確認します。反映には数分かかる場合があります。
+3. クエリを実行するプロジェクトで、Username 2 に **BigQuery Job User**（`roles/bigquery.jobUser`）をプロジェクトレベルで付与します。このロールに含まれる `bigquery.jobs.create` がクエリジョブの作成に必要です。同等の最小カスタムロールを使う場合も、この権限をクエリ実行プロジェクトで付与します。
+4. **BigQuery Data Viewer** ロールを維持したまま、**Add condition** をクリックします。
+5. Condition title に `No SPII Access Only` と入力します。
+6. Condition builder で、Condition type を **Resource > Tag**、Operator を **has value** に設定します。
+7. Value path に `<ORGANIZATION>/SPII/No` の形式でタグバリューのパスを入力します。
+8. 条件を保存し、IAM ポリシー全体を保存します。
+9. （任意テストとして）Username 2 でログインし、BigQuery コンソールをリロードして `orders` データセットのみが表示されることを確認します。反映には数分かかる場合があります。
 
 **ベストプラクティス**
 
@@ -410,13 +411,28 @@ def generate_guarded_response(prompt: str, model, project_id: str) -> str:
     credential_info_types = ["AUTH_TOKEN", "GCP_CREDENTIALS", "GCP_API_KEY"]
     # 追加: 米国の車両識別番号
     vin_info_type = "US_VEHICLE_IDENTIFICATION_NUMBER"
+    blocked_response = "[このレスポンスは機密情報を含むためブロックされました]"
 
     response = model.generate_content(prompt)
-    model_response = response.text
+    candidates = getattr(response, "candidates", None) or []
+    prompt_feedback = getattr(response, "prompt_feedback", None)
+    prompt_block_reason = getattr(prompt_feedback, "block_reason", None)
+
+    if prompt_block_reason or not candidates:
+        return blocked_response
+
+    finish_reason = getattr(candidates[0], "finish_reason", None)
+    finish_reason_name = getattr(finish_reason, "name", str(finish_reason))
+    if finish_reason_name not in {"STOP", "FinishReason.STOP", "1"}:
+        return blocked_response
+
+    model_response = (response.text or "").strip()
+    if not model_response:
+        return blocked_response
 
     all_info_types = credential_info_types + [vin_info_type]
     if contains_sensitive_info(project_id, model_response, all_info_types):
-        return "[このレスポンスは機密情報を含むためブロックされました]"
+        return blocked_response
 
     return model_response
 ```
@@ -438,35 +454,41 @@ def generate_guarded_response(prompt: str, model, project_id: str) -> str:
 
 出典: [InfoType detector reference](https://docs.cloud.google.com/sensitive-data-protection/docs/infotypes-reference) / [Redacting sensitive data from text](https://docs.cloud.google.com/sensitive-data-protection/docs/redacting-sensitive-data) / [De-identify sensitive data by replacing with infoType](https://docs.cloud.google.com/sensitive-data-protection/docs/samples/dlp-deidentify-replace-infotype) / [Listing built-in infoType detectors](https://docs.cloud.google.com/sensitive-data-protection/docs/listing-infotypes)
 
-### 5-3. temperature=0 でテストする理由
+### 5-3. 固定応答でガード処理をテストする理由
 
-**何をするか**: 以下のプロンプトでテスト用のレスポンスを生成します。
+**何をするか**: 固定の VIN 含有文字列を DLP で直接検査する単体テストと、その文字列を `response.text` として返すスタブモデルを使った統合テストを実行します。
 
-```text
-Is 4Y1SL65848Z411439 an example of a US Vehicle Identification Number (VIN)?
-```
-
-このとき `temperature` を `0` に設定します。
-
-**なぜ temperature=0 なのか**: `temperature` は生成 AI の出力のランダム性を制御するパラメータです。`0`にすると再現性は高まりますが、同一出力は保証されません。DLPの検証を確実にするには、固定のVIN含有テキストを直接検査するか、生成結果の揺らぎを許容する検証条件にしてください。
+生成モデルの出力内容には依存しません。DLP 検出器の単体テストでは固定文字列を直接渡し、ガード処理の統合テストでは同じ文字列を返すスタブを使います。
 
 ```python
-from vertexai.generative_models import GenerationConfig, GenerativeModel
+from types import SimpleNamespace
 
-model = GenerativeModel("<model_name>")
-generation_config = GenerationConfig(temperature=0)
+VIN = "4Y1SL65848Z411439"
+VIN_INFO_TYPE = "US_VEHICLE_IDENTIFICATION_NUMBER"
+BLOCKED_RESPONSE = "[このレスポンスは機密情報を含むためブロックされました]"
 
-prompt = "Is 4Y1SL65848Z411439 an example of a US Vehicle Identification Number (VIN)?"
-response = model.generate_content(prompt, generation_config=generation_config)
-print(response.text)
+# 単体テスト: モデルを介さず、固定の VIN 含有文字列を直接検査する
+assert contains_sensitive_info(PROJECT_ID, f"Vehicle VIN: {VIN}", [VIN_INFO_TYPE])
+
+
+class StubModel:
+    def generate_content(self, _prompt):
+        return SimpleNamespace(
+            candidates=[SimpleNamespace(finish_reason=SimpleNamespace(name="STOP"))],
+            prompt_feedback=SimpleNamespace(block_reason=None),
+            text=f"Vehicle VIN: {VIN}",
+        )
+
+
+# 統合テスト: プロンプトの再出力ではなく、スタブの response.text を検査する
+result = generate_guarded_response("safe prompt", StubModel(), PROJECT_ID)
+assert result == BLOCKED_RESPONSE
 ```
 
 **ベストプラクティス**
 
-- **検証用のプロンプトは決定論的に固定する**: セキュリティ機能のテストでは、出力のランダム性が結果の再現性を損なわないよう、`temperature=0`（またはそれに準ずる低い値）を使うのが定石です。
-- **本番運用では用途に応じて temperature を切り替える**: ブロック機能のテストは 0 が適切ですが、実際のチャットボット応答など創造性が求められる用途では、別途適切な temperature を設定してください。
-
-出典: [Content generation parameters | Vertex AI](https://cloud.google.com/vertex-ai/generative-ai/docs/multimodal/content-generation-parameters)
+- **検出器とガード処理を分けてテストする**: DLP へ固定文字列を渡すテストと、スタブモデルを使う統合テストを分けると、モデル出力の揺らぎと検出ロジックの不具合を切り分けられます。
+- **ブロックされたモデル応答も検証する**: `candidates` がない場合、`prompt_feedback.block_reason` が設定された場合、または `finish_reason` が正常終了でない場合に、DLP 検査前にブロックメッセージを返すことも確認してください。
 
 ---
 
@@ -482,7 +504,7 @@ print(response.text)
 | IAM タグ | タグキー・バリューの説明を明記し、組織内で一意性を保つ |
 | 条件付きアクセス | 広範なロール（Viewer 等）を条件なしで残さない。必要最小限のロール＋条件の組み合わせにする |
 | Gen AI 応答の保護 | 一意識別子（VIN 等）はマスキングよりブロックなど、より保守的な方針を検討する |
-| テストの再現性 | セキュリティ機能の検証には temperature=0 など決定論的な設定を使う |
+| テストの再現性 | 固定の機密文字列とスタブ応答を使い、生成モデルの出力内容に依存させない |
 | infoType の選定 | 用途に応じて具体的な infoType を過不足なく指定し、`min_likelihood` を明示する |
 
 ---
@@ -494,8 +516,9 @@ print(response.text)
 | Discovery スキャン設定でロケーションが選べない | データのロケーションと構成保存先ロケーションの不整合 | バケットや BigQuery データセットのリージョンと、Multi-region 設定の整合性を確認する |
 | De-identify ジョブがテンプレートを認識しない | テンプレートのリソースパスの指定ミス、またはロケーション（global）と Storage 構造化テンプレートのロケーション不一致 | テンプレートのフルリソース名（`projects/.../locations/.../deidentifyTemplates/...`）を正確にコピーする |
 | Username 2 に BigQuery データセットが表示されない／されすぎる | タグの付与漏れ、条件式のタグパス誤り、反映の遅延 | タグバリューパスの構文（`ORGANIZATION/TAG_KEY/TAG_VALUE`）を再確認し、数分待って再読み込みする |
+| Username 2 のクエリが `bigquery.jobs.create` 不足で失敗する | クエリ実行プロジェクトにジョブ作成権限がない | Username 2 にプロジェクトレベルの `roles/bigquery.jobUser` または同等の最小カスタムロールを付与する |
 | Notebook にファイルが表示されない | Workbench インスタンスのファイル同期不具合 | JupyterLab タブを閉じ、インスタンスを Reset → 1分待機 → 再度 Open JupyterLab |
-| ブロック機能のテストで毎回結果が変わる | temperature が 0 になっていない | `GenerationConfig(temperature=0)` を明示的に設定しているか確認する |
+| ブロック機能のテストで毎回結果が変わる | 実際の生成モデルの応答内容に依存している | 固定の VIN 含有文字列を返すスタブモデルに置き換える |
 
 ---
 
