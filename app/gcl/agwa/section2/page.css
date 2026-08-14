@@ -456,7 +456,8 @@
                 color: var(--accent);
             }
             .agwa-section2-page ul.checklist-list {
-                list-style: none;
+                list-style: none !important;
+                list-style-type: none !important;
                 margin: 0;
                 padding: 0;
             }

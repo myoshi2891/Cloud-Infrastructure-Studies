@@ -421,8 +421,9 @@
     padding: 4px 12px;
     border-radius: 999px;
 }
-.agwa-s3-page .checklist-list {
-    list-style: none;
+.agwa-s3-page .main ul.checklist-list {
+    list-style: none !important;
+    list-style-type: none !important;
     margin: 4px 0 0;
     padding: 4px 8px;
 }
