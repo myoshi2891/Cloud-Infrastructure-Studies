@@ -34,6 +34,9 @@ vi.mock('@/components/MermaidDiagram', () => ({
 /** 空白差・改行差を無視して比較するための正規化 */
 const squash = (value: string): string => value.replace(/\s+/g, '');
 const normalize = (value: string): string => value.replace(/\s+/g, ' ').trim();
+/**
+ * 入力全体と各行の前後空白を正規化し、移行テストで空白差を無視できる形にする。
+ */
 const normalizeMermaid = (value: string): string => value
     .trim()
     .split(/\r?\n/)
