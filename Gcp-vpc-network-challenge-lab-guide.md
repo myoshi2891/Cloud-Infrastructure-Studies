@@ -33,7 +33,7 @@ flowchart TB
     subgraph FW["適用するファイアウォールルール（Ingress / Allow）"]
         direction TB
         FW1["ルール1: TCP:22 (SSH)<br/>優先度 1000"]
-        FW2["ルール2: TCP:3389 (RDP)<br/>優先度 65535"]
+        FW2["ルール2: TCP:3389 (RDP)<br/>優先度 1001"]
         FW3["ルール3: ICMP<br/>優先度 1000"]
         FW1 ~~~ FW2 ~~~ FW3
     end
@@ -68,7 +68,7 @@ flowchart TB
 
 ## 2. 事前準備：命名規則を決める
 
-ラボの手順書には `network name`、`subnet a name` のようにプレースホルダーで名前が示されているだけで、実際の値は自分で決める必要があります。チャレンジラボは自動採点のため、**大文字・アンダースコアは使えません**（Google Cloudのリソース名は小文字英数字とハイフンのみ）。あらかじめ命名規則を決めておくと、後工程の設定ミスを防げます。
+ラボの手順書には `network name`、`subnet a name` のようにプレースホルダーで名前が示されているだけで、実際の値は自分で決める必要があります。チャレンジラボで作成する VPC ネットワーク、サブネット、Firewall ルール、VM の名前には、**小文字英数字とハイフンのみ**を使用します。あらかじめ対象リソースの命名規則を決めておくと、後工程の設定ミスを防げます。
 
 | プレースホルダー | 推奨する命名例 | 補足 |
 |---|---|---|
@@ -171,7 +171,7 @@ VPCのファイアウォールルールは、次の要素の組み合わせで�
 | ルール名 | 優先度 | 方向 | アクション | ターゲット | 送信元範囲 | プロトコル/ポート |
 |---|---|---|---|---|---|---|
 | `fw-allow-ssh` | 1000 | Ingress | Allow | すべてのインスタンス | `0.0.0.0/0` | TCP:22 |
-| `fw-allow-rdp` | 65535 | Ingress | Allow | すべてのインスタンス | `0.0.0.0/24` | TCP:3389 |
+| `fw-allow-rdp` | 1001 | Ingress | Allow | すべてのインスタンス | `0.0.0.0/24` | TCP:3389 |
 | `fw-allow-icmp` | 1000 | Ingress | Allow | すべてのインスタンス | `10.10.10.0/24`, `10.10.20.0/24` | ICMP |
 
 > **ラボ指定についての注意**: ルール2の送信元範囲は、配布された手順書と採点条件どおり `0.0.0.0/24` を指定します。このCIDRが含むのは `0.0.0.0`〜`0.0.0.255` の256アドレスだけで、全IPv4送信元を意味する `0.0.0.0/0` とは異なります。実務ではこの値を流用せず、IAP、VPN、踏み台、または承認済みの管理端末CIDRに限定してください。
@@ -186,7 +186,7 @@ flowchart TB
     R1 -->|一致| Allow1(["許可"])
     R1 -->|不一致| R3["優先度1000: fw-allow-icmp<br/>ICMP に一致？"]
     R3 -->|一致| Allow2(["許可"])
-    R3 -->|不一致| R2["優先度65535: fw-allow-rdp<br/>TCP:3389 に一致？"]
+    R3 -->|不一致| R2["優先度1001: fw-allow-rdp<br/>TCP:3389 に一致？"]
     R2 -->|一致| Allow3(["許可"])
     R2 -->|不一致| Implied["暗黙のルール（優先度65535）<br/>それ以外のIngressはすべて拒否"]
     Implied --> Deny(["拒否"])
@@ -212,7 +212,7 @@ gcloud compute firewall-rules create fw-allow-ssh \
 
 gcloud compute firewall-rules create fw-allow-rdp \
   --network=vpc-net-challenge --direction=INGRESS --action=ALLOW \
-  --rules=tcp:3389 --source-ranges=0.0.0.0/24 --priority=65535
+  --rules=tcp:3389 --source-ranges=0.0.0.0/24 --priority=1001
 
 gcloud compute firewall-rules create fw-allow-icmp \
   --network=vpc-net-challenge --direction=INGRESS --action=ALLOW \
