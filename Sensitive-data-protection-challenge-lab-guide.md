@@ -211,7 +211,7 @@ sequenceDiagram
 |---|---|
 | Job ID | `us_ccn_deidentify` |
 | Location type | Multi-region: us |
-| URL | `gs://<Project ID>-car-owners/` |
+| URL | `gs://<Project ID>-car-owners` |
 | Scan recursively | 有効化 |
 | Sampling | 100%（No sampling） |
 | Structured de-identification template | 3-2 で作成したテンプレートのフルパス |
@@ -222,7 +222,7 @@ sequenceDiagram
 
 1. **Sensitive Data Protection > De-identification** から **Create job or job trigger** に進みます。
 2. Job ID に `us_ccn_deidentify`、ロケーションタイプに Multi-region の `us` を指定します。
-3. 入力データとして Cloud Storage を選び、URL に `gs://<Project ID>-car-owners/` を入力、**Scan recursively**（サブフォルダも含めて再帰的にスキャン）を有効にします。
+3. 入力データとして Cloud Storage を選び、URL に `gs://<Project ID>-car-owners` を入力、**Scan recursively**（サブフォルダも含めて再帰的にスキャン）を有効にします。
 4. Sampling は 100%（No sampling）を選び、バケット内のすべてのオブジェクトを対象にします。
 5. **Structured de-identification template** に、3-2 で作成した `us_ccn_deidentify` テンプレートのリソースパスを指定します。
 6. **Export transformation details to BigQuery** を有効化し、Dataset ID `cs_transformations`、Table ID `deidentify_ccn` を指定します。
@@ -295,11 +295,13 @@ sequenceDiagram
     participant DS1 as "car_owners (SPII: Yes)"
     participant DS2 as "orders (SPII: No)"
 
-    User->>IAM: BigQuery データセット一覧をリクエスト
+    User->>IAM: orders へのクエリ実行を要求
     IAM->>IAM: 条件式を評価<br/>resource.tag == "SPII/No" ?
-    IAM-->>DS1: 条件不一致 → アクセス拒否
-    IAM-->>DS2: 条件一致 → アクセス許可
-    IAM-->>User: orders データセットのみ表示
+    IAM->>DS2: 条件一致 → クエリ実行を許可
+    DS2-->>User: orders のクエリ結果を返す
+    User->>IAM: car_owners へのクエリ実行を要求
+    IAM->>IAM: 条件式を評価<br/>resource.tag == "SPII/No" ?
+    IAM-->>User: 条件不一致 → car_owners のクエリ実行を拒否
 ```
 
 **設定値（ラボの要求仕様）**
@@ -387,7 +389,7 @@ def contains_sensitive_info(project_id: str, text: str, info_types: list[str]) -
     inspect_config = {
         "info_types": [{"name": info_type} for info_type in info_types],
         "min_likelihood": dlp_v2.Likelihood.POSSIBLE,
-        "include_quote": True,
+        "include_quote": False,
     }
 
     response = dlp_client.inspect_content(
@@ -440,13 +442,13 @@ def generate_guarded_response(prompt: str, model, project_id: str) -> str:
 
 **何をするか**: 以下のプロンプトでテスト用のレスポンスを生成します。
 
-```
+```text
 Is 4Y1SL65848Z411439 an example of a US Vehicle Identification Number (VIN)?
 ```
 
 このとき `temperature` を `0` に設定します。
 
-**なぜ temperature=0 なのか**: `temperature` は生成 AI の出力のランダム性を制御するパラメータです。値が高いほど多様で創造的な出力になり、`0` に近いほど「最も確率の高いトークン」を選び続ける決定論的な（再現性の高い）出力になります。このラボでは、DLP によるブロック機能が正しく動作するかを検証（progress check）するために、毎回同じ内容の VIN を含む応答が生成されることが重要なので、`temperature=0` を指定します。
+**なぜ temperature=0 なのか**: `temperature` は生成 AI の出力のランダム性を制御するパラメータです。`0`にすると再現性は高まりますが、同一出力は保証されません。DLPの検証を確実にするには、固定のVIN含有テキストを直接検査するか、生成結果の揺らぎを許容する検証条件にしてください。
 
 ```python
 from vertexai.generative_models import GenerationConfig, GenerativeModel

@@ -107,7 +107,7 @@ flowchart LR
 | 持続可能性（Sustainability） | 環境負荷を最小化する設計 | リージョン選択でカーボンフットプリントを考慮したか |
 
 > **ベストプラクティス**: 試験問題の多くは「どの選択肢が最もコストが低いか」ではなく「ビジネス要件と技術要件の両方を満たしつつ、WAFの複数の柱をバランスよく満たす選択肢はどれか」を問う設計になっています。単一の正解軸（例：コストだけ）で選択肢を絞り込まないようにしましょう。
-
+>
 > **出典**: [Google Cloud Architecture Framework](https://cloud.google.com/architecture/framework)
 
 ### ケーススタディの扱い方
@@ -122,10 +122,11 @@ flowchart LR
 | KnightMotives Automotive | 自動車 |
 
 > **ベストプラクティス**: 試験前に4つのケーススタディを一度読み込んでおくと、本番で「このケーススタディはこういう制約がある会社だ」とすぐに思い出せて時間短縮になります。ケーススタディ関連の問題は、一般知識だけで解こうとせず、必ず「この企業の制約・目標に照らして最適な選択肢はどれか」という視点で選びましょう。
-
+>
 > **出典**: [Professional Cloud Architect Exam Guide（PDF）](https://services.google.com/fh/files/misc/professional_cloud_architect_exam_guide_english.pdf)
 
 ---
+
 ## Section 1: クラウドソリューションアーキテクチャの設計と計画（約25%）
 
 試験全体で最も配点が高いセクションです。5つのタスク（1.1〜1.5）に分かれており、「ビジネス要件」「技術要件」「リソース設計」「移行計画」「将来構想」という設計の一連の流れを問われます。
@@ -185,7 +186,7 @@ flowchart TD
 **統合パターン**: 外部システムとの連携は、同期API呼び出しだけでなく、Pub/Subによる非同期メッセージング、Eventarcによるイベント駆動連携、Cloud Data Fusion/Dataflowによるバッチ・ストリーミング統合など、要件に応じた選択が必要です。
 
 > **ベストプラクティス**: システム間の結合度を下げたい場合はPub/Subなどの非同期メッセージングを優先します。強い一貫性が必要な同期的トランザクションにのみ同期APIを使うと、可用性・拡張性の両面で有利になります。
-
+>
 > **出典**: [Google Cloud Architecture Framework: システム設計の考慮事項](https://cloud.google.com/architecture/framework/system-design) / [アプリケーション統合の設計パターン](https://cloud.google.com/architecture/application-integration)
 
 ### 1.2 技術要件を満たすクラウドソリューションインフラの設計
@@ -246,7 +247,7 @@ flowchart LR
 
 | 要素 | 役割 |
 |---|---|
-| VPC（Virtual Private Cloud） | プロジェクトを跨いで利用できるグローバルな仮想ネットワーク |
+| VPC（Virtual Private Cloud） | 1つのプロジェクト内で利用するグローバルな仮想ネットワーク |
 | VPCピアリング | 2つのVPC間をGoogleのバックボーンnet経由で直接接続（推移的接続不可） |
 | Shared VPC（共有VPC） | ホストプロジェクトのVPCを複数のサービスプロジェクトから共有利用 |
 | Private Service Connect（PSC） | VPCを跨いでプライベートIPのみでサービスに接続する仕組み |
@@ -343,7 +344,7 @@ flowchart LR
 - ソフトウェアライセンスへの影響（BYOL、ソケット/コア課金体系の違い）と財務的インパクト
 
 > **ベストプラクティス**: 移行計画では「一度に全部切り替える」ビッグバン移行よりも、依存関係の少ないワークロードから段階的に移行するアプローチがリスクを抑えられます。ネットワーク帯域や既存システムとの接続要件（ハイブリッド接続）を移行計画の初期段階で明確化しておくことが、後工程の手戻りを防ぐ鍵です。
-
+>
 > **出典**: [Migration Centerの概要](https://cloud.google.com/migration-center/docs/migration-center-overview) / [クラウド移行の基本ガイド](https://cloud.google.com/architecture/migration-to-google-cloud-building-your-foundation)
 
 ### 1.5 将来の解決策の改善を見据える
@@ -355,7 +356,7 @@ flowchart LR
 - クラウドファーストな設計アプローチ（オンプレミス前提の制約に縛られない設計判断）
 
 > **ベストプラクティス**: 設計時点で「将来この部分をどう進化させられるか」を疎結合なアーキテクチャ（マイクロサービス化、IaC化、抽象化されたAPI境界）によって担保しておくと、将来の技術更新をシステム全体の作り直しなしに取り込めます。
-
+>
 > **出典**: [Google Cloud Architecture Center](https://cloud.google.com/architecture)
 
 ---
@@ -377,10 +378,10 @@ Section 1で設計したアーキテクチャを、実際にどう構成・プ�
 
 | 接続方式 | 帯域/用途 | 特徴 |
 |---|---|---|
-| Cloud VPN（HA VPN） | 〜3Gbps程度 | インターネット経由のIPsec暗号化トンネル、迅速に構築可能 |
-| Dedicated Interconnect | 10Gbps/100Gbps単位 | Googleとの物理専用線、大容量・低レイテンシ |
-| Partner Interconnect | 50Mbps〜10Gbps | パートナー経由でGoogleに接続、Google拠点に直接アクセスできない場合に利用 |
-| Cross-Cloud Interconnect | 10Gbps/100Gbps | 他クラウドプロバイダとの専用線接続 |
+| Cloud VPN（HA VPN） | トンネルあたり最大250,000pps（平均パケットサイズにより約1〜3Gbps） | インターネット経由のIPsec暗号化トンネル。実効帯域はパケットサイズなどに依存 |
+| Dedicated Interconnect | VLAN attachmentあたり50Mbps〜400Gbps | 物理回線容量（10/100Gbps回線など）とVLAN attachment容量を分けて設計する |
+| Partner Interconnect | VLAN attachmentあたり50Mbps〜50Gbps | パートナー回線とVLAN attachmentの容量を分けて設計する |
+| Cross-Cloud Interconnect | 接続先ごとにAWS/OCIは最大400Gbps、Azure/Alibaba Cloudは最大100Gbps | 他クラウドプロバイダとの専用接続。接続先と構成により上限が異なる |
 | Network Connectivity Center（NCC） | — | ハブ&スポーク型で複数拠点/複数クラウドを一元的にオーケストレーション |
 
 ```mermaid
@@ -398,9 +399,9 @@ flowchart TB
 
 **セキュリティ保護**: Cloud Armor（WAF/DDoS対策）、階層型ファイアウォールポリシー、Cloud IDS（侵入検知）などをネットワーク層に組み込みます。
 
-> **ベストプラクティス**: 帯域とSLAの要件が明確な基幹接続にはDedicated/Partner Interconconnectを、多数の拠点・クラウドを段階的に統合したい場合はNCCのハブ&スポーク構成を優先します。VPNは構築の速さと引き換えに帯域・レイテンシの制約があるため、恒久的な大容量接続には不向きです。
-
-> **出典**: [ハイブリッド接続の概要](https://cloud.google.com/hybrid-connectivity) / [Network Connectivity Centerの概要](https://cloud.google.com/network-connectivity-center/docs/overview)
+> **ベストプラクティス**: 帯域とSLAの要件が明確な基幹接続にはDedicated/Partner Interconnectを、多数の拠点・クラウドを段階的に統合したい場合はNCCのハブ&スポーク構成を優先します。VPNは構築の速さと引き換えに帯域・レイテンシの制約があるため、恒久的な大容量接続には不向きです。
+>
+> **出典**: [ハイブリッド接続の概要](https://cloud.google.com/hybrid-connectivity) / [Cloud Interconnect FAQ](https://cloud.google.com/network-connectivity/docs/interconnect/support/faq) / [Network Connectivity Centerの概要](https://cloud.google.com/network-connectivity-center/docs/overview)
 
 ### 2.2 個別ストレージシステムの構成
 
@@ -424,7 +425,7 @@ flowchart TB
 | 長期アーカイブ | Archive | 年1回未満 |
 
 > **ベストプラクティス**: Object Lifecycle Managementルールを使い、経過日数に応じて自動的にStandard→Nearline→Coldline→Archiveへ移行させることで、手動運用なしにストレージコストを継続的に最適化できます。データ保護の観点では、リージョナルではなくマルチリージョン/デュアルリージョンバケットを使うことでリージョン障害時の耐性を高められます。
-
+>
 > **出典**: [Cloud Storageクラスの選択](https://cloud.google.com/storage/docs/storage-classes) / [オブジェクトのライフサイクル管理](https://cloud.google.com/storage/docs/lifecycle)
 
 ### 2.3 コンピュートシステムの構成
@@ -458,7 +459,7 @@ flowchart LR
 ```
 
 > **ベストプラクティス**: 中断耐性のあるワークロード（バッチ処理・ステートレスな分散計算）は積極的にSpot VMへ寄せることで大幅なコスト最適化が図れます。パッチ管理はOS Config Managementで自動化し、手動SSHでのパッチ適用を避けることで構成ドリフトを防止します。
-
+>
 > **出典**: [Spot VM の概要](https://cloud.google.com/compute/docs/instances/spot) / [VM Manager（パッチ管理）](https://cloud.google.com/compute/docs/vm-manager)
 
 ### 2.4 Gemini Enterprise Agent Platformを活用したエンドツーエンドMLワークフロー
@@ -479,7 +480,7 @@ flowchart LR
 ```
 
 > **ベストプラクティス**: 学習と推論でワークロード特性が異なるため、GPU/TPUの選定は「学習は高スループットのTPU、リアルタイム推論は低レイテンシのGPU」のように用途で使い分けを検討します。パイプライン化によって、データ準備からデプロイまでの再現性を確保することが重要です。
-
+>
 > **出典**: [AI Hypercomputer の概要](https://cloud.google.com/ai-hypercomputer/docs/overview) / [Gemini Enterprise Agent Platform](https://cloud.google.com/products/gemini-enterprise-agent-platform)
 
 ### 2.5 Agent Platformでの事前構築ソリューション・APIの構成
@@ -500,11 +501,10 @@ flowchart LR
 | NotebookLM | ドキュメントを情報源としたAI要約・Q&A |
 
 > **ベストプラクティス**: 独自モデルの学習コストをかける前に、まずModel GardenやGoogle AI APIで要件を満たせないか検討するのが費用対効果の観点で定石です。試験では「ゼロからモデルを構築する」選択肢よりも「既存の事前構築済みAPI/モデルを活用する」選択肢が正解になりやすい傾向があります。
-
+>
 > **出典**: [Model Gardenの概要](https://cloud.google.com/vertex-ai/generative-ai/docs/model-garden/explore-models) / [Google Cloud AI・機械学習製品](https://cloud.google.com/products/ai)
 
 ---
-
 
 ## Section 3: セキュリティとコンプライアンスの設計（約17.5%）
 
@@ -580,10 +580,10 @@ flowchart LR
 
 **AIのセキュリティ**: Model Armor（生成AIの入出力に対するプロンプトインジェクション対策等）、Sensitive Data Protectionと連携した機密情報の漏洩防止、モデルのデプロイ時のアクセス制御が近年の出題範囲に加わっています。
 
-**ソフトウェアサプライチェーンのセキュリティ**: Artifact RegistryとBinary Authorizationを組み合わせ、署名済み・脆弱性スキャン済みのコンテナイメージのみをデプロイ許可する仕組みが代表例です。
+**ソフトウェアサプライチェーンのセキュリティ**: Artifact Analysisがコンテナイメージの脆弱性スキャンを担当し、スキャン合格後に署名付きattestationを作成します。Binary Authorizationはそのattestationを検証し、対応するattestorをポリシーで必須化することで、条件を満たしたイメージだけをデプロイできるよう制御します。
 
 > **ベストプラクティス**: 「多層防御（Defense in Depth）」の考え方に基づき、ネットワーク層（VPC Service Controls）、ID層（IAM/Context-Aware Access）、データ層（暗号化/DLP）、アプリ層（Binary Authorization）の各レベルで独立した防御を重ねることが試験・実務ともに評価される設計です。
-
+>
 > **出典**: [IAMの概要](https://cloud.google.com/iam/docs/overview) / [リソース階層の理解](https://cloud.google.com/resource-manager/docs/cloud-platform-resource-hierarchy) / [Cloud KMSの概要](https://cloud.google.com/kms/docs/key-management-service) / [VPC Service Controlsの概要](https://cloud.google.com/vpc-service-controls/docs/overview) / [Model Armorの概要](https://cloud.google.com/security-command-center/docs/model-armor-overview)
 
 ### 3.2 コンプライアンスの設計
@@ -608,11 +608,10 @@ flowchart LR
 **監査ログ**: Cloud Auditログには「管理アクティビティ」「データアクセス」「システムイベント」「ポリシー拒否」の4種類があり、これらをBigQueryやCloud Storageにエクスポートして長期保存・分析することがコンプライアンス対応の基本です。
 
 > **ベストプラクティス**: 業界別の規制要件（医療ならHIPAA、決済ならPCI DSS）を洗い出したうえで、Assured WorkloadsやOrganization Policyで技術的に強制する仕組みに落とし込むことが「口頭ルールに頼らないコンプライアンス」の実現方法です。監査ログは既定で一定期間保持されますが、長期保持が必要な場合は明示的にログシンクを設定してエクスポートします。
-
+>
 > **出典**: [Assured Workloadsの概要](https://cloud.google.com/assured-workloads/docs/overview) / [Cloud Auditログの概要](https://cloud.google.com/logging/docs/audit) / [コンプライアンスリソースセンター](https://cloud.google.com/compliance)
 
 ---
-
 
 ## Section 4: 技術・ビジネスプロセスの分析と最適化（約15%）
 
@@ -652,7 +651,7 @@ flowchart LR
 **根本原因分析（RCA）**: 障害発生時に、表面的な症状ではなく根本原因を特定するプロセスです。Cloud Logging/Cloud Traceによる分散トレーシング、ポストモーテム（振り返り）文化の醸成が実務上のベストプラクティスとされます。
 
 > **ベストプラクティス**: 障害対応では「誰が悪いか」ではなく「なぜ仕組みが障害を防げなかったか」に焦点を当てるBlameless Postmortem（非難なき事後検証）の文化が、SRE的な運用の卓越性につながります。
-
+>
 > **出典**: [Cloud Buildの概要](https://cloud.google.com/build/docs/overview) / [SRE本 - ポストモーテムの文化](https://sre.google/sre-book/postmortem-culture/)
 
 ### 4.2 ビジネスプロセスの分析と定義
@@ -675,7 +674,7 @@ flowchart LR
 | メリット | 長期的な単価は下がる場合がある | 初期投資が不要、需要に応じた即応が可能 |
 
 > **ベストプラクティス**: 経営層への説明では、クラウド移行がCapExからOpExへの転換であることを明確に伝えると合意形成がしやすくなります。試験では「予算承認プロセス」や「変更管理プロセス」に関する記述問題があり、技術的な正しさだけでなく組織的なプロセスを踏まえた選択肢が問われる点に注意しましょう。
-
+>
 > **出典**: [コスト最適化の柱 - Architecture Framework](https://cloud.google.com/architecture/framework/cost-optimization)
 
 ---
@@ -697,7 +696,7 @@ flowchart LR
 **Apigeeによる APIマネジメント**: APIのライフサイクル全体（設計、セキュリティ、レート制限、分析、マネタイズ）を管理するプラットフォームです。バックエンドサービスを直接公開せず、Apigeeをゲートウェイとして挟むことで、認証・スロットリング・バージョニングを一元管理できます。
 
 > **ベストプラクティス**: 社内外に公開するAPIが増えてきた組織では、個別サービスごとに認証・レート制限を実装するのではなく、Apigeeのようなゲートウェイ層で横断的に管理することで、一貫したセキュリティポリシーとAPI利用状況の可視化が実現できます。
-
+>
 > **出典**: [Apigeeの概要](https://cloud.google.com/apigee/docs/api-platform/get-started/what-apigee)
 
 ### 5.2 Google Cloudとのプログラム的なやり取り
@@ -731,11 +730,10 @@ flowchart LR
 ```
 
 > **ベストプラクティス**: 手動でのコンソール操作（ClickOps）は再現性・監査性に欠けるため、本番環境の構成変更は必ずTerraform等のIaCとバージョン管理システムを通して行うのが定石です。Terraform StateはローカルではなくCloud Storageバケット等のリモートバックエンドで管理し、チームでの競合を防ぎます。ローカル開発ではクラウドエミュレータを活用することで、開発時のクラウドコストとネットワーク遅延を削減できます。
-
+>
 > **出典**: [Google CloudにおけるTerraformの利用](https://cloud.google.com/docs/terraform) / [gcloud CLIの概要](https://cloud.google.com/sdk/gcloud) / [ローカルエミュレータの一覧](https://cloud.google.com/sdk/gcloud/reference/emulators)
 
 ---
-
 
 ## Section 6: ソリューションと運用の卓越性の確保（約12.5%）
 
@@ -776,7 +774,7 @@ flowchart TB
 **アラート戦略**: すべてのメトリクスに閾値アラートを設定するのではなく、SLO（サービスレベル目標）のエラーバジェット消費速度に基づくアラート（バーンレートアラート）を設計することが、アラート疲れ（Alert Fatigue）を防ぐ現代的なプラクティスです。
 
 > **ベストプラクティス**: 「原因系（CPU使用率など）」ではなく「結果系（ユーザーが体感するレイテンシ・エラー率などのSLI）」を軸にアラートを設計すると、ノイズの多い通知を減らしつつ実際に対応が必要な問題を確実に捕捉できます。
-
+>
 > **出典**: [Cloud Observabilityの概要](https://cloud.google.com/stackdriver/docs) / [SLOに基づくアラート設計](https://cloud.google.com/architecture/monitoring-slo-alerting-with-events)
 
 ### 6.3 デプロイとリリース管理
@@ -840,7 +838,7 @@ flowchart LR
 ```
 
 > **ベストプラクティス**: これらのテストは「一度実施して終わり」ではなく、リリースサイクルに組み込んで継続的に実施することで、システムの変化に追従した信頼性担保が可能になります。
-
+>
 > **出典**: [信頼性の柱 - Architecture Framework](https://cloud.google.com/architecture/framework/reliability) / [SRE本 - カオスエンジニアリング](https://sre.google/sre-book/introduction/)
 
 ---
