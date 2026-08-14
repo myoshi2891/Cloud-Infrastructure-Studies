@@ -1,4 +1,5 @@
 # セキュアなコンテナ CI/CD パイプライン構築ガイド
+
 ## Artifact Registry × Binary Authorization × Cloud Build によるソフトウェアサプライチェーンセキュリティ実践
 
 > 本ガイドは、Google Cloud Skills Boost の Challenge Lab「Secure Software Delivery」（[https://www.skills.google/course_templates/1164/labs/610922](https://www.skills.google/course_templates/1164/labs/610922)）で扱われる、Cymbal Bank のコンテナアプリケーションをセキュアにデプロイするシナリオを題材に、初学者でも一つずつ理解しながら進められるよう、各タスクの背景にあるベストプラクティスとその根拠を解説したものです。
@@ -8,11 +9,13 @@
 ## 1. このガイドについて
 
 ### 1.1 対象読者
+
 - Google Cloud のコンテナデプロイに初めて触れるソフトウェアエンジニア / QA エンジニア
 - Artifact Registry・Cloud Build・Binary Authorization を「使ったことはあるが、なぜそう設定するのか」を理解したい方
 - ソフトウェアサプライチェーンセキュリティ（SLSA、脆弱性スキャン、イメージ署名）の実践的な考え方を学びたい方
 
 ### 1.2 学習目標
+
 1. コンテナイメージを「検証前」と「検証後」で分離管理する設計思想を理解する
 2. Cloud Build を使ったビルド → スキャン → 署名 → デプロイの自動化パイプラインを構築できる
 3. Binary Authorization の Attestor・Note・Attestation・Policy の関係を説明できる
@@ -45,7 +48,7 @@ flowchart TB
 | 設計判断 | 理由 |
 |---|---|
 | スキャン用と本番用でリポジトリを分ける | スキャン未完了・未署名のイメージが誤って参照・デプロイされるリスクを構造的に排除できる |
-| CRITICAL 脆弱性でビルドを止める | 「気づいたら直す」ではなく「検出したら先に進めない」ことで、脆弱性のある成果物がそもそも生成されない |
+| CRITICAL 脆弱性でビルドを止める | 「気づいたら直す」ではなく「検出したら先に進めない」ことで、脆弱性のあるイメージが本番用リポジトリへ昇格・デプロイされるのを防ぐ |
 | Cloud Run 側でも Binary Authorization を強制する | パイプラインを経由しない `docker push` や手動デプロイからも本番環境を守る、多層防御（Defense in Depth）になる |
 
 *出典: [Artifact analysis and vulnerability scanning \| Artifact Registry](https://docs.cloud.google.com/artifact-registry/docs/analysis)、[Binary Authorization overview](https://docs.cloud.google.com/binary-authorization/docs/overview)*
@@ -75,6 +78,7 @@ flowchart TB
 ## 4. Task 1: 環境準備と Artifact Registry リポジトリの設計
 
 ### 4.1 やること
+
 - 必要な API（Cloud KMS、Cloud Run、Cloud Build、GKE、Container Registry、Artifact Registry、Container Scanning、On-Demand Scanning、Binary Authorization）を有効化する
 - サンプルアプリのソース一式を取得する
 - `artifact-scanning-repo`（スキャン用）と `artifact-prod-repo`（本番用）の 2 つの Docker リポジトリを作成する
@@ -90,6 +94,7 @@ Artifact Registry のリポジトリは、CMEK 暗号化やクリーンアップ
 出典: [Create standard repositories \| Artifact Registry](https://docs.cloud.google.com/artifact-registry/docs/repositories/create-repos)、[Quickstart: Store Docker container images in Artifact Registry](https://docs.cloud.google.com/artifact-registry/docs/docker/store-docker-container-images)
 
 **実行コマンド例**
+
 ```bash
 gcloud artifacts repositories create artifact-scanning-repo \
   --repository-format=docker \
@@ -107,6 +112,7 @@ gcloud artifacts repositories create artifact-prod-repo \
 ## 5. Task 2: 基本的な Cloud Build パイプラインの構築
 
 ### 5.1 やること
+
 - Cloud Build のサービスアカウントに `roles/iam.serviceAccountUser` と `roles/ondemandscanning.admin` を付与する
 - `cloudbuild.yaml` のイメージ名プレースホルダーを埋める（`artifact-scanning-repo` / `sample-image`）
 - ビルドを実行し、スキャン結果に CRITICAL 脆弱性があることを確認する
@@ -204,6 +210,7 @@ gcloud kms keys create lab-key \
 出典: [Create a key \| Cloud Key Management Service](https://docs.cloud.google.com/kms/docs/create-key)、[Creating and validating digital signatures](https://docs.cloud.google.com/kms/docs/create-validate-signatures)
 
 **鍵を Attestor に紐づける**
+
 ```bash
 gcloud container binauthz attestors public-keys add \
   --attestor=vulnerability-attestor \
@@ -217,6 +224,21 @@ gcloud container binauthz attestors public-keys add \
 ### 6.4 Binary Authorization ポリシーの更新
 
 デフォルトポリシーはすべてのイメージのデプロイを許可する設定になっています。これを「`vulnerability-attestor` による Attestation がなければデプロイを拒否する」という **ホワイトリスト方式（拒否がデフォルト）** に変更します。ポリシーは XML のような「例外リスト」ではなく「原則拒否 + 明示的な許可条件」で構成するのが、supply chain 攻撃対策の定石です。
+
+```bash
+cat > binauthz-policy.yaml <<EOF
+name: projects/$PROJECT_ID/policy
+defaultAdmissionRule:
+  evaluationMode: REQUIRE_ATTESTATION
+  enforcementMode: ENFORCED_BLOCK_AND_AUDIT_LOG
+  requireAttestationsBy:
+  - projects/$PROJECT_ID/attestors/vulnerability-attestor
+EOF
+
+gcloud container binauthz policy import binauthz-policy.yaml
+```
+
+このポリシーは未認証イメージをブロックし、`vulnerability-attestor` のattestationを必須にします。後述のCloud Runデプロイで`--binary-authorization=default`を指定すると、このデフォルトポリシーが評価されます。
 
 出典: [Binary Authorization concepts](https://docs.cloud.google.com/binary-authorization/docs/key-concepts)、[Quickstart: Configure a Binary Authorization policy with Cloud Run](https://docs.cloud.google.com/binary-authorization/docs/run/configure-policy-cloud-run)
 
@@ -246,10 +268,20 @@ Attestation の作成は、ペイロード生成・署名・Attestation の登�
 ```bash
 git clone https://github.com/GoogleCloudPlatform/cloud-builders-community.git
 cd cloud-builders-community/binauthz-attestation
+# チームでレビュー済みの不変コミットを指定する
+git checkout <REVIEWED_COMMIT_SHA>
 gcloud builds submit . --config cloudbuild.yaml
+
+# ビルド結果を不変digestで記録し、cloudbuild.yamlの
+# ATTESTATION_BUILDER_DIGESTへ設定する
+gcloud container images describe \
+  gcr.io/$PROJECT_ID/binauthz-attestation:latest \
+  --format='value(image_summary.digest)'
 cd ../..
 rm -rf cloud-builders-community
 ```
+
+以後は`gcr.io/$PROJECT_ID/binauthz-attestation@sha256:ATTESTATION_BUILDER_DIGEST`の形式で参照し、可変な`latest`タグを実行時に使用しません。
 
 出典: [cloud-builders-community/binauthz-attestation (GitHub)](https://github.com/GoogleCloudPlatform/cloud-builders-community/tree/master/binauthz-attestation)、[Create a Binary Authorization attestation in a Cloud Build pipeline](https://docs.cloud.google.com/binary-authorization/docs/cloud-build)
 
@@ -258,16 +290,23 @@ rm -rf cloud-builders-community
 ```yaml
 steps:
 
-# 1. ビルド: artifact-scanning-repo 宛てにタグ付け
+# 1. ビルド: BUILD_ID 固有タグを付ける
 - id: "build"
   name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'REGION-docker.pkg.dev/$PROJECT_ID/artifact-scanning-repo/sample-image', '.']
+  args: ['build', '-t', 'REGION-docker.pkg.dev/$PROJECT_ID/artifact-scanning-repo/sample-image:$BUILD_ID', '.']
   waitFor: ['-']
 
-# 2. push: まず「検証前」リポジトリへ
+# 2. 検証前リポジトリへpushし、不変digest参照を記録
 - id: "push"
   name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'REGION-docker.pkg.dev/$PROJECT_ID/artifact-scanning-repo/sample-image']
+  entrypoint: 'bash'
+  args:
+  - '-c'
+  - |
+    set -euo pipefail
+    IMAGE_TAG="REGION-docker.pkg.dev/$PROJECT_ID/artifact-scanning-repo/sample-image:$BUILD_ID"
+    docker push "$IMAGE_TAG"
+    docker inspect --format='{{index .RepoDigests 0}}' "$IMAGE_TAG" > /workspace/image_ref.txt
 
 # 3. On-Demand Scanning でスキャンを実行し、scan_id を後続ステップに渡す
 - id: scan
@@ -276,10 +315,12 @@ steps:
   args:
   - '-c'
   - |
-    (gcloud artifacts docker images scan \
-    REGION-docker.pkg.dev/$PROJECT_ID/artifact-scanning-repo/sample-image \
-    --location us \
-    --format="value(response.scan)") > /workspace/scan_id.txt
+    set -euo pipefail
+    gcloud artifacts docker images scan \
+      "$(cat /workspace/image_ref.txt)" \
+      --remote \
+      --location us \
+      --format="value(response.scan)" > /workspace/scan_id.txt
 
 # 4. CRITICAL が1件でもあればビルドを止める（品質ゲート）
 - id: severity check
@@ -288,32 +329,50 @@ steps:
   args:
   - '-c'
   - |
-      gcloud artifacts docker images list-vulnerabilities $(cat /workspace/scan_id.txt) \
-      --format="value(vulnerability.effectiveSeverity)" | if grep -Fxq CRITICAL; \
-      then echo "Failed vulnerability check for CRITICAL level" && exit 1; else echo \
-      "No CRITICAL vulnerability found, congrats !" && exit 0; fi
+    set -uo pipefail
+    if ! gcloud artifacts docker images list-vulnerabilities \
+      "$(cat /workspace/scan_id.txt)" \
+      --format="value(vulnerability.effectiveSeverity)" \
+      > /workspace/vulnerabilities.txt; then
+      echo "Failed to fetch vulnerability results; refusing to sign or deploy" >&2
+      exit 1
+    fi
+    if grep -Fxq CRITICAL /workspace/vulnerabilities.txt; then
+      echo "Failed vulnerability check for CRITICAL level" >&2
+      exit 1
+    fi
+    echo "No CRITICAL vulnerability found"
 
 # 5. 検査を通過したイメージにのみ Attestation を発行
 - id: 'create-attestation'
-  name: 'gcr.io/${PROJECT_ID}/binauthz-attestation:latest'
+  name: 'gcr.io/cloud-builders/docker'
+  entrypoint: 'bash'
   args:
-    - '--artifact-url'
-    - 'REGION-docker.pkg.dev/$PROJECT_ID/artifact-scanning-repo/sample-image'
-    - '--attestor'
-    - 'projects/$PROJECT_ID/attestors/vulnerability-attestor'
-    - '--keyversion'
-    - 'projects/$PROJECT_ID/locations/global/keyRings/binauthz-keys/cryptoKeys/lab-key/cryptoKeyVersions/1'
+  - '-c'
+  - |
+    set -euo pipefail
+    docker run --rm \
+      gcr.io/$PROJECT_ID/binauthz-attestation@sha256:ATTESTATION_BUILDER_DIGEST \
+      --artifact-url "$(cat /workspace/image_ref.txt)" \
+      --attestor "projects/$PROJECT_ID/attestors/vulnerability-attestor" \
+      --keyversion "projects/$PROJECT_ID/locations/global/keyRings/binauthz-keys/cryptoKeys/lab-key/cryptoKeyVersions/1"
 
 # 6. 署名済みイメージだけを本番リポジトリへ昇格させる
 - id: "push-to-prod"
   name: 'gcr.io/cloud-builders/docker'
+  entrypoint: 'bash'
   args:
-    - 'tag'
-    - 'REGION-docker.pkg.dev/$PROJECT_ID/artifact-scanning-repo/sample-image'
-    - 'REGION-docker.pkg.dev/$PROJECT_ID/artifact-prod-repo/sample-image'
-- id: "push-to-prod-final"
-  name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'REGION-docker.pkg.dev/$PROJECT_ID/artifact-prod-repo/sample-image']
+  - '-c'
+  - |
+    set -euo pipefail
+    SOURCE_REF="$(cat /workspace/image_ref.txt)"
+    PROD_TAG="REGION-docker.pkg.dev/$PROJECT_ID/artifact-prod-repo/sample-image:$BUILD_ID"
+    docker pull "$SOURCE_REF"
+    docker tag "$SOURCE_REF" "$PROD_TAG"
+    docker push "$PROD_TAG"
+    docker inspect --format='{{range .RepoDigests}}{{println .}}{{end}}' "$PROD_TAG" \
+      | grep '/artifact-prod-repo/' | head -n 1 > /workspace/prod_image_ref.txt
+    test -s /workspace/prod_image_ref.txt
 
 # 7. Cloud Run にBinary Authorization強制ありでデプロイ
 - id: 'deploy-to-cloud-run'
@@ -322,22 +381,25 @@ steps:
   args:
   - '-c'
   - |
+    set -euo pipefail
     gcloud run deploy auth-service \
-    --image=REGION-docker.pkg.dev/$PROJECT_ID/artifact-prod-repo/sample-image \
-    --binary-authorization=default --region=REGION --allow-unauthenticated
+      --image="$(cat /workspace/prod_image_ref.txt)" \
+      --binary-authorization=default \
+      --region=REGION \
+      --allow-unauthenticated
 
 images:
-  - REGION-docker.pkg.dev/$PROJECT_ID/artifact-scanning-repo/sample-image
+  - REGION-docker.pkg.dev/$PROJECT_ID/artifact-scanning-repo/sample-image:$BUILD_ID
 ```
 
 **ステップ設計で意識すべきポイント**
 
 | ポイント | なぜ重要か |
 |---|---|
-| スキャン結果を `scan_id.txt` でステップ間受け渡し | Cloud Build の各ステップはコンテナが独立しているため、`/workspace` を介したファイル共有で状態を引き継ぐ |
+| イメージ参照とスキャン結果を`/workspace`で受け渡し | Cloud Build の各ステップはコンテナが独立しているため、ビルド固有タグから得たdigest参照とscan IDを共有領域で引き継ぐ |
 | `grep -Fxq` で完全一致検索 | 部分一致だと `CRITICAL_ISH` のような別文字列も誤検出しうるため、行全体一致（`-x`）で厳密に判定する |
 | 署名ステップを severity check の**後**に配置 | `waitFor` を明示しなくても Cloud Build はデフォルトで前ステップの成功を条件に直列実行するため、脆弱性ありのイメージには絶対に署名されない |
-| `images:` フィールドにビルド成果物を明記 | Cloud Build のビルド履歴・Build Provenance に、どのイメージがこのビルドから生成されたかを正しく記録するため |
+| `images:` に`$BUILD_ID`付き成果物を明記 | Cloud Build のビルド履歴・Build Provenanceへ成果物を登録しつつ、可変な`latest`を再登録しないため |
 | `--binary-authorization=default` を Cloud Run 側にも指定 | パイプライン外から未署名イメージが直接デプロイされることをサービス自体がブロックする、多層防御の要 |
 
 出典: [gcloud run deploy リファレンス](https://docs.cloud.google.com/sdk/gcloud/reference/run/deploy)、[Enable Binary Authorization for Cloud Run](https://docs.cloud.google.com/binary-authorization/docs/run/enabling-binauthz-cloud-run)、[Use On-Demand Scanning in your Cloud Build pipeline](https://docs.cloud.google.com/artifact-analysis/docs/ods-cloudbuild)
@@ -351,8 +413,10 @@ images:
 ## 8. Task 5: 脆弱性の修正と再デプロイ
 
 ### 8.1 やること
-- Dockerfile のベースイメージを `python:3.8-alpine` に変更
+
+- Dockerfile のベースイメージを、サポート中の`python:3.12-alpine`などへ更新
 - Flask 3.0.3 / Gunicorn 23.0.0 / Werkzeug 3.0.4 へ依存パッケージを更新
+- 新しいPythonベースイメージと本番向け依存関係の互換性テストを実行
 - パイプラインを再実行し、成功を確認
 - 検証目的で `allUsers` に `roles/run.invoker` を付与し、動作確認
 
@@ -366,6 +430,7 @@ Alpine は必要最小限のパッケージのみで構成された軽量な Lin
 `Flask`、`Gunicorn`、`Werkzeug` はいずれも Web サーバーの根幹に関わるパッケージです。バージョンを明示的に固定することで「ビルドのたびに異なるバージョンが解決され、再現性がなくなる」問題を防ぎつつ、既知の CVE が修正されたバージョンへ確実にアップグレードできます。
 
 **検証用の `allUsers` 権限は一時的なものと明確に扱う**
+
 ```bash
 gcloud beta run services add-iam-policy-binding \
   --region=REGION \
@@ -373,6 +438,7 @@ gcloud beta run services add-iam-policy-binding \
   --role=roles/run.invoker \
   auth-service
 ```
+
 これは動作確認のためだけの設定であり、本番運用では IAP（Identity-Aware Proxy）や認証必須の呼び出し（`gcloud run services proxy` や ID トークン）に置き換えるべきです。ラボの手順書自体も「本番環境では使用しないこと」と明記している点は、実務でもそのまま踏襲すべき注意点です。
 出典: [gcloud run deploy リファレンス](https://docs.cloud.google.com/sdk/gcloud/reference/run/deploy)
 
