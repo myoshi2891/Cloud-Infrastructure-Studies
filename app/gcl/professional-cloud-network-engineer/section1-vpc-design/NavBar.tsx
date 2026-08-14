@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 
+/** 見出しの現在位置を追跡し、モバイル開閉に対応した章内ナビゲーションを表示する。 */
 export function NavBar() {
     const [activeId, setActiveId] = useState('この章について');
     const [isOpen, setIsOpen] = useState(false);

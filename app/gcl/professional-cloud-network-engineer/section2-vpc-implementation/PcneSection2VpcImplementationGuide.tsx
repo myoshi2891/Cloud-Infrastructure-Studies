@@ -5,6 +5,7 @@ import NavBar from './NavBar';
 import { MermaidDiagram } from '@/components/MermaidDiagram';
 import { DIAGRAMS, type DiagramId } from './constants';
 
+/** 定義済みの Mermaid 図をアクセシブルなラッパー内に表示する。 */
 const Diagram = memo(function Diagram({ id, label }: { id: DiagramId; label: string }) {
   const chart = DIAGRAMS[id];
   if (!chart) return null;
@@ -44,6 +45,7 @@ const CHECKLIST_ITEMS: React.ReactNode[] = [
   "高頻度DNSクエリが想定されるクラスタでNodeLocal DNSCacheの要否を検討した"
 ];
 
+/** 学習項目の完了状態と進捗数を管理するチェックリストを表示する。 */
 function ChecklistSection() {
   const [checkedState, setCheckedState] = useState<boolean[]>(
     new Array(CHECKLIST_ITEMS.length).fill(false)
@@ -85,6 +87,7 @@ function ChecklistSection() {
   );
 }
 
+/** PCNE Section 2 の VPC ネットワーク実装ガイド全体を表示する。 */
 export default function PcneSection2VpcImplementationGuide() {
   const [showScrollTop, setShowScrollTop] = useState(false);
 
@@ -96,6 +99,7 @@ export default function PcneSection2VpcImplementationGuide() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  /** ページ先頭へスムーズにスクロールする。 */
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };

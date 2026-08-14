@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { NAV_ITEMS } from './constants';
 
+/** 表示中の見出しを追跡し、Section 2 の章内ナビゲーションを表示する。 */
 export default function NavBar() {
   const [activeId, setActiveId] = useState<string>('');
 
