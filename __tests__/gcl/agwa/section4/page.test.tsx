@@ -3,63 +3,17 @@ import { render } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import inventory from '@/docs/migration-inventory/agwa-section4.json';
 import Page from '@/app/gcl/agwa/section4/page';
+import {
+    codeBlockSelector,
+    codeLineCount,
+    extractBodyContent,
+    squash,
+} from '../migration-test-utils';
 
-// MermaidDiagram は名前付きエクスポート。default でモックすると落ちる。
-vi.mock('@/components/MermaidDiagram', () => ({
-    MermaidDiagram: ({ chart, ariaLabel, decorative, preserveNaturalScale }: {
-        chart: string;
-        ariaLabel?: string;
-        decorative?: boolean;
-        preserveNaturalScale?: boolean;
-    }) => (
-        <div
-            data-testid="mermaid-diagram"
-            data-chart={chart}
-            data-decorative={String(decorative === true)}
-            data-preserve-natural-scale={String(preserveNaturalScale)}
-            aria-label={ariaLabel}
-            aria-hidden={decorative || undefined}
-        />
-    ),
-}));
-
-/** 空白差・改行差を無視して比較するための正規化 */
-const squash = (value: string): string => value.replace(/\s+/g, '');
-const normalize = (value: string): string => value.replace(/\s+/g, ' ').trim();
-const codeBlockSelector = 'pre:not(.mermaid), .code-block';
-const codeLines = (block: Element): string[] => {
-    const explicitLines = [...block.querySelectorAll(':scope > .code-line')];
-    if (explicitLines.length > 0) {
-        return explicitLines.map((line) => line.textContent ?? '');
-    }
-    const text = (block.textContent ?? '')
-        .replace(/\r\n?/g, '\n')
-        .replace(/^\n|\n$/g, '');
-    return text ? text.split('\n') : [];
-};
-const codeText = (block: Element): string => codeLines(block).join('\n');
-const codeLineCount = (block: Element): number => codeLines(block).length;
-const bodySelector = `p, aside, .annotation, [class*="callout"], img[alt], ${codeBlockSelector}`;
-const extractBodyContent = (container: HTMLElement) =>
-    [...container.querySelectorAll(bodySelector)]
-        .filter((element) => !element.parentElement?.closest(bodySelector))
-        .map((element) => ({
-            kind: element.matches('img[alt]')
-                ? 'imageAlt'
-                : element.matches(codeBlockSelector)
-                    ? 'code'
-                    : element.matches('aside, .annotation, [class*="callout"]')
-                        ? 'annotation'
-                        : 'paragraph',
-            text: element.matches(codeBlockSelector)
-                ? codeText(element)
-                : normalize(
-                    element.matches('img[alt]')
-                        ? element.getAttribute('alt') ?? ''
-                        : element.textContent ?? '',
-                ),
-        }))
-        .filter((entry) => entry.text);
+vi.mock('@/components/MermaidDiagram', async () => {
+    const { MermaidDiagramMock } = await import('../migration-test-utils');
+    return { MermaidDiagram: MermaidDiagramMock };
+});
 
 describe('AGWA Section 4 — セキュリティポリシーとアクセス制御 移行検証', () => {
     const renderPage = () => {
@@ -92,13 +46,13 @@ describe('AGWA Section 4 — セキュリティポリシーとアクセス制御
         expect(rendered).toEqual(items.map(squash));
     });
 
-    it('外部リンクの URL 集合が移行元と一致する', () => {
+    it('外部リンクのテキストと URL が移行元の順序どおり一致する', () => {
         const container = renderPage();
-        const rendered = [...new Set(
-            [...container.querySelectorAll('a[href^="http"]')].map((a) => a.getAttribute('href')),
-        )].sort();
-        const expected = [...new Set(inventory.links.map((link) => link.href))].sort();
-        expect(rendered).toEqual(expected);
+        const rendered = [...container.querySelectorAll('a[href^="http"]')].map((anchor) => ({
+            text: anchor.textContent?.replace(/\s+/g, ' ').trim() ?? '',
+            href: anchor.getAttribute('href'),
+        }));
+        expect(rendered).toEqual(inventory.links);
     });
 
     it('本文・注釈・画像 alt・コード全文が移行元の順序どおり一致する', () => {
@@ -132,7 +86,7 @@ describe('AGWA Section 4 — セキュリティポリシーとアクセス制御
         expect(tables).toHaveLength(inventory.counts.table);
         tables.forEach((table, index) => {
             expect(table.querySelector('thead')).not.toBeNull();
-            expect(table.querySelectorAll('thead th, th[scope="col"]').length).toBe(
+            expect(table.querySelectorAll('thead th[scope="col"]').length).toBe(
                 inventory.structures.tableColumnHeaders[index],
             );
         });

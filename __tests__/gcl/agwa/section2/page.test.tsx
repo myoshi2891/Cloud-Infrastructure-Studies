@@ -18,22 +18,22 @@ describe('AGWA Section 2 完全学習ガイド', () => {
     it('主要なセクションの見出しが存在すること', () => {
         render(<AgwaSection2Page />);
         // Testing some of the major sections based on HTML content
-        expect(screen.getAllByText(/2.1/).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/2\.1/).length).toBeGreaterThanOrEqual(1);
         expect(screen.getAllByText(/Gmail/i).length).toBeGreaterThanOrEqual(1);
         
-        expect(screen.getAllByText(/2.2/).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/2\.2/).length).toBeGreaterThanOrEqual(1);
         expect(screen.getAllByText(/Drive/i).length).toBeGreaterThanOrEqual(1);
         
-        expect(screen.getAllByText(/2.3/).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/2\.3/).length).toBeGreaterThanOrEqual(1);
         expect(screen.getAllByText(/Calendar/i).length).toBeGreaterThanOrEqual(1);
 
-        expect(screen.getAllByText(/2.4/).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/2\.4/).length).toBeGreaterThanOrEqual(1);
         expect(screen.getAllByText(/Google Meet/i).length).toBeGreaterThanOrEqual(1);
 
-        expect(screen.getAllByText(/2.5/).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/2\.5/).length).toBeGreaterThanOrEqual(1);
         expect(screen.getAllByText(/Google Chat/i).length).toBeGreaterThanOrEqual(1);
 
-        expect(screen.getAllByText(/2.6/).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/2\.6/).length).toBeGreaterThanOrEqual(1);
         expect(screen.getAllByText(/Gemini/i).length).toBeGreaterThanOrEqual(1);
     });
 });

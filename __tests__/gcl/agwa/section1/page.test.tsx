@@ -4,63 +4,17 @@ import { render } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import inventory from '@/docs/migration-inventory/agwa-section1.json';
 import Page from '@/app/gcl/agwa/section1/page';
+import {
+    codeBlockSelector,
+    codeLineCount,
+    extractBodyContent,
+    squash,
+} from '../migration-test-utils';
 
-// MermaidDiagram は名前付きエクスポート。default でモックすると必ず落ちる。
-vi.mock('@/components/MermaidDiagram', () => ({
-    MermaidDiagram: ({ chart, ariaLabel, decorative, preserveNaturalScale }: {
-        chart: string;
-        ariaLabel?: string;
-        decorative?: boolean;
-        preserveNaturalScale?: boolean;
-    }) => (
-        <div
-            data-testid="mermaid-diagram"
-            data-chart={chart}
-            data-decorative={String(decorative === true)}
-            data-preserve-natural-scale={String(preserveNaturalScale)}
-            aria-label={ariaLabel}
-            aria-hidden={decorative || undefined}
-        />
-    ),
-}));
-
-/** 空白差・改行差を無視して比較するための正規化 */
-const squash = (value: string): string => value.replace(/\s+/g, '');
-const normalize = (value: string): string => value.replace(/\s+/g, ' ').trim();
-const codeBlockSelector = 'pre:not(.mermaid), .code-block';
-const codeLines = (block: Element): string[] => {
-    const explicitLines = [...block.querySelectorAll(':scope > .code-line')];
-    if (explicitLines.length > 0) {
-        return explicitLines.map((line) => line.textContent ?? '');
-    }
-    const text = (block.textContent ?? '')
-        .replace(/\r\n?/g, '\n')
-        .replace(/^\n|\n$/g, '');
-    return text ? text.split('\n') : [];
-};
-const codeText = (block: Element): string => codeLines(block).join('\n');
-const codeLineCount = (block: Element): number => codeLines(block).length;
-const bodySelector = `p, aside, .annotation, [class*="callout"], img[alt], ${codeBlockSelector}`;
-const extractBodyContent = (container: HTMLElement) =>
-    [...container.querySelectorAll(bodySelector)]
-        .filter((element) => !element.parentElement?.closest(bodySelector))
-        .map((element) => ({
-            kind: element.matches('img[alt]')
-                ? 'imageAlt'
-                : element.matches(codeBlockSelector)
-                    ? 'code'
-                    : element.matches('aside, .annotation, [class*="callout"]')
-                        ? 'annotation'
-                        : 'paragraph',
-            text: element.matches(codeBlockSelector)
-                ? codeText(element)
-                : normalize(
-                    element.matches('img[alt]')
-                        ? element.getAttribute('alt') ?? ''
-                        : element.textContent ?? '',
-                ),
-        }))
-        .filter((entry) => entry.text);
+vi.mock('@/components/MermaidDiagram', async () => {
+    const { MermaidDiagramMock } = await import('../migration-test-utils');
+    return { MermaidDiagram: MermaidDiagramMock };
+});
 
 describe('agwa-section1 — 移行元コンテンツの全量移行', () => {
     const renderPage = () => {
