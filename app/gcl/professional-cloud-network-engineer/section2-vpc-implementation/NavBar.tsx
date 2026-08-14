@@ -36,25 +36,28 @@ export default function NavBar() {
       <nav>
         <ul className="nav-list">
           {NAV_ITEMS.map((item) => {
-            const hasSub = item.subItems && item.subItems.length > 0;
+            const subItems = item.subItems ?? [];
+            const hasSub = subItems.length > 0;
             const isActive = activeId === item.id;
             return (
               <li key={item.id} className={`nav-item ${hasSub ? 'nav-h2' : ''}`}>
                 <a
                   href={`#${item.id}`}
                   className={`nav-link ${isActive ? 'active' : ''}`}
+                  aria-current={isActive ? 'page' : undefined}
                 >
                   {item.label}
                 </a>
                 {hasSub && (
                   <ul className="nav-sub">
-                    {item.subItems!.map((sub) => {
+                    {subItems.map((sub) => {
                       const isSubActive = activeId === sub.id;
                       return (
                         <li key={sub.id}>
                           <a
                             href={`#${sub.id}`}
                             className={`nav-link ${isSubActive ? 'active' : ''}`}
+                            aria-current={isSubActive ? 'page' : undefined}
                           >
                             {sub.label}
                           </a>

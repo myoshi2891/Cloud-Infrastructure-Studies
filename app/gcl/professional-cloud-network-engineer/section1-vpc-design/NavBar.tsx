@@ -1,9 +1,12 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 export function NavBar() {
     const [activeId, setActiveId] = useState('この章について');
+    const [isOpen, setIsOpen] = useState(false);
+    const toggleRef = useRef<HTMLButtonElement>(null);
+    const sidebarRef = useRef<HTMLElement>(null);
 
     useEffect(() => {
         if (typeof window === 'undefined') return;
@@ -72,6 +75,20 @@ export function NavBar() {
         };
     }, []);
 
+    useEffect(() => {
+        if (!isOpen) return;
+
+        sidebarRef.current?.querySelector<HTMLAnchorElement>('a')?.focus();
+        const closeOnEscape = (event: KeyboardEvent) => {
+            if (event.key === 'Escape') {
+                setIsOpen(false);
+                toggleRef.current?.focus();
+            }
+        };
+        document.addEventListener('keydown', closeOnEscape);
+        return () => document.removeEventListener('keydown', closeOnEscape);
+    }, [isOpen]);
+
     const links = [
         { href: '#この章について', target: 'この章について', text: 'この章について' },
         { href: '#試験全体における本セクションの位置づけ', target: '試験全体における本セクションの位置づけ', text: '試験全体における本セクションの位置づけ' },
@@ -85,14 +102,30 @@ export function NavBar() {
     ];
 
     return (
-        <aside className="sidebar">
+        <>
+            <button
+                ref={toggleRef}
+                type="button"
+                className="sidebar-toggle"
+                aria-label={isOpen ? '目次を閉じる' : '目次を開く'}
+                aria-expanded={isOpen}
+                aria-controls="pcne-section1-sidebar"
+                onClick={() => setIsOpen((open) => !open)}
+            >
+                ☰
+            </button>
+            <aside
+                ref={sidebarRef}
+                id="pcne-section1-sidebar"
+                className={`sidebar ${isOpen ? 'open' : ''}`}
+            >
             <div className="brand">Google Cloud PCNE</div>
             {' '}
             <div className="brand-sub">
                 Section 1: Designing and planning a Google Cloud VPC network
             </div>
             {' '}
-            <nav>
+            <nav aria-label="Section 1 ガイド内ナビゲーション">
                 <ul>
                     {links.map((link) => {
                         const isSelected = activeId === link.target;
@@ -102,6 +135,8 @@ export function NavBar() {
                                     <a
                                         href={link.href}
                                         className={isSelected ? 'active' : ''}
+                                        aria-current={isSelected ? 'location' : undefined}
+                                        onClick={() => setIsOpen(false)}
                                     >
                                         {link.text}
                                     </a>
@@ -112,6 +147,7 @@ export function NavBar() {
                     })}
                 </ul>
             </nav>
-        </aside>
+            </aside>
+        </>
     );
 }

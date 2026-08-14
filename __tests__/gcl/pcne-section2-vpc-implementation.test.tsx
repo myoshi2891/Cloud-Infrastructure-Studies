@@ -49,6 +49,9 @@ describe('PCNE Section 2 VPC Implementation Migration Verification', () => {
         for (const tdText of inventory.td) {
             expect(squashedFullText).toContain(squash(tdText));
         }
+        for (const listItem of inventory.listItems) {
+            expect(squashedFullText).toContain(squash(listItem));
+        }
 
         // 3. 図解 (Mermaid) の件数および preserveNaturalScale の検証
         const diagrams = container.querySelectorAll('[data-testid="mermaid-diagram"]');
@@ -71,10 +74,10 @@ describe('PCNE Section 2 VPC Implementation Migration Verification', () => {
         // 6. デザイン構造要素の全量移転検証 (元HTMLのキーとなるCSSクラス構造)
         expect(container.querySelector('.hero-eyebrow')).not.toBeNull();
         expect(container.querySelector('.main > blockquote')).not.toBeNull();
-        expect(container.querySelectorAll('.table-scroll').length).toBeGreaterThan(0);
-        expect(container.querySelectorAll('.ref-grid').length).toBeGreaterThan(0);
-        expect(container.querySelectorAll('.ref-card').length).toBeGreaterThan(0);
-        expect(container.querySelectorAll('.checklist-wrapper').length).toBeGreaterThan(0);
-        expect(container.querySelectorAll('blockquote.source-card').length).toBeGreaterThan(0);
+        expect(container.querySelectorAll('.table-scroll')).toHaveLength(10);
+        expect(container.querySelectorAll('.ref-grid')).toHaveLength(1);
+        expect(container.querySelectorAll('.ref-card')).toHaveLength(9);
+        expect(container.querySelectorAll('.checklist-wrapper')).toHaveLength(1);
+        expect(container.querySelectorAll('blockquote.source-card')).toHaveLength(20);
     });
 });

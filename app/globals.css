@@ -111,6 +111,23 @@
     --color-network-amber: #fde68a;
     --color-network-amber-soft: #fef3c7;
 
+    /* PCNE Section 1 VPC design guide */
+    --color-pcne-design-background: #07111e;
+    --color-pcne-design-elevated: #0d1a2e;
+    --color-pcne-design-card: #0f1f36;
+    --color-pcne-design-border: #1e2f4a;
+    --color-pcne-design-border-soft: #16253d;
+    --color-pcne-design-accent: #7c9eff;
+    --color-pcne-design-accent-soft: #a9c0ff;
+    --color-pcne-design-accent-dim: #3d5285;
+    --color-pcne-design-foreground: #eef4ff;
+    --color-pcne-design-foreground-muted: #c3d1ea;
+    --color-pcne-design-foreground-faint: #9db0d4;
+    --color-pcne-design-green: #5fd4a8;
+    --color-pcne-design-amber: #e8a35f;
+    --color-pcne-design-red: #e2716f;
+    --color-pcne-design-purple: #c78dea;
+
     /* Cisco guide page themes */
     --color-ccna-fundamentals-elevated: #0d1a2e;
     --color-ccna-fundamentals-card: #101f38;

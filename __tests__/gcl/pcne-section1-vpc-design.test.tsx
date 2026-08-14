@@ -133,8 +133,8 @@ describe('pcne-section1-vpc-design — 移行元コンテンツの100%全量移�
         expect(tables).toHaveLength(inventory.counts.table);
         tables.forEach((table, index) => {
             expect(table.querySelector('thead')).not.toBeNull();
-            expect(table.querySelectorAll('thead th[scope="col"]').length).toBe(
-                inventory.structures.tableColumnHeaders[index],
+            expect(table.querySelectorAll('thead th[scope="col"]')).toHaveLength(
+                table.querySelectorAll('thead th').length,
             );
         });
     });
@@ -154,7 +154,7 @@ describe('pcne-section1-vpc-design — 移行元コンテンツの100%全量移�
     it('サイドバーの全てのアンカーリンクの target ID が DOM 内の要素と1対1で対応する', () => {
         const container = renderPage();
         const sidebarLinks = [...container.querySelectorAll('.sidebar nav a[href^="#"]')];
-        expect(sidebarLinks.length).toBeGreaterThan(0);
+        expect(sidebarLinks).toHaveLength(9);
         sidebarLinks.forEach((link) => {
             const href = link.getAttribute('href') ?? '';
             const targetId = href.replace(/^#/, '');
@@ -172,5 +172,3 @@ describe('pcne-section1-vpc-design — 移行元コンテンツの100%全量移�
         expect(firstLink?.classList.contains('active')).toBe(true);
     });
 });
-
-

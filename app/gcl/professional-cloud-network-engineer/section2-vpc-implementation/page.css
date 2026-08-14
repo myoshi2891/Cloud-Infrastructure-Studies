@@ -1,6 +1,7 @@
 /* app/gcl/professional-cloud-network-engineer/section2-vpc-implementation/page.css */
 
 .pcne-s2-vpc-implementation-page {
+  /* TODO: Consolidate these legacy PCNE tokens into app/globals.css @theme. */
   --pcne-bg: #07111e;
   --pcne-bg-elevated: #0d1a2e;
   --pcne-bg-card: #0f1f36;
@@ -124,7 +125,7 @@
 
 @media (max-width: 900px) {
   .pcne-s2-vpc-implementation-page .sidebar {
-    transform: translateX(-100%);
+    display: none;
   }
   .pcne-s2-vpc-implementation-page .main {
     margin-left: 0;
@@ -293,7 +294,6 @@
   color: var(--pcne-text-dim) !important;
   background: var(--pcne-bg-card) !important;
   overflow-wrap: break-word;
-  word-break: break-word;
 }
 
 .pcne-s2-vpc-implementation-page tbody tr:last-child td {
@@ -314,7 +314,6 @@
   font-family: var(--font-mono, monospace);
   font-size: 0.9em;
   overflow-wrap: break-word;
-  word-break: break-word;
 }
 
 /* ---------------- Reference Cards Grid ---------------- */
@@ -363,7 +362,6 @@
   padding: 6px 8px;
   border-radius: 6px;
   overflow-wrap: break-word;
-  word-break: break-word;
   transition: background 0.15s ease, color 0.15s ease;
 }
 

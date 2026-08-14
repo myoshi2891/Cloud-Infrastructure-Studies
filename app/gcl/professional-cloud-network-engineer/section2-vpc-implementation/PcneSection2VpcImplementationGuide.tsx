@@ -131,8 +131,8 @@ export default function PcneSection2VpcImplementationGuide() {
                     <table>
                         <thead>
                             <tr className="header">
-                                <th>項目</th>
-                                <th>内容</th>
+                                <th scope="col">項目</th>
+                                <th scope="col">内容</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -189,8 +189,8 @@ export default function PcneSection2VpcImplementationGuide() {
                     <table>
                         <thead>
                             <tr className="header">
-                                <th>リソース</th>
-                                <th>説明</th>
+                                <th scope="col">リソース</th>
+                                <th scope="col">説明</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -285,15 +285,14 @@ export default function PcneSection2VpcImplementationGuide() {
                     Shared
                     VPCは、ホストプロジェクトが所有するVPCネットワークのサブネットを、複数のサービスプロジェクトから共有利用できる仕組みです。
                 </p>
-                <Diagram id="diag-3" label="Shared
-                    VPCは、ホストプロジェクトが所有するVPCネットワークのサブネットを、複数のサービスプロジェクトから共有利用できる仕組みです。" />
+                <Diagram id="diag-3" label="2.1.3 Shared VPC の構成と IAM" />
                 <div className="table-scroll">
                     <table>
                         <thead>
                             <tr className="header">
-                                <th>IAMロール</th>
-                                <th>付与対象</th>
-                                <th>権限範囲</th>
+                                <th scope="col">IAMロール</th>
+                                <th scope="col">付与対象</th>
+                                <th scope="col">権限範囲</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -349,8 +348,8 @@ export default function PcneSection2VpcImplementationGuide() {
                     <table>
                         <thead>
                             <tr className="header">
-                                <th>方式</th>
-                                <th>用途</th>
+                                <th scope="col">方式</th>
+                                <th scope="col">用途</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -489,9 +488,9 @@ export default function PcneSection2VpcImplementationGuide() {
                     <table>
                         <thead>
                             <tr className="header">
-                                <th>モード</th>
-                                <th>経路の有効範囲</th>
-                                <th>適した用途</th>
+                                <th scope="col">モード</th>
+                                <th scope="col">経路の有効範囲</th>
+                                <th scope="col">適した用途</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -550,16 +549,14 @@ export default function PcneSection2VpcImplementationGuide() {
                     route policies)」は
                     <strong>別機能</strong>です。混同しやすいため明確に整理します。
                 </p>
-                <Diagram id="diag-8" label="試験ガイドが区別する「ポリシーベースルーティング」と「動的ルーティングでの優先度制御(BGP
-                    route policies)」は
-                    別機能です。混同しやすいため明確に整理します。" />
+                <Diagram id="diag-8" label="2.2.4 PBR と BGP route policies の比較" />
                 <div className="table-scroll">
                     <table>
                         <thead>
                             <tr className="header">
-                                <th>観点</th>
-                                <th>ポリシーベースルート(PBR)</th>
-                                <th>BGP route policies</th>
+                                <th scope="col">観点</th>
+                                <th scope="col">ポリシーベースルート(PBR)</th>
+                                <th scope="col">BGP route policies</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -669,9 +666,9 @@ export default function PcneSection2VpcImplementationGuide() {
                     <table>
                         <thead>
                             <tr className="header">
-                                <th>ステップ</th>
-                                <th>Peeringの場合</th>
-                                <th>NCCの場合</th>
+                                <th scope="col">ステップ</th>
+                                <th scope="col">Peeringの場合</th>
+                                <th scope="col">NCCの場合</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -781,9 +778,9 @@ export default function PcneSection2VpcImplementationGuide() {
                     <table>
                         <thead>
                             <tr className="header">
-                                <th>チェック項目</th>
-                                <th>確認方法</th>
-                                <th>よくある原因</th>
+                                <th scope="col">チェック項目</th>
+                                <th scope="col">確認方法</th>
+                                <th scope="col">よくある原因</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -912,9 +909,9 @@ export default function PcneSection2VpcImplementationGuide() {
                     <table>
                         <thead>
                             <tr className="header">
-                                <th>方式</th>
-                                <th>アクセス制御の単位</th>
-                                <th>特徴</th>
+                                <th scope="col">方式</th>
+                                <th scope="col">アクセス制御の単位</th>
+                                <th scope="col">特徴</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -1046,8 +1043,8 @@ export default function PcneSection2VpcImplementationGuide() {
                     <table>
                         <thead>
                             <tr className="header">
-                                <th>コンポーネント</th>
-                                <th>役割</th>
+                                <th scope="col">コンポーネント</th>
+                                <th scope="col">役割</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -1311,6 +1308,7 @@ export default function PcneSection2VpcImplementationGuide() {
 
       {showScrollTop && (
         <button
+          type="button"
           onClick={scrollToTop}
           className="scroll-top-btn"
           aria-label="ページ上部へ戻る"

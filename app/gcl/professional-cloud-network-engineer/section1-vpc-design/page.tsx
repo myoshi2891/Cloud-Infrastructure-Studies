@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { PcneSection1VpcDesignGuide } from './PcneSection1VpcDesignGuide';
-import './page.css';
+import styles from './page.module.css';
 
 export const metadata: Metadata = {
     title: 'Google Cloud PCNE Section 1: VPCネットワーク設計 – 試験対策ガイド',
@@ -8,5 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function PcneSection1VpcDesignPage() {
-    return <PcneSection1VpcDesignGuide />;
+    return <PcneSection1VpcDesignGuide rootClassName={styles.root} />;
 }

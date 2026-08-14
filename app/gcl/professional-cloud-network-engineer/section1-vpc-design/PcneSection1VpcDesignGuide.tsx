@@ -15,7 +15,7 @@ const Diagram = memo(function Diagram({ id, label }: { id: DiagramId; label: str
     );
 });
 
-export function PcneSection1VpcDesignGuide() {
+export function PcneSection1VpcDesignGuide({ rootClassName }: { rootClassName: string }) {
     const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
 
     const toggleCheck = (id: string) => {
@@ -23,7 +23,7 @@ export function PcneSection1VpcDesignGuide() {
     };
 
     return (
-        <div className="pcne-vpc-design-page layout">
+        <div className={`${rootClassName} layout`}>
             <NavBar />
             <div><div className="hero">
             <span className="eyebrow">Professional Cloud Network Engineer · Section 1 (～21%)</span>
@@ -66,9 +66,9 @@ export function PcneSection1VpcDesignGuide() {
                 <table>
                     <thead>
                         <tr className="header">
-                            <th>タスク</th>
-                            <th>内容</th>
-                            <th>主なキーワード</th>
+                            <th scope="col">タスク</th>
+                            <th scope="col">内容</th>
+                            <th scope="col">主なキーワード</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -143,9 +143,9 @@ export function PcneSection1VpcDesignGuide() {
                 <table>
                     <thead>
                         <tr className="header">
-                            <th>Section</th>
-                            <th>名称</th>
-                            <th>比率</th>
+                            <th scope="col">Section</th>
+                            <th scope="col">名称</th>
+                            <th scope="col">比率</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -213,9 +213,9 @@ export function PcneSection1VpcDesignGuide() {
                 <table>
                     <thead>
                         <tr className="header">
-                            <th>観点</th>
-                            <th>Premium Tier</th>
-                            <th>Standard Tier</th>
+                            <th scope="col">観点</th>
+                            <th scope="col">Premium Tier</th>
+                            <th scope="col">Standard Tier</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -272,9 +272,9 @@ export function PcneSection1VpcDesignGuide() {
                 <table>
                     <thead>
                         <tr className="header">
-                            <th>レイヤー</th>
-                            <th>SPOFになりやすい要素</th>
-                            <th>Google Cloudでの緩和策</th>
+                            <th scope="col">レイヤー</th>
+                            <th scope="col">SPOFになりやすい要素</th>
+                            <th scope="col">Google Cloudでの緩和策</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -370,9 +370,9 @@ export function PcneSection1VpcDesignGuide() {
                 <table>
                     <thead>
                         <tr className="header">
-                            <th>判断軸</th>
-                            <th>選択肢</th>
-                            <th>主な用途</th>
+                            <th scope="col">判断軸</th>
+                            <th scope="col">選択肢</th>
+                            <th scope="col">主な用途</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -466,9 +466,9 @@ export function PcneSection1VpcDesignGuide() {
                 <table>
                     <thead>
                         <tr className="header">
-                            <th>ロール</th>
-                            <th>付与先</th>
-                            <th>役割</th>
+                            <th scope="col">ロール</th>
+                            <th scope="col">付与先</th>
+                            <th scope="col">役割</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -532,10 +532,10 @@ export function PcneSection1VpcDesignGuide() {
                 <table>
                     <thead>
                         <tr className="header">
-                            <th>方式</th>
-                            <th>接続モデル</th>
-                            <th>主な用途</th>
-                            <th>設計上の注意点</th>
+                            <th scope="col">方式</th>
+                            <th scope="col">接続モデル</th>
+                            <th scope="col">主な用途</th>
+                            <th scope="col">設計上の注意点</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -597,9 +597,9 @@ export function PcneSection1VpcDesignGuide() {
                 <table>
                     <thead>
                         <tr className="header">
-                            <th>項目</th>
-                            <th>既定の目安</th>
-                            <th>補足</th>
+                            <th scope="col">項目</th>
+                            <th scope="col">既定の目安</th>
+                            <th scope="col">補足</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -669,9 +669,9 @@ export function PcneSection1VpcDesignGuide() {
                 <table>
                     <thead>
                         <tr className="header">
-                            <th>観点</th>
-                            <th>Standalone VPC</th>
-                            <th>Shared VPC</th>
+                            <th scope="col">観点</th>
+                            <th scope="col">Standalone VPC</th>
+                            <th scope="col">Shared VPC</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -722,11 +722,11 @@ export function PcneSection1VpcDesignGuide() {
                 <table>
                     <thead>
                         <tr className="header">
-                            <th>方式</th>
-                            <th>接続の性質</th>
-                            <th>推移性</th>
-                            <th>スケール</th>
-                            <th>典型ユースケース</th>
+                            <th scope="col">方式</th>
+                            <th scope="col">接続の性質</th>
+                            <th scope="col">推移性</th>
+                            <th scope="col">スケール</th>
+                            <th scope="col">典型ユースケース</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -767,10 +767,10 @@ export function PcneSection1VpcDesignGuide() {
                 <table>
                     <thead>
                         <tr className="header">
-                            <th>方式</th>
-                            <th>スポーク間到達性</th>
-                            <th>推移的ルート共有</th>
-                            <th>適した規模</th>
+                            <th scope="col">方式</th>
+                            <th scope="col">スポーク間到達性</th>
+                            <th scope="col">推移的ルート共有</th>
+                            <th scope="col">適した規模</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -818,9 +818,9 @@ export function PcneSection1VpcDesignGuide() {
                 <table>
                     <thead>
                         <tr className="header">
-                            <th>レンジ種別</th>
-                            <th>用途</th>
-                            <th>設計上の注意</th>
+                            <th scope="col">レンジ種別</th>
+                            <th scope="col">用途</th>
+                            <th scope="col">設計上の注意</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -871,8 +871,8 @@ export function PcneSection1VpcDesignGuide() {
                 <table>
                     <thead>
                         <tr className="header">
-                            <th>ユースケース</th>
-                            <th>説明</th>
+                            <th scope="col">ユースケース</th>
+                            <th scope="col">説明</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -925,9 +925,9 @@ export function PcneSection1VpcDesignGuide() {
                 <table>
                     <thead>
                         <tr className="header">
-                            <th>モード</th>
-                            <th>挙動</th>
-                            <th>適した要件</th>
+                            <th scope="col">モード</th>
+                            <th scope="col">挙動</th>
+                            <th scope="col">適した要件</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -976,8 +976,8 @@ export function PcneSection1VpcDesignGuide() {
                 <table>
                     <thead>
                         <tr className="header">
-                            <th>項目</th>
-                            <th>内容</th>
+                            <th scope="col">項目</th>
+                            <th scope="col">内容</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1037,9 +1037,9 @@ export function PcneSection1VpcDesignGuide() {
                 <table>
                     <thead>
                         <tr className="header">
-                            <th>手法</th>
-                            <th>判定基準</th>
-                            <th>主な用途</th>
+                            <th scope="col">手法</th>
+                            <th scope="col">判定基準</th>
+                            <th scope="col">主な用途</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1104,10 +1104,10 @@ export function PcneSection1VpcDesignGuide() {
                 <table>
                     <thead>
                         <tr className="header">
-                            <th>方式</th>
-                            <th>帯域幅の目安</th>
-                            <th>SLA(冗長構成時)</th>
-                            <th>特徴</th>
+                            <th scope="col">方式</th>
+                            <th scope="col">帯域幅の目安</th>
+                            <th scope="col">SLA(冗長構成時)</th>
+                            <th scope="col">特徴</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1173,9 +1173,9 @@ export function PcneSection1VpcDesignGuide() {
                 <table>
                     <thead>
                         <tr className="header">
-                            <th>方式</th>
-                            <th>接続の性質</th>
-                            <th>適した要件</th>
+                            <th scope="col">方式</th>
+                            <th scope="col">接続の性質</th>
+                            <th scope="col">適した要件</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1225,10 +1225,10 @@ export function PcneSection1VpcDesignGuide() {
                 <table>
                     <thead>
                         <tr className="header">
-                            <th>方式</th>
-                            <th>接続の主体</th>
-                            <th>SLA</th>
-                            <th>Googleの推奨度</th>
+                            <th scope="col">方式</th>
+                            <th scope="col">接続の主体</th>
+                            <th scope="col">SLA</th>
+                            <th scope="col">Googleの推奨度</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1314,9 +1314,9 @@ export function PcneSection1VpcDesignGuide() {
                 <table>
                     <thead>
                         <tr className="header">
-                            <th>パターン</th>
-                            <th>概要</th>
-                            <th>適した状況</th>
+                            <th scope="col">パターン</th>
+                            <th scope="col">概要</th>
+                            <th scope="col">適した状況</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1373,9 +1373,9 @@ export function PcneSection1VpcDesignGuide() {
                 <table>
                     <thead>
                         <tr className="header">
-                            <th>方式</th>
-                            <th>概要</th>
-                            <th>適したケース</th>
+                            <th scope="col">方式</th>
+                            <th scope="col">概要</th>
+                            <th scope="col">適したケース</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1452,8 +1452,8 @@ export function PcneSection1VpcDesignGuide() {
                 <table>
                     <thead>
                         <tr className="header">
-                            <th>検討項目</th>
-                            <th>設計上の注意</th>
+                            <th scope="col">検討項目</th>
+                            <th scope="col">設計上の注意</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1512,9 +1512,9 @@ export function PcneSection1VpcDesignGuide() {
                 <table>
                     <thead>
                         <tr className="header">
-                            <th>コンポーネント</th>
-                            <th>役割</th>
-                            <th>方向性</th>
+                            <th scope="col">コンポーネント</th>
+                            <th scope="col">役割</th>
+                            <th scope="col">方向性</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1596,9 +1596,9 @@ export function PcneSection1VpcDesignGuide() {
                 <table>
                     <thead>
                         <tr className="header">
-                            <th>接続方式</th>
-                            <th>サポートされるMTU</th>
-                            <th>設計上の注意</th>
+                            <th scope="col">接続方式</th>
+                            <th scope="col">サポートされるMTU</th>
+                            <th scope="col">設計上の注意</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1653,9 +1653,9 @@ export function PcneSection1VpcDesignGuide() {
                 <table>
                     <thead>
                         <tr className="header">
-                            <th>方式</th>
-                            <th>暗号化区間</th>
-                            <th>特徴</th>
+                            <th scope="col">方式</th>
+                            <th scope="col">暗号化区間</th>
+                            <th scope="col">特徴</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1726,9 +1726,9 @@ export function PcneSection1VpcDesignGuide() {
                 <table>
                     <thead>
                         <tr className="header">
-                            <th>アクセスパターン</th>
-                            <th>説明</th>
-                            <th>適したケース</th>
+                            <th scope="col">アクセスパターン</th>
+                            <th scope="col">説明</th>
+                            <th scope="col">適したケース</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1794,8 +1794,8 @@ export function PcneSection1VpcDesignGuide() {
                 <table>
                     <thead>
                         <tr className="header">
-                            <th>レンジ</th>
-                            <th>サイズ設計の考え方</th>
+                            <th scope="col">レンジ</th>
+                            <th scope="col">サイズ設計の考え方</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1842,9 +1842,9 @@ export function PcneSection1VpcDesignGuide() {
                 <table>
                     <thead>
                         <tr className="header">
-                            <th>選択肢</th>
-                            <th>用途</th>
-                            <th>設計上の注意</th>
+                            <th scope="col">選択肢</th>
+                            <th scope="col">用途</th>
+                            <th scope="col">設計上の注意</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1926,9 +1926,9 @@ export function PcneSection1VpcDesignGuide() {
                 <table>
                     <thead>
                         <tr className="header">
-                            <th>手法</th>
-                            <th>マッピング先</th>
-                            <th>特徴</th>
+                            <th scope="col">手法</th>
+                            <th scope="col">マッピング先</th>
+                            <th scope="col">特徴</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1978,8 +1978,8 @@ export function PcneSection1VpcDesignGuide() {
                 <table>
                     <thead>
                         <tr className="header">
-                            <th>観点</th>
-                            <th>設計ポイント</th>
+                            <th scope="col">観点</th>
+                            <th scope="col">設計ポイント</th>
                         </tr>
                     </thead>
                     <tbody>
