@@ -20,28 +20,28 @@ export default function ComptiaNetworkPlusGuide() {
                     </p>
 
                     <div className="stat-grid">
-                        <div className="stat-card" style={{ '--stat-accent': 'var(--c-purple-200)' } as React.CSSProperties}>
+                        <div className="stat-card stat-card--purple">
                             <div className="stat-card-top">
                                 <i className="ti ti-list-details" aria-hidden="true" />
                                 <span>出題ドメイン</span>
                             </div>
                             <div className="stat-card-value">5 分野</div>
                         </div>
-                        <div className="stat-card" style={{ '--stat-accent': 'var(--c-teal-200)' } as React.CSSProperties}>
+                        <div className="stat-card stat-card--teal">
                             <div className="stat-card-top">
                                 <i className="ti ti-help-circle" aria-hidden="true" />
                                 <span>問題数（最大）</span>
                             </div>
                             <div className="stat-card-value">90問</div>
                         </div>
-                        <div className="stat-card" style={{ '--stat-accent': 'var(--c-coral-200)' } as React.CSSProperties}>
+                        <div className="stat-card stat-card--coral">
                             <div className="stat-card-top">
                                 <i className="ti ti-clock-hour-4" aria-hidden="true" />
                                 <span>試験時間</span>
                             </div>
                             <div className="stat-card-value">90分</div>
                         </div>
-                        <div className="stat-card" style={{ '--stat-accent': 'var(--c-amber-200)' } as React.CSSProperties}>
+                        <div className="stat-card stat-card--amber">
                             <div className="stat-card-top">
                                 <i className="ti ti-target-arrow" aria-hidden="true" />
                                 <span>合格ライン</span>
@@ -108,7 +108,7 @@ export default function ComptiaNetworkPlusGuide() {
                             <tr>
                                 <td>
                                     取得後に想定される職務<br />
-                                    <span style={{ color: 'var(--color-text-tertiary)', fontSize: '12px' }}>
+                                    <span style={{ color: 'var(--color-network-foreground-faint)', fontSize: '12px' }}>
                                         （NICE/DoD 8140の職務区分に基づく）
                                     </span>
                                 </td>
@@ -201,7 +201,7 @@ export default function ComptiaNetworkPlusGuide() {
                     </p>
 
                     <div className="diagram-block">
-                        <div className="diagram-head" style={{ '--diagram-accent': 'var(--c-purple-200)' } as React.CSSProperties}>
+                        <div className="diagram-head diagram-head--purple">
                             <i className="ti ti-chart-pie" aria-hidden="true" />
                             <span>図: ドメイン別の配点比率</span>
                         </div>
@@ -229,7 +229,7 @@ export default function ComptiaNetworkPlusGuide() {
                             <tr>
                                 <td className="num">1</td>
                                 <td>
-                                    <span className="domain-dot" style={{ background: 'var(--c-purple-200)' }} />
+                                    <span className="domain-dot" style={{ background: 'var(--color-network-purple)' }} />
                                     ネットワークの概念
                                 </td>
                                 <td className="pct">23%</td>
@@ -238,7 +238,7 @@ export default function ComptiaNetworkPlusGuide() {
                             <tr>
                                 <td className="num">2</td>
                                 <td>
-                                    <span className="domain-dot" style={{ background: 'var(--c-teal-200)' }} />
+                                    <span className="domain-dot" style={{ background: 'var(--color-network-teal)' }} />
                                     ネットワークの実装
                                 </td>
                                 <td className="pct">20%</td>
@@ -247,7 +247,7 @@ export default function ComptiaNetworkPlusGuide() {
                             <tr>
                                 <td className="num">3</td>
                                 <td>
-                                    <span className="domain-dot" style={{ background: 'var(--c-coral-200)' }} />
+                                    <span className="domain-dot" style={{ background: 'var(--color-network-coral)' }} />
                                     ネットワークの運用
                                 </td>
                                 <td className="pct">19%</td>
@@ -256,7 +256,7 @@ export default function ComptiaNetworkPlusGuide() {
                             <tr>
                                 <td className="num">4</td>
                                 <td>
-                                    <span className="domain-dot" style={{ background: 'var(--c-pink-200)' }} />
+                                    <span className="domain-dot" style={{ background: 'var(--color-network-pink)' }} />
                                     ネットワークセキュリティ
                                 </td>
                                 <td className="pct">14%</td>
@@ -265,7 +265,7 @@ export default function ComptiaNetworkPlusGuide() {
                             <tr>
                                 <td className="num">5</td>
                                 <td>
-                                    <span className="domain-dot" style={{ background: 'var(--c-amber-200)' }} />
+                                    <span className="domain-dot" style={{ background: 'var(--color-network-amber)' }} />
                                     ネットワークのトラブルシューティング
                                 </td>
                                 <td className="pct">24%</td>
@@ -286,7 +286,7 @@ export default function ComptiaNetworkPlusGuide() {
                         5. 各ドメインの詳細解説
                     </h2>
 
-                    <div className="domain-card" style={{ '--domain-accent': 'var(--c-purple-200)', '--domain-accent-bg': 'var(--c-purple-800)', '--domain-accent-text': 'var(--c-purple-100)' } as React.CSSProperties}>
+                    <div className="domain-card domain-card--purple">
                         <div className="domain-card-head">
                             <div className="domain-num">1</div>
                             <h3>ネットワークの概念</h3>
@@ -306,7 +306,7 @@ export default function ComptiaNetworkPlusGuide() {
                         </ul>
                     </div>
 
-                    <div className="domain-card" style={{ '--domain-accent': 'var(--c-teal-200)', '--domain-accent-bg': 'var(--c-teal-800)', '--domain-accent-text': 'var(--c-teal-100)' } as React.CSSProperties}>
+                    <div className="domain-card domain-card--teal">
                         <div className="domain-card-head">
                             <div className="domain-num">2</div>
                             <h3>ネットワークの実装</h3>
@@ -321,7 +321,7 @@ export default function ComptiaNetworkPlusGuide() {
                         </ul>
                     </div>
 
-                    <div className="domain-card" style={{ '--domain-accent': 'var(--c-coral-200)', '--domain-accent-bg': 'var(--c-coral-800)', '--domain-accent-text': 'var(--c-coral-100)' } as React.CSSProperties}>
+                    <div className="domain-card domain-card--coral">
                         <div className="domain-card-head">
                             <div className="domain-num">3</div>
                             <h3>ネットワークの運用</h3>
@@ -340,7 +340,7 @@ export default function ComptiaNetworkPlusGuide() {
                         </ul>
                     </div>
 
-                    <div className="domain-card" style={{ '--domain-accent': 'var(--c-pink-200)', '--domain-accent-bg': 'var(--c-pink-800)', '--domain-accent-text': 'var(--c-pink-100)' } as React.CSSProperties}>
+                    <div className="domain-card domain-card--pink">
                         <div className="domain-card-head">
                             <div className="domain-num">4</div>
                             <h3>ネットワークセキュリティ</h3>
@@ -359,7 +359,7 @@ export default function ComptiaNetworkPlusGuide() {
                         </ul>
                     </div>
 
-                    <div className="domain-card" style={{ '--domain-accent': 'var(--c-amber-200)', '--domain-accent-bg': 'var(--c-amber-800)', '--domain-accent-text': 'var(--c-amber-100)' } as React.CSSProperties}>
+                    <div className="domain-card domain-card--amber">
                         <div className="domain-card-head">
                             <div className="domain-num">5</div>
                             <h3>ネットワークのトラブルシューティング ― 最重要ドメイン</h3>
@@ -370,7 +370,7 @@ export default function ComptiaNetworkPlusGuide() {
                         </p>
 
                         <div className="diagram-block">
-                            <div className="diagram-head" style={{ '--diagram-accent': 'var(--c-amber-200)' } as React.CSSProperties}>
+                            <div className="diagram-head diagram-head--amber">
                                 <i className="ti ti-list-numbers" aria-hidden="true" />
                                 <span>図: CompTIA標準のトラブルシューティング方法論（6ステップ）</span>
                             </div>
@@ -488,7 +488,7 @@ export default function ComptiaNetworkPlusGuide() {
                     <p>以下は、初学者がゼロから合格までたどる標準的な学習ロードマップです。</p>
 
                     <div className="diagram-block">
-                        <div className="diagram-head" style={{ '--diagram-accent': 'var(--c-purple-200)' } as React.CSSProperties}>
+                        <div className="diagram-head diagram-head--purple">
                             <i className="ti ti-route" aria-hidden="true" />
                             <span>図: 初学者向け学習ロードマップ</span>
                         </div>
@@ -579,7 +579,7 @@ export default function ComptiaNetworkPlusGuide() {
                     </h2>
 
                     <div className="diagram-block">
-                        <div className="diagram-head" style={{ '--diagram-accent': 'var(--c-coral-200)' } as React.CSSProperties}>
+                        <div className="diagram-head diagram-head--coral">
                             <i className="ti ti-calendar-event" aria-hidden="true" />
                             <span>図: 試験当日の流れ（合格ライン: 720/900点）</span>
                         </div>

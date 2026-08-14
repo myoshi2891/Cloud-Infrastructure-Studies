@@ -1,9 +1,16 @@
 // __tests__/comptia/network-plus-guide.test.tsx
 // @vitest-environment jsdom
 import { render } from '@testing-library/react';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { describe, expect, it, vi } from 'vitest';
 import inventory from '@/docs/migration-inventory/comptia-network-plus-guide.json';
 import Page from '@/app/comptia/network-plus/page';
+
+const sourceHtml = readFileSync(
+    join(process.cwd(), 'archive/CompTIA/html/Comptia-network-plus-guide.html'),
+    'utf8',
+);
 
 // MermaidDiagram は名前付きエクスポート。default でモックすると落ちる
 vi.mock('@/components/MermaidDiagram', () => ({
@@ -27,6 +34,11 @@ vi.mock('@/components/MermaidDiagram', () => ({
 /** 空白差・改行差を無視して比較するための正規化 */
 const squash = (value: string): string => value.replace(/\s+/g, '');
 const normalize = (value: string): string => value.replace(/\s+/g, ' ').trim();
+const normalizeMermaid = (value: string): string => value
+    .trim()
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .join('\n');
 const codeBlockSelector = 'pre:not(.mermaid), .code-block';
 const codeLines = (block: Element): string[] => {
     const explicitLines = [...block.querySelectorAll(':scope > .code-line')];
@@ -106,6 +118,20 @@ describe('CompTIA Network+ Guide — 移行元コンテンツの全量移行', (
         expect(extractBodyContent(container)).toEqual(inventory.bodyContent);
     });
 
+    it('導入文と Mermaid 定義の全文が移行元 HTML と一致する', () => {
+        const sourceDocument = new DOMParser().parseFromString(sourceHtml, 'text/html');
+        const sourceIntroduction = sourceDocument.querySelector('.doc-header .subtitle')?.textContent ?? '';
+        const sourceMermaid = [...sourceDocument.querySelectorAll('script[type="text/mermaid"]')]
+            .map((script) => normalizeMermaid(script.textContent ?? ''));
+        const container = renderPage();
+        const renderedIntroduction = container.querySelector('.doc-header .subtitle')?.textContent ?? '';
+        const renderedMermaid = [...container.querySelectorAll('[data-testid="mermaid-diagram"]')]
+            .map((diagram) => normalizeMermaid(diagram.getAttribute('data-chart') ?? ''));
+
+        expect(normalize(renderedIntroduction)).toBe(normalize(sourceIntroduction));
+        expect(renderedMermaid).toEqual(sourceMermaid);
+    });
+
     it('全形式の図が件数どおり存在し、説明または装飾指定を持つ', () => {
         const container = renderPage();
         const diagramSelector = '[data-testid="mermaid-diagram"], .mermaid, [id^="diag-"]';
@@ -134,6 +160,6 @@ describe('CompTIA Network+ Guide — 移行元コンテンツの全量移行', (
         expect(container.querySelectorAll('.stat-card')).toHaveLength(4);
         expect(container.querySelectorAll('.domain-card')).toHaveLength(5);
         expect(container.querySelector('.ref-box')).not.toBeNull();
-        expect(container.querySelectorAll('.ti').length).toBeGreaterThan(15);
+        expect(container.querySelectorAll('.ti')).toHaveLength(46);
     });
 });
