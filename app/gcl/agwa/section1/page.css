@@ -216,10 +216,22 @@
     color: var(--text);
     margin: 0.9em 0;
 }
-.agwa-s1-page .main ul,
+.agwa-s1-page .main ul {
+    color: var(--text);
+    padding-left: 1.5em;
+    list-style-type: disc;
+}
 .agwa-s1-page .main ol {
     color: var(--text);
     padding-left: 1.5em;
+    list-style-type: decimal;
+}
+.agwa-s1-page .main ul.checklist-list,
+.agwa-s1-page .main ul.ref-items,
+.agwa-s1-page .main ul.nav-list,
+.agwa-s1-page .main ul.nav-sublist {
+    list-style-type: none;
+    padding-left: 0;
 }
 .agwa-s1-page .main li {
     margin: 0.35em 0;
