@@ -283,22 +283,30 @@ export const NavBar: React.FC = () => {
     );
     if (headingElements.length === 0) return;
 
-    const observer = new IntersectionObserver((entries) => {
+    const activateLastHeadingAtBottom = () => {
       const isBottom = window.innerHeight + window.scrollY
         >= document.documentElement.scrollHeight - 100;
       if (isBottom) {
         setActiveId(headingElements[headingElements.length - 1]?.id ?? NAV_ITEMS[0].id);
-        return;
+        return true;
       }
+
+      return false;
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      if (activateLastHeadingAtBottom()) return;
 
       const visibleHeading = entries.find((entry) => entry.isIntersecting);
       if (visibleHeading) setActiveId(visibleHeading.target.id);
     }, { rootMargin: "-15% 0px -75% 0px", threshold: 0 });
 
     headingElements.forEach((heading) => observer.observe(heading));
+    window.addEventListener("scroll", activateLastHeadingAtBottom, { passive: true });
 
     return () => {
       observer.disconnect();
+      window.removeEventListener("scroll", activateLastHeadingAtBottom);
     };
   }, []);
 
