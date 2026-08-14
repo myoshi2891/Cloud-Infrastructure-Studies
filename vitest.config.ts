@@ -6,6 +6,10 @@ export default defineConfig({
     plugins: [react()],
     test: {
         environment: 'jsdom',
+        // Node.js 25 enables its own incomplete Web Storage object unless a
+        // persistence file is configured. Disable it in workers so jsdom owns
+        // window.localStorage consistently across supported Node versions.
+        execArgv: ['--no-experimental-webstorage'],
         globals: true,
         setupFiles: ['./vitest.setup.ts'],
         include: [
