@@ -182,11 +182,12 @@ VPCのファイアウォールルールは、次の要素の組み合わせで�
 
 ```mermaid
 flowchart TB
-    Start(["パケットが対象VMへ到着"]) --> R1["優先度1000: fw-allow-ssh<br/>TCP:22 に一致？"]
-    R1 -->|一致| Allow1(["許可"])
-    R1 -->|不一致| R3["優先度1000: fw-allow-icmp<br/>ICMP に一致？"]
-    R3 -->|一致| Allow2(["許可"])
-    R3 -->|不一致| R2["優先度1001: fw-allow-rdp<br/>TCP:3389 に一致？"]
+    Start(["パケットが対象VMへ到着"]) --> P1000{"優先度1000のAllowルール<br/>順序なしで一致を判定"}
+    P1000 -->|TCP:22| R1["fw-allow-ssh に一致"]
+    P1000 -->|ICMPかつ指定送信元| R3["fw-allow-icmp に一致"]
+    R1 --> Allow1(["許可"])
+    R3 --> Allow2(["許可"])
+    P1000 -->|どちらにも不一致| R2["優先度1001: fw-allow-rdp<br/>TCP:3389 に一致？"]
     R2 -->|一致| Allow3(["許可"])
     R2 -->|不一致| Implied["暗黙のルール（優先度65535）<br/>それ以外のIngressはすべて拒否"]
     Implied --> Deny(["拒否"])
