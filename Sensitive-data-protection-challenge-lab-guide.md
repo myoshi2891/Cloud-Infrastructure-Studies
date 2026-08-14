@@ -426,7 +426,11 @@ def generate_guarded_response(prompt: str, model, project_id: str) -> str:
     if finish_reason_name not in {"STOP", "FinishReason.STOP", "1"}:
         return blocked_response
 
-    model_response = (response.text or "").strip()
+    try:
+        model_response = (response.text or "").strip()
+    except ValueError:
+        return blocked_response
+
     if not model_response:
         return blocked_response
 
