@@ -34,7 +34,7 @@ Updated 2026-08-13
   - `/app/gcl/hands-on`: GCP ハンズオン実践ガイド群（`cloud-load-balancing-guide`, `develop-your-gcp-network`, `build-a-secure-google-cloud-network`, `set-up-an-app-dev-environment-on-google-cloud`, `gcp-security-fundamentals-guide`, `gke-private-cluster-security-guide`, `iap-tcp-forwarding-best-practices-guide`, `terraform-gcp-challenge-lab-guide`, `griffin-wordpress-gke-guide`）。
   - `/app/gcl/genai-leader`: Generative AI Leader 試験対策ページ（Section 1〜4、section1/2 はコンポーネント分割済み）。
   - `/app/gcl/cloud-digital-leader`: Cloud Digital Leader 試験対策ページ（Section 1〜6、各セクションはコンポーネント分割済み）。
-  - `/app/gcl/agwa`: Associate Google Workspace Administrator 試験対策ページ（Section 1、Section 2、Section 3含む）。
+  - `/app/gcl/agwa`: Associate Google Workspace Administrator 試験対策ページ（Section 1、Section 2、Section 3、Section 4含む）。
   - `/app/gcl/professional-cloud-network-engineer`: PCNE 試験対策ページ（概要・ドメイン別解説、`section1-vpc-design` および `section2-vpc-implementation` 完全ガイド含む）。
   - `/app/gcl/professional-cloud-network-engineer-step-by-step`: PCNE ステップバイステップ実践ガイド。
   - `/app/cisco/ccde/complete-guide`: Cisco CCDE 認定 完全ガイド。
