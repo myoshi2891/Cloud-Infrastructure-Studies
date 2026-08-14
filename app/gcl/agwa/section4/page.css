@@ -509,9 +509,10 @@
 
 .agwa-s4-page .checklist-item.checked label,
 .agwa-s4-page .checklist-item.checked span,
+.agwa-s4-page .checklist li.checked span,
 .agwa-s4-page ul.task-list li:has(input:checked) label {
-    color: var(--text-faint);
-    text-decoration: line-through;
+    color: var(--text-faint) !important;
+    text-decoration: line-through !important;
 }
 
 /* ---------- References Grid ---------- */

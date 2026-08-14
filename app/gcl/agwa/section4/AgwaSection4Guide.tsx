@@ -1782,7 +1782,7 @@ export function AgwaSection4Guide() {
                                 'アクセスグループがOUの設定を「オンに上書き」する方向にのみ作用する点を説明できる',
                                 'Trusted / Specific Google data / Limited / Blockedという4つのAPIアクセスレベルの違いを説明できる',
                             ].map((text, idx) => (
-                                <li key={idx}>
+                                <li key={idx} className={`checklist-item ${checkedItems[idx] ? 'checked' : ''}`}>
                                     <button
                                         type="button"
                                         className={`check-box ${checkedItems[idx] ? 'checked' : ''}`}
@@ -1791,7 +1791,12 @@ export function AgwaSection4Guide() {
                                     >
                                         {checkedItems[idx] && '✓'}
                                     </button>
-                                    <span>{text}</span>
+                                    <span
+                                        onClick={() => toggleCheck(idx)}
+                                        style={{ cursor: 'pointer' }}
+                                    >
+                                        {text}
+                                    </span>
                                 </li>
                             ))}
                         </ul>
