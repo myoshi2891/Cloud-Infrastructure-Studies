@@ -1183,7 +1183,7 @@ export function AgwaSection3Guide() {
                             <div className="ref-row">
                                 <span className="ref-icon">↗</span>
                                 <span>
-                                    <a href="https://support.google.com/a/answer/7646040?hl=en" target="_blank" rel="noopener noreferrer">Manage access to services that aren't controlled individually</a>
+                                    <a href="https://support.google.com/a/answer/7646040?hl=en" target="_blank" rel="noopener noreferrer">Manage access to services that aren&apos;t controlled individually</a>
                                 </span>
                             </div>
                             <div className="ref-row">
