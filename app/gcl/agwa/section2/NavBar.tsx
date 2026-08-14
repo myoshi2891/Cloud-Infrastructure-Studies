@@ -281,13 +281,14 @@ export const NavBar: React.FC = () => {
     const headingElements = Array.from(
       document.querySelectorAll<HTMLElement>(".main h2[id], .main h3[id]")
     );
-    if (headingElements.length === 0) return;
+    const lastHeading = headingElements[headingElements.length - 1];
+    if (!lastHeading) return;
 
     const activateLastHeadingAtBottom = () => {
       const isBottom = window.innerHeight + window.scrollY
         >= document.documentElement.scrollHeight - 100;
       if (isBottom) {
-        setActiveId(headingElements[headingElements.length - 1]?.id ?? NAV_ITEMS[0].id);
+        setActiveId(lastHeading.id);
         return true;
       }
 

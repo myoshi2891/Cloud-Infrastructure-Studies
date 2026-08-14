@@ -25,7 +25,7 @@ const NAV_ITEMS = [
     { id: '435-接続済みアプリケーションとサイトの削除', text: '4.3.5 接続済みアプリケーションとサイトの削除', level: 'h3' },
     { id: '試験対策チェックリスト', text: '試験対策チェックリスト', level: 'h2' },
     { id: '参考文献', text: '参考文献', level: 'h2' },
-];
+] as const;
 
 export function NavBar() {
     const [activeId, setActiveId] = useState<string>(NAV_ITEMS[0].id);
