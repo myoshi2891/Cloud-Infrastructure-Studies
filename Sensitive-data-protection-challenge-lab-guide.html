@@ -1,0 +1,2517 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Cymbal Cars 機密データ保護チャレンジラボ 徹底解説ガイド</title>
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/dist/tabler-icons.min.css"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"
+        />
+        <style>
+            :root {
+                --color-background-primary: #07111e;
+                --color-background-secondary: #0d1b2e;
+                --color-background-tertiary: #142338;
+                --color-background-info: #12263f;
+                --color-background-danger: #3a1a1e;
+                --color-background-success: #123324;
+                --color-background-warning: #3a2c12;
+                --color-text-primary: #e8edf5;
+                --color-text-secondary: #a8b6c9;
+                --color-text-tertiary: #6b7d94;
+                --color-text-info: #7db3ff;
+                --color-text-danger: #ff8f8f;
+                --color-text-success: #7de0a8;
+                --color-text-warning: #f0c674;
+                --color-border-tertiary: #1c2c40;
+                --color-border-secondary: #263a52;
+                --color-border-primary: #33506f;
+                --font-sans:
+                    -apple-system, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Noto Sans JP',
+                    'Yu Gothic', system-ui, sans-serif;
+                --font-mono: ui-monospace, 'SFMono-Regular', 'Menlo', 'Consolas', monospace;
+                --border-radius-md: 8px;
+                --border-radius-lg: 12px;
+                --border-radius-xl: 16px;
+                --accent: #7c9eff;
+                --sidebar-width: 300px;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            html {
+                scroll-behavior: smooth;
+            }
+
+            body {
+                margin: 0;
+                background: var(--color-background-primary);
+                color: var(--color-text-primary);
+                font-family: var(--font-sans);
+                font-size: 16px;
+                font-weight: 400;
+                line-height: 1.7;
+            }
+
+            /* --- Sidebar --- */
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: var(--sidebar-width);
+                height: 100vh;
+                overflow-y: auto;
+                background: var(--color-background-secondary);
+                border-right: 1px solid var(--color-border-tertiary);
+                padding: 28px 20px 40px;
+            }
+
+            .sidebar-brand {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                margin-bottom: 24px;
+                padding-bottom: 20px;
+                border-bottom: 1px solid var(--color-border-tertiary);
+            }
+
+            .sidebar-brand i {
+                font-size: 22px;
+                color: var(--accent);
+            }
+
+            .sidebar-brand-text {
+                font-size: 16px;
+                font-weight: 500;
+                line-height: 1.4;
+            }
+            .sidebar-brand-text small {
+                display: block;
+                color: var(--color-text-tertiary);
+                font-size: 13px;
+                margin-top: 2px;
+            }
+
+            .nav-group {
+                margin-bottom: 18px;
+            }
+            .nav-group-title {
+                font-size: 13px;
+                color: var(--color-text-tertiary);
+                text-transform: uppercase;
+                letter-spacing: 0.06em;
+                margin: 0 0 8px 10px;
+            }
+
+            .nav-link {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 8px 10px;
+                border-radius: var(--border-radius-md);
+                color: var(--color-text-secondary);
+                text-decoration: none;
+                font-size: 15px;
+                line-height: 1.4;
+            }
+            .nav-link i {
+                font-size: 17px;
+                width: 18px;
+                text-align: center;
+                color: var(--color-text-tertiary);
+            }
+            .nav-link:hover {
+                background: var(--color-background-tertiary);
+                color: var(--color-text-primary);
+            }
+            .nav-link.active {
+                background: var(--color-background-tertiary);
+                color: var(--color-text-primary);
+            }
+            .nav-link.active i {
+                color: var(--accent);
+            }
+
+            .nav-sublink {
+                display: block;
+                padding: 6px 10px 6px 38px;
+                color: var(--color-text-tertiary);
+                text-decoration: none;
+                font-size: 14px;
+            }
+            .nav-sublink:hover {
+                color: var(--color-text-primary);
+            }
+            .nav-sublink.active {
+                color: var(--accent);
+            }
+
+            /* --- Layout (must stay display:block with a fixed sidebar) --- */
+            .layout {
+                display: block;
+            }
+
+            .content {
+                margin-left: var(--sidebar-width);
+                padding: 48px 56px 80px;
+            }
+
+            /* --- Hero --- */
+            .hero {
+                margin-bottom: 40px;
+                padding-bottom: 32px;
+                border-bottom: 1px solid var(--color-border-tertiary);
+            }
+            .hero h1 {
+                font-size: 26px;
+                font-weight: 500;
+                margin: 0 0 14px;
+                line-height: 1.4;
+            }
+            .hero p {
+                margin: 0 0 8px;
+                color: var(--color-text-secondary);
+            }
+            .hero-meta {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+                margin-top: 18px;
+            }
+            .pill {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                background: var(--color-background-tertiary);
+                border: 1px solid var(--color-border-secondary);
+                color: var(--color-text-secondary);
+                border-radius: 999px;
+                padding: 6px 14px;
+                font-size: 14px;
+            }
+            .pill i {
+                color: var(--accent);
+                font-size: 15px;
+            }
+
+            .callout {
+                background: var(--color-background-info);
+                border: 1px solid var(--color-border-secondary);
+                border-radius: var(--border-radius-lg);
+                padding: 16px 20px;
+                margin: 20px 0;
+                font-size: 15px;
+                color: var(--color-text-secondary);
+            }
+            .callout a {
+                color: var(--color-text-info);
+            }
+            .callout i {
+                color: var(--color-text-info);
+                margin-right: 8px;
+            }
+
+            /* --- Sections --- */
+            section {
+                margin-bottom: 56px;
+                scroll-margin-top: 28px;
+            }
+            section.sub {
+                margin-bottom: 44px;
+                padding-top: 8px;
+            }
+
+            h2 {
+                font-size: 20px;
+                font-weight: 500;
+                margin: 0 0 20px;
+                padding-bottom: 12px;
+                border-bottom: 1px solid var(--color-border-tertiary);
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+            h2 i {
+                color: var(--accent);
+                font-size: 20px;
+            }
+
+            h3 {
+                font-size: 17px;
+                font-weight: 500;
+                margin: 32px 0 14px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+            h3 i {
+                color: var(--accent);
+                font-size: 17px;
+            }
+
+            h4 {
+                font-size: 16px;
+                font-weight: 500;
+                margin: 24px 0 10px;
+                color: var(--color-text-primary);
+            }
+
+            p {
+                margin: 0 0 14px;
+            }
+
+            a {
+                color: var(--accent);
+            }
+
+            ul,
+            ol {
+                padding-left: 22px;
+                margin: 0 0 16px;
+            }
+            li {
+                margin-bottom: 8px;
+            }
+
+            strong {
+                font-weight: 500;
+                color: var(--color-text-primary);
+            }
+
+            code {
+                font-family: var(--font-mono);
+                background: var(--color-background-tertiary);
+                border: 1px solid var(--color-border-tertiary);
+                border-radius: 4px;
+                padding: 2px 6px;
+                font-size: 15px;
+            }
+
+            pre {
+                background: var(--color-background-tertiary);
+                border: 1px solid var(--color-border-secondary);
+                border-radius: var(--border-radius-lg);
+                padding: 18px 20px;
+                overflow-x: auto;
+                margin: 0 0 18px;
+            }
+            pre code {
+                background: none;
+                border: none;
+                padding: 0;
+                font-size: 15px;
+                line-height: 1.65;
+            }
+
+            /* --- Tables --- */
+            .table-wrap {
+                overflow-x: auto;
+                margin: 0 0 22px;
+                border: 1px solid var(--color-border-secondary);
+                border-radius: var(--border-radius-lg);
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 15px;
+            }
+            thead th {
+                text-align: left;
+                background: var(--color-background-tertiary);
+                color: var(--color-text-primary);
+                font-weight: 500;
+                padding: 12px 16px;
+                border-bottom: 1px solid var(--color-border-secondary);
+                white-space: nowrap;
+            }
+            tbody td {
+                padding: 12px 16px;
+                border-bottom: 1px solid var(--color-border-tertiary);
+                color: var(--color-text-secondary);
+                vertical-align: top;
+            }
+            tbody tr:last-child td {
+                border-bottom: none;
+            }
+            tbody td code {
+                white-space: nowrap;
+            }
+
+            /* --- Practice cards --- */
+            .practice-block {
+                background: var(--color-background-secondary);
+                border: 1px solid var(--color-border-tertiary);
+                border-left: 3px solid var(--accent);
+                border-radius: var(--border-radius-lg);
+                padding: 18px 22px;
+                margin: 0 0 22px;
+            }
+            .practice-block h4 {
+                margin-top: 0;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+            .practice-block h4 i {
+                color: var(--accent);
+            }
+            .practice-block ul {
+                margin-bottom: 0;
+            }
+
+            .why-what {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 16px;
+                margin: 0 0 20px;
+            }
+            .why-what .box {
+                background: var(--color-background-secondary);
+                border: 1px solid var(--color-border-tertiary);
+                border-radius: var(--border-radius-lg);
+                padding: 16px 18px;
+            }
+            .why-what .box .label {
+                font-size: 13px;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                color: var(--color-text-tertiary);
+                margin-bottom: 8px;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+            }
+            .why-what .box .label i {
+                color: var(--accent);
+            }
+
+            /* --- Source line --- */
+            .source-line {
+                font-size: 14px;
+                color: var(--color-text-tertiary);
+                border-top: 1px dashed var(--color-border-secondary);
+                padding-top: 12px;
+                margin-top: 4px;
+            }
+            .source-line i {
+                margin-right: 6px;
+                color: var(--color-text-info);
+            }
+            .source-line a {
+                color: var(--color-text-info);
+            }
+            .source-line .sep {
+                margin: 0 6px;
+                color: var(--color-border-primary);
+            }
+
+            /* --- Mermaid --- */
+            .diagram-card {
+                background: var(--color-background-secondary);
+                border: 1px solid var(--color-border-tertiary);
+                border-radius: var(--border-radius-lg);
+                padding: 20px;
+                margin: 0 0 22px;
+                display: flex;
+                justify-content: center;
+                width: 100%;
+                overflow-x: auto;
+            }
+            .diagram-card svg {
+                max-width: 100%;
+                height: auto;
+                overflow: visible;
+            }
+            .diagram-loading {
+                color: var(--color-text-tertiary);
+                font-size: 14px;
+                padding: 30px 0;
+            }
+
+            /* --- Reference list --- */
+            .ref-group {
+                margin-bottom: 20px;
+            }
+            .ref-group h4 {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+            .ref-group h4 i {
+                color: var(--accent);
+            }
+            .ref-list {
+                list-style: none;
+                padding-left: 0;
+            }
+            .ref-list li {
+                display: flex;
+                gap: 10px;
+                padding: 10px 14px;
+                background: var(--color-background-secondary);
+                border: 1px solid var(--color-border-tertiary);
+                border-radius: var(--border-radius-md);
+                margin-bottom: 8px;
+                font-size: 15px;
+            }
+            .ref-list li i {
+                color: var(--color-text-info);
+                margin-top: 3px;
+            }
+            .ref-list li a {
+                word-break: break-all;
+            }
+
+            /* --- Footer --- */
+            .footer {
+                border-top: 1px solid var(--color-border-tertiary);
+                padding-top: 24px;
+                margin-top: 60px;
+                color: var(--color-text-tertiary);
+                font-size: 14px;
+            }
+
+            @media (max-width: 900px) {
+                .sidebar {
+                    display: none;
+                }
+                .content {
+                    margin-left: 0;
+                    padding: 32px 20px 60px;
+                }
+                .why-what {
+                    grid-template-columns: 1fr;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <nav class="sidebar">
+            <div class="sidebar-brand">
+                <i class="ti ti-shield-lock"></i>
+                <div class="sidebar-brand-text">
+                    Sensitive Data Protection<small>Cymbal Cars Challenge Lab</small>
+                </div>
+            </div>
+
+            <div class="nav-group">
+                <div class="nav-link" data-target="overview">
+                    <i class="ti ti-map"></i>シナリオと全体像
+                </div>
+                <div class="nav-link" data-target="prereq">
+                    <i class="ti ti-book"></i>事前知識・基礎用語
+                </div>
+            </div>
+
+            <div class="nav-group">
+                <p class="nav-group-title">Task 1: Cloud Storage</p>
+                <div class="nav-link" data-target="task1">
+                    <i class="ti ti-database"></i>Cloud Storage 保護
+                </div>
+                <a class="nav-sublink" href="#task1-1">3-1. Discovery スキャン設定</a>
+                <a class="nav-sublink" href="#task1-2">3-2. De-identify テンプレート</a>
+                <a class="nav-sublink" href="#task1-3">3-3. De-identify ジョブ実行</a>
+            </div>
+
+            <div class="nav-group">
+                <p class="nav-group-title">Task 2: BigQuery</p>
+                <div class="nav-link" data-target="task2">
+                    <i class="ti ti-table"></i>BigQuery 保護
+                </div>
+                <a class="nav-sublink" href="#task2-1">4-1. IAM Tags の作成</a>
+                <a class="nav-sublink" href="#task2-2">4-2. 条件付きアクセス</a>
+                <a class="nav-sublink" href="#task2-3">4-3. データセットへのタグ付与</a>
+            </div>
+
+            <div class="nav-group">
+                <p class="nav-group-title">Task 3: Gen AI</p>
+                <div class="nav-link" data-target="task3">
+                    <i class="ti ti-robot"></i>Gen AI 応答の保護
+                </div>
+                <a class="nav-sublink" href="#task3-1">5-1. 既存関数の理解</a>
+                <a class="nav-sublink" href="#task3-2">5-2. VIN ブロック機能</a>
+                <a class="nav-sublink" href="#task3-3">5-3. temperature=0 の理由</a>
+            </div>
+
+            <div class="nav-group">
+                <div class="nav-link" data-target="best-practices">
+                    <i class="ti ti-checklist"></i>ベストプラクティス総まとめ
+                </div>
+                <div class="nav-link" data-target="troubleshooting">
+                    <i class="ti ti-bug"></i>よくある詰まりポイント
+                </div>
+                <div class="nav-link" data-target="references">
+                    <i class="ti ti-link"></i>参考文献
+                </div>
+            </div>
+        </nav>
+
+        <main class="layout">
+            <div class="content">
+                <header class="hero">
+                    <h1>Cymbal Cars 機密データ保護チャレンジラボ 徹底解説ガイド</h1>
+                    <p>
+                        Discover and Protect Sensitive Data Across Your Ecosystem: Challenge Lab
+                        を、初学者でも一つずつ理解できるようステップバイステップで解説します。
+                    </p>
+                    <p>
+                        各タスクを「何を」「なぜ」「どうやって」の3段階に分解し、実務でも再現できるベストプラクティスとして定着させることを目的としています。
+                    </p>
+                    <div class="hero-meta">
+                        <span class="pill"
+                            ><i class="ti ti-users"></i>対象: Sensitive Data Protection
+                            を初めて扱うインフラ / データエンジニア</span
+                        >
+                        <span class="pill"><i class="ti ti-cloud"></i>Google Cloud</span>
+                        <span class="pill"
+                            ><i class="ti ti-shield-check"></i>Sensitive Data Protection (旧 Cloud
+                            DLP)</span
+                        >
+                    </div>
+                    <div class="callout">
+                        <i class="ti ti-info-circle"></i>出典元ラボ:
+                        <a
+                            href="https://www.skills.google/course_templates/1177/labs/609028"
+                            target="_blank"
+                            rel="noopener"
+                            >https://www.skills.google/course_templates/1177/labs/609028</a
+                        >（Google Skills
+                        アカウントへのサインインが必要なため、本ガイドは添付されたラボ本文と Google
+                        Cloud 公式ドキュメントに基づいて作成しています）
+                    </div>
+                </header>
+
+                <!-- ==================== 1. 全体像 ==================== -->
+                <section id="overview">
+                    <h2><i class="ti ti-map"></i>1. シナリオと全体アーキテクチャ</h2>
+                    <p>
+                        Cymbal Cars
+                        社のデータエンジニアとして、車の所有者（顧客）に関する機密データを組織のデータ基盤全体で守ることがミッションです。データは大きく3つの場所に存在します。
+                    </p>
+
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>データの場所</th>
+                                    <th>内容</th>
+                                    <th>既に対応済みのこと</th>
+                                    <th>このラボで追加すること</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Cloud Storage</td>
+                                    <td>顧客とのやり取りログ（CSV等）</td>
+                                    <td>US Social Security Number の redaction 済み</td>
+                                    <td>
+                                        クレジットカード番号の検出・非識別化＋日次ディスカバリー
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>BigQuery</td>
+                                    <td>顧客・注文データのテーブル</td>
+                                    <td>一部テーブルの redaction 済み</td>
+                                    <td>
+                                        SPII（機微な個人識別情報）タグによる条件付きアクセス制御
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Gen AI モデル応答</td>
+                                    <td>Vertex AI 上の生成 AI の出力</td>
+                                    <td>クレデンシャル（認証情報）検出時の redaction 済み</td>
+                                    <td>
+                                        US Vehicle Identification
+                                        Number（VIN）検出時のブロック機能追加
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <p>
+                        3つのタスクはそれぞれ独立していますが、「機密データを<strong>発見（Discover）</strong>し<strong>保護（Protect）</strong>する」という一貫した思想でつながっています。
+                    </p>
+
+                    <div class="diagram-card">
+                        <div id="diagram-overview" class="diagram-loading">図を読み込み中...</div>
+                    </div>
+
+                    <div class="practice-block">
+                        <h4><i class="ti ti-bulb"></i>設計思想のポイント（ベストプラクティス）</h4>
+                        <ul>
+                            <li>
+                                <strong>Discovery（発見）と Protect（保護）を分離する</strong>:
+                                まず「どこに何があるか」を継続的に把握し（discovery
+                                scan）、そのうえで「見つかったものをどう変換するか」を別レイヤー（de-identify
+                                template /
+                                job）で定義します。これにより、検出ロジックと変換ロジックを独立して更新できます。
+                            </li>
+                            <li>
+                                <strong
+                                    >保存データ（at rest）と生成データ（in transit / at
+                                    generation）で手法を使い分ける</strong
+                                >: Cloud Storage / BigQuery のような静的データには discovery scan と
+                                de-identify job、Gen AI の応答のようなリアルタイム生成データには DLP
+                                API の同期呼び出し（Content メソッド）を使います。
+                            </li>
+                            <li>
+                                <strong
+                                    >アクセス制御は「データを変換する」以外にもう一段の防御を用意する</strong
+                                >: BigQuery では変換だけでなく、IAM
+                                タグによる条件付きアクセスで「そもそも見せない」という防御も重ねます（多層防御
+                                / defense in depth）。
+                            </li>
+                        </ul>
+                    </div>
+
+                    <p class="source-line">
+                        <i class="ti ti-external-link"></i>出典:
+                        <a
+                            href="https://docs.cloud.google.com/sensitive-data-protection/docs/concepts-method-types"
+                            target="_blank"
+                            rel="noopener"
+                            >Method types | Sensitive Data Protection</a
+                        >
+                    </p>
+                </section>
+
+                <!-- ==================== 2. 事前知識 ==================== -->
+                <section id="prereq">
+                    <h2>
+                        <i class="ti ti-book"></i>2. 事前知識: Sensitive Data Protection の基礎用語
+                    </h2>
+                    <p>
+                        Cloud DLP は現在
+                        <strong>Sensitive Data Protection</strong>
+                        というサービス名の一部になっていますが、API 名は引き続き
+                        <code>Cloud Data Loss Prevention API</code>（DLP API）です。
+                    </p>
+
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>用語</th>
+                                    <th>説明</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>InfoType</strong></td>
+                                    <td>
+                                        「クレジットカード番号」「メールアドレス」など、検出対象となる機密データの種類。組み込み（built-in）とカスタムの2種類がある
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Inspect（検査）</strong></td>
+                                    <td>
+                                        データの中に InfoType
+                                        に一致する箇所があるかどうかを調べる処理
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>De-identify（非識別化）</strong></td>
+                                    <td>
+                                        検出した機密データをマスキング・トークン化・暗号化などで変換する処理
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Discovery（検出スキャン）</strong></td>
+                                    <td>
+                                        プロジェクト・フォルダ・組織単位で継続的にデータをプロファイリングし、機密データの存在場所を可視化する仕組み
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Data profile（データプロファイル）</strong></td>
+                                    <td>
+                                        discovery
+                                        スキャンの結果として生成される、リソースごとの機密データの統計・インサイト
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>InfoType Transformation</strong></td>
+                                    <td>非構造化テキスト（自由記述の文章など）に対する変換方法</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Record Transformation</strong></td>
+                                    <td>
+                                        CSV や BigQuery
+                                        テーブルのような構造化データに対して、列（フィールド）単位で適用する変換方法
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Template（テンプレート）</strong></td>
+                                    <td>
+                                        Inspect / De-identify の設定を再利用可能な形で保存したもの
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>DlpJob</strong></td>
+                                    <td>
+                                        実際にデータに対して inspect や de-identify
+                                        を実行する非同期ジョブ
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <p class="source-line">
+                        <i class="ti ti-external-link"></i>出典:
+                        <a
+                            href="https://docs.cloud.google.com/sensitive-data-protection/docs/concepts-infotypes"
+                            target="_blank"
+                            rel="noopener"
+                            >InfoTypes と infoType 検出器</a
+                        ><span class="sep">/</span>
+                        <a
+                            href="https://docs.cloud.google.com/sensitive-data-protection/docs/concepts-templates"
+                            target="_blank"
+                            rel="noopener"
+                            >Templates | Sensitive Data Protection</a
+                        ><span class="sep">/</span>
+                        <a
+                            href="https://docs.cloud.google.com/sensitive-data-protection/docs/data-profiles"
+                            target="_blank"
+                            rel="noopener"
+                            >Overview of sensitive data discovery</a
+                        >
+                    </p>
+                </section>
+
+                <!-- ==================== 3. Task 1 ==================== -->
+                <section id="task1">
+                    <h2><i class="ti ti-database"></i>3. Task 1: Cloud Storage の機密データ保護</h2>
+
+                    <section class="sub" id="task1-1">
+                        <h3>
+                            <i class="ti ti-calendar-time"></i>3-1. Discovery
+                            スキャン設定の作成とスケジューリング
+                        </h3>
+
+                        <div class="why-what">
+                            <div class="box">
+                                <div class="label">
+                                    <i class="ti ti-target-arrow"></i>何をするか
+                                </div>
+                                <code>gs://&lt;Project ID&gt;-car-owners</code>
+                                バケットを対象に、日次で自動的に機密データをプロファイリングする
+                                discovery scan configuration を作成します。
+                            </div>
+                            <div class="box">
+                                <div class="label"><i class="ti ti-help-circle"></i>なぜ重要か</div>
+                                discovery scan configuration
+                                は一度作成すれば、追加・変更されたファイルも自動的に再プロファイリングされ続けます。手動スキャンの都度実行は抜け漏れが発生しやすいため、継続的な監視の仕組みを最初に構築するのがベストプラクティスです。
+                            </div>
+                        </div>
+
+                        <div class="diagram-card">
+                            <div id="diagram-discovery" class="diagram-loading">
+                                図を読み込み中...
+                            </div>
+                        </div>
+
+                        <h4>設定値（ラボの要求仕様）</h4>
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>項目</th>
+                                        <th>値</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Select scope</td>
+                                        <td>Scan selected project</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Managed schedules</td>
+                                        <td>
+                                            Reprofile Daily を「On a schedule」と「When inspect
+                                            template changes」の両方に設定
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Select inspection template</td>
+                                        <td>新規作成</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Save data profile copies to BigQuery</td>
+                                        <td>
+                                            Dataset ID: <code>cs_discovery</code> / Table ID:
+                                            <code>cs_data_profiles</code>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Set location to store configuration</td>
+                                        <td>Multi-region: us</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Display name</td>
+                                        <td>Cloud Storage Daily Discovery</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h4>ステップバイステップ</h4>
+                        <ol>
+                            <li>
+                                Google Cloud コンソールで
+                                <strong>Sensitive Data Protection &gt; Discovery</strong>
+                                に移動します。
+                            </li>
+                            <li>
+                                <strong>Create Configuration</strong>
+                                をクリックし、スコープを「このプロジェクトをスキャン」に設定します。
+                            </li>
+                            <li>
+                                対象を Cloud Storage に絞り、<code
+                                    >&lt;Project ID&gt;-car-owners</code
+                                >
+                                バケットを指定します。
+                            </li>
+                            <li>
+                                <strong>Schedules</strong> で「Reprofile Daily」を選び、「On a
+                                schedule」と「When inspect template
+                                changes」の両方をトリガーとして有効化します。
+                            </li>
+                            <li>
+                                Inspection template は新規作成し、後続の Record 変換で使う
+                                infoType（クレジットカード番号など）を含めておきます。
+                            </li>
+                            <li>
+                                <strong>Save data profile copies to BigQuery</strong>
+                                を有効化し、Dataset ID に <code>cs_discovery</code>、Table ID に
+                                <code>cs_data_profiles</code> を指定します。
+                            </li>
+                            <li>
+                                設定の保存先ロケーションは Multi-region の
+                                <code>us</code>
+                                を選びます（バケットのロケーションと整合させるのがポイントです）。
+                            </li>
+                            <li>
+                                Display name に
+                                <code>Cloud Storage Daily Discovery</code>
+                                と入力し、設定を保存します。
+                            </li>
+                        </ol>
+
+                        <div class="practice-block">
+                            <h4><i class="ti ti-bulb"></i>ベストプラクティス</h4>
+                            <ul>
+                                <li>
+                                    <strong
+                                        >スケジュールは「定期」と「テンプレート変更時」の両方をトリガーにする</strong
+                                    >: 定期実行だけだと、inspection テンプレートの infoType
+                                    を追加・変更したときに反映が翌日以降になってしまいます。
+                                </li>
+                                <li>
+                                    <strong
+                                        >プロファイルの保存先ロケーションはデータのロケーションと合わせる</strong
+                                    >:
+                                    リージョンをまたぐと追加のレイテンシやコストが発生する可能性があります。
+                                </li>
+                                <li>
+                                    <strong
+                                        >discovery
+                                        設定を削除しても既存のデータプロファイルは消えない</strong
+                                    >ことを理解しておく:
+                                    再作成しても再プロファイルが即座に走るわけではない点に注意してください。
+                                </li>
+                            </ul>
+                        </div>
+
+                        <p class="source-line">
+                            <i class="ti ti-external-link"></i>出典:
+                            <a
+                                href="https://docs.cloud.google.com/sensitive-data-protection/docs/data-profiles"
+                                target="_blank"
+                                rel="noopener"
+                                >Overview of sensitive data discovery</a
+                            ><span class="sep">/</span>
+                            <a
+                                href="https://docs.cloud.google.com/sensitive-data-protection/docs/manage-scan-configurations"
+                                target="_blank"
+                                rel="noopener"
+                                >Manage discovery scan configurations</a
+                            ><span class="sep">/</span>
+                            <a
+                                href="https://docs.cloud.google.com/sensitive-data-protection/docs/common-discovery-configurations"
+                                target="_blank"
+                                rel="noopener"
+                                >Common discovery enablement scenarios</a
+                            >
+                        </p>
+                    </section>
+
+                    <section class="sub" id="task1-2">
+                        <h3>
+                            <i class="ti ti-replace"></i>3-2. De-identify
+                            テンプレートの作成（構造化データ用）
+                        </h3>
+
+                        <div class="why-what">
+                            <div class="box">
+                                <div class="label">
+                                    <i class="ti ti-target-arrow"></i>何をするか
+                                </div>
+                                CSV
+                                ファイルのようなテーブル形式データに対して、クレジットカード番号を
+                                infoType 名で置換する de-identify テンプレートを作成します。
+                            </div>
+                            <div class="box">
+                                <div class="label">
+                                    <i class="ti ti-help-circle"></i>なぜ Record 変換か
+                                </div>
+                                CSV や BigQuery テーブルは「列」という構造を持ちます。InfoType
+                                Transformation はテキスト全体に一律適用されますが、<strong
+                                    >Record Transformation</strong
+                                >
+                                は特定のフィールド（列）を指定して変換できるため、構造化データに適しています。
+                            </div>
+                        </div>
+
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>変換タイプ</th>
+                                        <th>用途</th>
+                                        <th>特徴</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>InfoType Transformation</td>
+                                        <td>自由記述のテキストファイル</td>
+                                        <td>
+                                            テキスト全体から infoType
+                                            を検出し変換。列の概念を持たない
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Record Transformation</td>
+                                        <td>CSV・BigQuery などの構造化データ</td>
+                                        <td>
+                                            特定のフィールドを指定し、そのフィールド内で infoType
+                                            を検出・変換できる
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h4>設定値（ラボの要求仕様）</h4>
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>項目</th>
+                                        <th>値</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Template ID</td>
+                                        <td><code>us_ccn_deidentify</code></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Data transformation type</td>
+                                        <td>Record</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Display name</td>
+                                        <td>De-identify Credit Card Numbers</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Location type</td>
+                                        <td>Multi-region: global</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Field for Transformation Rule</td>
+                                        <td><code>message</code></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Transformation type</td>
+                                        <td>Match on infoType</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Transformation Method</td>
+                                        <td>Replace with infoType name</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h4>ステップバイステップ</h4>
+                        <ol>
+                            <li>
+                                <strong
+                                    >Sensitive Data Protection &gt; Configuration &gt;
+                                    Templates</strong
+                                >
+                                に移動し、<strong>Create Template</strong> をクリックします。
+                            </li>
+                            <li>
+                                Template type で
+                                <strong>De-identify（機密データを削除）</strong> を選択します。
+                            </li>
+                            <li>
+                                Template ID に <code>us_ccn_deidentify</code>、Display name に
+                                <code>De-identify Credit Card Numbers</code> と入力します。
+                            </li>
+                            <li>
+                                Resource location は Global を選択します（CSV
+                                ファイルは複数リージョンをまたいで処理される可能性があるため）。
+                            </li>
+                            <li>
+                                Data transformation type で
+                                <strong>Record</strong> を選び、対象フィールドに
+                                <code>message</code> を指定します。
+                            </li>
+                            <li>
+                                Transformation type は
+                                <strong>Match on infoType</strong>、Transformation Method は
+                                <strong>Replace with infoType name</strong>（例:
+                                <code>CREDIT_CARD_NUMBER</code> という文字列に置換）を選択します。
+                            </li>
+                            <li>テンプレートを保存します。</li>
+                        </ol>
+
+                        <div class="practice-block">
+                            <h4><i class="ti ti-bulb"></i>ベストプラクティス</h4>
+                            <ul>
+                                <li>
+                                    <strong
+                                        >「置換後にどんな値が残るか」を意識してテンプレート設計する</strong
+                                    >: <code>Replace with infoType name</code> は元の値を infoType
+                                    名に置き換える手法で、値そのものは失われますが「そこに機密データがあった」という事実は監査ログとして残せます。
+                                </li>
+                                <li>
+                                    <strong>テンプレートを分離して管理する</strong>:
+                                    非構造化データ用（デフォルト）・構造化データ用・画像用でテンプレートを分けることで、ファイル形式ごとに最適な変換方法を適用できます。
+                                </li>
+                                <li>
+                                    <strong
+                                        >暗号化ベースの変換を使う場合は Cloud KMS
+                                        のラップキーが必須</strong
+                                    >（transient/raw
+                                    キーは非対応）である点も覚えておくと、将来トークン化などに拡張する際に役立ちます。
+                                </li>
+                            </ul>
+                        </div>
+
+                        <p class="source-line">
+                            <i class="ti ti-external-link"></i>出典:
+                            <a
+                                href="https://docs.cloud.google.com/sensitive-data-protection/docs/creating-templates-deid"
+                                target="_blank"
+                                rel="noopener"
+                                >Creating de-identification templates</a
+                            ><span class="sep">/</span>
+                            <a
+                                href="https://docs.cloud.google.com/sensitive-data-protection/docs/deidentify-sensitive-data"
+                                target="_blank"
+                                rel="noopener"
+                                >De-identifying sensitive data</a
+                            ><span class="sep">/</span>
+                            <a
+                                href="https://docs.cloud.google.com/sensitive-data-protection/docs/deidentify-storage-console"
+                                target="_blank"
+                                rel="noopener"
+                                >Create de-identified copies of data in Cloud Storage</a
+                            >
+                        </p>
+                    </section>
+
+                    <section class="sub" id="task1-3">
+                        <h3><i class="ti ti-player-play"></i>3-3. De-identify ジョブの実行</h3>
+
+                        <div class="why-what">
+                            <div class="box" style="grid-column: 1 / -1">
+                                <div class="label">
+                                    <i class="ti ti-target-arrow"></i>何をするか
+                                </div>
+                                作成した de-identify テンプレートを使い、バケット内の CSV
+                                ファイルに対して実際に非識別化を行うジョブを実行します。
+                            </div>
+                        </div>
+
+                        <div class="diagram-card">
+                            <div id="diagram-deidentify-job" class="diagram-loading">
+                                図を読み込み中...
+                            </div>
+                        </div>
+
+                        <h4>設定値（ラボの要求仕様）</h4>
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>項目</th>
+                                        <th>値</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Job ID</td>
+                                        <td><code>us_ccn_deidentify</code></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Location type</td>
+                                        <td>Multi-region: us</td>
+                                    </tr>
+                                    <tr>
+                                        <td>URL</td>
+                                        <td><code>gs://&lt;Project ID&gt;-car-owners/</code></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Scan recursively</td>
+                                        <td>有効化</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Sampling</td>
+                                        <td>100%（No sampling）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Structured de-identification template</td>
+                                        <td>3-2 で作成したテンプレートのフルパス</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Export transformation details to BigQuery</td>
+                                        <td>
+                                            Dataset ID: <code>cs_transformations</code> / Table ID:
+                                            <code>deidentify_ccn</code>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Cloud Storage output location</td>
+                                        <td>
+                                            <code
+                                                >gs://&lt;Project
+                                                ID&gt;-car-owners-transformed</code
+                                            >
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h4>ステップバイステップ</h4>
+                        <ol>
+                            <li>
+                                <strong>Sensitive Data Protection &gt; De-identification</strong>
+                                から <strong>Create job or job trigger</strong> に進みます。
+                            </li>
+                            <li>
+                                Job ID に <code>us_ccn_deidentify</code>、ロケーションタイプに
+                                Multi-region の <code>us</code> を指定します。
+                            </li>
+                            <li>
+                                入力データとして Cloud Storage を選び、URL に
+                                <code>gs://&lt;Project ID&gt;-car-owners/</code> を入力、<strong
+                                    >Scan recursively</strong
+                                >
+                                を有効にします。
+                            </li>
+                            <li>
+                                Sampling は 100%（No
+                                sampling）を選び、バケット内のすべてのオブジェクトを対象にします。
+                            </li>
+                            <li>
+                                <strong>Structured de-identification template</strong> に、3-2
+                                で作成した
+                                <code>us_ccn_deidentify</code>
+                                テンプレートのリソースパスを指定します。
+                            </li>
+                            <li>
+                                <strong>Export transformation details to BigQuery</strong>
+                                を有効化し、Dataset ID <code>cs_transformations</code>、Table ID
+                                <code>deidentify_ccn</code> を指定します。
+                            </li>
+                            <li>
+                                <strong>Cloud Storage output location</strong> に
+                                <code>gs://&lt;Project ID&gt;-car-owners-transformed</code>
+                                を指定し、元のバケットを上書きせず別バケットに出力するようにします。
+                            </li>
+                            <li>ジョブを作成し実行します。</li>
+                        </ol>
+
+                        <div class="practice-block">
+                            <h4><i class="ti ti-bulb"></i>ベストプラクティス</h4>
+                            <ul>
+                                <li>
+                                    <strong>出力先バケットを分離する</strong>:
+                                    元データを直接上書きせず、変換後データを別バケット（<code
+                                        >-transformed</code
+                                    >
+                                    サフィックス）に出力することで、元データの保全と変換結果の検証を両立できます。
+                                </li>
+                                <li>
+                                    <strong>変換ログを BigQuery にエクスポートする</strong>:
+                                    どのファイルのどの箇所が、どの infoType
+                                    としてどう変換されたかを後から追跡できるようにしておくことは、コンプライアンス監査の観点で重要です。
+                                </li>
+                                <li>
+                                    <strong>サンプリング率は要件に応じて調整する</strong>:
+                                    大規模データセットでは処理コストとのトレードオフでサンプリング率を下げる選択肢もありますが、機密データの見逃しリスクとのバランスを検討してください。
+                                </li>
+                            </ul>
+                        </div>
+
+                        <p class="source-line">
+                            <i class="ti ti-external-link"></i>出典:
+                            <a
+                                href="https://docs.cloud.google.com/sensitive-data-protection/docs/deidentify-storage-console"
+                                target="_blank"
+                                rel="noopener"
+                                >Create de-identified copies of data using the console</a
+                            ><span class="sep">/</span>
+                            <a
+                                href="https://docs.cloud.google.com/sensitive-data-protection/docs/deidentify-storage"
+                                target="_blank"
+                                rel="noopener"
+                                >...using the API</a
+                            ><span class="sep">/</span>
+                            <a
+                                href="https://docs.cloud.google.com/sensitive-data-protection/docs/inspecting-storage"
+                                target="_blank"
+                                rel="noopener"
+                                >Inspect Google Cloud storage and databases</a
+                            >
+                        </p>
+                    </section>
+                </section>
+
+                <!-- ==================== 4. Task 2 ==================== -->
+                <section id="task2">
+                    <h2><i class="ti ti-table"></i>4. Task 2: BigQuery の機密データ保護</h2>
+
+                    <section class="sub" id="task2-1">
+                        <h3><i class="ti ti-tag"></i>4-1. IAM Tags の作成</h3>
+
+                        <div class="why-what">
+                            <div class="box">
+                                <div class="label">
+                                    <i class="ti ti-target-arrow"></i>何をするか
+                                </div>
+                                SPII（Sensitive Personally Identifiable
+                                Information）というタグキーを組織の IAM に作成し、<code>Yes</code> /
+                                <code>No</code> の2つのタグバリューを定義します。
+                            </div>
+                            <div class="box">
+                                <div class="label">
+                                    <i class="ti ti-help-circle"></i>なぜタグを使うのか
+                                </div>
+                                Tag（リソースマネージャー
+                                タグ）は、キーバリュー形式のメタデータをリソースに付与し、IAM
+                                の条件と組み合わせることで柔軟なアクセス制御を実現します。Label
+                                と違い、タグは IAM
+                                ポリシーの条件式として直接評価できる点が特徴です。
+                            </div>
+                        </div>
+
+                        <div class="diagram-card">
+                            <div id="diagram-tag-hierarchy" class="diagram-loading">
+                                図を読み込み中...
+                            </div>
+                        </div>
+
+                        <h4>設定値（ラボの要求仕様）</h4>
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>項目</th>
+                                        <th>値</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Tag key</td>
+                                        <td><code>SPII</code></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tag key description</td>
+                                        <td>
+                                            Flag for sensitive personally identifiable information
+                                            (SPII)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tag key value 1</td>
+                                        <td><code>Yes</code>（機微な個人識別情報を含む）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tag key value 2</td>
+                                        <td><code>No</code>（含まない）</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h4>ステップバイステップ</h4>
+                        <ol>
+                            <li>
+                                Google Cloud コンソールの
+                                <strong>IAM &amp; Admin &gt; Tags</strong> に移動します。
+                            </li>
+                            <li>
+                                <strong>Create tag key</strong> から、キー名
+                                <code>SPII</code> と説明を入力します。
+                            </li>
+                            <li>
+                                タグバリューとして <code>Yes</code>（説明:
+                                機微な個人識別情報を含む）と <code>No</code>（説明:
+                                含まない）を追加します。
+                            </li>
+                            <li>
+                                保存すると、このタグキーは組織内のリソース（BigQuery
+                                データセットなど）に付与できるようになります。
+                            </li>
+                        </ol>
+
+                        <div class="practice-block">
+                            <h4><i class="ti ti-bulb"></i>ベストプラクティス</h4>
+                            <ul>
+                                <li>
+                                    <strong>タグキーは組織レベルで一意にする</strong>:
+                                    同じ親（組織・プロジェクト）内でタグキーが重複しないよう設計し、バインド時に一意な組み合わせを保証します。
+                                </li>
+                                <li>
+                                    <strong>タグの説明文を丁寧に書く</strong>:
+                                    <code>Yes</code>/<code>No</code>
+                                    のような単純な値であっても、何を意味するかの説明を明記します。
+                                </li>
+                                <li>
+                                    <strong
+                                        >タグの削除・変更が既存のアクセス権に影響することを理解する</strong
+                                    >: 変更前に影響範囲を確認してください。
+                                </li>
+                            </ul>
+                        </div>
+
+                        <p class="source-line">
+                            <i class="ti ti-external-link"></i>出典:
+                            <a
+                                href="https://docs.cloud.google.com/resource-manager/docs/tags/tags-overview"
+                                target="_blank"
+                                rel="noopener"
+                                >Tags overview | Resource Manager</a
+                            ><span class="sep">/</span>
+                            <a
+                                href="https://cloud.google.com/iam/docs/tags-access-control"
+                                target="_blank"
+                                rel="noopener"
+                                >Tags and access control | IAM</a
+                            >
+                        </p>
+                    </section>
+
+                    <section class="sub" id="task2-2">
+                        <h3>
+                            <i class="ti ti-shield-lock"></i>4-2. タグベースの条件付きアクセス付与
+                        </h3>
+
+                        <div class="why-what">
+                            <div class="box" style="grid-column: 1 / -1">
+                                <div class="label">
+                                    <i class="ti ti-target-arrow"></i>何をするか
+                                </div>
+                                Username 2 に対して、BigQuery Data Viewer ロールを「SPII タグの値が
+                                <code>No</code> であるデータセットに対してのみ」有効になるよう IAM
+                                条件を追加します。あわせて既存の Viewer ロールを Browser
+                                ロールに置き換えます。
+                            </div>
+                        </div>
+
+                        <div class="diagram-card">
+                            <div id="diagram-access-eval" class="diagram-loading">
+                                図を読み込み中...
+                            </div>
+                        </div>
+
+                        <h4>設定値（ラボの要求仕様）</h4>
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>項目</th>
+                                        <th>値</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>IAM Roles for Username 2</td>
+                                        <td>
+                                            Viewer を Browser に置き換え、BigQuery Data Viewer
+                                            は条件付きで維持
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Condition title</td>
+                                        <td>No SPII Access Only</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Condition type と operator</td>
+                                        <td>Tag / has value</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Value path</td>
+                                        <td><code>&lt;ORGANIZATION&gt;/SPII/No</code></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h4>ステップバイステップ</h4>
+                        <ol>
+                            <li>
+                                <strong>IAM &amp; Admin &gt; IAM</strong> で Username 2
+                                のロールを編集します。
+                            </li>
+                            <li>
+                                既存の Viewer ロールを削除し、代わりに
+                                <strong>Browser</strong> ロールを付与します。
+                            </li>
+                            <li>
+                                <strong>BigQuery Data Viewer</strong> ロールを維持したまま、<strong
+                                    >Add condition</strong
+                                >
+                                をクリックします。
+                            </li>
+                            <li>
+                                Condition title に <code>No SPII Access Only</code> と入力します。
+                            </li>
+                            <li>
+                                Condition builder で、Condition type を
+                                <strong>Resource &gt; Tag</strong>、Operator を
+                                <strong>has value</strong> に設定します。
+                            </li>
+                            <li>
+                                Value path に
+                                <code>&lt;ORGANIZATION&gt;/SPII/No</code>
+                                の形式でタグバリューのパスを入力します。
+                            </li>
+                            <li>条件を保存し、IAM ポリシー全体を保存します。</li>
+                            <li>
+                                （任意テストとして）Username 2 でログインし、BigQuery
+                                コンソールをリロードして
+                                <code>orders</code>
+                                データセットのみが表示されることを確認します。反映には数分かかる場合があります。
+                            </li>
+                        </ol>
+
+                        <div class="practice-block">
+                            <h4><i class="ti ti-bulb"></i>ベストプラクティス</h4>
+                            <ul>
+                                <li>
+                                    <strong>Viewer と Browser の違いを理解する</strong>:
+                                    <code>Viewer</code> は広い閲覧権限を持ちますが、<code
+                                        >Browser</code
+                                    >
+                                    はリソース階層と IAM
+                                    ポリシーの閲覧に限定された狭い権限です。広範な Viewer
+                                    を条件なしで残すと、条件付与の意味が薄れます。
+                                </li>
+                                <li>
+                                    <strong>タグの参照方式による挙動の違いを理解する</strong>:
+                                    タグキーやバリューを削除・再作成すると、条件の参照方法によっては意図せずアクセスが変化することがあります。
+                                </li>
+                                <li>
+                                    <strong>コンソールでの操作に制限がある点に注意する</strong>:
+                                    タグベースの条件付きアクセスを持つユーザーは、コンソール上で権限を変更できない場合があります（<code
+                                        >bq</code
+                                    >
+                                    コマンドや BigQuery API 経由の操作が必要）。
+                                </li>
+                            </ul>
+                        </div>
+
+                        <p class="source-line">
+                            <i class="ti ti-external-link"></i>出典:
+                            <a
+                                href="https://docs.cloud.google.com/bigquery/docs/tags"
+                                target="_blank"
+                                rel="noopener"
+                                >Control access with tags | BigQuery</a
+                            ><span class="sep">/</span>
+                            <a
+                                href="https://cloud.google.com/iam/docs/tags-access-control"
+                                target="_blank"
+                                rel="noopener"
+                                >Tags and access control | IAM</a
+                            >
+                        </p>
+                    </section>
+
+                    <section class="sub" id="task2-3">
+                        <h3><i class="ti ti-tags"></i>4-3. データセットへのタグ付与</h3>
+
+                        <div class="why-what">
+                            <div class="box" style="grid-column: 1 / -1">
+                                <div class="label">
+                                    <i class="ti ti-target-arrow"></i>何をするか
+                                </div>
+                                <code>orders</code> データセット（SPII を含まない）に対して、SPII
+                                タグの値を <code>No</code> として実際にバインドします。
+                            </div>
+                        </div>
+
+                        <h4>ステップバイステップ</h4>
+                        <ol>
+                            <li>
+                                BigQuery コンソールで
+                                <code>orders</code> データセットの詳細画面を開きます。
+                            </li>
+                            <li>
+                                <strong>Tags</strong> セクションから
+                                <strong>Manage tags</strong> を選択します。
+                            </li>
+                            <li>
+                                タグキー <code>SPII</code>、タグバリュー
+                                <code>No</code> を選択して保存します。
+                            </li>
+                            <li>
+                                <code>car_owners</code> データセットには SPII
+                                を含むため、同様の手順で
+                                <code>Yes</code>
+                                を付与しておくと、組織全体でタグ付けの一貫性が保たれます。
+                            </li>
+                        </ol>
+
+                        <div class="practice-block">
+                            <h4><i class="ti ti-bulb"></i>ベストプラクティス</h4>
+                            <ul>
+                                <li>
+                                    <strong
+                                        >すべての対象データセットに漏れなくタグを付与する運用を確立する</strong
+                                    >: タグが付いていないデータセットは
+                                    <code>has value</code>
+                                    条件では対象外になります。新規データセット作成時のタグ付与を必須化するガバナンスを検討してください。
+                                </li>
+                                <li>
+                                    <strong>タグ付与を discovery スキャンの結果と連動させる</strong
+                                    >: discovery
+                                    スキャンは検出結果に応じて自動的にタグを付与するアクション機能も持ちます。手動から自動タグ付けへの移行で保護漏れを防げます。
+                                </li>
+                            </ul>
+                        </div>
+
+                        <p class="source-line">
+                            <i class="ti ti-external-link"></i>出典:
+                            <a
+                                href="https://docs.cloud.google.com/bigquery/docs/tags"
+                                target="_blank"
+                                rel="noopener"
+                                >Control access with tags | BigQuery</a
+                            ><span class="sep">/</span>
+                            <a
+                                href="https://docs.cloud.google.com/sensitive-data-protection/docs/concepts-method-types"
+                                target="_blank"
+                                rel="noopener"
+                                >Method types | Sensitive Data Protection</a
+                            >（discovery のタグ付けアクションについて）
+                        </p>
+                    </section>
+                </section>
+
+                <!-- ==================== 5. Task 3 ==================== -->
+                <section id="task3">
+                    <h2><i class="ti ti-robot"></i>5. Task 3: Gen AI モデルレスポンスの保護</h2>
+
+                    <section class="sub" id="task3-1">
+                        <h3><i class="ti ti-code"></i>5-1. 既存の Python 関数を理解する</h3>
+                        <p>
+                            ラボのノートブック（<code>deidentify-model-response-challenge-lab.ipynb</code>）には、既にクレデンシャル（認証情報）が含まれるレスポンスを
+                            redact/block する関数が用意されています。これを拡張し、<strong
+                                >US Vehicle Identification Number（VIN）</strong
+                            >
+                            を検出した場合にレスポンス自体をブロックする機能を追加します。
+                        </p>
+                        <p>
+                            VIN は北米で流通するすべての自動車に割り当てられる、一意の 17
+                            桁の英数字コードです。
+                        </p>
+
+                        <div class="diagram-card">
+                            <div id="diagram-vin-flow" class="diagram-loading">
+                                図を読み込み中...
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="sub" id="task3-2">
+                        <h3><i class="ti ti-ban"></i>5-2. VIN 検出によるブロック機能の追加</h3>
+
+                        <div class="why-what">
+                            <div class="box" style="grid-column: 1 / -1">
+                                <div class="label">
+                                    <i class="ti ti-help-circle"></i
+                                    >なぜ「redact」ではなく「block」なのか
+                                </div>
+                                クレジットカード番号のような構造化データは値の一部だけをマスクして活用できますが、VIN
+                                のような一意識別子を含む生成 AI
+                                の応答は、部分的なマスキングでは車両の特定リスクを十分に下げられない場合があります。そのためこのタスクでは「検出したら応答全体を差し止める（block）」という、より保守的な方針を取ります。
+                            </div>
+                        </div>
+
+                        <p>
+                            以下は DLP API の Python
+                            クライアントを使った典型的な実装パターンです（既存関数を拡張するイメージ、実際の変数名や関数名はノートブックに合わせてください）。
+                        </p>
+
+                        <pre><code class="language-python">from google.cloud import dlp_v2
+
+def contains_sensitive_info(project_id: str, text: str, info_types: list[str]) -&gt; bool:
+    """DLP API でテキストを検査し、指定した infoType が
+    1件でも見つかれば True を返すヘルパー関数"""
+    dlp_client = dlp_v2.DlpServiceClient()
+    parent = f"projects/{project_id}/locations/global"
+
+    inspect_config = {
+        "info_types": [{"name": info_type} for info_type in info_types],
+        "min_likelihood": dlp_v2.Likelihood.POSSIBLE,
+        "include_quote": True,
+    }
+
+    response = dlp_client.inspect_content(
+        request={
+            "parent": parent,
+            "inspect_config": inspect_config,
+            "item": {"value": text},
+        }
+    )
+
+    return len(response.result.findings) &gt; 0
+
+
+def generate_guarded_response(prompt: str, model, project_id: str) -&gt; str:
+    """Gemini から応答を生成し、機密情報を検出した場合は
+    ブロックメッセージを返す"""
+    # 既存: クレデンシャル系 infoType
+    credential_info_types = ["AUTH_TOKEN", "GCP_CREDENTIALS", "GCP_API_KEY"]
+    # 追加: 米国の車両識別番号
+    vin_info_type = "US_VEHICLE_IDENTIFICATION_NUMBER"
+
+    response = model.generate_content(prompt)
+    model_response = response.text
+
+    all_info_types = credential_info_types + [vin_info_type]
+    if contains_sensitive_info(project_id, model_response, all_info_types):
+        return "[このレスポンスは機密情報を含むためブロックされました]"
+
+    return model_response</code></pre>
+
+                        <div class="callout">
+                            <i class="ti ti-alert-triangle"></i
+                            ><code>US_VEHICLE_IDENTIFICATION_NUMBER</code> は米国の VIN
+                            を対象とする、国・地域別の infoType 名の一例です。infoType 名は Google
+                            側で追加・変更されることがあるため、実装前に必ず
+                            <code>infoTypes.list</code> API または InfoType
+                            検出器リファレンスで最新の正式名称を確認してください。
+                        </div>
+
+                        <h4>ステップバイステップ</h4>
+                        <ol>
+                            <li>
+                                Workbench インスタンス
+                                <code>vertex-ai-jupyterlab</code> を開き、<code
+                                    >deidentify-model-response-challenge-lab.ipynb</code
+                                >
+                                を開きます（Notebook が表示されない場合は、JupyterLab
+                                タブを閉じてインスタンスを
+                                <strong>Reset</strong> し、1分待ってから再度
+                                <strong>Open JupyterLab</strong> します）。
+                            </li>
+                            <li>
+                                既存のクレデンシャル検出・ブロック関数のセルを確認し、使用している
+                                infoType のリストを把握します。
+                            </li>
+                            <li>
+                                その infoType リストに VIN 用の infoType を追加するか、VIN
+                                専用の検査を別途行い、いずれかで検出された場合にブロックするようロジックを拡張します。
+                            </li>
+                            <li>
+                                Project ID と
+                                Location（<code>global</code>）を、ラボ環境の値に置き換えます。
+                            </li>
+                        </ol>
+
+                        <div class="practice-block">
+                            <h4><i class="ti ti-bulb"></i>ベストプラクティス</h4>
+                            <ul>
+                                <li>
+                                    <strong>infoType の粒度を用途に合わせて選ぶ</strong>:
+                                    「クレデンシャル」は単一の infoType ではなく、<code
+                                        >AUTH_TOKEN</code
+                                    >
+                                    や
+                                    <code>GCP_CREDENTIALS</code>
+                                    など複数の具体的な検出器の集合です。
+                                </li>
+                                <li>
+                                    <strong><code>min_likelihood</code> を明示的に設定する</strong>:
+                                    要件に応じて <code>POSSIBLE</code>（広く拾う）から
+                                    <code>VERY_LIKELY</code>（誤検知を減らす）まで調整してください。
+                                </li>
+                                <li>
+                                    <strong>ブロック時のフォールバックメッセージを設計する</strong>:
+                                    単に空文字を返すのではなく、なぜブロックされたかが分かるメッセージを返すことで
+                                    UX を損なわずに安全性を確保できます。
+                                </li>
+                            </ul>
+                        </div>
+
+                        <p class="source-line">
+                            <i class="ti ti-external-link"></i>出典:
+                            <a
+                                href="https://docs.cloud.google.com/sensitive-data-protection/docs/infotypes-reference"
+                                target="_blank"
+                                rel="noopener"
+                                >InfoType detector reference</a
+                            ><span class="sep">/</span>
+                            <a
+                                href="https://docs.cloud.google.com/sensitive-data-protection/docs/redacting-sensitive-data"
+                                target="_blank"
+                                rel="noopener"
+                                >Redacting sensitive data from text</a
+                            ><span class="sep">/</span>
+                            <a
+                                href="https://docs.cloud.google.com/sensitive-data-protection/docs/samples/dlp-deidentify-replace-infotype"
+                                target="_blank"
+                                rel="noopener"
+                                >De-identify by replacing with infoType</a
+                            ><span class="sep">/</span>
+                            <a
+                                href="https://docs.cloud.google.com/sensitive-data-protection/docs/listing-infotypes"
+                                target="_blank"
+                                rel="noopener"
+                                >Listing built-in infoType detectors</a
+                            >
+                        </p>
+                    </section>
+
+                    <section class="sub" id="task3-3">
+                        <h3>
+                            <i class="ti ti-thermometer"></i>5-3. temperature=0 でテストする理由
+                        </h3>
+
+                        <div class="why-what">
+                            <div class="box" style="grid-column: 1 / -1">
+                                <div class="label">
+                                    <i class="ti ti-target-arrow"></i>何をするか
+                                </div>
+                                次のプロンプトでテスト用レスポンスを生成します:
+                                <code
+                                    >Is 4Y1SL65848Z411439 an example of a US Vehicle Identification
+                                    Number (VIN)?</code
+                                >
+                                このとき <code>temperature</code> を <code>0</code> に設定します。
+                            </div>
+                        </div>
+
+                        <p>
+                            <strong>なぜ temperature=0 なのか</strong>:
+                            <code>temperature</code> は生成 AI
+                            の出力のランダム性を制御するパラメータです。値が高いほど多様で創造的な出力になり、<code
+                                >0</code
+                            >
+                            に近いほど「最も確率の高いトークン」を選び続ける決定論的な（再現性の高い）出力になります。このラボでは
+                            DLP によるブロック機能が正しく動作するかを検証（progress
+                            check）するために、毎回同じ内容の VIN
+                            を含む応答が生成されることが重要なので、<code>temperature=0</code>
+                            を指定します。
+                        </p>
+
+                        <pre><code class="language-python">from vertexai.generative_models import GenerationConfig, GenerativeModel
+
+model = GenerativeModel("&lt;model_name&gt;")
+generation_config = GenerationConfig(temperature=0)
+
+prompt = "Is 4Y1SL65848Z411439 an example of a US Vehicle Identification Number (VIN)?"
+response = model.generate_content(prompt, generation_config=generation_config)
+print(response.text)</code></pre>
+
+                        <div class="practice-block">
+                            <h4><i class="ti ti-bulb"></i>ベストプラクティス</h4>
+                            <ul>
+                                <li>
+                                    <strong>検証用のプロンプトは決定論的に固定する</strong>:
+                                    セキュリティ機能のテストでは
+                                    <code>temperature=0</code
+                                    >（またはそれに準ずる低い値）を使うのが定石です。
+                                </li>
+                                <li>
+                                    <strong
+                                        >本番運用では用途に応じて temperature を切り替える</strong
+                                    >: ブロック機能のテストは 0
+                                    が適切ですが、創造性が求められる用途では別途適切な temperature
+                                    を設定してください。
+                                </li>
+                            </ul>
+                        </div>
+
+                        <p class="source-line">
+                            <i class="ti ti-external-link"></i>出典:
+                            <a
+                                href="https://cloud.google.com/vertex-ai/generative-ai/docs/multimodal/content-generation-parameters"
+                                target="_blank"
+                                rel="noopener"
+                                >Content generation parameters | Vertex AI</a
+                            >
+                        </p>
+                    </section>
+                </section>
+
+                <!-- ==================== 6. ベストプラクティス総まとめ ==================== -->
+                <section id="best-practices">
+                    <h2><i class="ti ti-checklist"></i>6. ベストプラクティス総まとめ</h2>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>領域</th>
+                                    <th>ベストプラクティス</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Discovery 全般</td>
+                                    <td>
+                                        発見（discovery）と保護（de-identify /
+                                        IAM）のレイヤーを分離して設計する
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>スケジューリング</td>
+                                    <td>
+                                        「定期実行」と「設定変更時」の両方をトリガーにして反映漏れを防ぐ
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>De-identify テンプレート</td>
+                                    <td>
+                                        データ形式（非構造化 / 構造化 /
+                                        画像）ごとにテンプレートを分ける
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>ジョブの出力先</td>
+                                    <td>
+                                        変換結果は元データと別の場所に出力し、元データを保全する
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>監査ログ</td>
+                                    <td>
+                                        変換の詳細を BigQuery にエクスポートし、追跡可能性を確保する
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>IAM タグ</td>
+                                    <td>タグキー・バリューの説明を明記し、組織内で一意性を保つ</td>
+                                </tr>
+                                <tr>
+                                    <td>条件付きアクセス</td>
+                                    <td>
+                                        広範なロール（Viewer
+                                        等）を条件なしで残さない。必要最小限のロール＋条件の組み合わせにする
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Gen AI 応答の保護</td>
+                                    <td>
+                                        一意識別子（VIN
+                                        等）はマスキングよりブロックなど、より保守的な方針を検討する
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>テストの再現性</td>
+                                    <td>
+                                        セキュリティ機能の検証には temperature=0
+                                        など決定論的な設定を使う
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>infoType の選定</td>
+                                    <td>
+                                        用途に応じて具体的な infoType を過不足なく指定し、<code
+                                            >min_likelihood</code
+                                        >
+                                        を明示する
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- ==================== 7. トラブルシューティング ==================== -->
+                <section id="troubleshooting">
+                    <h2><i class="ti ti-bug"></i>7. よくある詰まりポイント</h2>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>症状</th>
+                                    <th>原因の可能性</th>
+                                    <th>対処</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Discovery スキャン設定でロケーションが選べない</td>
+                                    <td>データのロケーションと構成保存先ロケーションの不整合</td>
+                                    <td>
+                                        バケットや BigQuery データセットのリージョンと、Multi-region
+                                        設定の整合性を確認する
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>De-identify ジョブがテンプレートを認識しない</td>
+                                    <td>
+                                        テンプレートのリソースパスの指定ミス、またはロケーション不一致
+                                    </td>
+                                    <td>
+                                        テンプレートのフルリソース名（<code>projects/.../locations/.../deidentifyTemplates/...</code>）を正確にコピーする
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Username 2 に BigQuery
+                                        データセットが表示されない／されすぎる
+                                    </td>
+                                    <td>タグの付与漏れ、条件式のタグパス誤り、反映の遅延</td>
+                                    <td>
+                                        タグバリューパスの構文（<code>ORGANIZATION/TAG_KEY/TAG_VALUE</code>）を再確認し、数分待って再読み込みする
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Notebook にファイルが表示されない</td>
+                                    <td>Workbench インスタンスのファイル同期不具合</td>
+                                    <td>
+                                        JupyterLab タブを閉じ、インスタンスを Reset → 1分待機 → 再度
+                                        Open JupyterLab
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>ブロック機能のテストで毎回結果が変わる</td>
+                                    <td>temperature が 0 になっていない</td>
+                                    <td>
+                                        <code>GenerationConfig(temperature=0)</code>
+                                        を明示的に設定しているか確認する
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- ==================== 8. 参考文献 ==================== -->
+                <section id="references">
+                    <h2><i class="ti ti-link"></i>8. 参考文献（出典 URL 一覧）</h2>
+
+                    <div class="ref-group">
+                        <h4><i class="ti ti-radar-2"></i>Discovery / スキャン構成</h4>
+                        <ul class="ref-list">
+                            <li>
+                                <i class="ti ti-file-text"></i
+                                ><span
+                                    >Overview of sensitive data discovery —
+                                    <a
+                                        href="https://docs.cloud.google.com/sensitive-data-protection/docs/data-profiles"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >https://docs.cloud.google.com/sensitive-data-protection/docs/data-profiles</a
+                                    ></span
+                                >
+                            </li>
+                            <li>
+                                <i class="ti ti-file-text"></i
+                                ><span
+                                    >Manage discovery scan configurations —
+                                    <a
+                                        href="https://docs.cloud.google.com/sensitive-data-protection/docs/manage-scan-configurations"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >https://docs.cloud.google.com/sensitive-data-protection/docs/manage-scan-configurations</a
+                                    ></span
+                                >
+                            </li>
+                            <li>
+                                <i class="ti ti-file-text"></i
+                                ><span
+                                    >Common discovery enablement scenarios —
+                                    <a
+                                        href="https://docs.cloud.google.com/sensitive-data-protection/docs/common-discovery-configurations"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >https://docs.cloud.google.com/sensitive-data-protection/docs/common-discovery-configurations</a
+                                    ></span
+                                >
+                            </li>
+                            <li>
+                                <i class="ti ti-file-text"></i
+                                ><span
+                                    >Inspect Google Cloud storage and databases for sensitive data —
+                                    <a
+                                        href="https://docs.cloud.google.com/sensitive-data-protection/docs/inspecting-storage"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >https://docs.cloud.google.com/sensitive-data-protection/docs/inspecting-storage</a
+                                    ></span
+                                >
+                            </li>
+                            <li>
+                                <i class="ti ti-file-text"></i
+                                ><span
+                                    >Method types | Sensitive Data Protection —
+                                    <a
+                                        href="https://docs.cloud.google.com/sensitive-data-protection/docs/concepts-method-types"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >https://docs.cloud.google.com/sensitive-data-protection/docs/concepts-method-types</a
+                                    ></span
+                                >
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="ref-group">
+                        <h4><i class="ti ti-replace"></i>De-identify テンプレートとジョブ</h4>
+                        <ul class="ref-list">
+                            <li>
+                                <i class="ti ti-file-text"></i
+                                ><span
+                                    >Create de-identified copies of data (console) —
+                                    <a
+                                        href="https://docs.cloud.google.com/sensitive-data-protection/docs/deidentify-storage-console"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >https://docs.cloud.google.com/sensitive-data-protection/docs/deidentify-storage-console</a
+                                    ></span
+                                >
+                            </li>
+                            <li>
+                                <i class="ti ti-file-text"></i
+                                ><span
+                                    >Create de-identified copies of data (API) —
+                                    <a
+                                        href="https://docs.cloud.google.com/sensitive-data-protection/docs/deidentify-storage"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >https://docs.cloud.google.com/sensitive-data-protection/docs/deidentify-storage</a
+                                    ></span
+                                >
+                            </li>
+                            <li>
+                                <i class="ti ti-file-text"></i
+                                ><span
+                                    >Creating Sensitive Data Protection de-identification templates
+                                    —
+                                    <a
+                                        href="https://docs.cloud.google.com/sensitive-data-protection/docs/creating-templates-deid"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >https://docs.cloud.google.com/sensitive-data-protection/docs/creating-templates-deid</a
+                                    ></span
+                                >
+                            </li>
+                            <li>
+                                <i class="ti ti-file-text"></i
+                                ><span
+                                    >Templates | Sensitive Data Protection —
+                                    <a
+                                        href="https://docs.cloud.google.com/sensitive-data-protection/docs/concepts-templates"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >https://docs.cloud.google.com/sensitive-data-protection/docs/concepts-templates</a
+                                    ></span
+                                >
+                            </li>
+                            <li>
+                                <i class="ti ti-file-text"></i
+                                ><span
+                                    >De-identifying sensitive data —
+                                    <a
+                                        href="https://docs.cloud.google.com/sensitive-data-protection/docs/deidentify-sensitive-data"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >https://docs.cloud.google.com/sensitive-data-protection/docs/deidentify-sensitive-data</a
+                                    ></span
+                                >
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="ref-group">
+                        <h4><i class="ti ti-list-details"></i>InfoType</h4>
+                        <ul class="ref-list">
+                            <li>
+                                <i class="ti ti-file-text"></i
+                                ><span
+                                    >InfoType detector reference —
+                                    <a
+                                        href="https://docs.cloud.google.com/sensitive-data-protection/docs/infotypes-reference"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >https://docs.cloud.google.com/sensitive-data-protection/docs/infotypes-reference</a
+                                    ></span
+                                >
+                            </li>
+                            <li>
+                                <i class="ti ti-file-text"></i
+                                ><span
+                                    >InfoTypes and infoType detectors —
+                                    <a
+                                        href="https://docs.cloud.google.com/sensitive-data-protection/docs/concepts-infotypes"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >https://docs.cloud.google.com/sensitive-data-protection/docs/concepts-infotypes</a
+                                    ></span
+                                >
+                            </li>
+                            <li>
+                                <i class="ti ti-file-text"></i
+                                ><span
+                                    >Listing built-in infoType detectors —
+                                    <a
+                                        href="https://docs.cloud.google.com/sensitive-data-protection/docs/listing-infotypes"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >https://docs.cloud.google.com/sensitive-data-protection/docs/listing-infotypes</a
+                                    ></span
+                                >
+                            </li>
+                            <li>
+                                <i class="ti ti-file-text"></i
+                                ><span
+                                    >Examples of custom infoType detectors —
+                                    <a
+                                        href="https://cloud.google.com/dlp/docs/examples-custom-infotypes"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >https://cloud.google.com/dlp/docs/examples-custom-infotypes</a
+                                    ></span
+                                >
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="ref-group">
+                        <h4><i class="ti ti-tags"></i>BigQuery タグと IAM 条件付きアクセス</h4>
+                        <ul class="ref-list">
+                            <li>
+                                <i class="ti ti-file-text"></i
+                                ><span
+                                    >Control access with tags | BigQuery —
+                                    <a
+                                        href="https://docs.cloud.google.com/bigquery/docs/tags"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >https://docs.cloud.google.com/bigquery/docs/tags</a
+                                    ></span
+                                >
+                            </li>
+                            <li>
+                                <i class="ti ti-file-text"></i
+                                ><span
+                                    >Tags overview | Resource Manager —
+                                    <a
+                                        href="https://docs.cloud.google.com/resource-manager/docs/tags/tags-overview"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >https://docs.cloud.google.com/resource-manager/docs/tags/tags-overview</a
+                                    ></span
+                                >
+                            </li>
+                            <li>
+                                <i class="ti ti-file-text"></i
+                                ><span
+                                    >Tags and access control | IAM —
+                                    <a
+                                        href="https://cloud.google.com/iam/docs/tags-access-control"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >https://cloud.google.com/iam/docs/tags-access-control</a
+                                    ></span
+                                >
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="ref-group">
+                        <h4><i class="ti ti-robot"></i>Gen AI 応答の保護 / DLP API</h4>
+                        <ul class="ref-list">
+                            <li>
+                                <i class="ti ti-file-text"></i
+                                ><span
+                                    >Redacting sensitive data from text —
+                                    <a
+                                        href="https://docs.cloud.google.com/sensitive-data-protection/docs/redacting-sensitive-data"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >https://docs.cloud.google.com/sensitive-data-protection/docs/redacting-sensitive-data</a
+                                    ></span
+                                >
+                            </li>
+                            <li>
+                                <i class="ti ti-file-text"></i
+                                ><span
+                                    >De-identify sensitive data by replacing with infoType —
+                                    <a
+                                        href="https://docs.cloud.google.com/sensitive-data-protection/docs/samples/dlp-deidentify-replace-infotype"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >https://docs.cloud.google.com/sensitive-data-protection/docs/samples/dlp-deidentify-replace-infotype</a
+                                    ></span
+                                >
+                            </li>
+                            <li>
+                                <i class="ti ti-file-text"></i
+                                ><span
+                                    >Authenticating to the DLP API —
+                                    <a
+                                        href="https://cloud.google.com/sensitive-data-protection/docs/auth"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >https://cloud.google.com/sensitive-data-protection/docs/auth</a
+                                    ></span
+                                >
+                            </li>
+                            <li>
+                                <i class="ti ti-file-text"></i
+                                ><span
+                                    >Content generation parameters | Vertex AI —
+                                    <a
+                                        href="https://cloud.google.com/vertex-ai/generative-ai/docs/multimodal/content-generation-parameters"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >https://cloud.google.com/vertex-ai/generative-ai/docs/multimodal/content-generation-parameters</a
+                                    ></span
+                                >
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="ref-group">
+                        <h4><i class="ti ti-school"></i>ラボ本体</h4>
+                        <ul class="ref-list">
+                            <li>
+                                <i class="ti ti-file-text"></i
+                                ><span
+                                    >Discover and Protect Sensitive Data Across Your Ecosystem:
+                                    Challenge Lab —
+                                    <a
+                                        href="https://www.skills.google/course_templates/1177/labs/609028"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >https://www.skills.google/course_templates/1177/labs/609028</a
+                                    ></span
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+
+                <footer class="footer">
+                    Cymbal Cars 機密データ保護チャレンジラボ 徹底解説ガイド — Google Cloud
+                    公式ドキュメントに基づき作成
+                </footer>
+            </div>
+        </main>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.12.0/mermaid.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+        <script>
+            const DIAGRAMS = {
+                overview: `flowchart TB
+    subgraph SRC["データソース"]
+        CS["Cloud Storage<br/>car-owners bucket"]
+        BQ["BigQuery<br/>car_owners / orders データセット"]
+        GENAI["Gen AI モデル<br/>Vertex AI Gemini"]
+    end
+    subgraph SDP["Sensitive Data Protection"]
+        DISC["Discovery スキャン<br/>定期的な自動検出"]
+        DEID["De-identify テンプレート<br/>クレジットカード番号を変換"]
+        TAG["IAM Tags<br/>SPII: Yes / No"]
+        DLPAPI["DLP API<br/>Python Client"]
+    end
+    subgraph OUT["保護後の状態"]
+        OUT1["変換済み CSV<br/>+ BigQuery 変換ログ"]
+        OUT2["タグに基づく<br/>条件付きアクセス"]
+        OUT3["VIN を含む応答は<br/>ブロック"]
+    end
+    CS --> DISC --> DEID --> OUT1
+    BQ --> TAG --> OUT2
+    GENAI --> DLPAPI --> OUT3
+    classDef sdpStyle fill:#1f2a44,stroke:#7c9eff,color:#ffffff
+    class SDP sdpStyle`,
+
+                discovery: `flowchart LR
+    A["Cloud Storage<br/>バケットを選択"] --> B["スケジュール設定<br/>Reprofile Daily"]
+    B --> C["Inspection テンプレート<br/>を新規作成"]
+    C --> D["データプロファイルの<br/>BigQuery 出力先を設定"]
+    D --> E["リージョンを設定<br/>Multi-region: us"]
+    E --> F["Discovery スキャン<br/>設定を保存"]
+    F --> G(("継続的な<br/>自動プロファイリング"))`,
+
+                'deidentify-job': `sequenceDiagram
+    participant U as エンジニア
+    participant SDP as Sensitive Data Protection
+    participant SRC as "gs://*-car-owners"
+    participant BQ as "BigQuery (cs_transformations)"
+    participant DST as "gs://*-car-owners-transformed"
+    U->>SDP: De-identify ジョブを作成<br/>(Structured template を指定)
+    SDP->>SRC: バケット内を再帰的にスキャン (100% サンプリング)
+    SRC-->>SDP: CSV ファイル一覧を取得
+    SDP->>SDP: infoType 検出 + Record Transformation 適用
+    SDP->>DST: 変換済みファイルを出力
+    SDP->>BQ: 変換の詳細ログをエクスポート
+    SDP-->>U: ジョブ完了通知`,
+
+                'tag-hierarchy': `flowchart TD
+    ORG["組織 (Organization)"] --> KEY["Tag Key: SPII"]
+    KEY --> V1["Tag Value: Yes<br/>（機微な個人識別情報を含む）"]
+    KEY --> V2["Tag Value: No<br/>（含まない）"]
+    V1 -.バインド.-> DS1["BigQuery データセット<br/>car_owners"]
+    V2 -.バインド.-> DS2["BigQuery データセット<br/>orders"]`,
+
+                'access-eval': `sequenceDiagram
+    participant User as Username 2
+    participant IAM as IAM ポリシー評価
+    participant DS1 as "car_owners (SPII: Yes)"
+    participant DS2 as "orders (SPII: No)"
+    User->>IAM: BigQuery データセット一覧をリクエスト
+    IAM->>IAM: 条件式を評価<br/>resource.tag == "SPII/No" ?
+    IAM-->>DS1: 条件不一致 → アクセス拒否
+    IAM-->>DS2: 条件一致 → アクセス許可
+    IAM-->>User: orders データセットのみ表示`,
+
+                'vin-flow': `flowchart TD
+    A["ユーザーのプロンプト"] --> B["Gemini モデル<br/>generate_content()"]
+    B --> C["モデルのレスポンス文字列"]
+    C --> D{"DLP API で inspect<br/>クレデンシャル or VIN を検出？"}
+    D -- "検出あり" --> E["レスポンスをブロック<br/>（または redact）"]
+    D -- "検出なし" --> F["レスポンスをそのまま返す"]`,
+            };
+
+            const DIAGRAM_TARGETS = {
+                overview: 'diagram-overview',
+                discovery: 'diagram-discovery',
+                'deidentify-job': 'diagram-deidentify-job',
+                'tag-hierarchy': 'diagram-tag-hierarchy',
+                'access-eval': 'diagram-access-eval',
+                'vin-flow': 'diagram-vin-flow',
+            };
+
+            async function renderDiagrams() {
+                await document.fonts.ready;
+
+                mermaid.initialize({
+                    startOnLoad: false,
+                    theme: 'dark',
+                    securityLevel: 'loose',
+                    fontFamily: 'inherit',
+                    flowchart: { useMaxWidth: false, htmlLabels: true },
+                    sequence: { useMaxWidth: false },
+                });
+
+                let i = 0;
+                for (const [key, src] of Object.entries(DIAGRAMS)) {
+                    const targetId = DIAGRAM_TARGETS[key];
+                    const container = document.getElementById(targetId);
+                    if (!container) continue;
+
+                    try {
+                        const { svg } = await mermaid.render(`mermaid-render-${i++}`, src);
+                        container.innerHTML = svg;
+
+                        const svgEl = container.querySelector('svg');
+                        if (svgEl) {
+                            svgEl.removeAttribute('width');
+                            svgEl.removeAttribute('height');
+
+                            const viewBoxAttr = svgEl.getAttribute('viewBox');
+                            if (viewBoxAttr) {
+                                const parts = viewBoxAttr.split(/\s+/).map(Number);
+                                const extra =
+                                    src.trim().startsWith('sequenceDiagram') ||
+                                    src.trim().startsWith('stateDiagram')
+                                        ? 110
+                                        : 15;
+                                parts[3] = parts[3] + extra;
+                                svgEl.setAttribute('viewBox', parts.join(' '));
+                                svgEl.style.width = Math.min(parts[2], 1200) + 'px';
+                            }
+                            svgEl.style.maxWidth = '100%';
+                            svgEl.style.height = 'auto';
+                            svgEl.style.overflow = 'visible';
+                        }
+                    } catch (err) {
+                        container.innerHTML = `<div class="diagram-loading">図の描画に失敗しました: ${key}</div>`;
+                    }
+                }
+            }
+
+            function setupActiveNav() {
+                const sections = document.querySelectorAll('section[id]');
+                const navLinks = document.querySelectorAll('.nav-link[data-target]');
+                const subLinks = document.querySelectorAll('.nav-sublink');
+
+                const observer = new IntersectionObserver(
+                    (entries) => {
+                        entries.forEach((entry) => {
+                            if (entry.isIntersecting) {
+                                const id = entry.target.id;
+
+                                navLinks.forEach((link) => {
+                                    link.classList.toggle('active', link.dataset.target === id);
+                                });
+
+                                subLinks.forEach((link) => {
+                                    link.classList.toggle(
+                                        'active',
+                                        link.getAttribute('href') === '#' + id,
+                                    );
+                                });
+                            }
+                        });
+                    },
+                    { rootMargin: '-20% 0px -70% 0px' },
+                );
+
+                sections.forEach((section) => observer.observe(section));
+
+                navLinks.forEach((link) => {
+                    link.addEventListener('click', () => {
+                        const target = document.getElementById(link.dataset.target);
+                        if (target) target.scrollIntoView({ behavior: 'smooth' });
+                    });
+                });
+            }
+
+            window.addEventListener('DOMContentLoaded', () => {
+                renderDiagrams();
+                setupActiveNav();
+                if (window.hljs) {
+                    document
+                        .querySelectorAll('pre code')
+                        .forEach((block) => hljs.highlightElement(block));
+                }
+            });
+        </script>
+    </body>
+</html>

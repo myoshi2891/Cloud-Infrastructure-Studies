@@ -120,6 +120,13 @@ app/
         constants.ts                # Domain 4 固有定数
         domain4.css                 # ページ固有スタイル
         layout.tsx                  # Domain 4 レイアウト
+  comptia/
+    network-plus/
+      page.tsx                      # CompTIA Network+ (N10-009 / V9) 完全ガイド (Server)
+      ComptiaNetworkPlusGuide.tsx   # 本文＋インタラクション (Client。全13セクション、Mermaid等)
+      NavBar.tsx                    # サイドバーナビ (IntersectionObserver)
+      constants.ts                  # Mermaid 図定義（4図）
+      page.css                      # ページ固有スタイル（サイドバー幅280px契約準拠）
       architecture-guide/page.tsx   # アーキテクチャガイドページ
     hands-on/
       cloud-load-balancing-guide/
@@ -216,6 +223,18 @@ app/
     professional-cloud-network-engineer/
       page.tsx                      # PCNE 試験対策ページ（概要・ドメイン別解説）
       components/                   # セクションコンポーネント（Section1-6 + Summary）
+      section1-vpc-design/
+        page.tsx                    # Section 1: VPCネットワーク設計 完全ガイド (Server)
+        PcneSection1VpcDesignGuide.tsx # 本文＋インタラクション (Client。全10セクション、31 Mermaid図等)
+        NavBar.tsx                  # サイドバーナビ (IntersectionObserver)
+        constants.ts                # Mermaid 図定義 (31図)
+        page.css                    # ページ固有スタイル
+      section2-vpc-implementation/
+        page.tsx                    # Section 2: VPCネットワークの実装 完全ガイド (Server)
+        PcneSection2VpcImplementationGuide.tsx # 本文＋インタラクション (Client。全9セクション、17 Mermaid図等)
+        NavBar.tsx                  # サイドバーナビ (IntersectionObserver)
+        constants.ts                # Mermaid 図定義 (17図)
+        page.css                    # ページ固有スタイル
     professional-cloud-network-engineer-step-by-step/
       page.tsx                      # PCNE ステップバイステップ実践ガイド
       components/                   # セクションコンポーネント（Section1-6）

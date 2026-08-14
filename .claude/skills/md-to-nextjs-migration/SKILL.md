@@ -182,14 +182,6 @@ assert_staged_scope() {
     esac
   done
 }
-
-# ステージ失敗時: working tree を保持したまま、このステップの index を解除する
-cleanup_stage() {
-  git reset --mixed --quiet HEAD || {
-    echo 'ステージ差分の cleanup に失敗しました。index を確認してください。' >&2
-    return 1
-  }
-}
 ```
 
 ```bash
@@ -306,20 +298,14 @@ if ! git status --short; then
   echo 'worktree の状態を取得できません。コミットを中止します。' >&2
   exit 1
 fi
+assert_clean_stage || exit 1
+git add -p -- app/constants.ts app/gcl/<exam>/<changed-file-1> app/gcl/<exam>/<changed-file-2> || exit 1
+assert_staged_scope app/constants.ts app/gcl/<exam>/<changed-file-1> app/gcl/<exam>/<changed-file-2> || exit 1
+git diff --cached
 [ "${COMMIT_AUTHORIZED:-}" = 'yes' ] || {
   echo 'ユーザーの明示認可がないため、コミットしません。' >&2
   exit 1
 }
-assert_clean_stage || exit 1
-if ! git add -p -- app/constants.ts app/gcl/<exam>/<changed-file-1> app/gcl/<exam>/<changed-file-2>; then
-  cleanup_stage || true
-  exit 1
-fi
-if ! assert_staged_scope app/constants.ts app/gcl/<exam>/<changed-file-1> app/gcl/<exam>/<changed-file-2>; then
-  cleanup_stage || true
-  exit 1
-fi
-git diff --cached
 git commit -m "feat(gcl/<exam>/SN): implement migrated content"
 ```
 
@@ -336,19 +322,13 @@ if ! git status --short; then
   echo 'worktree の状態を取得できません。コミットを中止します。' >&2
   exit 1
 fi
+assert_clean_stage || exit 1
+git add -p -- <refactored-files> || exit 1
+assert_staged_scope <refactored-files> || exit 1
 [ "${COMMIT_AUTHORIZED:-}" = 'yes' ] || {
   echo 'ユーザーの明示認可がないため、コミットしません。' >&2
   exit 1
 }
-assert_clean_stage || exit 1
-if ! git add -p -- <refactored-files>; then
-  cleanup_stage || true
-  exit 1
-fi
-if ! assert_staged_scope <refactored-files>; then
-  cleanup_stage || true
-  exit 1
-fi
 git commit -m "refactor(gcl/<exam>/SN): integrate migrated content"
 ```
 

@@ -12,9 +12,12 @@ const __dirname = dirname(__filename);
 describe('スモークテスト', () => {
     it('Home ページがレンダリングされること', () => {
         render(<Home />);
-        // h1 内で "Cloud Infrastructure" と "Studies" が別要素に分かれているため
-        // getByRole でアクセシブル名を検索する
-        expect(screen.getByRole('heading', { level: 1, name: /cloud infrastructure/i })).toBeInTheDocument();
+        expect(
+            screen.getByRole('heading', {
+                level: 1,
+                name: 'インフラの知識を、確かな実力へ。',
+            })
+        ).toBeInTheDocument();
     });
 
     it('should verify that .app-layout uses block layout (Red Phase)', () => {

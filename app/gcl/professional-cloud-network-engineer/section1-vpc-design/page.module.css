@@ -1,0 +1,568 @@
+
+.root {
+    background: var(--color-pcne-design-background);
+    background-image:
+        radial-gradient(circle at 15% 8%, rgba(124, 158, 255, 0.1), transparent 45%),
+        radial-gradient(circle at 85% 92%, rgba(95, 212, 168, 0.07), transparent 50%);
+    background-attachment: fixed;
+    color: var(--color-pcne-design-foreground-muted);
+    font-family: var(--font-body);
+    line-height: 1.85;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+}
+
+.root :global(.sidebar) {
+    position: fixed;
+    top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px));
+    left: 0;
+    width: 280px;
+    height: calc(100vh - var(--header-h, 60px) - var(--disclaimer-height, 0px));
+    overflow-y: auto;
+    background: var(--color-pcne-design-elevated);
+    border-right: 1px solid var(--color-pcne-design-border);
+    padding: 28px 22px 40px;
+    z-index: 40;
+}
+
+.root :global(.main) {
+    margin-left: 280px;
+    padding: 36px 48px 80px;
+    width: calc(100% - 280px);
+    max-width: none;
+}
+
+.root :global(.section-block) {
+    scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 24px);
+}
+
+@media (max-width: 900px) {
+    .root :global(.sidebar) {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+    }
+    .root :global(.sidebar):global(.open) {
+        transform: translateX(0);
+    }
+    .root :global(.main) {
+        margin-left: 0;
+        width: 100%;
+        padding: 24px 18px 60px;
+    }
+}
+
+.root {
+            * {
+                box-sizing: border-box;
+            }
+            
+
+            
+
+            
+
+            a {
+                color: var(--color-pcne-design-accent-soft);
+                text-decoration: underline;
+                text-decoration-color: rgba(169, 192, 255, 0.35);
+                text-underline-offset: 3px;
+            }
+            a:hover {
+                color: var(--color-pcne-design-accent);
+            }
+
+            /* ---------- Layout ---------- */
+            :global(.layout) {
+                display: block;
+            }
+
+            :global(.sidebar) {
+                position: fixed;
+                left: 0;
+                width: 280px;
+                overflow-y: auto;
+                background: var(--color-pcne-design-elevated);
+                border-right: 1px solid var(--color-pcne-design-border);
+                padding: 28px 22px 40px;
+                z-index: 40;
+            }
+
+            :global(.sidebar) :global(.brand) {
+                font-size: 0.78rem;
+                letter-spacing: 0.08em;
+                color: var(--color-pcne-design-accent-soft);
+                text-transform: uppercase;
+                margin-bottom: 4px;
+                font-weight: 600;
+            }
+            :global(.sidebar) :global(.brand-sub) {
+                font-size: 0.72rem;
+                color: var(--color-pcne-design-foreground-faint);
+                margin-bottom: 22px;
+                line-height: 1.5;
+            }
+
+            :global(.sidebar) nav ul {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+            :global(.sidebar) nav li {
+                margin: 0;
+            }
+            :global(.sidebar) nav a {
+                display: block;
+                padding: 9px 12px;
+                border-radius: 8px;
+                color: var(--color-pcne-design-foreground-faint);
+                text-decoration: none;
+                font-size: 0.87rem;
+                line-height: 1.4;
+                border-left: 2px solid transparent;
+                transition:
+                    background 0.15s ease,
+                    color 0.15s ease,
+                    border-color 0.15s ease;
+            }
+            :global(.sidebar) nav a:hover {
+                background: rgba(124, 158, 255, 0.12);
+                color: var(--color-pcne-design-foreground);
+            }
+            :global(.sidebar) nav a:global(.active) {
+                background: #1d3356 !important;
+                background: linear-gradient(90deg, rgba(124, 158, 255, 0.28), rgba(124, 158, 255, 0.16)) !important;
+                color: #ffffff !important;
+                border-left: 3px solid var(--color-pcne-design-accent) !important;
+                font-weight: 600 !important;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+            }
+
+            :global(.sidebar-toggle) {
+                display: none;
+                position: fixed;
+                top: 14px;
+                left: 14px;
+                z-index: 60;
+                background: var(--color-pcne-design-card);
+                border: 1px solid var(--color-pcne-design-border);
+                color: var(--color-pcne-design-foreground);
+                width: 42px;
+                height: 42px;
+                border-radius: 10px;
+                font-size: 1.1rem;
+                cursor: pointer;
+            }
+
+            :global(.main) {
+                margin-left: 280px;
+                padding: 0 56px 100px;
+            }
+
+            /* ---------- Hero ---------- */
+            :global(.hero) {
+                margin-left: 280px;
+                padding: 72px 56px 40px;
+                border-bottom: 1px solid var(--color-pcne-design-border-soft);
+            }
+            :global(.hero) :global(.eyebrow) {
+                display: inline-block;
+                font-size: 0.78rem;
+                letter-spacing: 0.1em;
+                text-transform: uppercase;
+                color: var(--color-pcne-design-green);
+                background: rgba(95, 212, 168, 0.1);
+                border: 1px solid rgba(95, 212, 168, 0.3);
+                padding: 5px 12px;
+                border-radius: 999px;
+                margin-bottom: 22px;
+            }
+            :global(.hero) h1 {
+                font-family: var(--font-display);
+                font-size: clamp(1.9rem, 4vw, 2.9rem);
+                line-height: 1.3;
+                margin: 0 0 14px;
+                background: linear-gradient(
+                    135deg,
+                    #ffffff 0%,
+                    var(--color-pcne-design-accent-soft) 60%,
+                    var(--color-pcne-design-accent) 100%
+                );
+                -webkit-background-clip: text;
+                background-clip: text;
+                -webkit-text-fill-color: transparent;
+                font-weight: 800;
+            }
+            :global(.hero) :global(.hero-sub) {
+                font-size: 1.15rem;
+                color: var(--color-pcne-design-foreground-muted);
+                margin: 0 0 26px;
+            }
+            blockquote:global(.hero-lede) {
+                margin: 0;
+                padding: 18px 22px;
+                background: var(--color-pcne-design-card);
+                border: 1px solid var(--color-pcne-design-border);
+                border-left: 3px solid var(--color-pcne-design-accent);
+                border-radius: 10px;
+                color: var(--color-pcne-design-foreground-muted);
+                font-size: 0.98rem;
+            }
+            blockquote:global(.hero-lede) a {
+                color: var(--color-pcne-design-accent-soft);
+                text-decoration: underline;
+            }
+            blockquote:global(.hero-lede) p {
+                margin: 6px 0;
+            }
+
+            /* ---------- Prose ---------- */
+            :global(.main) h2 {
+                font-family: var(--font-display);
+                font-size: 1.7rem;
+                color: var(--color-pcne-design-foreground);
+                margin: 64px 0 20px;
+                padding-top: 8px;
+                border-top: 1px solid var(--color-pcne-design-border-soft);
+                scroll-margin-top: 24px;
+            }
+            :global(.main) > h2:first-of-type,
+            :global(.main) div:first-child > h2 {
+                border-top: none;
+                margin-top: 32px;
+            }
+
+            :global(.main) h3 {
+                font-family: var(--font-display);
+                font-size: 1.28rem;
+                color: var(--color-pcne-design-accent-soft);
+                margin: 42px 0 16px;
+                scroll-margin-top: 24px;
+            }
+            :global(.main) h4 {
+                font-size: 1.05rem;
+                color: var(--color-pcne-design-foreground);
+                margin: 26px 0 10px;
+            }
+
+            :global(.main) p {
+                margin: 0 0 18px;
+                color: var(--color-pcne-design-foreground-muted);
+            }
+            :global(.main) ul,
+            :global(.main) ol {
+                margin: 0 0 18px;
+                padding-left: 1.5em;
+                color: var(--color-pcne-design-foreground-muted);
+            }
+            :global(.main) li {
+                margin-bottom: 8px;
+            }
+            :global(.main) strong {
+                color: var(--color-pcne-design-foreground);
+                font-weight: 700;
+            }
+            :global(.main) hr {
+                border: none;
+                border-top: 1px solid var(--color-pcne-design-border-soft);
+                margin: 48px 0;
+            }
+
+            :global(.main) blockquote {
+                margin: 22px 0;
+                padding: 14px 20px;
+                background: rgba(124, 158, 255, 0.06);
+                border: 1px solid var(--color-pcne-design-border);
+                border-left: 3px solid var(--color-pcne-design-accent-dim);
+                border-radius: 8px;
+                color: var(--color-pcne-design-foreground-faint);
+                font-size: 0.9rem;
+            }
+            :global(.main) blockquote p {
+                margin: 0;
+                color: var(--color-pcne-design-foreground-faint);
+            }
+            :global(.main) blockquote strong {
+                color: var(--color-pcne-design-accent-soft);
+            }
+            :global(.main) blockquote a {
+                color: var(--color-pcne-design-accent-soft);
+            }
+
+            code:not(pre code) {
+                background: rgba(124, 158, 255, 0.12);
+                color: var(--color-pcne-design-accent-soft);
+                padding: 2px 6px;
+                border-radius: 5px;
+                font-family: var(--font-mono);
+                font-size: 0.88em;
+                overflow-wrap: break-word;
+            }
+
+            pre:not(:global(.mermaid)) {
+                background: #0a1526;
+                border: 1px solid var(--color-pcne-design-border);
+                border-radius: 10px;
+                padding: 16px 18px;
+                overflow-x: auto;
+                font-size: 0.86rem;
+            }
+            pre:not(:global(.mermaid)) code {
+                background: none;
+                padding: 0;
+                color: var(--color-pcne-design-foreground-muted);
+                overflow-wrap: normal;
+            }
+
+            /* ---------- Tables ---------- */
+            :global(.table-scroll) {
+                overflow-x: auto;
+                margin: 0 0 26px;
+                border: 1px solid var(--color-pcne-design-border);
+                border-radius: 10px;
+            }
+            table {
+                border-collapse: collapse;
+                width: 100%;
+                min-width: 560px;
+                font-size: 0.92rem;
+            }
+            th,
+            td {
+                padding: 11px 15px;
+                text-align: left;
+                border-bottom: 1px solid var(--color-pcne-design-border-soft);
+                overflow-wrap: break-word;
+            }
+            th {
+                background: var(--color-pcne-design-elevated);
+                color: var(--color-pcne-design-accent-soft);
+                font-weight: 600;
+                white-space: nowrap;
+            }
+            tr:last-child td {
+                border-bottom: none;
+            }
+            tbody tr:hover {
+                background: rgba(124, 158, 255, 0.05);
+            }
+
+            /* ---------- Mermaid ---------- */
+            pre:global(.mermaid) {
+                width: 100%;
+                display: flex;
+                justify-content: safe center;
+                overflow-x: auto;
+                margin: 1.5rem auto 2rem;
+                padding: 20px 8px;
+                background: var(--color-pcne-design-card);
+                border: 1px solid var(--color-pcne-design-border);
+                border-radius: 12px;
+            }
+
+            /* ---------- Quick nav cards ---------- */
+            :global(.quicknav-grid) {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 16px;
+                margin: 28px 0 40px;
+            }
+            @media (max-width: 720px) {
+                :global(.quicknav-grid) {
+                    grid-template-columns: 1fr;
+                }
+            }
+            :global(.quicknav-card) {
+                display: block;
+                background: var(--color-pcne-design-card);
+                border: 1px solid var(--color-pcne-design-border);
+                border-radius: 12px;
+                padding: 20px 22px;
+                text-decoration: none;
+                transition:
+                    border-color 0.15s ease,
+                    transform 0.15s ease;
+                min-width: 0;
+            }
+            :global(.quicknav-card):hover {
+                border-color: var(--color-pcne-design-accent-dim);
+                transform: translateY(-2px);
+            }
+            :global(.quicknav-badge) {
+                display: inline-block;
+                font-size: 0.75rem;
+                font-weight: 700;
+                color: var(--color-pcne-design-accent);
+                background: rgba(124, 158, 255, 0.12);
+                padding: 3px 10px;
+                border-radius: 999px;
+                margin-bottom: 10px;
+            }
+            :global(.quicknav-card) h3 {
+                margin: 0 0 8px;
+                font-size: 1.05rem;
+                color: var(--color-pcne-design-foreground);
+            }
+            :global(.quicknav-card) p {
+                margin: 0;
+                font-size: 0.86rem;
+                color: var(--color-pcne-design-foreground-faint);
+                overflow-wrap: break-word;
+            }
+
+            /* ---------- Reference grid ---------- */
+            :global(.ref-grid) {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 18px;
+                margin: 24px 0 32px;
+            }
+            @media (max-width: 720px) {
+                :global(.ref-grid) {
+                    grid-template-columns: 1fr;
+                }
+            }
+            :global(.ref-card) {
+                background: var(--color-pcne-design-card);
+                border: 1px solid var(--color-pcne-design-border);
+                border-radius: 12px;
+                padding: 20px 22px;
+                min-width: 0;
+            }
+            :global(.ref-card) h4 {
+                margin: 0 0 12px;
+                font-size: 0.95rem;
+                color: var(--color-pcne-design-accent-soft);
+            }
+            :global(.ref-card) ul {
+                margin: 0;
+                padding: 0;
+                list-style: none;
+            }
+            :global(.ref-card) li {
+                margin-bottom: 9px;
+            }
+            :global(.ref-card) a {
+                font-size: 0.87rem;
+                color: var(--color-pcne-design-foreground-muted);
+                text-decoration: none;
+                overflow-wrap: break-word;
+            }
+            :global(.ref-card) a:hover {
+                color: var(--color-pcne-design-accent-soft);
+            }
+
+            /* ---------- Checklist ---------- */
+            :global(.checklist-card) {
+                background: var(--color-pcne-design-card);
+                border: 1px solid var(--color-pcne-design-border);
+                border-radius: 12px;
+                padding: 8px 22px 12px;
+                margin: 20px 0 32px;
+            }
+            :global(.checklist-header) {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 14px 0;
+                border-bottom: 1px solid var(--color-pcne-design-border-soft);
+                margin-bottom: 6px;
+                font-size: 0.92rem;
+                color: var(--color-pcne-design-foreground);
+                font-weight: 600;
+            }
+            :global(.checklist-counter) {
+                font-size: 0.82rem;
+                color: var(--color-pcne-design-accent-soft);
+                font-weight: 600;
+                background: rgba(124, 158, 255, 0.12);
+                padding: 3px 12px;
+                border-radius: 999px;
+            }
+            :global(.checklist-card) ul {
+                list-style: none;
+                margin: 0;
+                padding: 8px 0;
+            }
+            :global(.checklist-card) li {
+                margin: 0;
+                border-radius: 8px;
+                transition: background 0.15s ease;
+            }
+            :global(.checklist-card) li:hover {
+                background: rgba(124, 158, 255, 0.06);
+            }
+            :global(.checklist-card) label {
+                display: flex;
+                align-items: flex-start;
+                gap: 12px;
+                padding: 10px 8px;
+                cursor: pointer;
+                font-size: 0.92rem;
+                color: var(--color-pcne-design-foreground-muted);
+            }
+            :global(.checklist-card) input[type='checkbox'] {
+                appearance: none;
+                -webkit-appearance: none;
+                flex: 0 0 auto;
+                width: 19px;
+                height: 19px;
+                margin-top: 2px;
+                border: 1.5px solid var(--color-pcne-design-border);
+                border-radius: 5px;
+                background: var(--color-pcne-design-elevated);
+                position: relative;
+                cursor: pointer;
+            }
+            :global(.checklist-card) input[type='checkbox']:checked {
+                background: var(--color-pcne-design-accent);
+                border-color: var(--color-pcne-design-accent);
+            }
+            :global(.checklist-card) input[type='checkbox']:checked::after {
+                content: '';
+                position: absolute;
+                left: 5px;
+                top: 1px;
+                width: 5px;
+                height: 10px;
+                border: solid #07111e;
+                border-width: 0 2px 2px 0;
+                transform: rotate(40deg);
+            }
+            :global(.checklist-text) {
+                flex: 1 1 0%;
+                min-width: 0;
+            }
+            :global(.checklist-card) li:has(input:checked) label :global(.checklist-text) {
+                text-decoration: line-through;
+                color: var(--color-pcne-design-foreground-faint);
+            }
+
+            /* ---------- Mobile ---------- */
+            @media (max-width: 900px) {
+                :global(.sidebar) {
+                    left: -320px;
+                    transition: left 0.2s ease;
+                    box-shadow: 20px 0 40px rgba(0, 0, 0, 0.4);
+                }
+                :global(.sidebar):global(.open) {
+                    left: 0;
+                }
+                :global(.sidebar-toggle) {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+                :global(.hero),
+                :global(.main) {
+                    margin-left: 0;
+                    padding-left: 24px;
+                    padding-right: 24px;
+                }
+                :global(.hero) {
+                    padding-top: 84px;
+                }
+            }
+}
+
+.root [id] { scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 24px); }

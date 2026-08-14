@@ -2,7 +2,7 @@
 
 import { HANDS_ON_ENABLED } from '@/lib/featureFlags';
 
-export type Provider = 'GCP' | 'AWS' | 'Cisco';
+export type Provider = 'GCP' | 'AWS' | 'Cisco' | 'CompTIA';
 
 export interface ExamDomain {
     label: string;
@@ -17,7 +17,8 @@ export type ColorKey =
     | 'card-agwa'
     | 'card-pcne'
     | 'card-aws-saa'
-    | 'card-ccna';
+    | 'card-ccna'
+    | 'card-comptia';
 
 export interface Exam {
     id: string;
@@ -46,6 +47,7 @@ export const cardColorMap: Record<ColorKey, string> = {
     'card-pcne': 'card-pcne',
     'card-ccna': 'card-ccna',
     'card-aws-saa': 'card-aws-saa',
+    'card-comptia': 'card-comptia',
 };
 
 export const providerMeta: Record<
@@ -67,9 +69,14 @@ export const providerMeta: Record<
         kicker: 'Network & Automation',
         description: 'ネットワーク基礎から設計、自動化、DevNetまでを深掘りする',
     },
+    CompTIA: {
+        label: 'CompTIA',
+        kicker: 'Infrastructure & Security',
+        description: 'ベンダーニュートラルなITインフラ・ネットワーク・セキュリティ標準を学ぶ',
+    },
 };
 
-export const providerOrder: Provider[] = ['GCP', 'AWS', 'Cisco'];
+export const providerOrder: Provider[] = ['GCP', 'AWS', 'Cisco', 'CompTIA'];
 
 const ALL_EXAMS: Exam[] = [
     {
@@ -214,6 +221,8 @@ const ALL_EXAMS: Exam[] = [
             'Google Cloud のネットワークインフラの設計・実装・管理能力を認定。VPC・ハイブリッド接続・ロードバランシング・セキュリティなどを網羅。',
         domains: [
             { label: '試験対策ガイド', href: '/gcl/professional-cloud-network-engineer', pct: '概要' },
+            { label: 'Section 1: VPCネットワーク設計', href: '/gcl/professional-cloud-network-engineer/section1-vpc-design', pct: '~21%' },
+            { label: 'Section 2: VPCネットワークの実装', href: '/gcl/professional-cloud-network-engineer/section2-vpc-implementation', pct: '~20%' },
             { label: 'ステップバイステップガイド', href: '/gcl/professional-cloud-network-engineer-step-by-step', pct: '詳細' },
         ],
         badge: 'ネットワーク特化',
@@ -483,6 +492,27 @@ const ALL_EXAMS: Exam[] = [
         badge: 'Automation プロフェッショナル',
         icon: '🚀',
         provider: 'Cisco',
+    },
+    {
+        id: 'comptia-network-plus',
+        label: 'CompTIA Network+',
+        abbr: 'Network+',
+        level: 'Associate',
+        score: '最大90問 / 90分',
+        color: 'card-comptia',
+        href: '/comptia/network-plus',
+        description:
+            'ベンダーニュートラルなネットワーク基礎資格。TCP/IP・ルーティング・スイッチング・無線LAN・セキュリティ・障害切り分け方法論を完全網羅。',
+        domains: [
+            {
+                label: '完全対策ガイド (N10-009 / V9)',
+                href: '/comptia/network-plus',
+                pct: '完全解説',
+            },
+        ],
+        badge: 'ネットワーク基礎',
+        icon: '⚡',
+        provider: 'CompTIA',
     },
 ];
 

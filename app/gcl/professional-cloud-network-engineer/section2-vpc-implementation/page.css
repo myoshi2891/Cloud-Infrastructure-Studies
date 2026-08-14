@@ -1,0 +1,521 @@
+/* app/gcl/professional-cloud-network-engineer/section2-vpc-implementation/page.css */
+
+.pcne-s2-vpc-implementation-page {
+  /* TODO: Consolidate these legacy PCNE tokens into app/globals.css @theme. */
+  --pcne-bg: #07111e;
+  --pcne-bg-elevated: #0d1a2e;
+  --pcne-bg-card: #0f1f36;
+  --pcne-border: #1c2b42;
+  --pcne-border-soft: #16233a;
+  --pcne-text: #e6edf7;
+  --pcne-text-dim: #9fb0c9;
+  --pcne-text-faint: #6b7c99;
+  --pcne-accent: #7c9eff;
+  --pcne-accent-soft: #3d5490;
+  --pcne-accent-glow: rgba(124, 158, 255, 0.15);
+  --pcne-warn: #ffb454;
+  --pcne-warn-bg: rgba(255, 180, 84, 0.08);
+  --pcne-good: #6bd6a8;
+
+  background-color: var(--pcne-bg) !important;
+  color: var(--pcne-text) !important;
+  font-family: var(--font-body, system-ui, sans-serif);
+  line-height: 1.85;
+  font-size: 16px;
+  min-height: 100vh;
+}
+
+/* ---------------- Layout & Sidebar ---------------- */
+.pcne-s2-vpc-implementation-page .layout {
+  display: block;
+}
+
+.pcne-s2-vpc-implementation-page .sidebar {
+  position: fixed;
+  top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px));
+  left: 0;
+  width: 280px;
+  bottom: 0;
+  overflow-y: auto;
+  background: var(--pcne-bg-elevated) !important;
+  border-right: 1px solid var(--pcne-border) !important;
+  padding: 28px 20px 40px;
+  z-index: 40;
+  transition: transform 0.25s ease;
+  scrollbar-width: thin;
+}
+
+.pcne-s2-vpc-implementation-page .sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+.pcne-s2-vpc-implementation-page .sidebar::-webkit-scrollbar-thumb {
+  background: var(--pcne-border);
+  border-radius: 3px;
+}
+
+.pcne-s2-vpc-implementation-page .brand {
+  font-size: 13px;
+  color: var(--pcne-accent) !important;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+
+.pcne-s2-vpc-implementation-page .brand-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--pcne-text) !important;
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+.pcne-s2-vpc-implementation-page .nav-list,
+.pcne-s2-vpc-implementation-page .nav-sub {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.pcne-s2-vpc-implementation-page .nav-sub {
+  padding-left: 14px;
+  border-left: 1px solid var(--pcne-border-soft) !important;
+  margin: 2px 0 10px 6px;
+}
+
+.pcne-s2-vpc-implementation-page .nav-h2 {
+  margin-top: 14px;
+}
+
+.pcne-s2-vpc-implementation-page .nav-link {
+  display: block;
+  color: var(--pcne-text-dim) !important;
+  text-decoration: none;
+  font-size: 13.5px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  line-height: 1.5;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.pcne-s2-vpc-implementation-page .nav-h2 > .nav-link {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--pcne-text) !important;
+}
+
+.pcne-s2-vpc-implementation-page .nav-link:hover {
+  background: var(--pcne-accent-glow) !important;
+  color: var(--pcne-accent) !important;
+}
+
+.pcne-s2-vpc-implementation-page .nav-link.active {
+  background: var(--pcne-accent-glow) !important;
+  color: var(--pcne-accent) !important;
+  font-weight: 700;
+}
+
+/* ---------------- Main Content ---------------- */
+.pcne-s2-vpc-implementation-page .main {
+  margin-left: 280px;
+  padding: 48px 56px 100px;
+  width: calc(100% - 280px);
+  max-width: none;
+}
+
+@media (max-width: 900px) {
+  .pcne-s2-vpc-implementation-page .sidebar {
+    display: none;
+  }
+  .pcne-s2-vpc-implementation-page .main {
+    margin-left: 0;
+    width: 100%;
+    padding: 24px 16px 60px;
+  }
+}
+
+/* ---------------- Hero ---------------- */
+.pcne-s2-vpc-implementation-page .hero {
+  margin-bottom: 32px;
+}
+
+.pcne-s2-vpc-implementation-page .hero-eyebrow {
+  color: var(--pcne-accent) !important;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.pcne-s2-vpc-implementation-page .hero h1 {
+  font-size: 34px;
+  line-height: 1.4;
+  margin: 0 0 20px;
+  background: linear-gradient(90deg, #ffffff, var(--pcne-accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 800;
+}
+
+/* ---------------- Lead Card ---------------- */
+.pcne-s2-vpc-implementation-page .main > blockquote:first-of-type,
+.pcne-s2-vpc-implementation-page .lead-card {
+  border-left: 3px solid var(--pcne-accent) !important;
+  background: var(--pcne-accent-glow) !important;
+  padding: 18px 22px;
+  margin: 0 0 32px;
+  border-radius: 0 10px 10px 0;
+  color: var(--pcne-text-dim) !important;
+  font-size: 15px;
+}
+
+.pcne-s2-vpc-implementation-page .main > blockquote:first-of-type p,
+.pcne-s2-vpc-implementation-page .lead-card p {
+  margin: 0;
+  color: var(--pcne-text-dim) !important;
+}
+
+/* ---------------- Headings ---------------- */
+.pcne-s2-vpc-implementation-page h2,
+.pcne-s2-vpc-implementation-page .main h2 {
+  font-size: 26px !important;
+  margin: 64px 0 20px !important;
+  padding-top: 12px !important;
+  border-top: 1px solid var(--pcne-border-soft) !important;
+  color: var(--pcne-text) !important; /* #e6edf7 白文字 */
+  font-weight: 800 !important;
+  scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 24px);
+}
+
+.pcne-s2-vpc-implementation-page h2:first-of-type,
+.pcne-s2-vpc-implementation-page .main h2:first-of-type {
+  border-top: none !important;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+.pcne-s2-vpc-implementation-page h3,
+.pcne-s2-vpc-implementation-page .main h3 {
+  font-size: 20px !important;
+  margin: 40px 0 16px !important;
+  color: var(--pcne-accent) !important; /* #7c9eff 青色アクセント */
+  font-weight: 700 !important;
+  scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 24px);
+}
+
+.pcne-s2-vpc-implementation-page p {
+  color: var(--pcne-text) !important;
+  margin: 0 0 16px;
+}
+
+.pcne-s2-vpc-implementation-page ul,
+.pcne-s2-vpc-implementation-page ol {
+  margin: 0 0 16px;
+  padding-left: 26px;
+  color: var(--pcne-text) !important;
+}
+
+.pcne-s2-vpc-implementation-page li {
+  margin-bottom: 6px;
+}
+
+.pcne-s2-vpc-implementation-page strong {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+.pcne-s2-vpc-implementation-page a {
+  color: var(--pcne-accent) !important;
+}
+
+.pcne-s2-vpc-implementation-page a:hover {
+  text-decoration: underline;
+}
+
+.pcne-s2-vpc-implementation-page hr {
+  border: none;
+  border-top: 1px solid var(--pcne-border-soft);
+  margin: 48px 0;
+}
+
+/* ---------------- Source / Citation Card ---------------- */
+.pcne-s2-vpc-implementation-page blockquote.source-card {
+  background: var(--pcne-bg-card) !important;
+  border: 1px solid var(--pcne-border) !important;
+  border-left: 3px solid var(--pcne-good) !important;
+  border-radius: 8px;
+  padding: 14px 18px;
+  margin: -6px 0 28px;
+  font-size: 13.5px;
+  color: var(--pcne-text-dim) !important;
+}
+
+.pcne-s2-vpc-implementation-page blockquote.source-card p {
+  margin: 0;
+  color: var(--pcne-text-dim) !important;
+}
+
+.pcne-s2-vpc-implementation-page blockquote.source-card strong {
+  color: var(--pcne-good) !important;
+  font-size: 12.5px;
+  letter-spacing: 0.04em;
+}
+
+/* ---------------- Tables ---------------- */
+.pcne-s2-vpc-implementation-page .table-scroll {
+  overflow-x: auto;
+  margin: 0 0 28px;
+  border: 1px solid var(--pcne-border) !important;
+  border-radius: 10px;
+}
+
+.pcne-s2-vpc-implementation-page table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 560px;
+  font-size: 14.5px;
+}
+
+.pcne-s2-vpc-implementation-page thead th {
+  background: var(--pcne-bg-elevated) !important;
+  color: var(--pcne-accent) !important; /* #7c9eff 表見出しの青文字 */
+  text-align: left;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--pcne-border) !important;
+  white-space: nowrap;
+  font-weight: 700;
+}
+
+.pcne-s2-vpc-implementation-page tbody td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--pcne-border-soft) !important;
+  color: var(--pcne-text-dim) !important;
+  background: var(--pcne-bg-card) !important;
+  overflow-wrap: break-word;
+}
+
+.pcne-s2-vpc-implementation-page tbody tr:last-child td {
+  border-bottom: none !important;
+}
+
+.pcne-s2-vpc-implementation-page tbody tr:hover td {
+  background: rgba(124, 158, 255, 0.06) !important;
+}
+
+/* ---------------- Inline Code ---------------- */
+.pcne-s2-vpc-implementation-page code:not(pre code) {
+  background: var(--pcne-bg-card) !important;
+  border: 1px solid var(--pcne-border) !important;
+  color: var(--pcne-accent) !important;
+  padding: 2px 6px;
+  border-radius: 5px;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.9em;
+  overflow-wrap: break-word;
+}
+
+/* ---------------- Reference Cards Grid ---------------- */
+.pcne-s2-vpc-implementation-page .ref-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin: 20px 0 28px;
+}
+
+@media (max-width: 768px) {
+  .pcne-s2-vpc-implementation-page .ref-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.pcne-s2-vpc-implementation-page .ref-card {
+  background: var(--pcne-bg-card) !important;
+  border: 1px solid var(--pcne-border) !important;
+  border-radius: 10px;
+  padding: 18px 20px;
+  min-width: 0;
+}
+
+.pcne-s2-vpc-implementation-page .ref-card h3 {
+  margin: 0 0 12px !important;
+  font-size: 15px !important;
+  color: var(--pcne-text) !important;
+}
+
+.pcne-s2-vpc-implementation-page .ref-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pcne-s2-vpc-implementation-page .ref-card li {
+  margin-bottom: 8px;
+}
+
+.pcne-s2-vpc-implementation-page .ref-card a {
+  display: block;
+  font-size: 13.5px;
+  color: var(--pcne-text-dim) !important;
+  text-decoration: none;
+  padding: 6px 8px;
+  border-radius: 6px;
+  overflow-wrap: break-word;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.pcne-s2-vpc-implementation-page .ref-card a::before {
+  content: '↗ ';
+  color: var(--pcne-accent) !important;
+}
+
+.pcne-s2-vpc-implementation-page .ref-card a:hover {
+  background: var(--pcne-accent-glow) !important;
+  color: var(--pcne-accent) !important;
+}
+
+/* ---------------- Checklist ---------------- */
+.pcne-s2-vpc-implementation-page .checklist-wrapper {
+  background: var(--pcne-bg-card) !important;
+  border: 1px solid var(--pcne-border) !important;
+  border-radius: 12px;
+  padding: 8px 22px 22px;
+  margin: 20px 0 28px;
+}
+
+.pcne-s2-vpc-implementation-page .checklist-header {
+  padding: 14px 0 10px;
+  border-bottom: 1px solid var(--pcne-border-soft) !important;
+  margin-bottom: 12px;
+  font-size: 13px;
+  color: var(--pcne-accent) !important;
+  font-weight: 700;
+}
+
+.pcne-s2-vpc-implementation-page ul.checklist-card {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pcne-s2-vpc-implementation-page ul.checklist-card li {
+  margin: 0;
+}
+
+.pcne-s2-vpc-implementation-page ul.checklist-card label {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 12px !important;
+  padding: 9px 8px !important;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14.5px;
+  color: var(--pcne-text-dim) !important;
+}
+
+.pcne-s2-vpc-implementation-page ul.checklist-card label:hover {
+  background: rgba(124, 158, 255, 0.05) !important;
+}
+
+.pcne-s2-vpc-implementation-page ul.checklist-card input[type='checkbox'] {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  width: 18px !important;
+  height: 18px !important;
+  min-width: 18px !important;
+  margin-top: 3px !important;
+  border: 1.5px solid var(--pcne-border) !important;
+  border-radius: 5px !important;
+  background: var(--pcne-bg) !important;
+  position: relative !important;
+  cursor: pointer !important;
+  flex-shrink: 0 !important;
+  display: inline-block !important;
+}
+
+.pcne-s2-vpc-implementation-page ul.checklist-card input[type='checkbox']:checked {
+  background: var(--pcne-accent) !important;
+  border-color: var(--pcne-accent) !important;
+}
+
+.pcne-s2-vpc-implementation-page ul.checklist-card input[type='checkbox']:checked::after {
+  content: '' !important;
+  position: absolute !important;
+  left: 5px !important;
+  top: 1px !important;
+  width: 5px !important;
+  height: 9px !important;
+  border: solid var(--pcne-bg) !important;
+  border-width: 0 2px 2px 0 !important;
+  transform: rotate(45deg) !important;
+}
+
+.pcne-s2-vpc-implementation-page .checklist-text.is-completed,
+.pcne-s2-vpc-implementation-page ul.checklist-card label.checked .checklist-text,
+.pcne-s2-vpc-implementation-page ul.checklist-card li:has(input:checked) .checklist-text {
+  text-decoration: line-through !important;
+  color: var(--pcne-text-faint) !important;
+  opacity: 0.7;
+}
+
+.pcne-s2-vpc-implementation-page .checklist-text {
+  flex: 1;
+  line-height: 1.6;
+  color: var(--pcne-text-dim);
+}
+
+/* ---------------- Mermaid ---------------- */
+.pcne-s2-vpc-implementation-page .mermaid-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  overflow-x: auto;
+  background: var(--pcne-bg-card) !important;
+  border: 1px solid var(--pcne-border) !important;
+  border-radius: 12px;
+  padding: 28px 20px;
+  margin: 0 0 28px;
+}
+
+/* ---------------- Code Blocks ---------------- */
+.pcne-s2-vpc-implementation-page .code-block {
+  background-color: #050b14 !important;
+  border: 1px solid var(--pcne-border) !important;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 20px 0 28px;
+  font-family: var(--font-mono, monospace);
+  font-size: 13.5px;
+  overflow-x: auto;
+}
+
+.pcne-s2-vpc-implementation-page .code-line {
+  white-space: pre;
+  line-height: 1.6;
+  color: var(--pcne-text) !important;
+}
+
+.pcne-s2-vpc-implementation-page .scroll-top-btn {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: var(--pcne-accent) !important;
+  color: #000 !important;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.pcne-s2-vpc-implementation-page .scroll-top-btn:hover {
+  transform: translateY(-2px);
+}

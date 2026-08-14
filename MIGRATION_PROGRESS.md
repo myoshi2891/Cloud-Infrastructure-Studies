@@ -7,8 +7,85 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 ## 現在地
 
 - **ブランチ:** dev
-- **進行中タスク:** レビュー指摘のカテゴリー別修正・検証・コミット完了
-- **最終更新日時(UTC):** 2026-08-13T07:49:25Z
+- **最新完了タスク:** Google Cloud PCNE Section 2: VPCネットワークの実装ガイド 100%全量移行完了
+- **最終更新日時(UTC):** 2026-08-14T02:53:47Z
+
+## 2026-08-14: Google Cloud「PCNE Section 2: VPCネットワークの実装 完全ガイド」100%全量移行・デザイン完全復元 (完了)
+
+### 目的
+
+`Pcne-s2-vpc-implementation.html` を、Next.js App Router 5ファイル構成 (`page.tsx`, `PcneSection2VpcImplementationGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/gcl/professional-cloud-network-engineer/section2-vpc-implementation` ルートへ移行。全9セクションの見出し(h1:1, h2:8, h3:23)、全10個のテーブル、17個のMermaid図解、全外部リンクを一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for pcne-s2-vpc-implementation` (`f40abbc`)
+- [x] **Step 1 (Red)**: `test(pcne): add failing tests for section2-vpc-implementation` (`2285158`)
+- [x] **Step 2 (Green)**: `feat(pcne): implement section2-vpc-implementation to pass tests` (`d0333e0`), `fix(pcne): restore 100% exact visual design and CSS variables for section2-vpc-implementation` (`c8f9c3d`), `fix(pcne): ensure h3 accent title color and sidebar nav-h2 hierarchy matching original design` (`eddce49`), `fix(pcne): implement interactive checklist state and counter for section2-vpc-implementation` (`59fdadf`), `fix(pcne): format --nomasq-all-reserved-ranges in checklist item with code tag` (`0d497dd`), `fix(pcne): wrap checklist text in flex span to fix checkbox visibility and code tag inline layout` (`30db6ae`) & `fix(pcne): replace static checklist HTML with active ChecklistSection component and fix line-through state` (`bdd4568`)
+- [x] **Step 3 (Refactor / Integration & Nav & Docs)**: `refactor(pcne): integrate section2-vpc-implementation into routing and update docs` (`732cf94`)
+- [x] **Step 4 (Archive & Sync)**: 元HTMLを `archive/Gcl_Archive/Professional-Cloud-Network-Engineer/` へ移動し `MIGRATION_PROGRESS.md` を同期
+
+### 関連ファイル
+
+- [app/gcl/professional-cloud-network-engineer/section2-vpc-implementation/page.tsx](app/gcl/professional-cloud-network-engineer/section2-vpc-implementation/page.tsx)
+- [app/gcl/professional-cloud-network-engineer/section2-vpc-implementation/PcneSection2VpcImplementationGuide.tsx](app/gcl/professional-cloud-network-engineer/section2-vpc-implementation/PcneSection2VpcImplementationGuide.tsx)
+- [app/gcl/professional-cloud-network-engineer/section2-vpc-implementation/NavBar.tsx](app/gcl/professional-cloud-network-engineer/section2-vpc-implementation/NavBar.tsx)
+- [app/gcl/professional-cloud-network-engineer/section2-vpc-implementation/constants.ts](app/gcl/professional-cloud-network-engineer/section2-vpc-implementation/constants.ts)
+- [app/gcl/professional-cloud-network-engineer/section2-vpc-implementation/page.css](app/gcl/professional-cloud-network-engineer/section2-vpc-implementation/page.css)
+- [__tests__/gcl/pcne-section2-vpc-implementation.test.tsx](__tests__/gcl/pcne-section2-vpc-implementation.test.tsx)
+- [docs/migration-inventory/pcne-s2-vpc-implementation.json](docs/migration-inventory/pcne-s2-vpc-implementation.json)
+- [archive/Gcl_Archive/Professional-Cloud-Network-Engineer/Pcne-s2-vpc-implementation.html](archive/Gcl_Archive/Professional-Cloud-Network-Engineer/Pcne-s2-vpc-implementation.html)
+
+## 2026-08-14: Google Cloud「PCNE Section 1: VPCネットワーク設計 完全ガイド」100%全量移行・デザイン完全復元 (完了)
+
+### 目的
+
+`Pcne-section1-vpc-design.html` および `Pcne-section1-vpc-design.md` を、Next.js App Router 5ファイル構成 (`page.tsx`, `PcneSection1VpcDesignGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/gcl/professional-cloud-network-engineer/section1-vpc-design` ルートへ移行。全10セクションの見出し(h1:1, h2:10, h3:36, h4:5)、全30個のテーブル、31個のMermaid図解、133個の外部リンクを一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for pcne-section1-vpc-design` (`3fa0a19`)
+- [x] **Step 1 (Red)**: `test(gcl): add failing tests for pcne section 1 vpc design guide` (`d1ee0fe`)
+- [x] **Step 2 (Green)**: `feat(gcl): implement pcne section 1 vpc design guide page to pass tests` (`e8f3929`)
+- [x] **Step 3 (Refactor / Integration & Nav & Docs)**: `refactor(gcl): integrate pcne section 1 vpc design guide into routing and update docs` (`58039f1`)
+- [x] **Step 4 (Archive & Sync)**: 元HTML/MDを `archive/Gcl_Archive/Professional-Cloud-Network-Engineer/` へ移動し `MIGRATION_PROGRESS.md` を同期
+
+### 関連ファイル
+
+- [app/gcl/professional-cloud-network-engineer/section1-vpc-design/page.tsx](app/gcl/professional-cloud-network-engineer/section1-vpc-design/page.tsx)
+- [app/gcl/professional-cloud-network-engineer/section1-vpc-design/PcneSection1VpcDesignGuide.tsx](app/gcl/professional-cloud-network-engineer/section1-vpc-design/PcneSection1VpcDesignGuide.tsx)
+- [app/gcl/professional-cloud-network-engineer/section1-vpc-design/NavBar.tsx](app/gcl/professional-cloud-network-engineer/section1-vpc-design/NavBar.tsx)
+- [app/gcl/professional-cloud-network-engineer/section1-vpc-design/constants.ts](app/gcl/professional-cloud-network-engineer/section1-vpc-design/constants.ts)
+- [app/gcl/professional-cloud-network-engineer/section1-vpc-design/page.css](app/gcl/professional-cloud-network-engineer/section1-vpc-design/page.css)
+- [__tests__/gcl/pcne-section1-vpc-design.test.tsx](__tests__/gcl/pcne-section1-vpc-design.test.tsx)
+- [docs/migration-inventory/pcne-section1-vpc-design.json](docs/migration-inventory/pcne-section1-vpc-design.json)
+- [archive/Gcl_Archive/Professional-Cloud-Network-Engineer/Pcne-section1-vpc-design.html](archive/Gcl_Archive/Professional-Cloud-Network-Engineer/Pcne-section1-vpc-design.html)
+- [archive/Gcl_Archive/Professional-Cloud-Network-Engineer/Pcne-section1-vpc-design.md](archive/Gcl_Archive/Professional-Cloud-Network-Engineer/Pcne-section1-vpc-design.md)
+
+## 2026-08-13: CompTIA「CompTIA Network+ (N10-009 / V9) 完全ガイド」100%全量移行・デザイン完全復元 (完了)
+
+### 目的
+
+`Comptia-network-plus-guide.html` および `Comptia-network-plus-guide.md` を、Next.js App Router 5ファイル構成 (`page.tsx`, `ComptiaNetworkPlusGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/comptia/network-plus` ルートへ移行。全13セクションの見出し、全6個のテーブルセルテキスト、4個のMermaid図解、4個のコールアウト、4つの情報カード (`stat-grid`)、5つのドメインカード (`domain-card`)、参考文献カード (`ref-box`)、および Tabler Icons アイコン群を一切の省略・漏れなく100%完全移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for comptia-network-plus-guide` (`4924bdd`)
+- [x] **Step 1 (Red)**: `test(comptia): add failing tests for comptia network plus guide migration` (`b56f078` / `17b2753`)
+- [x] **Step 2 (Green)**: `feat(comptia): implement comptia network plus guide page components to pass tests` (`b1f15c5` / `04a29e8`)
+- [x] **Step 3 (Refactor / Integration & Nav & Docs)**: `refactor(comptia): integrate comptia network plus guide into routing and update docs` (`0643cfa`)
+- [x] **Step 4 (Archive & Sync)**: 元HTML/MDを `archive/CompTIA/html/` および `archive/CompTIA/md/` へ移動し `MIGRATION_PROGRESS.md` を同期 (`0fece63`)
+
+### 関連ファイル
+
+- [app/comptia/network-plus/page.tsx](app/comptia/network-plus/page.tsx)
+- [app/comptia/network-plus/ComptiaNetworkPlusGuide.tsx](app/comptia/network-plus/ComptiaNetworkPlusGuide.tsx)
+- [app/comptia/network-plus/NavBar.tsx](app/comptia/network-plus/NavBar.tsx)
+- [app/comptia/network-plus/constants.ts](app/comptia/network-plus/constants.ts)
+- [app/comptia/network-plus/page.css](app/comptia/network-plus/page.css)
+- [__tests__/comptia/network-plus-guide.test.tsx](__tests__/comptia/network-plus-guide.test.tsx)
+- [docs/migration-inventory/comptia-network-plus-guide.json](docs/migration-inventory/comptia-network-plus-guide.json)
+- [archive/CompTIA/html/Comptia-network-plus-guide.html](archive/CompTIA/html/Comptia-network-plus-guide.html)
+- [archive/CompTIA/md/Comptia-network-plus-guide.md](archive/CompTIA/md/Comptia-network-plus-guide.md)
 
 ## 2026-08-13: レビュー追補の認可・インベントリ・Drive復元修正（完了）
 

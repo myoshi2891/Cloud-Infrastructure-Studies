@@ -77,6 +77,57 @@
     --color-guide-meta: #5f7291;
     --color-guide-hero-start: #ffffff;
 
+    /* CompTIA Network+ guide */
+    --color-network-background: #0d0f12;
+    --color-network-surface: #15181d;
+    --color-network-surface-elevated: #1c2027;
+    --color-network-info-background: #142330;
+    --color-network-danger-background: #2a1618;
+    --color-network-success-background: #12241f;
+    --color-network-warning-background: #2a2314;
+    --color-network-foreground: #e8eaed;
+    --color-network-foreground-muted: #a8adb5;
+    --color-network-foreground-faint: #8f96a3;
+    --color-network-info: #7dd3fc;
+    --color-network-danger: #f87171;
+    --color-network-success: #6ee7b7;
+    --color-network-warning: #fbbf24;
+    --color-network-border-soft: #23272e;
+    --color-network-border: #2d323b;
+    --color-network-border-strong: #3a3f4a;
+    --color-network-purple-deep: #4c1d95;
+    --color-network-purple: #ddd6fe;
+    --color-network-purple-soft: #ede9fe;
+    --color-network-teal-deep: #115e59;
+    --color-network-teal: #99f6e4;
+    --color-network-teal-soft: #ccfbf1;
+    --color-network-coral-deep: #9a3412;
+    --color-network-coral: #fed7aa;
+    --color-network-coral-soft: #ffedd5;
+    --color-network-pink-deep: #831843;
+    --color-network-pink: #fbcfe8;
+    --color-network-pink-soft: #fce7f3;
+    --color-network-amber-deep: #92400e;
+    --color-network-amber: #fde68a;
+    --color-network-amber-soft: #fef3c7;
+
+    /* PCNE Section 1 VPC design guide */
+    --color-pcne-design-background: #07111e;
+    --color-pcne-design-elevated: #0d1a2e;
+    --color-pcne-design-card: #0f1f36;
+    --color-pcne-design-border: #1e2f4a;
+    --color-pcne-design-border-soft: #16253d;
+    --color-pcne-design-accent: #7c9eff;
+    --color-pcne-design-accent-soft: #a9c0ff;
+    --color-pcne-design-accent-dim: #3d5285;
+    --color-pcne-design-foreground: #eef4ff;
+    --color-pcne-design-foreground-muted: #c3d1ea;
+    --color-pcne-design-foreground-faint: #9db0d4;
+    --color-pcne-design-green: #5fd4a8;
+    --color-pcne-design-amber: #e8a35f;
+    --color-pcne-design-red: #e2716f;
+    --color-pcne-design-purple: #c78dea;
+
     /* Cisco guide page themes */
     --color-ccna-fundamentals-elevated: #0d1a2e;
     --color-ccna-fundamentals-card: #101f38;
