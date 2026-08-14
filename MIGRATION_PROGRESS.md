@@ -7,8 +7,34 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 ## 現在地
 
 - **ブランチ:** dev
-- **最新完了タスク:** AGWA Section 2: コアWorkspaceサービスの管理 100%全量移行完了
-- **最終更新日時(UTC):** 2026-08-14T14:30:00Z
+- **最新完了タスク:** AGWA Section 3: データガバナンスとコンプライアンスの管理 100%全量移行完了
+- **最終更新日時(UTC):** 2026-08-14T23:55:00Z
+
+## 2026-08-14: AGWA Section 3「データガバナンスとコンプライアンスの管理」100%全量移行 (完了)
+
+### 目的
+
+`Agwa-section3-data-governance.html` を、Next.js App Router 5ファイル構成 (`page.tsx`, `AgwaSection3Guide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/gcl/agwa/section3` ルートへ移行。見出し(h1:1, h2:8, h3:27, h4:6)、全9個のテーブル、10個のMermaid図解、全外部リンク・全本文・注釈を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for agwa-section3-data-governance`
+- [x] **Step 1 (Red)**: `test(gcl): add failing tests for agwa-section3-data-governance`
+- [x] **Step 2 (Green)**: `feat(gcl): implement agwa-section3-data-governance to pass tests`
+- [x] **Step 3 (Refactor)**: `refactor(gcl): integrate agwa-section3-data-governance into routing and update docs`
+- [x] **Step 4 (Archive & Sync)**: `chore(docs): update MIGRATION_PROGRESS.md — migrate Agwa-section3-data-governance.html to Next.js`
+
+### 関連ファイル
+
+- [app/gcl/agwa/section3/page.tsx](app/gcl/agwa/section3/page.tsx)
+- [app/gcl/agwa/section3/AgwaSection3Guide.tsx](app/gcl/agwa/section3/AgwaSection3Guide.tsx)
+- [app/gcl/agwa/section3/NavBar.tsx](app/gcl/agwa/section3/NavBar.tsx)
+- [app/gcl/agwa/section3/constants.ts](app/gcl/agwa/section3/constants.ts)
+- [app/gcl/agwa/section3/page.css](app/gcl/agwa/section3/page.css)
+- [__tests__/gcl/agwa-section3-data-governance/page.test.tsx](__tests__/gcl/agwa-section3-data-governance/page.test.tsx)
+- [docs/migration-inventory/agwa-section3-data-governance.json](docs/migration-inventory/agwa-section3-data-governance.json)
+- [archive/Gcl_Archive/Associate-Google-Workspace-Administrator/html/Agwa-section3-data-governance.html](archive/Gcl_Archive/Associate-Google-Workspace-Administrator/html/Agwa-section3-data-governance.html)
+- [archive/Gcl_Archive/Associate-Google-Workspace-Administrator/md/Agwa-section3-data-governance.md](archive/Gcl_Archive/Associate-Google-Workspace-Administrator/md/Agwa-section3-data-governance.md)
 
 ## 2026-08-14: AGWA Section 2「コアWorkspaceサービスの管理」100%全量移行 (完了)
 
