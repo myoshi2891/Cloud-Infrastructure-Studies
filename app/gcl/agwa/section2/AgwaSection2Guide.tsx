@@ -146,7 +146,7 @@ export const AgwaSection2Guide: React.FC = () => {
             </tbody>
           </table>
         </div>
-        <ol start="4" type="1">
+        <ol start={4} type="1">
           <li>変更を保存する（DNS伝播に
             <strong>最大72時間</strong>かかる場合がある）
           </li>
