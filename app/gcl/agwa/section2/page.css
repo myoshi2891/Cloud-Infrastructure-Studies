@@ -294,10 +294,15 @@
                 color: var(--text);
                 margin: 1rem 0;
             }
-            .agwa-section2-page .main ul,
+            .agwa-section2-page .main ul {
+                margin: 1rem 0;
+                padding-left: 1.5rem;
+                list-style-type: disc;
+            }
             .agwa-section2-page .main ol {
                 margin: 1rem 0;
                 padding-left: 1.5rem;
+                list-style-type: decimal;
             }
             .agwa-section2-page .main li {
                 margin: 0.4rem 0;

@@ -166,11 +166,17 @@
     color: var(--color-foreground, #dce6f5);
     margin: 14px 0;
 }
-.agwa-s3-page .main ul,
+.agwa-s3-page .main ul {
+    margin: 14px 0;
+    padding-left: 26px;
+    color: var(--color-foreground, #dce6f5);
+    list-style-type: disc;
+}
 .agwa-s3-page .main ol {
     margin: 14px 0;
     padding-left: 26px;
     color: var(--color-foreground, #dce6f5);
+    list-style-type: decimal;
 }
 .agwa-s3-page .main li {
     margin: 6px 0;
