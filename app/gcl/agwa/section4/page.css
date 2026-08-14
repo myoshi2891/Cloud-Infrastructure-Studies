@@ -375,7 +375,7 @@
 .agwa-s4-page .mermaid-wrap svg .node[style*="#f"] foreignObject div {
     color: #0b1220 !important;
     fill: #0b1220 !important;
-    font-weight: 700 !important;
+    font-weight: normal;
 }
 
 /* Clear contrast for edge labels (Yes/No line labels) */
