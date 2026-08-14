@@ -416,7 +416,7 @@
                         <a href="#pattern-c"><i class="ti ti-camera"></i>パターンC: Snapshot</a>
                     </li>
                     <li>
-                        <a href="#pattern-d"><i class="ti ti-bolt"></i>パターンD: Pub/Sub Lite</a>
+                        <a href="#pattern-d"><i class="ti ti-bolt"></i>旧パターンD: Pub/Sub Lite</a>
                     </li>
                     <li>
                         <a href="#pattern-e"><i class="ti ti-webhook"></i>パターンE: Eventarc</a>
@@ -478,11 +478,14 @@
                             <i class="ti ti-circle-check"></i>Pub/Sub の
                             Snapshot（スナップショット）を作成する
                         </li>
-                        <li><i class="ti ti-circle-check"></i>Pub/Sub Lite をセットアップする</li>
+                        <li>
+                            <i class="ti ti-circle-check"></i>提供終了済みの Pub/Sub Lite
+                            旧出題パターンと移行先を歴史資料として確認する
+                        </li>
                     </ul>
                     <p>
                         本ガイドは、本ラボの公開されている解答例と Google Cloud
-                        公式ドキュメントを突き合わせて、<strong>出題されうる全パターンを網羅的に</strong>解説します。実際に表示されたタスク文言と照らし合わせ、該当するセクションを読み進めてください。
+                        公式ドキュメントを突き合わせて、<strong>現行の出題パターンを網羅的に</strong>解説します。提供終了済みの旧パターンDは実行手順から除外し、移行用の歴史資料として分離しています。実際に表示されたタスク文言と照らし合わせ、該当するセクションを読み進めてください。
                     </p>
 
                     <div class="diagram-wrap">
@@ -561,7 +564,7 @@
                         <tr>
                             <td>Pub/Sub Lite</td>
                             <td>
-                                パーティション方式の低コスト版Pub/Sub。スループットを事前にプロビジョニングする必要がある
+                                かつて提供されていたパーティション方式のサービス。2026年6月30日に提供終了済みで、新規作成・Publishは実行できない
                             </td>
                         </tr>
                         <tr>
@@ -586,7 +589,7 @@
                         <tr>
                             <th scope="col">観点</th>
                             <th scope="col">Pub/Sub</th>
-                            <th scope="col">Pub/Sub Lite</th>
+                            <th scope="col">Pub/Sub Lite（提供終了済み）</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -685,9 +688,9 @@ gcloud services enable pubsub.googleapis.com \
                             </td>
                         </tr>
                         <tr>
-                            <td>Pub/Sub Liteの管理</td>
+                            <td>Pub/Sub Liteの旧管理ロール</td>
                             <td><code>roles/pubsublite.admin</code></td>
-                            <td>Reservation/Lite Topic/Lite Subscriptionすべてを操作可能</td>
+                            <td>提供終了前の歴史資料。現行ラボでは付与・利用しない</td>
                         </tr>
                         </tbody>
                     </table>
@@ -958,112 +961,63 @@ gcloud pubsub subscriptions pull snapshot-demo-sub --auto-ack</code></pre>
                 </section>
 
                 <section id="pattern-d">
-                    <h2><i class="ti ti-bolt"></i>6. パターンD: Pub/Sub Lite のセットアップ</h2>
+                    <h2>
+                        <i class="ti ti-bolt"></i>6. 旧パターンD: Pub/Sub
+                        Lite（提供終了済み・歴史資料）
+                    </h2>
                     <div class="callout warning">
                         <i class="ti ti-alert-triangle"></i>
                         <div>
                             <p>
-                                Pub/Sub Liteは2026年6月30日に提供終了します。新規構成ではGoogle Cloud Managed Service for Apache KafkaまたはPub/Subを選択し、既存利用者は提供終了日までに移行してください。
+                                <strong>提供終了済み:</strong> Pub/Sub
+                                Liteは2026年6月30日に提供を終了しました。Reservation、Lite
+                                Topic、Lite
+                                Subscriptionの新規作成とPublishは現在実行できないため、この章にあった作成・Publishコマンドは削除しました。現行のChallenge
+                                LabではPub/Sub Liteリソースを作成しないでください。
                             </p>
                         </div>
                     </div>
+
+                    <h3>6.1 旧構成と移行先</h3>
                     <p>
-                        Pub/Sub
-                        Liteは、大量データを安定して流し続けるユースケース向けに、スループットとストレージを<strong>事前に手動でプロビジョニング</strong>することでコストを下げられるサービスです。Reservation（予約容量）→
-                        Lite Topic（パーティション分割）→ Lite Subscription
-                        という3階層でリソースを組みます。
+                        提供終了前のPub/Sub Liteは、Reservation（予約容量）→ Lite
+                        Topic（パーティション分割）→ Lite
+                        Subscriptionという3階層で構成されていました。この情報は旧タスクを読み解くための歴史資料であり、操作手順ではありません。
                     </p>
 
                     <div class="diagram-wrap">
                         <div class="mermaid-target" id="diagram-lite"></div>
-                        <p class="diagram-caption">図6: Pub/Sub Lite のリソース階層</p>
+                        <p class="diagram-caption">図6: Pub/Sub Lite からの移行先</p>
                     </div>
 
-                    <h3>Step 1: Reservationを作成する</h3>
-                    <pre><code class="language-bash">gcloud pubsub lite-reservations create my-reservation \
-    --location=$REGION \
-    --throughput-capacity=4</code></pre>
-
-                    <table class="data-table">
-                        <thead>
-                        <tr>
-                            <th scope="col">Lite Topicのタイプ</th>
-                            <th scope="col">Publishスループット</th>
-                            <th scope="col">Subscribeスループット</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>Zonal</td>
-                            <td>1 MiB/s</td>
-                            <td>2 MiB/s</td>
-                        </tr>
-                        <tr>
-                            <td>Regional</td>
-                            <td>0.25 MiB/s</td>
-                            <td>0.5 MiB/s</td>
-                        </tr>
-                        </tbody>
-                    </table>
-
-                    <h3>Step 2: Lite Topicを作成し、Reservationに紐付ける</h3>
-                    <pre><code class="language-bash">gcloud pubsub lite-topics create my-lite-topic \
-    --location=$REGION-a \
-    --partitions=1 \
-    --per-partition-bytes=30GiB \
-    --throughput-reservation=my-reservation</code></pre>
-
-                    <h3>Step 3: Lite Subscriptionを作成する</h3>
-                    <pre><code class="language-bash">gcloud pubsub lite-subscriptions create my-lite-sub \
-    --location=$REGION-a \
-    --topic=my-lite-topic</code></pre>
-
-                    <h3>Step 4: 動作確認</h3>
-                    <pre><code class="language-bash">gcloud pubsub lite-topics publish my-lite-topic \
-    --location=$REGION-a \
-    --message="hello from pubsub lite"</code></pre>
-
-                    <h3>ベストプラクティス</h3>
-                    <ul class="checklist">
+                    <h3>6.2 現行ラボでの対応</h3>
+                    <ol>
                         <li>
-                            <i class="ti ti-circle-check"></i
-                            >Zonal（可用性より低コスト）かRegional（高可用性、単価高め）かを要件に合わせて選ぶ
+                            タスク文にPub/Sub
+                            Liteが記載されている場合、その教材が提供終了前の旧版でないか確認します。
                         </li>
                         <li>
-                            <i class="ti ti-circle-check"></i
-                            >Reservationのスループットは、紐づく全Lite
-                            Topicのピーク時合計スループットを上回るよう設計する
+                            現行タスクでは、通常のPub/Sub
+                            Topic/Subscription、または指定されたManaged Kafkaリソースを作成します。
                         </li>
                         <li>
-                            <i class="ti ti-circle-check"></i
-                            >スループットを減らした場合でも24時間は減少前の料金が請求される点に注意する
+                            旧構成を移行する場合は、配信方式、順序保証、保持期間、スループット要件を整理して移行先を選び、アプリケーションのPublisher/Subscriberを切り替えます。
                         </li>
-                        <li>
-                            <i class="ti ti-circle-check"></i>検証後は lite-subscriptions →
-                            lite-topics → lite-reservations の順で削除しコストを抑える
-                        </li>
-                    </ul>
+                    </ol>
                     <p class="source-line">
                         <i class="ti ti-external-link"></i> 出典:
                         <a
-                            href="https://cloud.google.com/pubsub/lite/docs/reservations"
+                            href="https://cloud.google.com/pubsub/lite/docs"
                             target="_blank"
                             rel="noopener"
-                            >Create and manage Lite reservations</a
+                            >Pub/Sub Lite service turndown</a
                         >
                         /
                         <a
-                            href="https://cloud.google.com/pubsub/lite/docs/how-to"
+                            href="https://cloud.google.com/pubsub/docs/choosing-pubsub-or-lite"
                             target="_blank"
                             rel="noopener"
-                            >Pub/Sub Lite how-to guides</a
-                        >
-                        /
-                        <a
-                            href="https://cloud.google.com/pubsub/lite/docs/publish-receive-messages-console"
-                            target="_blank"
-                            rel="noopener"
-                            >Quickstart: Publish and receive messages</a
+                            >Choose Pub/Sub or Pub/Sub Lite</a
                         >
                     </p>
                 </section>
@@ -1167,11 +1121,9 @@ gcloud eventarc triggers create pubsub-trigger \
                             </td>
                         </tr>
                         <tr>
-                            <td>Pub/Sub Lite</td>
+                            <td>Pub/Sub Lite（旧タスク）</td>
                             <td>
-                                <code>lite-reservations describe</code> /
-                                <code>lite-topics describe</code> /
-                                <code>lite-subscriptions describe</code> でそれぞれ設定値を確認
+                                提供終了済みのため作成・採点対象にしない。教材が旧版の場合は現行タスクへ更新されているか確認
                             </td>
                         </tr>
                         </tbody>
@@ -1254,11 +1206,11 @@ gcloud eventarc triggers create pubsub-trigger \
                             </td>
                         </tr>
                         <tr>
-                            <td>Lite Topic作成時に<code>RESOURCE_EXHAUSTED</code></td>
-                            <td>Reservationのスループット容量が不足、パーティション数が過大</td>
+                            <td>Pub/Sub Liteの作成・Publishコマンドを実行できない</td>
+                            <td>サービスが2026年6月30日に提供終了済み</td>
                             <td>
-                                <code>--throughput-capacity</code
-                                >を見直すか、パーティション数を減らす
+                                コマンドを再試行せず、教材の現行版を確認してPub/SubまたはManaged
+                                Kafkaへの移行手順を使う
                             </td>
                         </tr>
                         <tr>
@@ -1282,7 +1234,8 @@ gcloud eventarc triggers create pubsub-trigger \
                         <li>
                             <i class="ti ti-circle-check"></i><code>--location</code> /
                             <code>--region</code
-                            >はTopic（グローバル）とScheduler/Lite（リージョナル/ゾーナル）で意味が異なることを理解して使い分ける
+                            >はPub/Sub
+                            Topic（グローバル）とScheduler（リージョナル）で意味が異なることを理解して使い分ける
                         </li>
                         <li>
                             <i class="ti ti-circle-check"></i>権限は必要最小限（<code
@@ -1297,8 +1250,8 @@ gcloud eventarc triggers create pubsub-trigger \
                             >で強制実行し、待ち時間なしで結果を確認する
                         </li>
                         <li>
-                            <i class="ti ti-circle-check"></i>Snapshot/Lite
-                            Reservationなど課金が発生するリソースは、検証後に削除してコストを抑える
+                            <i class="ti ti-circle-check"></i
+                            >Snapshotなど課金が発生するリソースは、検証後に削除してコストを抑える
                         </li>
                         <li>
                             <i class="ti ti-circle-check"></i
@@ -1701,12 +1654,12 @@ Start["ラボ開始<br/>(Start Lab)"] --> Pool["採点システムが<br/>タス
 Pool --> A["パターンA<br/>Topic/Subscription基本操作<br/>+ Cloud Scheduler cron"]
 Pool --> B["パターンB<br/>Pub/Sub Schema作成<br/>+ Schema付きTopic作成"]
 Pool --> C["パターンC<br/>Snapshot作成<br/>+ Seekによるメッセージ再生"]
-Pool --> D["パターンD<br/>Pub/Sub Lite<br/>Reservation/Topic/Subscription"]
+Pool -.-> D["旧パターンD<br/>Pub/Sub Lite<br/>提供終了済み・実行不可"]
 Pool --> E["パターンE(補足)<br/>Eventarc経由で<br/>Cloud Runファンクション起動"]
 A --> Check["Check my progress<br/>で各タスクを検証"]
 B --> Check
 C --> Check
-D --> Check
+D --> Archive["歴史資料として参照<br/>Pub/Sub または Managed Kafka へ移行"]
 E --> Check`,
                 arch: `flowchart LR
 Publisher["Publisher<br/>(gcloud / アプリ)"] -->|Publish| Topic["Pub/Sub Topic"]
@@ -1738,11 +1691,10 @@ T0["時刻t0<br/>メッセージをPublish、一部をPullしてack"] --> Snap["
 Snap --> T1["時刻t1<br/>さらにメッセージをPublish、Pullとackが進む"]
 T1 --> SeekOp["gcloud pubsub subscriptions seek<br/>--snapshot=SNAPSHOT_ID"]
 SeekOp --> Replay["ack状態がSnapshot時点に巻き戻る<br/>未ackメッセージとして再配信される"]`,
-                lite: `flowchart TB
-Res["Lite Reservation<br/>(スループット容量を事前確保)"] -->|throughput-reservation| LT["Lite Topic<br/>(ゾーン/リージョン, パーティション数を指定)"]
-LT --> LS["Lite Subscription"]
-Pub3["Publisher"] -->|Publish| LT
-LS --> Sub4["Subscriber<br/>(gRPC StreamingPullのみ対応)"]`,
+                lite: `flowchart LR
+Legacy["旧Pub/Sub Lite構成<br/>Reservation / Topic / Subscription"] --> Decide{"移行先を選択"}
+Decide -->|Pub/Sub互換のメッセージング| PubSub["Pub/Sub"]
+Decide -->|Kafka API・エコシステムが必要| Kafka["Google Cloud Managed Service for Apache Kafka"]`,
                 eventarc: `flowchart LR
 Topic4["Pub/Sub Topic"] -->|messagePublished イベント| Eventarc["Eventarc Trigger"]
 Eventarc --> Func["Cloud Run function<br/>(2nd gen)"]`,

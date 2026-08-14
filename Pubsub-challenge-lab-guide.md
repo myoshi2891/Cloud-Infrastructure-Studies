@@ -14,9 +14,9 @@
 - Cloud Scheduler で cron ジョブを作成し、Pub/Sub トピックにメッセージをPublishする
 - Pub/Sub の **Schema（スキーマ）** を作成する
 - Pub/Sub の **Snapshot（スナップショット）** を作成する
-- **Pub/Sub Lite** をセットアップする
+- 提供終了済みの **Pub/Sub Lite** 旧出題パターンと移行先を歴史資料として確認する
 
-本ガイドは、公開されている本ラボのタスクプール（複数の解答リポジトリで報告されている「フォームA/B/C」パターン）と Google Cloud 公式ドキュメントを突き合わせて、**出題されうる全パターンを網羅的に**解説します。実際に表示されたタスク文言と照らし合わせ、該当するセクションを読み進めてください。
+本ガイドは、公開されている本ラボのタスクプール（複数の解答リポジトリで報告されている「フォームA/B/C」パターン）と Google Cloud 公式ドキュメントを突き合わせて、**現行の出題パターンを網羅的に**解説します。提供終了済みの旧パターンDは実行手順から除外し、移行用の歴史資料として分離しています。実際に表示されたタスク文言と照らし合わせ、該当するセクションを読み進めてください。
 
 ```mermaid
 flowchart TB
@@ -24,12 +24,12 @@ flowchart TB
     Pool --> A["パターンA\nTopic/Subscription 基本操作\n+ Cloud Scheduler cron"]
     Pool --> B["パターンB\nPub/Sub Schema 作成\n+ Schema付きTopic作成"]
     Pool --> C["パターンC\nSnapshot作成\n+ Seekによるメッセージ再生"]
-    Pool --> D["パターンD\nPub/Sub Lite\nReservation/Topic/Subscription"]
+    Pool -.-> D["旧パターンD\nPub/Sub Lite\n提供終了済み・実行不可"]
     Pool --> E["パターンE(補足)\nEventarc経由で\nCloud Runファンクション起動"]
     A --> Check["Check my progress\nで各タスクを検証"]
     B --> Check
     C --> Check
-    D --> Check
+    D --> Archive["歴史資料として参照\nPub/Sub または Managed Kafka へ移行"]
     E --> Check
 ```
 
@@ -51,7 +51,7 @@ flowchart TB
 | Snapshot（スナップショット） | あるSubscriptionの「ack（確認応答）状態」をある時点で保存したもの。Seekと組み合わせてメッセージを再生できる |
 | Seek | Subscriptionのack状態を過去のタイムスタンプやSnapshotの状態に巻き戻す操作 |
 | Cloud Scheduler | cron形式でジョブを定期実行するフルマネージドサービス。ターゲットとしてPub/SubトピックへのPublishを指定できる |
-| Pub/Sub Lite | パーティション方式の低コスト版Pub/Sub。スループットを事前にプロビジョニングする必要がある |
+| Pub/Sub Lite | かつて提供されていたパーティション方式のサービス。2026年6月30日に提供終了済みで、新規作成・Publishは実行できない |
 | Eventarc | Pub/Subメッセージなどのイベントをトリガーに Cloud Run function（旧Cloud Functions）を起動する仕組み |
 
 ### 1.2 コアアーキテクチャ
@@ -71,7 +71,7 @@ flowchart LR
 
 ### 1.3 Pub/Sub と Pub/Sub Lite の違い
 
-| 観点 | Pub/Sub | Pub/Sub Lite |
+| 観点 | Pub/Sub | Pub/Sub Lite（提供終了済み） |
 |---|---|---|
 | スケーリング | 自動（容量を意識しなくてよい） | 手動プロビジョニング（パーティション数・Reservationのスループットを事前設定） |
 | リソースのスコープ | グローバル/リージョナル | ゾーンまたはリージョン単位（Publisher/Subscriberと同一リージョン推奨） |
@@ -109,7 +109,7 @@ gcloud services enable pubsub.googleapis.com \
 | メッセージのPublishのみ | `roles/pubsub.publisher` | 最小権限。特定Topicに絞って付与するとより安全 |
 | メッセージのPull/ackのみ | `roles/pubsub.subscriber` | 最小権限 |
 | Cloud SchedulerジョブがTopicにPublishする | Cloud Schedulerのサービスエージェントに `roles/pubsub.publisher` | Console/gcloudでジョブ作成時に自動付与されることが多いが、権限エラー時は確認する |
-| Pub/Sub Liteの管理 | `roles/pubsublite.admin` | Reservation/Lite Topic/Lite Subscriptionすべてを操作可能 |
+| Pub/Sub Liteの旧管理ロール | `roles/pubsublite.admin` | 提供終了前の歴史資料。現行ラボでは付与・利用しない |
 
 チャレンジラボの環境では学習者アカウントに主要な権限が事前付与されていることが多いですが、`PERMISSION_DENIED` が出た場合はまずここを疑ってください。
 
@@ -318,78 +318,28 @@ gcloud pubsub subscriptions pull snapshot-demo-sub --auto-ack
 
 ---
 
-## 6. パターンD: Pub/Sub Lite のセットアップ
+## 6. 旧パターンD: Pub/Sub Lite（提供終了済み・歴史資料）
 
-> **提供終了に関する注意**: Pub/Sub Liteは2026年6月30日に提供終了します。新規構成ではGoogle Cloud Managed Service for Apache KafkaまたはPub/Subを選択し、既存利用者は提供終了日までに移行してください。
+> **提供終了済み**: Pub/Sub Liteは2026年6月30日に提供を終了しました。Reservation、Lite Topic、Lite Subscriptionの新規作成とPublishは現在実行できないため、この章にあった作成・Publishコマンドは削除しました。現行のChallenge LabではPub/Sub Liteリソースを作成しないでください。
 
-### 6.1 なぜPub/Sub Liteが別枠で存在するのか
+### 6.1 旧構成と移行先
 
-Pub/Sub Liteは、大量データを安定して流し続けるユースケース向けに、スループットとストレージを**事前に手動でプロビジョニング**することでコストを下げられるサービスです。通常のPub/Subと異なり、自動スケーリングではなく **Reservation（予約容量）→ Lite Topic（パーティション分割）→ Lite Subscription** という3階層でリソースを組みます。
+提供終了前のPub/Sub Liteは、Reservation（予約容量）→ Lite Topic（パーティション分割）→ Lite Subscriptionという3階層で構成されていました。この情報は旧タスクを読み解くための歴史資料であり、操作手順ではありません。
 
 ```mermaid
-flowchart TB
-    Res["Lite Reservation\n(スループット容量を capacity unit で事前確保)"] -->|throughput-reservation| LT["Lite Topic\n(ゾーン/リージョン, パーティション数を指定)"]
-    LT --> LS["Lite Subscription"]
-    Pub3["Publisher"] -->|Publish| LT
-    LS --> Sub4["Subscriber\n(gRPC StreamingPullのみ対応)"]
+flowchart LR
+    Legacy["旧Pub/Sub Lite構成\nReservation / Topic / Subscription"] --> Decide{"移行先を選択"}
+    Decide -->|Pub/Sub互換のメッセージング| PubSub["Pub/Sub"]
+    Decide -->|Kafka API・エコシステムが必要| Kafka["Google Cloud Managed Service for Apache Kafka"]
 ```
 
-### 6.2 手順
+### 6.2 現行ラボでの対応
 
-**Step 1: Reservationを作成する**
+1. タスク文にPub/Sub Liteが記載されている場合、その教材が提供終了前の旧版でないか確認します。
+2. 現行タスクでは、通常のPub/Sub Topic/Subscription、または指定されたManaged Kafkaリソースを作成します。
+3. 旧構成を移行する場合は、配信方式、順序保証、保持期間、スループット要件を整理して移行先を選び、アプリケーションのPublisher/Subscriberを切り替えます。
 
-```bash
-gcloud pubsub lite-reservations create my-reservation \
-    --location=$REGION \
-    --throughput-capacity=4
-```
-
-`--throughput-capacity` は「capacity unit」の数です。1 capacity unitあたりのスループット目安は次のとおりです。
-
-| Lite Topicのタイプ | Publishスループット | Subscribeスループット |
-|---|---|---|
-| Zonal | 1 MiB/s | 2 MiB/s |
-| Regional | 0.25 MiB/s | 0.5 MiB/s |
-
-**Step 2: Lite Topicを作成し、Reservationに紐付ける**
-
-```bash
-gcloud pubsub lite-topics create my-lite-topic \
-    --location=$REGION-a \
-    --partitions=1 \
-    --per-partition-bytes=30GiB \
-    --throughput-reservation=my-reservation
-```
-
-- Zonalの場合は `us-central1-a` のようにゾーンまで指定します。
-- パーティション数は将来のスループット要件を見越して決めます（後から増やすことは可能ですが減らすことはできません）。
-
-**Step 3: Lite Subscriptionを作成する**
-
-```bash
-gcloud pubsub lite-subscriptions create my-lite-sub \
-    --location=$REGION-a \
-    --topic=my-lite-topic
-```
-
-**Step 4: 動作確認**
-
-Pub/Sub LiteはStreamingPullのgRPCクライアントライブラリ経由での送受信が基本です。CLIから簡易的に投稿する場合は以下のような形になります（言語別クライアントライブラリを使う方が一般的です）。
-
-```bash
-gcloud pubsub lite-topics publish my-lite-topic \
-    --location=$REGION-a \
-    --message="hello from pubsub lite"
-```
-
-### 6.3 ベストプラクティス
-
-- Zonal（ゾーン単位）かRegional（リージョン単位、高可用性だが単価が高い）かは可用性要件とコストのバランスで選ぶ。
-- Reservationのスループットは、紐づく全Lite Topicの「ピーク時合計スループット」を上回るように設計する。容量を使い切ると発行/配信がスロットリングされる。
-- Reservationのスループットはいつでも更新可能だが、**減らした場合でも24時間は減少前の料金が請求される**点に注意する。
-- タスク終了後は `lite-subscriptions delete` → `lite-topics delete` → `lite-reservations delete` の順で削除し、コストを抑える（Reservationは紐づくTopicが残っていると削除できない）。
-
-出典: [Choose Pub/Sub or Pub/Sub Lite](https://cloud.google.com/pubsub/docs/choosing-pubsub-or-lite) / [Create and manage Lite reservations](https://cloud.google.com/pubsub/lite/docs/reservations) / [Pub/Sub Lite how-to guides](https://cloud.google.com/pubsub/lite/docs/how-to) / [Quickstart: Publish and receive messages (Pub/Sub Lite)](https://cloud.google.com/pubsub/lite/docs/publish-receive-messages-console) / [Access control with IAM (Pub/Sub Lite)](https://cloud.google.com/pubsub/lite/docs/access-control)
+出典: [Pub/Sub Lite service turndown](https://cloud.google.com/pubsub/lite/docs) / [Choose Pub/Sub or Pub/Sub Lite](https://cloud.google.com/pubsub/docs/choosing-pubsub-or-lite)
 
 ---
 
@@ -431,7 +381,7 @@ Eventarcはトランスポート層としてPub/Subを利用するため、内�
 | Schema作成 | `gcloud pubsub schemas describe <SCHEMA>` でフィールド定義がタスク指定と一致しているか |
 | Schema付きTopic | `gcloud pubsub topics describe <TOPIC>` の出力に `schemaSettings` が含まれているか |
 | Snapshot作成 | `gcloud pubsub snapshots describe <SNAPSHOT>` で対象Subscriptionが正しいか |
-| Pub/Sub Lite | `gcloud pubsub lite-reservations describe` / `lite-topics describe` / `lite-subscriptions describe` でそれぞれ設定値(capacity, partitions, reservation紐付け)を確認 |
+| Pub/Sub Lite（旧タスク） | 提供終了済みのため作成・採点対象にしない。教材が旧版の場合は現行タスクへ更新されているか確認 |
 
 `Check my progress` が失敗する場合、多くは「リソース名の誤字」「リージョン/ロケーションの指定漏れ」「API未有効化」のいずれかです。次章のトラブルシューティング表もあわせて確認してください。
 
@@ -447,7 +397,7 @@ Eventarcはトランスポート層としてPub/Subを利用するため、内�
 | Schema作成時の `INVALID_ARGUMENT` | Avro/Protocol BufferのJSON定義に構文エラーがある、またはトップレベル型が複数ある | `--definition` のJSONをローカルでLintし、importを使っていないか確認する |
 | Topic作成時に `schemaSettings` が反映されない | `--schema` オプションと `--message-encoding` の指定漏れ | `gcloud pubsub topics update <TOPIC> --schema=<SCHEMA> --message-encoding=json` で後付け設定も可能 |
 | Seekしても再配信されない | Subscriptionのメッセージ保持期間がSnapshot作成時点をすでに超えている、またはSnapshotが期限切れ | Snapshotの有効期限(デフォルト7日)を確認し、Subscriptionの`--message-retention-duration`を延長して再作成する |
-| Pub/Sub Lite Topic作成時に `RESOURCE_EXHAUSTED` | Reservationのスループット容量が不足、またはパーティション数が過大 | `--throughput-capacity` を見直すか、パーティション数を減らす |
+| Pub/Sub Liteの作成・Publishコマンドを実行できない | サービスが2026年6月30日に提供終了済み | コマンドを再試行せず、教材の現行版を確認してPub/SubまたはManaged Kafkaへの移行手順を使う |
 | Eventarcトリガー作成が一時的に失敗する | 初回作成時、Eventarcのサービスエージェントのプロビジョニングに時間がかかることがある | 数分待って再実行する |
 
 ---
@@ -455,10 +405,10 @@ Eventarcはトランスポート層としてPub/Subを利用するため、内�
 ## 10. ベストプラクティスまとめ（チェックリスト）
 
 - [ ] リソース名はタスク文で指定された名前を**一字一句そのまま**使用する（採点は文字列完全一致で見ていることが多い）
-- [ ] `--location` / `--region` はTopic(グローバル)とScheduler/Lite(リージョナル/ゾーナル)で意味が異なることを理解して使い分ける
+- [ ] `--location` / `--region` はPub/Sub Topic（グローバル）とScheduler（リージョナル）で意味が異なることを理解して使い分ける
 - [ ] 権限は必要最小限（`pubsub.publisher` / `pubsub.subscriber`）を基本とし、`pubsub.editor`は管理作業時のみに限定する
 - [ ] cronジョブは`jobs run`で強制実行し、待ち時間なしで結果を確認する
-- [ ] Snapshot/Lite Reservationなど課金が発生するリソースは、検証後に削除してコストを抑える
+- [ ] Snapshotなど課金が発生するリソースは、検証後に削除してコストを抑える
 - [ ] Schemaはフィールド名・型をタスク仕様と完全に一致させ、PIIを含めない
 - [ ] 採点(Check my progress)が失敗した場合は、まず`describe`系コマンドで実際の設定値を確認してから再実行する
 
