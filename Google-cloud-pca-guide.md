@@ -582,7 +582,7 @@ flowchart LR
 
 **ソフトウェアサプライチェーンのセキュリティ**: Artifact Analysisがコンテナイメージの脆弱性スキャンを担当し、スキャン合格後に署名付きattestationを作成します。Binary Authorizationはそのattestationを検証し、対応するattestorをポリシーで必須化することで、条件を満たしたイメージだけをデプロイできるよう制御します。
 
-> **ベストプラクティス**: 「多層防御（Defense in Depth）」の考え方に基づき、ネットワーク層（VPC Service Controls）、ID層（IAM/Context-Aware Access）、データ層（暗号化/DLP）、アプリ層（Binary Authorization）の各レベルで独立した防御を重ねることが試験・実務ともに評価される設計です。
+> **ベストプラクティス**: 「多層防御（Defense in Depth）」の考え方に基づき、サービス境界によるデータ流出制御（VPC Service Controls）、ID層（IAM/Context-Aware Access）、データ層（暗号化/DLP）、ソフトウェアサプライチェーンおよびデプロイ時ポリシー制御（Binary Authorization）の各レベルで独立した防御を重ねることが試験・実務ともに評価される設計です。
 >
 > **出典**: [IAMの概要](https://cloud.google.com/iam/docs/overview) / [リソース階層の理解](https://cloud.google.com/resource-manager/docs/cloud-platform-resource-hierarchy) / [Cloud KMSの概要](https://cloud.google.com/kms/docs/key-management-service) / [VPC Service Controlsの概要](https://cloud.google.com/vpc-service-controls/docs/overview) / [Model Armorの概要](https://cloud.google.com/security-command-center/docs/model-armor-overview)
 
