@@ -617,4 +617,36 @@
                     grid-template-columns: minmax(0, 1fr);
                 }
             }
+
+            .agwa-section2-page .main ol {
+                list-style-type: decimal !important;
+                padding-left: 1.8rem !important;
+                margin: 1rem 0;
+            }
+
+            .agwa-section2-page .main ol li {
+                list-style-type: decimal !important;
+            }
+
+            .agwa-section2-page .nav-link.active {
+                background: var(--accent-dim-2) !important;
+                color: var(--accent) !important;
+                font-weight: 700 !important;
+                border-left: 3px solid var(--accent);
+                padding-left: calc(1.3rem - 3px);
+            }
+
+            .agwa-section2-page .mermaid .yellowFill,
+            .agwa-section2-page .mermaid .yellowFill .nodeLabel,
+            .agwa-section2-page .mermaid .yellowFill .nodeLabel p,
+            .agwa-section2-page .mermaid .yellowFill text,
+            .agwa-section2-page .mermaid .yellowFill tspan,
+            .agwa-section2-page .mermaid [style*="fill:#ffd54f"] .nodeLabel,
+            .agwa-section2-page .mermaid [style*="fill:#ffd54f"] text,
+            .agwa-section2-page .mermaid [style*="fill:#ffe08a"] .nodeLabel,
+            .agwa-section2-page .mermaid [style*="fill:#ffe08a"] text {
+                color: #000000 !important;
+                fill: #000000 !important;
+            }
+
         
