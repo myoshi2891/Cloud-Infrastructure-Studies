@@ -216,8 +216,15 @@
     margin: 0 0 18px;
 }
 
-.agwa-s4-page ul,
+.agwa-s4-page ul:not(.toc):not(.task-list):not(.checklist):not(.ref-card ul) {
+    list-style-type: disc !important;
+    margin: 0 0 18px;
+    padding-left: 28px;
+    color: var(--text);
+}
+
 .agwa-s4-page ol {
+    list-style-type: decimal !important;
     margin: 0 0 18px;
     padding-left: 28px;
     color: var(--text);
