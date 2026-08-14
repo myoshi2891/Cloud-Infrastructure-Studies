@@ -52,7 +52,7 @@ flowchart TB
 | Seek | Subscriptionのack状態を過去のタイムスタンプやSnapshotの状態に巻き戻す操作 |
 | Cloud Scheduler | cron形式でジョブを定期実行するフルマネージドサービス。ターゲットとしてPub/SubトピックへのPublishを指定できる |
 | Pub/Sub Lite | パーティション方式の低コスト版Pub/Sub。スループットを事前にプロビジョニングする必要がある |
-| Eventarc | Pub/Subメッセージなどのイベントをトリガーに Cloud Run функция（旧Cloud Functions）を起動する仕組み |
+| Eventarc | Pub/Subメッセージなどのイベントをトリガーに Cloud Run function（旧Cloud Functions）を起動する仕組み |
 
 ### 1.2 コアアーキテクチャ
 
@@ -310,7 +310,7 @@ gcloud pubsub subscriptions pull snapshot-demo-sub --auto-ack
 
 ### 5.3 ベストプラクティス
 
-- SnapshotはデフォルトでSubscriptionのメッセージ保持期間（最大7日、`--message-retention-duration`で31日まで延長可）に基づいて有効期限が切れます。長期保管が必要な場合は保持期間の設計を見直してください。
+- Snapshotの最大有効期間は7日で、延長できません。`--message-retention-duration`で最大31日まで延長できるのはTopicのメッセージ保持期間です。長期保管が必要な場合は、Snapshotとは別にTopicの保持設計を見直してください。
 - Snapshotは「同じTopicに紐づく別のSubscription」にもSeekできるため、Blue/Greenデプロイでの切り戻し用途にも応用できます。
 - 使い終わったSnapshotは課金対象になるため、`gcloud pubsub snapshots delete` で忘れずに削除します。
 
@@ -319,6 +319,8 @@ gcloud pubsub subscriptions pull snapshot-demo-sub --auto-ack
 ---
 
 ## 6. パターンD: Pub/Sub Lite のセットアップ
+
+> **提供終了に関する注意**: Pub/Sub Liteは2026年6月30日に提供終了します。新規構成ではGoogle Cloud Managed Service for Apache KafkaまたはPub/Subを選択し、既存利用者は提供終了日までに移行してください。
 
 ### 6.1 なぜPub/Sub Liteが別枠で存在するのか
 

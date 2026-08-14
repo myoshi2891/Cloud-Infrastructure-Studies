@@ -505,10 +505,13 @@
 
                     <h3>1.1 用語整理</h3>
                     <table class="data-table">
+                        <thead>
                         <tr>
-                            <th>用語</th>
-                            <th>説明</th>
+                            <th scope="col">用語</th>
+                            <th scope="col">説明</th>
                         </tr>
+                        </thead>
+                        <tbody>
                         <tr>
                             <td>Topic（トピック）</td>
                             <td>
@@ -568,6 +571,7 @@
                                 function（旧Cloud Functions）を起動する仕組み
                             </td>
                         </tr>
+                        </tbody>
                     </table>
 
                     <h3>1.2 コアアーキテクチャ</h3>
@@ -578,11 +582,14 @@
 
                     <h3>1.3 Pub/Sub と Pub/Sub Lite の違い</h3>
                     <table class="data-table">
+                        <thead>
                         <tr>
-                            <th>観点</th>
-                            <th>Pub/Sub</th>
-                            <th>Pub/Sub Lite</th>
+                            <th scope="col">観点</th>
+                            <th scope="col">Pub/Sub</th>
+                            <th scope="col">Pub/Sub Lite</th>
                         </tr>
+                        </thead>
+                        <tbody>
                         <tr>
                             <td>スケーリング</td>
                             <td>自動（容量を意識しなくてよい）</td>
@@ -612,6 +619,7 @@
                             <td>一般的な非同期メッセージング全般</td>
                             <td>高スループットなログ/イベント基盤で、コスト最適化を重視する場合</td>
                         </tr>
+                        </tbody>
                     </table>
                     <p class="source-line">
                         <i class="ti ti-external-link"></i> 出典:
@@ -644,11 +652,14 @@ gcloud services enable pubsub.googleapis.com \
 
                     <h3>2.1 必要なIAMロールの目安</h3>
                     <table class="data-table">
+                        <thead>
                         <tr>
-                            <th>作業</th>
-                            <th>推奨ロール</th>
-                            <th>備考</th>
+                            <th scope="col">作業</th>
+                            <th scope="col">推奨ロール</th>
+                            <th scope="col">備考</th>
                         </tr>
+                        </thead>
+                        <tbody>
                         <tr>
                             <td>Topic/Subscriptionの作成・管理</td>
                             <td><code>roles/pubsub.editor</code></td>
@@ -678,6 +689,7 @@ gcloud services enable pubsub.googleapis.com \
                             <td><code>roles/pubsublite.admin</code></td>
                             <td>Reservation/Lite Topic/Lite Subscriptionすべてを操作可能</td>
                         </tr>
+                        </tbody>
                     </table>
                     <p class="source-line">
                         <i class="ti ti-external-link"></i> 出典:
@@ -914,7 +926,7 @@ gcloud pubsub subscriptions pull snapshot-demo-sub --auto-ack</code></pre>
                     <ul class="checklist">
                         <li>
                             <i class="ti ti-circle-check"></i
-                            >Snapshotはデフォルトで最大7日、<code>--message-retention-duration</code>で31日まで延長可能
+                            >Snapshotの最大有効期間は7日で延長不可。<code>--message-retention-duration</code>で最大31日まで延長できるのはTopicのメッセージ保持期間
                         </li>
                         <li>
                             <i class="ti ti-circle-check"></i
@@ -947,6 +959,14 @@ gcloud pubsub subscriptions pull snapshot-demo-sub --auto-ack</code></pre>
 
                 <section id="pattern-d">
                     <h2><i class="ti ti-bolt"></i>6. パターンD: Pub/Sub Lite のセットアップ</h2>
+                    <div class="callout warning">
+                        <i class="ti ti-alert-triangle"></i>
+                        <div>
+                            <p>
+                                Pub/Sub Liteは2026年6月30日に提供終了します。新規構成ではGoogle Cloud Managed Service for Apache KafkaまたはPub/Subを選択し、既存利用者は提供終了日までに移行してください。
+                            </p>
+                        </div>
+                    </div>
                     <p>
                         Pub/Sub
                         Liteは、大量データを安定して流し続けるユースケース向けに、スループットとストレージを<strong>事前に手動でプロビジョニング</strong>することでコストを下げられるサービスです。Reservation（予約容量）→
@@ -965,11 +985,14 @@ gcloud pubsub subscriptions pull snapshot-demo-sub --auto-ack</code></pre>
     --throughput-capacity=4</code></pre>
 
                     <table class="data-table">
+                        <thead>
                         <tr>
-                            <th>Lite Topicのタイプ</th>
-                            <th>Publishスループット</th>
-                            <th>Subscribeスループット</th>
+                            <th scope="col">Lite Topicのタイプ</th>
+                            <th scope="col">Publishスループット</th>
+                            <th scope="col">Subscribeスループット</th>
                         </tr>
+                        </thead>
+                        <tbody>
                         <tr>
                             <td>Zonal</td>
                             <td>1 MiB/s</td>
@@ -980,6 +1003,7 @@ gcloud pubsub subscriptions pull snapshot-demo-sub --auto-ack</code></pre>
                             <td>0.25 MiB/s</td>
                             <td>0.5 MiB/s</td>
                         </tr>
+                        </tbody>
                     </table>
 
                     <h3>Step 2: Lite Topicを作成し、Reservationに紐付ける</h3>
@@ -1095,10 +1119,13 @@ gcloud eventarc triggers create pubsub-trigger \
                         CloudのAPIを呼び出し、<strong>該当リソースが指定どおりの名前・設定で存在するか</strong>を検証していると考えられます。ボタンを押す前に次のセルフチェックを行ってください。
                     </p>
                     <table class="data-table">
+                        <thead>
                         <tr>
-                            <th>タスク種別</th>
-                            <th>セルフチェック項目</th>
+                            <th scope="col">タスク種別</th>
+                            <th scope="col">セルフチェック項目</th>
                         </tr>
+                        </thead>
+                        <tbody>
                         <tr>
                             <td>Topic/Subscription作成</td>
                             <td>
@@ -1147,6 +1174,7 @@ gcloud eventarc triggers create pubsub-trigger \
                                 <code>lite-subscriptions describe</code> でそれぞれ設定値を確認
                             </td>
                         </tr>
+                        </tbody>
                     </table>
                     <p>
                         <code>Check my progress</code
@@ -1160,11 +1188,14 @@ gcloud eventarc triggers create pubsub-trigger \
                         よくあるエラーとトラブルシューティング
                     </h2>
                     <table class="data-table">
+                        <thead>
                         <tr>
-                            <th>症状 / エラーメッセージ</th>
-                            <th>主な原因</th>
-                            <th>対処</th>
+                            <th scope="col">症状 / エラーメッセージ</th>
+                            <th scope="col">主な原因</th>
+                            <th scope="col">対処</th>
                         </tr>
+                        </thead>
+                        <tbody>
                         <tr>
                             <td><code>PERMISSION_DENIED</code></td>
                             <td>実行アカウントに必要なIAMロールが不足</td>
@@ -1237,6 +1268,7 @@ gcloud eventarc triggers create pubsub-trigger \
                             </td>
                             <td>数分待って再実行する</td>
                         </tr>
+                        </tbody>
                     </table>
                 </section>
 
