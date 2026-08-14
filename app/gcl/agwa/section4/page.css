@@ -1,0 +1,306 @@
+.agwa-s4-page {
+    background:
+        radial-gradient(
+            1200px 800px at 15% -10%,
+            rgba(124, 158, 255, 0.09),
+            transparent 55%
+        ),
+        radial-gradient(
+            1000px 700px at 100% 0%,
+            rgba(126, 224, 176, 0.05),
+            transparent 50%
+        ),
+        var(--color-background, #07111e);
+    color: var(--color-foreground, #dce6f5);
+    font-family: var(--font-body, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+    line-height: 1.85;
+    font-size: 16px;
+    min-height: 100vh;
+}
+
+.agwa-s4-page a {
+    color: #7c9eff;
+    text-decoration: none;
+}
+.agwa-s4-page a:hover {
+    text-decoration: underline;
+}
+
+/* Sidebar */
+.agwa-s4-page .sidebar {
+    position: fixed;
+    top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px));
+    left: 0;
+    bottom: 0;
+    width: 280px;
+    overflow-y: auto;
+    background: #0c1930;
+    border-right: 1px solid #1b2f4d;
+    padding: 24px 0 40px;
+    z-index: 40;
+}
+.agwa-s4-page .sidebar-brand {
+    padding: 0 22px 18px;
+    border-bottom: 1px solid #14243d;
+    margin-bottom: 14px;
+}
+.agwa-s4-page .sidebar-brand .kicker {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: #5d7297;
+    text-transform: uppercase;
+}
+.agwa-s4-page .sidebar-brand .title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--color-foreground, #dce6f5);
+    margin-top: 6px;
+    line-height: 1.5;
+}
+.agwa-s4-page .nav-link {
+    display: block;
+    padding: 7px 22px;
+    font-size: 13.5px;
+    color: var(--color-muted-foreground, #90a4c2);
+    border-left: 3px solid transparent;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.agwa-s4-page .nav-link:hover {
+    color: var(--color-foreground, #dce6f5);
+    text-decoration: none;
+    background: rgba(124, 158, 255, 0.06);
+}
+.agwa-s4-page .nav-link.nav-h2 {
+    font-weight: 700;
+    color: var(--color-foreground, #dce6f5);
+    margin-top: 10px;
+    font-size: 14px;
+}
+.agwa-s4-page .nav-link.nav-h3 {
+    padding-left: 36px;
+    font-size: 13px;
+}
+.agwa-s4-page .nav-link.active {
+    color: #a9c1ff;
+    border-left-color: #7c9eff;
+    background: rgba(124, 158, 255, 0.12);
+}
+
+.agwa-s4-page .sidebar-toggle {
+    display: none;
+    position: fixed;
+    top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 14px);
+    right: 14px;
+    z-index: 60;
+    background: var(--color-card, #0e1e38);
+    border: 1px solid #1b2f4d;
+    color: var(--color-foreground, #dce6f5);
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* Main */
+.agwa-s4-page .main {
+    margin-left: 280px;
+    width: calc(100% - 280px);
+    max-width: none;
+    padding: 36px 48px 80px;
+}
+
+/* Elements & Typography */
+.agwa-s4-page h1 {
+    font-size: 2.1rem;
+    font-weight: 800;
+    margin: 0 0 16px;
+    line-height: 1.35;
+    background: linear-gradient(135deg, #ffffff 30%, #a4c2ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.agwa-s4-page .subtitle {
+    font-size: 1.05rem;
+    color: #94a9c9;
+    margin-bottom: 32px;
+}
+
+.agwa-s4-page .section-block {
+    scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 24px);
+    margin-bottom: 48px;
+}
+
+.agwa-s4-page h2 {
+    font-size: 1.55rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 40px 0 20px;
+    padding-left: 14px;
+    border-left: 4px solid #7c9eff;
+    line-height: 1.4;
+}
+
+.agwa-s4-page h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #cbdcf7;
+    margin: 32px 0 16px;
+}
+
+.agwa-s4-page h4 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #a4beea;
+    margin: 24px 0 12px;
+}
+
+.agwa-s4-page p {
+    margin: 0 0 16px;
+    color: #d1dff2;
+}
+
+.agwa-s4-page ul, .agwa-s4-page ol {
+    margin: 0 0 20px;
+    padding-left: 24px;
+}
+.agwa-s4-page li {
+    margin-bottom: 8px;
+    color: #c9daf2;
+}
+
+.agwa-s4-page blockquote {
+    margin: 20px 0;
+    padding: 14px 20px;
+    background: rgba(124, 158, 255, 0.05);
+    border-left: 4px solid #486bb5;
+    border-radius: 0 8px 8px 0;
+    color: #9cb1d6;
+}
+.agwa-s4-page blockquote p {
+    margin: 0;
+}
+
+.agwa-s4-page hr {
+    border: 0;
+    height: 1px;
+    background: #1b2f4d;
+    margin: 44px 0;
+}
+
+/* Tables */
+.agwa-s4-page .table-scroll {
+    overflow-x: auto;
+    margin: 20px 0 24px;
+    border: 1px solid #1c3254;
+    border-radius: 10px;
+    background: #091526;
+}
+.agwa-s4-page table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14.5px;
+    text-align: left;
+}
+.agwa-s4-page th {
+    background: #11223b;
+    color: #ffffff;
+    font-weight: 700;
+    padding: 12px 16px;
+    border-bottom: 1px solid #1c3254;
+    white-space: nowrap;
+}
+.agwa-s4-page td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #14253d;
+    color: #cde0f7;
+}
+.agwa-s4-page tr:last-child td {
+    border-bottom: none;
+}
+.agwa-s4-page tr.odd td {
+    background: rgba(255, 255, 255, 0.015);
+}
+.agwa-s4-page tr.even td {
+    background: transparent;
+}
+
+/* Diagrams */
+.agwa-s4-page .mermaid-wrap {
+    width: 100%;
+    margin: 1.5rem auto 2rem;
+    overflow-x: auto;
+    background: #0b172a;
+    border: 1px solid #192d4a;
+    border-radius: 12px;
+    padding: 20px;
+}
+
+/* Code & Pre */
+.agwa-s4-page .code-block {
+    background: #07101c;
+    border: 1px solid #192e4d;
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 16px 0;
+    font-family: var(--font-mono, monospace);
+    font-size: 13.5px;
+}
+.agwa-s4-page .code-line {
+    white-space: pre;
+    min-height: 1.4em;
+}
+
+/* Checkboxes & Interactive */
+.agwa-s4-page .checklist {
+    list-style: none;
+    padding-left: 0;
+}
+.agwa-s4-page .checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 14px;
+    background: #0a182c;
+    border: 1px solid #172c47;
+    border-radius: 8px;
+    margin-bottom: 8px;
+}
+.agwa-s4-page .check-box {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    border: 2px solid #5d75a3;
+    background: transparent;
+    cursor: pointer;
+    margin-top: 3px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.agwa-s4-page .check-box.checked {
+    background: #7c9eff;
+    border-color: #7c9eff;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .agwa-s4-page .sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.25s ease-in-out;
+    }
+    .agwa-s4-page .sidebar.open {
+        transform: translateX(0);
+    }
+    .agwa-s4-page .sidebar-toggle {
+        display: flex;
+    }
+    .agwa-s4-page .main {
+        margin-left: 0;
+        width: 100%;
+        padding: 24px 20px 60px;
+    }
+}
