@@ -58,7 +58,6 @@
     gap: 2px;
 }
 
-/* 目次は ul / li 構造。ブラウザ既定のマーカーと余白を打ち消してリンクのみを見せる */
 .agwa-section6-root .sidebar-nav ul {
     list-style: none;
     margin: 0;
