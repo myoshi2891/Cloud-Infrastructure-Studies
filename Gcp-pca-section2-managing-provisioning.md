@@ -1,5 +1,6 @@
 # Google Cloud Professional Cloud Architect（PCA）試験ガイド
-# Section 2：クラウドソリューションインフラの管理とプロビジョニング（配点 約17.5%）
+
+## Section 2：クラウドソリューションインフラの管理とプロビジョニング（配点 約17.5%）
 
 > 本ガイドは、Google Cloud公式の [Professional Cloud Architect 認定ページ](https://cloud.google.com/learn/certification/cloud-architect) および [公式Exam Guide（PDF）](https://services.google.com/fh/files/misc/professional_cloud_architect_exam_guide_english.pdf) の **Section 2: Managing and provisioning a cloud solution infrastructure** を基に、初学者がゼロから体系的に理解できるよう再構成した学習用ドキュメントです。図解はすべてMermaid、表組みはすべてMarkdownテーブルで統一し、ASCIIアートは一切使用していません。
 
@@ -109,7 +110,7 @@ flowchart TD
 
 **ベストプラクティス**
 
-- RFC1918（プライベートIP）同士の通信が必要な場合は、Dedicated InterconnectまたはPartner Interconnectが必須です。VPC Peeringはプライベートアドレッシングを提供しません<sup>[1]</sup>。
+- オンプレミスとVPC間のRFC1918通信にはHA VPNまたはCloud Interconnectを使用できます。高帯域・低レイテンシでインターネットを経由しない専用接続が必要な場合は、Dedicated InterconnectまたはPartner Interconnectを選択します。VPC間はVPC Network Peeringで接続でき、プライベートIPv4サブネットルートが常に交換されます<sup>[1]</sup>。
 - HA VPNは静的・動的（BGP）ルーティングの両方に対応し、Classic VPNのBGPは非推奨（Deprecated）のため新規構築では避けます<sup>[1]</sup>。
 - Cloud Interconnectは、リンク層暗号化のためMACsecをサポートし、VLANアタッチメントのトラフィックをIPsecで暗号化するHA VPN over Cloud Interconnectも構成可能です<sup>[1]</sup>。
 - 本番環境では、Interconnectを主回線、HA VPNをフェイルオーバー用のバックアップ回線とする構成が一般的です<sup>[2]</sup>。
@@ -157,8 +158,8 @@ graph TD
 
 - IDS/IPSはまず「検出モード」で導入し、誤検知（false positive）をチューニングしてから「防御モード」に切り替えるのが安全な導入手順です<sup>[3]</sup>。
 - Cloud NGFWはNorth-South（VPCと外部間）だけでなくEast-West（VPC内のリソース間）トラフィックにも適用され、セキュアタグを用いたマイクロセグメンテーションでゼロトラストに近い構成を実現できます<sup>[4]</sup>。
-- ファイアウォールルールは「広く・少なく」を基本方針とし、明確なセキュリティ目的を定義したうえで、外部アクセスを最小化し、機密データには専用のサービス境界（VPC Service Controls）を設定します<sup>[1]</sup>。
-- VMのアイデンティティ管理にはネットワークタグではなく、IAMで統制可能なサービスアカウントまたはIAM-governed Tagsを使うことで、権限昇格のリスクを抑えられます<sup>[1][4]</sup>。
+- ファイアウォールの許可ルールは、必要なプロトコル・ポート・送信元・宛先だけに限定します。同じセキュリティ目的のルールは追跡可能で管理しやすい範囲に集約し、外部アクセスを最小化したうえで、機密データには専用のサービス境界（VPC Service Controls）を設定します<sup>[1]</sup>。
+- VMのアイデンティティ管理にはネットワークタグではなく、IAMで統制可能なサービスアカウントまたはIAM-governed Tagsを使うことで、権限昇格のリスクを抑えられます<sup>[1, 4]</sup>。
 
 ### 2.1.4 VPC設計とロードバランシング
 
@@ -166,13 +167,13 @@ graph TD
 
 Google CloudのVPCはAWSやAzureと異なり、**グローバルリソース**です。1つのVPCが複数のリージョンにまたがるサブネットを持つことができ、リージョンをまたいだVPC Peeringを組む必要がありません<sup>[5]</sup>。
 
-**ベストプラクティス（VPC設計）**<sup>[6][7]</sup>
+**ベストプラクティス（VPC設計）**<sup>[6, 7]</sup>
 
 - 要件が共通するリソース群には、まず単一のVPCネットワークから始める。
 - 複数チーム・複数プロジェクトでネットワークを一元管理したい場合は **共有VPC（Shared VPC）** を採用し、ネットワークユーザーロールをサブネット単位で付与する。
 - 本番環境と非本番環境を同じ共有VPCに同居させることは避ける（管理者権限の分離が難しくなるため）。
 - IPアドレス空間は将来の拡張を見込み、CIDRの重複がないよう事前に計画する。
-- ファイアウォールルールは少数の広いルールセットにまとめ、タグやサービスアカウントで対象を絞り込む。
+- ファイアウォールルールは必要なプロトコルとポートだけを許可し、同じ目的のルールは管理しやすい範囲で集約する。タグやサービスアカウントで対象を必要最小限に絞り込む。
 
 ```mermaid
 graph TB
@@ -195,7 +196,7 @@ graph TB
     Sub2 -.->|"ネットワークユーザーロール"| GKE1
 ```
 
-共有VPCでは、1つの「ホストプロジェクト」が持つネットワークを複数の「サービスプロジェクト」が利用します。ホストプロジェクトはサービスプロジェクトを兼ねることができず、サービスプロジェクトは1つのホストプロジェクトにのみ接続できます（複数ホストプロジェクトの構成自体は可能）<sup>[7]</sup>。この仕組みにより、ネットワーク管理者はネットワークとセキュリティを一元管理しつつ、各チームのプロジェクト管理者にはインスタンス作成などの限定的な権限のみを委譲でき、最小権限の原則を実現します<sup>[7][8]</sup>。
+共有VPCでは、1つの「ホストプロジェクト」が持つネットワークを複数の「サービスプロジェクト」が利用します。ホストプロジェクトはサービスプロジェクトを兼ねることができず、サービスプロジェクトは1つのホストプロジェクトにのみ接続できます（複数ホストプロジェクトの構成自体は可能）<sup>[7]</sup>。この仕組みにより、ネットワーク管理者はネットワークとセキュリティを一元管理しつつ、各チームのプロジェクト管理者にはインスタンス作成などの限定的な権限のみを委譲でき、最小権限の原則を実現します<sup>[7, 8]</sup>。
 
 #### Private Service Connect（PSC）
 
@@ -332,7 +333,7 @@ Compute EngineやGKEのワークロードに接続する永続ストレージに
 
 出典：[Persistent Disk: durable block storage](https://cloud.google.com/persistent-disk)
 
-**ベストプラクティス**：Persistent Diskはゾーン間の同期レプリケーション、リージョン間の非同期レプリケーション、スナップショット、ディスククローンの4つの方法でデータ保護を実現できます<sup>[16]</sup>。複数のディスクを同時にアタッチできるため、パーティショニングやRAID構成の手間を省けます<sup>[16]</sup>。
+**ベストプラクティス**：Persistent Diskはゾーン間の同期レプリケーション、リージョン間の非同期レプリケーション、スナップショット、ディスククローンの4つの方法でデータ保護を実現できます<sup>[16]</sup>。1台のVMには複数のディスクをアタッチでき、通常は各ディスクを単一のファイルシステムとして使用します。容量や性能を拡張する場合は、既存ディスクのサイズ変更または追加ディスクのアタッチを選択します<sup>[16]</sup>。
 
 ### 2.2.4 データ保護（バックアップと復旧）
 
@@ -383,7 +384,7 @@ Compute Engineのマシンタイプは「ファミリー」（用途）と「シ
 
 出典：[Machine families resource and comparison guide](https://docs.cloud.google.com/compute/docs/machine-resource)
 
-**カスタムマシンタイプ**：定義済みのマシンタイプがワークロードに合わない場合（例：ソフトウェアライセンスがコア数に紐づくため、必要最小限のvCPU数に絞りたい）、E系列・N系列でvCPU数とメモリ量を個別に指定できます。カスタムマシンタイプは定義済みタイプに対してオンデマンド価格が5%程度割高になります<sup>[20][21]</sup>。
+**カスタムマシンタイプ**：定義済みのマシンタイプがワークロードに合わない場合（例：ソフトウェアライセンスがコア数に紐づくため、必要最小限のvCPU数に絞りたい）、E系列・N系列でvCPU数とメモリ量を個別に指定できます。カスタムマシンタイプは定義済みタイプに対してオンデマンド価格が5%程度割高になります<sup>[20, 21]</sup>。
 
 **ベストプラクティス**：Cloud MonitoringのCPU・メモリ使用率データ（過去8日間）に基づき、Compute Engineはマシンタイプの「サイズ適正化（rightsizing）」を自動的に推奨してくれます。定期的にこの推奨事項を確認し、過剰プロビジョニングを是正します<sup>[22]</sup>。
 
@@ -427,7 +428,7 @@ sequenceDiagram
 |---|---|
 | Compute Engine | VPCネイティブのサブネット、内部/外部IP、Cloud NATによる送信専用アクセス |
 | GKE | VPCネイティブクラスタ、エイリアスIP範囲によるPod/Serviceのアドレッシング、Dataplane V2（eBPF） |
-| サーバーレス（Cloud Run等） | サーバーレスVPCアクセスコネクタによるVPC内部リソースへのプライベート到達性 |
+| サーバーレス（Cloud Run等） | Direct VPC egressによるVPC内部リソースへのプライベート到達性を推奨。要件を満たせない場合はServerless VPC Accessコネクタを代替として使用 |
 | Google Cloud VMware Engine | VMware EngineネットワークとVPC間のピアリング、Public IP Serviceまたは外部ロードバランサー経由のインターネット到達性 |
 
 出典：[Google Cloud VMware Engine best practices for networking](https://docs.cloud.google.com/vmware-engine/docs/best-practices-security)
@@ -528,7 +529,7 @@ Cloud Runは、コンテナイメージをそのままステートレスなHTTP�
 
 ## 2.4 Gemini Enterprise Agent Platformを活用したエンドツーエンドMLワークフロー
 
-> **用語の変遷に関する注記**：2026年4月22日のGoogle Cloud Next '26にて、これまで「Vertex AI」と呼ばれていたAI／MLプラットフォームは **Gemini Enterprise Agent Platform** としてブランドを刷新しました<sup>[31][32]</sup>。既存のVertex AI顧客のコンソール表示は自動的に新ブランドに切り替わり、既存APIは後方互換性を維持したまま利用可能です<sup>[31]</sup>。今後のロードマップはすべてAgent Platformのブランドで提供されるとGoogleは発表しています<sup>[31]</sup>。本ガイドの執筆時点（2026年8月）でこれが最新の公式名称であるため、この名称で解説します。
+> **用語の変遷に関する注記**：2026年4月22日のGoogle Cloud Next '26にて、これまで「Vertex AI」と呼ばれていたAI／MLプラットフォームは **Gemini Enterprise Agent Platform** としてブランドを刷新しました<sup>[31, 32]</sup>。既存のVertex AI顧客のコンソール表示は自動的に新ブランドに切り替わり、既存APIは後方互換性を維持したまま利用可能です<sup>[31]</sup>。今後のロードマップはすべてAgent Platformのブランドで提供されるとGoogleは発表しています<sup>[31]</sup>。本ガイドの執筆時点（2026年8月）でこれが最新の公式名称であるため、この名称で解説します。
 
 ### 2.4.1 Gemini Enterprise Agent Platformの全体像
 
