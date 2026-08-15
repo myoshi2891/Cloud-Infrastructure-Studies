@@ -75,7 +75,7 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 - [x] **ナビゲーション:** Section 2/4 の最下部 active 補正と Section 5 のモバイル目次・`NAV_ITEMS` 正本化を実装（`6db863b`）。
 - [x] **Section 6:** 本文コンポーネントを `components/sections/` へ移し、CSS Modules とグローバル色トークンへ移行（`105d89c`）。
 - [x] **教材:** AGWA の Vault・DLP・MX・Data regions・権限・安全なCSV例と、PCA のネットワーク・ストレージ・Cloud Run記述を公式資料に合わせて更新（`2341fe8`, `725cd2a`）。
-- [x] **検証:** 2026-08-15T01:53:03Z に対象コミット `725cd2a` を全体スコープで検証し、`npm test` は131ファイル・1118件成功、`npm run lint` も成功。対象Markdown lintは0件。ユーザー指示に従いビルドと目視確認は未実施。
+- [x] **検証:** 2026-08-15T03:13:14Z に対象コミット `9ddf12a` を全体スコープで検証し、`bun run test` は131ファイル・1118件成功、`bun run lint` も成功。対象Markdown lintは0件。ユーザー指示に従いビルドと目視確認は未実施。
 
 ## 2026-08-14: AGWA Section 1〜4 レビュー指摘対応 (完了)
 

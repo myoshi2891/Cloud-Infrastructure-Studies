@@ -179,7 +179,7 @@ bun run dashboard
 あなたは熟練したテストエンジニアであり、Next.js (App Router) / TypeScript / Vitest / Playwright のテストスペシャリストです。
 現在、[docs/TEST_COVERAGE_PROGRESS.md](TEST_COVERAGE_PROGRESS.md) の既存 **🔴 P0 / 🟡 P1 / 🔵 P2** は完了済みですが、CCNA / DevNetの独立集計によりCisco向けP1 E2Eが新たに未完了として可視化されています。サイドバー付き全24スタイルシートの横断レイアウト契約は `guide-content-widths.test.ts` の73ケースで保護されています。次フェーズではCisco E2Eを優先し、以下の候補もステップバイステップで進めてください。
 
-AGWA の移行検証は Section 1〜6 と共有抽出ヘルパーへ同期済みです。最新の実行記録は 2026-08-15T01:53:03Z、対象コミット `725cd2a`、スコープはサンドボックス指定の `npm test` による全体Vitestで、131ファイル・1118件が成功しました。`npm run lint` も全体スコープで成功しています。
+AGWA の移行検証は Section 1〜6 と共有抽出ヘルパーへ同期済みです。最新の実行記録は 2026-08-15T03:13:14Z、対象コミット `9ddf12a`、スコープは `bun run test` による全体Vitestで、131ファイル・1118件が成功しました。`bun run lint` も全体スコープで成功しています。
 
 直近のレビュー対応では、Section 4 NavBar の最下部スクロール回帰テストを追加し、Section 5 のテーブル構造検証と Mermaid モックのアクセシビリティ契約を強化しました。Section 6 は `components/sections/` と CSS Modules の構成へ移行済みです。ユーザー指示に従い、ビルドと目視確認は実施していません。
 
