@@ -135,5 +135,9 @@ describe('agwa-s5-browsers-endpoints — 移行元コンテンツの全量移行
         const container = renderPage();
         const tables = [...container.querySelectorAll('table')];
         expect(tables).toHaveLength(inventory.counts.table);
+        tables.forEach((table) => {
+            expect(table.querySelector('thead')).not.toBeNull();
+            expect(table.querySelector('th[scope="col"]')).not.toBeNull();
+        });
     });
 });

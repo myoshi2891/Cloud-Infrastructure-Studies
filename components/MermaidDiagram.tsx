@@ -135,6 +135,8 @@ export const applySvgFixups = (
     svgEl.style.width = `${targetWidth}px`;
     if (preserveNaturalScale && targetWidth > 0) {
         svgEl.style.minWidth = `${targetWidth}px`;
+    } else {
+        svgEl.style.minWidth = '';
     }
     svgEl.style.maxHeight = preserveNaturalScale ? 'none' : h > 550 ? '580px' : 'none';
     svgEl.setAttribute('viewBox', `${x} ${y} ${w} ${h + extraHeight}`);

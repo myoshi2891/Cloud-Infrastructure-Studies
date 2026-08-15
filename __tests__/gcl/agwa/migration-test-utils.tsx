@@ -20,9 +20,11 @@ export const MermaidDiagramMock = ({
     chart,
     ariaLabel,
     decorative,
-    preserveNaturalScale,
+    preserveNaturalScale = false,
 }: MermaidDiagramMockProps) => (
     <div
+        role="img"
+        aria-roledescription="diagram"
         data-testid="mermaid-diagram"
         data-chart={chart}
         data-decorative={String(decorative === true)}

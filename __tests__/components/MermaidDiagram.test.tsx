@@ -143,6 +143,15 @@ describe('MermaidDiagram', () => {
             expect(svg.style.maxHeight).toBe('none');
         });
 
+        it('自然倍率を維持しない場合は以前の min-width を解除すること', () => {
+            const svg = makeSvg('0 0 800 600');
+            svg.style.minWidth = '800px';
+
+            applySvgFixups(svg, 'flowchart TD\nA-->B');
+
+            expect(svg.style.minWidth).toBe('');
+        });
+
         it('viewBox が無い場合も max-width のインライン上書きを行わないこと', () => {
             // Arrange
             const svg = makeSvg();
