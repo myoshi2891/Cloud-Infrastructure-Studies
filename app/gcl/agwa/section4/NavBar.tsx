@@ -34,6 +34,12 @@ const NAV_LEVEL_CLASSES: Record<(typeof NAV_ITEMS)[number]['level'], string> = {
 
 /**
  * Section 4 の目次を提供し、現在位置を示す activeId とモバイル表示の isOpen を管理する。
+ *
+ * activeId は通常 IntersectionObserver が交差した見出しで更新するが、
+ * ページ最下部（残りスクロール 100px 以内）に到達している間は例外的に
+ * NAV_ITEMS の最後の項目を優先して active にする。最後の見出しは
+ * ビューポート上部の判定バンドに入りきらず、交差判定だけでは
+ * いつまでも active にならないため。
  */
 export function NavBar() {
     const [activeId, setActiveId] = useState<string>(NAV_ITEMS[0].id);
@@ -113,6 +119,7 @@ export function NavBar() {
                             <a
                                 href={`#${item.id}`}
                                 className={`nav-link ${NAV_LEVEL_CLASSES[item.level]} ${activeId === item.id ? 'active' : ''}`}
+                                aria-current={activeId === item.id ? 'location' : undefined}
                                 onClick={(e) => {
                                     e.preventDefault();
                                     handleClick(item.id);

@@ -5,6 +5,27 @@ import NavBar from '../../NavBar';
 import { MermaidDiagram } from '@/components/MermaidDiagram';
 import styles from '../../page.module.css';
 
+/**
+ * 学習チェックリストの項目。進捗表示の分母はこの配列長から導出するため、
+ * 項目を増減してもコンポーネント側の修正は不要。
+ */
+const CHECKLIST_ITEMS = [
+    'Audit and investigationツールとSecurity Investigation Toolの違い（対応エディション、検索モデル、実行可能なアクション）を説明できる',
+    'Status Dashboardの3つの確認方法（Webページ、RSS、システム定義ルール）とそれぞれの通知速度の違いを説明できる',
+    'Email Log Searchで確認できる情報と、確認できない情報（メッセージ内容）を区別できる',
+    'SPF・DKIM・DMARCそれぞれのトラブルシューティング手順とAdmin Toolboxの活用方法を説明できる',
+    'SMTPエラーメッセージのgsmtp識別子とgcdp識別子の違いを説明できる',
+    '2SVロックアウト時のバックアップコード発行手順と、子OUの2SV設定が設定グループの免除に優先する仕組みを説明できる',
+    'Calendar Interopで空き時間が正しく相互参照できない場合の主要な原因パターンを列挙できる',
+    'カレンダー・Driveの共有権限における「組織レベルの上限」と「個別設定」の関係を説明できる',
+    'My Drive、共有ドライブ内ファイル、削除済み共有ドライブの復元経路と25日期限、共有ドライブの組織所有・権限モデル、My Driveのアカウント削除20日制限、Gmailの復元期限を正確に説明できる',
+    'Meet quality toolの特性（事後分析ツールであること、30日間のデータ保持）を説明できる',
+    'Reports overview、Apps usageレポート、Storageページの役割の違いを説明できる',
+    'サポートケースを開く前に確認すべき情報源（Known Issues、Status Dashboard）の順序を説明できる',
+    'HARファイルの用途と、共有時に配慮すべきプライバシー上の注意点を説明できる',
+    'Workspace Updatesブログ、リリースカレンダー、「What\'s new」ヘルプページの役割の違いを説明できる',
+] as const;
+
 /** Section 6 の学習本文、図表、進捗チェックリストを一体として描画する。 */
 export default function AgwaSection6Guide() {
     const [checkedItems, setCheckedItems] = useState<Record<number, boolean>>({});
@@ -1755,25 +1776,17 @@ export default function AgwaSection6Guide() {
                     <div className={styles["checklist-card"]}>
                         <div className={styles["checklist-header"]}>
                             <span>習熟度チェック</span>
-                            <span className={styles.checklistProgress}>{completedCount} / 14 完了</span>
+                            <span
+                                className={styles.checklistProgress}
+                                role="status"
+                                aria-live="polite"
+                                aria-atomic="true"
+                            >
+                                {completedCount} / {CHECKLIST_ITEMS.length} 完了
+                            </span>
                         </div>
                         <ul className={styles["task-list"]}>
-                            {[
-                                'Audit and investigationツールとSecurity Investigation Toolの違い（対応エディション、検索モデル、実行可能なアクション）を説明できる',
-                                'Status Dashboardの3つの確認方法（Webページ、RSS、システム定義ルール）とそれぞれの通知速度の違いを説明できる',
-                                'Email Log Searchで確認できる情報と、確認できない情報（メッセージ内容）を区別できる',
-                                'SPF・DKIM・DMARCそれぞれのトラブルシューティング手順とAdmin Toolboxの活用方法を説明できる',
-                                'SMTPエラーメッセージのgsmtp識別子とgcdp識別子の違いを説明できる',
-                                '2SVロックアウト時のバックアップコード発行手順と、子OUの2SV設定が設定グループの免除に優先する仕組みを説明できる',
-                                'Calendar Interopで空き時間が正しく相互参照できない場合の主要な原因パターンを列挙できる',
-                                'カレンダー・Driveの共有権限における「組織レベルの上限」と「個別設定」の関係を説明できる',
-                                'My Drive、共有ドライブ内ファイル、削除済み共有ドライブの復元経路と25日期限、共有ドライブの組織所有・権限モデル、My Driveのアカウント削除20日制限、Gmailの復元期限を正確に説明できる',
-                                'Meet quality toolの特性（事後分析ツールであること、30日間のデータ保持）を説明できる',
-                                'Reports overview、Apps usageレポート、Storageページの役割の違いを説明できる',
-                                'サポートケースを開く前に確認すべき情報源（Known Issues、Status Dashboard）の順序を説明できる',
-                                'HARファイルの用途と、共有時に配慮すべきプライバシー上の注意点を説明できる',
-                                'Workspace Updatesブログ、リリースカレンダー、「What\'s new」ヘルプページの役割の違いを説明できる',
-                            ].map((text, idx) => (
+                            {CHECKLIST_ITEMS.map((text, idx) => (
                                 <li key={idx} className={checkedItems[idx] ? styles.completed : undefined}>
                                     <label>
                                         <input

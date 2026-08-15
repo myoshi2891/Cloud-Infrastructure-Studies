@@ -57,6 +57,11 @@ const NAV_ITEMS = [
     { href: '#オフラインアクセスdrive--docs', label: 'オフラインアクセス（Drive & Docs）', level: 3 },
 ];
 
+/**
+ * Section 5 の目次サイドバー。NAV_ITEMS の見出しを IntersectionObserver で監視し、
+ * スクロール位置に対応するリンクを active 表示にする。モバイルでは
+ * トグルボタンで開閉し、リンク選択時に自動で閉じる。
+ */
 export default function NavBar() {
     const [activeHref, setActiveHref] = useState<string>('');
     const [isOpen, setIsOpen] = useState(false);
