@@ -27,6 +27,14 @@ const NAV_ITEMS = [
     { id: '参考文献', text: '参考文献', level: 'h2' },
 ] as const;
 
+const NAV_LEVEL_CLASSES: Record<(typeof NAV_ITEMS)[number]['level'], string> = {
+    h2: 'nav-h2',
+    h3: 'nav-h3',
+};
+
+/**
+ * Section 4 の目次を提供し、現在位置を示す activeId とモバイル表示の isOpen を管理する。
+ */
 export function NavBar() {
     const [activeId, setActiveId] = useState<string>(NAV_ITEMS[0].id);
     const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -34,8 +42,21 @@ export function NavBar() {
     useEffect(() => {
         if (typeof IntersectionObserver === 'undefined') return;
 
+        const activateLastItemAtBottom = () => {
+            const isBottom = window.innerHeight + window.scrollY
+                >= document.documentElement.scrollHeight - 100;
+            if (isBottom) {
+                setActiveId(NAV_ITEMS[NAV_ITEMS.length - 1].id);
+                return true;
+            }
+
+            return false;
+        };
+
         const observer = new IntersectionObserver(
             (entries) => {
+                if (activateLastItemAtBottom()) return;
+
                 entries.forEach((entry) => {
                     if (entry.isIntersecting) {
                         setActiveId(entry.target.id);
@@ -50,13 +71,19 @@ export function NavBar() {
             if (el) observer.observe(el);
         });
 
-        return () => observer.disconnect();
+        window.addEventListener('scroll', activateLastItemAtBottom, { passive: true });
+
+        return () => {
+            observer.disconnect();
+            window.removeEventListener('scroll', activateLastItemAtBottom);
+        };
     }, []);
 
     const handleClick = (id: string) => {
         setIsOpen(false);
         const el = document.getElementById(id);
         if (el) {
+            setActiveId(id);
             el.scrollIntoView({ behavior: 'smooth' });
             el.focus({ preventScroll: true });
             window.history.pushState(null, '', `#${id}`);
@@ -70,19 +97,21 @@ export function NavBar() {
                 className="sidebar-toggle"
                 onClick={() => setIsOpen(!isOpen)}
                 aria-label="目次メニュー切替"
+                aria-expanded={isOpen}
+                aria-controls="sidebar"
             >
                 ☰
             </button>
             <aside className={`sidebar ${isOpen ? 'open' : ''}`} id="sidebar">
                 <div className="sidebar-brand">Associate Google Workspace Administrator</div>
                 <div className="sidebar-title">Section 4: セキュリティポリシーとアクセス制御</div>
-                <nav className="toc" id="tocNav">
+                <nav className="toc" id="tocNav" aria-label="AGWA Section 4の目次">
                     <ul className="toc-list">
                         {NAV_ITEMS.map((item) => (
                             <li key={item.id}>
                             <a
                                 href={`#${item.id}`}
-                                className={`nav-link nav-${item.level} ${activeId === item.id ? 'active' : ''}`}
+                                className={`nav-link ${NAV_LEVEL_CLASSES[item.level]} ${activeId === item.id ? 'active' : ''}`}
                                 onClick={(e) => {
                                     e.preventDefault();
                                     handleClick(item.id);

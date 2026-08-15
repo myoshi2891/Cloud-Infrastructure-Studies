@@ -271,6 +271,10 @@ const NAV_ITEMS = [
   }
 ];
 
+/**
+ * Section 2 の目次を表示し、スクロール位置に合わせて項目を有効化する。
+ * ページ最下部では IntersectionObserver の結果より最後の見出しを優先する。
+ */
 export const NavBar: React.FC = () => {
   const [activeId, setActiveId] = useState<string>("section-2の全体像");
   const [isOpen, setIsOpen] = useState<boolean>(false);

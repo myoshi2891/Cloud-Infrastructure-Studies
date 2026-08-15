@@ -59,21 +59,16 @@ const NAV_ITEMS = [
 
 export default function NavBar() {
     const [activeHref, setActiveHref] = useState<string>('');
+    const [isOpen, setIsOpen] = useState(false);
 
     useEffect(() => {
         if (typeof IntersectionObserver === 'undefined') return;
 
-        const navLinks = Array.from(document.querySelectorAll('.sidebar nav a'));
-        if (navLinks.length === 0) return;
-
         const headingToHref = new Map<Element, string>();
-        navLinks.forEach((a) => {
-            const href = a.getAttribute('href');
-            if (href) {
-                const id = decodeURIComponent(href.slice(1));
-                const el = document.getElementById(id);
-                if (el) headingToHref.set(el, href);
-            }
+        NAV_ITEMS.forEach(({ href }) => {
+            const id = decodeURIComponent(href.slice(1));
+            const element = document.getElementById(id);
+            if (element) headingToHref.set(element, href);
         });
 
         const targets = Array.from(headingToHref.keys());
@@ -97,25 +92,38 @@ export default function NavBar() {
     }, []);
 
     return (
-        <div className="sidebar" id="sidebar">
-            <div className="sidebar-brand">AGWA 試験対策ガイド</div>
-            <div className="sidebar-title">Section 5: ブラウザとエンドポイントの管理</div>
-            <nav>
-                <ul>
-                    {NAV_ITEMS.map((item) => (
-                        <li key={item.href}>
-                            <a
-                                href={item.href}
-                                className={`${item.level === 3 ? 'level-3' : ''} ${
-                                    activeHref === item.href ? 'active' : ''
-                                }`}
-                            >
-                                {item.label}
-                            </a>
-                        </li>
-                    ))}
-                </ul>
-            </nav>
-        </div>
+        <>
+            <button
+                type="button"
+                className="sidebar-toggle"
+                aria-label="Section 5の目次メニューを切り替える"
+                aria-expanded={isOpen}
+                aria-controls="sidebar"
+                onClick={() => setIsOpen((open) => !open)}
+            >
+                ☰
+            </button>
+            <div className={`sidebar ${isOpen ? 'open' : ''}`} id="sidebar">
+                <div className="sidebar-brand">AGWA 試験対策ガイド</div>
+                <div className="sidebar-title">Section 5: ブラウザとエンドポイントの管理</div>
+                <nav aria-label="AGWA Section 5の目次">
+                    <ul>
+                        {NAV_ITEMS.map((item) => (
+                            <li key={item.href}>
+                                <a
+                                    href={item.href}
+                                    className={`${item.level === 3 ? 'level-3' : ''} ${
+                                        activeHref === item.href ? 'active' : ''
+                                    }`}
+                                    onClick={() => setIsOpen(false)}
+                                >
+                                    {item.label}
+                                </a>
+                            </li>
+                        ))}
+                    </ul>
+                </nav>
+            </div>
+        </>
     );
 }
