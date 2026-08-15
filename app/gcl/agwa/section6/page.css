@@ -200,6 +200,34 @@
     margin: 0 0 18px;
 }
 
+.agwa-section6-root .main ol {
+    list-style-type: decimal;
+    padding-left: 28px;
+    margin: 0 0 20px;
+    color: var(--text);
+}
+
+.agwa-section6-root .main ul {
+    list-style-type: disc;
+    padding-left: 28px;
+    margin: 0 0 20px;
+    color: var(--text);
+}
+
+.agwa-section6-root .main li {
+    margin-bottom: 8px;
+}
+
+.agwa-section6-root .main li > ul,
+.agwa-section6-root .main li > ol {
+    margin-top: 8px;
+}
+
+.agwa-section6-root .main strong {
+    color: #ffffff;
+    font-weight: 700;
+}
+
 .agwa-section6-root .badge {
     display: inline-block;
     font-size: 12px;

@@ -79,6 +79,7 @@ export default function AgwaSection6Guide() {
     class S6 blueFill;
     class T61,T62,T63,T64 lightFill;`}
                             ariaLabel="Section 6 の4つのタスクと各サブタスクの全体図"
+                            preserveNaturalScale={true}
                         />
                     </div>
 
@@ -248,6 +249,7 @@ export default function AgwaSection6Guide() {
                     <div className="callout callout-green">
                         <div className="callout-title">ベストプラクティス</div>
                         <p>
+                            <strong>ベストプラクティス:</strong> 
                             ログイベントデータはCloud LoggingへのGoogle Cloud転送をオプトインで有効にできます。BigQueryへのエクスポートと組み合わせることで、90日を超える長期保持やSQLベースの高度な分析が可能になります。監査要件が厳しい組織や、SIEM連携が必要な組織では、管理コンソール単体の保持期間に頼らず、この転送機能を早期に有効化しておくことが推奨されます。
                         </p>
                     </div>
@@ -278,6 +280,7 @@ export default function AgwaSection6Guide() {
                     <div className="callout callout-green">
                         <div className="callout-title">ベストプラクティス</div>
                         <p>
+                            <strong>ベストプラクティス:</strong> 
                             調査結果は「投資（Investigation）」として保存・共有できます。繰り返し発生する種類の問題に対しては、毎回ゼロから検索条件を組み立てるのではなく、保存済みの調査をテンプレートとして再利用することで、対応の一貫性とスピードを両立できます。
                         </p>
                     </div>
@@ -324,6 +327,7 @@ export default function AgwaSection6Guide() {
                     <div className="callout callout-green">
                         <div className="callout-title">ベストプラクティス</div>
                         <p>
+                            <strong>ベストプラクティス:</strong> 
                             RSSフィードの購読を強く推奨します。Gmailサービス自体が障害の影響を受けている状況では、メール通知よりもRSSやシステム定義ルールのほうが確実に障害情報を届けられます。super administratorアカウントでサインインしていれば、5年分の履歴からインシデントの再発パターンを分析することも可能です。
                         </p>
                     </div>
@@ -415,6 +419,7 @@ export default function AgwaSection6Guide() {
     class End greenFill;
     class R9 redFill;`}
                             ariaLabel="障害・問題発生時の全体的な切り分けアプローチフロー"
+                            preserveNaturalScale={true}
                         />
                     </div>
 
@@ -455,6 +460,7 @@ export default function AgwaSection6Guide() {
     class Start blueFill;
     class End greenFill;`}
                             ariaLabel="アカウント・サインイン問題の対処フロー"
+                            preserveNaturalScale={true}
                         />
                     </div>
 
@@ -502,7 +508,7 @@ export default function AgwaSection6Guide() {
                     <div className="callout callout-green">
                         <div className="callout-title">ベストプラクティス</div>
                         <p>
-                            Googleは管理者アカウントに対する2SVの強制（enforcement）を進めています。管理者アカウントについては、予備のセキュリティキーを最低1つ追加で登録し、安全な場所に保管しておくこと、アンドスーパー管理者は他の管理者のためにバックアップコードを事前に生成・印刷しておくことが推奨されています。これにより、単一のロックアウトが組織全体の管理機能停止に発展するリスクを避けられます。
+                            <strong>ベストプラクティス:</strong> Googleは管理者アカウントに対する2SVの強制（enforcement）を進めています。管理者アカウントについては、予備のセキュリティキーを最低1つ追加で登録し、安全な場所に保管しておくこと、そしてスーパー管理者は他の管理者のためにバックアップコードを事前に生成・印刷しておくことが推奨されています。これにより、単一のロックアウトが組織全体の管理機能停止に発展するリスクを避けられます。
                         </p>
                     </div>
 
@@ -582,7 +588,8 @@ export default function AgwaSection6Guide() {
 
     class Start blueFill;
     class End greenFill;`}
-                            ariaLabel="メール配信問題の切り分けフロー"
+                            ariaLabel="メール配信問題全体の切り分けフロー図"
+                            preserveNaturalScale={true}
                         />
                     </div>
 
@@ -599,6 +606,7 @@ export default function AgwaSection6Guide() {
                     <div className="callout callout-green">
                         <div className="callout-title">ベストプラクティス</div>
                         <p>
+                            <strong>ベストプラクティス:</strong> 
                             ELSは「監査目的の非侵襲的な調査ツール」であり、メッセージへの削除・隔離・復元といったアクションは実行できません。アクションが必要な場合は、より高度なライセンス（Enterprise Plus、Education Plusなど）で利用可能なSecurity Investigation ToolのGmail log eventsデータソースを使う必要があります。この違いを理解しておくことは、試験でもよく問われるポイントです。
                         </p>
                     </div>
@@ -676,6 +684,7 @@ export default function AgwaSection6Guide() {
     MTA-->>Report: 集約レポートを<br/>rua宛先へ送信
     MTA->>Sender: 配信 または<br/>SMTPエラーで拒否`}
                             ariaLabel="送信メール認証（SPF / DKIM / DMARC）のシーケンス図"
+                            preserveNaturalScale={true}
                         />
                     </div>
 
@@ -717,6 +726,7 @@ export default function AgwaSection6Guide() {
                     <div className="callout callout-green">
                         <div className="callout-title">ベストプラクティス</div>
                         <p>
+                            <strong>ベストプラクティス:</strong> 
                             SPF・DKIM・DMARCはバルク送信者（1日5,000通以上）に対してGoogleが必須要件として求めています。バルク送信者でなくても、送信ドメインの信頼性を高めるために3つすべてを設定し、DMARCレポートを定期的に確認する運用を確立しておくことが推奨されます。
                         </p>
                     </div>
@@ -776,6 +786,7 @@ export default function AgwaSection6Guide() {
     class Start blueFill;
     class End greenFill;`}
                             ariaLabel="カレンダー同期問題の切り分けフロー"
+                            preserveNaturalScale={true}
                         />
                     </div>
 
@@ -813,6 +824,7 @@ export default function AgwaSection6Guide() {
                     <div className="callout callout-green">
                         <div className="callout-title">ベストプラクティス</div>
                         <p>
+                            <strong>ベストプラクティス:</strong> 
                             GWSMOの同期問題は、Windowsのタスクバーアイコンがオフライン表示になっているという単純な兆候から始まることが多く、まずネットワーク接続とOutlookのオフラインモードを確認するのが最も効率的な第一歩です。それでも解決しない場合にのみ、トレースログの収集とLog Analyzerでの解析に進むという段階的アプローチを徹底することで、不要な深掘りを避けられます。
                         </p>
                     </div>
@@ -863,6 +875,7 @@ export default function AgwaSection6Guide() {
                     <div className="callout callout-green">
                         <div className="callout-title">ベストプラクティス</div>
                         <p>
+                            <strong>ベストプラクティス:</strong> 
                             リソースカレンダーの予定に機密情報が含まれる可能性がある場合（役員会議室など）、「空き時間のみ共有」と「予約許可」を組み合わせることで、プライバシーと利便性を両立できます。ユーザーからの「会議室を予約できない」という問い合わせの多くは、この予約権限設定の見落としが原因です。
                         </p>
                     </div>
@@ -912,6 +925,7 @@ export default function AgwaSection6Guide() {
                     <div className="callout callout-green">
                         <div className="callout-title">ベストプラクティス</div>
                         <p>
+                            <strong>ベストプラクティス:</strong> 
                             Calendar Interopのトラブルシューティングは「全ユーザーに共通する問題か、特定ユーザーに限定される問題か」で切り分けの筋道が大きく変わります。特定ユーザーに限定される場合はそのユーザー固有の設定（重複アカウント、Calendarサービスの状態）を、全体的な問題の場合はロールアカウントの権限を優先的に疑うという順序を徹底することで、調査時間を大幅に短縮できます。
                         </p>
                     </div>
@@ -949,6 +963,7 @@ export default function AgwaSection6Guide() {
     class Start blueFill;
     class End greenFill;`}
                             ariaLabel="Drive共有・アクセス問題の切り分けフロー"
+                            preserveNaturalScale={true}
                         />
                     </div>
 
@@ -991,7 +1006,7 @@ export default function AgwaSection6Guide() {
                             <strong>組織全体の外部共有ポリシー</strong> — 管理コンソールで外部共有そのものが許可されているか。
                         </li>
                         <li>
-                            <strong>信頼ルール（Trust rules）</strong> — 特別のOU・グループ・ドメイン・ユーザーに対する共有の許可/ブロックがルールベースで設定されていないか。
+                            <strong>信頼ルール（Trust rules）</strong> — 特定のOU・グループ・ドメイン・ユーザーに対する共有の許可/ブロックがルールベースで設定されていないか。
                         </li>
                         <li>
                             <strong>ファイル・フォルダ個別の共有設定</strong> — 所有者が実際に対象ユーザーへ共有し、適切な権限（閲覧者・コメント可・編集者）を付与しているか。
@@ -1004,6 +1019,7 @@ export default function AgwaSection6Guide() {
                     <div className="callout callout-green">
                         <div className="callout-title">ベストプラクティス</div>
                         <p>
+                            <strong>ベストプラクティス:</strong> 
                             「共有できない」という問い合わせを受けたとき、まず組織のBusiness Starterエディションのようにシステムデフォルトへのリセットしかできないエディション制約がないかを確認します。エディションによっては共有設定のカスタマイズ機能自体が制限されているため、設定操作そのものより先にライセンス種別を確認することで無駄な調査を避けられます。
                         </p>
                     </div>
@@ -1049,6 +1065,7 @@ export default function AgwaSection6Guide() {
                     <div className="callout callout-green">
                         <div className="callout-title">ベストプラクティス</div>
                         <p>
+                            <strong>ベストプラクティス:</strong> 
                             Drive for desktopの同期トラブルは、まず「アカウントの切断・再接続」という最も低コストな手順から始め、それでも解決しない場合にのみ再インストールやログ収集に進むという段階的なエスカレーションを徹底します。試験でも、いきなり高度な手順を選ぶ選択肢ではなく、段階的なアプローチを問う設問が想定されます。
                         </p>
                     </div>
@@ -1095,6 +1112,7 @@ export default function AgwaSection6Guide() {
 
     復元不可 --> [*]`}
                             ariaLabel="ファイル・メールの復元ライフサイクル状態遷移図"
+                            preserveNaturalScale={true}
                         />
                     </div>
 
@@ -1135,6 +1153,7 @@ export default function AgwaSection6Guide() {
                     <div className="callout callout-green">
                         <div className="callout-title">ベストプラクティス</div>
                         <p>
+                            <strong>ベストプラクティス:</strong> 
                             まず対象をMy Drive、共有ドライブ、Gmailに分け、対応するごみ箱を確認します。My DriveはDirectory &gt; Users &gt; Restore data、共有ドライブ内の完全削除ファイルと削除済み共有ドライブはApps &gt; Google Workspace &gt; Drive and Docs &gt; Manage shared drivesへ進み、いずれも25日以内の期限を確認します。My Driveでは対象期間の全データとストレージ、共有ドライブでは組織所有と操作ロール、Gmailでは復元不可のメッセージ種別を事前に確認します。
                         </p>
                     </div>
@@ -1188,6 +1207,7 @@ export default function AgwaSection6Guide() {
                     <div className="callout callout-green">
                         <div className="callout-title">ベストプラクティス</div>
                         <p>
+                            <strong>ベストプラクティス:</strong> 
                             「Drive for desktopのオフラインアクセス」と「Docs/Sheets/Slides Web版のオフラインアクセス」は名称が似ていますが、全く別の機能・設定です。前者はローカルファイルシステムへのストリーミング全般を扱い、後者はブラウザ内でのオフライン編集機能に限定されます。ユーザーからの問い合わせでこの2つが混同されるケースが多いため、まずどちらの機能について質問されているかを明確にすることが、正確な回答への近道です。
                         </p>
                     </div>
@@ -1229,6 +1249,7 @@ export default function AgwaSection6Guide() {
     class Start blueFill;
     class End greenFill;`}
                             ariaLabel="Meet品質・ネットワーク診断の切り分けフロー"
+                            preserveNaturalScale={true}
                         />
                     </div>
 
@@ -1277,6 +1298,7 @@ export default function AgwaSection6Guide() {
                     <div className="callout callout-green">
                         <div className="callout-title">ベストプラクティス</div>
                         <p>
+                            <strong>ベストプラクティス:</strong> 
                             問題が「送信者側で発生しているのか、受信者側で発生しているのか」を切り分けることが、Meetのトラブルシューティングにおける最初の分岐点です。ある参加者から見て全員の映像が乱れて見える場合は受信側（自分のネットワーク）の問題である可能性が高く、逆に全員から見てある1人の映像だけが乱れる場合は送信側（その人のネットワークやデバイス）の問題である可能性が高いという原則を、ユーザーへのヒアリング時に活用します。
                         </p>
                     </div>
@@ -1325,6 +1347,7 @@ export default function AgwaSection6Guide() {
                     <div className="callout callout-green">
                         <div className="callout-title">ベストプラクティス</div>
                         <p>
+                            <strong>ベストプラクティス:</strong> 
                             Meetの接続・品質問題は原因の切り分けが難しく、ユーザーからの曖昧な報告（「Meetが重い」など）だけでは対応が困難です。6.2.12・6.2.13の内容を踏まえたヒアリングシート（影響範囲・タイミング・ネットワーク環境・使用デバイス）を事前に用意しておくことで、サポートへのエスカレーションを含めた対応全体のスピードが大きく向上します。
                         </p>
                     </div>
@@ -1400,6 +1423,7 @@ export default function AgwaSection6Guide() {
                     <div className="callout callout-green">
                         <div className="callout-title">ベストプラクティス</div>
                         <p>
+                            <strong>ベストプラクティス:</strong> 
                             ストレージ上限に関する問い合わせの多くは、実際には「不要なファイルの蓄積」が原因です。上限そのものを引き上げる前に、まずApps usageレポートで上限に近いユーザーを特定し、共有ドライブのストレージ消費状況と照らし合わせることで、根本原因（重複ファイル、大容量の動画添付、放置された古いバックアップなど）を特定できる場合があります。
                         </p>
                     </div>
@@ -1452,6 +1476,7 @@ export default function AgwaSection6Guide() {
     class Start blueFill;
     class End greenFill;`}
                             ariaLabel="サポートケース作成とエスカレーションのフロー"
+                            preserveNaturalScale={true}
                         />
                     </div>
 
@@ -1463,6 +1488,7 @@ export default function AgwaSection6Guide() {
                     <div className="callout callout-amber">
                         <div className="callout-title">注意</div>
                         <p>
+                            <strong>注意:</strong> 
                             パスワードや政府発行のID番号などの機密情報はサポートケースやその添付ファイルに含めないでください。
                         </p>
                     </div>
@@ -1541,6 +1567,7 @@ export default function AgwaSection6Guide() {
                     <div className="callout callout-green">
                         <div className="callout-title">ベストプラクティス</div>
                         <p>
+                            <strong>ベストプラクティス:</strong> 
                             HARファイルにはCookieやセッショントークンなど機微な情報が含まれる可能性があります。共有前に必要最小限の情報のみが含まれているかを確認し、共有期限を設定したうえでGoogle Driveのリンク共有を利用するといった、プライバシーに配慮した受け渡し方法を徹底することが推奨されます。
                         </p>
                     </div>
@@ -1597,6 +1624,7 @@ export default function AgwaSection6Guide() {
                     <div className="callout callout-green">
                         <div className="callout-title">ベストプラクティス</div>
                         <p>
+                            <strong>ベストプラクティス:</strong> 
                             ケースの説明欄には、個人を特定できる情報（PII）を含めないことが強く推奨されています。ユーザーの実名やメールアドレスが問題の再現に必須の場合でも、可能な限り最小限の情報に留め、詳細な機微情報はサポート担当者から個別に要求された場合にのみ、適切なチャネル（暗号化された共有方法など）で提供するという運用を徹底します。
                         </p>
                     </div>
@@ -1644,6 +1672,7 @@ export default function AgwaSection6Guide() {
                     <div className="callout callout-green">
                         <div className="callout-title">ベストプラクティス</div>
                         <p>
+                            <strong>ベストプラクティス:</strong> 
                             大規模な組織変更（部門再編、M&amp;Aによる大量アカウント統合など）を控えている場合、事前にリリースカレンダーを確認し、破壊的な変更（UIの大幅刷新、既定動作の変更など）が計画期間中に重ならないよう調整することで、変更管理の負荷を軽減できます。週次のWeekly Recap記事を購読しておくと、個別記事を読み逃すリスクも減らせます。
                         </p>
                     </div>
