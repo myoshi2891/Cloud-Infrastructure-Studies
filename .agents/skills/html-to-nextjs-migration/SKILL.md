@@ -523,7 +523,7 @@ vi.mock('@/components/MermaidDiagram', () => ({ default: /* ... */ }));
 | 検証 | 方法 |
 |---|---|
 | `.code-block` 内に `{"\n"}` が残っていない | `grep -rn '{"\\n"}' app/<route>/` の結果が空 |
-| `class=` が JSX に残っていない | `grep -rnE '[[:space:]]class=' app/<route>/` で候補を列挙し（複数行 JSX では属性行が必ずインデントされるため、行頭の選択肢は不要）、**各ヒットを開始タグの閉じ `>` まで読んで JSX 属性かどうかを判定**する。JSX で許されるのは `className` のみ。開始タグと属性が同一行にある前提の `<[a-zA-Z][^>]*[[:space:]]class=` は、属性が次行以降へ折り返された複数行 JSX を取りこぼす（§0-A-3） |
+| `class=` が JSX に残っていない | `grep -rnwE 'class[[:space:]]*=' app/<route>/` で候補を列挙し（`-w` の語境界により、行頭に置かれた `class=` と `class = "…"` のように空白を挟む代入形式の双方を検出し、`className=` は語境界で自動的に除外される）、**各ヒットを開始タグの閉じ `>` まで読んで JSX 属性かどうかを判定**する。JSX で許されるのは `className` のみ。`[[:space:]]class=` は行頭の `class=` と空白を挟む代入を取りこぼし、開始タグと属性が同一行にある前提の `<[a-zA-Z][^>]*[[:space:]]class=` は、属性が次行以降へ折り返された複数行 JSX を取りこぼす（§0-A-3） |
 | ページ CSS に新規 custom property が無い | `grep -nE '^[[:space:]]*--[a-z-]+:' app/<route>/*.css` が空（`*.css` は `page.css` と `page.module.css` の双方にマッチする） |
 | `@layer components` を使っていない | `grep -n '@layer' app/<route>/*.css` が空 |
 | サイドバー幅契約 | `__tests__/guide-content-widths.test.ts` が全スタイルシートを検証（新規 CSS も自動的に対象） |
