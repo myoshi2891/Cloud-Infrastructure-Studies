@@ -9,7 +9,7 @@ description: >
 
 # Mermaid 構文・描画修正スキル
 
-(最終更新日: 2026-08-13)
+(最終更新日: 2026-08-15)
 
 ## 前提バージョンと正準実装（推測禁止）
 
@@ -25,11 +25,18 @@ description: >
 > 以降の「Mermaid v10 の必須ルール」は **v11 でも有効な基本構文ルール**である（カラム0・1行1ステートメント等）。
 > v10 固有の記述であることを理由に読み飛ばさないこと。`references/mermaid-v10-guide.md` も同様に v11 で有効。
 
-## このスキルは3系統に複製されている
+## このスキルは3系統に複製されている（エージェント非依存）
 
 `.agents/skills/fix-mermaid/` を**正本**とし、`.claude/` と `.gemini/` 配下は複製である。
 過去に3系統が乖離し、`.gemini/` だけが古いルール（図ごとの `maxWidth` インライン指定を許容する記述等）で
 残っていた実績がある。編集後は `.agents/rules/tdd-commit-workflow.md` §8 の `rsync` 手順で必ず同期すること。
+
+本スキルは Claude Code / Gemini CLI のどちらでも**同じ結果**になることを要件とする。実行契約は
+`.agents/rules/tdd-commit-workflow.md` **§0-A**（正本パス・`bun` 統一・ツール名の読み替え表）に従う。
+
+- スクリプトは常に `.agents/skills/fix-mermaid/scripts/*` を実行する。**ミラー配下（`.claude/` / `.gemini/`）のコピーを実行しない。**
+- 本文の「検索する」「読む」「編集する」は能力名である（Claude Code: `Grep` / `Read` / `Edit`、Gemini CLI: `search_file_content` / `read_file` / `replace`）。
+- 実行コマンドは `bun` に統一する。`node` / `npx` を使わない。
 
 ## 🚀 まず再利用スクリプトを使う（トークン節約・最優先）
 
@@ -83,9 +90,9 @@ HTMLやコードのフォーマッタ（Prettier等）による破壊パター�
 
 ## 修正手順
 
-1. `Grep` で修正対象ファイルを検索し、Mermaid ブロックを把握する
-2. `Read` で各ブロックを確認し、上記ルール違反を特定する
-3. `Edit` または自動修正スクリプトで各ブロックの内容を修正する
+1. **全文検索**で修正対象ファイルを絞り込み、Mermaid ブロックを把握する
+2. **ファイル読取**で各ブロックを確認し、上記ルール違反を特定する
+3. **差分編集**または自動修正スクリプトで各ブロックの内容を修正する
 
 自動修正を行う場合は TypeScript 版スクリプト `fix_mermaid.ts` を `bun` で実行します:
 
@@ -396,22 +403,30 @@ const Diagram = memo(function Diagram({ id, label }: { id: DiagramId; label: str
 
 **⚠️ エクスポート形態は「名前付き」です。`default` でモックすると `undefined` になり必ず落ちます。**
 
+**モックはテストごとに書き起こさず、共有モジュール `__tests__/gcl/agwa/migration-test-utils.tsx` の
+`MermaidDiagramMock` を使う。** 同一定義を複数テストへ複製すると、契約（`ariaLabel` / `decorative` /
+`preserveNaturalScale` の透過）を1箇所だけ直して他が古いまま残る。
+
 ```tsx
 // ✅ 正しい — components/MermaidDiagram.tsx は `export const MermaidDiagram`
-vi.mock('@/components/MermaidDiagram', () => ({
-    MermaidDiagram: ({ chart, ariaLabel, preserveNaturalScale }: {
-        chart: string;
-        ariaLabel: string;
-        preserveNaturalScale?: boolean;
-    }) => (
-        <div
-            data-testid="mermaid-diagram"
-            data-chart={chart}
-            data-preserve-natural-scale={String(preserveNaturalScale)}
-            aria-label={ariaLabel}
-        />
-    ),
-}));
+import { MermaidDiagramMock } from '@/__tests__/gcl/agwa/migration-test-utils';
+
+vi.mock('@/components/MermaidDiagram', () => ({ MermaidDiagram: MermaidDiagramMock }));
+```
+
+共有モジュールが提供するダミーは、実コンポーネントの契約をそのまま再現している:
+
+```tsx
+<div
+    role="img"
+    aria-roledescription="diagram"
+    data-testid="mermaid-diagram"
+    data-chart={chart}
+    data-decorative={String(decorative === true)}
+    data-preserve-natural-scale={String(preserveNaturalScale)}
+    aria-label={ariaLabel}
+    aria-hidden={decorative || undefined}
+/>
 ```
 
 ```tsx
@@ -508,10 +523,21 @@ const applySvgFixups = (
         targetWidth = Math.min(650, Math.max(Math.round(w * 1.35), 480));
     }
     svgEl.style.width = `${targetWidth}px`;
+    // preserveNaturalScale=true のときだけ minWidth で自然幅を固定する。
+    // ⚠️ 無効時は必ず空文字でクリアする。同一 SVG を再処理する経路（HMR・再レンダリング）で
+    //    前回の minWidth が残ると、縮小されるべき図が固定幅のまま横スクロールを発生させる。
+    if (preserveNaturalScale && targetWidth > 0) {
+        svgEl.style.minWidth = `${targetWidth}px`;
+    } else {
+        svgEl.style.minWidth = '';
+    }
     svgEl.style.maxHeight = preserveNaturalScale ? 'none' : h > 550 ? '580px' : 'none';
     svgEl.setAttribute('viewBox', `${x} ${y} ${w} ${h + extraHeight}`);
 };
 ```
+
+> このコードは `components/MermaidDiagram.tsx` の実装と**同期している必要がある**。
+> 片方だけを変更しないこと。差異が疑われる場合は実装側を正とし、本節を更新する。
 
 ### Mermaid の採寸値と CSS 文字サイズを一致させる
 
@@ -533,6 +559,11 @@ const applySvgFixups = (
 過去、全 SVG テキストへ `color/fill:#e6e9ee !important` を当てた結果、**エッジラベル・subgraph 見出し・シーケンス図 Note（明色背景）まで明色文字になり読めなくなる**「もぐら叩き」を繰り返した。`theme:'dark'` で背景色は適正化されるため、CSS で色を当てるのは**ノードラベル（`.node .nodeLabel`）に限定**する。エッジラベル / Note はテーマ任せ（暗背景＋明文字）にする。
 
 ノード文字色の方針（ユーザー選択：**暗ノード＝白 / 黄ノード＝黒** が最も読みやすい）:
+
+> **明色ノードの判定は `classDef` 名を第一手段とする。** 図側で `classDef yellowFill fill:#fbbc04,...` を定義し、
+> CSS は `.yellowFill .nodeLabel` を対象にする。新しい明色を使うたびに `[style*="…"]` / `[fill*="…"]`
+> のカラーコード列挙を増やすやり方は、**追加漏れが即座に「白×黄で読めない」不具合になる**ため、
+> 既存図の互換用フォールバックとしてのみ残す。新規図では `classDef` 名を必ず付けること。
 
 ```css
 /* foreignObject のクリップ解除（emoji 採寸ズレによる右端切れ対策） */
