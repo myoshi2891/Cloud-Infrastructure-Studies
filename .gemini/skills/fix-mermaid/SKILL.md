@@ -600,7 +600,28 @@ const applySvgFixups = (
 .mermaidTarget :global(.node .nodeLabel),
 .mermaidTarget :global(.node .nodeLabel *) { color: #ffffff !important; }
 
-/* 黄色系ノード(#fbbc04, #ffe08a, #ffd479, #ffba00)は白×黄で同化するため、ラベルのみ黒に戻す */
+/* ── 第一手段: classDef 名で明色ノードを判定する（新規図はこちらだけで完結させる） ──
+   図側で `classDef yellowFill fill:#fbbc04,...` のように定義すると、mermaid は
+   そのクラス名を `.node` 要素へ付与するため、カラーコードを列挙せずに黒文字を当てられる */
+.mermaidTarget :global(.yellowFill),
+.mermaidTarget :global(.yellowFill .nodeLabel),
+.mermaidTarget :global(.yellowFill .nodeLabel *),
+.mermaidTarget :global(.yellowFill text),
+.mermaidTarget :global(.yellowFill tspan),
+.mermaidTarget :global(.lightRedFill),
+.mermaidTarget :global(.lightRedFill .nodeLabel),
+.mermaidTarget :global(.lightRedFill .nodeLabel *),
+.mermaidTarget :global(.lightGreenFill),
+.mermaidTarget :global(.lightGreenFill .nodeLabel),
+.mermaidTarget :global(.lightGreenFill .nodeLabel *),
+.mermaidTarget :global(.lightBlueFill),
+.mermaidTarget :global(.lightBlueFill .nodeLabel),
+.mermaidTarget :global(.lightBlueFill .nodeLabel *),
+.mermaidTarget :global(.grayFill),
+.mermaidTarget :global(.grayFill .nodeLabel),
+.mermaidTarget :global(.grayFill .nodeLabel *),
+/* ── 以下は classDef 名を持たない既存図のための互換フォールバック ──
+   新しい明色を使うたびにここへカラーコードを足す運用はしない（追加漏れが即不具合になる） */
 .mermaidTarget :global(.node[style*="fbbc04" i] .nodeLabel),
 .mermaidTarget :global(.node[style*="fbbc04" i] .nodeLabel *),
 .mermaidTarget :global(.node[style*="ffe08a" i] .nodeLabel),

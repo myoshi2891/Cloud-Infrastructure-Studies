@@ -59,7 +59,7 @@ LLM エージェント（Claude / Gemini / その他）がコードを実装す�
 |---|---|
 | Claude Code | `.claude/skills/<name>/SKILL.md` を自動検出。明示的に使う場合は `/<name>` |
 | Gemini CLI | `gemini skills install <name>.skill --scope workspace` → セッション内で `/skills reload`（詳細は `GEMINI.md` の「AI Skills」節） |
-| いずれも不可の場合 | **ファイル読取で `.agents/skills/<name>/SKILL.md` を直接読む。** スキル機構が無くても手順は完結する |
+| いずれも不可の場合 | **スキル機構を使わず、ファイル読取（上の能力対応表の「ファイル読取」）で `.agents/skills/<name>/SKILL.md` の本文をそのまま読み込む。** スキル機構が無くても手順は完結する |
 
 スキル本文は「読めば実行できる Markdown」として書く。ロード機構の有無を前提にした記述（「スキルが有効なら〜」等）を書かない。
 
@@ -425,7 +425,7 @@ describe('<page-slug> — 移行元コンテンツの全量移行', () => {
 
   | 分類 | 要件 | 検出コマンド例 |
   |---|---|---|
-  | CSS トークン | ページ固有 CSS でローカル `--*` を定義しない。必要な色は先に `app/globals.css` の `@theme` へ追加する | `grep -nE '^[[:space:]]*--[a-z-]+:' app/<route>/*.css` が空 |
+  | CSS トークン | ページ固有 CSS でローカル `--*` を定義しない。必要な色は先に `app/globals.css` の `@theme` へ追加する | `grep -nE '^[[:space:]]*--[A-Za-z0-9_-]+:' app/<route>/*.css` が空（英小文字とハイフンだけに絞ると `--gcpBlue` / `--color_1` 等の定義を取りこぼす） |
   | 固定色 | ページ CSS に生の hex を残さない（シンタックスハイライト色のみ例外） | `grep -nE '#[0-9a-fA-F]{3,8}' app/<route>/*.css` を目検（**対象を `*.css` に限定する。** ディレクトリ全体を `-r` で走査すると `constants.ts` のアンカー `#611-...` を hex 色と誤検出する） |
   | 非推奨プロパティ | `word-break: break-word` を使わない → `overflow-wrap: anywhere` | `grep -rn 'word-break: break-word' app/` が空 |
   | サイドバー契約 | 幅 `280px` / `margin-left: 280px` / `width: calc(100% - 280px)` | `__tests__/guide-content-widths.test.ts` |
@@ -442,8 +442,11 @@ describe('<page-slug> — 移行元コンテンツの全量移行', () => {
   それをそのままシェルへ貼ると ERE の選択肢として解釈されず検出漏れになる。必ずこの fenced block から貼る）:
 
   ```bash
-  grep -rnE '(^|[[:space:]`])(node|npx|npm run|yarn) ' <変更したドキュメント>
+  grep -rnE '(^|[[:space:]`])(node|npx|npm|yarn)([[:space:]]|$)' <変更したドキュメント>
   ```
+
+  `npm run` だけを列挙すると `npm test` / `npm install` / `npm ci` を取りこぼすため、
+  `npm` を単体のコマンドとして検出する。末尾は空白または行末のいずれもコマンド境界として扱う。
 
 - **🚨 ゲート条件（P レベルタスクまたは複数コミットのフェーズ完了時）**:
   - `.agents/skills/spec-sync/SKILL.md` の Section F「フェーズ完了時の Definition of Done」を適用する。
