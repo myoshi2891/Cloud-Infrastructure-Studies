@@ -16,7 +16,7 @@ const themeTokens = [
 ] as const;
 
 const extractCustomPropertyNames = (css: string): string[] =>
-    Array.from(css.matchAll(/(?<![\w-])(--[\w-]+)\s*:/g), (match) => match[1]);
+    Array.from(css.matchAll(/(?<![\w-])(--[\w-]+)\s*:/g), (match) => match[1]!);
 
 describe('ACE Section 1 theme token ownership', () => {
     it('defines each shared GCP guide token once in globals.css and not on the page scope', () => {

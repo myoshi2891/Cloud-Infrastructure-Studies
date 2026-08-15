@@ -62,7 +62,7 @@ describe('Zoo tour guide deployment instructions', () => {
     it('documents exact session creation and streaming POST requests in section 7.4', () => {
         const deploymentVerification = section('### 7\\.4 ', '### 7\\.5 ');
         const requestCode = [...deploymentVerification.matchAll(/```bash\n([\s\S]*?)\n```/g)]
-            .map((match) => match[1])
+            .map((match) => match[1] ?? '')
             .find((block) => block.includes('/run_sse')) ?? '';
         const curlBlocks = requestCode
             .slice(requestCode.indexOf('curl '))

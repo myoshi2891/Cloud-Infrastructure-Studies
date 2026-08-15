@@ -113,9 +113,10 @@ describe('CCNA Automation Network Fundamentals Guide - Automated 100% Text & Str
             if (!observerCallback) {
                 throw new Error('ScrollSpy must register an IntersectionObserver callback');
             }
+            const callback = observerCallback;
 
             act(() => {
-                observerCallback(
+                callback(
                     [{ isIntersecting: true, target: { id: 'step3' } } as IntersectionObserverEntry],
                     {} as IntersectionObserver,
                 );

@@ -67,8 +67,9 @@ describe('CCNA Network Access Guide Page - Automated 100% Fidelity & Structural 
     it('defines all 17 Mermaid diagrams in constants.ts', () => {
         expect(Object.keys(DIAGRAMS)).toHaveLength(17);
         for (let i = 1; i <= 17; i++) {
-            expect(DIAGRAMS[`diag-${i}`]).toBeDefined();
-            expect(DIAGRAMS[`diag-${i}`].length).toBeGreaterThan(0);
+            const diagram = DIAGRAMS[`diag-${i}`];
+            expect(diagram).toBeDefined();
+            expect(diagram?.length).toBeGreaterThan(0);
         }
     });
 

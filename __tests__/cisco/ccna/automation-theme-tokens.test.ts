@@ -53,10 +53,10 @@ const expectedGlobalTokens = [
 ] as const;
 
 const extractCustomPropertyNames = (css: string): string[] =>
-    Array.from(css.matchAll(/(?<![\w-])(--[\w-]+)\s*:/g), (match) => match[1]);
+    Array.from(css.matchAll(/(?<![\w-])(--[\w-]+)\s*:/g), (match) => match[1]!);
 
 const extractReferencedCustomPropertyNames = (css: string): string[] =>
-    Array.from(new Set(Array.from(css.matchAll(/var\(\s*(--[\w-]+)/g), (match) => match[1])));
+    Array.from(new Set(Array.from(css.matchAll(/var\(\s*(--[\w-]+)/g), (match) => match[1]!)));
 
 describe('CCNA automation theme token ownership', () => {
     it('defines shared tokens once in globals.css and none in page styles', () => {
