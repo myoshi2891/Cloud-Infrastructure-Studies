@@ -41,7 +41,8 @@ LLM エージェント（Claude / Gemini / その他）がコードを実装す�
 
 | 能力名（本文の表記） | Claude Code | Gemini CLI |
 |---|---|---|
-| ファイル読取 | `Read` | `read_file` / `read_many_files` |
+| ファイル読取 | `Read`（`offset` / `limit` で範囲指定） | `read_file`（`offset` / `limit` で範囲指定） |
+| 複数ファイルの一括読取 | `Read` を複数回 | `read_many_files` |
 | 全文検索 / ファイル探索 | `Grep` / `Glob` | `search_file_content` / `glob` |
 | 差分編集 | `Edit` | `replace` |
 | 新規作成 | `Write` | `write_file` |
@@ -49,6 +50,46 @@ LLM エージェント（Claude / Gemini / その他）がコードを実装す�
 
 **エージェント固有機能に依存する手順を書かない。** サブエージェント、拡張機能、対話 UI 前提の操作は手順の必須要素にしてはならない。
 すべての手順は「シェルコマンド + ファイル編集」だけで完結する形で記述し、検証は `bun run test` / `bun run lint` / `bun run build` / `bun run test:e2e` の出力で行う。
+
+### 0-A-1. スキルの読み込み方法（エージェント別の入口）
+
+スキルの**内容**は3系統で同一だが、**読み込ませ方**だけがエージェントごとに異なる。手順本文にはこの差を書かず、ここに集約する。
+
+| エージェント | 入口 |
+|---|---|
+| Claude Code | `.claude/skills/<name>/SKILL.md` を自動検出。明示的に使う場合は `/<name>` |
+| Gemini CLI | `gemini skills install <name>.skill --scope workspace` → セッション内で `/skills reload`（詳細は `GEMINI.md` の「AI Skills」節） |
+| いずれも不可の場合 | **ファイル読取で `.agents/skills/<name>/SKILL.md` を直接読む。** スキル機構が無くても手順は完結する |
+
+スキル本文は「読めば実行できる Markdown」として書く。ロード機構の有無を前提にした記述（「スキルが有効なら〜」等）を書かない。
+
+### 0-A-2. 差分編集の移植性契約
+
+エージェントによって差分編集ツールの能力が異なるため、**最小公倍数ではなく最大公約数**に合わせる。
+
+- **正規表現による一括置換を手順の必須要素にしない。** Gemini CLI の `replace` はリテラル一致であり、正規表現・全件置換フラグを前提にできない。
+- 置換対象は**周辺行を含めて一意になるアンカー**で指定する。「同じ文字列を全て置換」と書かず、「この前後関係の箇所を置換」と書く。
+- 同一文字列が複数箇所にある変更は、**箇所ごとに独立した編集**として記述する。
+- 大量の機械的置換が必要な場合は、編集ツールではなく**スクリプト（`bun` 実行）またはシェルコマンド**として手順に書く。こちらは全エージェントで同一に動く。
+
+### 0-A-3. シェルコマンドの移植性契約
+
+手順に書くコマンドは、macOS（BSD）と Linux（GNU）の双方、かつ任意のエージェントのシェル実行で同じ結果になること。
+
+| 禁止 | 理由 | 代替 |
+|---|---|---|
+| `grep` の先読み・後読み（`(?=...)` / `(?!...)`） | POSIX ERE の範囲外。BSD grep ではエラー、GNU grep でも `-E` では動かない | 「A を含み B を含まない行」は `grep ... \| grep -v ...` の2段で書く。**ただし JSX のように属性が複数行へまたがる対象では 1 行単位の除外は誤検出する** — その場合は `grep -A<n>` で候補ブロックを列挙し、各ブロックを確認する手順として書く（§4 のボタン a11y 行が実例） |
+| `rg`（ripgrep） | 環境に存在する保証がない | `grep -rn` |
+| `node` / `npx` / `npm` / `yarn` | ランタイムを `bun` に統一しているため（§0） | `bun` / `bunx` |
+| `sed -i` の GNU/BSD 依存記法 | BSD は `sed -i ''`、GNU は `sed -i` で非互換 | 編集ツールで直接編集するか、`.mjs` スクリプトを `bun` で実行 |
+
+Vitest の実行形式は次の2つだけを使う（どちらも動作確認済み）。
+
+```bash
+bun run test                       # 全体
+bun run test -- <名前の一部>        # 名前で絞り込み（例: bun run test -- agent-mirror-sync）
+bunx vitest run __tests__/path/to/foo.test.tsx   # ファイルパス指定
+```
 
 ---
 
@@ -384,18 +425,18 @@ describe('<page-slug> — 移行元コンテンツの全量移行', () => {
 
   | 分類 | 要件 | 検出コマンド例 |
   |---|---|---|
-  | CSS トークン | ページ固有 CSS でローカル `--*` を定義しない。必要な色は先に `app/globals.css` の `@theme` へ追加する | `grep -nE '^\s*--[a-z-]+:' app/<route>/*.css` が空 |
-  | 固定色 | ページ CSS に生の hex を残さない（シンタックスハイライト色のみ例外） | `grep -nE '#[0-9a-fA-F]{3,8}' app/<route>/*.css` を目検 |
-  | 非推奨プロパティ | `word-break: break-word` を使わない → `overflow-wrap: anywhere` | `grep -n 'word-break: break-word' app/` が空 |
+  | CSS トークン | ページ固有 CSS でローカル `--*` を定義しない。必要な色は先に `app/globals.css` の `@theme` へ追加する | `grep -nE '^[[:space:]]*--[a-z-]+:' app/<route>/*.css` が空 |
+  | 固定色 | ページ CSS に生の hex を残さない（シンタックスハイライト色のみ例外） | `grep -nE '#[0-9a-fA-F]{3,8}' app/<route>/*.css` を目検（**対象を `*.css` に限定する。** ディレクトリ全体を `-r` で走査すると `constants.ts` のアンカー `#611-...` を hex 色と誤検出する） |
+  | 非推奨プロパティ | `word-break: break-word` を使わない → `overflow-wrap: anywhere` | `grep -rn 'word-break: break-word' app/` が空 |
   | サイドバー契約 | 幅 `280px` / `margin-left: 280px` / `width: calc(100% - 280px)` | `__tests__/guide-content-widths.test.ts` |
   | デッドコード | 未使用の CSS クラス・未使用の変数（`--sidebar-w` 等）を残さない | `grep` で定義と参照の突き合わせ |
-  | ボタン a11y | `<button>` に `type="button"`、開閉トグルに `aria-expanded` | `grep -n '<button' app/<route>/*.tsx` |
+  | ボタン a11y | `<button>` に `type="button"`、開閉トグルに `aria-expanded` | `grep -rn -A4 '<button' app/<route>/` を実行し、**各ヒットブロック内に `type=` があること**を確認する（JSX は属性が次行以降に来るため、1行だけを見る `grep -v` 形は誤検出する。§0-A-3） |
   | ナビ a11y | `<nav>` に `aria-label`、目次は `ul` / `li` 構造、リンク操作後にフォーカスと URL ハッシュを更新 | 目検 + E2E |
   | ナビの導出 | 監視対象のセクション ID は `NAV_ITEMS` から導出し、二重管理しない。初期 `activeId` は `NAV_ITEMS[0]` に一致させる | 目検 |
   | scroll 性能 | scroll ハンドラ内で毎回 `getBoundingClientRect()` を呼ばない。`IntersectionObserver` か `requestAnimationFrame` でまとめる | 目検 |
   | JSDoc | 公開 React コンポーネントと共有ユーティリティに JSDoc を付ける | 目検 |
   | ドキュメント日付 | `MIGRATION_PROGRESS.md` / 各 `SKILL.md` の「最終更新日」を実際の更新日に同期する | 目検 |
-  | ランタイム統一 | 手順・ドキュメントの実行例を `bun` に統一する | `grep -rn '^\s*node \|npx \|npm run' <変更したドキュメント>` が空 |
+  | ランタイム統一 | 手順・ドキュメントの実行例を `bun` に統一する | `grep -rnE '(^\|[[:space:]`])(node\|npx\|npm run\|yarn) ' <変更したドキュメント>` が空 |
 
 - **🚨 ゲート条件（P レベルタスクまたは複数コミットのフェーズ完了時）**:
   - `.agents/skills/spec-sync/SKILL.md` の Section F「フェーズ完了時の Definition of Done」を適用する。

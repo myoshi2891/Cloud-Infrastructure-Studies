@@ -220,10 +220,10 @@ HTML 末尾 `<script>` の `DIAGRAMS` オブジェクト + `mermaid.render(...)`
 トークン浪費の最大要因は「ソースの再読」と「参照ファイルの再読」。以下を厳守する。
 
 1. **ソースHTMLは100%読む（要約・スキップ厳禁）。** ただし往復は最小化する:
-   - まず **1回の `grep`** で zone 境界の行番号を取得（例: `grep -nE '</style>|<body|<script' file.html`）。
-   - `<style>` ブロック・本文・末尾 `<script>` を、**大きめ（~800行）の連続・非重複チャンクで各1回** Read する。
-   - **同一行範囲を二度読まない。** 既読範囲はメモリ上の内容を使う。
-2. **既知の単一ファイル移行では Explore / Plan エージェントを使わない**（1エージェント ≈ 40K tokens のオーバーヘッド。対象パスが明確なら Read/Grep を直接使う）。
+   - まず **1回の全文検索** で zone 境界の行番号を取得（例: `grep -nE '</style>|<body|<script' file.html`）。
+   - `<style>` ブロック・本文・末尾 `<script>` を、**大きめ（~800行）の連続・非重複チャンクで各1回**読む。範囲指定はファイル読取能力の `offset` / `limit` で行う（§0-A の能力対応表）。
+   - **同一行範囲を二度読まない。** 既読範囲はコンテキスト上の内容を使う。
+2. **対象パスが判明している移行では、探索を委譲せず直接読む。** 対象 HTML と出力先ルートが確定している単一ファイル移行で、リポジトリ全体の探索を挟まない。委譲機構（サブエージェント等）を持つエージェントでも、その起動自体がコンテキストを再構築するオーバーヘッド（1回あたり数万トークン規模）になるため使わない。委譲機構を持たないエージェントとの結果同一性も、直接読み取りに統一することで担保される。
 3. **本 skill の「正準リファレンス」に載っている参照ファイルを移行のたびに読まない**
    （`components/MermaidDiagram.tsx`・参照ページの `page.tsx`/`NavBar.tsx`/`page.css`・`app/globals.css`）。
    値の陳腐化が疑われる時だけ、必要な数行を `grep` で照合する。
@@ -516,17 +516,21 @@ vi.mock('@/components/MermaidDiagram', () => ({ default: /* ... */ }));
 
 #### 6d. コード品質の静的アサーション（Vitest / grep で機械検証）
 
+> **コマンドは POSIX ERE のみで書く。** `\s` は GNU 拡張で BSD grep（macOS 既定）と挙動が異なるため `[[:space:]]` を使う。
+> 先読み `(?!...)` は `grep -E` では動かない。ディレクトリを対象にする場合は必ず `-r` を付ける。詳細は
+> `.agents/rules/tdd-commit-workflow.md` §0-A-3。
+
 | 検証 | 方法 |
 |---|---|
-| `.code-block` 内に `{"\n"}` が残っていない | `grep -n '{"\\n"}' app/<route>/*.tsx` の結果が空 |
-| `class=` が JSX に残っていない | `grep -nE '<[a-zA-Z][^>]*\sclass=' app/<route>/*.tsx` が空 |
-| ページ CSS に新規 custom property が無い | `grep -nE '^\s*--[a-z-]+:' app/<route>/page.css` が空 |
-| `@layer components` を使っていない | `grep -n '@layer' app/<route>/page.css` が空 |
+| `.code-block` 内に `{"\n"}` が残っていない | `grep -rn '{"\\n"}' app/<route>/` の結果が空 |
+| `class=` が JSX に残っていない | `grep -rnE '<[a-zA-Z][^>]*[[:space:]]class=' app/<route>/` が空 |
+| ページ CSS に新規 custom property が無い | `grep -nE '^[[:space:]]*--[a-z-]+:' app/<route>/*.css` が空（`*.css` は `page.css` と `page.module.css` の双方にマッチする） |
+| `@layer components` を使っていない | `grep -n '@layer' app/<route>/*.css` が空 |
 | サイドバー幅契約 | `__tests__/guide-content-widths.test.ts` が全スタイルシートを検証（新規 CSS も自動的に対象） |
-| camelCase keyframes が無い | `grep -nE '@keyframes\s+[a-z]+[A-Z]' app/<route>/page.css` が空 |
-| 非推奨の `word-break: break-word` が無い | `grep -n 'word-break: break-word' app/<route>/` が空 |
+| camelCase keyframes が無い | `grep -nE '@keyframes[[:space:]]+[a-z]+[A-Z]' app/<route>/*.css` が空 |
+| 非推奨の `word-break: break-word` が無い | `grep -rn 'word-break: break-word' app/<route>/` が空 |
 | `next/font` を使っていない | `grep -rn 'next/font' app/<route>/` が空（自己ホストの `@fontsource-variable/*` のみ） |
-| `<button>` に `type` がある | `grep -nE '<button(?![^>]*type=)' app/<route>/*.tsx` 相当の確認（`rg -n '<button' → type 属性を目検`） |
+| `<button>` に `type` がある | `grep -rn -A4 '<button' app/<route>/` を実行し、**各ヒットブロック内に `type=` があること**を確認する。JSX は属性が次行以降に来るため、1行単位で除外する形（先読みや `grep -v`）では誤検出する |
 | テストの配置がルートと一致 | `__tests__/<app 配下と同じ相対パス>/page.test.tsx` が存在する |
 
 #### 6e. `scripts/verify-html-migration.mjs` について（現状の制約）
