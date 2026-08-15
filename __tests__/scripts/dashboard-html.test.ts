@@ -42,7 +42,7 @@ describe('dashboard-html / renderDashboardHtml', () => {
         const match = html.match(/<script[^>]*id="dashboard-data"[^>]*>([\s\S]*?)<\/script>/);
         expect(match).not.toBeNull();
         const dashboardData = match?.[1];
-        expect(dashboardData).toBeTruthy();
+        // expect より前に throw することで、到達不能なガードにせず型も string へ絞り込む
         if (!dashboardData) throw new Error('Dashboard data script is empty');
         const parsed = JSON.parse(dashboardData);
         expect(parsed.totals.sources).toBe(100);
