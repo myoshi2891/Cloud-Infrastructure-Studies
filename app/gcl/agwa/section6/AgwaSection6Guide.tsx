@@ -857,7 +857,7 @@ export default function AgwaSection6Guide() {
                         さらに、super administratorおよびManage Calendars権限を持つ管理者は、カレンダーの共有設定にかかわらずすべてのイベント詳細を閲覧できるという例外があります。この点はユーザーから「共有制限をかけているのに管理者から見えてしまう」という問い合わせを受けた際の説明材料として重要です。
                     </p>
                     <p>
-                        会議室・設備などのリソースカレンダーについては、共有設定に加えて「予約権限（Resource booking permissions）」という別レイヤーの設定が存在します。リソースが「空き時間のみ」で共有されている場合でも、Allow users to book resources that are shared as "See only free/busy"を有効にすることで、詳細情報を隠したまま予約自体は許可するという運用が可能です。
+                        会議室・設備などのリソースカレンダーについては、共有設定に加えて「予約権限（Resource booking permissions）」という別レイヤーの設定が存在します。リソースが「空き時間のみ」で共有されている場合でも、Allow users to book resources that are shared as &quot;See only free/busy&quot;を有効にすることで、詳細情報を隠したまま予約自体は許可するという運用が可能です。
                     </p>
 
                     <div className="callout callout-green">
@@ -1394,7 +1394,7 @@ export default function AgwaSection6Guide() {
                         Storageページの「Shared drives using the most storage（最もストレージを消費している共有ドライブ）」セクションでは、ストレージを大量に消費している共有ドライブを一覧できます。また、ユーザー個人またはOU単位でストレージ上限を個別に設定・調整することも可能です。
                     </p>
                     <p>
-                        Reports overviewの「What's the storage being used?」パネルからも、組織全体の使用可能なストレージ容量を俯瞰できます。詳細を確認したい場合は「View Details」からより深い分析画面に遷移できます。
+                        Reports overviewの「What&apos;s the storage being used?」パネルからも、組織全体の使用可能なストレージ容量を俯瞰できます。詳細を確認したい場合は「View Details」からより深い分析画面に遷移できます。
                     </p>
 
                     <div className="callout callout-green">
@@ -1410,7 +1410,7 @@ export default function AgwaSection6Guide() {
                     </p>
                     <p>具体的な活用シーンとしては、次のようなものが想定されます。</p>
                     <ul>
-                        <li>ユーザーの最終サインイン日時を確認し、休眠アカウントを特定する（View your users' last sign-inレポート）。</li>
+                        <li>ユーザーの最終サインイン日時を確認し、休眠アカウントを特定する（View your users&apos; last sign-inレポート）。</li>
                         <li>特定のファイルが誰によって、いつ、どこから共有されたかをDrive log eventsで追跡する。</li>
                         <li>管理者が実施した設定変更の履歴をAdmin log eventsで時系列に確認し、意図しない変更がなかったかを監査する。</li>
                         <li>大規模タスク（一括ユーザー登録など）の処理状況をCheck task statusページで確認する。</li>
@@ -1629,7 +1629,7 @@ export default function AgwaSection6Guide() {
                                     <td>今後のリリーススケジュールを俯瞰し、社内周知のタイミングを計画するとき</td>
                                 </tr>
                                 <tr>
-                                    <td>「What's new in Google Workspace」ヘルプページ</td>
+                                    <td>「What&apos;s new in Google Workspace」ヘルプページ</td>
                                     <td>ブログで発表されなかった小規模な変更も含め、週次で更新される一覧表</td>
                                     <td>ブログには載らない細かな変更も含めて漏れなく確認したいとき</td>
                                 </tr>
@@ -2009,7 +2009,7 @@ export default function AgwaSection6Guide() {
                                 </li>
                                 <li>
                                     <a href="https://knowledge.workspace.google.com/admin/drive/restore-a-deleted-users-drive-files">
-                                        Restore a deleted user's Drive files
+                                        Restore a deleted user&apos;s Drive files
                                     </a>
                                 </li>
                                 <li>
@@ -2089,7 +2089,7 @@ export default function AgwaSection6Guide() {
                                 </li>
                                 <li>
                                     <a href="https://knowledge.workspace.google.com/admin/releases/whats-new">
-                                        What's new in Google Workspace（recent releases）
+                                        What&apos;s new in Google Workspace（recent releases）
                                     </a>
                                 </li>
                                 <li>
