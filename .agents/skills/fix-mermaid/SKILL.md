@@ -523,6 +523,10 @@ const applySvgFixups = (
     svgEl.style.height = 'auto';
     svgEl.style.overflow = 'visible';   // viewBox から数px はみ出す描画の途切れ防止
     svgEl.style.marginBottom = '10px';
+    // ⚠️ viewBox 検証による早期 return より前にクリアする。同一 SVG を再処理する経路
+    //    （HMR・再レンダリング）で前回の minWidth が残ると、縮小されるべき図が
+    //    固定幅のまま横スクロールを発生させる。
+    svgEl.style.minWidth = '';
 
     const viewBox = svgEl.getAttribute('viewBox');
     if (!viewBox) {
@@ -544,13 +548,10 @@ const applySvgFixups = (
         targetWidth = Math.min(650, Math.max(Math.round(w * 1.35), 480));
     }
     svgEl.style.width = `${targetWidth}px`;
-    // preserveNaturalScale=true のときだけ minWidth で自然幅を固定する。
-    // ⚠️ 無効時は必ず空文字でクリアする。同一 SVG を再処理する経路（HMR・再レンダリング）で
-    //    前回の minWidth が残ると、縮小されるべき図が固定幅のまま横スクロールを発生させる。
+    // 有効な viewBox が取れた場合のみ、preserveNaturalScale=true の自然幅を minWidth で固定する。
+    // （クリアは早期 return より前で済ませてあるため、ここに else 節は置かない）
     if (preserveNaturalScale && targetWidth > 0) {
         svgEl.style.minWidth = `${targetWidth}px`;
-    } else {
-        svgEl.style.minWidth = '';
     }
     svgEl.style.maxHeight = preserveNaturalScale ? 'none' : h > 550 ? '580px' : 'none';
     svgEl.setAttribute('viewBox', `${x} ${y} ${w} ${h + extraHeight}`);

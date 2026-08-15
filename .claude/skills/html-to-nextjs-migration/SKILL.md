@@ -530,7 +530,7 @@ vi.mock('@/components/MermaidDiagram', () => ({ default: /* ... */ }));
 | camelCase keyframes が無い | `grep -nE '@keyframes[[:space:]]+[a-z]+[A-Z]' app/<route>/*.css` が空 |
 | 非推奨の `word-break: break-word` が無い | `grep -rn 'word-break: break-word' app/<route>/` が空 |
 | `next/font` を使っていない | `grep -rn 'next/font' app/<route>/` が空（自己ホストの `@fontsource-variable/*` のみ） |
-| `<button>` に `type` がある | `grep -rn -A4 '<button' app/<route>/` を実行し、**各ヒットブロック内に `type=` があること**を確認する。JSX は属性が次行以降に来るため、1行単位で除外する形（先読みや `grep -v`）では誤検出する |
+| `<button>` に `type` がある | `grep -rn '<button' app/<route>/` で全ヒットを列挙し、**各 `<button` について開始タグの閉じ `>` までを読んで `type=` があること**を1件ずつ確認する。JSX は属性が次行以降に来るため 1 行単位の除外（先読みや `grep -v`）では誤検出し、`-A4` のような固定行数も5行目以降の `type` を取りこぼすため判定の根拠にしない |
 | テストの配置がルートと一致 | `__tests__/<app 配下と同じ相対パス>/page.test.tsx` が存在する |
 
 #### 6e. `scripts/verify-html-migration.mjs` について（現状の制約）
