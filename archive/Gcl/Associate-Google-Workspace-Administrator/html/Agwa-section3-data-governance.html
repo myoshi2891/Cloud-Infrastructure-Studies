@@ -1163,7 +1163,7 @@ flowchart TD
                     APIから開始されたリクエストには適用されない点に注意してください<sup>[17]</sup>。
                 </p>
                 <p>
-                    Vaultがエクスポートできないデータにも留意が必要です。VaultはCalendar・Contacts・Keep・Currentsなど一部のサービスをサポートしていません<sup>[19]</sup>。またVaultのエクスポートは法的開示（legal
+                    Vaultがエクスポートできないデータにも留意が必要です。VaultはContacts・Keep・Currentsなど一部のサービスをサポートしていません。一方、Calendarはretention・holds・検索・エクスポートに対応しています<sup>[19]</sup>。またVaultのエクスポートは法的開示（legal
                     discovery）を目的として作成されるものであり、効率的なデータ処理を目的としたものではありません。差分バックアップの作成やデータの重複排除はできず、たとえばDriveのエクスポートでは、検索対象のアカウントがアクセス権を持つすべてのアイテムが含まれます。多数のアカウントが同一のアイテムにアクセスできる場合、各アカウントについて個別にエクスポートされるため、大量の重複データが生成されます<sup>[19]</sup>。
                 </p>
                 <h3 id="317-エクスポート先の設定">3.1.7 エクスポート先の設定</h3>
@@ -1371,7 +1371,8 @@ flowchart TD
                     新しく作成したり変更したルールが実際に反映されるまで、最大<strong>24時間</strong>かかる場合があります（通常はもっと早く反映される）<sup>[24]</sup>。
                 </p>
                 <p>
-                    Gmailにおけるスキャンの仕組みも出題対象です。DLPルールは基本的に<strong>非同期</strong>（asynchronous）でスキャンされます。つまりメッセージは送信者のメールボックスを離れてから、受信者に配信される前にスキャンされ、必要であればブロック・隔離されます。ユーザーがサードパーティのメールアプリからメッセージを送信した場合や、同期スキャンが成功しなかった場合には非同期スキャンが行われます<sup>[24]</sup>。2024年のアップデートでGmail向けDLPの適用は即時化され、より迅速にアクションが実行されるようになりました<sup>[31]</sup>。
+                    Gmailにおけるスキャンの仕組みも出題対象です。Gmail
+                    Webとモバイルアプリでは、ユーザーが送信操作をした時点で<strong>同期</strong>（synchronous）スキャンを行います。サードパーティのメールアプリから送信した場合、同期スキャンが成功しなかった場合、自動転送や予約送信などで自動送信された場合は、メッセージが送信者のメールボックスを離れてから受信者に配信されるまでの間に<strong>非同期</strong>（asynchronous）スキャンを行い、必要であればブロック・隔離します。また、同期スキャンで違反が検出されなかったメッセージも、追加の保護として非同期で再スキャンされます<sup>[24]</sup><sup>[31]</sup>。
                 </p>
                 <pre class="mermaid">
 sequenceDiagram
@@ -1380,14 +1381,46 @@ sequenceDiagram
     participant D as DLPスキャン
     participant R as 受信者
     U-&gt;&gt;G: メッセージを送信
-    G-&gt;&gt;D: 同期スキャン(送信前)
-    alt 機密情報を検出せず
+    alt Web版・モバイルアプリからの送信
+        G-&gt;&gt;D: 同期スキャン(送信操作時)
+        alt Blockアクション
+            D--&gt;&gt;G: 違反を検出
+            G-&gt;&gt;U: 送信をブロックし警告(Back to editing)
+        else Quarantineアクション
+            D--&gt;&gt;G: 違反を検出
+            G-&gt;&gt;G: 管理者レビュー用に隔離
+            G-&gt;&gt;U: 隔離された旨を通知
+        else Warn usersアクション
+            D--&gt;&gt;G: 違反を検出
+            G-&gt;&gt;U: 警告を表示(ユーザー判断で送信を続行可)
+        else Audit onlyアクション
+            D--&gt;&gt;G: 違反を検出
+            G-&gt;&gt;G: Rule log eventsに記録(送信は継続)
+        end
+    else 第三者SMTPクライアント・自動送信・同期スキャン失敗
+        Note over U,G: 同期スキャンは行われない
+    end
+    G-&gt;&gt;D: 非同期スキャン(メールボックス離脱後・配信前)
+    Note over G,D: 同期スキャンで違反がなかったメッセージも追加保護として再スキャン
+    alt Blockアクション
+        D--&gt;&gt;G: 違反を検出
+        G-&gt;&gt;G: 配信をブロック&lt;br/&gt;(メッセージは送信済みフォルダに残る)
+        G-&gt;&gt;U: 別メールで送信者に通知
+    else Quarantineアクション
+        D--&gt;&gt;G: 違反を検出
+        G-&gt;&gt;G: 管理者レビュー用に隔離
+        G-&gt;&gt;U: 通知は隔離設定またはレビュー結果次第
+    else Warn usersアクション
+        D--&gt;&gt;G: 違反を検出
+        G-&gt;&gt;U: 警告を表示して通知
+        G-&gt;&gt;R: 配信は継続
+    else Audit onlyアクション
+        D--&gt;&gt;G: 違反を検出
+        G-&gt;&gt;G: Rule log eventsに記録
+        G-&gt;&gt;R: 配信は継続(通知なし)
+    else 違反なし
         D--&gt;&gt;G: 違反なし
         G-&gt;&gt;R: メッセージを配信
-    else 機密情報を検出
-        D--&gt;&gt;G: 違反を検出
-        G-&gt;&gt;U: 警告 / ブロック / 隔離を通知
-        Note over G,D: 非同期スキャンは送信後・配信前に追加で再スキャン
     end</pre
                 >
                 <h3 id="323-サービス別のdlpルール適用">3.2.3 サービス別のDLPルール適用</h3>
@@ -1712,12 +1745,15 @@ flowchart TD
                     対応エディションを持たないユーザーは、そのOUにデータリージョンポリシーを適用していてもデータリージョンポリシーの対象にはなりません<sup>[44]</sup>。
                 </p>
                 <p>
-                    データリージョンは、保存時データ（data at
-                    rest。バックアップを含む）と、対応するGoogle
-                    Workspaceコアサービスにおけるデータ処理（data
-                    processing）の両方をカバーします<sup>[45]</sup>。ただし、データリージョンはログやキャッシュされたコンテンツなど、本ポリシーで明示的に対象とされていないデータタイプやカスタマーサプライドデータではないデータには適用できません<sup>[45]</sup>。
+                    データリージョンがカバーする範囲は、エディションと対象サービスによって異なります。Fundamentalデータリージョンと
+                    Data regions for
+                    Education（Education Standard・Education Plus）は、対応するGoogle
+                    Workspaceコアサービスの保存時データ（data at
+                    rest。バックアップを含む）のみが対象で、データ処理リージョンポリシーは含まれません。Enterpriseデータリージョン（Enterprise
+                    Plusなど）は、対応するGoogle Workspaceコアサービスにおける保存時データとデータ処理（data
+                    processing）の両方をカバーします<sup>[45]</sup>。いずれの場合も、データリージョンはログやキャッシュされたコンテンツなど、本ポリシーで明示的に対象とされていないデータタイプや、カスタマーサプライドデータではないデータには適用できません<sup>[45]</sup>。
                 </p>
-                <p>データリージョンには2つのレベルがあります。</p>
+                <p>データリージョンには、エディション別に次の区分があります。</p>
                 <div class="table-scroll">
                     <table>
                         <thead>
@@ -1737,10 +1773,19 @@ flowchart TD
                                 <td>組織全体で1つのリージョンのみ選択可能（米国 or 欧州）</td>
                             </tr>
                             <tr class="even">
-                                <td>Enterpriseデータリージョン</td>
-                                <td>Enterprise Plus・Education Plus・Frontline Plusなど</td>
+                                <td>Data regions for Education</td>
+                                <td>Education Standard・Education Plus</td>
                                 <td>
-                                    OU・グループ単位で複数リージョンを使い分け可能。データ処理リージョンも個別に指定できる
+                                    保存リージョンをOU・設定グループ単位で指定可能。データ処理リージョンポリシーは含まれない
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>Enterpriseデータリージョン</td>
+                                <td>
+                                    Enterprise Plus・Frontline Plus・Enterprise Essentials Plus
+                                </td>
+                                <td>
+                                    OU・グループ単位で複数の保存リージョンを使い分け可能。データ処理リージョンも個別に指定できる
                                 </td>
                             </tr>
                         </tbody>
@@ -1750,13 +1795,17 @@ flowchart TD
 flowchart TD
     A["データリージョン設定"] --&gt; B{"エディションは?"}
     B --&gt;|"Business Standard/Plus,&lt;br/&gt;Enterprise Standard,&lt;br/&gt;Frontline等"| C["Fundamentalデータ&lt;br/&gt;リージョン"]
-    B --&gt;|"Enterprise Plus,&lt;br/&gt;Education Plus,&lt;br/&gt;Frontline Plus"| D["Enterpriseデータ&lt;br/&gt;リージョン"]
+    B --&gt;|"Education Standard/Plus"| EDU["Data regions for Education"]
+    B --&gt;|"Enterprise Plus,&lt;br/&gt;Frontline Plus,&lt;br/&gt;Enterprise Essentials Plus"| D["Enterpriseデータ&lt;br/&gt;リージョン"]
     C --&gt; C1["組織全体で1リージョンのみ&lt;br/&gt;選択可(米国 or 欧州)"]
     D --&gt; D1["OU・グループ単位で&lt;br/&gt;複数リージョンを&lt;br/&gt;使い分け可能"]
     D --&gt; D2["データ処理リージョンも&lt;br/&gt;個別に指定可能"]
+    EDU --&gt; EDU1["OU・設定グループ単位で&lt;br/&gt;保存リージョンを指定可能"]
+    EDU --&gt; EDU2["データ処理リージョン&lt;br/&gt;ポリシーは対象外"]
     C1 --&gt; E["対象: Gmail, Calendar,&lt;br/&gt;Drive, Chat, Docs等の&lt;br/&gt;保存時データ"]
     D1 --&gt; E
-    D2 --&gt; E</pre
+    EDU1 --&gt; E
+    D2 --&gt; P["対象: データ処理リージョン&lt;br/&gt;(処理中データの実行場所)"]</pre
                 >
                 <p>
                     データリージョンを選択する際は、特定のリージョンを選んでもパフォーマンスが向上したりネットワークやデータアクセスが最適化されたりするわけではない点に注意が必要です。むしろ、リージョン外にいるユーザーは、リアルタイムでの共同編集などの操作時にレイテンシが増加する場合があります<sup>[44]</sup>。

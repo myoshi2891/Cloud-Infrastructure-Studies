@@ -92,14 +92,46 @@ export const DIAGRAMS: Record<DiagramId, string> = {
     participant D as DLPスキャン
     participant R as 受信者
     U->>G: メッセージを送信
-    G->>D: 同期スキャン(送信前)
-    alt 機密情報を検出せず
+    alt Web版・モバイルアプリからの送信
+        G->>D: 同期スキャン(送信操作時)
+        alt Blockアクション
+            D-->>G: 違反を検出
+            G->>U: 送信をブロックし警告(Back to editing)
+        else Quarantineアクション
+            D-->>G: 違反を検出
+            G->>G: 管理者レビュー用に隔離
+            G->>U: 隔離された旨を通知
+        else Warn usersアクション
+            D-->>G: 違反を検出
+            G->>U: 警告を表示(ユーザー判断で送信を続行可)
+        else Audit onlyアクション
+            D-->>G: 違反を検出
+            G->>G: Rule log eventsに記録(送信は継続)
+        end
+    else 第三者SMTPクライアント・自動送信・同期スキャン失敗
+        Note over U,G: 同期スキャンは行われない
+    end
+    G->>D: 非同期スキャン(メールボックス離脱後・配信前)
+    Note over G,D: 同期スキャンで違反がなかったメッセージも追加保護として再スキャン
+    alt Blockアクション
+        D-->>G: 違反を検出
+        G->>G: 配信をブロック<br/>(メッセージは送信済みフォルダに残る)
+        G->>U: 別メールで送信者に通知
+    else Quarantineアクション
+        D-->>G: 違反を検出
+        G->>G: 管理者レビュー用に隔離
+        G->>U: 通知は隔離設定またはレビュー結果次第
+    else Warn usersアクション
+        D-->>G: 違反を検出
+        G->>U: 警告を表示して通知
+        G->>R: 配信は継続
+    else Audit onlyアクション
+        D-->>G: 違反を検出
+        G->>G: Rule log eventsに記録
+        G->>R: 配信は継続(通知なし)
+    else 違反なし
         D-->>G: 違反なし
         G->>R: メッセージを配信
-    else 機密情報を検出
-        D-->>G: 違反を検出
-        G->>U: 警告 / ブロック / 隔離を通知
-        Note over G,D: 非同期スキャンは送信後・配信前に追加で再スキャン
     end`,
 
     'diag-7': `flowchart TD
@@ -132,13 +164,17 @@ export const DIAGRAMS: Record<DiagramId, string> = {
     'diag-9': `flowchart TD
     A["データリージョン設定"] --> B{"エディションは?"}
     B -->|"Business Standard/Plus,<br/>Enterprise Standard,<br/>Frontline等"| C["Fundamentalデータ<br/>リージョン"]
-    B -->|"Enterprise Plus,<br/>Education Plus,<br/>Frontline Plus"| D["Enterpriseデータ<br/>リージョン"]
+    B -->|"Education Standard/Plus"| EDU["Data regions for Education"]
+    B -->|"Enterprise Plus,<br/>Frontline Plus,<br/>Enterprise Essentials Plus"| D["Enterpriseデータ<br/>リージョン"]
     C --> C1["組織全体で1リージョンのみ<br/>選択可(米国 or 欧州)"]
     D --> D1["OU・グループ単位で<br/>複数リージョンを<br/>使い分け可能"]
     D --> D2["データ処理リージョンも<br/>個別に指定可能"]
+    EDU --> EDU1["OU・設定グループ単位で<br/>保存リージョンを指定可能"]
+    EDU --> EDU2["データ処理リージョン<br/>ポリシーは対象外"]
     C1 --> E["対象: Gmail, Calendar,<br/>Drive, Chat, Docs等の<br/>保存時データ"]
     D1 --> E
-    D2 --> E`,
+    EDU1 --> E
+    D2 --> P["対象: データ処理リージョン<br/>(処理中データの実行場所)"]`,
 
     'diag-10': `flowchart TD
     A(["Driveファイル/Gmailメッセージに<br/>分類ラベルを適用したい"]) --> B{"適用方法は?"}

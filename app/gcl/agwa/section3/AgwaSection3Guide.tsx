@@ -325,7 +325,7 @@ export function AgwaSection3Guide() {
                         組織にスーパー管理者による「Multi-party approval for Vaultエクスポート」が設定されている場合、エクスポートリクエストはマルチパーティ承認プロセスをトリガーします。これはVault UIから開始されたエクスポートリクエストにのみ適用され、Vault APIから開始されたリクエストには適用されない点に注意してください<sup><a href="https://support.google.com/vault/answer/2473458?hl=en">[17]</a></sup>。
                     </p>
                     <p>
-                        Vaultがエクスポートできないデータにも留意が必要です。VaultはCalendar・Contacts・Keep・Currentsなど一部のサービスをサポートしていません<sup><a href="https://support.google.com/vault/answer/6093005?hl=en">[19]</a></sup>。またVaultのエクスポートは法的開示（legal discovery）を目的として作成されるものであり、効率的なデータ処理を目的としたものではありません。差分バックアップの作成やデータの重複排除はできず、たとえばDriveのエクスポートでは、検索対象のアカウントがアクセス権を持つすべてのアイテムが含まれます。多数のアカウントが同一のアイテムにアクセスできる場合、各アカウントについて個別にエクスポートされるため、大量の重複データが生成されます<sup><a href="https://support.google.com/vault/answer/6093005?hl=en">[19]</a></sup>。
+                        Vaultがエクスポートできないデータにも留意が必要です。VaultはContacts・Keep・Currentsなど一部のサービスをサポートしていません。一方、Calendarはretention・holds・検索・エクスポートに対応しています<sup><a href="https://support.google.com/vault/answer/6093005?hl=en">[19]</a></sup>。またVaultのエクスポートは法的開示（legal discovery）を目的として作成されるものであり、効率的なデータ処理を目的としたものではありません。差分バックアップの作成やデータの重複排除はできず、たとえばDriveのエクスポートでは、検索対象のアカウントがアクセス権を持つすべてのアイテムが含まれます。多数のアカウントが同一のアイテムにアクセスできる場合、各アカウントについて個別にエクスポートされるため、大量の重複データが生成されます<sup><a href="https://support.google.com/vault/answer/6093005?hl=en">[19]</a></sup>。
                     </p>
 
                     <h3 id="317-エクスポート先の設定">3.1.7 エクスポート先の設定</h3>
@@ -439,7 +439,8 @@ export function AgwaSection3Guide() {
                         新しく作成したり変更したルールが実際に反映されるまで、最大<strong>24時間</strong>かかる場合があります（通常はもっと早く反映される）<sup><a href="https://support.google.com/a/answer/11400056?hl=en">[24]</a></sup>。
                     </p>
                     <p>
-                        Gmailにおけるスキャンの仕組みも出題対象です。DLPルールは基本的に<strong>非同期</strong>（asynchronous）でスキャンされます。つまりメッセージは送信者のメールボックスを離れてから、受信者に配信される前にスキャンされ、必要であればブロック・隔離されます。ユーザーがサードパーティのメールアプリからメッセージを送信した場合や、同期スキャンが成功しなかった場合には非同期スキャンが行われます<sup><a href="https://support.google.com/a/answer/14767988?hl=en">[24]</a></sup>。2024年のアップデートでGmail向けDLPの適用は即時化され、より迅速にアクションが実行されるようになりました<sup><a href="https://workspaceupdates.googleblog.com/2024/10/gmail-data-loss-prevention-enforcement-is-now-instantaneous.html">[31]</a></sup>。
+                        Gmailにおけるスキャンの仕組みも出題対象です。Gmail
+                        Webとモバイルアプリでは、ユーザーが送信操作をした時点で<strong>同期</strong>（synchronous）スキャンを行います。サードパーティのメールアプリから送信した場合、同期スキャンが成功しなかった場合、自動転送や予約送信などで自動送信された場合は、メッセージが送信者のメールボックスを離れてから受信者に配信されるまでの間に<strong>非同期</strong>（asynchronous）スキャンを行い、必要であればブロック・隔離します。また、同期スキャンで違反が検出されなかったメッセージも、追加の保護として非同期で再スキャンされます<sup><a href="https://support.google.com/a/answer/14767988?hl=en">[24]</a></sup><sup><a href="https://workspaceupdates.googleblog.com/2024/10/gmail-data-loss-prevention-enforcement-is-now-instantaneous.html">[31]</a></sup>。
                     </p>
 
                     <Diagram id="diag-6" label="Gmail DLPスキャンのシーケンス" />
@@ -636,9 +637,9 @@ export function AgwaSection3Guide() {
                         対応エディションを持たないユーザーは、そのOUにデータリージョンポリシーを適用していてもデータリージョンポリシーの対象にはなりません<sup><a href="https://knowledge.workspace.google.com/admin/compliance/choose-a-geographic-location-for-your-data">[44]</a></sup>。
                     </p>
                     <p>
-                        データリージョンは、保存時データ（data at rest。バックアップを含む）と、対応するGoogle Workspaceコアサービスにおけるデータ処理（data processing）の両方をカバーします<sup><a href="https://knowledge.workspace.google.com/admin/compliance/data-covered-by-data-regions">[45]</a></sup>。ただし、データリージョンはログやキャッシュされたコンテンツなど、本ポリシーで明示的に対象とされていないデータタイプやカスタマーサプライドデータではないデータには適用できません<sup><a href="https://knowledge.workspace.google.com/admin/compliance/data-covered-by-data-regions">[45]</a></sup>。
+                        データリージョンがカバーする範囲は、エディションと対象サービスによって異なります。Fundamentalデータリージョンと Data regions for Education（Education Standard・Education Plus）は、対応するGoogle Workspaceコアサービスの保存時データ（data at rest。バックアップを含む）のみが対象で、データ処理リージョンポリシーは含まれません。Enterpriseデータリージョン（Enterprise Plusなど）は、対応するGoogle Workspaceコアサービスにおける保存時データとデータ処理（data processing）の両方をカバーします<sup><a href="https://knowledge.workspace.google.com/admin/compliance/data-covered-by-data-regions">[45]</a></sup>。いずれの場合も、データリージョンはログやキャッシュされたコンテンツなど、本ポリシーで明示的に対象とされていないデータタイプや、カスタマーサプライドデータではないデータには適用できません<sup><a href="https://knowledge.workspace.google.com/admin/compliance/data-covered-by-data-regions">[45]</a></sup>。
                     </p>
-                    <p>データリージョンには2つのレベルがあります。</p>
+                    <p>データリージョンには、エディション別に次の区分があります。</p>
 
                     <div className="table-scroll">
                         <table>
@@ -656,9 +657,14 @@ export function AgwaSection3Guide() {
                                     <td>組織全体で1つのリージョンのみ選択可能（米国 or 欧州）</td>
                                 </tr>
                                 <tr className="even">
+                                    <td>Data regions for Education</td>
+                                    <td>Education Standard・Education Plus</td>
+                                    <td>保存リージョンをOU・設定グループ単位で指定可能。データ処理リージョンポリシーは含まれない</td>
+                                </tr>
+                                <tr className="odd">
                                     <td>Enterpriseデータリージョン</td>
-                                    <td>Enterprise Plus・Education Plus・Frontline Plusなど</td>
-                                    <td>OU・グループ単位で複数リージョンを使い分け可能。データ処理リージョンも個別に指定できる</td>
+                                    <td>Enterprise Plus・Frontline Plus・Enterprise Essentials Plus</td>
+                                    <td>OU・グループ単位で複数の保存リージョンを使い分け可能。データ処理リージョンも個別に指定できる</td>
                                 </tr>
                             </tbody>
                         </table>
