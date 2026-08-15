@@ -162,6 +162,30 @@ describe('MermaidDiagram', () => {
             // Assert
             expect(svg.style.maxWidth).toBe('');
         });
+
+        it('viewBox が無い場合は自然倍率指定でも以前の min-width を解除すること', () => {
+            // Arrange: 前回処理の min-width が残っている SVG を再処理する
+            const svg = makeSvg();
+            svg.style.minWidth = '800px';
+
+            // Act
+            applySvgFixups(svg, 'flowchart TD\nA-->B', true);
+
+            // Assert: 自然幅を確定できないため固定幅を残さない
+            expect(svg.style.minWidth).toBe('');
+        });
+
+        it('viewBox が不正な場合も以前の min-width を解除すること', () => {
+            // Arrange
+            const svg = makeSvg('0 0 800');
+            svg.style.minWidth = '800px';
+
+            // Act
+            applySvgFixups(svg, 'flowchart TD\nA-->B', true);
+
+            // Assert
+            expect(svg.style.minWidth).toBe('');
+        });
     });
 
     it('エラー表示時、各行の要素に安定したキーに基づいた data-key 属性が付与されること', async () => {
