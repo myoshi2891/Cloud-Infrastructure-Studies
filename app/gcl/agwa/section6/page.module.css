@@ -1,24 +1,7 @@
 .agwa-section6-root {
-    --bg: #07111e;
-    --bg-elevated: #0d1b2e;
-    --bg-card: #0f1e33;
-    --border: #1f3350;
-    --border-soft: #17293f;
-    --text: #e8eaf0;
-    --text-dim: #93a2bd;
-    --accent: #7c9eff;
-    --accent-soft: #33507c;
-    --accent-bg: rgba(124, 158, 255, 0.1);
-    --green: #4caf7d;
-    --red: #ef6a6a;
-    --amber: #f2b84b;
-    --sidebar-w: 280px;
-    --font-jp: 'Hiragino Sans', 'Noto Sans JP', 'Yu Gothic UI', 'Meiryo', system-ui, sans-serif;
-    --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
-
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--font-jp);
+    background: var(--color-guide-background);
+    color: var(--color-guide-foreground);
+    font-family: 'Hiragino Sans', 'Noto Sans JP', 'Yu Gothic UI', 'Meiryo', system-ui, sans-serif;
     font-size: 16px;
     line-height: 1.85;
     min-height: 100vh;
@@ -42,8 +25,8 @@
     width: 280px;
     height: calc(100vh - var(--header-h, 60px));
     overflow-y: auto;
-    background: var(--bg-elevated);
-    border-right: 1px solid var(--border);
+    background: var(--color-guide-node-background);
+    border-right: 1px solid var(--color-guide-border);
     padding: 28px 22px 40px;
     z-index: 50;
 }
@@ -52,7 +35,7 @@
     display: block;
     font-size: 13px;
     font-weight: 700;
-    color: var(--accent);
+    color: var(--color-guide-accent);
     letter-spacing: 0.02em;
     margin-bottom: 4px;
 }
@@ -60,7 +43,7 @@
 .agwa-section6-root .sidebar-subtitle {
     display: block;
     font-size: 12px;
-    color: var(--text-dim);
+    color: var(--color-guide-foreground-soft);
     margin-bottom: 24px;
     line-height: 1.6;
 }
@@ -73,7 +56,7 @@
 
 .agwa-section6-root .sidebar-nav a {
     display: block;
-    color: var(--text-dim);
+    color: var(--color-guide-foreground-soft);
     text-decoration: none;
     font-size: 13.5px;
     padding: 7px 10px;
@@ -85,7 +68,7 @@
 
 .agwa-section6-root .sidebar-nav a.level-2 {
     font-weight: 600;
-    color: var(--text);
+    color: var(--color-guide-foreground);
     margin-top: 10px;
 }
 
@@ -95,14 +78,14 @@
 }
 
 .agwa-section6-root .sidebar-nav a:hover {
-    background: var(--accent-bg);
-    color: var(--text);
+    background: var(--color-guide-interactive-background);
+    color: var(--color-guide-foreground);
 }
 
 .agwa-section6-root .sidebar-nav a.active {
-    background: var(--accent-bg);
-    color: var(--accent);
-    border-left-color: var(--accent);
+    background: var(--color-guide-interactive-background);
+    color: var(--color-guide-accent);
+    border-left-color: var(--color-guide-accent);
 }
 
 /* ---------------- Main content ---------------- */
@@ -121,7 +104,7 @@
     display: inline-block;
     font-size: 13px;
     font-weight: 700;
-    color: var(--accent);
+    color: var(--color-guide-accent);
     letter-spacing: 0.04em;
     text-transform: uppercase;
     margin-bottom: 14px;
@@ -132,30 +115,29 @@
     font-weight: 800;
     line-height: 1.35;
     margin: 0 0 22px;
-    color: var(--text);
+    color: var(--color-guide-foreground);
 }
 
 .agwa-section6-root .lede-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-left: 3px solid var(--accent);
+    background: var(--color-guide-surface-2);
+    border: 1px solid var(--color-guide-border);
+    border-left: 3px solid var(--color-guide-accent);
     border-radius: 10px;
     padding: 20px 24px;
-    color: var(--text-dim);
+    color: var(--color-guide-foreground-soft);
     font-size: 14.5px;
     line-height: 2;
 }
 
 .agwa-section6-root .main a {
-    color: var(--accent);
+    color: var(--color-guide-accent);
     text-decoration: none;
-    border-bottom: 1px solid var(--accent-soft);
+    border-bottom: 1px solid var(--color-guide-accent-soft);
     overflow-wrap: break-word;
-    word-break: break-word;
 }
 
 .agwa-section6-root .main a:hover {
-    border-bottom-color: var(--accent);
+    border-bottom-color: var(--color-guide-accent);
 }
 
 .agwa-section6-root .main h2 {
@@ -163,8 +145,8 @@
     font-weight: 800;
     margin: 64px 0 20px;
     padding-top: 4px;
-    color: var(--text);
-    border-bottom: 1px solid var(--border);
+    color: var(--color-guide-foreground);
+    border-bottom: 1px solid var(--color-guide-border);
     padding-bottom: 14px;
     scroll-margin-top: 24px;
 }
@@ -173,7 +155,7 @@
     font-size: 19px;
     font-weight: 700;
     margin: 44px 0 16px;
-    color: var(--text);
+    color: var(--color-guide-foreground);
     scroll-margin-top: 24px;
 }
 
@@ -183,7 +165,7 @@
     width: 8px;
     height: 8px;
     border-radius: 2px;
-    background: var(--accent);
+    background: var(--color-guide-accent);
     margin-right: 10px;
     vertical-align: middle;
 }
@@ -192,11 +174,11 @@
     font-size: 16px;
     font-weight: 700;
     margin: 30px 0 12px;
-    color: var(--accent);
+    color: var(--color-guide-accent);
 }
 
 .agwa-section6-root .main p {
-    color: var(--text);
+    color: var(--color-guide-foreground);
     margin: 0 0 18px;
 }
 
@@ -204,14 +186,14 @@
     list-style-type: decimal;
     padding-left: 28px;
     margin: 0 0 20px;
-    color: var(--text);
+    color: var(--color-guide-foreground);
 }
 
 .agwa-section6-root .main ul {
     list-style-type: disc;
     padding-left: 28px;
     margin: 0 0 20px;
-    color: var(--text);
+    color: var(--color-guide-foreground);
 }
 
 .agwa-section6-root .main li {
@@ -224,7 +206,7 @@
 }
 
 .agwa-section6-root .main strong {
-    color: #ffffff;
+    color: var(--color-primary-foreground);
     font-weight: 700;
 }
 
@@ -234,33 +216,33 @@
     font-weight: 700;
     padding: 2px 10px;
     border-radius: 999px;
-    background: var(--accent-bg);
-    color: var(--accent);
-    border: 1px solid var(--accent-soft);
+    background: var(--color-guide-interactive-background);
+    color: var(--color-guide-accent);
+    border: 1px solid var(--color-guide-accent-soft);
 }
 
 .agwa-section6-root .badge-amber {
-    background: rgba(242, 184, 75, 0.12);
-    color: var(--amber);
-    border-color: rgba(242, 184, 75, 0.3);
+    background: var(--color-devnet-associate-warning-soft);
+    color: var(--color-guide-warning);
+    border-color: var(--color-guide-practice-border);
 }
 
 .agwa-section6-root .badge-green {
-    background: rgba(76, 175, 125, 0.12);
-    color: var(--green);
-    border-color: rgba(76, 175, 125, 0.3);
+    background: var(--color-accent-active);
+    color: var(--color-guide-positive);
+    border-color: var(--color-guide-practice-border);
 }
 
 .agwa-section6-root .badge-red {
-    background: rgba(239, 106, 106, 0.12);
-    color: var(--red);
-    border-color: rgba(239, 106, 106, 0.3);
+    background: var(--color-accent-active);
+    color: var(--color-network-danger);
+    border-color: var(--color-guide-practice-border);
 }
 
 .agwa-section6-root .callout {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-left: 4px solid var(--accent);
+    background: var(--color-guide-surface-2);
+    border: 1px solid var(--color-guide-border);
+    border-left: 4px solid var(--color-guide-positive);
     border-radius: 8px;
     padding: 20px 24px;
     margin: 28px 0;
@@ -268,39 +250,39 @@
 
 .agwa-section6-root .callout-title {
     font-weight: 700;
-    color: var(--accent);
+    color: var(--color-guide-positive);
     margin-bottom: 8px;
 }
 
 .agwa-section6-root .callout-amber {
-    border-left-color: var(--amber);
+    border-left-color: var(--color-guide-warning);
 }
 
 .agwa-section6-root .callout-amber .callout-title {
-    color: var(--amber);
+    color: var(--color-guide-warning);
 }
 
 .agwa-section6-root .callout-green {
-    border-left-color: var(--green);
+    border-left-color: var(--color-guide-positive);
 }
 
 .agwa-section6-root .callout-green .callout-title {
-    color: var(--green);
+    color: var(--color-guide-positive);
 }
 
 .agwa-section6-root .callout-red {
-    border-left-color: var(--red);
+    border-left-color: var(--color-network-danger);
 }
 
 .agwa-section6-root .callout-red .callout-title {
-    color: var(--red);
+    color: var(--color-network-danger);
 }
 
 /* ---------------- Tables ---------------- */
 .agwa-section6-root .table-wrapper {
     overflow-x: auto;
     margin: 28px 0;
-    border: 1px solid var(--border);
+    border: 1px solid var(--color-guide-border);
     border-radius: 10px;
 }
 
@@ -314,25 +296,25 @@
 .agwa-section6-root th,
 .agwa-section6-root td {
     padding: 12px 16px;
-    border-bottom: 1px solid var(--border-soft);
+    border-bottom: 1px solid var(--color-guide-border-soft);
     vertical-align: top;
     overflow-wrap: break-word;
 }
 
 .agwa-section6-root th {
-    background: var(--bg-elevated);
-    color: var(--accent);
+    background: var(--color-guide-node-background);
+    color: var(--color-guide-accent);
     font-weight: 700;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--color-guide-border);
     white-space: nowrap;
 }
 
 .agwa-section6-root td {
-    color: var(--text-dim);
+    color: var(--color-guide-foreground-soft);
 }
 
 .agwa-section6-root td strong {
-    color: var(--text);
+    color: var(--color-guide-foreground);
 }
 
 .agwa-section6-root tr:last-child td {
@@ -340,30 +322,30 @@
 }
 
 .agwa-section6-root tbody tr:hover {
-    background: rgba(124, 158, 255, 0.04);
+    background: var(--color-agwa-s3-accent-04);
 }
 
 /* ---------------- Code & Diagram ---------------- */
 .agwa-section6-root code {
-    font-family: var(--font-mono);
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
     font-size: 13.5px;
-    background: var(--bg-elevated);
+    background: var(--color-guide-node-background);
     padding: 2px 6px;
     border-radius: 4px;
-    color: var(--accent);
+    color: var(--color-guide-accent);
 }
 
 .agwa-section6-root .code-block {
-    background: var(--bg-elevated);
-    border: 1px solid var(--border);
+    background: var(--color-guide-node-background);
+    border: 1px solid var(--color-guide-border);
     border-radius: 8px;
     padding: 16px 20px;
-    font-family: var(--font-mono);
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
     font-size: 13.5px;
     line-height: 1.6;
     overflow-x: auto;
     margin: 20px 0;
-    color: var(--text);
+    color: var(--color-guide-foreground);
 }
 
 .agwa-section6-root .code-line {
@@ -379,8 +361,8 @@
 }
 
 .agwa-section6-root .task-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
+    background: var(--color-guide-surface-2);
+    border: 1px solid var(--color-guide-border);
     border-radius: 10px;
     padding: 18px 20px;
 }
@@ -389,8 +371,8 @@
     display: inline-block;
     font-size: 12px;
     font-weight: 800;
-    color: var(--accent);
-    background: var(--accent-bg);
+    color: var(--color-guide-accent);
+    background: var(--color-guide-interactive-background);
     border-radius: 5px;
     padding: 2px 8px;
     margin-bottom: 10px;
@@ -409,8 +391,8 @@
 }
 
 .agwa-section6-root .ref-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
+    background: var(--color-guide-surface-2);
+    border: 1px solid var(--color-guide-border);
     border-radius: 10px;
     padding: 20px;
 }
@@ -418,7 +400,7 @@
 .agwa-section6-root .ref-card h3 {
     margin-top: 0;
     font-size: 16px;
-    color: var(--accent);
+    color: var(--color-guide-accent);
 }
 
 .agwa-section6-root .ref-card ul {
@@ -429,7 +411,7 @@
 
 .agwa-section6-root .ref-card li {
     margin: 0;
-    border-top: 1px solid var(--border-soft);
+    border-top: 1px solid var(--color-guide-border-soft);
 }
 
 .agwa-section6-root .ref-card li:first-child {
@@ -440,24 +422,24 @@
     display: block;
     padding: 9px 0;
     font-size: 13px;
-    color: var(--text-dim);
+    color: var(--color-guide-foreground-soft);
     border-bottom: none;
 }
 
 .agwa-section6-root .ref-card a::before {
     content: '↗';
-    color: var(--accent);
+    color: var(--color-guide-accent);
     margin-right: 8px;
 }
 
 .agwa-section6-root .ref-card a:hover {
-    color: var(--accent);
+    color: var(--color-guide-accent);
 }
 
 /* ---------------- Checklist ---------------- */
 .agwa-section6-root .checklist-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
+    background: var(--color-guide-surface-2);
+    border: 1px solid var(--color-guide-border);
     border-radius: 12px;
     padding: 6px 24px 20px;
     margin: 24px 0 36px;
@@ -468,21 +450,21 @@
     align-items: center;
     justify-content: space-between;
     padding: 16px 0;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--color-guide-border);
     margin-bottom: 6px;
 }
 
 .agwa-section6-root .checklist-header span:first-child {
     font-weight: 700;
-    color: var(--text);
+    color: var(--color-guide-foreground);
     font-size: 14px;
 }
 
-.agwa-section6-root #checklist-progress {
+.agwa-section6-root .checklistProgress {
     font-size: 13px;
-    color: var(--accent);
+    color: var(--color-guide-accent);
     font-weight: 700;
-    background: var(--accent-bg);
+    background: var(--color-guide-interactive-background);
     padding: 3px 12px;
     border-radius: 999px;
 }
@@ -496,9 +478,9 @@
 .agwa-section6-root ul.task-list li {
     position: relative;
     padding: 12px 8px 12px 34px;
-    border-bottom: 1px solid var(--border-soft);
+    border-bottom: 1px solid var(--color-guide-border-soft);
     font-size: 14.5px;
-    color: var(--text-dim);
+    color: var(--color-guide-foreground-soft);
     border-radius: 6px;
 }
 
@@ -507,7 +489,7 @@
 }
 
 .agwa-section6-root ul.task-list li:hover {
-    background: rgba(124, 158, 255, 0.04);
+    background: var(--color-agwa-s3-accent-04);
 }
 
 .agwa-section6-root ul.task-list input[type='checkbox'] {
@@ -518,16 +500,16 @@
     top: 14px;
     width: 17px;
     height: 17px;
-    border: 1.5px solid var(--border);
+    border: 1.5px solid var(--color-guide-border);
     border-radius: 5px;
-    background: var(--bg-elevated);
+    background: var(--color-guide-node-background);
     cursor: pointer;
     margin: 0;
 }
 
 .agwa-section6-root ul.task-list input[type='checkbox']:checked {
-    background: var(--accent);
-    border-color: var(--accent);
+    background: var(--color-guide-accent);
+    border-color: var(--color-guide-accent);
 }
 
 .agwa-section6-root ul.task-list input[type='checkbox']:checked::after {
@@ -537,7 +519,7 @@
     top: 1px;
     width: 5px;
     height: 9px;
-    border: solid #07111e;
+    border: solid var(--color-guide-background);
     border-width: 0 2px 2px 0;
     transform: rotate(45deg);
 }
@@ -547,7 +529,7 @@
 .agwa-section6-root ul.task-list li.completed span,
 .agwa-section6-root ul.task-list li.completed label span {
     text-decoration: line-through;
-    color: var(--text-dim);
+    color: var(--color-guide-foreground-soft);
     opacity: 0.6;
 }
 

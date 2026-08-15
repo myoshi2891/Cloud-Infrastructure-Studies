@@ -31,6 +31,7 @@ vi.mock('@/components/MermaidDiagram', () => ({
 /** 空白差・改行差を無視して比較するための正規化 */
 const squash = (value: string): string => value.replace(/\s+/g, '');
 
+/** HTML エンティティを移行元との比較用テキストへ復号する。 */
 const decodeEntities = (str: string) =>
     str
         .replace(/&gt;/g, '>')
@@ -40,6 +41,7 @@ const decodeEntities = (str: string) =>
         .replace(/&#39;/g, "'");
 
 describe('agwa-section6 — 監視とトラブルシューティング 移行元コンテンツの全量検証', () => {
+    /** Section 6 ページを描画し、検証対象のコンテナを返す。 */
     const renderPage = () => {
         const { container } = render(<Page />);
         return container;
@@ -80,8 +82,8 @@ describe('agwa-section6 — 監視とトラブルシューティング 移行元
 
     it('習熟度チェックリスト項目（14項目）の文言が移行元と完全一致する', () => {
         const container = renderPage();
-        const checklistLabels = [...container.querySelectorAll('.task-list li label')].map((el) =>
-            squash(el.textContent ?? '')
+        const checklistLabels = [...container.querySelectorAll('input[type="checkbox"]')].map(
+            (element) => squash(element.closest('label')?.textContent ?? ''),
         );
         const expectedItems = inventory.checklistItems.map((item: string) => squash(item));
 

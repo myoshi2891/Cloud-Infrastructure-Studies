@@ -2,24 +2,20 @@
 
 import { useEffect, useState } from 'react';
 import { NAV_ITEMS } from './constants';
+import styles from './page.module.css';
 
+/** Section 6 の目次を表示し、スクロール位置に対応するリンクを有効化する。 */
 export default function NavBar() {
     const [activeHref, setActiveHref] = useState<string>('');
 
     useEffect(() => {
         if (typeof IntersectionObserver === 'undefined') return;
 
-        const navLinks = Array.from(document.querySelectorAll('.sidebar-nav a'));
-        if (navLinks.length === 0) return;
-
         const headingToHref = new Map<Element, string>();
-        navLinks.forEach((a) => {
-            const href = a.getAttribute('href');
-            if (href) {
-                const id = decodeURIComponent(href.slice(1));
-                const el = document.getElementById(id);
-                if (el) headingToHref.set(el, href);
-            }
+        NAV_ITEMS.forEach(({ href }) => {
+            const id = decodeURIComponent(href.slice(1));
+            const element = document.getElementById(id);
+            if (element) headingToHref.set(element, href);
         });
 
         const targets = Array.from(headingToHref.keys());
@@ -43,16 +39,16 @@ export default function NavBar() {
     }, []);
 
     return (
-        <aside className="sidebar" id="sidebar">
-            <span className="sidebar-brand">AGWA 試験対策ガイド</span>
-            <span className="sidebar-subtitle">Section 6: 監視とトラブルシューティング</span>
-            <nav className="sidebar-nav">
+        <aside className={styles.sidebar} id="sidebar">
+            <span className={styles["sidebar-brand"]}>AGWA 試験対策ガイド</span>
+            <span className={styles["sidebar-subtitle"]}>Section 6: 監視とトラブルシューティング</span>
+            <nav className={styles["sidebar-nav"]}>
                 {NAV_ITEMS.map((item) => (
                     <a
                         key={item.href}
                         href={item.href}
-                        className={`${item.level === 2 ? 'level-2' : 'level-3'} ${
-                            activeHref === item.href ? 'active' : ''
+                        className={`${item.level === 2 ? styles["level-2"] : styles["level-3"]} ${
+                            activeHref === item.href ? styles.active : ''
                         }`}
                     >
                         {item.label}

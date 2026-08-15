@@ -1,9 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import NavBar from './NavBar';
+import NavBar from '../../NavBar';
 import { MermaidDiagram } from '@/components/MermaidDiagram';
+import styles from '../../page.module.css';
 
+/** Section 6 の学習本文、図表、進捗チェックリストを一体として描画する。 */
 export default function AgwaSection6Guide() {
     const [checkedItems, setCheckedItems] = useState<Record<number, boolean>>({});
 
@@ -17,18 +19,18 @@ export default function AgwaSection6Guide() {
     const completedCount = Object.values(checkedItems).filter(Boolean).length;
 
     return (
-        <div className="agwa-section6-root">
-            <div className="layout">
+        <div className={styles["agwa-section6-root"]}>
+            <div className={styles.layout}>
                 <NavBar />
-                <main className="main">
-                    <div className="hero">
-                        <span className="hero-eyebrow">
+                <main className={styles.main}>
+                    <div className={styles.hero}>
+                        <span className={styles["hero-eyebrow"]}>
                             Associate Google Workspace Administrator 試験対策ガイド
                         </span>
-                        <h1 className="hero-title">
+                        <h1 className={styles["hero-title"]}>
                             Section 6: 監視とトラブルシューティング（Monitoring and troubleshooting common issues）
                         </h1>
-                        <div className="lede-card">
+                        <div className={styles["lede-card"]}>
                             <p>出題比率: 約13%（Google公式Exam Guideに基づく）</p>
                             <p>対象レベル: 中級者〜上級者</p>
                             <p>
@@ -43,7 +45,7 @@ export default function AgwaSection6Guide() {
                     </p>
                     <p>公式Exam Guideは本セクションを4つのタスクに分けています。</p>
 
-                    <div className="mermaid-wrap">
+                    <div className={styles["mermaid-wrap"]}>
                         <MermaidDiagram
                             chart={`flowchart TD
     classDef blueFill fill:#1a73e8,stroke:#174ea6,color:#ffffff;
@@ -84,7 +86,7 @@ export default function AgwaSection6Guide() {
                     </div>
 
                     <h3 id="タスク別出題範囲一覧">タスク別出題範囲一覧</h3>
-                    <div className="table-wrapper">
+                    <div className={styles["table-wrapper"]}>
                         <table>
                             <thead>
                                 <tr>
@@ -123,28 +125,28 @@ export default function AgwaSection6Guide() {
                         </table>
                     </div>
 
-                    <div className="task-grid">
-                        <div className="task-card">
-                            <span className="task-num">6.1</span>
+                    <div className={styles["task-grid"]}>
+                        <div className={styles["task-card"]}>
+                            <span className={styles["task-num"]}>6.1</span>
                             <h4>問題の特定と診断</h4>
                             <p>
                                 監査ログへのアクセス、ログ解釈、Status Dashboard確認、メール配信解決策の提案
                             </p>
                         </div>
-                        <div className="task-card">
-                            <span className="task-num">6.2</span>
+                        <div className={styles["task-card"]}>
+                            <span className={styles["task-num"]}>6.2</span>
                             <h4>一般的な問題のトラブルシューティング</h4>
                             <p>アカウント、メール、カレンダー、Drive、Meetにまたがる13項目</p>
                         </div>
-                        <div className="task-card">
-                            <span className="task-num">6.3</span>
+                        <div className={styles["task-card"]}>
+                            <span className={styles["task-num"]}>6.3</span>
                             <h4>レポートと監査ログの管理</h4>
                             <p>
                                 アプリ使用状況、ストレージ上限、監査レポート、デバイスアクティビティの監視
                             </p>
                         </div>
-                        <div className="task-card">
-                            <span className="task-num">6.4</span>
+                        <div className={styles["task-card"]}>
+                            <span className={styles["task-num"]}>6.4</span>
                             <h4>サポートリソースの活用</h4>
                             <p>
                                 再現手順の文書化、ログ収集、既知の問題検索、HARファイル、ケースオープン、リリース情報の把握
@@ -168,7 +170,7 @@ export default function AgwaSection6Guide() {
                         6.1.1 管理コンソールでの監査ログへのアクセス
                     </h3>
                     <p>Google Workspaceの監査ログ機能は、エディションによって2つの入り口があります。</p>
-                    <div className="table-wrapper">
+                    <div className={styles["table-wrapper"]}>
                         <table>
                             <thead>
                                 <tr>
@@ -205,7 +207,7 @@ export default function AgwaSection6Guide() {
                         監査ログは対象サービスごとに種類が分かれており、主なログイベントカテゴリは以下の通りです。
                     </p>
 
-                    <div className="table-wrapper">
+                    <div className={styles["table-wrapper"]}>
                         <table>
                             <thead>
                                 <tr>
@@ -246,8 +248,8 @@ export default function AgwaSection6Guide() {
                         </table>
                     </div>
 
-                    <div className="callout callout-green">
-                        <div className="callout-title">ベストプラクティス</div>
+                    <div className={styles.callout}>
+                        <div className={styles["callout-title"]}>ベストプラクティス</div>
                         <p>
                             <strong>ベストプラクティス:</strong> 
                             ログイベントデータはCloud LoggingへのGoogle Cloud転送をオプトインで有効にできます。BigQueryへのエクスポートと組み合わせることで、90日を超える長期保持やSQLベースの高度な分析が可能になります。監査要件が厳しい組織や、SIEM連携が必要な組織では、管理コンソール単体の保持期間に頼らず、この転送機能を早期に有効化しておくことが推奨されます。
@@ -277,8 +279,8 @@ export default function AgwaSection6Guide() {
                         また、Google Workspaceは監査ログのスキーマとイベントモデリングを継続的に更新しており、レガシーイベントを使用している既存のクエリ・アラート・レポートには影響が及ぶ可能性があります。新旧両方のイベントが並行して利用可能な移行期間が設けられるため、既存のフィルタやレポーティングルールが正しく機能しているかを定期的に見直すことがベストプラクティスです。
                     </p>
 
-                    <div className="callout callout-green">
-                        <div className="callout-title">ベストプラクティス</div>
+                    <div className={styles.callout}>
+                        <div className={styles["callout-title"]}>ベストプラクティス</div>
                         <p>
                             <strong>ベストプラクティス:</strong> 
                             調査結果は「投資（Investigation）」として保存・共有できます。繰り返し発生する種類の問題に対しては、毎回ゼロから検索条件を組み立てるのではなく、保存済みの調査をテンプレートとして再利用することで、対応の一貫性とスピードを両立できます。
@@ -295,7 +297,7 @@ export default function AgwaSection6Guide() {
                         障害が発生している場合、ダッシュボードには通知が表示され、クリックすると解決見込み時刻を含む詳細情報を確認できます。問題が解決すると最終更新が投稿されます。
                     </p>
 
-                    <div className="table-wrapper">
+                    <div className={styles["table-wrapper"]}>
                         <table>
                             <thead>
                                 <tr>
@@ -324,8 +326,8 @@ export default function AgwaSection6Guide() {
                         </table>
                     </div>
 
-                    <div className="callout callout-green">
-                        <div className="callout-title">ベストプラクティス</div>
+                    <div className={styles.callout}>
+                        <div className={styles["callout-title"]}>ベストプラクティス</div>
                         <p>
                             <strong>ベストプラクティス:</strong> 
                             RSSフィードの購読を強く推奨します。Gmailサービス自体が障害の影響を受けている状況では、メール通知よりもRSSやシステム定義ルールのほうが確実に障害情報を届けられます。super administratorアカウントでサインインしていれば、5年分の履歴からインシデントの再発パターンを分析することも可能です。
@@ -340,7 +342,7 @@ export default function AgwaSection6Guide() {
                     </p>
                     <p>典型的な解決策のパターンは次の通りです。</p>
 
-                    <div className="table-wrapper">
+                    <div className={styles["table-wrapper"]}>
                         <table>
                             <thead>
                                 <tr>
@@ -385,7 +387,7 @@ export default function AgwaSection6Guide() {
                     </p>
                     <p>まず、6.2全体を通じて繰り返し登場する診断アプローチを俯瞰しておきます。</p>
 
-                    <div className="mermaid-wrap">
+                    <div className={styles["mermaid-wrap"]}>
                         <MermaidDiagram
                             chart={`flowchart TD
     classDef blueFill fill:#1a73e8,stroke:#174ea6,color:#ffffff;
@@ -434,7 +436,7 @@ export default function AgwaSection6Guide() {
                         ユーザーがサインインできない、パスワードを忘れた、2段階認証（2SV）の手段を紛失した、といった問題は管理者への問い合わせの中でも頻度が高いカテゴリです。
                     </p>
 
-                    <div className="mermaid-wrap">
+                    <div className={styles["mermaid-wrap"]}>
                         <MermaidDiagram
                             chart={`flowchart TD
     classDef blueFill fill:#1a73e8,stroke:#174ea6,color:#ffffff;
@@ -466,7 +468,7 @@ export default function AgwaSection6Guide() {
 
                     <p>代表的な症状と対処法は次の表の通りです。</p>
 
-                    <div className="table-wrapper">
+                    <div className={styles["table-wrapper"]}>
                         <table>
                             <thead>
                                 <tr>
@@ -505,8 +507,8 @@ export default function AgwaSection6Guide() {
                         </table>
                     </div>
 
-                    <div className="callout callout-green">
-                        <div className="callout-title">ベストプラクティス</div>
+                    <div className={styles.callout}>
+                        <div className={styles["callout-title"]}>ベストプラクティス</div>
                         <p>
                             <strong>ベストプラクティス:</strong> Googleは管理者アカウントに対する2SVの強制（enforcement）を進めています。管理者アカウントについては、予備のセキュリティキーを最低1つ追加で登録し、安全な場所に保管しておくこと、そしてスーパー管理者は他の管理者のためにバックアップコードを事前に生成・印刷しておくことが推奨されています。これにより、単一のロックアウトが組織全体の管理機能停止に発展するリスクを避けられます。
                         </p>
@@ -524,7 +526,7 @@ export default function AgwaSection6Guide() {
                     </p>
                     <p>ELSでのトラブルシューティングの起点は、メッセージの送受信パターンによって異なります。</p>
 
-                    <div className="table-wrapper">
+                    <div className={styles["table-wrapper"]}>
                         <table>
                             <thead>
                                 <tr>
@@ -553,7 +555,7 @@ export default function AgwaSection6Guide() {
                         これらの入口を踏まえたうえで、メール配信問題全体の切り分けは次のような一連の流れで進めるのが効率的です。
                     </p>
 
-                    <div className="mermaid-wrap">
+                    <div className={styles["mermaid-wrap"]}>
                         <MermaidDiagram
                             chart={`flowchart TD
     classDef blueFill fill:#1a73e8,stroke:#174ea6,color:#ffffff;
@@ -603,8 +605,8 @@ export default function AgwaSection6Guide() {
                         検索結果はGoogle SheetsまたはCSVファイルへエクスポートでき、メッセージのラベル・保存場所・迷惑メール判定の有無・配信後に削除されたかどうかといった詳細情報を確認できます。
                     </p>
 
-                    <div className="callout callout-green">
-                        <div className="callout-title">ベストプラクティス</div>
+                    <div className={styles.callout}>
+                        <div className={styles["callout-title"]}>ベストプラクティス</div>
                         <p>
                             <strong>ベストプラクティス:</strong> 
                             ELSは「監査目的の非侵襲的な調査ツール」であり、メッセージへの削除・隔離・復元といったアクションは実行できません。アクションが必要な場合は、より高度なライセンス（Enterprise Plus、Education Plusなど）で利用可能なSecurity Investigation ToolのGmail log eventsデータソースを使う必要があります。この違いを理解しておくことは、試験でもよく問われるポイントです。
@@ -618,7 +620,7 @@ export default function AgwaSection6Guide() {
                         ELSで解決しない、あるいはより詳細な配信経路の分析が必要な場合、Google Admin Toolbox（toolbox.googleapps.com）の各ツールが役立ちます。
                     </p>
 
-                    <div className="table-wrapper">
+                    <div className={styles["table-wrapper"]}>
                         <table>
                             <thead>
                                 <tr>
@@ -659,7 +661,7 @@ export default function AgwaSection6Guide() {
                         メッセージヘッダー解析は、SPF・DKIM・DMARCの認証結果を確認する上で中心的な役割を果たします。次のシーケンス図は、送信メッセージが受信側MTA（mx.google.com）でどのように認証されるかを示しています。
                     </p>
 
-                    <div className="mermaid-wrap">
+                    <div className={styles["mermaid-wrap"]}>
                         <MermaidDiagram
                             chart={`sequenceDiagram
     participant Sender as 送信メールサーバー
@@ -690,7 +692,7 @@ export default function AgwaSection6Guide() {
 
                     <p>3つの認証方式にはそれぞれ固有のトラブルシューティングポイントがあります。</p>
 
-                    <div className="table-wrapper">
+                    <div className={styles["table-wrapper"]}>
                         <table>
                             <thead>
                                 <tr>
@@ -723,8 +725,8 @@ export default function AgwaSection6Guide() {
                         また、SMTPエラーメッセージの構造を理解しておくことも重要です。エラーメッセージには、Googleのすべてのエラーに付与されるgsmtp（Google SMTP）識別子と、管理者が作成したカスタムルールに起因するエラーに付与されるgcdp（Google Custom Domain Policies）識別子が含まれます。たとえば「550 5.7.1 This message violates example.com email policy. - gcdp - gsmtp」というエラーは、管理者がコンテンツコンプライアンスルールなどで独自に作成したポリシーによってブロックされたことを意味します。
                     </p>
 
-                    <div className="callout callout-green">
-                        <div className="callout-title">ベストプラクティス</div>
+                    <div className={styles.callout}>
+                        <div className={styles["callout-title"]}>ベストプラクティス</div>
                         <p>
                             <strong>ベストプラクティス:</strong> 
                             SPF・DKIM・DMARCはバルク送信者（1日5,000通以上）に対してGoogleが必須要件として求めています。バルク送信者でなくても、送信ドメインの信頼性を高めるために3つすべてを設定し、DMARCレポートを定期的に確認する運用を確立しておくことが推奨されます。
@@ -759,7 +761,7 @@ export default function AgwaSection6Guide() {
                         Google Calendarと外部カレンダークライアント（Apple Calendar、Microsoft Outlook）との同期問題は、連携方式によって切り分け方が大きく異なります。
                     </p>
 
-                    <div className="mermaid-wrap">
+                    <div className={styles["mermaid-wrap"]}>
                         <MermaidDiagram
                             chart={`flowchart TD
     classDef blueFill fill:#1a73e8,stroke:#174ea6,color:#ffffff;
@@ -792,7 +794,7 @@ export default function AgwaSection6Guide() {
 
                     <p>主要な連携パターンとトラブルシューティングの要点は以下の通りです。</p>
 
-                    <div className="table-wrapper">
+                    <div className={styles["table-wrapper"]}>
                         <table>
                             <thead>
                                 <tr>
@@ -821,8 +823,8 @@ export default function AgwaSection6Guide() {
                         </table>
                     </div>
 
-                    <div className="callout callout-green">
-                        <div className="callout-title">ベストプラクティス</div>
+                    <div className={styles.callout}>
+                        <div className={styles["callout-title"]}>ベストプラクティス</div>
                         <p>
                             <strong>ベストプラクティス:</strong> 
                             GWSMOの同期問題は、Windowsのタスクバーアイコンがオフライン表示になっているという単純な兆候から始まることが多く、まずネットワーク接続とOutlookのオフラインモードを確認するのが最も効率的な第一歩です。それでも解決しない場合にのみ、トレースログの収集とLog Analyzerでの解析に進むという段階的アプローチを徹底することで、不要な深掘りを避けられます。
@@ -837,7 +839,7 @@ export default function AgwaSection6Guide() {
                         管理コンソールのCalendar &gt; Sharing settingsで設定する内部共有オプション（Internal sharing options for primary calendars）には、次の3段階があります。
                     </p>
 
-                    <div className="table-wrapper">
+                    <div className={styles["table-wrapper"]}>
                         <table>
                             <thead>
                                 <tr>
@@ -872,8 +874,8 @@ export default function AgwaSection6Guide() {
                         会議室・設備などのリソースカレンダーについては、共有設定に加えて「予約権限（Resource booking permissions）」という別レイヤーの設定が存在します。リソースが「空き時間のみ」で共有されている場合でも、Allow users to book resources that are shared as &quot;See only free/busy&quot;を有効にすることで、詳細情報を隠したまま予約自体は許可するという運用が可能です。
                     </p>
 
-                    <div className="callout callout-green">
-                        <div className="callout-title">ベストプラクティス</div>
+                    <div className={styles.callout}>
+                        <div className={styles["callout-title"]}>ベストプラクティス</div>
                         <p>
                             <strong>ベストプラクティス:</strong> 
                             リソースカレンダーの予定に機密情報が含まれる可能性がある場合（役員会議室など）、「空き時間のみ共有」と「予約許可」を組み合わせることで、プライバシーと利便性を両立できます。ユーザーからの「会議室を予約できない」という問い合わせの多くは、この予約権限設定の見落としが原因です。
@@ -888,7 +890,7 @@ export default function AgwaSection6Guide() {
                     </p>
                     <p>Calendar Interop環境で空き時間の相互参照に失敗する場合の主な原因パターンは以下の通りです。</p>
 
-                    <div className="table-wrapper">
+                    <div className={styles["table-wrapper"]}>
                         <table>
                             <thead>
                                 <tr>
@@ -922,8 +924,8 @@ export default function AgwaSection6Guide() {
                         </table>
                     </div>
 
-                    <div className="callout callout-green">
-                        <div className="callout-title">ベストプラクティス</div>
+                    <div className={styles.callout}>
+                        <div className={styles["callout-title"]}>ベストプラクティス</div>
                         <p>
                             <strong>ベストプラクティス:</strong> 
                             Calendar Interopのトラブルシューティングは「全ユーザーに共通する問題か、特定ユーザーに限定される問題か」で切り分けの筋道が大きく変わります。特定ユーザーに限定される場合はそのユーザー固有の設定（重複アカウント、Calendarサービスの状態）を、全体的な問題の場合はロールアカウントの権限を優先的に疑うという順序を徹底することで、調査時間を大幅に短縮できます。
@@ -935,7 +937,7 @@ export default function AgwaSection6Guide() {
                         Google Driveの共有・アクセス問題は、対象が「個人のマイドライブ」か「共有ドライブ」かによって確認すべき設定レイヤーが異なります。
                     </p>
 
-                    <div className="mermaid-wrap">
+                    <div className={styles["mermaid-wrap"]}>
                         <MermaidDiagram
                             chart={`flowchart TD
     classDef blueFill fill:#1a73e8,stroke:#174ea6,color:#ffffff;
@@ -971,7 +973,7 @@ export default function AgwaSection6Guide() {
                         共有ドライブ特有の問題として、Google公式ヘルプは「メンバーがいない共有ドライブ」と「マネージャーがいない共有ドライブ」を明確に区別しています。
                     </p>
 
-                    <div className="table-wrapper">
+                    <div className={styles["table-wrapper"]}>
                         <table>
                             <thead>
                                 <tr>
@@ -1016,8 +1018,8 @@ export default function AgwaSection6Guide() {
                         管理者は共有ドライブのマネージャーとして、ファイルを組織外と共有できないようにする制限や、Content managerやContributor・閲覧者による大量ダウンロード・コピー・印刷を禁止する制限を設定できます。これらの制限は個々のファイル・フォルダの共有設定よりも優先され、上書きされます。
                     </p>
 
-                    <div className="callout callout-green">
-                        <div className="callout-title">ベストプラクティス</div>
+                    <div className={styles.callout}>
+                        <div className={styles["callout-title"]}>ベストプラクティス</div>
                         <p>
                             <strong>ベストプラクティス:</strong> 
                             「共有できない」という問い合わせを受けたとき、まず組織のBusiness Starterエディションのようにシステムデフォルトへのリセットしかできないエディション制約がないかを確認します。エディションによっては共有設定のカスタマイズ機能自体が制限されているため、設定操作そのものより先にライセンス種別を確認することで無駄な調査を避けられます。
@@ -1029,7 +1031,7 @@ export default function AgwaSection6Guide() {
                         Drive for desktop（旧Drive File Stream）は、クラウド上のDriveファイルをローカルのファイルシステムとしてマウントするデスクトップクライアントです。同期に関する問題は、まず一般的な切り分け手順を試し、それでも解決しない場合に高度な設定へ進むという段階的アプローチが基本です。
                     </p>
 
-                    <div className="table-wrapper">
+                    <div className={styles["table-wrapper"]}>
                         <table>
                             <thead>
                                 <tr>
@@ -1062,8 +1064,8 @@ export default function AgwaSection6Guide() {
                         共有ドライブへのファイル追加ができない場合は、ディスク容量不足、組織のストレージ容量超過、同期権限の不足のいずれかが典型的な原因です。また、Google Docs/Sheets/Slides/DrawingsのコピーはDrive for desktop上では直接サポートされておらず、ブラウザ経由でのコピー操作が必要になる点も、ユーザーからの問い合わせで頻出するポイントです。
                     </p>
 
-                    <div className="callout callout-green">
-                        <div className="callout-title">ベストプラクティス</div>
+                    <div className={styles.callout}>
+                        <div className={styles["callout-title"]}>ベストプラクティス</div>
                         <p>
                             <strong>ベストプラクティス:</strong> 
                             Drive for desktopの同期トラブルは、まず「アカウントの切断・再接続」という最も低コストな手順から始め、それでも解決しない場合にのみ再インストールやログ収集に進むという段階的なエスカレーションを徹底します。試験でも、いきなり高度な手順を選ぶ選択肢ではなく、段階的なアプローチを問う設問が想定されます。
@@ -1077,7 +1079,7 @@ export default function AgwaSection6Guide() {
                         My Driveのファイル、共有ドライブのファイル、Gmailメッセージはいずれも、まず対応するゴミ箱から復元できるかを確認します。ただし、完全削除後の管理者経路は、My Drive、共有ドライブ、Gmailで異なります。特にDriveは所有モデルに応じて管理画面と必要権限が変わるため、対象を先に判別します。
                     </p>
 
-                    <div className="mermaid-wrap">
+                    <div className={styles["mermaid-wrap"]}>
                         <MermaidDiagram
                             chart={`stateDiagram-v2
     [*] --> 対象判定
@@ -1150,8 +1152,8 @@ export default function AgwaSection6Guide() {
                         Vaultを利用している組織では、DriveとGmailの標準復元期限を過ぎても、保持ルールやホールドの対象データを検索・エクスポートできる場合があります。ただし、Vaultから元のDriveやGmailアカウントへ直接復元する機能ではありません。
                     </p>
 
-                    <div className="callout callout-green">
-                        <div className="callout-title">ベストプラクティス</div>
+                    <div className={styles.callout}>
+                        <div className={styles["callout-title"]}>ベストプラクティス</div>
                         <p>
                             <strong>ベストプラクティス:</strong> 
                             まず対象をMy Drive、共有ドライブ、Gmailに分け、対応するごみ箱を確認します。My DriveはDirectory &gt; Users &gt; Restore data、共有ドライブ内の完全削除ファイルと削除済み共有ドライブはApps &gt; Google Workspace &gt; Drive and Docs &gt; Manage shared drivesへ進み、いずれも25日以内の期限を確認します。My Driveでは対象期間の全データとストレージ、共有ドライブでは組織所有と操作ロール、Gmailでは復元不可のメッセージ種別を事前に確認します。
@@ -1165,7 +1167,7 @@ export default function AgwaSection6Guide() {
                         Google Docs・Sheets・SlidesのWeb版オフラインアクセスは、管理コンソールでの組織全体の設定（デフォルトでオン）と、ユーザー個人による有効化という2段階の許可モデルを持ちます。
                     </p>
 
-                    <div className="table-wrapper">
+                    <div className={styles["table-wrapper"]}>
                         <table>
                             <thead>
                                 <tr>
@@ -1204,8 +1206,8 @@ export default function AgwaSection6Guide() {
                         <li>ネットワーク接続の問題がないか確認する（オフラインファイルの初期同期には接続が必要なため）。</li>
                     </ol>
 
-                    <div className="callout callout-green">
-                        <div className="callout-title">ベストプラクティス</div>
+                    <div className={styles.callout}>
+                        <div className={styles["callout-title"]}>ベストプラクティス</div>
                         <p>
                             <strong>ベストプラクティス:</strong> 
                             「Drive for desktopのオフラインアクセス」と「Docs/Sheets/Slides Web版のオフラインアクセス」は名称が似ていますが、全く別の機能・設定です。前者はローカルファイルシステムへのストリーミング全般を扱い、後者はブラウザ内でのオフライン編集機能に限定されます。ユーザーからの問い合わせでこの2つが混同されるケースが多いため、まずどちらの機能について質問されているかを明確にすることが、正確な回答への近道です。
@@ -1219,7 +1221,7 @@ export default function AgwaSection6Guide() {
                         Meet quality tool（MQT）は、Google Meetのセッションパフォーマンスを事後的に分析するための管理者向けツールです。管理コンソールのApps &gt; Google Workspace &gt; Google Meet &gt; Meet quality toolからアクセスします。
                     </p>
 
-                    <div className="mermaid-wrap">
+                    <div className={styles["mermaid-wrap"]}>
                         <MermaidDiagram
                             chart={`flowchart TD
     classDef blueFill fill:#1a73e8,stroke:#174ea6,color:#ffffff;
@@ -1255,7 +1257,7 @@ export default function AgwaSection6Guide() {
 
                     <p>MQTの主な特性を理解しておくことが重要です。</p>
 
-                    <div className="table-wrapper">
+                    <div className={styles["table-wrapper"]}>
                         <table>
                             <thead>
                                 <tr>
@@ -1295,8 +1297,8 @@ export default function AgwaSection6Guide() {
                         Meet Hardware（会議室のデバイス）については、別途「Monitor the health of devices」機能でデバイスごとに接続品質・映像帯域・解像度・音声キャプチャの診断テストを実行し、直近10回分の結果を分析できます。
                     </p>
 
-                    <div className="callout callout-green">
-                        <div className="callout-title">ベストプラクティス</div>
+                    <div className={styles.callout}>
+                        <div className={styles["callout-title"]}>ベストプラクティス</div>
                         <p>
                             <strong>ベストプラクティス:</strong> 
                             問題が「送信者側で発生しているのか、受信者側で発生しているのか」を切り分けることが、Meetのトラブルシューティングにおける最初の分岐点です。ある参加者から見て全員の映像が乱れて見える場合は受信側（自分のネットワーク）の問題である可能性が高く、逆に全員から見てある1人の映像だけが乱れる場合は送信側（その人のネットワークやデバイス）の問題である可能性が高いという原則を、ユーザーへのヒアリング時に活用します。
@@ -1311,7 +1313,7 @@ export default function AgwaSection6Guide() {
                     </p>
                     <p>主な確認項目は次の通りです。</p>
 
-                    <div className="table-wrapper">
+                    <div className={styles["table-wrapper"]}>
                         <table>
                             <thead>
                                 <tr>
@@ -1344,8 +1346,8 @@ export default function AgwaSection6Guide() {
                         Meetサポートへ連絡する前に管理者が収集すべき情報として、Google公式ヘルプは次のような項目を挙げています。問題の内容（エコー、映像品質低下、接続問題など）の説明、問題が発生している参加者の特定、クライアントのハードウェア情報（デバイス種別、CPU）、クライアントのソフトウェア情報（OS、ブラウザバージョンまたはモバイルアプリバージョン）、影響を受けた参加者のメールアドレス、会議室ハードウェアを使用している場合はそのシリアル番号とドメイン、会議が行われた日時・タイムゾーン、そしてChrome Connectivity Diagnosticsアプリで収集したネットワークログです。
                     </p>
 
-                    <div className="callout callout-green">
-                        <div className="callout-title">ベストプラクティス</div>
+                    <div className={styles.callout}>
+                        <div className={styles["callout-title"]}>ベストプラクティス</div>
                         <p>
                             <strong>ベストプラクティス:</strong> 
                             Meetの接続・品質問題は原因の切り分けが難しく、ユーザーからの曖昧な報告（「Meetが重い」など）だけでは対応が困難です。6.2.12・6.2.13の内容を踏まえたヒアリングシート（影響範囲・タイミング・ネットワーク環境・使用デバイス）を事前に用意しておくことで、サポートへのエスカレーションを含めた対応全体のスピードが大きく向上します。
@@ -1362,7 +1364,7 @@ export default function AgwaSection6Guide() {
                         管理コンソールのReporting配下には、目的の異なる複数のレポート体系が存在します。それぞれの違いを理解することが、6.3のみならず本ガイド全体の理解を助けます。
                     </p>
 
-                    <div className="table-wrapper">
+                    <div className={styles["table-wrapper"]}>
                         <table>
                             <thead>
                                 <tr>
@@ -1420,8 +1422,8 @@ export default function AgwaSection6Guide() {
                         Reports overviewの「What&apos;s the storage being used?」パネルからも、組織全体の使用可能なストレージ容量を俯瞰できます。詳細を確認したい場合は「View Details」からより深い分析画面に遷移できます。
                     </p>
 
-                    <div className="callout callout-green">
-                        <div className="callout-title">ベストプラクティス</div>
+                    <div className={styles.callout}>
+                        <div className={styles["callout-title"]}>ベストプラクティス</div>
                         <p>
                             <strong>ベストプラクティス:</strong> 
                             ストレージ上限に関する問い合わせの多くは、実際には「不要なファイルの蓄積」が原因です。上限そのものを引き上げる前に、まずApps usageレポートで上限に近いユーザーを特定し、共有ドライブのストレージ消費状況と照らし合わせることで、根本原因（重複ファイル、大容量の動画添付、放置された古いバックアップなど）を特定できる場合があります。
@@ -1453,7 +1455,7 @@ export default function AgwaSection6Guide() {
                         6.4は、管理者自身での解決が困難な問題に直面したときに、いかに効率よくGoogleサポートを活用するかを扱います。公式Exam Guideは、エンドユーザーによる再現手順の文書化、適切なログファイル種類の収集、アプリケーションのステータスと既知の問題の検索、HARファイルの生成、Googleサポートへのケースオープンに関するGoogle推奨のベストプラクティスの特定、そしてGoogle Workspace Updatesブログ・Status Dashboard・リリースカレンダーを用いたサービスリリースや障害情報の把握という6項目を挙げています。
                     </p>
 
-                    <div className="mermaid-wrap">
+                    <div className={styles["mermaid-wrap"]}>
                         <MermaidDiagram
                             chart={`flowchart TD
     classDef blueFill fill:#1a73e8,stroke:#174ea6,color:#ffffff;
@@ -1485,8 +1487,8 @@ export default function AgwaSection6Guide() {
                         サポートへの問い合わせを効率化する最初のステップは、エンドユーザーの操作手順を正確に記録することです。Google公式ヘルプは、サポート担当者がユーザーが実際に体験しているエラーや挙動を確認するために、正確なエラーメッセージ・コンテキスト・スクリーンショットが有用であると案内しています。組織や会社にヘルプデスクがある場合は、ヘルプデスクにユーザーからの情報・詳細の収集を依頼することも推奨されています。
                     </p>
 
-                    <div className="callout callout-amber">
-                        <div className="callout-title">注意</div>
+                    <div className={[styles.callout, styles["callout-amber"]].join(' ')}>
+                        <div className={styles["callout-title"]}>注意</div>
                         <p>
                             <strong>注意:</strong> 
                             パスワードや政府発行のID番号などの機密情報はサポートケースやその添付ファイルに含めないでください。
@@ -1498,7 +1500,7 @@ export default function AgwaSection6Guide() {
                     </h3>
                     <p>問題の種類によって、収集すべきログファイルの種類は異なります。</p>
 
-                    <div className="table-wrapper">
+                    <div className={styles["table-wrapper"]}>
                         <table>
                             <thead>
                                 <tr>
@@ -1564,8 +1566,8 @@ export default function AgwaSection6Guide() {
                         大容量のログファイルでケースへの直接アップロードが困難な場合は、Google Driveでファイルをホストし、リンクをサポートと共有する方法も利用できます。この場合、共有期限を設定し、ケースが解決したらGoogleサポートのアクセス権を取り消すことが推奨されるプライバシー配慮です。
                     </p>
 
-                    <div className="callout callout-green">
-                        <div className="callout-title">ベストプラクティス</div>
+                    <div className={styles.callout}>
+                        <div className={styles["callout-title"]}>ベストプラクティス</div>
                         <p>
                             <strong>ベストプラクティス:</strong> 
                             HARファイルにはCookieやセッショントークンなど機微な情報が含まれる可能性があります。共有前に必要最小限の情報のみが含まれているかを確認し、共有期限を設定したうえでGoogle Driveのリンク共有を利用するといった、プライバシーに配慮した受け渡し方法を徹底することが推奨されます。
@@ -1592,7 +1594,7 @@ export default function AgwaSection6Guide() {
                         重要度の選択はサポートの初回応答時間に直結します。Standard Supportでは、P1（最重要）ケースに対して24時間365日で4時間のサービスレベル目標（SLO）が提供されます。より高速な応答が必要な組織向けには、Enhanced SupportやPremium Supportといった上位のサポートプランも用意されています。
                     </p>
 
-                    <div className="table-wrapper">
+                    <div className={styles["table-wrapper"]}>
                         <table>
                             <thead>
                                 <tr>
@@ -1621,8 +1623,8 @@ export default function AgwaSection6Guide() {
                         ケースは他のユーザー（組織内外を問わない）と共有することもでき、共有された相手はGoogle Cloud Support Portalへのアクセス権を持たなくても、メール経由でケースを追跡し、返信することでコメントできます。
                     </p>
 
-                    <div className="callout callout-green">
-                        <div className="callout-title">ベストプラクティス</div>
+                    <div className={styles.callout}>
+                        <div className={styles["callout-title"]}>ベストプラクティス</div>
                         <p>
                             <strong>ベストプラクティス:</strong> 
                             ケースの説明欄には、個人を特定できる情報（PII）を含めないことが強く推奨されています。ユーザーの実名やメールアドレスが問題の再現に必須の場合でも、可能な限り最小限の情報に留め、詳細な機微情報はサポート担当者から個別に要求された場合にのみ、適切なチャネル（暗号化された共有方法など）で提供するという運用を徹底します。
@@ -1636,7 +1638,7 @@ export default function AgwaSection6Guide() {
                         継続的な運用においては、問題が起きてから対応するだけでなく、Googleが発表する変更を先取りして把握しておくことも管理者の重要な役割です。この目的のために、Googleは3つの補完的な情報源を提供しています。
                     </p>
 
-                    <div className="table-wrapper">
+                    <div className={styles["table-wrapper"]}>
                         <table>
                             <thead>
                                 <tr>
@@ -1669,8 +1671,8 @@ export default function AgwaSection6Guide() {
                         これら3つの情報源は互いに補完関係にあり、リリースカレンダー上のイベントをクリックするとブログ記事や関連ヘルプページに遷移する構造になっています。機能が実際にいつユーザーに届くかは、組織が選択しているリリーストラック（Rapid ReleaseかScheduled Releaseか）によって異なる点も理解しておく必要があります。
                     </p>
 
-                    <div className="callout callout-green">
-                        <div className="callout-title">ベストプラクティス</div>
+                    <div className={styles.callout}>
+                        <div className={styles["callout-title"]}>ベストプラクティス</div>
                         <p>
                             <strong>ベストプラクティス:</strong> 
                             大規模な組織変更（部門再編、M&amp;Aによる大量アカウント統合など）を控えている場合、事前にリリースカレンダーを確認し、破壊的な変更（UIの大幅刷新、既定動作の変更など）が計画期間中に重ならないよう調整することで、変更管理の負荷を軽減できます。週次のWeekly Recap記事を購読しておくと、個別記事を読み逃すリスクも減らせます。
@@ -1680,7 +1682,7 @@ export default function AgwaSection6Guide() {
                     <h2 id="ベストプラクティス総括表">ベストプラクティス総括表</h2>
                     <p>Section 6全体を横断する重要な判断原則を一覧にまとめます。</p>
 
-                    <div className="table-wrapper">
+                    <div className={styles["table-wrapper"]}>
                         <table>
                             <thead>
                                 <tr>
@@ -1750,12 +1752,12 @@ export default function AgwaSection6Guide() {
                     </div>
 
                     <h2 id="学習チェックリスト">学習チェックリスト</h2>
-                    <div className="checklist-card">
-                        <div className="checklist-header">
+                    <div className={styles["checklist-card"]}>
+                        <div className={styles["checklist-header"]}>
                             <span>習熟度チェック</span>
-                            <span id="checklist-progress">{completedCount} / 14 完了</span>
+                            <span className={styles.checklistProgress}>{completedCount} / 14 完了</span>
                         </div>
-                        <ul className="task-list">
+                        <ul className={styles["task-list"]}>
                             {[
                                 'Audit and investigationツールとSecurity Investigation Toolの違い（対応エディション、検索モデル、実行可能なアクション）を説明できる',
                                 'Status Dashboardの3つの確認方法（Webページ、RSS、システム定義ルール）とそれぞれの通知速度の違いを説明できる',
@@ -1772,7 +1774,7 @@ export default function AgwaSection6Guide() {
                                 'HARファイルの用途と、共有時に配慮すべきプライバシー上の注意点を説明できる',
                                 'Workspace Updatesブログ、リリースカレンダー、「What\'s new」ヘルプページの役割の違いを説明できる',
                             ].map((text, idx) => (
-                                <li key={idx} className={checkedItems[idx] ? 'completed' : ''}>
+                                <li key={idx} className={checkedItems[idx] ? styles.completed : undefined}>
                                     <label>
                                         <input
                                             type="checkbox"
@@ -1787,8 +1789,8 @@ export default function AgwaSection6Guide() {
                     </div>
 
                     <h2 id="参考文献">参考文献</h2>
-                    <div className="ref-grid">
-                        <div className="ref-card">
+                    <div className={styles["ref-grid"]}>
+                        <div className={styles["ref-card"]}>
                             <h3>公式認定情報</h3>
                             <ul>
                                 <li>
@@ -1803,7 +1805,7 @@ export default function AgwaSection6Guide() {
                                 </li>
                             </ul>
                         </div>
-                        <div className="ref-card">
+                        <div className={styles["ref-card"]}>
                             <h3>監査ログ・レポート</h3>
                             <ul>
                                 <li>
@@ -1853,7 +1855,7 @@ export default function AgwaSection6Guide() {
                                 </li>
                             </ul>
                         </div>
-                        <div className="ref-card">
+                        <div className={styles["ref-card"]}>
                             <h3>Status Dashboard</h3>
                             <ul>
                                 <li>
@@ -1873,7 +1875,7 @@ export default function AgwaSection6Guide() {
                                 </li>
                             </ul>
                         </div>
-                        <div className="ref-card">
+                        <div className={styles["ref-card"]}>
                             <h3>メール配信トラブルシューティング</h3>
                             <ul>
                                 <li>
@@ -1913,7 +1915,7 @@ export default function AgwaSection6Guide() {
                                 </li>
                             </ul>
                         </div>
-                        <div className="ref-card">
+                        <div className={styles["ref-card"]}>
                             <h3>SPF / DKIM / DMARC・Admin Toolbox</h3>
                             <ul>
                                 <li>
@@ -1958,7 +1960,7 @@ export default function AgwaSection6Guide() {
                                 </li>
                             </ul>
                         </div>
-                        <div className="ref-card">
+                        <div className={styles["ref-card"]}>
                             <h3>ユーザーアクセス・2SVトラブルシューティング</h3>
                             <ul>
                                 <li>
@@ -1978,7 +1980,7 @@ export default function AgwaSection6Guide() {
                                 </li>
                             </ul>
                         </div>
-                        <div className="ref-card">
+                        <div className={styles["ref-card"]}>
                             <h3>カレンダートラブルシューティング</h3>
                             <ul>
                                 <li>
@@ -2008,7 +2010,7 @@ export default function AgwaSection6Guide() {
                                 </li>
                             </ul>
                         </div>
-                        <div className="ref-card">
+                        <div className={styles["ref-card"]}>
                             <h3>Driveトラブルシューティング</h3>
                             <ul>
                                 <li>
@@ -2053,7 +2055,7 @@ export default function AgwaSection6Guide() {
                                 </li>
                             </ul>
                         </div>
-                        <div className="ref-card">
+                        <div className={styles["ref-card"]}>
                             <h3>Meetトラブルシューティング</h3>
                             <ul>
                                 <li>
@@ -2083,7 +2085,7 @@ export default function AgwaSection6Guide() {
                                 </li>
                             </ul>
                         </div>
-                        <div className="ref-card">
+                        <div className={styles["ref-card"]}>
                             <h3>サポートリソース</h3>
                             <ul>
                                 <li>
