@@ -31,6 +31,14 @@ vi.mock('@/components/MermaidDiagram', () => ({
 /** 空白差・改行差を無視して比較するための正規化 */
 const squash = (value: string): string => value.replace(/\s+/g, '');
 
+const decodeEntities = (str: string) =>
+    str
+        .replace(/&gt;/g, '>')
+        .replace(/&lt;/g, '<')
+        .replace(/&amp;/g, '&')
+        .replace(/&quot;/g, '"')
+        .replace(/&#39;/g, "'");
+
 describe('agwa-section6 — 監視とトラブルシューティング 移行元コンテンツの全量検証', () => {
     const renderPage = () => {
         const { container } = render(<Page />);
@@ -39,10 +47,10 @@ describe('agwa-section6 — 監視とトラブルシューティング 移行元
 
     it('見出しの件数と要素テキストが移行元インベントリと100%一致する', () => {
         const container = renderPage();
-        const headings = [...container.querySelectorAll('h1, h2, h3, h4')].map((el) =>
+        const headings = [...container.querySelectorAll('h1, h2, h3, h4, h5')].map((el) =>
             squash(el.textContent ?? '')
         );
-        const expectedHeadings = inventory.headings.map((h: { text: string }) => squash(h.text));
+        const expectedHeadings = inventory.headings.map((h: { text: string }) => squash(decodeEntities(h.text)));
         
         expect(headings.length).toBe(expectedHeadings.length);
         expect(headings).toEqual(expectedHeadings);
@@ -53,7 +61,7 @@ describe('agwa-section6 — 監視とトラブルシューティング 移行元
         const cells = [...container.querySelectorAll('th, td')].map((el) =>
             squash(el.textContent ?? '')
         );
-        const expectedCells = inventory.tableCells.map((c: string) => squash(c));
+        const expectedCells = inventory.tableCells.map((c: string) => squash(decodeEntities(c)));
 
         expect(cells.length).toBe(expectedCells.length);
         expect(cells).toEqual(expectedCells);
