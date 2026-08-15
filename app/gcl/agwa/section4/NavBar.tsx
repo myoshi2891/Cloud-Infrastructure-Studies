@@ -45,8 +45,9 @@ export function NavBar() {
         const activateLastItemAtBottom = () => {
             const isBottom = window.innerHeight + window.scrollY
                 >= document.documentElement.scrollHeight - 100;
-            if (isBottom) {
-                setActiveId(NAV_ITEMS[NAV_ITEMS.length - 1].id);
+            const lastItem = NAV_ITEMS.at(-1);
+            if (isBottom && lastItem) {
+                setActiveId(lastItem.id);
                 return true;
             }
 
