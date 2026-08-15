@@ -1772,14 +1772,14 @@ export default function AgwaSection6Guide() {
                                 'HARファイルの用途と、共有時に配慮すべきプライバシー上の注意点を説明できる',
                                 'Workspace Updatesブログ、リリースカレンダー、「What\'s new」ヘルプページの役割の違いを説明できる',
                             ].map((text, idx) => (
-                                <li key={idx}>
+                                <li key={idx} className={checkedItems[idx] ? 'completed' : ''}>
                                     <label>
                                         <input
                                             type="checkbox"
                                             checked={Boolean(checkedItems[idx])}
                                             onChange={() => handleCheckboxChange(idx)}
                                         />
-                                        {text}
+                                        <span>{text}</span>
                                     </label>
                                 </li>
                             ))}

@@ -301,7 +301,7 @@
     overflow-x: auto;
     margin: 28px 0;
     border: 1px solid var(--border);
-    border-radius: 8px;
+    border-radius: 10px;
 }
 
 .agwa-section6-root table {
@@ -315,16 +315,32 @@
 .agwa-section6-root td {
     padding: 12px 16px;
     border-bottom: 1px solid var(--border-soft);
+    vertical-align: top;
+    overflow-wrap: break-word;
 }
 
 .agwa-section6-root th {
     background: var(--bg-elevated);
-    color: var(--text);
+    color: var(--accent);
     font-weight: 700;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
 }
 
-.agwa-section6-root tr:nth-child(even) {
-    background: rgba(255, 255, 255, 0.02);
+.agwa-section6-root td {
+    color: var(--text-dim);
+}
+
+.agwa-section6-root td strong {
+    color: var(--text);
+}
+
+.agwa-section6-root tr:last-child td {
+    border-bottom: none;
+}
+
+.agwa-section6-root tbody tr:hover {
+    background: rgba(124, 158, 255, 0.04);
 }
 
 /* ---------------- Code & Diagram ---------------- */
@@ -402,59 +418,141 @@
 .agwa-section6-root .ref-card h3 {
     margin-top: 0;
     font-size: 16px;
+    color: var(--accent);
 }
 
 .agwa-section6-root .ref-card ul {
     margin: 0;
-    padding-left: 20px;
+    padding-left: 0;
+    list-style: none;
 }
 
 .agwa-section6-root .ref-card li {
-    margin-bottom: 8px;
-    font-size: 13.5px;
+    margin: 0;
+    border-top: 1px solid var(--border-soft);
+}
+
+.agwa-section6-root .ref-card li:first-child {
+    border-top: none;
+}
+
+.agwa-section6-root .ref-card a {
+    display: block;
+    padding: 9px 0;
+    font-size: 13px;
+    color: var(--text-dim);
+    border-bottom: none;
+}
+
+.agwa-section6-root .ref-card a::before {
+    content: '↗';
+    color: var(--accent);
+    margin-right: 8px;
+}
+
+.agwa-section6-root .ref-card a:hover {
+    color: var(--accent);
 }
 
 /* ---------------- Checklist ---------------- */
 .agwa-section6-root .checklist-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 24px;
-    margin: 32px 0;
+    border-radius: 12px;
+    padding: 6px 24px 20px;
+    margin: 24px 0 36px;
 }
 
 .agwa-section6-root .checklist-header {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    font-weight: 700;
-    margin-bottom: 20px;
+    justify-content: space-between;
+    padding: 16px 0;
     border-bottom: 1px solid var(--border);
-    padding-bottom: 12px;
+    margin-bottom: 6px;
 }
 
-.agwa-section6-root .task-list {
+.agwa-section6-root .checklist-header span:first-child {
+    font-weight: 700;
+    color: var(--text);
+    font-size: 14px;
+}
+
+.agwa-section6-root #checklist-progress {
+    font-size: 13px;
+    color: var(--accent);
+    font-weight: 700;
+    background: var(--accent-bg);
+    padding: 3px 12px;
+    border-radius: 999px;
+}
+
+.agwa-section6-root ul.task-list {
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
-.agwa-section6-root .task-list li {
-    margin-bottom: 14px;
-}
-
-.agwa-section6-root .task-list label {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    cursor: pointer;
+.agwa-section6-root ul.task-list li {
+    position: relative;
+    padding: 12px 8px 12px 34px;
+    border-bottom: 1px solid var(--border-soft);
     font-size: 14.5px;
-    line-height: 1.6;
+    color: var(--text-dim);
+    border-radius: 6px;
 }
 
-.agwa-section6-root .task-list input[type='checkbox'] {
-    margin-top: 4px;
-    accent-color: var(--accent);
+.agwa-section6-root ul.task-list li:last-child {
+    border-bottom: none;
+}
+
+.agwa-section6-root ul.task-list li:hover {
+    background: rgba(124, 158, 255, 0.04);
+}
+
+.agwa-section6-root ul.task-list input[type='checkbox'] {
+    appearance: none;
+    -webkit-appearance: none;
+    position: absolute;
+    left: 8px;
+    top: 14px;
+    width: 17px;
+    height: 17px;
+    border: 1.5px solid var(--border);
+    border-radius: 5px;
+    background: var(--bg-elevated);
+    cursor: pointer;
+    margin: 0;
+}
+
+.agwa-section6-root ul.task-list input[type='checkbox']:checked {
+    background: var(--accent);
+    border-color: var(--accent);
+}
+
+.agwa-section6-root ul.task-list input[type='checkbox']:checked::after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 1px;
+    width: 5px;
+    height: 9px;
+    border: solid #07111e;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.agwa-section6-root ul.task-list li:has(input:checked) label,
+.agwa-section6-root ul.task-list li.completed label,
+.agwa-section6-root ul.task-list li.completed span,
+.agwa-section6-root ul.task-list li.completed label span {
+    text-decoration: line-through;
+    color: var(--text-dim);
+    opacity: 0.6;
+}
+
+.agwa-section6-root ul.task-list label {
+    cursor: pointer;
 }
 
 /* ---------------- Responsive ---------------- */
