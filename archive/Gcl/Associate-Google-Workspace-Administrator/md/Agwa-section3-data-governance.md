@@ -1,4 +1,5 @@
 # Associate Google Workspace Administrator 試験対策ガイド
+
 ## Section 3: Managing data governance and compliance（データガバナンスとコンプライアンスの管理）
 
 > 本ガイドは、Google公式の[認定試験ページ](https://cloud.google.com/learn/certification/associate-google-workspace-administrator?hl=en)および[公式Exam Guide PDF](https://services.google.com/fh/files/misc/associate_google_workspace_administrator_exam_guide_english.pdf)に記載された Section 3 の出題範囲（試験全体の**約15**%）に厳密に対応する形で構成しています。中級者〜上級者の管理者を対象に、各機能の仕組み・設定手順・実務上のベストプラクティスをステップバイステップで解説します。
@@ -94,9 +95,10 @@ Vaultがユーザーのデータを検索・保持・保全できるのは、そ
 
 AUライセンスの主な特性は次のとおりです。
 
-- AUライセンスが付与されたユーザーのアカウントは、通常のライセンスと同様に**保持ルールとholdsの対象**になり続ける
+- AUライセンスが付与されたユーザーのアカウントは、AUが対応するサービスに限り、通常のライセンスと同様に**保持ルールとholdsの対象**になり続ける
 - 退職者のアカウントを一時停止（suspend）するだけでも データは保全されるが、一時停止アカウントは**アクティブなアカウントと同額の課金**が発生する<sup>[3]</sup>
-- Vault以外のアドオンライセンス（Vault自体やGoogle Voiceなど）を持つユーザーをアーカイブした場合、そのライセンスはアーカイブ後も保持される<sup>[5]</sup>
+- Vault以外のアドオンライセンスはアーカイブ後も保持される場合があるが、そのことは各サービスのデータがVaultの保持ルール・holdsに対応することを意味しない<sup>[5]</sup>
+- **Google Voiceの例外**: AUライセンスのアカウントに紐づくVoiceデータは、Vaultのretentionおよびholdsの対象外となる
 - アーカイブされたユーザーを元に戻す（unarchive）には、対応するGoogle Workspaceエディションの利用可能なライセンスが必要。ライセンスがない場合、unarchive処理は失敗し、ユーザーはAUライセンスのままアーカイブされた状態に留まる<sup>[5]</sup>
 - アーカイブされたユーザーは、いかなるシステムからもmanaged Google Accountにサインインできなくなる<sup>[5]</sup>
 
@@ -205,11 +207,11 @@ Vaultユーザーは、自組織の法的・業務上の要件を満たしてい
 - エクスポートされたデータを組織内の個々のユーザーに紐づけるために必要なメタデータ
 - エクスポートされたデータがGoogleのサーバー上のデータと一致することを証明するための裏付け情報
 
-エクスポートは実行後**15日間**利用可能で、その後はデータ保護のため自動的に削除されます<sup>[18]</sup>。GmailやGoogle Groups、Google Chatからのエクスポートでは、メッセージ本文のファイル形式としてPSTまたはmboxを選択できます<sup>[17]</sup>。
+エクスポートは開始時点から**15日間**利用可能で、その後はデータ保護のため自動的に削除されます<sup>[18]</sup>。GmailやGoogle Groups、Google Chatからのエクスポートでは、メッセージ本文のファイル形式としてPSTまたはmboxを選択できます<sup>[17]</sup>。
 
 組織にスーパー管理者による「Multi-party approval for Vaultエクスポート」が設定されている場合、エクスポートリクエストはマルチパーティ承認プロセスをトリガーします。これはVault UIから開始されたエクスポートリクエストにのみ適用され、Vault APIから開始されたリクエストには適用されない点に注意してください<sup>[17]</sup>。
 
-Vaultがエクスポートできないデータにも留意が必要です。VaultはCalendar・Contacts・Keep・Currentsなど一部のサービスをサポートしていません<sup>[19]</sup>。またVaultのエクスポートは法的開示（legal discovery）を目的として作成されるものであり、効率的なデータ処理を目的としたものではありません。差分バックアップの作成やデータの重複排除はできず、たとえばDriveのエクスポートでは、検索対象のアカウントがアクセス権を持つすべてのアイテムが含まれます。多数のアカウントが同一のアイテムにアクセスできる場合、各アカウントについて個別にエクスポートされるため、大量の重複データが生成されます<sup>[19]</sup>。
+Vaultがエクスポートできないデータにも留意が必要です。VaultはContacts・Keep・Currentsなど一部のサービスをサポートしていません。一方、Calendarはretention・holds・検索・エクスポートに対応しています<sup>[19]</sup>。またVaultのエクスポートは法的開示（legal discovery）を目的として作成されるものであり、効率的なデータ処理を目的としたものではありません。差分バックアップの作成やデータの重複排除はできず、たとえばDriveのエクスポートでは、検索対象のアカウントがアクセス権を持つすべてのアイテムが含まれます。多数のアカウントが同一のアイテムにアクセスできる場合、各アカウントについて個別にエクスポートされるため、大量の重複データが生成されます<sup>[19]</sup>。
 
 ### 3.1.7 エクスポート先の設定
 
@@ -319,7 +321,7 @@ flowchart TD
 
 新しく作成したり変更したルールが実際に反映されるまで、最大**24時間**かかる場合があります（通常はもっと早く反映される）<sup>[24]</sup>。
 
-Gmailにおけるスキャンの仕組みも出題対象です。DLPルールは基本的に**非同期**（asynchronous）でスキャンされます。つまりメッセージは送信者のメールボックスを離れてから、受信者に配信される前にスキャンされ、必要であればブロック・隔離されます。ユーザーがサードパーティのメールアプリからメッセージを送信した場合や、同期スキャンが成功しなかった場合には非同期スキャンが行われます<sup>[24]</sup>。2024年のアップデートでGmail向けDLPの適用は即時化され、より迅速にアクションが実行されるようになりました<sup>[31]</sup>。
+Gmailにおけるスキャンの仕組みも出題対象です。Gmail Webとモバイルアプリでは、ユーザーが送信操作をした時点で**同期**（synchronous）スキャンを行います。サードパーティのメールアプリから送信した場合、同期スキャンが成功しなかった場合、自動転送や予約送信などで自動送信された場合は、メールボックスを離れた後に**非同期**（asynchronous）スキャンを行います。また、同期スキャンで違反が検出されなかったメッセージも、追加の保護として非同期で再スキャンされます<sup>[24]</sup><sup>[31]</sup>。
 
 ```mermaid
 sequenceDiagram
@@ -331,12 +333,13 @@ sequenceDiagram
     G->>D: 同期スキャン(送信前)
     alt 機密情報を検出せず
         D-->>G: 違反なし
-        G->>R: メッセージを配信
+        G->>D: 追加の非同期スキャン(送信後)
+        D-->>R: 違反がなければ配信
     else 機密情報を検出
         D-->>G: 違反を検出
         G->>U: 警告 / ブロック / 隔離を通知
-        Note over G,D: 非同期スキャンは送信後・配信前に追加で再スキャン
     end
+    Note over U,D: サードパーティクライアント・同期失敗・自動送信は非同期スキャン
 ```
 
 ### 3.2.3 サービス別のDLPルール適用
@@ -348,7 +351,7 @@ DLPルールをGmailに適用する場合、それぞれのアクションでユ
 - **Quarantine message**: 管理者がレビューするまでメッセージを隔離する。送信者にはメッセージが隔離された旨のアラートが表示され、カスタムメッセージを追加できる
 - **Audit only**: メッセージは送信され、DLPイベントは今後の監査のためにログ記録される。新しいルールの影響評価に有用
 
-Drive向けDLPルールでは、ファイル名・拡張子・ファイル種別に基づく条件を、メール本文や件名ではなく**添付ファイルのみ**に適用する点に注意してください（この制約はGmailルールでファイル属性条件を使う場合に該当します）<sup>[29]</sup>。
+Gmail向けDLPルールでは、ファイル名・拡張子・ファイル種別に基づく条件を、メール本文や件名ではなく**添付ファイルのみ**に適用する点に注意してください<sup>[29]</sup>。
 
 Chat向けDLPルールでは、メッセージ送信とファイルアップロードをそれぞれ個別にトリガーとして選択できます。条件を設定しないルールを作成すると、選択したトリガー（メッセージ・添付ファイル、あるいはその両方）に対して指定したアクションがすべてのChatメッセージ・アップロードファイルに適用されてしまう点に注意が必要です<sup>[26]</sup>。また、カンマ区切り値（.csv）ファイルはプレーンテキストとして扱われるため、スプレッドシートとして見た場合に明らかな違反がある列でも、DLPが検出できない場合があります<sup>[26]</sup>。
 
@@ -497,24 +500,29 @@ flowchart TD
 
 データリージョンは、保存時データ（data at rest。バックアップを含む）と、対応するGoogle Workspaceコアサービスにおけるデータ処理（data processing）の両方をカバーします<sup>[45]</sup>。ただし、データリージョンはログやキャッシュされたコンテンツなど、本ポリシーで明示的に対象とされていないデータタイプやカスタマーサプライドデータではないデータには適用できません<sup>[45]</sup>。
 
-データリージョンには2つのレベルがあります。
+データリージョンには、エディション別に次の区分があります。
 
 | レベル | 対象エディション | 特徴 |
 | --- | --- | --- |
 | Fundamentalデータリージョン | Business Standard・Business Plus・Enterprise Standard・Frontlineなど | 組織全体で1つのリージョンのみ選択可能（米国 or 欧州） |
-| Enterpriseデータリージョン | Enterprise Plus・Education Plus・Frontline Plusなど | OU・グループ単位で複数リージョンを使い分け可能。データ処理リージョンも個別に指定できる |
+| Data regions for Education | Education Standard・Education Plus | 保存リージョンをOU・設定グループ単位で指定可能。データ処理リージョンポリシーは含まれない |
+| Enterpriseデータリージョン | Enterprise Plus・Frontline Plus・Enterprise Essentials Plus | OU・グループ単位で複数の保存リージョンを使い分け可能。データ処理リージョンも個別に指定できる |
 
 ```mermaid
 flowchart TD
     A["データリージョン設定"] --> B{"エディションは?"}
     B -->|"Business Standard/Plus,<br/>Enterprise Standard,<br/>Frontline等"| C["Fundamentalデータ<br/>リージョン"]
-    B -->|"Enterprise Plus,<br/>Education Plus,<br/>Frontline Plus"| D["Enterpriseデータ<br/>リージョン"]
+    B -->|"Education Standard/Plus"| EDU["Data regions for Education"]
+    B -->|"Enterprise Plus,<br/>Frontline Plus,<br/>Enterprise Essentials Plus"| D["Enterpriseデータ<br/>リージョン"]
     C --> C1["組織全体で1リージョンのみ<br/>選択可(米国 or 欧州)"]
     D --> D1["OU・グループ単位で<br/>複数リージョンを<br/>使い分け可能"]
     D --> D2["データ処理リージョンも<br/>個別に指定可能"]
+    EDU --> EDU1["OU・設定グループ単位で<br/>保存リージョンを指定可能"]
+    EDU --> EDU2["データ処理リージョン<br/>ポリシーは対象外"]
     C1 --> E["対象: Gmail, Calendar,<br/>Drive, Chat, Docs等の<br/>保存時データ"]
     D1 --> E
     D2 --> E
+    EDU1 --> E
 ```
 
 データリージョンを選択する際は、特定のリージョンを選んでもパフォーマンスが向上したりネットワークやデータアクセスが最適化されたりするわけではない点に注意が必要です。むしろ、リージョン外にいるユーザーは、リアルタイムでの共同編集などの操作時にレイテンシが増加する場合があります<sup>[44]</sup>。
@@ -627,7 +635,7 @@ flowchart TD
 - ラベルおよびフィールドは他システムや他組織からインポートできない。またGoogle Workspace Domain Transferではラベルはサポートされない
 - フィールドを必須（required）に設定できるが、未入力のままでもファイルの使用・共有・編集やメッセージの送信自体はブロックされない。未入力の必須フィールドはユーザーに強調表示される
 
-ラベルの作成には**Manage Labels**権限が必要です。誰がラベルを閲覧できるかは、ラベル作成時に「組織全体（既定）」または「特定のユーザー・グループのみ」として設定します。閲覧権限のないユーザーには、Drive・Gmailのどちらでもそのラベルは表示されません<sup>[49]</sup>。
+ラベルの作成には**Manage Classification Labels**権限が必要です。誰がラベルを閲覧できるかは、ラベル作成時に「組織全体（既定）」または「特定のユーザー・グループのみ」として設定します。閲覧権限のないユーザーには、Drive・Gmailのどちらでもそのラベルは表示されません<sup>[49]</sup>。
 
 ### 3.5.3 ベストプラクティス
 
@@ -646,8 +654,8 @@ flowchart TD
 | 3.1 Google Vault | 保持ルール・holds・検索・エクスポート・監査ログ | Manage Matters／Manage Searches／Manage Exports／Manage Audits | Vaultライセンスを含む・またはアドオンとして購入したエディション |
 | 3.2 DLP | コンテンツ検出器・データ保護ルール・通知カスタマイズ | View DLP rule ＋ Manage DLP rule | Drive／Gmail／Chat DLP対応エディション、Cloud Identity Premium＋Workspace併用も可 |
 | 3.3 Drive信頼ルール | 許可・ブロックルール、ビジター/未管理アカウント制御 | Rules関連の管理者権限 | Drive信頼ルール対応エディション |
-| 3.4 データの保存とエクスポート | Takeout・Data Export Tool・データリージョン・Assured Controls | Service Settings／Billing Management／Data Regions Settings | エディションにより機能範囲が大きく異なる（Fundamental/Enterpriseデータリージョン、Assured Controls等） |
-| 3.5 データの分類 | 手動・既定・DLP・AI分類ラベル | Manage Labels | 分類ラベル対応エディション、AI分類はFrontline Plus/Enterprise Plus等 |
+| 3.4 データの保存とエクスポート | Takeout・Data Export Tool・データリージョン・Assured Controls | Service Settings／Billing Management／Data Regions Settings | エディションにより機能範囲が大きく異なる（Fundamental／Education／Enterpriseデータリージョン、Assured Controls等） |
+| 3.5 データの分類 | 手動・既定・DLP・AI分類ラベル | Manage Classification Labels | 分類ラベル対応エディション、AI分類はFrontline Plus/Enterprise Plus等 |
 
 ---
 
@@ -664,7 +672,7 @@ flowchart TD
 - [ ] Drive信頼ルールにおいて「ブロックが常に優先される」原則と、ビジター/未管理アカウントへの適用条件を説明できる
 - [ ] 許可リスト（allowlist）と信頼ルール（trust rules）の機能差を説明できる
 - [ ] Google Takeout・Data Export Tool・Google Vaultのエクスポートの目的の違いを説明できる
-- [ ] FundamentalデータリージョンとEnterpriseデータリージョンの違い（リージョン数、OU単位設定の可否）を説明できる
+- [ ] Fundamental、Data regions for Education、Enterpriseデータリージョンの違い（保存リージョンの設定単位とデータ処理ポリシーの可否）を説明できる
 - [ ] Assured ControlsとAssured Controls Plusで対応できる規制（FedRAMP・CJIS・ITAR・IL4・FINRA）を挙げられる
 - [ ] 分類ラベルを適用できる対象・できない対象を説明できる
 - [ ] 手動・既定分類・DLP・AI分類の4種類のラベル付与方法とその優先順位を説明できる
@@ -676,10 +684,12 @@ flowchart TD
 ## 参考文献
 
 ### 公式試験情報
+
 - [Associate Google Workspace Administrator Certification](https://cloud.google.com/learn/certification/associate-google-workspace-administrator?hl=en) — Google Cloud公式認定ページ
 - [Associate Google Workspace Administrator Certification exam guide (PDF)](https://services.google.com/fh/files/misc/associate_google_workspace_administrator_exam_guide_english.pdf) — 公式Exam Guide
 
 ### Google Vault（3.1）
+
 - [1] [Vault - Google Vault Help](https://support.google.com/vault/answer/2462365?hl=en)
 - [2] [Assign Vault licenses](https://support.google.com/vault/answer/3220205?hl=en)
 - [3] [Buy Vault licenses for your organization](https://support.google.com/vault/answer/2557687?hl=en)
@@ -697,26 +707,28 @@ flowchart TD
 - [15] [Export data from Vault](https://support.google.com/vault/answer/2473458?hl=en)
 - [16] [Get started with Vault search & export](https://support.google.com/vault/answer/6161352?hl=en)
 - [17] [Export data from Vault](https://support.google.com/vault/answer/2473458?hl=en)
-- [18] [Vault - Google Vault Help](https://support.google.com/vault/answer/2462365?hl=en)
-- [19] [Google Vault FAQ](https://support.google.com/vault/answer/2539616?hl=en)
+- [18] [Download an export from Vault](https://support.google.com/vault/answer/11030798?hl=en)
+- [19] [Supported services & data types](https://support.google.com/vault/answer/6127699?hl=en)
 - [20] [Vault - Google Vault Help](https://support.google.com/vault/answer/2462365)
 - [21] [Vault log events (Reports & monitoring)](https://support.google.com/a/answer/13851268?hl=en)
 - [22] [Vault log events](https://support.google.com/vault/answer/4239060?hl=en)
 - [23] [Set up Vault for your organization](https://support.google.com/vault/answer/2584132?hl=en)
 
 ### データ損失防止 DLP（3.2）
-- [24] [Create data protection rules](https://support.google.com/a/answer/11400056?hl=en)
+
+- [24] [About DLP for Gmail](https://knowledge.workspace.google.com/admin/security/prevent-data-leaks-in-email-and-attachments-gmail-dlp)
 - [25] [Prevent data leaks in email & attachments (Gmail DLP)](https://support.google.com/a/answer/14767988?hl=en)
 - [26] [Prevent data leaks from Chat messages & attachments](https://support.google.com/a/answer/10846568?hl=en)
 - [27] [Create DLP for Drive rules and custom content detectors](https://support.google.com/a/answer/9655387?hl=en)
 - [28] [About DLP](https://support.google.com/a/answer/9646351?hl=en)
-- [29] [How to use predefined content detectors](https://support.google.com/a/answer/7047475?hl=en)
+- [29] [About DLP for Gmail](https://knowledge.workspace.google.com/admin/security/prevent-data-leaks-in-email-and-attachments-gmail-dlp)
 - [30] [Create DLP for Drive rules and custom content detectors](https://support.google.com/a/answer/9655387?hl=en)
 - [31] [Google Workspace Updates: Data Loss Prevention enforcement in Gmail is now instantaneous](https://workspaceupdates.googleblog.com/2024/10/gmail-data-loss-prevention-enforcement-is-now-instantaneous.html)
 - [32] [Google Workspace Updates: Custom notifications for Google Chat DLP rules are now generally available](https://workspaceupdates.googleblog.com/2023/12/custom-notifications-for-google-chat-data-loss-prevention-rules-web-mobile.html)
 - [33] [About DLP](https://support.google.com/a/answer/9646351?hl=en)
 
 ### Drive信頼ルール（3.3）
+
 - [34] [Create and manage trust rules for Drive sharing](https://support.google.com/a/answer/10621317?hl=en)
 - [35] [Create and manage trust rules for Drive sharing](https://support.google.com/a/answer/10621317?hl=en)
 - [36] [Create and manage trust rules for Drive sharing](https://support.google.com/a/answer/10621317?hl=en-)
@@ -725,6 +737,7 @@ flowchart TD
 - [39] [Help prevent Drive spam and phishing](https://support.google.com/a/answer/15201687?hl=en-EN)
 
 ### データの保存とエクスポート（3.4）
+
 - [40] [Allow or block Google Takeout](https://knowledge.workspace.google.com/admin/users/advanced/allow-or-block-google-takeout)
 - [41] [Manage access to services that aren't controlled individually](https://support.google.com/a/answer/7646040?hl=en)
 - [42] [Takeout log events](https://support.google.com/a/answer/11479893)
@@ -736,6 +749,7 @@ flowchart TD
 - [48] [HIPAA - Compliance | Google Cloud](https://cloud.google.com/security/compliance/hipaa-compliance)
 
 ### データの分類（3.5）
+
 - [49] [Get started as a classification labels admin](https://knowledge.workspace.google.com/admin/security/get-started-as-a-classification-labels-admin)
 - [50] [Apply Default classification labels to new files automatically](https://support.google.com/a/answer/11280938?hl=en)
 - [51] [Label Google Drive files automatically using AI classification](https://support.google.com/a/answer/12676216?hl=en)

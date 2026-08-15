@@ -42,7 +42,7 @@ Google Workspace への移行期や、特定のオンプレミスサーバーと
 2. **DKIM (DomainKeys Identified Mail):** 各送信メールのヘッダーにデジタル署名を付与する。受信側はこの署名を公開鍵で検証することで、メールの内容が改ざんされていないことを保証する 。
 3. **DMARC (Domain-based Message Authentication, Reporting, and Conformance):** SPF と DKIM の検証が失敗した場合、そのメールを「何もしない（none）」「隔離する（quarantine）」「拒否する（reject）」のいずれにするかを受信サーバーに指示する 。
 
-これらの設定は DNS レベルで行われるが、Google Workspace 管理コンソール内には、DKIM 署名の生成や DMARC レポートを解析するためのツールが統合されている 。ベストプラクティスとしては、最初は `p=none` で影響範囲をモニタリングし、徐々に `p=reject` へとポリシーを厳格化していくアプローチが推奨される 。
+Google Workspace 管理コンソールでは DKIM 鍵の生成と署名の有効化を行える一方、DMARC は DNS の TXT レコードで設定する。DMARC レポートは文書化した分析手順またはサードパーティの分析サービスで確認する。ベストプラクティスとしては、最初は `p=none` で影響範囲をモニタリングし、徐々に `p=reject` へとポリシーを厳格化していくアプローチが推奨される 。
 
 ### **1.5 未知の脅威を仮想環境で暴く：セキュリティサンドボックス**
 

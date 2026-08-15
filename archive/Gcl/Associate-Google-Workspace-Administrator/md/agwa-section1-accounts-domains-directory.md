@@ -152,9 +152,11 @@ Google Workspace を初めて導入する際や、他のシステムから乗り
 ```csv
 # CSV フォーマット例
 First Name [Required],Last Name [Required],Email Address [Required],Password [Required],Password Hash Function [UPLOAD ONLY],Org Unit Path [Required],
-山田,太郎,taro.yamada@example.com,ChangeMe123!,,/営業部,
-鈴木,花子,hanako.suzuki@example.com,ChangeMe123!,,/開発部,
+山田,太郎,taro.yamada@example.com,{{UNIQUE_TEMP_PASSWORD_TARO}},,/営業部,
+鈴木,花子,hanako.suzuki@example.com,{{UNIQUE_TEMP_PASSWORD_HANAKO}},,/開発部,
 ```
+
+`Password [Required]` には、ユーザーごとに安全に生成した一意の一時パスワードを設定します。共有の固定パスワードは使用せず、初回ログイン時にパスワード変更を必須とする運用にしてください。
 
 **手順**:
 
