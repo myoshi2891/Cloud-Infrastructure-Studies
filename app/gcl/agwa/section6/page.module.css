@@ -558,12 +558,19 @@
     }
 
     .agwa-section6-root .sidebar {
+        /* 画面外に退避した目次がキーボードフォーカスや読み上げ順に残らないようにする */
         transform: translateX(-100%);
-        transition: transform 0.25s ease-in-out;
+        visibility: hidden;
+        pointer-events: none;
+        transition:
+            transform 0.25s ease-in-out,
+            visibility 0.25s ease-in-out;
     }
 
     .agwa-section6-root .sidebar.open {
         transform: translateX(0);
+        visibility: visible;
+        pointer-events: auto;
     }
 
     .agwa-section6-root .main {
