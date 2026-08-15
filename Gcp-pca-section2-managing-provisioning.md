@@ -122,15 +122,25 @@ flowchart TD
 
 ```mermaid
 graph LR
-    Onprem["オンプレミスDC"] --- Hub["Network Connectivity Center<br/>ハブ"]
-    AWS["AWS VPC"] --- Hub
-    Azure["Azure VNet"] --- Hub
-    VPCA["共有サービスVPC"] --- Hub
-    VPCB["プロジェクトVPC B"] --- Hub
-    VPCC["プロジェクトVPC C"] --- Hub
+    Onprem["オンプレミスDC"] --- HybridOnprem["ハイブリッドスポーク<br/>HA VPNトンネル<br/>VLANアタッチメント"]
+    AWS["AWS VPC"] --- HybridAWS["ハイブリッドスポーク<br/>Cross-Cloud Interconnectの<br/>VLANアタッチメント"]
+    Azure["Azure VNet"] --- HybridAzure["ハイブリッドスポーク<br/>Cross-Cloud Interconnectの<br/>VLANアタッチメント"]
+    HybridOnprem --- Hub["Network Connectivity Center<br/>ハブ"]
+    HybridAWS --- Hub
+    HybridAzure --- Hub
+    Hub --- VPCA["VPCスポーク<br/>共有サービスVPC"]
+    Hub --- VPCB["VPCスポーク<br/>プロジェクトVPC B"]
+    Hub --- VPCC["VPCスポーク<br/>プロジェクトVPC C"]
 ```
 
-NCCは、Cloud VPN・Cloud Interconnect・ルーターアプライアンスをスポークとしてサポートし、ハブに接続されたすべてのスポーク間でフルメッシュの到達性を提供します。さらに、あらかじめ定義済みのメッシュ／スター型トポロジ用の「スポークグループ」もサポートしています<sup>[1]</sup>。マルチクラウドのプライベート接続には Cross-Cloud Interconnect が推奨される方式であり、NCCと組み合わせることでマルチクラウドのハブ＆スポークアーキテクチャを構築できます<sup>[1]</sup>。ApplovinやEA、PayPal、UberのようなAIワークロードを持つ企業がCross-Cloud Networkを利用している例が公式に紹介されています<sup>[2]</sup>。
+他クラウドのネットワークをハブへ直接アタッチすることはできません。AWS VPCやAzure VNetは、Cross-Cloud Interconnect のVLANアタッチメント（またはVPNトンネル）を**ハイブリッドスポーク**として登録することで接続します。
+
+NCCは、Cloud VPN・Cloud Interconnect・ルーターアプライアンスをスポークとしてサポートし、あらかじめ定義済みのメッシュ／スター型トポロジ用の「スポークグループ」もサポートしています<sup>[1]</sup>。スポーク間の到達性には次の条件が付きます<sup>[1]</sup>。
+
+- ハイブリッドスポーク同士が経路を交換し通信できるのは、ハブで **site-to-site data transfer** を有効にした場合だけです。無効の場合、ハイブリッドスポークはVPCスポークとの通信に限定されます。
+- ハイブリッドスポークはリージョン単位のリソースであり、**リージョンをまたぐ経路交換にはCloud Routerのglobal dynamic routingが必要**です。
+- VPCスポークにできるVPCネットワークは**1つのハブに対してのみ**であり、同一VPCを複数ハブのスポークにはできません。
+- VPCスポークはエクスポートする(あるいは除外する)サブネット範囲を、ハイブリッドスポークはVLANアタッチメント・トンネル単位でフィルタ条件を指定して経路の公開範囲を絞り込みます。マルチクラウドのプライベート接続には Cross-Cloud Interconnect が推奨される方式であり、NCCと組み合わせることでマルチクラウドのハブ＆スポークアーキテクチャを構築できます<sup>[1]</sup>。ApplovinやEA、PayPal、UberのようなAIワークロードを持つ企業がCross-Cloud Networkを利用している例が公式に紹介されています<sup>[2]</sup>。
 
 ### 2.1.3 セキュリティ保護（侵入防止・アクセス制御・ファイアウォール）
 
@@ -141,16 +151,17 @@ graph TD
     Internet["インターネット／外部トラフィック"] --> Armor["Cloud Armor<br/>DDoS対策・WAFルール"]
     Armor --> LB["Cloud Load Balancing"]
     LB --> NGFW["Cloud NGFW<br/>L3/L4/L7ファイアウォール・IDS/IPS"]
-    NGFW --> VPCFW["VPCファイアウォールルール<br/>（IAM-governed Tags）"]
+    NGFW --> Policy["ネットワークファイアウォールポリシー<br/>階層型・グローバル・リージョン<br/>IAM管理のsecure tagsで制御"]
+    Policy --> VPCFW["VPCファイアウォールルール<br/>ネットワークタグ／サービスアカウントで制御"]
     VPCFW --> Workload["ワークロード<br/>（VM／GKE／サーバーレス）"]
 ```
 
 | コンポーネント | 役割 | ティア／モード |
 |---|---|---|
 | Cloud Armor | エッジでのDDoS対策とWebアプリケーションファイアウォール（WAF） | Standard／Managed Protection Plus |
-| Cloud NGFW Essentials | IP・ポート・プロトコルベースの基本的なステートフルファイアウォール | 全プロジェクトに標準搭載 |
-| Cloud NGFW Standard | レイヤー7の階層型・グローバルファイアウォールポリシー、タグベースの制御 | 追加料金プラン |
-| Cloud NGFW Enterprise | Palo Alto Networksの脅威インテリジェンスによるIDS/IPS、URLフィルタリング、TLSインスペクション | 最上位プラン |
+| Cloud NGFW Essentials | ステートフル検査によるVPCファイアウォールルールとネットワークファイアウォールポリシー、secure tags、アドレスグループ | 全プロジェクトに標準搭載 |
+| Cloud NGFW Standard | Essentialsに加え、FQDNオブジェクト、地理位置情報オブジェクト、脅威インテリジェンスによる制御 | 追加料金プラン |
+| Cloud NGFW Enterprise | Standardに加え、Palo Alto Networksの脅威シグネチャによるL7 IDPS（侵入検知・防御）、URLフィルタリング、TLSインスペクション | 最上位プラン |
 
 出典：[Cloud NGFW overview](https://docs.cloud.google.com/firewall/docs/about-firewalls)、[Configure intrusion detection and prevention service](https://docs.cloud.google.com/firewall/docs/configure-intrusion-prevention)
 
@@ -288,10 +299,10 @@ flowchart LR
 **ベストプラクティス**
 
 - アクセスパターンが予測しにくいバケットには **Autoclass** を有効化すると、Cloud Storageがオブジェクトごとのアクセス頻度を見てクラスを自動的に移行し、早期削除料金なしで最適化してくれます<sup>[12]</sup>。ただしAutoclassを有効にしたバケットではSetStorageClassアクションを併用できません<sup>[11]</sup>。
-- 誤削除や悪意ある削除からデータを守るため、すべてのバケットで**ソフトデリート**を有効化することが推奨されます<sup>[12]</sup>。
+- **ソフトデリート**は新規バケットに既定で7日間の保持期間付きで適用されます。一律に有効化するのではなく、復旧要件と保持コストを基準に判断します。一時データや削除量の多いバケットでは、保持期間の短縮または無効化を検討できます<sup>[12]</sup>。
 - 重要データには**オブジェクトバージョニング**を有効にし、OLMルールで「非最新バージョン」の保持期間も明示的に設定しておかないと、意図せずストレージコストが蓄積します<sup>[13]</sup>。
 - ライフサイクルアクションの実行タイミングは保証されないため、アプリケーション側は「特定の時刻までに必ず移行される」という前提でロジックを組まないようにします<sup>[11]</sup>。
-- バケットは計算リソースと同じリージョンに配置し、リージョンをまたぐ読み出しによる追加のegress課金とレイテンシを避けます<sup>[12]</sup>。
+- 低レイテンシ・低コストを優先する場合は、バケットを計算リソースと同じリージョンに配置し、リージョンをまたぐ読み出しによる追加のegress課金とレイテンシを避けます。一方、高可用性やクロスリージョン冗長性、地理的分散、広域のデータレジデンシーが求められる場合はdual-regionまたはmulti-regionも選択できます<sup>[12]</sup>。
 
 ### 2.2.2 データ処理とコンピュートのプロビジョニング／データベースの選択
 
@@ -314,7 +325,7 @@ flowchart TD
 |---|---|---|---|---|
 | Cloud SQL | リレーショナル（MySQL/PostgreSQL/SQL Server） | 強整合性 | 既存アプリの移行、中規模OLTP | リージョンをまたぐ無制限のスケール |
 | Cloud Spanner | リレーショナル（グローバル分散） | 外部整合性（TrueTime） | ミッションクリティカルなグローバルOLTP、金融台帳 | 小規模・低コスト志向のワークロード |
-| Bigtable | ワイドカラム（NoSQL） | 結果整合性が基本 | 大量書き込み・低レイテンシの時系列／IoT／広告技術 | 複雑なクエリ・JOIN・トランザクション |
+| Bigtable | ワイドカラム（NoSQL） | 単一クラスタルーティングは強整合性、マルチクラスタルーティングは結果整合性（read-your-writes整合性は単一クラスタルーティングで構成可能） | 大量書き込み・低レイテンシの時系列／IoT／広告技術 | 複雑なクエリ・JOIN・トランザクション |
 | Firestore | ドキュメント（NoSQL） | 強整合性（ドキュメント単位） | モバイル／Webアプリのリアルタイム同期 | 数十TBを超える大規模データ |
 | BigQuery | 列指向（OLAP） | 該当なし（分析用） | ペタバイト級のアドホック分析・レポーティング | 低レイテンシな単一レコードの読み書き |
 
@@ -554,7 +565,7 @@ Agent Platformは「構築（Build）」「拡張（Scale）」「ガバナン�
 ```mermaid
 graph TD
     Platform["Gemini Enterprise Agent Platform"] --> Build["構築（Build）<br/>ADK／Agent Studio／Agent Garden／Model Garden"]
-    Platform --> Scale["拡張（Scale）<br/>Agent Runtime／Agent Engine"]
+    Platform --> Scale["拡張（Scale）<br/>Agent Runtime"]
     Platform --> Govern["ガバナンス（Govern）<br/>Agent Identity／Agent Registry／Agent Gateway"]
     Platform --> Optimize["最適化（Optimize）<br/>評価・モニタリング・Memory Bank"]
 ```
@@ -566,6 +577,7 @@ graph TD
 | Agent Garden | RAGなどの一般的なパターンを備えた、事前構築済みエージェントサンプルのライブラリ |
 | Model Garden | Gemini・Claude・Gemma・Grokなど200以上のモデルへのアクセス |
 | RAG Engine | 社内データを安全にLLMへ接続し、回答精度を高めハルシネーションを抑制 |
+| Agent Runtime | 構築したエージェントをマネージドかつスケーラブルに実行するランタイム（旧称 Vertex AI Agent Engine。APIリソース名は引き続き `reasoningEngines`） |
 | Agent Identity | エージェントに対して人間の従業員と同様に、きめ細かな権限を付与する仕組み |
 
 出典：[Agent Platform overview | Gemini Enterprise Agent Platform](https://docs.cloud.google.com/gemini-enterprise-agent-platform/overview)、[Introducing Gemini Enterprise Agent Platform](https://cloud.google.com/blog/products/ai-machine-learning/introducing-gemini-enterprise-agent-platform)
