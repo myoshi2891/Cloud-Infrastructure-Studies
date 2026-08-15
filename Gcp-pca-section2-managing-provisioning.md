@@ -146,14 +146,34 @@ NCCは、Cloud VPN・Cloud Interconnect・ルーターアプライアンスを�
 
 ネットワークセキュリティは、単一の製品ではなく複数レイヤーの「多層防御（Defense in Depth）」として設計します。
 
+トラフィックの経路は、エッジのCloud Armorとロードバランサを通り、バックエンドへ到達する直前にCloud NGFWの評価を受けます。
+
 ```mermaid
 graph TD
-    Internet["インターネット／外部トラフィック"] --> Armor["Cloud Armor<br/>DDoS対策・WAFルール"]
+    Internet["インターネット・外部トラフィック"] --> Armor["Cloud Armor<br/>DDoS対策・WAFルール"]
     Armor --> LB["Cloud Load Balancing"]
-    LB --> NGFW["Cloud NGFW<br/>L3/L4/L7ファイアウォール・IDS/IPS"]
-    NGFW --> Policy["ネットワークファイアウォールポリシー<br/>階層型・グローバル・リージョン<br/>IAM管理のsecure tagsで制御"]
-    Policy --> VPCFW["VPCファイアウォールルール<br/>ネットワークタグ／サービスアカウントで制御"]
-    VPCFW --> Workload["ワークロード<br/>（VM／GKE／サーバーレス）"]
+    LB --> FW{"Cloud NGFW による評価<br/>L3-L4-L7・IDS-IPS"}
+    FW --> Workload["ワークロード<br/>VM・GKE・サーバーレス"]
+```
+
+**注意**: ファイアウォールルールはロードバランサ自体ではなく、**バックエンドのインスタンスに適用**されます。したがってロードバランサ経由の通信を許可するには、バックエンドVMに対してヘルスチェック用の範囲とロードバランサの送信元範囲を許可する上りルールが必要です。
+
+「Cloud NGFW」「ネットワークファイアウォールポリシー」「VPCファイアウォールルール」は直列のネットワークホップではなく、**同じパケットに対する評価レイヤー**です。評価は優先度順に進み、`ALLOW` / `DENY` のような終端アクションに一致した時点で終了します。`GOTO_NEXT` の場合のみ後続のレイヤーへ評価が進みます。
+
+```mermaid
+graph TD
+    Start(["受信パケット"]) --> H["階層型ファイアウォールポリシー<br/>組織・フォルダ"]
+    H -->|GOTO_NEXT| GB["グローバルネットワークファイアウォールポリシー<br/>BEFORE_CLASSIC_FIREWALL"]
+    GB -->|GOTO_NEXT| VPCFW["VPCファイアウォールルール<br/>ネットワークタグ・サービスアカウントで制御"]
+    VPCFW -->|一致なし| GA["グローバルネットワークファイアウォールポリシー<br/>AFTER_CLASSIC_FIREWALL"]
+    GA -->|GOTO_NEXT| RP["リージョンネットワークファイアウォールポリシー<br/>IAM管理のsecure tagsで制御"]
+    RP -->|GOTO_NEXT| Implied["暗黙のルール<br/>下りは許可・上りは拒否"]
+    H -->|ALLOW または DENY| Terminal(["評価を終了しアクションを適用"])
+    GB -->|ALLOW または DENY| Terminal
+    VPCFW -->|ALLOW または DENY| Terminal
+    GA -->|ALLOW または DENY| Terminal
+    RP -->|ALLOW または DENY| Terminal
+    Implied --> Terminal
 ```
 
 | コンポーネント | 役割 | ティア／モード |
@@ -345,11 +365,11 @@ Compute EngineやGKEのワークロードに接続する永続ストレージに
 
 出典：[Persistent Disk: durable block storage](https://cloud.google.com/persistent-disk)
 
-**ベストプラクティス**：Persistent Diskのデータ保護手段は用途ごとに使い分けます<sup>[16]</sup>。なお、ゾーン間の同期レプリケーションが行われるのはRegional Persistent Disk（およびリージョンHyperdisk）を選択した場合であり、すべてのディスクが自動的に複数ゾーンへ複製されるわけではありません。
+**ベストプラクティス**：Persistent Diskのデータ保護手段は用途ごとに使い分けます<sup>[16]</sup>。なお、ゾーン間の同期レプリケーションが行われるのはRegional Persistent Disk（およびHyperdisk Balanced High Availability）を選択した場合であり、すべてのディスクが自動的に複数ゾーンへ複製されるわけではありません。
 
 | 手段 | レプリケーション/取得方式 | 主な用途 |
 | --- | --- | --- |
-| Regional Persistent Disk（リージョンディスク） | 同一リージョン内の2ゾーンへ**同期**レプリケーション | ゾーン障害時にもディスクを維持したい高可用性ワークロード |
+| Regional Persistent Disk（リージョンディスク） / Hyperdisk Balanced High Availability | 同一リージョン内の2ゾーンへ**同期**レプリケーション | ゾーン障害時にもディスクを維持したい高可用性ワークロード |
 | Asynchronous Replication | 別リージョンのディスクへ**非同期**レプリケーション | リージョン障害に備えたクロスリージョンDR |
 | スナップショット（標準／アーカイブ） | 増分バックアップをリージョンまたはマルチリージョンに保存 | 定期バックアップ、長期保管（アーカイブ）、DR時の復旧元 |
 | ディスククローン / Instant Snapshot | ソースディスクの時点コピーを即時作成 | テスト・デバッグ・解析用に本番相当データを複製する用途 |
