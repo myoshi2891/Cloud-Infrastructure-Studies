@@ -144,7 +144,7 @@ PR レビューで**セクションごとに同じ指摘が繰り返された**�
 | ボタン | `<button type="button">` を明示。開閉トグルには `aria-expanded` と `aria-controls` を付ける |
 | モバイル | サイドバーを `translateX(-100%)` で隠す場合、**開く手段（トグルボタン）を必ず用意する**。隠すだけの CSS は不可 |
 | 未使用要素 | `.sidebar-toggle` / `.sidebar-backdrop` などを CSS だけ書いて JSX で使わない（デッドコード禁止） |
-| リンク操作後 | クリック時に URL ハッシュを更新し、対象セクションへフォーカスを移す（キーボード操作の継続性） |
+| リンク操作後 | クリック時に URL ハッシュを更新し、**ハッシュ更新後に同じ対象要素へ `focus()` を呼ぶ**（キーボード操作の継続性）。リンク先となる `section` または見出しには **`tabIndex={-1}`** を付与する（プログラム的フォーカスのみを受け付け、Tab 順序には割り込ませない）。ハッシュの対象と `focus()` の対象がずれると視覚位置とフォーカス位置が乖離するため、必ず同一要素にする |
 | scroll 性能 | scroll ハンドラ内で毎要素の `getBoundingClientRect()` を呼ばない。`IntersectionObserver` を使い、ページ末尾では最後の項目がアクティブになるよう終端条件を持たせる |
 | jsdom ガード | `typeof IntersectionObserver !== 'undefined'` で守り、cleanup で `disconnect()` |
 | JSDoc | 公開コンポーネントとユーティリティに JSDoc を付ける |
