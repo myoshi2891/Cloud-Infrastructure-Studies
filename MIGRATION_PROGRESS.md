@@ -66,8 +66,16 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 ## 現在地
 
 - **ブランチ:** dev
-- **最新完了タスク:** AGWA Section 1〜4 レビュー指摘対応・移行検証共通化完了
-- **最終更新日時(UTC):** 2026-08-14T16:50:02Z
+- **最新完了タスク:** AGWA Section 2〜6・共通コンポーネント・教材レビュー指摘対応完了
+- **最終更新日時(UTC):** 2026-08-15T01:54:24Z
+
+## 2026-08-15: AGWA Section 2〜6・教材レビュー指摘対応 (完了)
+
+- [x] **共通テスト契約:** Mermaid の `min-width` リセット、モックの図ロール、Section 5 テーブル構造検証を追加（`7a4de72`）。
+- [x] **ナビゲーション:** Section 2/4 の最下部 active 補正と Section 5 のモバイル目次・`NAV_ITEMS` 正本化を実装（`6db863b`）。
+- [x] **Section 6:** 本文コンポーネントを `components/sections/` へ移し、CSS Modules とグローバル色トークンへ移行（`105d89c`）。
+- [x] **教材:** AGWA の Vault・DLP・MX・Data regions・権限・安全なCSV例と、PCA のネットワーク・ストレージ・Cloud Run記述を公式資料に合わせて更新（`2341fe8`, `725cd2a`）。
+- [x] **検証:** 2026-08-15T01:53:03Z に対象コミット `725cd2a` を全体スコープで検証し、`npm test` は131ファイル・1118件成功、`npm run lint` も成功。対象Markdown lintは0件。ユーザー指示に従いビルドと目視確認は未実施。
 
 ## 2026-08-14: AGWA Section 1〜4 レビュー指摘対応 (完了)
 
@@ -1399,8 +1407,8 @@ bun run test:e2e e2e/nav.spec.ts  # Chromium 2 件 pass
 ## 次回セッションでの再開プロンプト
 
 あなたは熟練したフロントエンドエンジニアであり、Next.js (App Router) の移行スペシャリストです。
-最新実装 HEAD は `52bfd16`、前回進捗同期コミットは `9b2bac0` です。
-AGWA Section 1〜4 のレビュー指摘は、テスト共有化、ナビゲーション、インベントリ、CSSのカテゴリー別コミットで対応済みです。最新の全体テストとESLintの結果は `docs/TEST_COVERAGE_PROGRESS.md` のAGWA実行記録を参照してください。E2E、Visualテスト、ビルドは未実施です。
+最新実装 HEAD は `725cd2a`、前回進捗同期コミットは `9b2bac0` です。
+AGWA Section 2〜6 と共通 Mermaid コンポーネントのレビュー指摘は、テスト契約、ナビゲーション、Section 6 CSS Modules、教材修正のカテゴリー別コミットで対応済みです。最新の全体テストとESLintの結果は `docs/TEST_COVERAGE_PROGRESS.md` のAGWA実行記録を参照してください。E2E、Visualテスト、ビルドは未実施です。
 
 標準ワークフローの正準は `.agents/rules/tdd-commit-workflow.md` で、`.claude` / `.gemini` は同期ミラーです。次回は次の4ステップを維持してください。
 

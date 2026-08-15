@@ -238,6 +238,12 @@ app/
         NavBar.tsx                  # サイドバーナビ
         constants.ts                # Mermaid図定義 (10図)
         page.css                    # ページ固有スタイル
+      section6/
+        page.tsx                    # Section 6: 監視とトラブルシューティング (Server)
+        NavBar.tsx                  # サイドバーナビ
+        constants.ts                # 目次定義
+        page.module.css             # ページ固有スタイル（CSS Modules）
+        components/sections/        # AgwaSection6Guide 本文コンポーネント
     professional-cloud-network-engineer/
       page.tsx                      # PCNE 試験対策ページ（概要・ドメイン別解説）
       components/                   # セクションコンポーネント（Section1-6 + Summary）
