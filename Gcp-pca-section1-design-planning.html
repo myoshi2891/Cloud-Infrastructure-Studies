@@ -657,8 +657,6 @@ flowchart TD
     S1 --&gt; T15["1.5 将来のソリューション&lt;br/&gt;改善の構想"]
     class S1 gcls1
     class T11,T12,T13,T14,T15 gcls2
-
-
 </pre
                 >
                 <p>
@@ -728,8 +726,6 @@ flowchart LR
     class P4 gcls2
     class P5 gcls6
     class P6 gcls7
-
-
 </pre
                 >
                 <div class="table-scroll">
@@ -845,6 +841,49 @@ flowchart LR
                     <div class="callout-body">
                         <span class="pill">SOURCE</span>
                         <p></p>
+                        <ul>
+                            <li>
+                                <a href="https://docs.cloud.google.com/architecture/framework"
+                                    >Google Cloud Well-Architected Framework</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://docs.cloud.google.com/architecture/framework/operational-excellence"
+                                    >運用の卓越性ピラー</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://docs.cloud.google.com/architecture/framework/security"
+                                    >セキュリティ・プライバシー・コンプライアンスピラー</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://docs.cloud.google.com/architecture/framework/reliability"
+                                    >信頼性ピラー</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://docs.cloud.google.com/architecture/framework/performance-optimization"
+                                    >パフォーマンス最適化ピラー</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://docs.cloud.google.com/architecture/framework/cost-optimization"
+                                    >コスト最適化ピラー</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://docs.cloud.google.com/architecture/framework/sustainability"
+                                    >持続可能性ピラー</a
+                                >
+                            </li>
+                        </ul>
                     </div>
                 </div>
                 <hr />
@@ -861,20 +900,24 @@ flowchart LR
                     >
                 </p>
                 <pre class="mermaid">
-mindmap
-  root((1.1 ビジネス要件))
-    ビジネスユースケースと製品戦略
-    機能要件・非機能要件の特定
-    事業継続計画(BCP)
-    コスト最適化
-    アプリケーション設計の支援
-    外部システムとの統合パターン
-    データの移動
-    設計判断のトレードオフ
-    ワークロード対応戦略
-    成功指標(KPI/ROI/メトリクス)
-    セキュリティとコンプライアンス
-    オブザーバビリティ
+flowchart LR
+    classDef gcls1 fill:#1a73e8,color:#ffffff,stroke:#174ea6,stroke-width:1.5px
+    classDef gcls2 fill:#e8f0fe,color:#0b1220,stroke:#1a73e8,stroke-width:1.5px
+    Root(("1.1&lt;br/&gt;ビジネス要件"))
+    Root --&gt; A1["ビジネスユースケースと&lt;br/&gt;製品戦略"]
+    Root --&gt; A2["機能要件・非機能要件の&lt;br/&gt;特定"]
+    Root --&gt; A3["事業継続計画(BCP)"]
+    Root --&gt; A4["コスト最適化"]
+    Root --&gt; A5["アプリケーション設計の&lt;br/&gt;支援"]
+    Root --&gt; A6["外部システムとの&lt;br/&gt;統合パターン"]
+    Root --&gt; A7["データの移動"]
+    Root --&gt; A8["設計判断のトレードオフ"]
+    Root --&gt; A9["ワークロード対応戦略"]
+    Root --&gt; A10["成功指標&lt;br/&gt;(KPI/ROI/メトリクス)"]
+    Root --&gt; A11["セキュリティと&lt;br/&gt;コンプライアンス"]
+    Root --&gt; A12["オブザーバビリティ"]
+    class Root gcls1
+    class A1,A2,A3,A4,A5,A6,A7,A8,A9,A10,A11,A12 gcls2
 </pre
                 >
                 <h3 id="31-ビジネスユースケースと製品戦略">3.1 ビジネスユースケースと製品戦略</h3>
@@ -938,7 +981,7 @@ mindmap
                 </p>
                 <pre class="mermaid">
 flowchart LR
-    classDef gcls3 fill:#fef7e0,color:#0b1220,stroke:#f9ab00,stroke-width:1.5px
+    classDef gclust1 fill:#0d1a2b,color:#dbe4f3,stroke:#f9ab00,stroke-width:2px
     subgraph BCP["事業継続計画 (BCP)"]
         direction LR
         A["リスク評価"] --&gt; B["業務影響分析&lt;br/&gt;(BIA)"]
@@ -948,9 +991,7 @@ flowchart LR
         E --&gt; F["継続的な見直し"]
         F -.フィードバック.-&gt; A
     end
-    class BCP gcls3
-
-
+    class BCP gclust1
 </pre
                 >
                 <p>DR計画を策定する際の核となる指標は次の2つです。</p>
@@ -1025,6 +1066,27 @@ flowchart LR
                     <div class="callout-body">
                         <span class="pill">SOURCE</span>
                         <p></p>
+                        <ul>
+                            <li>
+                                <a
+                                    href="https://docs.cloud.google.com/architecture/dr-scenarios-planning-guide"
+                                    >Disaster recovery planning guide</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://docs.cloud.google.com/architecture/disaster-recovery"
+                                    >Architecting disaster recovery for cloud infrastructure
+                                    outages</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://docs.cloud.google.com/backup-disaster-recovery/docs/concepts/backup-dr"
+                                    >Backup and DR Service overview</a
+                                >
+                            </li>
+                        </ul>
                     </div>
                 </div>
                 <h3 id="34-コスト最適化">3.4 コスト最適化</h3>
@@ -1116,8 +1178,6 @@ flowchart TD
     class Ext gcls8
     class API gcls2
     class PS,EA gcls5
-
-
 </pre
                 >
                 <div class="callout callout-practice">
@@ -1211,8 +1271,6 @@ flowchart LR
     class Complexity gcls4
     class Speed gcls2
     class Control gcls3
-
-
 </pre
                 >
                 <div class="callout callout-practice">
@@ -1326,8 +1384,8 @@ flowchart LR
                 </p>
                 <pre class="mermaid">
 flowchart TB
-    classDef gcls2 fill:#e8f0fe,color:#0b1220,stroke:#1a73e8,stroke-width:1.5px
     classDef gcls1 fill:#1a73e8,color:#ffffff,stroke:#174ea6,stroke-width:1.5px
+    classDef gclust2 fill:#0d1a2b,color:#dbe4f3,stroke:#1a73e8,stroke-width:2px
     subgraph Region["リージョン (例: asia-northeast1)"]
         direction LR
         subgraph ZoneA["ゾーン A"]
@@ -1345,10 +1403,8 @@ flowchart TB
     LB --&gt; ZoneB
     LB --&gt; ZoneC
     User["ユーザー"] --&gt; LB
-    class Region gcls2
     class LB gcls1
-
-
+    class Region gclust2
 </pre
                 >
                 <div class="callout callout-practice">
@@ -1404,8 +1460,6 @@ flowchart LR
     class Policy gcls3
     class ScaleOut gcls5
     class ScaleIn gcls4
-
-
 </pre
                 >
                 <div class="callout callout-practice">
@@ -1582,8 +1636,6 @@ flowchart LR
     OtherCloud["他クラウド&lt;br/&gt;(AWS/Azure等)"] --&gt;|"Cross-Cloud&lt;br/&gt;Interconnect"| VPC
     class OnPrem,OtherCloud gcls8
     class VPC gcls2
-
-
 </pre
                 >
                 <div class="callout callout-practice">
@@ -1678,8 +1730,6 @@ flowchart TD
     class AB gcls5
     class AH gcls3
     class RAG gcls6
-
-
 </pre
                 >
                 <div class="table-scroll">
@@ -1774,8 +1824,6 @@ flowchart TD
     class Org gcls8
     class HostProj gcls1
     class VPCNet gcls2
-
-
 </pre
                 >
                 <div class="callout callout-practice">
@@ -1872,8 +1920,6 @@ flowchart TD
     class Data gcls8
     class DF gcls2
     class BQ gcls5
-
-
 </pre
                 >
                 <h3 id="55-適切なストレージタイプの選択">5.5 適切なストレージタイプの選択</h3>
@@ -1908,8 +1954,6 @@ flowchart TD
     class Blk gcls5
     class File gcls3
     class DB gcls6
-
-
 </pre
                 >
                 <div class="table-scroll">
@@ -2050,8 +2094,6 @@ flowchart TD
     class GKE gcls5
     class CR gcls2
     class CRF gcls3
-
-
 </pre
                 >
                 <div class="table-scroll">
@@ -2232,8 +2274,6 @@ flowchart LR
     class Plan gcls6
     class Migrate gcls5
     class Optimize gcls4
-
-
 </pre
                 >
                 <p><strong>主な機能</strong></p>
@@ -2335,8 +2375,6 @@ flowchart LR
     class R4 gcls6
     class R5 gcls4
     class R6 gcls8
-
-
 </pre
                 >
                 <div class="table-scroll">
@@ -2488,8 +2526,6 @@ flowchart LR
     class Loop gcls1
     class Now gcls2
     class Implement gcls5
-
-
 </pre
                 >
                 <h3 id="71-クラウドと技術の改善">7.1 クラウドと技術の改善</h3>

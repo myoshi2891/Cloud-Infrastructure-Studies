@@ -44,7 +44,7 @@ flowchart TD
     style T15 fill:#e8f0fe,stroke:#1a73e8
 ```
 
-試験全体は50〜60問の多肢選択・複数選択問題で構成され、そのうち20〜30%は公式ケーススタディに基づく設問です。公式ケーススタディは4種類（Altostrat Media、Cymbal Retail、EHR Healthcare、KnightMotives Automotive）が公開されていますが、1回の試験で出題対象となるのはそのうち2つです。どの2つが選ばれるかは事前に分からないため、4種類すべてを準備しておく必要があります。試験時間は2時間、受験料は200米ドル（税別）、対応言語は英語と日本語です。[^1]
+以下は**標準試験（初回受験）**の条件です。標準試験は50〜60問の多肢選択・複数選択問題で構成され、そのうち20〜30%は公式ケーススタディに基づく設問です。公式ケーススタディは4種類（Altostrat Media、Cymbal Retail、EHR Healthcare、KnightMotives Automotive）が公開されていますが、1回の試験で出題対象となるのはそのうち2つです。どの2つが選ばれるかは事前に分からないため、4種類すべてを準備しておく必要があります。試験時間は2時間、受験料は200米ドル（税別）、対応言語は英語と日本語です。なお**更新試験（Recertification exam）は問題数・試験時間・受験料が標準試験と異なる**ため、更新受験の場合は公式ページで最新の条件を確認してください。[^1]
 
 > **出典**：[Professional Cloud Architect Certification | Google Cloud](https://cloud.google.com/learn/certification/cloud-architect?hl=en)
 
@@ -233,7 +233,7 @@ flowchart TD
 | ユースケース | 推奨サービス |
 | --- | --- |
 | オンライン/オンプレミスからCloud Storageへの継続的転送 | Storage Transfer Service |
-| 20TB〜1PB規模の大容量データを短期間で転送（オフライン） | Transfer Appliance |
+| 大容量データを短期間で転送（オフライン。TA40は最大40TB、TA300は最大300TB。300TBを超える場合は複数台を併用） | Transfer Appliance |
 | データベースの変更データキャプチャ（CDC）とレプリケーション | Datastream |
 | リアルタイムのイベントストリーム取り込み | Pub/Sub + Dataflow |
 
@@ -386,7 +386,17 @@ Gemini Cloud Assist は、Google Cloud のアプリケーションライフサ�
 
 **ベストプラクティス**：バックアップボールトは「不変性（Immutability）」と「削除不可性（Indelibility）」を持つため、ランサムウェア対策としても有効。
 
-CMEK（顧客管理暗号鍵）によるバックアップの暗号化に対応するのは **Compute Engine・Persistent Disk・Cloud SQL** のワークロードに限られます。**AlloyDB と Google Cloud VMware Engine のバックアップは CMEK の対象外**であり、これらは Google 管理鍵で暗号化されます。CMEK を使う場合は、**バックアップボールトの作成時に鍵を指定する必要があり、作成後に変更・追加することはできません**。したがって、保護対象ワークロード側の暗号化方式（Compute Engine の CMEK 付きディスク、Cloud SQL の CMEK 構成など）とボールト側の設定を、設計段階で整合させておく必要があります。[^11]
+CMEK（顧客管理暗号鍵）によるバックアップの暗号化に対応するのは **Compute Engine・Persistent Disk・Cloud SQL** のワークロードに限られます。**AlloyDB と Google Cloud VMware Engine のバックアップは CMEK の対象外**であり、これらは Google 管理鍵で暗号化されます。
+
+ただし、**どの鍵が使われるかはワークロードごとに異なります**。
+
+| ワークロード | バックアップの暗号化に使われる鍵 |
+| --- | --- |
+| Compute Engine | **バックアップボールト側の CMEK**。ボールト作成時に鍵を指定し、作成後に変更・追加することはできない |
+| Persistent Disk | **移行元ワークロード（ソースディスク）側の CMEK**。ソースが CMEK 暗号化されている場合、そのバックアップは **CMEK を設定していないボールト**に格納する必要がある |
+| Cloud SQL | **移行元ワークロード（ソースインスタンス）側の CMEK** |
+
+したがって「ボールト作成時に必ず鍵を指定する」という一律の運用にはできません。保護対象ワークロードの種類ごとに、ソース側の暗号化方式とボールト側の設定を設計段階で整合させておく必要があります。[^11]
 
 > **出典**：[Backup and DR Service overview](https://docs.cloud.google.com/backup-disaster-recovery/docs/concepts/backup-dr)
 
@@ -396,7 +406,7 @@ CMEK（顧客管理暗号鍵）によるバックアップの暗号化に対応�
 
 ## 5. 1.3 ネットワーク・ストレージ・コンピュートリソースの設計
 
-このタスクは最も製品知識が問われる領域です。試験ガイド原文の6項目を順に解説します。[^1]
+このタスクは最も製品知識が問われる領域です。試験ガイド原文の7項目を順に解説します。[^1]
 
 ### 5.1 オンプレミス／マルチクラウド環境との統合
 
@@ -662,7 +672,7 @@ flowchart LR
 
 - **Migrate to Virtual Machines**：オンプレミス／他クラウドのVMをCompute Engineへ移行
 - **Migrate to Containers**：VMワークロードをGKE上のコンテナへモダナイズしながら移行
-- **Storage Transfer Service / Transfer Appliance**：データ移行（前述5.7参照）
+- **Storage Transfer Service / Transfer Appliance**：データ移行（前述3.7参照）
 - **Cloud Build / Artifact Registry**：CI/CDパイプラインの構築、コンテナイメージ管理
 
 **ワークロードテスト**
@@ -732,7 +742,7 @@ Google Cloud は新サービス・新機能を継続的にリリースするた�
 
 ## 8. 公式ケーススタディとセクション1の関係
 
-2025年10月30日の試験改訂（v6.1）により、ケーススタディは以下の4種類に刷新され、1回の試験ではこのうち2つが出題対象になります。複数のケーススタディに生成AI活用の要素が組み込まれています。[^35]
+2025年10月30日の試験改訂（v6.1）により、ケーススタディは以下の4種類に刷新され、**標準試験**では1回の試験でこのうち2つが出題対象になります（更新試験の出題構成は標準試験とは異なります）。複数のケーススタディに生成AI活用の要素が組み込まれています。[^35]
 
 | ケーススタディ | 業種 | 既存技術環境の概要 | セクション1との関連ポイント |
 | --- | --- | --- | --- |
@@ -852,7 +862,7 @@ Google Cloud は新サービス・新機能を継続的にリリースするた�
 [^19]: [Best practices and reference architectures for VPC design](https://docs.cloud.google.com/architecture/best-practices-vpc-design)
 [^20]: [Agent Platform overview](https://docs.cloud.google.com/gemini-enterprise-agent-platform/overview)
 [^21]: [Overview of Model Garden](https://docs.cloud.google.com/vertex-ai/generative-ai/docs/model-garden/explore-models)
-[^22]: [Overview of models on Agent Platform](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models)
+[^22]: [Agent Platform overview — ADK（コードファースト）と Agent Studio（ローコード）](https://docs.cloud.google.com/gemini-enterprise-agent-platform/overview)
 [^23]: [Object storage vs block storage vs file storage](https://cloud.google.com/blog/topics/developers-practitioners/map-storage-options-google-cloud)
 [^24]: [How Object vs Block vs File Storage differ](https://cloud.google.com/discover/object-vs-block-vs-file-storage)
 [^25]: [Compute Engine overview](https://docs.cloud.google.com/compute/docs/overview) — ブロックストレージオプションに関する記載

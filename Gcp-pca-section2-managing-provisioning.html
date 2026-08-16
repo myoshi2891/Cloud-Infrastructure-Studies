@@ -3687,6 +3687,13 @@ flowchart TD
                         return renderChain;
                     };
 
+                    // What triggered the first render pass. The font-settled
+                    // redraw is only worth its cost when the first pass measured
+                    // text in the fallback font -- i.e. when the deadline below
+                    // fired before the font load finished.
+                    var initialRenderScheduled = false;
+                    var initialRenderUsedFallback = false;
+
                     // A font swap after the first render changes text metrics, so
                     // redraw once when the font set settles instead of waiting a
                     // fixed 600ms and patching boxes.
@@ -3697,6 +3704,11 @@ flowchart TD
                             fontRedrawDone = true;
                             document.fonts.removeEventListener('loadingdone', onFontsSettled);
                             document.fonts.removeEventListener('loadingerror', onFontsSettled);
+                            // Fonts settled before the first render was even
+                            // scheduled: that render will already measure with the
+                            // real font, so a redraw would only duplicate work.
+                            if (!initialRenderScheduled) return;
+                            if (!initialRenderUsedFallback) return;
                             queueRender();
                         };
                         document.fonts.addEventListener('loadingdone', onFontsSettled);
@@ -3751,16 +3763,27 @@ flowchart TD
                     // Never let a pending font promise keep the diagrams unrendered:
                     // whichever settles first -- the font wait or the deadline --
                     // triggers the first render pass.
+                    // Resolves with true when the deadline won the race, so the
+                    // caller can tell a fallback-font render from a real-font one.
                     var withDeadline = function (promise, ms) {
                         return new Promise(function (resolve) {
                             var settled = false;
-                            var finish = function () {
+                            var finish = function (timedOut) {
                                 if (settled) return;
                                 settled = true;
-                                resolve();
+                                resolve(timedOut);
                             };
-                            setTimeout(finish, ms);
-                            Promise.resolve(promise).then(finish, finish);
+                            setTimeout(function () {
+                                finish(true);
+                            }, ms);
+                            Promise.resolve(promise).then(
+                                function () {
+                                    finish(false);
+                                },
+                                function () {
+                                    finish(false);
+                                },
+                            );
                         });
                     };
 
@@ -3773,7 +3796,11 @@ flowchart TD
                                 }
                             }),
                         1500,
-                    ).then(queueRender);
+                    ).then(function (timedOut) {
+                        initialRenderUsedFallback = timedOut;
+                        initialRenderScheduled = true;
+                        return queueRender();
+                    });
                 } catch (e) {
                     console.error('mermaid init error', e);
                 }
