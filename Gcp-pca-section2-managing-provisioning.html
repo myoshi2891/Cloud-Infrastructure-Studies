@@ -3581,18 +3581,123 @@ flowchart TD
                             htmlLabels: true,
                         },
                     });
+                    // ----------------------------------------------------------
+                    // Self-healing pass: after mermaid draws each diagram, some
+                    // browsers finish downloading the CJK web-font subset a beat
+                    // *after* mermaid already measured + fixed the node box size
+                    // (measurement used the fallback font's narrower metrics).
+                    // The result is a node whose box is too small for the text
+                    // that actually paints, which clips the last character(s).
+                    // This pass detects any label wider/taller than its box and
+                    // grows the box (and its rect) to fit, regardless of *why*
+                    // the mismatch happened.
+                    // ----------------------------------------------------------
+                    var healOverflowingLabels = function (root) {
+                        try {
+                            var scope = root || document;
+                            var svgs = scope.querySelectorAll('pre.mermaid svg');
+                            svgs.forEach(function (svg) {
+                                var nodes = svg.querySelectorAll('.node');
+                                nodes.forEach(function (n) {
+                                    var fo = n.querySelector('foreignObject');
+                                    if (!fo) return;
+                                    var label = fo.querySelector('div, span, p, table');
+                                    if (!label) return;
+                                    var curW =
+                                        parseFloat(fo.getAttribute('width')) ||
+                                        fo.getBoundingClientRect().width;
+                                    var curH =
+                                        parseFloat(fo.getAttribute('height')) ||
+                                        fo.getBoundingClientRect().height;
+                                    var needW = label.scrollWidth;
+                                    var needH = label.scrollHeight;
+                                    var extraW = needW > curW + 1 ? needW - curW + 6 : 0;
+                                    var extraH = needH > curH + 1 ? needH - curH + 4 : 0;
+                                    if (extraW <= 0 && extraH <= 0) return;
+                                    var newW = curW + extraW;
+                                    var newH = curH + extraH;
+                                    fo.setAttribute('width', newW);
+                                    fo.setAttribute('height', newH);
+                                    var fx = parseFloat(fo.getAttribute('x')) || 0;
+                                    var fy = parseFloat(fo.getAttribute('y')) || 0;
+                                    fo.setAttribute('x', fx - extraW / 2);
+                                    fo.setAttribute('y', fy - extraH / 2);
+                                    var shape = n.querySelector('rect');
+                                    if (shape) {
+                                        var sw = parseFloat(shape.getAttribute('width')) || 0;
+                                        var sh = parseFloat(shape.getAttribute('height')) || 0;
+                                        var sx = parseFloat(shape.getAttribute('x')) || 0;
+                                        var sy = parseFloat(shape.getAttribute('y')) || 0;
+                                        shape.setAttribute('width', sw + extraW);
+                                        shape.setAttribute('height', sh + extraH);
+                                        shape.setAttribute('x', sx - extraW / 2);
+                                        shape.setAttribute('y', sy - extraH / 2);
+                                    } else {
+                                        console.warn(
+                                            'mermaid heal: non-rect node label overflowed, skipped resize',
+                                            n.id,
+                                        );
+                                    }
+                                });
+                            });
+                        } catch (e) {
+                            console.error('mermaid heal error', e);
+                        }
+                    };
+
                     var renderAll = function () {
                         try {
-                            mermaid.run({ querySelector: 'pre.mermaid' });
+                            mermaid
+                                .run({ querySelector: 'pre.mermaid' })
+                                .then(function () {
+                                    // First pass right after render.
+                                    healOverflowingLabels();
+                                    // Second pass a beat later, in case a web-font subset
+                                    // (e.g. Noto Sans JP) was still mid-download during the
+                                    // first pass and swapped in afterward.
+                                    setTimeout(function () {
+                                        healOverflowingLabels();
+                                    }, 600);
+                                })
+                                .catch(function (e) {
+                                    console.error('mermaid render error', e);
+                                });
                         } catch (e) {
                             console.error('mermaid render error', e);
                         }
                     };
-                    if (document.fonts && document.fonts.ready) {
-                        document.fonts.ready.then(renderAll).catch(renderAll);
-                    } else {
-                        renderAll();
+
+                    // Force the exact font/weight combinations used on this page to
+                    // finish loading -- with a sample string that actually contains
+                    // CJK glyphs -- *before* mermaid does its first text measurement
+                    // pass. This closes the race that the self-heal pass above is
+                    // also guarding against.
+                    var sample =
+                        'AWS Azure VPC VNet Google Cloud 0123456789 ' +
+                        'プロジェクトネットワークサービスハブオンプレミス構成管理接続' +
+                        'ストレージコンピュートセキュリティベストプラクティス出典参考文献';
+                    var weights = ['400', '500', '600', '700', '800'];
+                    var families = ['Inter', 'Noto Sans JP'];
+                    var loadPromises = [];
+                    if (document.fonts && document.fonts.load) {
+                        families.forEach(function (fam) {
+                            weights.forEach(function (w) {
+                                try {
+                                    loadPromises.push(
+                                        document.fonts.load(w + ' 16px "' + fam + '"', sample),
+                                    );
+                                } catch (e) {}
+                            });
+                        });
                     }
+                    Promise.all(loadPromises)
+                        .catch(function () {})
+                        .then(function () {
+                            if (document.fonts && document.fonts.ready) {
+                                return document.fonts.ready.catch(function () {});
+                            }
+                        })
+                        .then(renderAll);
                 } catch (e) {
                     console.error('mermaid init error', e);
                 }
