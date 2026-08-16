@@ -607,7 +607,7 @@ export function PcneSection5NetworkSecurityGuide() {
                 <h3 id="17-google-threat-intelligence" tabIndex={-1}>1.7 Google Threat Intelligence</h3>
                 <p>
                     Google Threat Intelligenceは、Cloud Armor
-                    Enterpriseの購読者向けに、Google/Mandiantが継続的に更新する脅威データフィードに基づいてトラフィックを許可・拒否できる機能です。<code>evaluateThreatIntelligence('FEED_NAME')</code>というマッチ式を用いて構成します。
+                    Enterpriseの購読者向けに、Google/Mandiantが継続的に更新する脅威データフィードに基づいてトラフィックを許可・拒否できる機能です。<code>evaluateThreatIntelligence(&apos;FEED_NAME&apos;)</code>というマッチ式を用いて構成します。
                 </p>
                 <div className="table-scroll">
                     <table>
@@ -1362,7 +1362,7 @@ export function PcneSection5NetworkSecurityGuide() {
                         <li>
                             <a
                                 href="https://cloud.google.com/firewall/docs/migrate-firewall-rules-no-dependencies"
-                                >Migrate VPC firewall rules that don't use network tags and service
+                                >Migrate VPC firewall rules that don&apos;t use network tags and service
                                 accounts</a
                             >
                         </li>
@@ -1628,7 +1628,7 @@ export function PcneSection5NetworkSecurityGuide() {
                 <blockquote className="practice">
                     <p>
                         <strong>ベストプラクティス</strong>:
-                        ポート枯渇によるNATエラー(<code>allocation_status="DROPPED"</code>)をCloud
+                        ポート枯渇によるNATエラー(<code>allocation_status=&quot;DROPPED&quot;</code>)をCloud
                         Loggingで継続的に監視してください。バーストする可能性のあるワークロードには動的ポート割り当てを採用し、固定サイズのワークロードには静的割り当てでリソースを予測可能に保つという使い分けが基本方針になります。IPアドレスを変更する際は、必ず「外部IPアドレスのドレイン」手順に従い、既存接続を保護してください。
                     </p>
                 </blockquote>
@@ -1798,7 +1798,7 @@ export function PcneSection5NetworkSecurityGuide() {
                             <tr className="odd">
                                 <td>監視</td>
                                 <td>
-                                    <code>allocation_status="DROPPED"</code
+                                    <code>allocation_status=&quot;DROPPED&quot;</code
                                     >ログを継続監視し、ポート枯渇を早期検知する
                                 </td>
                             </tr>
@@ -2434,7 +2434,7 @@ export function PcneSection5NetworkSecurityGuide() {
                             <label
                                 ><input
                                     type="checkbox"
-                                />NATポート枯渇(<code>allocation_status="DROPPED"</code>)の監視・アラートが設定されているか</label
+                                />NATポート枯渇(<code>allocation_status=&quot;DROPPED&quot;</code>)の監視・アラートが設定されているか</label
                             >
                         </li>
                         <li>
@@ -2824,7 +2824,7 @@ export function PcneSection5NetworkSecurityGuide() {
                                     target="_blank"
                                     ><span className="ref-icon">↗</span
                                     ><span
-                                        >Migrate VPC firewall rules that don't use network tags and
+                                        >Migrate VPC firewall rules that don&apos;t use network tags and
                                         service accounts</span
                                     ></a
                                 >
