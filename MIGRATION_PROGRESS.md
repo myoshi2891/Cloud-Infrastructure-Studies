@@ -4,6 +4,34 @@
 
 ---
 
+## 2026-08-16: PCNE Section 6「ネットワーク操作と監視」100%全量移行 (完了)
+
+### 目的
+
+`S6-network-ops-monitoring.html` および `S6-network-ops-monitoring.md` を、Next.js App Router 5ファイル構成 (`page.tsx`, `PcneSection6NetworkOpsMonitoringGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/gcl/professional-cloud-network-engineer/section6-network-ops-monitoring` ルートへ移行。見出し(h1:1, h2:7, h3:24, h4:14)、全7個のテーブル、20個のMermaid図解、全リスト、全外部リンク・全本文・注釈を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for pcne-s6-network-ops-monitoring` (`7b5be75`)
+- [x] **Step 1 (Red)**: `test(pcne): add failing tests for pcne section 6 network ops monitoring` (`9871b99`)
+- [x] **Step 2 (Green)**: `feat(pcne): implement section 6 network ops monitoring guide to pass tests` (`36319f9`)
+- [x] **Step 3 (Refactor)**: `refactor(pcne): integrate section 6 into routing and update docs` (`3d5683d`)
+- [x] **Step 4 (Archive & Sync)**: `chore(docs): update MIGRATION_PROGRESS.md — pcne section 6 complete`
+
+### 関連ファイル
+
+- [app/gcl/professional-cloud-network-engineer/section6-network-ops-monitoring/page.tsx](app/gcl/professional-cloud-network-engineer/section6-network-ops-monitoring/page.tsx)
+- [app/gcl/professional-cloud-network-engineer/section6-network-ops-monitoring/PcneSection6NetworkOpsMonitoringGuide.tsx](app/gcl/professional-cloud-network-engineer/section6-network-ops-monitoring/PcneSection6NetworkOpsMonitoringGuide.tsx)
+- [app/gcl/professional-cloud-network-engineer/section6-network-ops-monitoring/NavBar.tsx](app/gcl/professional-cloud-network-engineer/section6-network-ops-monitoring/NavBar.tsx)
+- [app/gcl/professional-cloud-network-engineer/section6-network-ops-monitoring/constants.ts](app/gcl/professional-cloud-network-engineer/section6-network-ops-monitoring/constants.ts)
+- [app/gcl/professional-cloud-network-engineer/section6-network-ops-monitoring/page.css](app/gcl/professional-cloud-network-engineer/section6-network-ops-monitoring/page.css)
+- [`__tests__/gcl/professional-cloud-network-engineer/section6-network-ops-monitoring/page.test.tsx`](__tests__/gcl/professional-cloud-network-engineer/section6-network-ops-monitoring/page.test.tsx)
+- [docs/migration-inventory/pcne-s6-network-ops-monitoring.json](docs/migration-inventory/pcne-s6-network-ops-monitoring.json)
+- [archive/Gcl/Professional-Cloud-Network-Engineer/S6-network-ops-monitoring.html](archive/Gcl/Professional-Cloud-Network-Engineer/S6-network-ops-monitoring.html)
+- [archive/Gcl/Professional-Cloud-Network-Engineer/S6-network-ops-monitoring.md](archive/Gcl/Professional-Cloud-Network-Engineer/S6-network-ops-monitoring.md)
+
+---
+
 ## 2026-08-16: PCNE Section 4「CDN・DNS・IPアドレス管理」100%全量移行 (完了)
 
 ### 目的
