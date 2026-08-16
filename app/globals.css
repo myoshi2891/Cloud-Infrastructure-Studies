@@ -157,6 +157,24 @@
     --color-pcne-design-red: #e2716f;
     --color-pcne-design-purple: #c78dea;
 
+    /* PCNE Section 3 Load Balancing guide */
+    --color-pcne-s3-background: #07111e;
+    --color-pcne-s3-elevated: #0d1a2c;
+    --color-pcne-s3-elevated2: #122238;
+    --color-pcne-s3-border: #1c3350;
+    --color-pcne-s3-border-soft: #16283f;
+    --color-pcne-s3-foreground: #dce6f4;
+    --color-pcne-s3-foreground-dim: #8fa3bd;
+    --color-pcne-s3-foreground-dimmer: #5f7691;
+    --color-pcne-s3-accent: #7c9eff;
+    --color-pcne-s3-accent-soft: rgba(124, 158, 255, 0.133);
+    --color-pcne-s3-accent-strong: #a8c0ff;
+    --color-pcne-s3-green: #5fd6a8;
+    --color-pcne-s3-amber: #f2c14e;
+    --color-pcne-s3-red: #f2765e;
+    --color-pcne-s3-purple: #c39bf2;
+
+
     /* Cisco guide page themes */
     --color-ccna-fundamentals-elevated: #0d1a2e;
     --color-ccna-fundamentals-card: #101f38;
