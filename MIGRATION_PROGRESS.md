@@ -1,6 +1,34 @@
 # 移行作業進捗管理ドキュメント (Migration Progress)
 
-(最終更新日: 2026-08-15)
+(最終更新日: 2026-08-16)
+
+---
+
+## 2026-08-16: PCNE Section 5「ネットワークセキュリティの設計と実装」100%全量移行 (完了)
+
+### 目的
+
+`Gcp-pcne-s5-network-security.html` を、Next.js App Router 5ファイル構成 (`page.tsx`, `PcneSection5NetworkSecurityGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/gcl/professional-cloud-network-engineer/section5-network-security` ルートへ移行。見出し(h1:1, h2:7, h3:26, h4:11)、全30個のテーブル、17個のMermaid図解、全リスト、全外部リンク・全本文・注釈を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for pcne-s5-network-security` (`cbb5b4d`)
+- [x] **Step 1 (Red)**: `test(pcne): add failing tests for pcne section 5 network security` (`c8d8e09`)
+- [x] **Step 2 (Green)**: `feat(pcne): implement section 5 network security guide to pass tests` (`0d6e834`)
+- [x] **Step 3 (Refactor)**: `refactor(pcne): integrate section 5 into routing and update docs` (`f3951c8`)
+- [x] **Step 4 (Archive & Sync)**: `chore(docs): update MIGRATION_PROGRESS.md — pcne section 5 complete`
+
+### 関連ファイル
+
+- [app/gcl/professional-cloud-network-engineer/section5-network-security/page.tsx](app/gcl/professional-cloud-network-engineer/section5-network-security/page.tsx)
+- [app/gcl/professional-cloud-network-engineer/section5-network-security/PcneSection5NetworkSecurityGuide.tsx](app/gcl/professional-cloud-network-engineer/section5-network-security/PcneSection5NetworkSecurityGuide.tsx)
+- [app/gcl/professional-cloud-network-engineer/section5-network-security/NavBar.tsx](app/gcl/professional-cloud-network-engineer/section5-network-security/NavBar.tsx)
+- [app/gcl/professional-cloud-network-engineer/section5-network-security/constants.ts](app/gcl/professional-cloud-network-engineer/section5-network-security/constants.ts)
+- [app/gcl/professional-cloud-network-engineer/section5-network-security/page.css](app/gcl/professional-cloud-network-engineer/section5-network-security/page.css)
+- [`__tests__/gcl/professional-cloud-network-engineer/section5-network-security/page.test.tsx`](__tests__/gcl/professional-cloud-network-engineer/section5-network-security/page.test.tsx)
+- [docs/migration-inventory/pcne-s5-network-security.json](docs/migration-inventory/pcne-s5-network-security.json)
+- [archive/Gcl/Professional-Cloud-Network-Engineer/Gcp-pcne-s5-network-security.html](archive/Gcl/Professional-Cloud-Network-Engineer/Gcp-pcne-s5-network-security.html)
+- [archive/Gcl/Professional-Cloud-Network-Engineer/Gcp-pcne-s5-network-security.md](archive/Gcl/Professional-Cloud-Network-Engineer/Gcp-pcne-s5-network-security.md)
 
 ---
 
