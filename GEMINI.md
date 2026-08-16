@@ -35,7 +35,7 @@ Updated 2026-08-15
   - `/app/gcl/genai-leader`: Generative AI Leader 試験対策ページ（Section 1〜4、section1/2 はコンポーネント分割済み）。
   - `/app/gcl/cloud-digital-leader`: Cloud Digital Leader 試験対策ページ（Section 1〜6、各セクションはコンポーネント分割済み）。
   - `/app/gcl/agwa`: Associate Google Workspace Administrator 試験対策ページ（Section 1〜6、既存の各セクション別ガイドとサイドバーナビゲーションを含む）。
-  - `/app/gcl/professional-cloud-network-engineer`: PCNE 試験対策ページ（概要・ドメイン別解説、`section1-vpc-design`、`section2-vpc-implementation` および `section5-network-security` 完全ガイド含む）。
+  - `/app/gcl/professional-cloud-network-engineer`: PCNE 試験対策ページ（概要・ドメイン別解説、`section1-vpc-design`、`section2-vpc-implementation`、`section3-load-balancing` および `section5-network-security` 完全ガイド含む）。
   - `/app/gcl/professional-cloud-network-engineer-step-by-step`: PCNE ステップバイステップ実践ガイド。
   - `/app/cisco/ccde/complete-guide`: Cisco CCDE 認定 完全ガイド。
   - `/app/cisco/devnet-professional`: Cisco Certified DevNet Professional 認定 徹底解説ガイド（CSS Modules）。
