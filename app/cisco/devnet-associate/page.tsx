@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import DevNetAssociateGuide from './DevNetAssociateGuide';
 
 export const metadata: Metadata = {
-    title: 'Cisco Certified DevNet Associate (200-901) 試験 完全ガイド | Cloud Infrastructure Studies',
+    title: 'Cisco Certified DevNet Associate (200-901) 試験 完全ガイド',
     description:
         'Cisco Certified DevNet Associate (CCNA Automation / 200-901) 試験の出題領域、各ドメイン解説、学習ロードマップ、参考文献を網羅した初学者向け解説ガイド。',
 };

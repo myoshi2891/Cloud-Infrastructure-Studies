@@ -39,7 +39,7 @@ vi.mock('@/components/MermaidDiagram', () => ({
 describe('CCNA Automation Network Fundamentals Guide - Automated 100% Text & Structure Verification', () => {
     it('identifies the CCNAAUTO 200-901 Network Fundamentals domain in metadata', () => {
         expect(metadata.title).toBe(
-            'CCNAAUTO 200-901 | 6.0 Network Fundamentals 完全対策ガイド | Cloud Infrastructure Studies',
+            'CCNAAUTO 200-901 | 6.0 Network Fundamentals 完全対策ガイド',
         );
         expect(metadata.description).toContain('CCNA Automation 200-901');
         expect(metadata.description).not.toContain('CCNA 200-301');
