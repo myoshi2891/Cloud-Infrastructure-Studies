@@ -376,7 +376,7 @@
     padding: 24px;
 }
 
-.pcne-s3-page .mermaid-wrap :global(svg) {
+.pcne-s3-page .mermaid-wrap svg {
     display: block;
     margin: 0 auto;
     max-width: 100% !important;

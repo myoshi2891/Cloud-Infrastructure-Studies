@@ -355,7 +355,7 @@ export function PcneSection4CdnDnsIpamGuide() {
                         GKE
                         Gatewayでは、Podの再起動・一時的な到達不能に備え<code>serveWhileStale</code>を24時間以上に設定し、<code>requestCoalescing</code>を有効化してオリジンへの同時キャッシュフィルリクエストを集約する。
                     </li><li>
-                        ネガティブキャッシングを活用し、エラーや리다이렉트のレスポンスも適切なTTLでキャッシュしてオリジン負荷を下げる。
+                        ネガティブキャッシングを活用し、エラーやリダイレクトのレスポンスも適切なTTLでキャッシュしてオリジン負荷を下げる。
                     </li><li>
                         TLS Early
                         Data（0-RTT）を有効化し、再開接続のパフォーマンスを30〜50%改善する。

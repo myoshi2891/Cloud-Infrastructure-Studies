@@ -39,7 +39,7 @@ export function PcneSection6NetworkOpsMonitoringGuide() {
                     ロードバランシング)、S4(Section 3 Task 3.2-3.3 CDN・DNS・IPAM)、S5(Section 6
                     ネットワークセキュリティ)の続編として、公式Exam Guide(PDF)の<strong>Section 5「Managing, monitoring, and troubleshooting network
                         operations</strong>」(出題比率約14%)に厳密に対応する範囲を扱います。ユーザー呼称の「S6」は公式セクション番号とは一致しませんが、これまでのシリーズと同じ命名慣行を踏襲しています。
-                </p>{" "}<div className="table-scroll">{" "}<table><thead><tr className="header"><th>本ガイドの構成</th><th>公式Exam GuideのTask</th><th>主な内容</th></tr></thead><tbody><tr className="odd"><td>Part 1</td><td>
+                </p>{" "}<div className="table-scroll">{" "}<table><thead><tr className="header"><th scope="col">本ガイドの構成</th><th scope="col">公式Exam GuideのTask</th><th scope="col">主な内容</th></tr></thead><tbody><tr className="odd"><td>Part 1</td><td>
                                     Task 5.1 Logging and monitoring with Google Cloud Observability
                                 </td><td>
                                     ネットワークコンポーネント別のCloud Loggingログ、Cloud
@@ -109,7 +109,7 @@ export function PcneSection6NetworkOpsMonitoringGuide() {
                 </h4>{" "}<p>
                     VPC Firewall Rules LoggingはCompute Engine
                     VM(GKEノードを含む)への/からのトラフィックを対象とし、ルールが許可または拒否した通信のたびに「接続レコード」というログエントリを生成します。<strong>Allow系ルール</strong>と<strong>Deny系ルール</strong>でログの挙動が大きく異なる点は頻出ポイントです。
-                </p>{" "}<div className="table-scroll">{" "}<table><thead><tr className="header"><th>項目</th><th>Allow + ロギング</th><th>Deny + ロギング</th></tr></thead><tbody><tr className="odd"><td>ログの発生単位</td><td>接続(コネクション)ごとに1回</td><td>一意な5-tupleごとに、パケットが観測されるたびに再発生</td></tr><tr className="even"><td>継続時間中の追加ログ</td><td>
+                </p>{" "}<div className="table-scroll">{" "}<table><thead><tr className="header"><th scope="col">項目</th><th scope="col">Allow + ロギング</th><th scope="col">Deny + ロギング</th></tr></thead><tbody><tr className="odd"><td>ログの発生単位</td><td>接続(コネクション)ごとに1回</td><td>一意な5-tupleごとに、パケットが観測されるたびに再発生</td></tr><tr className="even"><td>継続時間中の追加ログ</td><td>
                                     生成されない(ステートフルなため応答トラフィックは記録されない)
                                 </td><td>パケットが観測される限り約5秒ごとに繰り返し記録される</td></tr><tr className="odd"><td>既存アクティブ接続へのロギング有効化</td><td>
                                     新規ログは即時生成されない。アイドル10分後、新しいパケットが来た時点で記録される
@@ -226,7 +226,7 @@ export function PcneSection6NetworkOpsMonitoringGuide() {
                     draining)を使用します。ドレイニングタイムアウトを設定した状態でインスタンスグループからVMを削除、またはゾーンスコープのNEGからエンドポイントを削除すると、ロードバランサは新規接続を即座に停止しつつ、既存のリクエスト/接続には完了までの猶予を与えます。
                 </p>{" "}
 <Diagram id="diag-8" label="2.1 Application Load Balancerでのトラフィックドレイン・リダイレクト" />
-{" "}<p>ロードバランサの種類によって挙動に差異があります。</p>{" "}<div className="table-scroll">{" "}<table><thead><tr className="header"><th>ロードバランサ種別</th><th>ドレイニング中の挙動</th></tr></thead><tbody><tr className="odd"><td>Application Load Balancer(L7)</td><td>
+{" "}<p>ロードバランサの種類によって挙動に差異があります。</p>{" "}<div className="table-scroll">{" "}<table><thead><tr className="header"><th scope="col">ロードバランサ種別</th><th scope="col">ドレイニング中の挙動</th></tr></thead><tbody><tr className="odd"><td>Application Load Balancer(L7)</td><td>
                                     指定したタイムアウトの間、既存リクエストの完了を待つ。新規リクエストは送られない
                                 </td></tr><tr className="even"><td>Proxy Network Load Balancer</td><td>既存のTCPコネクションはタイムアウト期間中も動作を継続する</td></tr><tr className="odd"><td>内部パススルーNetwork Load Balancer(フェイルオーバー時)</td><td>{" "}<code>disableConnectionDrainOnFailover</code>と<code>dropTrafficIfUnhealthy</code>で挙動を制御。既定のドレイニングタイムアウトは固定10分
                                 </td></tr></tbody></table>{" "}</div>{" "}<p>
@@ -253,7 +253,7 @@ export function PcneSection6NetworkOpsMonitoringGuide() {
                     2.3 Cloud Interconnectの管理とトラブルシューティング
                 </h3>{" "}<p>
                     Cloud Interconnectのトラブルシューティングは、<a href="#132-cloud-interconnectとvlanアタッチメントのメトリクス">1.3.2節</a>で紹介した「物理層・論理層・ルーティング層」の3層モデルに沿って切り分けるのが基本です。
-                </p>{" "}<div className="table-scroll">{" "}<table><thead><tr className="header"><th>症状</th><th>疑うべき層</th><th>確認方法</th></tr></thead><tbody><tr className="odd"><td>接続自体が確立しない/光レベル異常</td><td>物理層</td><td>{" "}<code>gcloud compute interconnects get-diagnostics</code>でTx/Rx光レベルと稼働状態を確認
+                </p>{" "}<div className="table-scroll">{" "}<table><thead><tr className="header"><th scope="col">症状</th><th scope="col">疑うべき層</th><th scope="col">確認方法</th></tr></thead><tbody><tr className="odd"><td>接続自体が確立しない/光レベル異常</td><td>物理層</td><td>{" "}<code>gcloud compute interconnects get-diagnostics</code>でTx/Rx光レベルと稼働状態を確認
                                 </td></tr><tr className="even"><td>特定のVLANアタッチメントだけ帯域が頭打ち</td><td>論理層</td><td>
                                     VLANアタッチメントのMonitoringタブでingress/egress利用率、<code>BANDWIDTH_THROTTLE</code>ドロップの有無を確認(60秒サンプリングのためバーストは見えにくい点に注意)
                                 </td></tr><tr className="odd"><td>経路が広告されない/学習されない</td><td>ルーティング層</td><td>
@@ -275,7 +275,7 @@ export function PcneSection6NetworkOpsMonitoringGuide() {
                     BGPセッションは、確立までに複数の状態を遷移します。試験では状態遷移の理解に加え、「どのログ/メトリクスでどの状態を確認するか」が問われます。
                 </p>{" "}
 <Diagram id="diag-10" label="2.4 Cloud RouterのBGPピアリングのトラブルシューティング" />
-{" "}<p>代表的な障害パターンと対処の要点は次のとおりです。</p>{" "}<div className="table-scroll">{" "}<table><thead><tr className="header"><th>障害パターン</th><th>原因</th><th>対処</th></tr></thead><tbody><tr className="odd"><td>ローカルASNとピアASNの重複</td><td>
+{" "}<p>代表的な障害パターンと対処の要点は次のとおりです。</p>{" "}<div className="table-scroll">{" "}<table><thead><tr className="header"><th scope="col">障害パターン</th><th scope="col">原因</th><th scope="col">対処</th></tr></thead><tbody><tr className="odd"><td>ローカルASNとピアASNの重複</td><td>
                                     同一リージョン・同一ネットワーク内で同じASNを持つオンプレミスデバイスとセッションを試みている
                                 </td><td>Cloud RouterまたはオンプレミスルータのASN設計を見直す</td></tr><tr className="even"><td>MD5認証エラー(<code>MD5_AUTH_INTERNAL_PROBLEM</code>)</td><td>Cloud Router内部でMD5認証設定に失敗(内部エラー)</td><td>通常は自動復旧を待つ(1時間以上続く場合はサポートに連絡)</td></tr><tr className="odd"><td>MD5認証エラー(鍵不一致)</td><td>Cloud Routerとピアの事前共有鍵(認証キー)が一致していない</td><td>認証キーを更新して再同期</td></tr><tr className="even"><td>最大経路数超過によるセッション遮断</td><td>オンプレミスルータが5,000プレフィックスを超えて広告</td><td>{" "}<code>CEASE/MAX_PREFIXES_REACHED</code>ログを確認し、広告プレフィックス数を削減するか、手動でBGPピアリングをリセット
                                 </td></tr><tr className="odd"><td>BGPフラップ(定期的な切断)</td><td>Cloud Routerのソフトウェアメンテナンスイベント</td><td>
@@ -344,7 +344,7 @@ export function PcneSection6NetworkOpsMonitoringGuide() {
                     Insightsがアルファでしたが、現在は6つのモジュールが揃っています。
                 </p>{" "}
 <Diagram id="diag-14" label="3.1 Network Intelligence Centerの全体像" />
-{" "}<p>各モジュールの役割を一言でまとめると次のようになります。</p>{" "}<div className="table-scroll">{" "}<table><thead><tr className="header"><th>モジュール</th><th>主な問い</th><th>分析の性質</th></tr></thead><tbody><tr className="odd"><td>Network Topology</td><td>「今、どこにどれだけのトラフィックが流れているか」</td><td>リアルタイムのテレメトリ + 構成情報の可視化</td></tr><tr className="even"><td>Connectivity Tests</td><td>「AからBへ到達できるか、できないなら何が阻んでいるか」</td><td>構成分析(+一部でデータプレーン検証)</td></tr><tr className="odd"><td>Performance Dashboard</td><td>
+{" "}<p>各モジュールの役割を一言でまとめると次のようになります。</p>{" "}<div className="table-scroll">{" "}<table><thead><tr className="header"><th scope="col">モジュール</th><th scope="col">主な問い</th><th scope="col">分析の性質</th></tr></thead><tbody><tr className="odd"><td>Network Topology</td><td>「今、どこにどれだけのトラフィックが流れているか」</td><td>リアルタイムのテレメトリ + 構成情報の可視化</td></tr><tr className="even"><td>Connectivity Tests</td><td>「AからBへ到達できるか、できないなら何が阻んでいるか」</td><td>構成分析(+一部でデータプレーン検証)</td></tr><tr className="odd"><td>Performance Dashboard</td><td>
                                     「ゾーン/リージョン間のパケットロス・レイテンシはどの程度か」
                                 </td><td>実トラフィックに基づく能動的プロービング</td></tr><tr className="even"><td>Firewall Insights</td><td>「このファイアウォールルールは安全に削除・厳格化できるか」</td><td>ロギングデータ + 機械学習予測</td></tr><tr className="odd"><td>Network Analyzer</td><td>「構成に誤りや非効率はないか」</td><td>構成の自動巡回監視(プッシュ型)</td></tr><tr className="even"><td>Flow Analyzer</td><td>「Flow Logsから見える実際の通信パターンは何か」</td><td>SQLレスなFlow Logs分析(BigQuery基盤)</td></tr></tbody></table>{" "}</div>{" "}<blockquote className="callout callout-source">{" "}<div className="callout-header">{" "}<span className="callout-icon">🔗</span><span className="callout-label">出典</span>{" "}</div>{" "}<ul>{" "}<li>{" "}<a href="https://cloud.google.com/blog/products/networking/announcing-network-intelligence-center">https://cloud.google.com/blog/products/networking/announcing-network-intelligence-center</a>{" "}</li>{" "}<li>{" "}<a href="https://docs.cloud.google.com/network-intelligence-center/docs/overview">https://docs.cloud.google.com/network-intelligence-center/docs/overview</a>{" "}</li>{" "}<li>{" "}<a href="https://docs.cloud.google.com/network-intelligence-center/docs">https://docs.cloud.google.com/network-intelligence-center/docs</a>{" "}</li>{" "}</ul>{" "}</blockquote>{" "}<h3 id="32-network-topology" tabIndex={-1}>3.2 Network Topology</h3>{" "}<p>
                     Network
@@ -358,7 +358,7 @@ export function PcneSection6NetworkOpsMonitoringGuide() {
                     Testsは、送信元と宛先(VM、GKEクラスタ、ロードバランサのフォワーディングルール、インターネット上のIPアドレスなど)を指定し、その間のパケットが実際にどう転送されるかを<strong>シミュレーション</strong>するツールです。分析は2種類に分かれます。
                 </p>{" "}
 <Diagram id="diag-15" label="3.3 Connectivity Tests" />
-{" "}<p>総合到達性の結果は4値のいずれかです。</p>{" "}<div className="table-scroll">{" "}<table><thead><tr className="header"><th>結果</th><th>意味</th></tr></thead><tbody><tr className="odd"><td>Reachable</td><td>現在の構成でトラフィックが送信元から宛先へ到達できる</td></tr><tr className="even"><td>Unreachable</td><td>
+{" "}<p>総合到達性の結果は4値のいずれかです。</p>{" "}<div className="table-scroll">{" "}<table><thead><tr className="header"><th scope="col">結果</th><th scope="col">意味</th></tr></thead><tbody><tr className="odd"><td>Reachable</td><td>現在の構成でトラフィックが送信元から宛先へ到達できる</td></tr><tr className="even"><td>Unreachable</td><td>
                                     経路上のどこかでトラフィックが遮断されている(トレースにドロップ箇所が示される)
                                 </td></tr><tr className="odd"><td>Ambiguous</td><td>
                                     複数トレースの最終状態が混在している(例:

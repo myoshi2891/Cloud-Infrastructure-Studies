@@ -198,7 +198,7 @@
     margin: 56px 0 20px;
     padding-bottom: 12px;
     border-bottom: 1px solid var(--color-border, #16273f);
-    color: #fff;
+    color: var(--color-foreground);
     font-weight: 800;
     scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 24px);
 }
@@ -251,7 +251,7 @@
 }
 
 .pcne-s5-page .main strong {
-    color: #fff;
+    color: var(--color-foreground);
     font-weight: 700;
 }
 
@@ -550,7 +550,7 @@
     top: 1px;
     width: 5px;
     height: 9px;
-    border: solid #07111e;
+    border: solid var(--color-background);
     border-width: 0 2px 2px 0;
     transform: rotate(45deg);
 }

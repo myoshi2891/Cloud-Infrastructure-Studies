@@ -89,8 +89,8 @@ export function PcneSection3LoadBalancingGuide() {
                         <table>
                             <thead>
                                 <tr className="header">
-                                    <th>観点</th>
-                                    <th>内容</th>
+                                    <th scope="col">観点</th>
+                                    <th scope="col">内容</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -187,11 +187,11 @@ export function PcneSection3LoadBalancingGuide() {
                         <table>
                             <thead>
                                 <tr className="header">
-                                    <th>ロードバランサー</th>
-                                    <th>スコープ</th>
-                                    <th>公開範囲</th>
-                                    <th>実装方式</th>
-                                    <th>主なユースケース</th>
+                                    <th scope="col">ロードバランサー</th>
+                                    <th scope="col">スコープ</th>
+                                    <th scope="col">公開範囲</th>
+                                    <th scope="col">実装方式</th>
+                                    <th scope="col">主なユースケース</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -297,10 +297,10 @@ export function PcneSection3LoadBalancingGuide() {
                         <table>
                             <thead>
                                 <tr className="header">
-                                    <th>NEGタイプ</th>
-                                    <th>エンドポイント形式</th>
-                                    <th>主な用途</th>
-                                    <th>制約</th>
+                                    <th scope="col">NEGタイプ</th>
+                                    <th scope="col">エンドポイント形式</th>
+                                    <th scope="col">主な用途</th>
+                                    <th scope="col">制約</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -408,10 +408,10 @@ export function PcneSection3LoadBalancingGuide() {
                         <table>
                             <thead>
                                 <tr className="header">
-                                    <th>バランシングモード</th>
-                                    <th>容量の測定基準</th>
-                                    <th>対応バックエンド</th>
-                                    <th>備考</th>
+                                    <th scope="col">バランシングモード</th>
+                                    <th scope="col">容量の測定基準</th>
+                                    <th scope="col">対応バックエンド</th>
+                                    <th scope="col">備考</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -478,10 +478,10 @@ export function PcneSection3LoadBalancingGuide() {
                         <table>
                             <thead>
                                 <tr className="header">
-                                    <th>アフィニティ種別</th>
-                                    <th>ハッシュ対象</th>
-                                    <th>適したケース</th>
-                                    <th>注意点</th>
+                                    <th scope="col">アフィニティ種別</th>
+                                    <th scope="col">ハッシュ対象</th>
+                                    <th scope="col">適したケース</th>
+                                    <th scope="col">注意点</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -617,9 +617,9 @@ export function PcneSection3LoadBalancingGuide() {
                         <table>
                             <thead>
                                 <tr className="header">
-                                    <th>比較項目</th>
-                                    <th>リージョン内部 Application LB</th>
-                                    <th>クロスリージョン内部 Application LB</th>
+                                    <th scope="col">比較項目</th>
+                                    <th scope="col">リージョン内部 Application LB</th>
+                                    <th scope="col">クロスリージョン内部 Application LB</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -712,15 +712,15 @@ export function PcneSection3LoadBalancingGuide() {
                     <p>
                         この分離により、プラットフォームチームがGatewayのインフラ設定を管理し、アプリケーションチームがクラスタ全体の権限を持たずに自分たちのHTTPRouteだけを管理する、という役割分担が可能になります。GKE
                         Gateway
-                        controllerは常にGCE_VM_IP_PORTゾーンNEGバックエンドを使用し、Ingressと異なりヘルスチェックパラメータを自動推測しないため、明示的なHealthCheckPolicyの設定が必要です。
+                        controllerは常にGCE_VM_IP_PORTゾーンNEGバックエンドを使用します。IngressのようにPodのreadiness probeからパラメータを推測はしませんが、標準パス <code>/</code> と既定値を使うヘルスチェックは自動作成されるため、HealthCheckPolicyは必須ではありません。アプリケーションが <code>/</code> にHTTP 200を返さない場合や、追加のパス、ヘッダー、タイムアウトなどの既定値を変更する場合にのみHealthCheckPolicyを設定します。
                     </p>
                     <div className="table-scroll">
                         <table>
                             <thead>
                                 <tr className="header">
-                                    <th>比較項目</th>
-                                    <th>GKE Ingress controller</th>
-                                    <th>GKE Gateway controller</th>
+                                    <th scope="col">比較項目</th>
+                                    <th scope="col">GKE Ingress controller</th>
+                                    <th scope="col">GKE Gateway controller</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -732,7 +732,7 @@ export function PcneSection3LoadBalancingGuide() {
                                 <tr className="even">
                                     <td>実装されるLB</td>
                                     <td>常にClassic Application Load Balancer</td>
-                                    <td>GatewayClasseに応じて外部/内部・global/regionalを選択可能</td>
+                                    <td>GatewayClassに応じて外部/内部・global/regionalを選択可能</td>
                                 </tr>
                                 <tr className="odd">
                                     <td>リソース構成</td>
@@ -752,7 +752,7 @@ export function PcneSection3LoadBalancingGuide() {
                                 <tr className="even">
                                     <td>ヘルスチェック</td>
                                     <td>パラメータを自動推測</td>
-                                    <td>HealthCheckPolicyによる明示設定が必要</td>
+                                    <td>標準の <code>/</code> と既定ポリシーを自動作成。追加パス・ヘッダー・タイムアウトなどを変更する場合のみHealthCheckPolicyを使用</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -872,8 +872,8 @@ export function PcneSection3LoadBalancingGuide() {
                     <div className="checklist-card">
                         <div className="checklist-header">
                             <span className="checklist-title">チェックリスト</span>
-                            <span className="checklist-counter" data-total="10">
-                                {completedCount} / 10 完了
+                            <span className="checklist-counter" data-total={CHECKLIST_ITEMS.length}>
+                                {completedCount} / {CHECKLIST_ITEMS.length} 完了
                             </span>
                         </div>
                         <ul className="task-list">

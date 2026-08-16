@@ -61,7 +61,11 @@ export function NavBar({ isOpen, onToggle, onClose }: NavBarProps) {
             const target = document.getElementById(id);
             if (target) {
                 target.scrollIntoView({ behavior: 'smooth' });
-                target.focus();
+                // 見出し要素は既定でフォーカス不可のため、-1 を付与して
+                // スクリーンリーダーのフォーカスを移動させる（Tab 順には入れない）
+                target.tabIndex = -1;
+                // 既定の focus() は同期スクロールを伴い smooth スクロールを打ち消す
+                target.focus({ preventScroll: true });
                 window.history.pushState(null, '', `#${id}`);
             }
         },

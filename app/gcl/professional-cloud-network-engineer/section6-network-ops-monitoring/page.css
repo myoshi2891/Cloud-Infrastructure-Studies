@@ -1,5 +1,15 @@
 /* PCNE Section 6: ネットワーク操作と監視 ページスタイル (元HTMLのデザインを100%完全移植) */
 
+/*
+ * TODO(技術的負債): 以下 .pcne-s6-page 内でスコープ定義しているカスタムプロパティ
+ * (--bg / --bg-elev / --bg-elev-2 / --border / --border-soft / --text / --text-dim /
+ *  --text-faint / --accent / --accent-soft / --accent-2 / --warn / --warn-soft /
+ *  --good / --good-soft / --source / --source-soft / --sidebar-w) は、
+ * CLAUDE.md の「コンポーネントレベルの CSS 内で新たなカスタムプロパティを定義することは禁止」
+ * に反する。Section 3 と同様に app/globals.css の @theme へ --color-pcne-s6-* として移し、
+ * 本ファイルの参照を var(--color-pcne-s6-*) へ置き換えること。
+ * なお --header-h / --disclaimer-height はグローバル定義済みの承認済みトークンであり対象外。
+ */
 .pcne-s6-page {
     --bg: #07111e;
     --bg-elev: #0d1a2c;
@@ -253,7 +263,6 @@
     font-size: 26px;
     font-weight: 700;
     margin: 56px 0 20px 0;
-    padding-top: 8px;
     color: var(--text);
     scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 24px);
     border-top: 1px solid var(--border-soft);

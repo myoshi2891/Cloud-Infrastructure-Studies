@@ -69,9 +69,9 @@ export function PcneSection5NetworkSecurityGuide() {
                     <table>
                         <thead>
                             <tr className="header">
-                                <th>Exam Guide タスク番号</th>
-                                <th>原文タイトル</th>
-                                <th>本ガイドでの構成</th>
+                                <th scope="col">Exam Guide タスク番号</th>
+                                <th scope="col">原文タイトル</th>
+                                <th scope="col">本ガイドでの構成</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -145,10 +145,10 @@ export function PcneSection5NetworkSecurityGuide() {
                     <table>
                         <thead>
                             <tr className="header">
-                                <th>ポリシー種別</th>
-                                <th>type フラグ</th>
-                                <th>アタッチ先</th>
-                                <th>主な用途</th>
+                                <th scope="col">ポリシー種別</th>
+                                <th scope="col">type フラグ</th>
+                                <th scope="col">アタッチ先</th>
+                                <th scope="col">主な用途</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -189,8 +189,8 @@ export function PcneSection5NetworkSecurityGuide() {
                     <table>
                         <thead>
                             <tr className="header">
-                                <th>ロードバランサー種別</th>
-                                <th>Cloud Armor(バックエンドポリシー)対応</th>
+                                <th scope="col">ロードバランサー種別</th>
+                                <th scope="col">Cloud Armor(バックエンドポリシー)対応</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -255,8 +255,8 @@ export function PcneSection5NetworkSecurityGuide() {
                     <table>
                         <thead>
                             <tr className="header">
-                                <th>アクション</th>
-                                <th>説明</th>
+                                <th scope="col">アクション</th>
+                                <th scope="col">説明</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -326,8 +326,8 @@ export function PcneSection5NetworkSecurityGuide() {
                     <table>
                         <thead>
                             <tr className="header">
-                                <th>感度レベル</th>
-                                <th>特性</th>
+                                <th scope="col">感度レベル</th>
+                                <th scope="col">特性</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -405,9 +405,9 @@ export function PcneSection5NetworkSecurityGuide() {
                     <table>
                         <thead>
                             <tr className="header">
-                                <th>項目</th>
-                                <th>標準ネットワークDDoS防御</th>
-                                <th>高度なネットワークDDoS防御</th>
+                                <th scope="col">項目</th>
+                                <th scope="col">標準ネットワークDDoS防御</th>
+                                <th scope="col">高度なネットワークDDoS防御</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -476,8 +476,8 @@ export function PcneSection5NetworkSecurityGuide() {
                     <table>
                         <thead>
                             <tr className="header">
-                                <th>項目</th>
-                                <th>内容</th>
+                                <th scope="col">項目</th>
+                                <th scope="col">内容</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -540,8 +540,8 @@ export function PcneSection5NetworkSecurityGuide() {
                     <table>
                         <thead>
                             <tr className="header">
-                                <th>アクション</th>
-                                <th>動作</th>
+                                <th scope="col">アクション</th>
+                                <th scope="col">動作</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -613,8 +613,8 @@ export function PcneSection5NetworkSecurityGuide() {
                     <table>
                         <thead>
                             <tr className="header">
-                                <th>カテゴリ(フィード)</th>
-                                <th>説明</th>
+                                <th scope="col">カテゴリ(フィード)</th>
+                                <th scope="col">説明</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -663,8 +663,8 @@ export function PcneSection5NetworkSecurityGuide() {
                     <table>
                         <thead>
                             <tr className="header">
-                                <th>領域</th>
-                                <th>ベストプラクティス</th>
+                                <th scope="col">領域</th>
+                                <th scope="col">ベストプラクティス</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -735,11 +735,11 @@ export function PcneSection5NetworkSecurityGuide() {
                     <table>
                         <thead>
                             <tr className="header">
-                                <th>ポリシー種別</th>
-                                <th>適用範囲</th>
-                                <th>Secure Tags対応</th>
-                                <th>Network Tags対応</th>
-                                <th>課金(有料機能利用時)</th>
+                                <th scope="col">ポリシー種別</th>
+                                <th scope="col">適用範囲</th>
+                                <th scope="col">Secure Tags対応</th>
+                                <th scope="col">Network Tags対応</th>
+                                <th scope="col">課金(有料機能利用時)</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -825,9 +825,9 @@ export function PcneSection5NetworkSecurityGuide() {
                     <table>
                         <thead>
                             <tr className="header">
-                                <th>適用順序</th>
-                                <th>デフォルト</th>
-                                <th>説明</th>
+                                <th scope="col">適用順序</th>
+                                <th scope="col">デフォルト</th>
+                                <th scope="col">説明</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -868,9 +868,9 @@ export function PcneSection5NetworkSecurityGuide() {
                     <table>
                         <thead>
                             <tr className="header">
-                                <th>トラフィック方向</th>
-                                <th>ターゲット</th>
-                                <th>暗黙のアクション</th>
+                                <th scope="col">トラフィック方向</th>
+                                <th scope="col">ターゲット</th>
+                                <th scope="col">暗黙のアクション</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -968,9 +968,9 @@ export function PcneSection5NetworkSecurityGuide() {
                     <table>
                         <thead>
                             <tr className="header">
-                                <th>ティア</th>
-                                <th>主な機能</th>
-                                <th>課金対象トラフィック</th>
+                                <th scope="col">ティア</th>
+                                <th scope="col">主な機能</th>
+                                <th scope="col">課金対象トラフィック</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -1047,8 +1047,8 @@ export function PcneSection5NetworkSecurityGuide() {
                     <table>
                         <thead>
                             <tr className="header">
-                                <th>構成要素</th>
-                                <th>役割</th>
+                                <th scope="col">構成要素</th>
+                                <th scope="col">役割</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -1144,8 +1144,8 @@ export function PcneSection5NetworkSecurityGuide() {
                     <table>
                         <thead>
                             <tr className="header">
-                                <th>基準</th>
-                                <th>説明</th>
+                                <th scope="col">基準</th>
+                                <th scope="col">説明</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -1225,9 +1225,9 @@ export function PcneSection5NetworkSecurityGuide() {
                     <table>
                         <thead>
                             <tr className="header">
-                                <th>項目</th>
-                                <th>Secure Tags(IAM-governed tags)</th>
-                                <th>Network Tags(従来のタグ)</th>
+                                <th scope="col">項目</th>
+                                <th scope="col">Secure Tags(IAM-governed tags)</th>
+                                <th scope="col">Network Tags(従来のタグ)</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -1293,9 +1293,9 @@ export function PcneSection5NetworkSecurityGuide() {
                     <table>
                         <thead>
                             <tr className="header">
-                                <th>ロギング種別</th>
-                                <th>対象</th>
-                                <th>主な用途</th>
+                                <th scope="col">ロギング種別</th>
+                                <th scope="col">対象</th>
+                                <th scope="col">主な用途</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -1391,8 +1391,8 @@ export function PcneSection5NetworkSecurityGuide() {
                     <table>
                         <thead>
                             <tr className="header">
-                                <th>ワークロード種別</th>
-                                <th>対応内容</th>
+                                <th scope="col">ワークロード種別</th>
+                                <th scope="col">対応内容</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -1448,8 +1448,8 @@ export function PcneSection5NetworkSecurityGuide() {
                     <table>
                         <thead>
                             <tr className="header">
-                                <th>領域</th>
-                                <th>ベストプラクティス</th>
+                                <th scope="col">領域</th>
+                                <th scope="col">ベストプラクティス</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -1527,10 +1527,10 @@ export function PcneSection5NetworkSecurityGuide() {
                     <table>
                         <thead>
                             <tr className="header">
-                                <th>割り当て方式</th>
-                                <th>動作</th>
-                                <th>予測可能性</th>
-                                <th>主な用途</th>
+                                <th scope="col">割り当て方式</th>
+                                <th scope="col">動作</th>
+                                <th scope="col">予測可能性</th>
+                                <th scope="col">主な用途</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -1586,9 +1586,9 @@ export function PcneSection5NetworkSecurityGuide() {
                     <table>
                         <thead>
                             <tr className="header">
-                                <th>割り当て方式</th>
-                                <th>動作</th>
-                                <th>デフォルト値</th>
+                                <th scope="col">割り当て方式</th>
+                                <th scope="col">動作</th>
+                                <th scope="col">デフォルト値</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -1649,8 +1649,8 @@ export function PcneSection5NetworkSecurityGuide() {
                     <table>
                         <thead>
                             <tr className="header">
-                                <th>デプロイモード</th>
-                                <th>説明</th>
+                                <th scope="col">デプロイモード</th>
+                                <th scope="col">説明</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -1710,8 +1710,8 @@ export function PcneSection5NetworkSecurityGuide() {
                     <table>
                         <thead>
                             <tr className="header">
-                                <th>属性カテゴリ</th>
-                                <th>利用可能な識別子</th>
+                                <th scope="col">属性カテゴリ</th>
+                                <th scope="col">利用可能な識別子</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -1778,8 +1778,8 @@ export function PcneSection5NetworkSecurityGuide() {
                     <table>
                         <thead>
                             <tr className="header">
-                                <th>領域</th>
-                                <th>ベストプラクティス</th>
+                                <th scope="col">領域</th>
+                                <th scope="col">ベストプラクティス</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -1884,8 +1884,8 @@ export function PcneSection5NetworkSecurityGuide() {
                     <table>
                         <thead>
                             <tr className="header">
-                                <th>用途</th>
-                                <th>説明</th>
+                                <th scope="col">用途</th>
+                                <th scope="col">説明</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -1967,8 +1967,8 @@ export function PcneSection5NetworkSecurityGuide() {
                     <table>
                         <thead>
                             <tr className="header">
-                                <th>項目</th>
-                                <th>仕様</th>
+                                <th scope="col">項目</th>
+                                <th scope="col">仕様</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -2043,8 +2043,8 @@ export function PcneSection5NetworkSecurityGuide() {
                     <table>
                         <thead>
                             <tr className="header">
-                                <th>コンポーネント</th>
-                                <th>役割</th>
+                                <th scope="col">コンポーネント</th>
+                                <th scope="col">役割</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -2134,8 +2134,8 @@ export function PcneSection5NetworkSecurityGuide() {
                     <table>
                         <thead>
                             <tr className="header">
-                                <th>設定項目</th>
-                                <th>内容</th>
+                                <th scope="col">設定項目</th>
+                                <th scope="col">内容</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -2206,8 +2206,8 @@ export function PcneSection5NetworkSecurityGuide() {
                     <table>
                         <thead>
                             <tr className="header">
-                                <th>領域</th>
-                                <th>ベストプラクティス</th>
+                                <th scope="col">領域</th>
+                                <th scope="col">ベストプラクティス</th>
                             </tr>
                         </thead>
                         <tbody>

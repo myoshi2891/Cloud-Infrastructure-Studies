@@ -149,23 +149,23 @@ export const DIAGRAMS: Record<DiagramId, string> = {
     style Done2 fill:#f9ab00,color:#000`,
 
     'diag-9': `sequenceDiagram
-    participant VM as "送信元VM"
-    participant FW as "ファイアウォール<br/>ポリシールール"
-    participant EP as "ファイアウォール<br/>エンドポイント"
-    participant CAS as "Certificate Authority<br/>Service(CAS)"
-    participant SPG as "セキュリティプロファイル<br/>グループ(URL Filter/IDPS)"
-    participant Dest as "宛先"
+    participant VM as 送信元VM
+    participant FW as ファイアウォール<br/>ポリシールール
+    participant EP as ファイアウォール<br/>エンドポイント
+    participant CAS as Certificate Authority<br/>Service(CAS)
+    participant SPG as セキュリティプロファイル<br/>グループ(URL Filter/IDPS)
+    participant Dest as 宛先
 
-    VM->>FW: "TLS/HTTP(S) トラフィック"
-    FW->>FW: "apply_security_profile_group<br/>ルールにマッチ"
-    FW->>EP: "トラフィックを転送"
-    EP->>CAS: "中間証明書を要求(TLS Inspection時)"
-    CAS-->>EP: "短命の中間証明書を発行"
-    EP->>EP: "TLSを復号し、<br/>URLフィルタリング/IDPSを実行"
-    alt "検査結果: 許可"
-        EP->>Dest: "再暗号化して転送"
-    else "検査結果: 拒否"
-        EP->>VM: "接続を切断"
+    VM->>FW: TLS/HTTP(S) トラフィック
+    FW->>FW: apply_security_profile_group<br/>ルールにマッチ
+    FW->>EP: トラフィックを転送
+    EP->>CAS: 中間証明書を要求(TLS Inspection時)
+    CAS-->>EP: 短命の中間証明書を発行
+    EP->>EP: TLSを復号し、<br/>URLフィルタリング/IDPSを実行
+    alt 検査結果: 許可
+        EP->>Dest: 再暗号化して転送
+    else 検査結果: 拒否
+        EP->>VM: 接続を切断
     end`,
 
     'diag-10': `flowchart TD
@@ -199,24 +199,24 @@ export const DIAGRAMS: Record<DiagramId, string> = {
     style Dynamic fill:#188038,color:#fff`,
 
     'diag-12': `sequenceDiagram
-    participant VM as "VM / コンテナ / サーバーレス"
-    participant SWP as "Secure Web Proxy<br/>(Envoyプロキシプール)"
-    participant CAS as "Certificate Authority<br/>Service"
-    participant Ext as "外部Webサイト"
+    participant VM as VM / コンテナ / サーバーレス
+    participant SWP as Secure Web Proxy<br/>(Envoyプロキシプール)
+    participant CAS as Certificate Authority<br/>Service
+    participant Ext as 外部Webサイト
 
-    VM->>SWP: "明示的プロキシ経由でHTTPS接続要求"
-    SWP->>SWP: "ポリシー評価:<br/>送信元(Tag/SA)・宛先(URL)・<br/>リクエスト属性をマッチング"
-    alt "TLS Inspection有効"
-        SWP->>CAS: "証明書を要求"
-        CAS-->>SWP: "証明書を発行"
-        SWP->>SWP: "TLSを復号し、<br/>URLパス/ヘッダーを検査"
+    VM->>SWP: 明示的プロキシ経由でHTTPS接続要求
+    SWP->>SWP: ポリシー評価:<br/>送信元(Tag/SA)・宛先(URL)・<br/>リクエスト属性をマッチング
+    alt TLS Inspection有効
+        SWP->>CAS: 証明書を要求
+        CAS-->>SWP: 証明書を発行
+        SWP->>SWP: TLSを復号し、<br/>URLパス/ヘッダーを検査
     end
-    alt "ポリシーで許可"
-        SWP->>Ext: "新規TCP接続を作成し転送"
-        Ext-->>SWP: "レスポンス"
-        SWP-->>VM: "レスポンスを返却"
-    else "ポリシーで拒否"
-        SWP-->>VM: "接続拒否 + Cloud Loggingへ記録"
+    alt ポリシーで許可
+        SWP->>Ext: 新規TCP接続を作成し転送
+        Ext-->>SWP: レスポンス
+        SWP-->>VM: レスポンスを返却
+    else ポリシーで拒否
+        SWP-->>VM: 接続拒否 + Cloud Loggingへ記録
     end`,
 
     'diag-13': `flowchart TB
