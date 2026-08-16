@@ -17,25 +17,69 @@ const sectionIds = [
 ] as const;
 
 /**
+ * ページ高が安定するまで待機します。
+ *
+ * @remarks
+ * Mermaid 図は非同期に描画されるため、読み込み直後に測った座標はレンダリング完了後には
+ * 無効になります（実測でページ高が 17000px → 22500px まで伸びる）。スクロール位置を
+ * 計算する前に必ず本関数で安定を待ちます。
+ */
+async function waitForLayoutSettled(page: import('@playwright/test').Page) {
+    let previousHeight = -1;
+    let stableCount = 0;
+    const deadline = Date.now() + 30_000;
+
+    while (Date.now() < deadline) {
+        const height = await page.evaluate(() => document.body.scrollHeight);
+        stableCount = height === previousHeight ? stableCount + 1 : 0;
+        previousHeight = height;
+        if (stableCount >= 4) return;
+        await page.waitForTimeout(150);
+    }
+    throw new Error('ページ高が安定しませんでした');
+}
+
+/**
  * 指定したセクションを、ビューポート高の20〜30%にある検出帯の中央へ移動します。
  *
  * @param sectionId 移動対象のセクションID
- * @remarks `window.scrollTo` によりページのスクロール位置を変更します。
+ * @remarks
+ * `window.scrollTo` によりページのスクロール位置を変更します。CSS の
+ * `scroll-behavior: smooth` を打ち消すため `behavior: 'instant'` を指定し、
+ * 到達を実測で確認してから戻ります。ページ末尾のセクションは検出帯まで
+ * スクロールできないため、スクロール下限に達した時点で完了とみなします。
  */
 async function positionSectionInDetectionBand(
     page: import('@playwright/test').Page,
     sectionId: (typeof sectionIds)[number],
 ) {
-    await page.evaluate((id) => {
-        const section = document.getElementById(id);
-        if (!section) throw new Error(`Expected section #${id}`);
+    await waitForLayoutSettled(page);
 
-        const bandTop = window.innerHeight * 0.2;
-        const bandBottom = window.innerHeight * 0.3;
-        const bandCenter = (bandTop + bandBottom) / 2;
-        const sectionTop = window.scrollY + section.getBoundingClientRect().top;
-        window.scrollTo(0, sectionTop - bandCenter);
-    }, sectionId);
+    const deadline = Date.now() + 15_000;
+    while (Date.now() < deadline) {
+        const positioned = await page.evaluate((id) => {
+            const section = document.getElementById(id);
+            if (!section) throw new Error(`Expected section #${id}`);
+
+            const bandTop = window.innerHeight * 0.2;
+            const bandBottom = window.innerHeight * 0.3;
+            const bandCenter = (bandTop + bandBottom) / 2;
+            const delta = section.getBoundingClientRect().top - bandCenter;
+
+            // ページ末尾のセクションは検出帯の中央まで持ち上げられないため、
+            // スクロール下限に到達していれば到達済みとみなす
+            const atBottom =
+                window.scrollY + window.innerHeight >= document.body.scrollHeight - 1;
+            if (Math.abs(delta) <= 2 || atBottom) return true;
+
+            window.scrollTo({ top: window.scrollY + delta, behavior: 'instant' });
+            return false;
+        }, sectionId);
+
+        if (positioned) return;
+        await page.waitForTimeout(100);
+    }
+    throw new Error(`#${sectionId} を検出帯へ配置できませんでした`);
 }
 
 test.describe('CCNA Automation Network Fundamentals 完全自動視覚 & 動的スクロール検証', () => {

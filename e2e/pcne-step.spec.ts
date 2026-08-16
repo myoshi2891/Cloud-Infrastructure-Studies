@@ -15,9 +15,9 @@ test.describe('PCNE Step-by-Step ページ', () => {
 
     test('主要セクションが表示されること', async ({ page }) => {
         // 各セクションの見出しなどを検証
-        await expect(page.locator('h2', { hasText: '1. VPCの設計・実装・管理' })).toBeVisible();
-        await expect(page.locator('h2', { hasText: '2. ハイブリッド接続の設計・実装' })).toBeVisible();
-        await expect(page.locator('h2', { hasText: '3. ネットワークサービスの設計・実装' })).toBeVisible();
+        await expect(page.locator('h2', { hasText: 'VPCネットワークの設計と計画' })).toBeVisible();
+        await expect(page.locator('h2', { hasText: 'VPCネットワークの実装' })).toBeVisible();
+        await expect(page.locator('h2', { hasText: 'マネージドネットワークサービスの構成' })).toBeVisible();
     });
 
     test('コンソールエラーがないこと', async ({ page }) => {
