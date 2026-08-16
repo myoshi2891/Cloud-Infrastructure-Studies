@@ -12,8 +12,10 @@ import {
     squash,
 } from '@/__tests__/gcl/agwa/migration-test-utils';
 
-// MermaidDiagram は名前付きエクスポート。
-vi.mock('@/components/MermaidDiagram', () => ({ MermaidDiagram: MermaidDiagramMock }));
+vi.mock('@/components/MermaidDiagram', async () => {
+    const { MermaidDiagramMock } = await import('@/__tests__/gcl/agwa/migration-test-utils');
+    return { MermaidDiagram: MermaidDiagramMock };
+});
 
 describe('PCNE Section 5 — ネットワークセキュリティの設計と実装 全量移行検証', () => {
     const renderPage = () => {

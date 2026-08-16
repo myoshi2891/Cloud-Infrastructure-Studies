@@ -1,0 +1,588 @@
+/* PCNE Section 5: ネットワークセキュリティの設計と実装 ページスタイル */
+
+.pcne-s5-page {
+    display: block;
+    min-height: 100vh;
+    background: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-body, var(--font-sans, system-ui, sans-serif));
+    line-height: 1.85;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+}
+
+.pcne-s5-page * {
+    box-sizing: border-box;
+}
+
+/* ---------------- Sidebar ---------------- */
+.pcne-s5-page .sidebar {
+    position: fixed;
+    top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px));
+    left: 0;
+    bottom: 0;
+    width: 280px;
+    overflow-y: auto;
+    background: var(--color-surface, #0d1b2e);
+    border-right: 1px solid var(--color-border, #1e3252);
+    padding: 28px 0 40px;
+    z-index: 40;
+}
+
+.pcne-s5-page .sidebar-brand {
+    padding: 0 22px 20px;
+    border-bottom: 1px solid var(--color-border, #1e3252);
+    margin-bottom: 14px;
+}
+
+.pcne-s5-page .sidebar-brand .kicker {
+    display: block;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: var(--color-google-blue, #7c9eff);
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.pcne-s5-page .sidebar-brand .title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--color-foreground);
+    line-height: 1.5;
+}
+
+.pcne-s5-page .nav-list,
+.pcne-s5-page .nav-sub {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.pcne-s5-page .nav-list {
+    padding: 0 10px;
+}
+
+.pcne-s5-page .nav-h2 {
+    margin-top: 6px;
+}
+
+.pcne-s5-page .nav-list > .nav-h2 > a {
+    font-weight: 700;
+    color: var(--color-foreground);
+    font-size: 13.5px;
+}
+
+.pcne-s5-page .nav-list a {
+    display: block;
+    padding: 7px 12px;
+    border-radius: 8px;
+    color: var(--color-muted-foreground, #becce2);
+    text-decoration: none;
+    font-size: 13px;
+    line-height: 1.5;
+    transition: background 0.15s, color 0.15s;
+}
+
+.pcne-s5-page .nav-sub a {
+    padding-left: 24px;
+    font-size: 12.5px;
+}
+
+.pcne-s5-page .nav-list a:hover {
+    background: var(--color-border, #16273f);
+    color: var(--color-foreground);
+}
+
+.pcne-s5-page .nav-list a.active {
+    background: rgba(124, 158, 255, 0.15);
+    color: var(--color-google-blue, #a5c0ff);
+    font-weight: 700;
+}
+
+.pcne-s5-page .sidebar-toggle {
+    display: none;
+    position: fixed;
+    top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 14px);
+    left: 14px;
+    z-index: 45;
+    background: var(--color-card, #101f34);
+    border: 1px solid var(--color-border, #1e3252);
+    color: var(--color-foreground);
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+/* ---------------- Main ---------------- */
+.pcne-s5-page .main {
+    margin-left: 280px;
+    width: calc(100% - 280px);
+    max-width: none;
+    padding: 56px 64px 100px;
+}
+
+.pcne-s5-page .hero {
+    margin-bottom: 40px;
+}
+
+.pcne-s5-page .hero .kicker {
+    display: inline-block;
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    color: var(--color-google-blue, #7c9eff);
+    font-weight: 700;
+    margin-bottom: 14px;
+}
+
+.pcne-s5-page .hero h1 {
+    font-size: 34px;
+    line-height: 1.4;
+    margin: 0 0 20px;
+    background: linear-gradient(90deg, #ffffff, var(--color-google-blue, #a5c0ff));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 800;
+}
+
+.pcne-s5-page .meta-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 22px;
+}
+
+.pcne-s5-page .meta-badge {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    background: var(--color-card, #101f34);
+    border: 1px solid var(--color-border, #1e3252);
+    border-radius: 10px;
+    padding: 10px 16px;
+    min-width: 160px;
+}
+
+.pcne-s5-page .meta-badge .label {
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
+    color: var(--color-muted-foreground, #9fb7df);
+}
+
+.pcne-s5-page .meta-badge .value {
+    font-size: 13px;
+    color: var(--color-foreground);
+    font-weight: 600;
+}
+
+.pcne-s5-page .hero-note {
+    background: var(--color-card, #101f34);
+    border: 1px solid var(--color-border, #1e3252);
+    border-left: 3px solid var(--color-google-blue, #7c9eff);
+    border-radius: 10px;
+    padding: 16px 20px;
+    color: var(--color-muted-foreground, #becce2);
+    font-size: 14px;
+    line-height: 1.9;
+}
+
+.pcne-s5-page .hero-note strong {
+    color: var(--color-foreground);
+}
+
+/* ---------------- Prose ---------------- */
+.pcne-s5-page .main h2 {
+    font-size: 24px;
+    margin: 56px 0 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--color-border, #16273f);
+    color: #fff;
+    font-weight: 800;
+    scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 24px);
+}
+
+.pcne-s5-page .main h3 {
+    font-size: 19px;
+    margin: 40px 0 16px;
+    color: var(--color-google-blue, #a5c0ff);
+    font-weight: 700;
+    scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 24px);
+}
+
+.pcne-s5-page .main h4 {
+    font-size: 15.5px;
+    color: var(--color-foreground);
+    font-weight: 700;
+    margin: 0 0 10px;
+}
+
+.pcne-s5-page .main p {
+    margin: 0 0 18px;
+    color: var(--color-foreground);
+}
+
+.pcne-s5-page .main ul,
+.pcne-s5-page .main ol {
+    margin: 0 0 18px;
+    padding-left: 26px;
+    color: var(--color-foreground);
+}
+
+.pcne-s5-page .main li {
+    margin-bottom: 6px;
+}
+
+.pcne-s5-page .main hr {
+    border: none;
+    border-top: 1px solid var(--color-border, #16273f);
+    margin: 48px 0;
+}
+
+.pcne-s5-page .main a {
+    color: var(--color-google-blue, #7c9eff);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+}
+
+.pcne-s5-page .main a:hover {
+    border-bottom-color: var(--color-google-blue, #7c9eff);
+}
+
+.pcne-s5-page .main strong {
+    color: #fff;
+    font-weight: 700;
+}
+
+.pcne-s5-page code:not(pre code) {
+    background: var(--color-card, #101f34);
+    border: 1px solid var(--color-border, #1e3252);
+    border-radius: 5px;
+    padding: 2px 6px;
+    font-family: var(--font-mono, monospace);
+    font-size: 0.87em;
+    color: var(--color-google-blue, #a5c0ff);
+    overflow-wrap: anywhere;
+}
+
+/* ---------------- Blockquote callouts ---------------- */
+.pcne-s5-page blockquote {
+    margin: 0 0 22px;
+    padding: 14px 20px;
+    background: var(--color-card, #101f34);
+    border: 1px solid var(--color-border, #1e3252);
+    border-left: 3px solid var(--color-google-blue, #7c9eff);
+    border-radius: 10px;
+    color: var(--color-muted-foreground, #becce2);
+    font-size: 14.5px;
+}
+
+.pcne-s5-page blockquote p {
+    margin: 0;
+    color: inherit;
+}
+
+.pcne-s5-page blockquote p strong:first-child,
+.pcne-s5-page blockquote p:first-child {
+    color: var(--color-foreground);
+}
+
+.pcne-s5-page blockquote.cite {
+    border-left-color: var(--color-google-green, #4ade80);
+}
+
+.pcne-s5-page blockquote.cite strong:first-child {
+    color: var(--color-google-green, #4ade80);
+}
+
+.pcne-s5-page blockquote.practice {
+    border-left-color: var(--color-google-blue, #7c9eff);
+}
+
+.pcne-s5-page blockquote.practice strong:first-child {
+    color: var(--color-google-blue, #a5c0ff);
+}
+
+.pcne-s5-page blockquote.caution {
+    border-left-color: var(--color-google-red, #f87171);
+}
+
+.pcne-s5-page blockquote.caution strong:first-child {
+    color: var(--color-google-red, #f87171);
+}
+
+/* ---------------- Tables ---------------- */
+.pcne-s5-page .table-scroll {
+    overflow-x: auto;
+    margin: 0 0 24px;
+    border-radius: 10px;
+    border: 1px solid var(--color-border, #1e3252);
+}
+
+.pcne-s5-page table {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 560px;
+    font-size: 13.5px;
+}
+
+.pcne-s5-page th,
+.pcne-s5-page td {
+    padding: 11px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--color-border, #16273f);
+    overflow-wrap: anywhere;
+}
+
+.pcne-s5-page th {
+    background: var(--color-surface, #0d1b2e);
+    color: var(--color-google-blue, #a5c0ff);
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.pcne-s5-page tr:last-child td {
+    border-bottom: none;
+}
+
+.pcne-s5-page tbody tr:hover {
+    background: var(--color-border, #16273f);
+}
+
+/* ---------------- Code blocks ---------------- */
+.pcne-s5-page .code-block {
+    background: var(--color-gcp-code-background, #0a1626);
+    border: 1px solid var(--color-border, #1e3252);
+    border-radius: 10px;
+    padding: 18px 20px;
+    overflow-x: auto;
+    margin: 0 0 24px;
+    font-size: 13px;
+    font-family: var(--font-mono, monospace);
+}
+
+.pcne-s5-page .code-line {
+    white-space: pre;
+    line-height: 1.6;
+}
+
+.pcne-s5-page .hljs-keyword,
+.pcne-s5-page .hljs-built_in {
+    color: #c792ea;
+}
+
+.pcne-s5-page .hljs-string {
+    color: #a5d6a7;
+}
+
+.pcne-s5-page .hljs-comment {
+    color: var(--color-muted-foreground, #9fb7df);
+    font-style: italic;
+}
+
+.pcne-s5-page .hljs-number,
+.pcne-s5-page .hljs-literal {
+    color: #f78c6c;
+}
+
+.pcne-s5-page .hljs-title,
+.pcne-s5-page .hljs-name,
+.pcne-s5-page .hljs-attr {
+    color: #82aaff;
+}
+
+.pcne-s5-page .hljs-variable,
+.pcne-s5-page .hljs-template-variable {
+    color: #f07178;
+}
+
+/* ---------------- Mermaid ---------------- */
+.pcne-s5-page .mermaid-wrap {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    overflow-x: auto;
+    background: var(--color-card, #101f34);
+    border: 1px solid var(--color-border, #1e3252);
+    border-radius: 12px;
+    padding: 28px 20px;
+    margin: 1.5rem auto 2rem;
+}
+
+/* ---------------- Reference card grid ---------------- */
+.pcne-s5-page .ref-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin: 0 0 24px;
+}
+
+.pcne-s5-page .ref-card {
+    background: var(--color-card, #101f34);
+    border: 1px solid var(--color-border, #1e3252);
+    border-radius: 12px;
+    padding: 18px 20px;
+    min-width: 0;
+}
+
+.pcne-s5-page .ref-card h4 {
+    color: var(--color-google-blue, #a5c0ff);
+    margin-bottom: 12px;
+    font-size: 14px;
+}
+
+.pcne-s5-page .ref-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.pcne-s5-page .ref-card li {
+    margin-bottom: 2px;
+}
+
+.pcne-s5-page .ref-card a {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    padding: 7px 8px;
+    border-radius: 6px;
+    color: var(--color-muted-foreground, #becce2);
+    font-size: 13px;
+    border-bottom: none;
+    overflow-wrap: anywhere;
+    min-width: 0;
+}
+
+.pcne-s5-page .ref-card a:hover {
+    background: var(--color-border, #16273f);
+    color: var(--color-foreground);
+}
+
+.pcne-s5-page .ref-icon {
+    color: var(--color-google-blue, #7c9eff);
+    flex-shrink: 0;
+    font-size: 11px;
+}
+
+/* ---------------- Checklist cards ---------------- */
+.pcne-s5-page .checklist-card {
+    background: var(--color-card, #101f34);
+    border: 1px solid var(--color-border, #1e3252);
+    border-radius: 12px;
+    padding: 18px 22px 10px;
+    margin: 0 0 20px;
+}
+
+.pcne-s5-page .checklist-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--color-border, #16273f);
+}
+
+.pcne-s5-page .checklist-card-header h4 {
+    margin: 0;
+    color: var(--color-foreground);
+}
+
+.pcne-s5-page .checklist-counter {
+    font-size: 12px;
+    color: var(--color-google-blue, #a5c0ff);
+    background: rgba(124, 158, 255, 0.15);
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.pcne-s5-page ul.checklist-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 8px;
+}
+
+.pcne-s5-page ul.checklist-list li {
+    padding: 4px 0;
+    border-radius: 8px;
+}
+
+.pcne-s5-page ul.checklist-list li:hover {
+    background: var(--color-border, #16273f);
+}
+
+.pcne-s5-page ul.checklist-list label {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 6px 8px;
+    cursor: pointer;
+    font-size: 13.5px;
+    color: var(--color-muted-foreground, #becce2);
+}
+
+.pcne-s5-page ul.checklist-list input[type='checkbox'] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    border: 1.5px solid var(--color-border, #1e3252);
+    border-radius: 5px;
+    background: var(--color-surface, #0d1b2e);
+    position: relative;
+    cursor: pointer;
+}
+
+.pcne-s5-page ul.checklist-list input[type='checkbox']:checked {
+    background: var(--color-google-blue, #7c9eff);
+    border-color: var(--color-google-blue, #7c9eff);
+}
+
+.pcne-s5-page ul.checklist-list input[type='checkbox']:checked::after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 1px;
+    width: 5px;
+    height: 9px;
+    border: solid #07111e;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.pcne-s5-page ul.checklist-list li:has(input:checked) label {
+    text-decoration: line-through;
+    color: var(--color-muted-foreground, #9fb7df);
+}
+
+/* ---------------- Mobile ---------------- */
+@media (max-width: 880px) {
+    .pcne-s5-page .sidebar {
+        left: -320px;
+        transition: left 0.2s ease;
+        width: 280px;
+    }
+    .pcne-s5-page .sidebar.open {
+        left: 0;
+        box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+    }
+    .pcne-s5-page .main {
+        margin-left: 0;
+        width: 100%;
+        padding: 80px 20px 70px;
+    }
+    .pcne-s5-page .sidebar-toggle {
+        display: block;
+    }
+    .pcne-s5-page .ref-grid {
+        grid-template-columns: 1fr;
+    }
+    .pcne-s5-page .hero h1 {
+        font-size: 26px;
+    }
+}
