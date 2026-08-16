@@ -4,6 +4,34 @@
 
 ---
 
+## 2026-08-16: PCNE Section 4「CDN・DNS・IPアドレス管理」100%全量移行 (完了)
+
+### 目的
+
+`Pcne-s4-cdn-dns-ipam.html` を、Next.js App Router 5ファイル構成 (`page.tsx`, `PcneSection4CdnDnsIpamGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/gcl/professional-cloud-network-engineer/section4-cdn-dns-ipam` ルートへ移行。見出し(h1:1, h2:6, h3:26, h4:7)、全24個のテーブル、20個のMermaid図解、全リスト、全外部リンク・全本文・注釈を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for pcne-s4-cdn-dns-ipam` (`1943e9a`)
+- [x] **Step 1 (Red)**: `test(pcne): add failing tests for pcne section 4 cdn dns ipam` (`7adf3e1`)
+- [x] **Step 2 (Green)**: `feat(pcne): implement section 4 cdn dns ipam guide to pass tests` (`964d0ec`)
+- [x] **Step 3 (Refactor)**: `refactor(pcne): integrate section 4 into routing and update docs` (`24b5651`)
+- [x] **Step 4 (Archive & Sync)**: `chore(docs): update MIGRATION_PROGRESS.md — pcne section 4 complete`
+
+### 関連ファイル
+
+- [app/gcl/professional-cloud-network-engineer/section4-cdn-dns-ipam/page.tsx](app/gcl/professional-cloud-network-engineer/section4-cdn-dns-ipam/page.tsx)
+- [app/gcl/professional-cloud-network-engineer/section4-cdn-dns-ipam/PcneSection4CdnDnsIpamGuide.tsx](app/gcl/professional-cloud-network-engineer/section4-cdn-dns-ipam/PcneSection4CdnDnsIpamGuide.tsx)
+- [app/gcl/professional-cloud-network-engineer/section4-cdn-dns-ipam/NavBar.tsx](app/gcl/professional-cloud-network-engineer/section4-cdn-dns-ipam/NavBar.tsx)
+- [app/gcl/professional-cloud-network-engineer/section4-cdn-dns-ipam/constants.ts](app/gcl/professional-cloud-network-engineer/section4-cdn-dns-ipam/constants.ts)
+- [app/gcl/professional-cloud-network-engineer/section4-cdn-dns-ipam/page.css](app/gcl/professional-cloud-network-engineer/section4-cdn-dns-ipam/page.css)
+- [`__tests__/gcl/professional-cloud-network-engineer/section4-cdn-dns-ipam/page.test.tsx`](__tests__/gcl/professional-cloud-network-engineer/section4-cdn-dns-ipam/page.test.tsx)
+- [docs/migration-inventory/pcne-s4-cdn-dns-ipam.json](docs/migration-inventory/pcne-s4-cdn-dns-ipam.json)
+- [archive/Gcl/Professional-Cloud-Network-Engineer/Pcne-s4-cdn-dns-ipam.html](archive/Gcl/Professional-Cloud-Network-Engineer/Pcne-s4-cdn-dns-ipam.html)
+- [archive/Gcl/Professional-Cloud-Network-Engineer/Pcne-s4-cdn-dns-ipam.md](archive/Gcl/Professional-Cloud-Network-Engineer/Pcne-s4-cdn-dns-ipam.md)
+
+---
+
 ## 2026-08-16: PCNE Section 3「ロードバランシングとトラフィック管理」100%全量移行 (完了)
 
 ### 目的
