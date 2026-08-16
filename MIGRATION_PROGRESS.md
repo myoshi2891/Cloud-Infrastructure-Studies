@@ -4,6 +4,34 @@
 
 ---
 
+## 2026-08-16: PCNE Section 3「ロードバランシングとトラフィック管理」100%全量移行 (完了)
+
+### 目的
+
+`S3-load-balancing-traffic-management.html` を、Next.js App Router 5ファイル構成 (`page.tsx`, `PcneSection3LoadBalancingGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/gcl/professional-cloud-network-engineer/section3-load-balancing` ルートへ移行。見出し(h1:1, h2:7, h3:18)、全7個のテーブル、10個のMermaid図解、全リスト、全外部リンク・全本文・注釈を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for pcne-s3-load-balancing` (`083be34`)
+- [x] **Step 1 (Red)**: `test(pcne): add failing tests for pcne section 3 load balancing` (`6b17a61`)
+- [x] **Step 2 (Green)**: `feat(pcne): implement section 3 load balancing guide to pass tests` (`9d58aa4`)
+- [x] **Step 3 (Refactor)**: `refactor(pcne): integrate section 3 into routing and update docs` (`6b89e70`)
+- [x] **Step 4 (Archive & Sync)**: `chore(docs): update MIGRATION_PROGRESS.md — pcne section 3 complete`
+
+### 関連ファイル
+
+- [app/gcl/professional-cloud-network-engineer/section3-load-balancing/page.tsx](app/gcl/professional-cloud-network-engineer/section3-load-balancing/page.tsx)
+- [app/gcl/professional-cloud-network-engineer/section3-load-balancing/PcneSection3LoadBalancingGuide.tsx](app/gcl/professional-cloud-network-engineer/section3-load-balancing/PcneSection3LoadBalancingGuide.tsx)
+- [app/gcl/professional-cloud-network-engineer/section3-load-balancing/NavBar.tsx](app/gcl/professional-cloud-network-engineer/section3-load-balancing/NavBar.tsx)
+- [app/gcl/professional-cloud-network-engineer/section3-load-balancing/constants.ts](app/gcl/professional-cloud-network-engineer/section3-load-balancing/constants.ts)
+- [app/gcl/professional-cloud-network-engineer/section3-load-balancing/page.css](app/gcl/professional-cloud-network-engineer/section3-load-balancing/page.css)
+- [`__tests__/gcl/professional-cloud-network-engineer/section3-load-balancing/page.test.tsx`](__tests__/gcl/professional-cloud-network-engineer/section3-load-balancing/page.test.tsx)
+- [docs/migration-inventory/pcne-s3-load-balancing.json](docs/migration-inventory/pcne-s3-load-balancing.json)
+- [archive/Gcl/Professional-Cloud-Network-Engineer/S3-load-balancing-traffic-management.html](archive/Gcl/Professional-Cloud-Network-Engineer/S3-load-balancing-traffic-management.html)
+- [archive/Gcl/Professional-Cloud-Network-Engineer/S3-load-balancing-traffic-management.md](archive/Gcl/Professional-Cloud-Network-Engineer/S3-load-balancing-traffic-management.md)
+
+---
+
 ## 2026-08-16: PCNE Section 5「ネットワークセキュリティの設計と実装」100%全量移行 (完了)
 
 ### 目的
