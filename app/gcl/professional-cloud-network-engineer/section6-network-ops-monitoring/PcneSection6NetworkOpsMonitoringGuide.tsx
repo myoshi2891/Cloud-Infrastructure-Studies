@@ -29,7 +29,7 @@ export function PcneSection6NetworkOpsMonitoringGuide() {
                 onClose={() => setSidebarOpen(false)}
             />
             <div className="layout">
-                <main className="main">{" "}<div className="hero">{" "}<div className="badges">{" "}<span className="badge">Section 5</span>{" "}<span className="badge alt">出題比率 約14%</span>{" "}</div>{" "}<h1>PCNE試験対策ガイド S6: ネットワーク操作と監視</h1>{" "}<p className="subtitle">
+                <main className="main">{" "}<div className="hero">{" "}<div className="badges">{" "}<span className="badge">公式 Section 5</span>{" "}<span className="badge alt">出題比率 約14%</span>{" "}</div>{" "}<h1>PCNE試験対策ガイド S6: ネットワーク操作と監視</h1>{" "}<p className="subtitle">
                         Google Cloud Professional Cloud Network Engineer(PCNE)認定試験 — Section 5:
                         Managing, monitoring, and troubleshooting network operations（出題比率
                         約14%）

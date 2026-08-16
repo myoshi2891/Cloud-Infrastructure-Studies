@@ -23,7 +23,7 @@
     bottom: 0;
     width: 280px;
     overflow-y: auto;
-    background: var(--color-surface, #0d1b2e);
+    background: var(--color-card, #0d1b2e);
     border-right: 1px solid var(--color-border, #1e3252);
     padding: 28px 0 40px;
     z-index: 40;
@@ -336,7 +336,7 @@
 }
 
 .pcne-s5-page th {
-    background: var(--color-surface, #0d1b2e);
+    background: var(--color-card, #0d1b2e);
     color: var(--color-google-blue, #a5c0ff);
     font-weight: 700;
     white-space: nowrap;
@@ -533,7 +533,7 @@
     margin-top: 1px;
     border: 1.5px solid var(--color-border, #1e3252);
     border-radius: 5px;
-    background: var(--color-surface, #0d1b2e);
+    background: var(--color-card, #0d1b2e);
     position: relative;
     cursor: pointer;
 }

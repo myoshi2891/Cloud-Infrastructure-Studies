@@ -366,6 +366,8 @@
 .pcne-s6-page .mermaid-wrap {
     width: 100%;
     display: flex;
+    /* safe 未対応ブラウザ向けフォールバック（宣言全体が破棄されるため 2 回宣言する） */
+    justify-content: center;
     justify-content: safe center;
     overflow-x: auto;
     margin: 28px 0;

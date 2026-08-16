@@ -83,7 +83,7 @@ export function NavBar({ isOpen, onToggle, onClose }: NavBarProps) {
                 type="button"
                 className="menu-toggle"
                 id="menuToggle"
-                aria-label="目次を開く"
+                aria-label={isOpen ? '目次を閉じる' : '目次を開く'}
                 aria-expanded={isOpen}
                 aria-controls="sidebar"
                 onClick={onToggle}
