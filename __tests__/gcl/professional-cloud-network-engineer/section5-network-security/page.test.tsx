@@ -1,0 +1,103 @@
+// __tests__/gcl/professional-cloud-network-engineer/section5-network-security/page.test.tsx
+// @vitest-environment jsdom
+import { render } from '@testing-library/react';
+import { describe, expect, it, vi } from 'vitest';
+import inventory from '@/docs/migration-inventory/pcne-s5-network-security.json';
+import Page from '@/app/gcl/professional-cloud-network-engineer/section5-network-security/page';
+import {
+    MermaidDiagramMock,
+    codeBlockSelector,
+    codeLineCount,
+    extractBodyContent,
+    squash,
+} from '@/__tests__/gcl/agwa/migration-test-utils';
+
+// MermaidDiagram は名前付きエクスポート。
+vi.mock('@/components/MermaidDiagram', () => ({ MermaidDiagram: MermaidDiagramMock }));
+
+describe('PCNE Section 5 — ネットワークセキュリティの設計と実装 全量移行検証', () => {
+    const renderPage = () => {
+        const { container } = render(<Page />);
+        return container;
+    };
+
+    it.each([
+        ['h1', inventory.h1],
+        ['h2', inventory.h2],
+        ['h3', inventory.h3],
+        ['h4', inventory.h4],
+    ])('%s の件数・順序・テキストが移行元と一致する', (selector, headings) => {
+        const container = renderPage();
+        const rendered = [...container.querySelectorAll(selector)].map((element) =>
+            squash(element.textContent ?? ''),
+        );
+        expect(rendered).toEqual(headings.map(squash));
+    });
+
+    it.each([
+        ['th', inventory.th],
+        ['td', inventory.td],
+        ['li', inventory.listItems],
+    ])('%s の件数・順序・テキストが移行元と一致する', (selector, items) => {
+        const container = renderPage();
+        const rendered = [...container.querySelectorAll(selector)].map((element) =>
+            squash(element.textContent ?? ''),
+        );
+        expect(rendered).toEqual(items.map(squash));
+    });
+
+    it('外部リンクが件数・順序・URL まで移行元と一致する', () => {
+        const container = renderPage();
+        const rendered = [...container.querySelectorAll('a[href^="http"]')].map((anchor) =>
+            anchor.getAttribute('href'),
+        );
+        expect(rendered).toEqual(inventory.links.map((link) => link.href));
+    });
+
+    it('本文・注釈・画像 alt・コード全文が移行元の順序どおり一致する', () => {
+        const container = renderPage();
+        expect(extractBodyContent(container)).toEqual(inventory.bodyContent);
+    });
+
+    it('全形式の図が件数どおり存在し、説明または装飾指定と自然スケールを持つ', () => {
+        const container = renderPage();
+        const diagramSelector = '[data-testid="mermaid-diagram"], .mermaid, [id^="diag-"]';
+        const diagrams = [...container.querySelectorAll(diagramSelector)].filter(
+            (element) => !element.querySelector(diagramSelector),
+        );
+        expect(diagrams).toHaveLength(inventory.counts.diagram);
+        diagrams.forEach((element) => {
+            const hasLabel = Boolean(element.getAttribute('aria-label')?.trim());
+            const isDecorative = element.getAttribute('data-decorative') === 'true'
+                || element.getAttribute('aria-hidden') === 'true';
+            expect(hasLabel || isDecorative).toBe(true);
+            expect(element.getAttribute('data-preserve-natural-scale')).toBe('true');
+        });
+    });
+
+    it('静的な画像と SVG が移行元の件数と一致する', () => {
+        const container = renderPage();
+        expect(container.querySelectorAll('img, svg')).toHaveLength(inventory.counts.figure);
+    });
+
+    it('テーブルが件数どおり存在し、thead を持つ', () => {
+        const container = renderPage();
+        const tables = [...container.querySelectorAll('table')];
+        expect(tables).toHaveLength(inventory.counts.table);
+        tables.forEach((table) => {
+            expect(table.querySelector('thead')).not.toBeNull();
+        });
+    });
+
+    it('コードブロックが .code-line でラップされている', () => {
+        const container = renderPage();
+        const blocks = [...container.querySelectorAll(codeBlockSelector)].filter(
+            (element) => !element.parentElement?.closest(codeBlockSelector),
+        );
+        expect(blocks).toHaveLength(inventory.counts.codeBlock);
+        blocks.forEach((block, index) => {
+            expect(block.querySelector(':scope > .code-line')).not.toBeNull();
+            expect(codeLineCount(block)).toBe(inventory.structures.codeLines[index]);
+        });
+    });
+});
