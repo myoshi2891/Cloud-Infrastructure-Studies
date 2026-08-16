@@ -157,6 +157,9 @@ export function defineMigrationSuite(
                 (element) => !element.parentElement?.closest(codeBlockSelector),
             );
             expect(blocks).toHaveLength(inventory.counts.codeBlock);
+            // 行数の期待値がコードブロック数だけ揃っていないと、以降の
+            // codeLines[index] が undefined になり検証が骨抜きになる。件数不一致はここで落とす。
+            expect(inventory.structures.codeLines).toHaveLength(inventory.counts.codeBlock);
             blocks.forEach((block, index) => {
                 expect(block.querySelector(':scope > .code-line')).not.toBeNull();
                 expect(codeLineCount(block)).toBe(inventory.structures.codeLines[index]);
