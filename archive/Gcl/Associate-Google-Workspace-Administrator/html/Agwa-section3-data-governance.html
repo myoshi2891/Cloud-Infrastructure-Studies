@@ -1410,10 +1410,14 @@ sequenceDiagram
         D--&gt;&gt;G: 違反を検出
         G-&gt;&gt;G: 管理者レビュー用に隔離
         G-&gt;&gt;U: 通知は隔離設定またはレビュー結果次第
-    else Warn usersアクション - 第三者SMTPクライアント・自動送信
+    else Warn usersアクション - 第三者SMTPクライアント
         D--&gt;&gt;G: 違反を検出
-        G-&gt;&gt;G: Block message相当として配信をブロック
+        G-&gt;&gt;G: Block message相当として配信をブロック&lt;br/&gt;(メッセージは送信済みフォルダに残る)
         G-&gt;&gt;U: 別メールで送信者に通知
+    else Warn usersアクション - 自動送信
+        D--&gt;&gt;G: 違反を検出
+        G-&gt;&gt;R: 警告を表示できないため配信は継続&lt;br/&gt;(メッセージは送信済みフォルダに残る)
+        G-&gt;&gt;G: Rule log eventsに記録
     else Warn usersアクション - Web・モバイル送信の再スキャン
         D--&gt;&gt;G: 違反を検出
         G-&gt;&gt;R: 配信は継続&lt;br/&gt;(メッセージは送信済みフォルダに残る)
