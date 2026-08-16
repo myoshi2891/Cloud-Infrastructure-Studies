@@ -1,4 +1,5 @@
 # Google Cloud Professional Cloud Architect 試験対策ガイド
+
 ## セクション1：クラウドソリューションアーキテクチャの設計と計画（配点 約25%）
 
 > 本ガイドは、Google Cloud 公式の [Professional Cloud Architect Certification exam guide (v6.1)](https://services.google.com/fh/files/misc/professional_cloud_architect_exam_guide_english.pdf) および [認定ページ](https://cloud.google.com/learn/certification/cloud-architect?hl=en) に基づき、試験6セクション中もっとも配点比率が高い「セクション1：クラウドソリューションアーキテクチャの設計と計画」を初学者向けに解説したものです。各項目には、根拠となる Google Cloud 公式ドキュメントの URL を脚注として付記しています。
@@ -21,6 +22,7 @@
 ---
 
 <a id="part1"></a>
+
 ## 1. このセクションの全体像
 
 Professional Cloud Architect（PCA）試験は6つのセクションで構成されており、そのうち「セクション1：クラウドソリューションアーキテクチャの設計と計画」は**約25%**と最大の配点を占めます。試験ガイドでは、このセクションは以下の5つのサブトピックに分かれています。
@@ -42,13 +44,14 @@ flowchart TD
     style T15 fill:#e8f0fe,stroke:#1a73e8
 ```
 
-試験全体は50〜60問の多肢選択・複数選択問題で構成され、そのうち20〜30%は4つの公式ケーススタディ（Altostrat Media、Cymbal Retail、EHR Healthcare、KnightMotives Automotive）に基づく設問です。試験時間は2時間、受験料は200米ドル（税別）、対応言語は英語と日本語です。[^1]
+試験全体は50〜60問の多肢選択・複数選択問題で構成され、そのうち20〜30%は公式ケーススタディに基づく設問です。公式ケーススタディは4種類（Altostrat Media、Cymbal Retail、EHR Healthcare、KnightMotives Automotive）が公開されていますが、1回の試験で出題対象となるのはそのうち2つです。どの2つが選ばれるかは事前に分からないため、4種類すべてを準備しておく必要があります。試験時間は2時間、受験料は200米ドル（税別）、対応言語は英語と日本語です。[^1]
 
 > **出典**：[Professional Cloud Architect Certification | Google Cloud](https://cloud.google.com/learn/certification/cloud-architect?hl=en)
 
 ---
 
 <a id="part2"></a>
+
 ## 2. 前提知識：Google Cloud Well-Architected Framework
 
 2025年10月30日改訂版（v6.1）の試験ガイドから、**Google Cloud Well-Architected Framework（WAF）への習熟が明示的な出題範囲**として追加されました。WAF はセクション1だけでなく試験全体を貫く設計思想であるため、まず全体像を押さえておく必要があります。[^2]
@@ -75,7 +78,7 @@ flowchart LR
 ```
 
 | ピラー | 目的 | 中核となる原則（例） |
-|---|---|---|
+| --- | --- | --- |
 | 運用の卓越性 | ワークロードを効率的にデプロイ・運用・監視・管理する | SLO 定義に基づく CloudOps、継続的改善の文化 [^3] |
 | セキュリティ・プライバシー・コンプライアンス | 要件を満たしつつ安全にワークロードを設計・デプロイ・運用する | セキュリティ・バイ・デザイン、ゼロトラスト、シフトレフト・セキュリティ [^4] |
 | 信頼性 | 定義された条件下で意図した機能を継続的に発揮させる | 冗長化、フォールトトレラント設計、自動復旧 [^5] |
@@ -84,7 +87,7 @@ flowchart LR
 | 持続可能性 | エネルギー効率と環境負荷を考慮した設計を行う | サーバーレスによるスケールゼロ、リソースのライトサイジング [^8] |
 
 > **ベストプラクティス**：PCA試験の設問は「技術的に正しい選択肢が複数ある」ケースが多く、最終的な正解は**WAFの6ピラーのバランス**（特にコストと信頼性のトレードオフ）で決まることが多い。設問を読む際は「どのピラーが最優先されているか」を意識すると選択肢を絞りやすい。
-
+>
 > **出典**：
 > - [Google Cloud Well-Architected Framework](https://docs.cloud.google.com/architecture/framework)
 > - [運用の卓越性ピラー](https://docs.cloud.google.com/architecture/framework/operational-excellence)
@@ -97,9 +100,10 @@ flowchart LR
 ---
 
 <a id="part3"></a>
+
 ## 3. 1.1 ビジネス要件を満たすクラウドソリューションインフラの設計
 
-このタスクでは、「技術」よりも先に「ビジネス」の観点からインフラ設計を評価する能力が問われます。試験ガイド原文では以下の11項目が列挙されています。[^1]
+このタスクでは、「技術」よりも先に「ビジネス」の観点からインフラ設計を評価する能力が問われます。試験ガイド原文では以下の12項目が列挙されています。[^1]
 
 ```mermaid
 mindmap
@@ -123,13 +127,14 @@ mindmap
 クラウドアーキテクトは技術者である前に、ビジネスの「なぜ」を理解する必要があります。試験では「顧客の事業目標」が明示されたシナリオに対し、それを達成する最も適したアーキテクチャを選ぶ設問が頻出します。
 
 **ベストプラクティス**
+
 - 要件定義の最初のステップとして、ステークホルダー（アプリケーションオーナー、セキュリティアーキテクト、運用管理者など）を特定し、要求を集約する。[^9]
 - ビジネス上の成功指標（後述のKPI/ROI）と技術選定を紐づけて説明できるようにする。
 
 ### 3.2 機能要件と非機能要件の特定
 
 | 種別 | 定義 | 具体例 |
-|---|---|---|
+| --- | --- | --- |
 | 機能要件（Functional Requirement） | システムが「何をするか」を定義する要件 | ユーザー認証、注文処理、レコメンデーション生成 |
 | 非機能要件（Non-Functional Requirement） | システムが「どのように動作するか」の品質特性 | 可用性99.99%、レイテンシ100ms以内、GDPR準拠 |
 
@@ -157,11 +162,12 @@ flowchart LR
 DR計画を策定する際の核となる指標は次の2つです。
 
 | 指標 | 定義 | 設計上の意味 |
-|---|---|---|
+| --- | --- | --- |
 | RTO（Recovery Time Objective） | 障害発生からサービス復旧までに許容される時間 | RTOが短いほど、ホットスタンバイなど高コストな構成が必要 |
 | RPO（Recovery Point Objective） | 障害発生時に許容されるデータ損失量（時間換算） | RPOが短いほど、同期レプリケーションなど高頻度なバックアップが必要 |
 
 **ベストプラクティス**
+
 - DR計画のタスクは「シェルを開いて `/home/example/restore.sh` を実行する」のように、曖昧さのない具体的な手順に落とし込む。[^10]
 - バックアップの保管場所と復旧権限者を明確にし、監査可能な形にする。[^10]
 - Compute Engine・Cloud SQL・AlloyDB・VMware Engine 等のワークロードには **Backup and DR Service** を用い、ポリシーベースのバックアップと、変更・削除不可（Immutable/Indelible）なバックアップボールトを利用する。[^11]
@@ -176,12 +182,14 @@ DR計画を策定する際の核となる指標は次の2つです。
 コスト最適化は WAF の1ピラーであると同時に、1.1でも独立した評価項目です。オンプレミスの資本的支出（CapEx）中心のコストモデルに対し、クラウドはほとんどのリソースが従量課金の運用的支出（OpEx）である点が根本的な違いです。[^7]
 
 **コスト最適化の中核原則**
+
 1. クラウド支出をビジネス価値に整合させる（TCOで評価し、運用コストも含めて比較する）[^12]
 2. 組織全体にコスト意識の文化を醸成する
 3. リソース使用量を最適化する（必要な分だけプロビジョニングする）
 4. 継続的に最適化する（利用状況とコストを継続的に監視し是正する）
 
 **ベストプラクティス**
+
 - Compute Engine のVMは一見安価に見えても、パッチ適用・スケーリングなどの運用オーバーヘッドを含めたTCOで比較する。[^12]
 - Recommender（Active Assist）による自動リソース最適化提案、予算とアラートなどの **Cost Management** ツール群を活用する。
 
@@ -213,6 +221,7 @@ flowchart TD
 ```
 
 **ベストプラクティス**
+
 - APIの外部公開・管理には **Apigee** を用い、APIライフサイクル全体（設計・セキュリティ・監視・収益化）を一元管理する。
 - 疎結合なイベント駆動統合には **Pub/Sub**（メッセージング）と **Eventarc**（イベントルーティング）を組み合わせる。
 - 複数サービスをまたぐオーケストレーションには **Workflows** を利用し、個々のサービスの実装詳細から統合ロジックを分離する。
@@ -222,7 +231,7 @@ flowchart TD
 システム間・オンプレミスとクラウド間のデータ移動には、データ量・頻度・レイテンシ要件に応じて適切なサービスを選択します。
 
 | ユースケース | 推奨サービス |
-|---|---|
+| --- | --- |
 | オンライン/オンプレミスからCloud Storageへの継続的転送 | Storage Transfer Service |
 | 20TB〜1PB規模の大容量データを短期間で転送（オフライン） | Transfer Appliance |
 | データベースの変更データキャプチャ（CDC）とレプリケーション | Datastream |
@@ -256,7 +265,7 @@ flowchart LR
 新しい要件が生じたとき、常にゼロから構築（Build）するのではなく、既存の選択肢を評価する必要があります。
 
 | 戦略 | 内容 | 適用場面 |
-|---|---|---|
+| --- | --- | --- |
 | Build（構築） | 独自に開発する | 差別化要因となるコア機能、既製品で要件を満たせない場合 |
 | Buy（購入） | SaaS/マーケットプレイス製品を利用する | 汎用的な機能（CRM、決済等）で独自性が不要な場合 |
 | Modify（変更） | 既存システムを改修・拡張する | レガシー資産に一定の価値が残っている場合 |
@@ -267,7 +276,7 @@ flowchart LR
 技術選定の妥当性は、最終的にビジネス指標で説明できる必要があります。
 
 | 指標カテゴリ | 例 |
-|---|---|
+| --- | --- |
 | KPI（重要業績評価指標） | 可用性(%)、平均復旧時間(MTTR)、デプロイ頻度、顧客満足度 |
 | ROI（投資収益率） | クラウド移行による運用コスト削減額、新機能による売上増加 |
 | その他メトリクス | レイテンシp99、エラーレート、スループット |
@@ -283,6 +292,7 @@ flowchart LR
 ---
 
 <a id="part4"></a>
+
 ## 4. 1.2 技術要件を満たすクラウドソリューションインフラの設計
 
 1.1が「ビジネス」の視点だったのに対し、1.2は「技術」の視点から非機能要件を満たす設計を評価します。試験ガイド原文の項目は以下の7つです。[^1]
@@ -320,6 +330,7 @@ flowchart TB
 ```
 
 **ベストプラクティス**
+
 - リージョンマネージドインスタンスグループ（Regional MIG）を用いて複数ゾーンにVMを分散させ、単一ゾーン障害に耐える構成にする。[^13]
 - グローバルなユーザー基盤には、複数リージョンにまたがるアクティブ-アクティブ構成とグローバル外部ロードバランサを組み合わせる。
 - ステートレスなアプリケーション層とステートフルなデータ層を分離し、ステートレス層は容易に水平スケール・フェイルオーバーできるようにする。[^14]
@@ -355,6 +366,7 @@ flowchart LR
 Gemini Cloud Assist は、Google Cloud のアプリケーションライフサイクル全体（設計・デプロイ・トラブルシューティング・最適化）を支援する生成AIアシスタントです。[^15]
 
 **主な機能**
+
 - 自然言語の「意図」から、Application Design Center と連携してアーキテクチャ図や本番運用可能な Terraform／gcloud／kubectl のブルー プリントを生成する。[^16]
 - ログ・メトリクス・トレース・構成情報を横断的に相関分析し、パフォーマンス／コスト異常のプロアクティブな調査を支援する（プレビュー機能を含む）。[^16]
 - コンソール上の現在のページコンテキストを理解し、ハルシネーションを抑制したコンテキストに即した回答を提供する。[^17]
@@ -366,19 +378,22 @@ Gemini Cloud Assist は、Google Cloud のアプリケーションライフサ�
 3.3（事業継続計画）で述べたRTO/RPOを技術的に実現する手段です。
 
 | 対象ワークロード | 推奨手段 |
-|---|---|
+| --- | --- |
 | Compute Engine VM | Backup and DR Service によるバックアップボールト、または Persistent Disk スナップショット |
 | Cloud SQL / AlloyDB | Backup and DR Service の自動バックアッププラン |
 | Cloud Storage オブジェクト | オブジェクトバージョニング、マルチリージョンバケット |
 | VMware Engine VM | Backup and DR Service（vSphere Storage APIsベース） |
 
-**ベストプラクティス**：バックアップボールトは「不変性（Immutability）」と「削除不可性（Indelibility）」を持つため、ランサムウェア対策としても有効。CMEK（顧客管理暗号鍵）による暗号化にも対応する。[^11]
+**ベストプラクティス**：バックアップボールトは「不変性（Immutability）」と「削除不可性（Indelibility）」を持つため、ランサムウェア対策としても有効。
+
+CMEK（顧客管理暗号鍵）によるバックアップの暗号化に対応するのは **Compute Engine・Persistent Disk・Cloud SQL** のワークロードに限られます。**AlloyDB と Google Cloud VMware Engine のバックアップは CMEK の対象外**であり、これらは Google 管理鍵で暗号化されます。CMEK を使う場合は、**バックアップボールトの作成時に鍵を指定する必要があり、作成後に変更・追加することはできません**。したがって、保護対象ワークロード側の暗号化方式（Compute Engine の CMEK 付きディスク、Cloud SQL の CMEK 構成など）とボールト側の設定を、設計段階で整合させておく必要があります。[^11]
 
 > **出典**：[Backup and DR Service overview](https://docs.cloud.google.com/backup-disaster-recovery/docs/concepts/backup-dr)
 
 ---
 
 <a id="part5"></a>
+
 ## 5. 1.3 ネットワーク・ストレージ・コンピュートリソースの設計
 
 このタスクは最も製品知識が問われる領域です。試験ガイド原文の6項目を順に解説します。[^1]
@@ -404,6 +419,7 @@ flowchart LR
 ```
 
 **ベストプラクティス**
+
 - 帯域・パフォーマンス・セキュリティ・コスト・信頼性の要件に応じてハイブリッド／マルチクラウド接続方式を選定する。[^18]
 - ハブアンドスポーク型の接続VPCを使い、複数VPCにまたがるシナリオをスケールさせる。[^19]
 - Shared VPC を活用し、各サービスプロジェクトが個別に同じ接続ソリューションを複製する必要をなくす。[^19]
@@ -431,7 +447,7 @@ flowchart TD
 ```
 
 | コンポーネント | 役割 |
-|---|---|
+| --- | --- |
 | Model Garden | Gemini・Gemma・Claude・Llama など200以上のモデルを一箇所から発見・テスト・デプロイ [^21] |
 | Agent Builder（ADK/Agent Studio） | コードファースト（ADK）またはローコード（Agent Studio）でAIエージェントを構築 [^22] |
 | AI Hypercomputer | GPU/TPUを統合した大規模モデル学習・推論向けインフラ |
@@ -459,6 +475,7 @@ flowchart TD
 ```
 
 **ベストプラクティス**（[VPC設計のベストプラクティスとリファレンスアーキテクチャ](https://docs.cloud.google.com/architecture/best-practices-vpc-design)より）[^19]
+
 - VPCネットワーク設計は早い段階から検討し、ステークホルダー・タイムライン・前提作業を明確にする。
 - 「Keep it simple」の原則：単一のVPCで開始し、必要になった段階でShared VPCへ拡張する。
 - 明確な命名規則を使用する。
@@ -468,7 +485,7 @@ flowchart TD
 - ハイブリッド接続には動的ルーティング（Cloud Router）を可能な限り使用する。
 
 | 要素 | 目的 |
-|---|---|
+| --- | --- |
 | VPC ピアリング | プロジェクト間・組織間でプライベート接続する（推移的接続はできない点に注意） |
 | ファイアウォールルール | ネットワークタグ／サービスアカウント単位でトラフィックを制御する |
 | Cloud Load Balancing | グローバル／リージョナルなトラフィック分散 |
@@ -516,7 +533,7 @@ flowchart TD
 ```
 
 | ストレージ種別 | 主なサービス | 典型的なユースケース |
-|---|---|---|
+| --- | --- | --- |
 | オブジェクトストレージ | Cloud Storage | 静的サイトのアセット、データレイク、バックアップ、動画配信 [^24] |
 | ブロックストレージ | Persistent Disk、Hyperdisk、Local SSD | VMのブートディスク、データベースのローカルストレージ、低レイテンシキャッシュ [^25] |
 | ファイルストレージ | Filestore | 複数VM/コンテナからの同時読み書き、レガシーアプリのPOSIX互換要件 [^26] |
@@ -524,6 +541,7 @@ flowchart TD
 | NoSQL DB | Firestore、Bigtable | モバイル/Webアプリのドキュメント指向データはFirestore、IoT/分析向け大規模低レイテンシはBigtable |
 
 **ベストプラクティス**
+
 - Persistent Diskは永続性が必要な用途に、Local SSDは揮発性を許容できる高速スクラッチ領域に使い分ける。[^25]
 - Cloud Storageの **Autoclass** を使うとアクセス頻度に応じてストレージクラスが自動的に切り替わり、アクセスパターンが予測しにくいワークロードに適している。[^25]
 - 「本番環境でDBエンジンをVM上のブロックストレージで自前運用するか、マネージドDBを使うか」は運用オーバーヘッドの観点で比較する。
@@ -550,7 +568,7 @@ flowchart TD
 ```
 
 | プラットフォーム | 管理レベル | 適したワークロード |
-|---|---|---|
+| --- | --- | --- |
 | Compute Engine | ユーザーがOS〜アプリまで管理 | カスタムカーネル/低レベルアクセスが必要なアプリ、リフト＆シフト移行 [^27] |
 | GKE | Googleがコントロールプレーンを管理 | 複雑なマイクロサービス、既存のKubernetesワークロード、きめ細かい制御が必要な場合 [^28] |
 | Cloud Run | フルマネージド（サーバーレス） | ステートレスでリクエスト駆動のコンテナサービス、スケールゼロが有効なワークロード [^27] |
@@ -563,7 +581,7 @@ flowchart TD
 ### 5.7 コンピュートリソースの選択（Spot VM・カスタムマシンタイプ等）
 
 | オプション | 特徴 | 適したユースケース |
-|---|---|---|
+| --- | --- | --- |
 | Spot VM | 標準VMより大幅に安価だが、Googleにより随時回収され得る | バッチ処理、フォールトトレラントな分散処理、CI/CD |
 | カスタムマシンタイプ | vCPU・メモリを個別に指定できる | 定義済みマシンタイプがワークロードに最適化されていない場合 |
 | 専用ワークロード向けマシン（GPU/TPU） | AI/ML学習・推論、HPC向け | 大規模モデル学習、科学技術計算 |
@@ -571,6 +589,7 @@ flowchart TD
 ---
 
 <a id="part6"></a>
+
 ## 6. 1.4 移行計画（マイグレーションプラン）の作成
 
 試験ガイドでは「移行計画の作成（ドキュメントとアーキテクチャ図を含む）」として、以下の4項目が挙げられています。[^1]
@@ -599,6 +618,7 @@ flowchart LR
 ```
 
 **主な機能**
+
 - **コスト見積もり**：オンプレミス資産の規模・構成に基づき、将来のGoogle Cloudコストを迅速に見積もる（プレビュー含む）。[^30]
 - **資産検出（Discovery）**：エージェントレスのディスカバリークライアントで物理サーバー/VMを自動検出し、必要なメトリクスを収集する。[^31]
 - **TCOレポートと依存関係分析**：総保有コスト（TCO）レポートを生成し、アプリケーション／ネットワークの依存関係を特定して「一緒に移行すべきコンポーネント」を可視化する。[^30]
@@ -630,7 +650,7 @@ flowchart LR
 ```
 
 | 移行パス | 特徴 | 移行速度 | クラウド最適化度 |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | Rehost | Migrate to Virtual Machines等でそのまま移設 | 速い | 低い |
 | Replatform | OSやミドルウェアなど一部をクラウド向けに調整して移設 | 中程度 | 中程度 |
 | Refactor / Re-architect | コンテナ化・マネージドサービス化など抜本的に再設計 | 遅い | 高い |
@@ -639,10 +659,26 @@ flowchart LR
 | Retain | 規制等の理由で当面オンプレミスに残す | - | - |
 
 **移行に関わるツール**（実運用でGoogle Cloudのプロフェッショナルサービスチームが使用）[^33]
+
 - **Migrate to Virtual Machines**：オンプレミス／他クラウドのVMをCompute Engineへ移行
 - **Migrate to Containers**：VMワークロードをGKE上のコンテナへモダナイズしながら移行
 - **Storage Transfer Service / Transfer Appliance**：データ移行（前述5.7参照）
 - **Cloud Build / Artifact Registry**：CI/CDパイプラインの構築、コンテナイメージ管理
+
+**ワークロードテスト**
+
+移行手法を選んだあと、本番切り替え前に「移行後の環境が業務要件を満たすか」を検証する工程です。移行ウェーブごとに以下を実施し、結果をもって次のウェーブへ進むかを判断します。
+
+| 検証観点 | 内容 |
+| --- | --- |
+| 代表的な負荷パターン | 平常時・ピーク時（月末バッチ、キャンペーン、始業時アクセス集中など）・想定される将来の成長分を再現した負荷をかける |
+| 性能検証 | スループット、レイテンシ（p50/p95/p99）、リソース使用率を移行前のベースラインと比較する |
+| フェイルオーバー | ゾーン／リージョン障害、インスタンス停止、DBのフェイルオーバーを意図的に発生させ、実測のRTO/RPOが設計値（3.3参照）以内に収まるかを確認する |
+| データ整合性 | 移行前後でレコード件数・チェックサム・業務上のキー項目を突き合わせ、欠損・重複・文字コード変換の破損がないことを確認する |
+
+**移行可否（Go/No-Go）の判定基準**：上記のうち、①性能が移行前ベースライン比で許容範囲内（例：p95レイテンシの劣化が事前に合意した閾値以内）、②実測RTO/RPOが設計値を満たす、③データ整合性チェックが完全一致、の3点をすべて満たした場合にのみ本番切り替えを実施します。1つでも満たさない場合はNo-Goとし、原因を解消してから再テストします。
+
+**ロールバック条件**：切り替え後の監視期間（例：24〜72時間）内に、エラー率・レイテンシがあらかじめ定めた閾値を超えた場合、データ不整合が検出された場合、または業務が継続不能となった場合は、事前に用意したロールバック手順で移行元環境へ切り戻します。ロールバックを成立させるため、切り替え後も移行元環境を一定期間は稼働可能な状態で保持し、切り替え以降に発生した差分データの取り扱い（再同期するか破棄するか）を事前に決めておきます。
 
 **ベストプラクティス**：ネットワーク計画では、移行期間中に発生する一時的なハイブリッド接続（オンプレミス⇔クラウド間の帯域・レイテンシ）を考慮し、依存関係計画では「一緒に移行しないと動かないコンポーネント」を移行ウェーブの単位として扱う。[^32]
 
@@ -656,6 +692,7 @@ flowchart LR
 ---
 
 <a id="part7"></a>
+
 ## 7. 1.5 将来のソリューション改善の構想
 
 試験ガイド原文の3項目です。[^1]
@@ -692,12 +729,13 @@ Google Cloud は新サービス・新機能を継続的にリリースするた�
 ---
 
 <a id="part8"></a>
+
 ## 8. 公式ケーススタディとセクション1の関係
 
-2025年10月30日の試験改訂（v6.1）により、ケーススタディは以下の4種類に刷新されました。すべてに生成AI活用の要素が組み込まれています。[^35]
+2025年10月30日の試験改訂（v6.1）により、ケーススタディは以下の4種類に刷新され、1回の試験ではこのうち2つが出題対象になります。複数のケーススタディに生成AI活用の要素が組み込まれています。[^35]
 
 | ケーススタディ | 業種 | 既存技術環境の概要 | セクション1との関連ポイント |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | Altostrat Media | メディア | GKEでコンテンツ配信基盤を運用、Cloud Storageに映像/音声ライブラリ、BigQueryを分析基盤に利用、Cloud Run functionsでイベント駆動処理（トランスコード等） [^36] | 1.3のコンピュート選択（GKE/Cloud Run functions）、1.1のデータ移動、AI/ML活用（レコメンデーション） |
 | Cymbal Retail | 小売 | 急成長中のオンライン小売業者。会話型コマース、パーソナライズ、カタログ管理の刷新を計画 [^37] | 1.1のビジネスユースケース、1.3のAI/MLソリューション（Discovery AI等） |
 | EHR Healthcare | ヘルスケア | コロケーション環境からGoogle Cloudへ移行中のSaaS事業者。スケーラブルな基盤・DR・コンテナ化されたEHRソフトウェアの迅速なデプロイが課題 [^38] | 1.4の移行計画、1.1の事業継続計画・コンプライアンス（医療情報保護） |
@@ -710,6 +748,7 @@ Google Cloud は新サービス・新機能を継続的にリリースするた�
 ---
 
 <a id="part9"></a>
+
 ## 9. 学習チェックリスト
 
 - [ ] Well-Architected Framework の6ピラー（運用の卓越性・セキュリティ・信頼性・パフォーマンス・コスト・持続可能性）の目的をそれぞれ一言で説明できる
@@ -728,14 +767,17 @@ Google Cloud は新サービス・新機能を継続的にリリースするた�
 ---
 
 <a id="part10"></a>
+
 ## 10. 参考文献一覧
 
 ### 公式試験情報
+
 - [Professional Cloud Architect Certification | Google Cloud](https://cloud.google.com/learn/certification/cloud-architect?hl=en)
 - [Professional Cloud Architect Exam Guide (v6.1, PDF)](https://services.google.com/fh/files/misc/v6.1_pca_professional_cloud_architect_exam_guide_english.pdf)
 - [Professional Cloud Architect Exam Guide (PDF, 提供リンク)](https://services.google.com/fh/files/misc/professional_cloud_architect_exam_guide_english.pdf)
 
 ### Well-Architected Framework
+
 - [Google Cloud Well-Architected Framework](https://docs.cloud.google.com/architecture/framework)
 - [運用の卓越性ピラー](https://docs.cloud.google.com/architecture/framework/operational-excellence)
 - [セキュリティ・プライバシー・コンプライアンスピラー](https://docs.cloud.google.com/architecture/framework/security)
@@ -747,37 +789,44 @@ Google Cloud は新サービス・新機能を継続的にリリースするた�
 - [Manage and optimize cloud resources](https://docs.cloud.google.com/architecture/framework/operational-excellence/manage-and-optimize-cloud-resources)
 
 ### 事業継続・災害復旧
+
 - [Disaster recovery planning guide](https://docs.cloud.google.com/architecture/dr-scenarios-planning-guide)
 - [Architecting disaster recovery for cloud infrastructure outages](https://docs.cloud.google.com/architecture/disaster-recovery)
 - [Backup and DR Service overview](https://docs.cloud.google.com/backup-disaster-recovery/docs/concepts/backup-dr)
 
 ### ネットワーク
+
 - [Best practices and reference architectures for VPC design](https://docs.cloud.google.com/architecture/best-practices-vpc-design)
 - [Decide the network design for your Google Cloud landing zone](https://docs.cloud.google.com/architecture/landing-zones/decide-network-design)
 - [VPC networks](https://docs.cloud.google.com/vpc/docs/vpc)
 
 ### ストレージ
+
 - [Object storage vs block storage vs file storage](https://cloud.google.com/blog/topics/developers-practitioners/map-storage-options-google-cloud)
 - [How Object vs Block vs File Storage differ](https://cloud.google.com/discover/object-vs-block-vs-file-storage)
 
 ### コンピュート
+
 - [Compute overview](https://docs.cloud.google.com/docs/compute-area/overview)
 - [Compute Engine overview](https://docs.cloud.google.com/compute/docs/overview)
 - [Choose a Compute Engine deployment strategy](https://docs.cloud.google.com/compute/docs/choose-compute-deployment-option)
 
 ### AI / 生成AI
+
 - [Gemini Cloud Assist documentation](https://docs.cloud.google.com/cloud-assist)
 - [Gemini for Google Cloud overview](https://docs.cloud.google.com/cloud-assist/overview)
 - [Agent Platform overview](https://docs.cloud.google.com/gemini-enterprise-agent-platform/overview)
 - [Overview of Model Garden](https://docs.cloud.google.com/vertex-ai/generative-ai/docs/model-garden/explore-models)
 
 ### 移行
+
 - [Migration Center overview](https://docs.cloud.google.com/migration-center/docs/migration-center-overview)
 - [About migration planning](https://docs.cloud.google.com/migration-center/docs/migration-planning-overview)
 - [Migration tools](https://docs.cloud.google.com/migration-center/docs/migration-modernization-tools)
 - [RaMP overview](https://docs.cloud.google.com/migration-center/docs/ramp-overview)
 
 ### ケーススタディ
+
 - [v6.1 Professional Cloud Architect Exam Guide（ケーススタディ一覧掲載）](https://services.google.com/fh/files/misc/v6.1_pca_professional_cloud_architect_exam_guide_english.pdf)
 
 ---
