@@ -310,6 +310,16 @@
             pre.mermaid svg {
                 flex-shrink: 0;
             }
+            /* Mermaid gives every node's label group its own internal hit-area <rect>,
+   normally invisible. For diamond/rhombus nodes this rect is populated with
+   real (but mismatched) dimensions, and our node-fill CSS below paints it
+   as a second, misaligned box on top of the diamond. It carries no visible
+   content of its own (the polygon/shape already renders the real
+   background) so it is always safe to suppress. */
+            pre.mermaid .node .label rect {
+                fill: none !important;
+                stroke: none !important;
+            }
 
             /* ---------- Reference grid ---------- */
             .ref-cat-title {
