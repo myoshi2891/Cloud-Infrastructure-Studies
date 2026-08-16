@@ -77,7 +77,7 @@ flowchart TB
 
 ### 3.1.1 Identity and Access Management（IAM）
 
-IAMは「誰が（Who）」「何に対して（Which resource）」「どのような操作を（What access)」行えるかを制御する、Google Cloudのセキュリティの根幹をなす仕組みです。試験ではIAMの構成要素の理解に加え、最小権限の原則（Principle of Least Privilege）をどう実践するかが繰り返し問われます。
+IAMは「誰が（Who）」「何に対して（Which resource）」「どのような操作を（What access）」行えるかを制御する、Google Cloudのセキュリティの根幹をなす仕組みです。試験ではIAMの構成要素の理解に加え、最小権限の原則（Principle of Least Privilege）をどう実践するかが繰り返し問われます。
 
 #### IAMの基本構成要素
 
@@ -696,8 +696,8 @@ SLSA v1.2では、レベルが単一の連番ではなく**トラック（track�
 | レベル | 要件の概要 |
 | --- | --- |
 | Source L1 | ソースがバージョン管理され、リビジョンが一意に識別できる |
-| Source L2 | ブランチと履歴が保護され、ソースプロベナンスが生成される |
-| Source L3 | ソース管理プラットフォームが改ざんに耐性を持ち、検証可能なソースプロベナンスを提供する |
+| Source L2 | ブランチ履歴が連続的かつ不変な形で保持され、各ソースリビジョンに対してソースプロベナンス構成証明（attestation）が発行される |
+| Source L3 | 組織が定めた技術的統制が Named Reference に対して継続的に強制され、その証跡が記録される |
 | Source L4（最高レベル） | すべての変更に対する**2名以上のレビュー（two-party review）**を要求する最も厳格なレベル |
 
 出典: [^87]
