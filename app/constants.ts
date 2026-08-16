@@ -230,6 +230,7 @@ const ALL_EXAMS: Exam[] = [
             { label: 'Section 3: ロードバランシングとトラフィック管理', href: '/gcl/professional-cloud-network-engineer/section3-load-balancing', pct: '~16%' },
             { label: 'Section 4: CDN・DNS・IPアドレス管理', href: '/gcl/professional-cloud-network-engineer/section4-cdn-dns-ipam', pct: '~17%' },
             { label: 'Section 5: ネットワークセキュリティの設計と実装', href: '/gcl/professional-cloud-network-engineer/section5-network-security', pct: '~17%' },
+            { label: 'Section 6: ネットワーク操作と監視', href: '/gcl/professional-cloud-network-engineer/section6-network-ops-monitoring', pct: '~13%' },
             { label: 'ステップバイステップガイド', href: '/gcl/professional-cloud-network-engineer-step-by-step', pct: '詳細' },
         ],
         badge: 'ネットワーク特化',

@@ -277,6 +277,12 @@ app/
         NavBar.tsx                  # サイドバーナビ (IntersectionObserver)
         constants.ts                # Mermaid 図定義 (17図)
         page.css                    # ページ固有スタイル
+      section6-network-ops-monitoring/
+        page.tsx                    # Section 6: ネットワーク操作と監視 完全ガイド (Server)
+        PcneSection6NetworkOpsMonitoringGuide.tsx # 本文＋インタラクション (Client。全7セクション、20 Mermaid図等)
+        NavBar.tsx                  # サイドバーナビ (IntersectionObserver)
+        constants.ts                # Mermaid 図定義 (20図)
+        page.css                    # ページ固有スタイル
     professional-cloud-network-engineer-step-by-step/
       page.tsx                      # PCNE ステップバイステップ実践ガイド
       components/                   # セクションコンポーネント（Section1-6）
