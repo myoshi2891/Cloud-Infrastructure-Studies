@@ -265,6 +265,12 @@ app/
         NavBar.tsx                  # サイドバーナビ (IntersectionObserver)
         constants.ts                # Mermaid 図定義 (10図)
         page.css                    # ページ固有スタイル
+      section4-cdn-dns-ipam/
+        page.tsx                    # Section 4: CDN・DNS・IPアドレス管理 完全ガイド (Server)
+        PcneSection4CdnDnsIpamGuide.tsx # 本文＋インタラクション (Client。全6セクション、20 Mermaid図等)
+        NavBar.tsx                  # サイドバーナビ (IntersectionObserver)
+        constants.ts                # Mermaid 図定義 (20図)
+        page.css                    # ページ固有スタイル
       section5-network-security/
         page.tsx                    # Section 5: ネットワークセキュリティの設計と実装 完全ガイド (Server)
         PcneSection5NetworkSecurityGuide.tsx # 本文＋インタラクション (Client。全7セクション、17 Mermaid図等)
