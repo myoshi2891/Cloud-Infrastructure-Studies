@@ -489,6 +489,65 @@ class StubModel:
 # DLP API 統合テスト: モデルだけをスタブ化し、ガード処理から実際の DLP API を呼ぶ
 result = generate_guarded_response("safe prompt", StubModel(), PROJECT_ID)
 assert result == BLOCKED_RESPONSE
+
+
+class TextRaisesValueErrorResponse:
+    candidates = [SimpleNamespace(finish_reason=SimpleNamespace(name="STOP"))]
+    prompt_feedback = SimpleNamespace(block_reason=None)
+
+    @property
+    def text(self):
+        raise ValueError("Response text is unavailable")
+
+
+class ResponseStubModel:
+    def __init__(self, response):
+        self.response = response
+
+    def generate_content(self, _prompt):
+        return self.response
+
+
+def fail_if_dlp_called(*_args, **_kwargs):
+    raise AssertionError("DLP API must not be called for a blocked model response")
+
+
+# 単体テスト: 不正またはブロック済みのモデル応答は DLP 検査前に fail-closed する
+original_contains_sensitive_info = contains_sensitive_info
+contains_sensitive_info = fail_if_dlp_called
+
+try:
+    blocked_responses = [
+        SimpleNamespace(
+            candidates=[],
+            prompt_feedback=SimpleNamespace(block_reason=None),
+            text="unused",
+        ),
+        SimpleNamespace(
+            candidates=[SimpleNamespace(finish_reason=SimpleNamespace(name="STOP"))],
+            prompt_feedback=SimpleNamespace(block_reason="SAFETY"),
+            text="unused",
+        ),
+        SimpleNamespace(
+            candidates=[SimpleNamespace(finish_reason=SimpleNamespace(name="SAFETY"))],
+            prompt_feedback=SimpleNamespace(block_reason=None),
+            text="unused",
+        ),
+        SimpleNamespace(
+            candidates=[SimpleNamespace(finish_reason=SimpleNamespace(name="STOP"))],
+            prompt_feedback=SimpleNamespace(block_reason=None),
+            text="",
+        ),
+        TextRaisesValueErrorResponse(),
+    ]
+
+    for response in blocked_responses:
+        result = generate_guarded_response(
+            "safe prompt", ResponseStubModel(response), PROJECT_ID
+        )
+        assert result == BLOCKED_RESPONSE
+finally:
+    contains_sensitive_info = original_contains_sensitive_info
 ```
 
 **ベストプラクティス**

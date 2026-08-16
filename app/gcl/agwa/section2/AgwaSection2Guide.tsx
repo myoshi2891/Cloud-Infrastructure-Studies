@@ -1,0 +1,2505 @@
+// app/gcl/agwa/section2/AgwaSection2Guide.tsx
+"use client";
+
+import React, { memo } from "react";
+import { MermaidDiagram } from "@/components/MermaidDiagram";
+import { DIAGRAMS, type DiagramId } from "./constants";
+import { NavBar } from "./NavBar";
+
+const Diagram = memo(function Diagram({ id, label }: { id: DiagramId; label: string }) {
+  const chart = DIAGRAMS[id];
+  if (!chart) return null;
+  return (
+    <div className="mermaid-wrap">
+      <MermaidDiagram chart={chart} ariaLabel={label} preserveNaturalScale />
+    </div>
+  );
+});
+
+export const AgwaSection2Guide: React.FC = () => {
+  return (
+    <div className="agwa-section2-page">
+      <NavBar />
+      <main className="main">
+        <div className="hero">
+          <div className="hero-eyebrow">{" "}Associate Google Workspace Administrator 試験対策ガイド{" "}</div>
+          <h1 className="hero-title">Section 2: コアWorkspaceサービスの管理</h1>
+          <div className="hero-badge">出題比率 約23% ／ 7タスク（2.1〜2.7）</div>
+        </div>
+        <blockquote className="intro-quote">
+          <p>{" "}本ガイドはGoogle Cloud公式の
+            <a href="https://cloud.google.com/learn/certification/associate-google-workspace-administrator?hl=en">Associate Google Workspace Administrator認定ページ</a>および
+            <a href="https://services.google.com/fh/files/misc/associate_google_workspace_administrator_exam_guide_english.pdf">公式Exam Guide PDF</a>が定義するSection 2「Managing core Workspace
+                        services」の7つのタスク（2.1〜2.7）に厳密に対応し、Google
+                        Workspace管理者ヘルプセンター（
+            <code>support.google.com/a</code>および
+            <code>knowledge.workspace.google.com</code>）の一次情報に基づいて、中級者〜上級者向けに実務レベルの詳細解説とGoogle推奨ベストプラクティスをまとめたものです。{" "}
+          </p>
+        </blockquote>
+        <div className="quicknav-grid">
+          <a className="quicknav-card" href="#section-2の全体像">
+            <span className="quicknav-badge">概要</span>
+            <span className="quicknav-label">Section 2の全体像とタスク構成マップ</span>
+          </a>
+          <a className="quicknav-card" href="#21-gmailの設定">
+            <span className="quicknav-badge">2.1</span>
+            <span className="quicknav-label">Gmail: ルーティング・認証・コンプライアンス</span>
+          </a>
+          <a className="quicknav-card" href="#22-google-driveとdocsの設定">
+            <span className="quicknav-badge">2.2</span>
+            <span className="quicknav-label">Drive/Docs: 共有設定・Trust Rules・ストレージ</span>
+          </a>
+          <a className="quicknav-card" href="#23-google-calendarの設定">
+            <span className="quicknav-badge">2.3</span>
+            <span className="quicknav-label">Calendar: リソース予約・共有・委任</span>
+          </a>
+          <a className="quicknav-card" href="#24-google-meetの設定">
+            <span className="quicknav-badge">2.4</span>
+            <span className="quicknav-label">Meet: セーフティ設定・ビデオ設定</span>
+          </a>
+          <a className="quicknav-card" href="#25-google-chatの設定">
+            <span className="quicknav-badge">2.5</span>
+            <span className="quicknav-label">Chat: スペース設定・外部連携・アプリ</span>
+          </a>
+          <a className="quicknav-card" href="#26-google-workspaceにおける生成aiの活用">
+            <span className="quicknav-badge">2.6</span>
+            <span className="quicknav-label">生成AI: Geminiのプライバシーと有効化階層</span>
+          </a>
+          <a className="quicknav-card" href="#27-workspace開発のサポート">
+            <span className="quicknav-badge">2.7</span>
+            <span className="quicknav-label">Workspace開発: AppSheet・Apps Script</span>
+          </a>
+        </div>
+        <hr />
+        <h2 id="section-2の全体像">Section 2の全体像</h2>
+        <p>{" "}Exam Guideにおいて、Section 2「Managing core Workspace services」はSection
+                    1（ユーザー・ドメイン・ディレクトリ管理、約20%）に次いで出題比率が最も高い領域の一つで、
+          <strong>約23</strong>%を占めます。対象範囲はGmail、Google
+                    DriveとDocs、Google Calendar、Google Meet、Google
+                    Chat、生成AI（Gemini）、そしてAppSheet／Apps
+                    Scriptによる開発支援の7タスクにまたがり、Google
+                    Workspaceの「日常業務で最も使われるコアサービス」を管理者としてどう構成し、どう安全に運用するかが問われます。{" "}
+        </p>
+        <Diagram id="diag-1" label="AGWA Section 2 Diagram 1" />
+        <p>{" "}これらのタスクに共通する設計思想は、
+          <strong>Admin console上の「組織部門（OU）」または「設定グループ（Configuration
+                        Group）」を単位として、サービスごとに粒度の細かいポリシーを適用する</strong>という一貫したモデルです。この構造を理解しておくことは、Section
+                    2全体、さらには試験全体を通じて有効です。{" "}
+        </p>
+        <hr />
+        <h2 id="21-gmailの設定">2.1 Gmailの設定</h2>
+        <h3 id="211-mxレコードの設定">2.1.1 MXレコードの設定</h3>
+        <p>{" "}MXレコード（Mail Exchange
+                    record）は、ドメイン宛のメールをどのメールサーバーに配送するかを指定するDNSレコードです。Google
+                    Workspaceを利用するには、ドメインのMXレコードをGoogleのメールサーバーに向ける必要があります。{" "}</p>
+        <p>
+          <strong>2023年4月の仕様変更</strong>として、Googleはそれまでの複数レコード構成（
+          <code>ASPMX.L.GOOGLE.COM</code>などの5レコード、優先度違い）から、**単一のMXレコード
+          <code>smtp.google.com</code>**に設定を簡素化しました。既存の複数レコード構成（レガシー値）は引き続きサポートされており、正常に機能している場合は変更不要です。新規セットアップでは単一レコード方式が推奨されます。{" "}
+        </p>
+        <p>
+          <strong>設定手順の概要：</strong>
+        </p>
+        <ol type="1">
+          <li>{" "}ドメインレジストラ（お名前.com、Cloudflare、GoDaddyなど）のDNS管理画面にサインインする{" "}</li>
+          <li>既存のMXレコードをすべて削除する（残存すると配送障害の原因になる）</li>
+          <li>新しいMXレコードを追加する</li>
+        </ol>
+        <div className="table-scroll">
+          <table>
+            <thead>
+              <tr className="header">
+                <th>項目</th>
+                <th>値</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="odd">
+                <td>Type</td>
+                <td>MX</td>
+              </tr>
+              <tr className="even">
+                <td>Name / Host</td>
+                <td>{" "}空欄または
+                  <code>@</code>（サブドメインの場合はサブドメイン名）{" "}
+                </td>
+              </tr>
+              <tr className="odd">
+                <td>TTL</td>
+                <td>{" "}レジストラのデフォルト値、または
+                  <code>1</code>（3600秒/1時間を推奨するレジストラもある）{" "}
+                </td>
+              </tr>
+              <tr className="even">
+                <td>Priority</td>
+                <td>
+                  <code>1</code>
+                </td>
+              </tr>
+              <tr className="odd">
+                <td>Value / Destination</td>
+                <td>
+                  <code>smtp.google.com</code>（レジストラによっては末尾にピリオドが必要：
+                  <code>smtp.google.com.</code>）{" "}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <ol start={4} type="1">
+          <li>変更を保存する（DNS伝播に
+            <strong>最大72時間</strong>かかる場合がある）
+          </li>
+          <li>{" "}Admin
+                        consoleで「アカウント」→「ドメイン」→「ドメインを管理」→対象ドメインの「Gmailを有効にする」をクリックし、MXレコードの検証を行う（
+            <strong>ドメイン設定の管理者権限</strong>が必要）{" "}
+          </li>
+        </ol>
+        <p>
+          <strong>トラブルシューティングのポイント：</strong>
+        </p>
+        <ul>
+          <li>{" "}ドメインの所有権確認（TXTレコードによるベリフィケーション）が完了しているか確認する{" "}</li>
+          <li>レジストラごとのフォーマット差異（末尾ピリオドの有無など）を確認する</li>
+          <li>
+            <a href="https://toolbox.googleapps.com/apps/dig/#MX/">Admin Toolbox Dig</a>を使って、実際にインターネット上に公開されているMXレコードを検証する{" "}
+          </li>
+          <li>{" "}レジストラのサポートに問い合わせる（レジストラが不明な場合はドメインレジストラの特定方法を参照）{" "}</li>
+        </ul>
+        <p>
+          <strong>特殊なルーティングシナリオ：</strong>
+        </p>
+        <p>Gmailだけがメール処理を行うとは限らないケースがあります。</p>
+        <ul>
+          <li>
+            <strong>オンプレミスのメールハイジーン／ジャーナリング製品を前段に置く場合</strong>：MXレコードはオンプレミスサービスを指し、そこからGoogle
+                        Workspaceへ配送する構成にする{" "}
+          </li>
+          <li>
+            <strong>ハイブリッドメール環境（一部ユーザーがGoogle
+                            Workspace、一部がオンプレミスのExchangeなど）</strong>：MXレコードは通常どおり
+            <code>smtp.google.com</code>のままにし、Admin
+                        console側でSplit Delivery（分割配信）を設定する{" "}
+          </li>
+        </ul>
+        <blockquote className="callout-practice">
+          <p>
+            <span className="callout-icon">💡</span>
+            <strong>ベストプラクティス：</strong>{" "}MXレコードを切り替える前に、必ず新しいGoogle
+                        Workspaceのユーザーアカウントを作成しておくこと。MXレコード切り替え前にアカウントが存在しないと、メールがバウンス（配送不能）する原因になる。{" "}
+          </p>
+        </blockquote>
+        <h3 id="212-基本的なメールルーティングの設定">{" "}2.1.2 基本的なメールルーティングの設定{" "}</h3>
+        <p>{" "}Google Workspaceには
+          <strong>Default routing</strong>（デフォルトルーティング）と
+          <strong>Routing</strong>（ルーティング）という2つの主要なルーティング設定があり、この2つの使い分けが試験でも実務でも頻出のポイントです。{" "}
+        </p>
+        <div className="table-scroll">
+          <table>
+            <thead>
+              <tr className="header">
+                <th>設定</th>
+                <th>用途</th>
+                <th>優先度</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="odd">
+                <td>
+                  <strong>Default routing</strong>
+                </td>
+                <td>{" "}組織全体、またはOU全体に対する既定のメール配送方法を設定する（例：組織のほぼ全メールを2つの受信箱に配送するデュアルデリバリー）{" "}</td>
+                <td>{" "}コンテンツ／添付ファイルコンプライアンス設定より
+                  <strong>低い</strong>優先度。最大1000件まで作成可能で、優先順位を並べ替え可能{" "}
+                </td>
+              </tr>
+              <tr className="even">
+                <td>
+                  <strong>Routing</strong>
+                </td>
+                <td>{" "}より特定条件に基づく高度な配送ルールを設定する。Default
+                                    routingの挙動を上書きする用途にも使う（例：CEO宛メールのコピーをアシスタントにも送る）{" "}</td>
+                <td>Default routingより高い優先度</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>代表的なルーティングシナリオは以下の3つです。</p>
+        <Diagram id="diag-2" label="AGWA Section 2 Diagram 2" />
+        <ol type="1">
+          <li>
+            <strong>デュアルデリバリー（Dual delivery）</strong>：受信メッセージを2つ以上の受信箱に配送する。組織移行時の監査や、外部アーカイブシステムとの並行運用に利用される。Admin
+                        consoleでは「Gmail」→「Routing」（レガシーの「Email
+                        routing」設定は非推奨化され順次廃止予定）で設定し、「Also deliver
+                        to」で追加の宛先を指定する。{" "}
+          </li>
+          <li>
+            <strong>分割配信（Split delivery）</strong>：ドメイン内で一部のユーザーがGoogle
+                        Workspace、一部が別のメールシステムを使っている場合に、受信者に応じて配送先を分岐させる。事前に「Add
+                        Route」設定で非Gmailサーバーを追加しておく必要がある。Microsoft
+                        365との共存移行（フェーズドマイグレーション）で特によく使われる。{" "}
+          </li>
+          <li>
+            <strong>キャッチオールメールボックス（Catch-all mailbox）</strong>：誤って宛先を間違えたメールや、存在しない宛先宛のメールを取りこぼさないように、Default
+                        routingで「Unknown recipient」に対する配送ルールを設定する。{" "}
+          </li>
+        </ol>
+        <p>
+          <strong>設定手順（共通）：</strong>{" "}Admin console → 「アプリ」→「Google
+                    Workspace」→「Gmail」→「Routing」または「Default routing」→
+                    「設定」または「別のルールを追加」。変更の反映には最大24時間かかる（通常はより早く反映される）。{" "}
+        </p>
+        <blockquote className="callout-practice">
+          <p>
+            <span className="callout-icon">💡</span>
+            <strong>ベストプラクティス：</strong>{" "}ルーティングルールのテストは、いきなり全社展開せず、まず特定のOUやテストユーザーに絞り込んで検証してから全社展開する（Googleの「より高速なルールのテストに関するベストプラクティス」を参照）。{" "}
+          </p>
+        </blockquote>
+        <h3 id="213-コンテンツコンプライアンスルール">{" "}2.1.3 コンテンツコンプライアンスルール{" "}</h3>
+        <p>{" "}コンテンツコンプライアンス（Content
+                    compliance）は、メール本文や件名が特定の条件（キーワード、正規表現、事前定義された検出器）に一致した場合に、そのメッセージをどう処理するかを制御する高度なフィルタリング機能です。{" "}</p>
+        <p>
+          <strong>設定場所：</strong>{" "}Admin console → 「アプリ」→「Google
+                    Workspace」→「Gmail」→「コンプライアンス」（
+          <strong>Gmail設定の管理者権限</strong>が必要）{" "}
+        </p>
+        <p>
+          <strong>主な用途：</strong>
+        </p>
+        <ul>
+          <li>{" "}送信メール（Outbound）に「confidential」という単語が含まれる場合、配送を拒否する{" "}</li>
+          <li>特定のIPアドレス範囲からの受信メールを隔離（Quarantine）する</li>
+          <li>特定のテキストパターンに一致するメッセージを法務部門にルーティングする</li>
+          <li>{" "}ホワイトリスト化（第三者フィッシングシミュレーションサービスなど）にも応用可能{" "}</li>
+        </ul>
+        <p>
+          <strong>適用範囲の指定：</strong>{" "}ルールは「Inbound（受信）」「Outbound（送信）」「Internal-sending／Internal-receiving（組織内送受信）」のいずれか、または組み合わせに適用できる。ここでの「内部（internal）」とは、検証済みのWorkspaceドメインまたはそのサブドメイン・親ドメインを指す。{" "}
+        </p>
+        <p>
+          <strong>事前定義された検出器（Predefined content detectors）：</strong>{" "}クレジットカード番号や社会保障番号、パスポート番号など、機密データを検出するために、正規表現を自前で書かなくても使える組み込みの検出器が用意されている。これらはキーワードや正規表現と組み合わせて、より高度なポリシーを構築できる。{" "}
+        </p>
+        <p>
+          <strong>アタッチメントコンプライアンス（Attachment compliance）：</strong>{" "}ファイルの種類・ファイル名・メッセージサイズに基づいてメッセージの扱いを指定する別設定。暗号化された添付ファイルの検出にも対応し、ファイル拡張子を偽装したファイルでも実際のファイル種別を検出できる。{" "}
+        </p>
+        <blockquote className="callout-warning">
+          <p>
+            <span className="callout-icon">⚠</span>
+            <strong>重要な注意点：</strong>{" "}コンテンツフィルタは正規表現やその他のパラメータに基づく確率的な一致判定であり、すべての機微情報や添付ファイルを100%検出できることを保証するものではない（誤検知・見逃しが発生し得る）。{" "}
+          </p>
+        </blockquote>
+        <p>{" "}複数のコンプライアンスルールを設定した場合、どのルールが優先されるかは条件と優先順位によって決まる（「How
+                    multiple settings affect message behavior」を参照）。{" "}</p>
+        <h3 id="214-スパムフィッシングマルウェア対策">{" "}2.1.4 スパム・フィッシング・マルウェア対策{" "}</h3>
+        <p>{" "}「Spam, Phishing and
+                    Malware」設定は、Gmailの標準的なスパム判定を補完・上書きするための管理者向けコントロールです。試験で問われる主要な要素は次の4つです。{" "}</p>
+        <Diagram id="diag-3" label="AGWA Section 2 Diagram 3" />
+        <div className="table-scroll">
+          <table>
+            <thead>
+              <tr className="header">
+                <th>機能</th>
+                <th>説明</th>
+                <th>用途</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="odd">
+                <td>
+                  <strong>Email allowlist（許可リスト）</strong>
+                </td>
+                <td>{" "}特定の送信元IPアドレスからのメールについて、Gmailの標準スパムフィルタを完全にバイパスする。
+                  <strong>ドメイン全体に対してのみ設定可能で、OU単位では許可リストを設定できない</strong>
+                </td>
+                <td>{" "}正規の一斉配信サービス（フィッシング訓練ツールなど）からのメールが誤ってスパム判定されるのを防ぐ{" "}</td>
+              </tr>
+              <tr className="even">
+                <td>
+                  <strong>Blocked senders（denylist）</strong>
+                </td>
+                <td>特定のメールアドレスまたはドメインをブロックする</td>
+                <td>既知の迷惑送信元を明示的に遮断する</td>
+              </tr>
+              <tr className="odd">
+                <td>
+                  <strong>Inbound gateway（インバウンドゲートウェイ）</strong>
+                </td>
+                <td>{" "}自組織にメールを中継する前段のメールサーバー（セキュリティゲートウェイなど）のIPアドレスを指定する。トップレベル組織でのみ設定可能で、全組織に適用される{" "}</td>
+                <td>{" "}オンプレミスのメールセキュリティ製品やサードパーティの一斉送信サービスを経由させる場合{" "}</td>
+              </tr>
+              <tr className="even">
+                <td>
+                  <strong>IP allowlist（インバウンドゲートウェイ内）</strong>
+                </td>
+                <td>{" "}インバウンドゲートウェイ設定内で「Gateway
+                                    IPs」として登録したIPからのメールを信頼する{" "}</td>
+                <td>{" "}ゲートウェイ経由のメールに対してGmail自体のスパム評価を無効化し、ヘッダー値のみで判定させることも可能（
+                  <code>Disable Gmail spam evaluation on mail from this gateway;
+                                        only use header value</code>）{" "}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>
+          <strong>設定場所：</strong>{" "}Admin console → 「アプリ」→「Google
+                    Workspace」→「Gmail」→「スパム、フィッシング、マルウェア」{" "}
+        </p>
+        <blockquote className="callout-practice">
+          <p>
+            <span className="callout-icon">💡</span>
+            <strong>ベストプラクティス：</strong>
+          </p>
+          <ul>
+            <li>{" "}IPアドレスによる許可リストは、ドメイン全体に影響するため慎重に使用し、可能な限りコンテンツコンプライアンスルールやアドレスリストとの組み合わせでスコープを絞り込む{" "}</li>
+            <li>{" "}インバウンドゲートウェイを設定する場合、
+              <code>Reject all mail not from gateway IPs</code>のチェックは、本当にそのゲートウェイ以外からの直接配信を完全に禁止したい場合のみ有効にする（誤設定すると正規メールが届かなくなるリスクがある）{" "}
+            </li>
+            <li>{" "}許可リストへの追加は「配送性を上げる」ための機能であり、フィッシング対策そのものを弱体化させる可能性があるため、追加するIPは信頼できる送信元に限定する{" "}</li>
+          </ul>
+        </blockquote>
+        <h3 id="215-添付ファイルサイズ制限とブロックするファイル形式">{" "}2.1.5 添付ファイルサイズ制限とブロックするファイル形式{" "}</h3>
+        <p>{" "}コンプライアンス設定内の「Attachment
+                    compliance（添付ファイルコンプライアンス）」を使うと、ファイルの種類、ファイル名、メッセージサイズに基づいて、メッセージの扱い（拒否・隔離・変更など）を指定できます。{" "}</p>
+        <p>
+          <strong>制御できる主な観点：</strong>
+        </p>
+        <ul>
+          <li>{" "}特定の拡張子（
+            <code>.exe</code>、
+            <code>.bat</code>など実行可能ファイル）を持つ添付ファイルの拒否{" "}
+          </li>
+          <li>ファイル名パターンによるフィルタリング</li>
+          <li>メッセージ全体のサイズ上限に基づく制御</li>
+          <li>{" "}アーカイブファイル（ZIPなど）
+            <strong>内部</strong>のファイル名もスキャン対象にできる{" "}
+          </li>
+          <li>{" "}ファイル拡張子を偽装（リネーム）した悪意あるファイルも、実際のファイル種別を検出してブロックできる{" "}</li>
+          <li>{" "}暗号化された添付ファイルの検出（アーカイブサーバーへの非暗号化コピー送付などに活用）{" "}</li>
+        </ul>
+        <blockquote className="callout-practice">
+          <p>
+            <span className="callout-icon">💡</span>
+            <strong>ベストプラクティス：</strong>{" "}添付ファイルコンプライアンスルールは、コンテンツコンプライアンスルールと同様に複数設定できるが、複数ルールが競合した場合の優先順位（条件とルールの並び順）を必ず確認し、意図しないブロック・許可が発生しないようテストすること。{" "}
+          </p>
+        </blockquote>
+        <h3 id="216-gmail転送とpopimapアクセス">2.1.6 Gmail転送とPOP/IMAPアクセス</h3>
+        <p>
+          <strong>自動転送（Automatic forwarding）：</strong>
+        </p>
+        <ul>
+          <li>{" "}エンドユーザーは自身のGmail設定（「Forwarding and
+                        POP/IMAP」タブ）から個人的な転送先アドレスを1つ設定できる。転送先には確認メールが送られ、受信者側でリンクをクリックして初めて有効化される{" "}</li>
+          <li>{" "}管理者は、ユーザーによる自動転送設定そのものを許可・禁止するコントロールを持つ（Admin
+                        console → Gmail → エンドユーザーアクセス）{" "}</li>
+          <li>{" "}組織レベルでより高度な転送・複製が必要な場合は、個人設定ではなく管理者によるRouting設定（アドレスマップによる転送、コンプライアンスルールと組み合わせた外部転送のブロックなど）を使う{" "}</li>
+        </ul>
+        <p>
+          <strong>POP/IMAPアクセス：</strong>
+        </p>
+        <ul>
+          <li>{" "}管理者はユーザーまたはOU単位でPOP・IMAPアクセスのオン・オフを制御できる（Admin
+                        console → Gmail → ユーザー設定 → 「POPとIMAPアクセス」）{" "}</li>
+          <li>
+            <strong>2025年5月1日以降</strong>、Google
+                        WorkspaceアカウントはOAuthを使用しないサードパーティアプリ・デバイスからのログイン（いわゆる「安全性の低いアプリ」）をサポートしなくなった。サードパーティのメールクライアントを使う場合はOAuth認証が必須{" "}
+          </li>
+          <li>{" "}OAuthクライアントIDを指定して、特定のクライアントのみに同期を限定するオプションもある（この場合、サービスアカウントによるドメイン全体の委任を使うクライアントはサポート対象外になる点に注意）{" "}</li>
+        </ul>
+        <blockquote className="callout-practice">
+          <p>
+            <span className="callout-icon">💡</span>
+            <strong>ベストプラクティス：</strong>{" "}外部への自動転送は情報漏えいのリスクがあるため、必要なOU以外では転送機能自体を無効化し、どうしても外部転送が必要な場合はコンテンツコンプライアンスルールで「外部への自動転送をブロックする」設定と組み合わせて多層防御にする。{" "}
+          </p>
+        </blockquote>
+        <h3 id="217-google推奨のメールセキュリティ対策spfdkimdmarc">{" "}2.1.7 Google推奨のメールセキュリティ対策（SPF・DKIM・DMARC）{" "}</h3>
+        <p>{" "}SPF・DKIM・DMARCは、送信ドメイン認証（メールなりすまし対策）の三本柱であり、試験・実務の両面で最重要トピックの一つです。{" "}</p>
+        <Diagram id="diag-4" label="AGWA Section 2 Diagram 4" />
+        <div className="table-scroll">
+          <table>
+            <thead>
+              <tr className="header">
+                <th>項目</th>
+                <th>役割</th>
+                <th>Google Workspaceでの設定要点</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="odd">
+                <td>
+                  <strong>SPF</strong>（Sender Policy Framework）
+                </td>
+                <td>{" "}「どのメールサーバーがこのドメインの代理で送信してよいか」をDNS
+                                    TXTレコードで宣言する{" "}</td>
+                <td>
+                  <code>include:_spf.google.com</code>を含むSPFレコードをDNSに公開する。
+                  <strong>1ドメインにつきSPFレコードは1つのみ</strong>（複数ある場合はマージが必要）。反映まで最大48時間{" "}
+                </td>
+              </tr>
+              <tr className="even">
+                <td>
+                  <strong>DKIM</strong>（DomainKeys Identified Mail）
+                </td>
+                <td>{" "}メールに暗号署名を付与し、経路上での改ざんがないことと送信ドメインの真正性を証明する{" "}</td>
+                <td>{" "}Admin console
+                                    →「Gmail」→「メールを認証」でDKIM鍵ペア（1024ビットまたは2048ビット）を生成し、公開鍵をTXTレコードとしてDNSに公開後、「認証を開始」をクリックして有効化する{" "}</td>
+              </tr>
+              <tr className="odd">
+                <td>
+                  <strong>DMARC</strong>（Domain-based Message Authentication,
+                                    Reporting &amp; Conformance）{" "}
+                </td>
+                <td>{" "}SPF・DKIMの結果と
+                  <code>From:</code>ヘッダーのドメイン一致（アライメント）を基に、認証に失敗したメールをどう扱うか（
+                  <code>none</code>／
+                  <code>quarantine</code>／
+                  <code>reject</code>）をポリシーとして宣言し、レポートを受け取る{" "}
+                </td>
+                <td>
+                  <code>_dmarc.yourdomain.com</code>にTXTレコードとしてDMARCポリシーを公開する。
+                  <strong>まず
+                    <code>p=none</code>から開始
+                  </strong>し、レポートを分析しながら段階的に
+                  <code>quarantine</code>→
+                  <code>reject</code>へ引き上げるロールアウトが推奨される{" "}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>
+          <strong>Googleの送信者ガイドライン（Email sender guidelines）：</strong>
+        </p>
+        <ul>
+          <li>すべての送信者：SPFまたはDKIMのいずれかの設定が必須</li>
+          <li>{" "}大量送信者（1日5,000通以上のメッセージをGmail宛に送信する場合）：
+            <strong>SPF・DKIM・DMARCすべての設定が必須</strong>（2024年2月施行）{" "}
+          </li>
+        </ul>
+        <blockquote className="callout-practice">
+          <p>
+            <span className="callout-icon">💡</span>
+            <strong>ベストプラクティス：</strong>
+          </p>
+          <ul>
+            <li>{" "}SPF・DKIM・DMARCは単独ではなく
+              <strong>必ず三点セットで運用</strong>する。DMARCはSPF/DKIMの検証結果を土台にしているため、土台なしでDMARCだけ設定しても効果が限定的{" "}
+            </li>
+            <li>{" "}DMARCは
+              <code>p=none</code>（モニタリングのみ）から始め、集計レポートで正規の送信元をすべて洗い出してから段階的に強制力を高める「Recommended
+                            DMARC rollout」に従う{" "}
+            </li>
+            <li>{" "}SPFレコードは新しいメール配信サービスを追加・廃止するたびに更新し、使われなくなったドメイン・IPを削除して古いレコードを放置しない{" "}</li>
+            <li>{" "}追加のブランド対策として、DMARCの上にBIMI（ブランドロゴのメール表示）の導入も検討できる{" "}</li>
+          </ul>
+        </blockquote>
+        <h3 id="218-メールデータの移行">2.1.8 メールデータの移行</h3>
+        <p>{" "}他のメールプロバイダやGoogle
+                    Workspaceの別アカウントからGmailへメールデータを移行するには、Googleが提供する複数の移行ツールを使い分けます。{" "}</p>
+        <div className="table-scroll">
+          <table>
+            <thead>
+              <tr className="header">
+                <th>ツール</th>
+                <th>用途</th>
+                <th>アクセス場所</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="odd">
+                <td>
+                  <strong>新しいデータ移行サービス（Data migration, GA）</strong>
+                </td>
+                <td>{" "}Google
+                                    Workspace同士、Gmail（個人アカウント）、IMAP対応メールサーバーからのメール移行。デルタ移行（差分同期）に対応し、既存データを重複させずに新着・更新分のみ取り込める{" "}</td>
+                <td>{" "}Admin console
+                                    →「データ」→「データのインポートとエクスポート」→「データ移行」{" "}</td>
+              </tr>
+              <tr className="even">
+                <td>
+                  <strong>データインポートツール（Data import）</strong>
+                </td>
+                <td>{" "}Microsoft Exchange Online、IMAPベースのWebメール（Yahoo!、iCloud
+                                    Mail、GoDaddy、Zohoなど）、別のWorkspaceアカウント、個人のGmailアカウントからのインポート{" "}</td>
+                <td>{" "}Admin console
+                                    →「データ」→「データのインポートとエクスポート」→「データインポート」{" "}</td>
+              </tr>
+              <tr className="odd">
+                <td>
+                  <strong>レガシーData Migration Service（DMS）app</strong>
+                </td>
+                <td>{" "}従来型の移行アプリ。引き続き利用可能（
+                  <code>admin.google.com/ac/dms</code>）{" "}
+                </td>
+                <td>Admin console内</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>
+          <strong>移行フローの要点（Gmailアカウントからの移行の例）：</strong>
+        </p>
+        <ol type="1">
+          <li>{" "}スーパー管理者としてサインインし、移行先のAdmin
+                        consoleで移行元アドレスを指定して「認証をリクエスト」する{" "}</li>
+          <li>{" "}移行元アカウントの所有者が接続リクエストを承認する（自分自身が所有者であればAdmin
+                        console上で直接承認できる）{" "}</li>
+          <li>承認後、移行を実行する</li>
+          <li>{" "}Advanced Protection
+                        Program（高度な保護機能プログラム）に登録済みのユーザーは、移行前・移行中は同プログラムを一時的にオフにする必要がある{" "}</li>
+        </ol>
+        <blockquote className="callout-practice">
+          <p>
+            <span className="callout-icon">💡</span>
+            <strong>ベストプラクティス：</strong>
+          </p>
+          <ul>
+            <li>{" "}大規模な移行では、まず少人数のパイロットグループで移行してから全社展開する{" "}</li>
+            <li>{" "}移行完了後もデルタ移行（差分インポート）を実行し、初回移行後に追加・更新されたデータや、初回移行で失敗したデータを再取り込みする{" "}</li>
+            <li>{" "}Exchange OnlineやMicrosoft 365からの移行では、Data
+                            Importが「ドメイン全体の委任（Domain-wide
+                            delegation）」のAPIクライアントとして認証される点を踏まえ、事前にMicrosoft
+                            365側でグローバル管理者権限を用意しておく{" "}</li>
+          </ul>
+        </blockquote>
+        <h3 id="219-gmailアクセスの委任">2.1.9 Gmailアクセスの委任</h3>
+        <p>{" "}メールの委任（Mail
+                    delegation）を使うと、あるユーザー（アカウント所有者）が別のユーザー（委任先）に対して、自分の受信トレイの閲覧・送信・管理権限を付与できます。{" "}</p>
+        <p>
+          <strong>設定手順：</strong>
+        </p>
+        <ol type="1">
+          <li>{" "}Admin console →「アプリ」→「Google
+                        Workspace」→「Gmail」→「ユーザー設定」→「メールの委任」{" "}</li>
+          <li>{" "}「ユーザーがメールボックスへのアクセスをドメイン内の他のユーザーに委任できるようにする」をオンにする{" "}</li>
+          <li>{" "}委任者が送信したメールの送信者情報として、アカウント所有者・委任者のどちらのアドレスを受信者に表示するかを管理者が選択する{" "}</li>
+          <li>{" "}エンドユーザーに対し、個人単位・Googleグループ単位で委任先を追加できることを周知する{" "}</li>
+        </ol>
+        <p>
+          <strong>押さえるべきポイント：</strong>
+        </p>
+        <ul>
+          <li>
+            <strong>Googleグループをアカウントの委任先として追加できる</strong>（1つのグループは1人の委任者としてカウントされる）{" "}
+          </li>
+          <li>{" "}メールエイリアスはGoogleアカウントではないため、委任先として設定できない{" "}</li>
+          <li>{" "}委任先は受信トレイの閲覧・送信・返信・削除ができるが、パスワード変更やアカウント設定の変更はできない{" "}</li>
+        </ul>
+        <p>
+          <strong>委任 vs 共有メールボックス（Collaborative Inbox）：</strong>{" "}1対1の代理対応（秘書によるメール代理管理など）には委任、複数人でチケットのように受信箱を分担管理する場合はGoogleグループのCollaborative
+                    Inbox機能が適している（Section 1のグループ管理も参照）。{" "}
+        </p>
+        <h3 id="2110-コンプライアンスフッターとメール隔離quarantine">{" "}2.1.10 コンプライアンスフッターとメール隔離（Quarantine）{" "}</h3>
+        <p>
+          <strong>コンプライアンスフッター（Append footer）：</strong>{" "}法的な免責事項や社内ポリシーの通知など、定型のフッターテキストを送信メッセージに自動的に追加する機能。Admin
+                    console →「Gmail」→「コンプライアンス」→「フッターを追加」で設定する。{" "}
+        </p>
+        <p>
+          <strong>メール隔離（Email quarantine）：</strong>{" "}コンテンツコンプライアンスルールやDLPルールに一致したメッセージを、配信もブロックもせず一時的に「隔離エリア」に留め置き、管理者や指定ユーザーがレビューして解放・削除を判断できるようにする仕組み。{" "}
+        </p>
+        <p>
+          <strong>Quarantineへのアクセス権付与のベストプラクティス：</strong>
+        </p>
+        <div className="table-scroll">
+          <table>
+            <thead>
+              <tr className="header">
+                <th>オプション</th>
+                <th>方法</th>
+                <th>用途</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="odd">
+                <td>
+                  <strong>オプション1：全隔離メッセージへのアクセスを付与</strong>
+                </td>
+                <td>
+                  <code>Access Admin Quarantine</code>権限を持つカスタム管理者ロールを作成し、ユーザーに割り当てる{" "}
+                </td>
+                <td>{" "}全社のセキュリティチームなど、すべての隔離メッセージを横断的にレビューする担当者向け{" "}</td>
+              </tr>
+              <tr className="even">
+                <td>
+                  <strong>オプション2：特定の隔離メッセージのみへのアクセスを付与</strong>
+                </td>
+                <td>
+                  <code>Access Restricted Quarantines</code>権限を持つカスタムロールを作成し、Googleグループと紐づけて、隔離設定作成時に該当グループへのアクセスを許可する{" "}
+                </td>
+                <td>{" "}例：個人情報や機密情報を含むメッセージのレビューをコンプライアンスチームに限定する場合{" "}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <blockquote className="callout-practice">
+          <p>
+            <span className="callout-icon">💡</span>
+            <strong>ベストプラクティス：</strong>{" "}Quarantineへのアクセスはスーパー管理者に限定せず、必要最小限の権限を持つカスタムロールを作成して委任する（最小権限の原則）。全メッセージへの無制限アクセスを安易に多数の担当者へ配布しない。{" "}
+          </p>
+        </blockquote>
+        <hr />
+        <h2 id="22-google-driveとdocsの設定">2.2 Google DriveとDocsの設定</h2>
+        <h3 id="221-新規ファイルのデフォルト共有設定">{" "}2.2.1 新規ファイルのデフォルト共有設定{" "}</h3>
+        <p>{" "}Google Driveのファイル共有ポリシーの起点となるのが「General access
+                    default（全般的なアクセスのデフォルト設定）」です。Admin console
+                    →「アプリ」→「Google Workspace」→「Drive and
+                    Docs」→「共有設定」→「全般的なアクセスのデフォルト設定」から構成します（
+          <strong>Drive &amp; Docs管理者権限</strong>が必要）。{" "}
+        </p>
+        <p>
+          <strong>既定の選択肢：</strong>
+        </p>
+        <ul>
+          <li>
+            <strong>Restricted（限定公開）</strong>：ファイルはオーナーのみアクセス可能で、ユーザーが明示的に共有するまで非公開。
+            <strong>Googleが多くのユーザーに推奨する既定値</strong>であり、ユーザーが準備できたときにだけ共有し、個人ファイルは非公開のままにできる{" "}
+          </li>
+          <li>
+            <strong>your organization（組織全体）</strong>：組織内の全ユーザーがアクセス可能{" "}
+          </li>
+        </ul>
+        <p>{" "}さらに「ターゲットオーディエンス（後述2.2.4）」を作成することで、この2択に加えて任意のカスタムオーディエンス（例：特定部門、Employees
+                    Onlyなど）を選択肢に追加できます。{" "}</p>
+        <p>
+          <strong>内部共有 vs 外部共有：</strong>{" "}Google WorkspaceのAdmin
+                    consoleには「内部共有」を直接制限する専用トグルは存在せず、内部共有の制御は主に「全般的なアクセスのデフォルト設定」と「ターゲットオーディエンス」の組み合わせで実現します。一方、「外部共有」については専用の制御群（2.2.3参照）が用意されています。{" "}
+        </p>
+        <blockquote className="callout-practice">
+          <p>
+            <span className="callout-icon">💡</span>
+            <strong>ベストプラクティス：</strong>{" "}一般ユーザー向けには
+            <code>Restricted</code>をデフォルトにし、ターゲットオーディエンスで「Employees
+                        Only」のようなオーディエンスを作成した上でこれを優先（プライマリ）オーディエンスに設定することで、ユーザーが誤って外部ベンダーなどに広く共有してしまうリスクを下げる。{" "}
+          </p>
+        </blockquote>
+        <h3 id="222-drive信頼ルールtrust-rules">2.2.2 Drive信頼ルール（Trust Rules）</h3>
+        <p>{" "}Trust
+                    Rulesは、外部ドメイン・特定の組織部門（OU）・特定のグループ・特定のユーザーを基準に、Driveファイルの共有を
+          <strong>許可</strong>（Allow）・
+          <strong>拒否</strong>（Deny）・
+          <strong>警告表示</strong>（Warn）という形で制御するルールベースの新しい制御フレームワークです。従来の「Drive共有設定」（外部共有のオン・オフ、信頼済みドメインの許可リスト）を置き換えるものとして提供されています。{" "}
+        </p>
+        <p>
+          <strong>Trust Rulesが有効なユースケース：</strong>
+        </p>
+        <ul>
+          <li>{" "}財務部門が所有するファイルを、社内の他部署とは共有できないようにブロックする{" "}</li>
+          <li>契約関係のある特定の外部ドメインとのみ共有を許可する</li>
+          <li>{" "}外部ユーザーからのスパム・フィッシングファイル共有を防ぐため、通常は外部との共有が発生しないOUに対して「信頼できるドメインの外部ユーザーのみ共有を許可する」ルールを適用する{" "}</li>
+          <li>{" "}一時プロジェクトにおいて、一定期間後に外部コラボレーターのアクセスを自動的に失効させる{" "}</li>
+        </ul>
+        <p>
+          <strong>既存のDrive共有設定との関係：</strong>{" "}Trust
+                    Rulesを有効化すると、既存の「組織外との共有」設定は自動的にTrust
+                    Rulesへ変換される（プレビュー可能）。Trust
+                    Rulesを有効化した時点で、対応するDrive共有設定は無効になる（Trust
+                    Rulesはいつでもオフに戻し、従来のDrive共有設定に戻すことも可能）。{" "}
+        </p>
+        <Diagram id="diag-5" label="AGWA Section 2 Diagram 5" />
+        <p>
+          <strong>いつTrust Rulesを使うべきか（試験ポイント）：</strong>{" "}「Identifying
+                    when Drive trust rules should be
+                    used」という出題観点に対応する判断基準は、
+          <strong>単純な組織全体のオン・オフでは表現できない、部門・グループ・ドメイン単位できめ細かい共有制御が必要な場合</strong>にTrust
+                    Rulesを選択する、という点です。{" "}
+        </p>
+        <h3 id="223-組織ポリシーに基づく外部共有の制限">{" "}2.2.3 組織ポリシーに基づく外部共有の制限{" "}</h3>
+        <p>{" "}外部共有の制御はAdmin console →「Drive and
+                    Docs」→「共有設定」に集約されており、主な制御レバーは次の通りです。{" "}</p>
+        <div className="table-scroll">
+          <table>
+            <thead>
+              <tr className="header">
+                <th>制御</th>
+                <th>説明</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="odd">
+                <td>
+                  <strong>オン／オフ／制限</strong>
+                </td>
+                <td>{" "}外部共有を全面許可、全面禁止、または特定条件下でのみ許可に設定する（全面禁止は高セキュリティ環境以外では稀）{" "}</td>
+              </tr>
+              <tr className="even">
+                <td>
+                  <strong>信頼済み（許可リスト）ドメイン</strong>
+                </td>
+                <td>{" "}全面許可・全面禁止の二択ではなく、パートナー企業など特定ドメインとの共有のみを許可し、それ以外をブロックする{" "}</td>
+              </tr>
+              <tr className="odd">
+                <td>
+                  <strong>ターゲットオーディエンス</strong>
+                </td>
+                <td>{" "}「組織内全員」のような推奨共有先を提示し、ユーザーが安易に「リンクを知っている全員」を選択しないよう誘導する{" "}</td>
+              </tr>
+              <tr className="even">
+                <td>
+                  <strong>外部共有時の警告</strong>
+                </td>
+                <td>{" "}組織外への共有を行おうとした際にDriveが警告を表示し、意図しない外部共有（ヒューマンエラー）に気づかせる{" "}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>
+          <strong>Visitor Sharing（訪問者共有）：</strong>{" "}Googleアカウントを持たない外部ユーザー（非Google利用者）に対して、確認コードベースでファイルへの一時アクセスを許可する機能。外部共有を厳格に制限しつつ、特定の非Google利用者とだけ安全に共有したい場合に利用する。{" "}
+        </p>
+        <blockquote className="callout-practice">
+          <p>
+            <span className="callout-icon">💡</span>
+            <strong>ベストプラクティス（外部共有の5層防御モデル）：</strong>
+          </p>
+          <ol type="1">
+            <li>{" "}信頼済み外部ドメイン（契約関係のあるパートナー・ベンダー）を許可リスト化する{" "}</li>
+            <li>{" "}ターゲットオーディエンスと組み合わせ、ワンクリックで定義済みの外部グループに共有できるようにする{" "}</li>
+            <li>{" "}信頼済みドメインだからといって無制限アクセスにはならない点に留意する（信頼はあくまで摩擦を減らすためのものであり、権限レベルはファイルオーナーが個別に付与する）{" "}</li>
+            <li>{" "}高リスク部門（法務・財務など）はTrust
+                            Rulesで外部共有を個別にブロックする{" "}</li>
+            <li>{" "}Security
+                            CenterでDrive/Gmailの共有アクティビティを継続的に監視し、ポリシー違反のアラートを設定する{" "}</li>
+          </ol>
+        </blockquote>
+        <h3 id="224-ターゲットオーディエンスの管理">{" "}2.2.4 ターゲットオーディエンスの管理{" "}</h3>
+        <p>{" "}ターゲットオーディエンス（Target
+                    audiences）は、共有ダイアログでユーザーに提示される「推奨共有先」のリストであり、Drive/Docs・Chatサービスで利用できます（対応エディションはFrontline
+                    Plus、Business Plus、Enterprise Standard/Plus、Education Standard/Plusなど）。{" "}</p>
+        <p>
+          <strong>展開のベストプラクティス（Googleの公式推奨手順）：</strong>
+        </p>
+        <ol type="1">
+          <li>
+            <strong>すべての正社員を含む「Employees Only」オーディエンスを作成する</strong>：ダイナミックグループ（対応エディションの場合）または全社員を含む既存グループを使う{" "}
+          </li>
+          <li>
+            <strong>組織の全ユーザーを含む「Employees and
+                            Vendors」等のオーディエンスも作成する</strong>：全ユーザーを含むグループを作成して追加する{" "}
+          </li>
+          <li>
+            <strong>ターゲットオーディエンス向けのDrive/Docs共有ポリシーを作成する</strong>：全社、または特定OU・設定グループに適用する{" "}
+          </li>
+          <li>
+            <strong>「Employees Only」をプライマリ（優先）オーディエンスに設定する</strong>：優先オーディエンスをドラッグ操作で最上位に配置することで、ユーザーが誤ってベンダーを含む広いオーディエンスと共有するのを防ぎやすくなる{" "}
+          </li>
+        </ol>
+        <p>
+          <strong>設定場所：</strong>{" "}Admin console →「Drive and
+                    Docs」→「共有設定」→「ターゲットオーディエンス」{" "}
+        </p>
+        <blockquote className="callout-warning">
+          <p>
+            <span className="callout-icon">⚠</span>
+            <strong>注意点：</strong>{" "}ターゲットオーディエンスの構成グループとして、ダイナミックグループ（Dynamic
+                        groups）を組み合わせると、入退社に応じてメンバーが自動的に更新されるため、手動メンテナンスの負荷を大幅に減らせる（Section
+                        1のグループ管理を参照）。{" "}
+          </p>
+        </blockquote>
+        <h3 id="225-カスタムdocsテンプレートの設定">{" "}2.2.5 カスタムDocsテンプレートの設定{" "}</h3>
+        <p>{" "}組織独自のブランドを反映したテンプレート（Docs、Sheets、Slides、Forms、Sitesなど）をテンプレートギャラリーに追加できます。{" "}</p>
+        <p>
+          <strong>設定手順：</strong>
+        </p>
+        <ol type="1">
+          <li>{" "}Admin console →「Drive and
+                        Docs」→「テンプレート」→「テンプレートギャラリーの設定」{" "}</li>
+          <li>「組織のカスタムテンプレートを有効にする」にチェックを入れて保存する</li>
+          <li>{" "}（任意）カテゴリを追加する：例）マーケティング、営業、人事などのチーム別カテゴリ{" "}</li>
+          <li>テンプレート送信の承認ポリシーを設定する：</li>
+        </ol>
+        <div className="table-scroll">
+          <table>
+            <thead>
+              <tr className="header">
+                <th>送信モード</th>
+                <th>説明</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="odd">
+                <td>
+                  <strong>Open（オープン）</strong>
+                </td>
+                <td>組織内の誰でも承認なしにテンプレートを追加・削除できる</td>
+              </tr>
+              <tr className="even">
+                <td>
+                  <strong>Moderated（モデレート）</strong>
+                </td>
+                <td>{" "}Docs
+                                    Templates権限を持つ管理者に新規テンプレート追加のメール承認リクエストが届く。いずれかの管理者が応答すると完了。承認されたテンプレートはカスタムギャラリーに追加され、却下された場合は再提出できる{" "}</td>
+              </tr>
+              <tr className="odd">
+                <td>
+                  <strong>Restricted（制限）</strong>
+                </td>
+                <td>{" "}Docs Templates権限を持つ管理者のみがテンプレートを追加できる{" "}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>
+          <strong>関連する管理者権限：</strong>{" "}「Docs
+                    Templates」権限を持つ管理者は、テンプレートギャラリー内のテンプレートの削除・カテゴリ分けができ、モデレート方式の場合はテンプレート送信の承認・却下も行える。{" "}
+        </p>
+        <blockquote className="callout-practice">
+          <p>
+            <span className="callout-icon">💡</span>
+            <strong>ベストプラクティス：</strong>{" "}ブランドガイドラインが厳格な組織ではRestrictedを選び、少人数のデザイン・広報チームのみがテンプレートを管理する体制にする。全社的なテンプレート活用を促進したい組織ではModeratedを使い、品質管理をしながら現場からの提案も取り入れる。{" "}
+          </p>
+        </blockquote>
+        <h3 id="226-共有ドライブの作成と管理">2.2.6 共有ドライブの作成と管理</h3>
+        <p>{" "}共有ドライブ（Shared
+                    drives）は、特定の個人ではなくチーム・部門が所有者となるファイルストレージ空間で、メンバーの退職・異動があってもファイルが失われない点がマイドライブ（My
+                    Drive）との大きな違いです。{" "}</p>
+        <p>
+          <strong>共有ドライブの作成許可：</strong>{" "}Admin console →「Drive and
+                    Docs」→「共有設定」→「共有ドライブの作成」で、組織全体または一部のユーザーにのみ共有ドライブの作成を許可できる。作成を許可しないユーザーであっても、他者が作成した共有ドライブに追加されて利用することは可能。{" "}
+        </p>
+        <p>
+          <strong>OUへの割り当てとポリシーの継承：</strong>{" "}既定では、トップレベル組織部門で設定したポリシーがすべての共有ドライブに適用される。共有ドライブを子OUに割り当てることで、そのOU固有のポリシー（データ共有・セキュリティ・ストレージ）を個別に適用できる。既定でどのOUに共有ドライブが作成されるかも設定可能。{" "}
+        </p>
+        <p>
+          <strong>ストレージ容量の管理：</strong>
+        </p>
+        <ul>
+          <li>既定の共有ドライブ容量上限は
+            <strong>100GB</strong>
+          </li>
+          <li>{" "}Admin console
+                        →「ストレージ」→「ストレージ設定を管理」→対象OUを選択→「共有ドライブのストレージ上限」で、OUごとに異なる上限を設定できる{" "}</li>
+          <li>{" "}プロジェクト単位で一時的により多くのストレージが必要なユーザー向けに、設定グループ（Configuration
+                        group）を作成し、そのグループのメンバーをOUのストレージ上限から除外することも可能{" "}</li>
+        </ul>
+        <Diagram id="diag-6" label="AGWA Section 2 Diagram 6" />
+        <blockquote className="callout-practice">
+          <p>
+            <span className="callout-icon">💡</span>
+            <strong>ベストプラクティス：</strong>{" "}部門・プロジェクト単位の永続的なファイル資産（契約書、会計資料、進行中プロジェクトの成果物）は個人のマイドライブではなく共有ドライブに保存する運用を徹底し、退職者データ喪失リスクを構造的に排除する。ストレージ使用状況は「ストレージ設定」画面から定期的にレビューし、上位使用者・共有ドライブを把握する。{" "}
+          </p>
+        </blockquote>
+        <h3 id="227-ストレージ容量の設定と調整">2.2.7 ストレージ容量の設定と調整</h3>
+        <p>{" "}Google Workspaceのストレージは、Drive・Gmail・Google
+                    Photosで共有される「プールドストレージ（Pooled
+                    storage）」というモデルを採用しています。ライセンスごとに割り当てられたストレージが組織全体のプールに加算され、個々のユーザーはライセンス割り当て量を超えて利用することも可能です（プール全体に余裕がある限り）。{" "}</p>
+        <p>
+          <strong>ユーザー単位のストレージ上限設定：</strong>{" "}Admin console
+                    →「ストレージ」→「ストレージ設定を管理」からOU単位でストレージ上限を設定できる。ユーザーが「ストレージ容量不足」の通知を受け取った場合、多くのケースでサポートに連絡する必要はなく、Admin
+                    console側でストレージ上限の設定を見直すことで解決する。{" "}
+        </p>
+        <p>
+          <strong>モニタリングツール：</strong>{" "}ストレージ管理ツールでは、以下が確認できる：{" "}
+        </p>
+        <ul>
+          <li>製品別（Drive、Gmailなど）のストレージ使用量</li>
+          <li>組織内でストレージを最も使用しているユーザーの一覧</li>
+          <li>ストレージを最も使用している共有ドライブの一覧</li>
+          <li>ストレージ上限に近づいている警告</li>
+        </ul>
+        <blockquote className="callout-practice">
+          <p>
+            <span className="callout-icon">💡</span>
+            <strong>ベストプラクティス：</strong>{" "}ストレージポリシーを変更・強制する際は、事前にユーザーへポリシー変更の通知テンプレートを用いて周知し、不要なファイルの削除を促してから上限を適用する。バックアップ・アーカイブ用途でのDrive利用は推奨されておらず（Google
+                        Workspaceはリアルタイムコラボレーションと共有に最適化されている）、大容量アーカイブには別のストレージソリューションを案内する。{" "}
+          </p>
+        </blockquote>
+        <h3 id="228-google-drive-for-desktopの許可禁止">{" "}2.2.8 Google Drive for desktopの許可・禁止{" "}</h3>
+        <p>{" "}Drive for desktop（旧Drive File Stream / Backup and
+                    Sync）は、ローカルコンピュータ上でGoogle
+                    Driveのファイルをストリーミング形式で利用可能にするデスクトップクライアントです。管理者はAdmin
+                    console →「Drive and
+                    Docs」→「機能とアプリケーション」から、組織またはOU単位で許可・禁止を制御できます。{" "}</p>
+        <p>
+          <strong>関連設定：</strong>
+        </p>
+        <ul>
+          <li>
+            <strong>Drive SDK</strong>：Drive SDK
+                        APIを介したユーザーのDriveアクセスを許可するか{" "}
+          </li>
+          <li>
+            <strong>アドオン</strong>：Docsのアドオンストア経由でのアドオンインストールを許可するか{" "}
+          </li>
+          <li>
+            <strong>ランサムウェア検出と復元</strong>（Drive for desktop向け）：Drive
+                        for desktop環境でのランサムウェア検出・復元機能を有効化できる{" "}
+          </li>
+        </ul>
+        <blockquote className="callout-practice">
+          <p>
+            <span className="callout-icon">💡</span>
+            <strong>ベストプラクティス：</strong>{" "}マネージドデバイスにはDrive for
+                        desktopの配布・自動更新ポリシーを適用し（Google Workspace
+                        Updatesの管理）、BYOD（私物端末）環境では組織のセキュリティポリシーに応じて許可の可否を判断する。ファイアウォール・プロキシ環境がある場合は、Drive/Sitesのファイアウォール要件を事前に確認しておく。{" "}
+          </p>
+        </blockquote>
+        <h3 id="229-ファイルフォルダの所有権移転">2.2.9 ファイル・フォルダの所有権移転</h3>
+        <p>{" "}ユーザーの退職や異動の際、そのユーザーが所有していたDriveファイルの所有権を別のユーザーへ移転できます。{" "}</p>
+        <p>
+          <strong>設定手順：</strong>
+        </p>
+        <ol type="1">
+          <li>Admin console →「Drive and Docs」→「所有権の移転」を開く</li>
+          <li>{" "}移転元ユーザー（現在の所有者）と移転先ユーザー（新しい所有者）を指定する{" "}</li>
+          <li>移転を実行する</li>
+        </ol>
+        <p>
+          <strong>必要な管理者権限：</strong>{" "}「Drive &amp;
+                    Docsサービスの設定」権限、「データ移行（Data
+                    Transfer）」権限、「ユーザー：読み取り専用」権限の3つが必要（Admin
+                    consoleでの「所有権の移転」設定へのアクセスには加えて「Driveサービス」権限も必要）。この権限セットはOU単位に限定できない（組織全体に適用される）。{" "}
+        </p>
+        <p>
+          <strong>移転後の挙動：</strong>{" "}所有権移転後、元の所有者にはそのファイルへの編集権限が付与された状態が維持される（元所有者が削除されたり、編集権限を明示的に外されたりしない限り、引き続きアクセス可能）。{" "}
+        </p>
+        <blockquote className="callout-exam">
+          <p>
+            <span className="callout-icon">🎯</span>
+            <strong>試験・実務でのポイント：</strong>{" "}ユーザーを削除する前に必ず所有権移転を実施することが重要である。これはユーザー作成者が去った後もチームの重要データを失わないための基本的な運用手順であり、Section
+                        1の「アカウントの削除・保留・アーカイブ」（1.1）とも密接に関連する。{" "}
+          </p>
+        </blockquote>
+        <h3 id="2210-driveラベルの管理">2.2.10 Driveラベルの管理</h3>
+        <p>{" "}Driveラベル（Classification
+                    labels）は、ファイルにメタデータ（機密度、承認ステータス、期限など）を付与し、検索性の向上、ポリシーの自動適用、DLPとの連携を可能にする分類機能です（Gmailメッセージへのラベル付けはベータ機能として提供）。{" "}</p>
+        <p>
+          <strong>ラベルの作成：</strong>{" "}Admin console
+                    →「セキュリティ」→「アクセスとデータ管理」→「ラベルマネージャ」（
+          <strong>Manage Classification Labels管理者権限</strong>が必要）。1組織で最大
+          <strong>150個</strong>のラベル（バッジ付きラベルを含む）を作成可能。{" "}
+        </p>
+        <p>
+          <strong>自動適用の3つの方法：</strong>
+        </p>
+        <Diagram id="diag-7" label="AGWA Section 2 Diagram 7" />
+        <p>
+          <strong>ロックの概念：</strong>{" "}デフォルト分類、DLP、Vault保持ルールのいずれかでラベルが参照されると、そのラベルはラベルマネージャ内で「ロック」され、編集・無効化・削除ができなくなる（ビジネスポリシーを壊すような変更を防止するため）。ロックを解除するには、すべてのデフォルト分類ポリシーからそのラベルを削除する必要がある。{" "}
+        </p>
+        <p>
+          <strong>閲覧・適用権限：</strong>{" "}ラベルの閲覧・適用にはファイルへの閲覧権限に加え、ラベル自体への閲覧権限が必要。管理者は「レポート」権限があれば、ラベルマネージャ権限がなくてもDriveのレポート・監査でラベル情報を確認できる。{" "}
+        </p>
+        <blockquote className="callout-practice">
+          <p>
+            <span className="callout-icon">💡</span>
+            <strong>ベストプラクティス：</strong>{" "}ラベル名・フィールド名・選択肢に機密情報そのものを含めない（ラベルマネージャの閲覧権限を持つ全管理者に見えてしまうため）。ユーザーにラベル入力を促す場合は「必須フィールド」設定を活用し、未入力時にバナー表示で入力を促す（ただし必須フィールド未入力でも共有・編集自体はブロックされない点に注意）。{" "}
+          </p>
+        </blockquote>
+        <h3 id="2211-オフラインアクセスの有効化無効化">{" "}2.2.11 オフラインアクセスの有効化・無効化{" "}</h3>
+        <p>{" "}オフラインアクセスは、インターネット接続がない状態でもDocs・Sheets・Slidesを作成・編集できるようにする機能です。既定では組織全体でオンになっており、ユーザーは自分のアカウントで個別にオン・オフを切り替えられます。{" "}</p>
+        <p>
+          <strong>制御オプション（Admin console →「Drive and
+                        Docs」→「機能とアプリケーション」→「オフライン」）：</strong>
+        </p>
+        <div className="table-scroll">
+          <table>
+            <thead>
+              <tr className="header">
+                <th>オプション</th>
+                <th>説明</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="odd">
+                <td>
+                  <strong>全ユーザーにオフラインアクセスを許可（推奨）</strong>
+                </td>
+                <td>{" "}最も簡便な方法。ユーザーは自分の端末・信頼する端末でオフラインアクセスを有効化できる{" "}</td>
+              </tr>
+              <tr className="even">
+                <td>
+                  <strong>デバイスポリシーでオフラインアクセスを制御</strong>
+                </td>
+                <td>{" "}マネージドデバイスにポリシーを導入して制御する。
+                  <strong>ポリシーを導入しないままこのオプションを選ぶと、以前オフラインアクセスできていたユーザーが24時間後にアクセスできなくなる</strong>点に要注意{" "}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>
+          <strong>適用範囲の限界：</strong>{" "}この設定はChrome・Microsoft
+                    Edgeブラウザ上でのDocs/Sheets/Slidesのオフライン利用に対するものであり、
+          <strong>Google Drive for desktopには適用されない</strong>（Drive for desktopのオフラインファイル利用は別の仕組み）。{" "}
+        </p>
+        <blockquote className="callout-practice">
+          <p>
+            <span className="callout-icon">💡</span>
+            <strong>ベストプラクティス：</strong>{" "}機密情報や社外秘ファイルを扱うユーザー（役員、法務、人事など）に対しては、端末紛失時の情報漏えいリスクを踏まえてオフラインアクセスを無効化することを検討する。それ以外の一般ユーザーには利便性を優先してオンのままにするのが一般的な運用。{" "}
+          </p>
+        </blockquote>
+        <hr />
+        <h2 id="23-google-calendarの設定">2.3 Google Calendarの設定</h2>
+        <h3 id="231-リソースカレンダーの作成と管理">{" "}2.3.1 リソースカレンダーの作成と管理{" "}</h3>
+        <p>{" "}リソースカレンダー（会議室、車両、機材など）の設定は、Section
+                    1で扱う「建物とリソース管理」（1.5）の実務基盤の上に成り立っています。ここではCalendarサービスの観点から、リソースの予約・共有をどう運用するかを扱います。{" "}</p>
+        <p>
+          <strong>基本構造：</strong>
+        </p>
+        <ol type="1">
+          <li>
+            <strong>建物（Buildings）</strong>{" "}をまず作成する（最大10,000棟／ドメイン）{" "}
+          </li>
+          <li>建物に{" "}
+            <strong>フロア（Floors）</strong>{" "}を定義する
+          </li>
+          <li>
+            <strong>機能（Features）</strong>（プロジェクター、ホワイトボード、車椅子対応など）を最大100個まで作成する{" "}
+          </li>
+          <li>
+            <strong>リソース（Resources）</strong>（会議室 = Conference room、それ以外 =
+                        Other）を最大10,000件まで作成し、建物・フロア・機能と紐づける{" "}
+          </li>
+        </ol>
+        <p>
+          <strong>設定場所：</strong>{" "}Admin console
+                    →「ディレクトリ」→「建物とリソース」→「概要」（
+          <strong>建物とリソースの管理者権限</strong>が必要）。CSVによる一括アップロードやAPI（
+          <code>resources.buildings</code>、
+          <code>resources.features</code>、
+          <code>resources.calendars</code>）による一括更新にも対応。{" "}
+        </p>
+        <p>
+          <strong>Enterprise Plus / Assured Controls限定機能：</strong>{" "}リソースを特定の組織部門（OU）に割り当てることで、そのリソースカレンダーのイベントデータが当該OUのデータリージョンポリシーなどのデータポリシーを継承するようにできる（リソースのメタデータ自体はルート組織のポリシーに従う）。{" "}
+        </p>
+        <blockquote className="callout-practice">
+          <p>
+            <span className="callout-icon">💡</span>
+            <strong>ベストプラクティス：</strong>{" "}リソース名には「建物-フロア-フロアセクション-リソース名（収容人数）[機能]」形式の自動生成命名規則を活用し、ユーザーが予約画面で場所と設備を一目で判断できるようにする。{" "}
+          </p>
+        </blockquote>
+        <h3 id="232-リソースの予約ポリシーの設定">2.3.2 リソースの予約ポリシーの設定</h3>
+        <p>{" "}リソース予約の承認フローには、大きく分けて「自動承認」と「リソースマネージャーによる手動承認」の2パターンがあります。{" "}</p>
+        <Diagram id="diag-8" label="AGWA Section 2 Diagram 8" />
+        <p>
+          <strong>リソースマネージャー方式の設定手順：</strong>
+        </p>
+        <ol type="1">
+          <li>スーパー管理者権限を持つ管理者としてGoogleカレンダーにサインインする</li>
+          <li>リソースを組織全体、または特定の人に共有する</li>
+          <li>{" "}リソースマネージャーとなるユーザーにもリソースを共有し、「変更を加える権限」および「共有を管理する権限」を付与する{" "}</li>
+          <li>{" "}リソースの「カレンダーの詳細」タブで、Auto-accept
+                        invitationsを「すべての招待を自動的にこのカレンダーに追加する」に設定する{" "}</li>
+          <li>{" "}リソースマネージャーはリソース通知を受け取る設定を行い、招待が入るたびに承認・辞退・仮承諾を判断する{" "}</li>
+        </ol>
+        <p>
+          <strong>Free/Busy共有リソースの予約許可：</strong>{" "}リソースが「Free/busyのみ表示」で共有されている場合、既定ではユーザーはそのリソースを予約できる。管理者はAdmin
+                    console →「Calendar」→「全般設定」→「リソースの予約権限」で、「See only
+                    free/busyとして共有されているリソースの予約をユーザーに許可する」のチェックを制御できる（機密性の高いイベント情報を隠しつつ予約自体は可能にする、という使い分けができる）。スーパー管理者は、この設定に関わらず常に全リソースを予約できる。{" "}
+        </p>
+        <blockquote className="callout-practice">
+          <p>
+            <span className="callout-icon">💡</span>
+            <strong>ベストプラクティス：</strong>{" "}高需要の会議室（大会議室、役員会議室など）はリソースマネージャーによる手動承認にし、稼働状況をコントロールする。一般的な小会議室・電話ブースは自動承認にして、従業員の摩擦を減らす。{" "}
+          </p>
+        </blockquote>
+        <h3 id="233-カレンダーリソースアクセスの委任">{" "}2.3.3 カレンダー・リソースアクセスの委任{" "}</h3>
+        <p>{" "}カレンダーの委任は、Gmailのメール委任（2.1.9）と対になる概念で、管理職のカレンダー管理をアシスタントに任せるようなシナリオで利用されます。{" "}</p>
+        <p>
+          <strong>設定方法：</strong>{" "}カレンダー所有者がGoogleカレンダーの「設定と共有」からカレンダーを特定のユーザーに共有し、「予定の変更」権限を付与することで、事実上の委任が成立する（Gmailのメール委任のような専用の「委任」ボタンではなく、共有権限の付与という形で実現される点に注意）。{" "}
+        </p>
+        <p>
+          <strong>Google Workspace Sync for Microsoft
+                        Outlook（GWSMO）を利用する場合：</strong>{" "}Outlookからカレンダー・メールの委任機能を使いたい場合は、まずGoogleカレンダー側で共有設定を行った上で、委任先ユーザーが自分のOutlookプロファイルに委任元のGoogle
+                    Workspaceアカウントを追加する、という手順を踏む。委任先は委任元のパスワード変更や他のアカウント設定変更はできない。{" "}
+        </p>
+        <p>
+          <strong>建物・リソースの管理権限としての「委任」：</strong>{" "}リソースカレンダーについては、前述のリソースマネージャー方式が実質的な「委任」の役割を果たす。{" "}
+        </p>
+        <blockquote className="callout-exam">
+          <p>
+            <span className="callout-icon">🎯</span>
+            <strong>試験ポイント：</strong>{" "}「カレンダーとリソースへのアクセスを別のユーザーに委任する」という出題観点は、(1)
+                        個人カレンダーの委任＝共有権限の付与、(2)
+                        リソースカレンダーの委任＝リソースマネージャー設定、という2つの異なるメカニズムを区別して理解しているかを問うている。{" "}
+          </p>
+        </blockquote>
+        <h3 id="234-プライマリセカンダリカレンダーのデフォルト内部共有設定">{" "}2.3.4 プライマリ・セカンダリカレンダーのデフォルト内部共有設定{" "}</h3>
+        <p>{" "}Admin console
+                    →「Calendar」→「共有設定」で、組織内でカレンダーがどの程度共有されるかの既定値を設定できます。OU単位で異なるポリシーを適用でき、たとえば学校・教育機関ではより制限的な設定にし、一般企業ではよりオープンな設定にするといった使い分けが可能です。{" "}</p>
+        <p>
+          <strong>内部共有の一般的な選択肢（制限が緩い順）：</strong>
+        </p>
+        <ul>
+          <li>予定の詳細をすべて共有する（Share all information）</li>
+          <li>{" "}空き時間・予定ありのみ共有する（Free/busy情報のみ、時間帯は見えるが内容は見えない）{" "}</li>
+          <li>共有しない（デフォルトでは他ユーザーから見えない）</li>
+        </ul>
+        <p>
+          <strong>OU間の共有制限：</strong>{" "}部門間・学生グループ間でのカレンダー共有によるプライバシー・情報漏えいリスクを軽減するために、OUごとに「内部共有オプション（プライマリカレンダー用）」をより制限的な値に設定できる。合わせて「外部共有オプション」も無効化することで、OU単位での多層防御が可能。{" "}
+        </p>
+        <blockquote className="callout-practice">
+          <p>
+            <span className="callout-icon">💡</span>
+            <strong>ベストプラクティス：</strong>{" "}役員・人事・法務など機密性の高い予定を扱う部門は、内部共有のデフォルトを「Free/busyのみ」以下に制限し、一般部門はコラボレーションを促進するためより開かれた設定にする、というOUベースの階層化ポリシーを設計する。{" "}
+          </p>
+        </blockquote>
+        <h3 id="235-チームグループ向け共有カレンダーの設定">{" "}2.3.5 チーム・グループ向け共有カレンダーの設定{" "}</h3>
+        <p>{" "}チームやプロジェクト単位で共有するグループカレンダー（Secondary
+                    calendar）を作成・共有することで、個人のプライマリカレンダーとは別に、チーム全体のイベント（休暇予定、チーム定例、プロジェクトマイルストーンなど）を一元管理できます。{" "}</p>
+        <p>
+          <strong>作成の流れ（概要）：</strong>
+        </p>
+        <ol type="1">
+          <li>{" "}管理者またはカレンダー作成権限を持つユーザーがセカンダリカレンダーを新規作成する{" "}</li>
+          <li>{" "}対象チーム・グループに対して適切なアクセスレベル（閲覧のみ／予定の変更／管理権限）で共有する{" "}</li>
+          <li>{" "}必要に応じてGoogleグループのメンバー全体に一括共有する（Section
+                        1「グループのすべてのユーザーへの追加」参照）{" "}</li>
+        </ol>
+        <p>
+          <strong>「マイカレンダー」に他ユーザーのカレンダーが表示される理由：</strong>{" "}管理者が明示的にユーザーへ共有した、あるいはユーザー自身が「マイカレンダー」欄に追加したカレンダー（他ユーザーのカレンダーやリソースカレンダーなど）は、そのユーザーのカレンダー一覧に表示され続ける。これは共有設定に起因する正常な挙動であり、トラブルシューティングの際にユーザーからの問い合わせの原因になりやすいポイントである。{" "}
+        </p>
+        <blockquote className="callout-practice">
+          <p>
+            <span className="callout-icon">💡</span>
+            <strong>ベストプラクティス：</strong>{" "}チームカレンダーの命名規則（例：
+            <code>[チーム名] Team Calendar</code>）を統一し、検索・識別性を高める。カレンダーの「管理権限」を持つメンバーは最小限に絞り、誤削除・誤設定変更のリスクを抑える。{" "}
+          </p>
+        </blockquote>
+        <h3 id="236-カレンダーの外部共有オプションの管理">{" "}2.3.6 カレンダーの外部共有オプションの管理{" "}</h3>
+        <p>{" "}組織外のユーザーとカレンダーを共有する範囲も、Admin console
+                    →「Calendar」→「共有設定」の「外部共有オプション」でOU単位に制御します。{" "}</p>
+        <p>
+          <strong>外部共有制限の効果：</strong>{" "}組織の外部共有を制限すると、ユーザーは個々のイベント単位でその制限を超えた共有はできなくなる（例：組織レベルでFree/busyのみに制限していれば、個別のイベントでそれ以上の詳細を外部共有することはできない）。{" "}
+        </p>
+        <p>
+          <strong>外部ゲスト招待時の確認プロンプト：</strong>{" "}ユーザーが組織外のゲストを含むイベントを作成すると、既定では「本当に組織外のゲストを含めてよいか」の確認プロンプトが表示される。Admin
+                    console
+                    →「Calendar」→「共有設定」→「外部での招待」で、このプロンプトの表示・非表示をOU単位で切り替えられる（例：日常的に外部顧客とやり取りする営業部門はプロンプトを無効化し、それ以外の部門は有効のままにする）。{" "}
+        </p>
+        <blockquote className="callout-practice">
+          <p>
+            <span className="callout-icon">💡</span>
+            <strong>ベストプラクティス：</strong>{" "}外部共有オプションは、Drive/Docsの外部共有制御（2.2.3）と一貫したポリシー思想（信頼できる相手とのコラボレーションは円滑に、それ以外は摩擦を残す）で設計し、部門ごとに整合性を持たせる。{" "}
+          </p>
+        </blockquote>
+        <h3 id="237-イベント所有権の移転">2.3.7 イベント所有権の移転</h3>
+        <p>{" "}イベントの主催者（オーナー）が退職・異動する際、そのユーザーが作成したイベントの所有権を別のユーザーに移す必要があります。{" "}</p>
+        <p>
+          <strong>エンドユーザー操作（イベント単位）：</strong>{" "}Googleカレンダーで自分がオーナーであるイベントを開き、「その他のオプション」→「オーナーの変更」から新しいオーナーのメールアドレスを入力する。{" "}
+        </p>
+        <p>
+          <strong>管理者によるユーザー削除前の一括対応：</strong>{" "}ユーザーを削除する前に、そのユーザーが所有するイベントおよびセカンダリカレンダーを取り消すか、他のユーザーに移管する必要がある（「ユーザーを削除する前にイベントやセカンダリカレンダーをキャンセル・移管する」手順）。対応しないまま削除すると、他の参加者のカレンダー上でイベントが不正な状態のまま残る可能性がある。{" "}
+        </p>
+        <blockquote className="callout-exam">
+          <p>
+            <span className="callout-icon">🎯</span>
+            <strong>試験ポイント：</strong>{" "}Drive/Docsのファイル所有権移転（2.2.9）と同様に、「ユーザー削除の
+            <strong>前に</strong>所有物の移転・整理を行う」という運用順序が、Calendar・Drive双方で共通する重要な原則である。{" "}
+          </p>
+        </blockquote>
+        <h3 id="238-不明な送信者からの招待の防止">2.3.8 不明な送信者からの招待の防止</h3>
+        <p>{" "}見知らぬ送信者からのスパム的なカレンダー招待は、ユーザーのカレンダーを埋め尽くし、フィッシングの温床にもなり得るため、Google
+                    Workspaceには専用の対策が用意されています。{" "}</p>
+        <p>
+          <strong>組織レベルの制御（管理者）：</strong>{" "}Admin console
+                    →「Calendar」→「共有設定」→「外部での招待」で、「送信者とやり取りしたことがある招待のみを表示する」オプションを選択する。この設定を有効にすると、ユーザーが既に何らかの形でやり取りしたことのある送信者（連絡先に登録済み、Gmailでやり取り済み、同一Workspaceドメインなど）からの招待のみが自動的にカレンダーに追加され、それ以外の招待はカレンダーに自動追加されなくなる。{" "}
+        </p>
+        <p>
+          <strong>ユーザーレベルの制御：</strong>{" "}ユーザー個人でも、Googleカレンダーの設定→「予定の設定」→「マイカレンダーへの招待の追加」で「送信元が判明している場合のみ」を選択できる。判定基準は、送信者が連絡先に登録されている、Gmailでメールをやり取りしたことがある、同一Workspaceドメインに所属している、のいずれかを満たす場合。{" "}
+        </p>
+        <p>
+          <strong>スパム招待への対応で避けるべき行動：</strong>{" "}不審な招待に対して「欠席」を含むいかなる返信（欠席・出席・未定・コメント付き返信）も行わないことが推奨される。返信すると招待元（スパム送信者）に「このアドレスは有効で監視されている」という情報を与えてしまい、標的として狙われやすくなる。安全な対応は「スパムとして報告」「返信せず削除」、またはそのまま無視することのみ。{" "}
+        </p>
+        <blockquote className="callout-practice">
+          <p>
+            <span className="callout-icon">💡</span>
+            <strong>ベストプラクティス：</strong>{" "}この設定を全社的に有効化した場合でも、既にカレンダーに登録されてしまった過去のスパムイベントは自動削除されないため、ユーザー自身での手動クリーンアップが必要になる点をヘルプデスク対応時に案内しておく。法務・金融など標的型攻撃のリスクが高い部門では、Gmailの外部送信者警告設定（2.1章）と組み合わせて多層的に対策する。{" "}
+          </p>
+        </blockquote>
+        <hr />
+        <h2 id="24-google-meetの設定">2.4 Google Meetの設定</h2>
+        <h3 id="241-組織ou単位でのmeetの有効化無効化">{" "}2.4.1 組織・OU単位でのMeetの有効化・無効化{" "}</h3>
+        <p>{" "}Google Meetのサービス自体のオン・オフは、他のWorkspaceサービスと同様に、Admin
+                    console →「アプリ」→「Google Workspace」→「Google
+                    Meet」から、組織全体または特定のOU・設定グループ単位で制御します（
+          <strong>Service Settings管理者権限</strong>が必要）。{" "}
+        </p>
+        <p>
+          <strong>基本的な考え方：</strong>{" "}サービスをオフにしたユーザーは、既存の会議への参加や新規会議の開催ができなくなる。段階的な展開（パイロット部門から先行導入し、順次全社展開する）を行う場合は、OUまたは設定グループを使って対象範囲を絞り込む。{" "}
+        </p>
+        <blockquote className="callout-practice">
+          <p>
+            <span className="callout-icon">💡</span>
+            <strong>ベストプラクティス：</strong>{" "}大規模組織や大人数の会議（全社集会、ウェビナー等）を予定している場合は、事前に「大規模組織向けのGoogle
+                        Meetセットアップ」ガイドに従い、ネットワーク要件の事前確認・会議スペースの設計・サポート体制の準備を行う。{" "}
+          </p>
+        </blockquote>
+        <h3 id="242-meetセーフティ設定の構成">2.4.2 Meetセーフティ設定の構成</h3>
+        <p>{" "}Meetのセーフティ設定は、会議中の不正参加・荒らし行為（Zoombombing的な被害）を防ぐための中核的な管理機能です。中心となる概念が{" "}
+          <strong>Host Management（ホスト管理）</strong>{" "}です。{" "}
+        </p>
+        <Diagram id="diag-9" label="AGWA Section 2 Diagram 9" />
+        <div className="table-scroll">
+          <table>
+            <thead>
+              <tr className="header">
+                <th>設定</th>
+                <th>概要</th>
+                <th>既定値</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="odd">
+                <td>
+                  <strong>Host Management</strong>
+                </td>
+                <td>{" "}ホスト・co-hostに会議内コントロール（チャット、画面共有、ミュート、録画・文字起こし開始権限など）を集約させる機能。オフの場合、ドメイン内の参加者は誰でもこれらの操作が可能{" "}</td>
+                <td>{" "}Business系エディションは
+                  <strong>既定でオフ</strong>、Education系・Frontlineは
+                  <strong>既定でオン</strong>（管理者がAdmin
+                                    console上のデフォルト状態を変更可能）{" "}
+                </td>
+              </tr>
+              <tr className="even">
+                <td>
+                  <strong>Waiting Room（待機室）</strong>
+                </td>
+                <td>{" "}参加者を待機室に留め、ホストが個別に入室を許可する。ホストは待機中の参加者にメッセージを送ったり、会議添付資料などの情報を共有したりできる{" "}</td>
+                <td>Quick accessがオフの場合に事実上の待機室として機能する</td>
+              </tr>
+              <tr className="odd">
+                <td>
+                  <strong>Quick access</strong>
+                </td>
+                <td>{" "}カレンダー招待に事前に含まれている参加者、または既に会議に参加している組織内メンバーから招待された参加者は、ホスト不在でも入室できる{" "}</td>
+                <td>{" "}Google Workspace全顧客・レガシーG Suite
+                                    Basic/Business顧客で既定オン{" "}</td>
+              </tr>
+              <tr className="even">
+                <td>
+                  <strong>外部参加者への追加の予防措置</strong>
+                </td>
+                <td>{" "}外部参加者が「リクエストなしで」参加できるのは、(a)
+                                    会議開始前のカレンダー招待に含まれている、または(b)
+                                    既に会議に参加している組織内メンバーから招待された場合で、かつ(c)
+                                    予定開始時刻の前後15分以内、のいずれかを満たす場合のみ{" "}</td>
+                <td>常時適用される仕様</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>
+          <strong>設定場所：</strong>{" "}Admin console →「Google
+                    Meet」→「Meetセーフティ設定」{" "}
+        </p>
+        <p>
+          <strong>その他のセキュリティ・プライバシー機能：</strong>
+        </p>
+        <ul>
+          <li>
+            <strong>会議コード</strong>：長く推測困難なコード体系で不正アクセスを防止{" "}
+          </li>
+          <li>
+            <strong>電話でのダイヤルイン</strong>：電話番号とPINは、予定されている会議時間内のみ有効{" "}
+          </li>
+          <li>
+            <strong>SAML SSOによる追加認証</strong>：全エディションでSAMLベースのシングルサインオンに対応{" "}
+          </li>
+          <li>
+            <strong>監査ログ</strong>：Admin console上でMeetの監査ログを確認可能
+          </li>
+          <li>
+            <strong>アクセス透過性（Access Transparency）</strong>：管理者がMeet録画にアクセスするたびにログとその理由を記録{" "}
+          </li>
+          <li>
+            <strong>データリージョン</strong>：録画データをGoogle
+                        Driveに保存する地理的リージョン（米国・欧州など）を指定可能{" "}
+          </li>
+        </ul>
+        <blockquote className="callout-practice">
+          <p>
+            <span className="callout-icon">💡</span>
+            <strong>ベストプラクティス：</strong>{" "}外部参加者を含む機密性の高い会議（人事面談、取締役会など）では、Host
+                        Managementを明示的にオンにし、待機室を併用する。全社集会・ウェビナーのような大規模会議では、Quick
+                        accessをオンにしたままHost
+                        Managementでチャット・画面共有権限のみを制限する、といった使い分けが実務的。{" "}
+          </p>
+        </blockquote>
+        <h3 id="243-meetビデオ設定の構成画質録画文字起こしノートテイキング">{" "}2.4.3 Meetビデオ設定の構成（画質・録画・文字起こし・ノートテイキング）{" "}</h3>
+        <p>{" "}Admin console →「Google
+                    Meet」→「Meetビデオ設定」から、会議の画質・録画・文字起こし・Gemini
+                    によるノートテイキングを制御します。{" "}</p>
+        <p>
+          <strong>主なビデオ設定項目：</strong>
+        </p>
+        <div className="table-scroll">
+          <table>
+            <thead>
+              <tr className="header">
+                <th>設定</th>
+                <th>説明</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="odd">
+                <td>
+                  <strong>既定の動画画質（Default video quality）</strong>
+                </td>
+                <td>会議の画質を選択する（帯域幅要件に影響）</td>
+              </tr>
+              <tr className="even">
+                <td>
+                  <strong>録画（Recording）</strong>
+                </td>
+                <td>{" "}「ユーザーに会議の録画を許可する」設定。既定では
+                  <strong>3か月間</strong>録画データが保存される。録画のダウンロード・コピーを既定で許可するかも設定可能。Host
+                                    Managementがオンでホストが録画を許可していない場合、録画は利用不可。ブレイクアウトルーム内では録画不可{" "}
+                </td>
+              </tr>
+              <tr className="odd">
+                <td>
+                  <strong>ストリーム（Stream）</strong>
+                </td>
+                <td>{" "}組織内、信頼済みドメイン、またはYouTube経由でのライブ配信を許可するか{" "}</td>
+              </tr>
+              <tr className="even">
+                <td>
+                  <strong>ゲートウェイの相互運用性</strong>
+                </td>
+                <td>{" "}サードパーティのビデオ会議システムのユーザーが自組織のMeet会議に参加できるようにする（追加設定が必要）{" "}</td>
+              </tr>
+              <tr className="odd">
+                <td>
+                  <strong>クライアントログのアップロード</strong>
+                </td>
+                <td>{" "}ユーザーのメールアドレスを含むブラウザ・モバイルアプリのログ情報の収集を許可し、サポート対応に活用する{" "}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>
+          <strong>文字起こし（Transcripts）：</strong>{" "}Education（学生ライセンス）を除く全エディションで既定オン。会議の音声のみが文字起こし対象で（チャットメッセージの記録には録画が必要）、文字起こし結果は会議主催者のGoogle
+                    Driveに保存される。Host
+                    Managementがオンの場合、Transcriptsを開始できるのはホスト・co-hostのみに制限される。{" "}
+        </p>
+        <p>
+          <strong>自動的な会議成果物の設定（録画・文字起こし・Gemini
+                        ノートテイキングの自動化）：</strong>{" "}Admin console →「Google
+                    Meet」→「Meetビデオ設定」→「自動文字起こし」「自動録画」、および「Google
+                    Meetの設定」→「Gemini設定」から、新規作成される会議について録画・文字起こし・「自分の代わりにメモを取る（Gemini
+                    ノートテイキング）」を既定でオンにできる。ホスト・co-hostはカレンダー招待や会議中にこれらの設定を編集・オフにできる。これらの成果物がオンの場合、参加者には入室時に通知される。「自分の代わりにメモを取る」機能はGemini
+                    Business/Enterprise/EducationまたはAI Meetings &amp; Messagesアドオンが必要。{" "}
+        </p>
+        <Diagram id="diag-10" label="AGWA Section 2 Diagram 10" />
+        <blockquote className="callout-practice">
+          <p>
+            <span className="callout-icon">💡</span>
+            <strong>ベストプラクティス：</strong>{" "}「営業商談やタウンホールなど、常に記録を残したい会議シリーズ」に対しては、自動録画・自動文字起こしをOU/グループ単位でオンにし、手動操作への依存をなくす。一方、機密性の高いミーティングが多い部門では、既定オフのままにして、必要な場合にホストが都度有効化する運用にする。{" "}
+          </p>
+        </blockquote>
+        <hr />
+        <h2 id="25-google-chatの設定">2.5 Google Chatの設定</h2>
+        <h3 id="251-組織ou単位でのchatの有効化無効化">{" "}2.5.1 組織・OU単位でのChatの有効化・無効化{" "}</h3>
+        <p>{" "}Chatサービスの有効化・無効化は、Admin console →「アプリ」→「Google
+                    Workspace」→「Google
+                    Chat」→「Chatを有効または無効にする」から、組織全体・OU単位・グループ単位で制御します。{" "}</p>
+        <p>
+          <strong>Chat設定の初期展開（Set up Chat for your organization）の流れ：</strong>
+        </p>
+        <ol type="1">
+          <li>要件を確認する</li>
+          <li>{" "}ディレクトリの連絡先共有をオンにする（ユーザー同士がChatで検索・発見できるようにするため）{" "}</li>
+          <li>Chatサービス自体のオン・オフを設定する</li>
+          <li>Chatの履歴設定をオン・オフにする（2.5.2参照）</li>
+          <li>スペースの履歴オプションを設定する</li>
+          <li>Chat招待の自動承諾を設定する（2.5.3参照）</li>
+          <li>外部ユーザーとのやり取りを制御する</li>
+          <li>Chatアプリのインストールを許可する（2.5.4参照）</li>
+          <li>GIFピッカーのオン・オフを設定する</li>
+          <li>ユーザーへの告知・トレーニングを行う</li>
+        </ol>
+        <blockquote className="callout-practice">
+          <p>
+            <span className="callout-icon">💡</span>
+            <strong>ベストプラクティス：</strong>{" "}Chatの全社展開前に、まずディレクトリ連絡先共有の設定を確認する（オフのままだとユーザー同士が検索できずChatの利便性が著しく損なわれる）。{" "}
+          </p>
+        </blockquote>
+        <h3 id="252-admin-consoleでのchat設定">2.5.2 Admin consoleでのChat設定</h3>
+        <p>
+          <strong>チャット履歴（History for chats）：</strong>{" "}1対1メッセージやグループメッセージの履歴を保持するかどうかの既定値を制御する。{" "}
+        </p>
+        <p>
+          <strong>スペース履歴（History for spaces）：</strong>{" "}インラインスレッド形式のスペースにおける履歴の既定設定。選択肢は以下の4種類：{" "}
+        </p>
+        <div className="table-scroll">
+          <table>
+            <thead>
+              <tr className="header">
+                <th>オプション</th>
+                <th>動作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="odd">
+                <td>History is ON by default（ユーザーが変更可）</td>
+                <td>既定オンだが個々のスペースで変更できる</td>
+              </tr>
+              <tr className="even">
+                <td>History is OFF by default（ユーザーが変更可）</td>
+                <td>既定オフだが個々のスペースで変更できる</td>
+              </tr>
+              <tr className="odd">
+                <td>History is ALWAYS ON（変更不可）</td>
+                <td>常にオンで固定、ユーザーは変更できない</td>
+              </tr>
+              <tr className="even">
+                <td>History is ALWAYS OFF（変更不可）</td>
+                <td>常にオフで固定、ユーザーは変更できない</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>{" "}「Let History for chats setting override Space history
+                    setting」のチェックボックスにより、1対1・グループメッセージの履歴設定がスペースの履歴設定より優先されるかどうかを制御できる。両者を意図的に逆方向で強制すると、グループ会話をスペースにアップグレードした際に履歴設定が切り替わる可能性があるため注意。{" "}</p>
+        <p>
+          <strong>外部ドメインとのChat・スペース：</strong>
+        </p>
+        <Diagram id="diag-11" label="AGWA Section 2 Diagram 11" />
+        <p>
+          <strong>外部チャットの設定手順：</strong>{" "}Admin console →「Google
+                    Chat」→「External Chat
+                    Settings」で、「組織外へのメッセージ送信をユーザーに許可する」をオン・オフし、オンの場合は「許可リスト化されたドメインのみに制限する」「面識のある外部ゲスト・ユーザーからの招待を自動承諾する」を任意で追加設定できる。{" "}
+        </p>
+        <p>
+          <strong>ゲストアカウントと外部ユーザーの違い：</strong>{" "}外部ユーザーはGoogleアカウントを保有する組織外の人物、ゲストはGoogleアカウントを持たない人物を指し、ゲストにはアカウント作成の招待が送られる。外部ユーザー・ゲストはグループメッセージには直接追加できず、1対1メッセージまたは外部メンバーを許可するスペースでのみやり取りできる。信頼済みドメインを設定すると、Workspaceアカウントを持たないコンシューマー向けGoogleアカウント利用者とのコラボレーションができなくなる点に注意（業務用メールで作成された個人アカウントとの意図しない連携を防ぐ効果もある）。{" "}
+        </p>
+        <p>
+          <strong>コンテンツモデレーション（Moderation）：</strong>{" "}ユーザーが不適切なメッセージを報告できる仕組みを、Admin console →「Google
+                    Chat」→コンテンツ保護設定から有効化する。報告はモデレーターロールを持つ管理者のみが確認可能（Google自身はレポート内容を閲覧しない）。管理者はレポートカテゴリ・対象となる会話タイプを管理し、報告されたコンテンツに対してアクションを実行できる。2020年12月以前に作成された外部ユーザーを含むグループ会話は、Chat／クラシックHangoutsの仕様変更により報告対象外となる。{" "}
+        </p>
+        <p>
+          <strong>設定場所まとめ：</strong>{" "}すべてAdmin console →「アプリ」→「Google
+                    Workspace」→「Google Chat」配下（
+          <strong>Service Settings管理者権限</strong>、モデレーションなど一部は
+          <strong>Google Chat管理者権限</strong>が必要）。{" "}
+        </p>
+        <blockquote className="callout-practice">
+          <p>
+            <span className="callout-icon">💡</span>
+            <strong>ベストプラクティス：</strong>{" "}コンプライアンス要件が厳しい業界（金融・医療）では、履歴を「ALWAYS
+                        ON」に固定し、Vaultによる法的保持・eDiscovery対応を前提とした運用にする。外部連携が多い営業・パートナーシップ部門は「External
+                        Chat
+                        Settings」で信頼済みドメインの許可リストを整備し、それ以外の部門は外部Chatをオフのままにする。{" "}
+          </p>
+        </blockquote>
+        <h3 id="253-chat招待設定の管理">2.5.3 Chat招待設定の管理</h3>
+        <p>
+          <strong>Chat招待の自動承諾（Automatically accept chat invitations）：</strong>{" "}組織内の他ユーザーからのChat招待を自動的に承諾させるかどうかを制御する。オフの場合、既定では新しい連絡先からの招待をユーザーが手動で承諾する必要がある。設定場所：Admin
+                    console →「Google Chat」→「Chat Invitations」で、OU単位でオン・オフを選択する。{" "}
+        </p>
+        <p>
+          <strong>Chat・スペースの作成制限（Chat and Space restrictions）：</strong>{" "}特定のユーザーグループに対して、新規の1対1メッセージ・グループメッセージ・スペースの作成を制限できる。制限対象グループは、既存の会話へのメンバー管理操作も制限される。設定場所：Admin
+                    console →「Google Chat」→「Chat and Space restrictions」。{" "}
+        </p>
+        <blockquote className="callout-practice">
+          <p>
+            <span className="callout-icon">💡</span>
+            <strong>ベストプラクティス：</strong>{" "}大規模組織では新入社員のオンボーディング時の摩擦を減らすため、自動承諾を組織内でオンにしておくことが一般的。逆に、外部からの不審な招待を警戒すべき業種では、手動承諾のままにしてユーザーの判断を介在させる。{" "}
+          </p>
+        </blockquote>
+        <h3 id="254-chatアプリの追加">2.5.4 Chatアプリの追加</h3>
+        <p>{" "}Chatアプリ（ポーリング、タスク管理、サードパーティ連携ボットなど）のインストール許可も、Admin
+                    console →「Google Chat」→「Chat apps」で制御します。{" "}</p>
+        <p>
+          <strong>ユーザーによるインストールの許可：</strong>{" "}Admin console →「Google
+                    Chat」→「Chat
+                    apps」でOU単位に許可を設定する。一部のアプリはトップレベル組織単位でのアクセスを要求する場合があり、これを許可しないとChat
+                    APIが正しく動作しない可能性がある点に注意。{" "}
+        </p>
+        <p>
+          <strong>管理者による組織への一括インストール：</strong>{" "}管理者はGoogle Workspace
+                    Marketplaceからアプリを選び、「管理者としてインストール」→対象を「組織内の全員」に設定してインストールできる。この場合、ユーザーは自分でインストール操作をせずとも「アプリ」セクションにそのアプリが表示され、利用可能になる（通知はオフにできるが、アンインストールはユーザー側ではできない）。{" "}
+        </p>
+        <p>
+          <strong>自動インストール（2025年9月以降）：</strong>{" "}ユーザーが最初にアプリの機能を使おうとした時点（例：投票アプリで初めて投票を作成しようとした時）に自動的にそのアプリがインストールされ、以降はどのスペースでもすぐに利用できるようになる仕組みが導入されている。自動インストールを望まない場合、管理者は特定のアプリのインストール自体を禁止するか、特定スペースでのアプリインストール権限を制限することで防止できる。{" "}
+        </p>
+        <p>
+          <strong>アプリ権限（App authorization）：</strong>{" "}Chatアプリがユーザーのように振る舞うための権限（メッセージの送受信など）はOAuth
+                    2.0スコープ（
+          <code>https://www.googleapis.com/auth/chat.app.*</code>）で要求される。アプリ権限はユーザー権限と異なりOUごとに付与範囲を絞ることができない点も押さえておくべき。{" "}
+        </p>
+        <blockquote className="callout-practice">
+          <p>
+            <span className="callout-icon">💡</span>
+            <strong>ベストプラクティス：</strong>{" "}生産性向上に資する社内標準アプリ（承認ワークフロー、勤怠管理ボットなど）は管理者が組織全体に一括インストールし、利用開始の障壁をなくす。一方、サードパーティ製の汎用チャットアプリはMarketplaceの許可リスト（Section
+                        4「Marketplaceの許可リスト管理」も参照）で個別審査してから許可する。{" "}
+          </p>
+        </blockquote>
+        <hr />
+        <h2 id="26-google-workspaceにおける生成aiの活用">{" "}2.6 Google Workspaceにおける生成AIの活用{" "}</h2>
+        <h3 id="261-生成ai利用時の組織データのプライバシーとセキュリティ確保">{" "}2.6.1 生成AI利用時の組織データのプライバシーとセキュリティ確保{" "}</h3>
+        <p>{" "}Gemini for Google
+                    Workspaceは、エンタープライズ利用を前提としたデータガバナンスモデルの上に構築されています。管理者としてまず理解すべきは、
+          <strong>Geminiのデータ取り扱いポリシーが通常のGoogle
+                        Workspaceサービスと同様の契約・プライバシー保護の枠内にある</strong>という点です。{" "}
+        </p>
+        <p>
+          <strong>Googleが明示するデータ保護の原則：</strong>
+        </p>
+        <ul>
+          <li>ユーザーのデータはユーザー自身のものであり、Googleの所有物ではない</li>
+          <li>Googleはユーザーデータを広告目的で利用しない</li>
+          <li>Googleはユーザーデータを第三者に販売しない</li>
+          <li>{" "}データは転送時に暗号化され、Google
+                        Driveに保存される会議録画等は保存時にも暗号化される{" "}</li>
+          <li>{" "}Vaultを使ってGeminiに関連するデータ（例：Meet録画）の保持ポリシーを設定できる{" "}</li>
+          <li>HIPAAやFedRAMP Highなど、規制業界のコンプライアンス要件をサポート</li>
+        </ul>
+        <p>
+          <strong>Workspace Intelligence（サイドパネルのGemini）のデータソース制御：</strong>{" "}Gmail・Drive・Calendar・Chatの各サービスについて、Geminiがバックグラウンドでアクティブに検索対象とするかどうかを個別にオン・オフできる。特定サービスをオフにすると、Geminiはそのアプリを能動的に検索しなくなる。{" "}
+        </p>
+        <p>
+          <strong>会話履歴の保持ポリシー：</strong>{" "}管理者は以下を選択できる：
+        </p>
+        <ul>
+          <li>ユーザーによる個別会話の手動削除を許可する（既定で有効）</li>
+          <li>一定期間（3か月、18か月、3年など）でGeminiの会話履歴を自動削除する</li>
+          <li>組織として無期限に会話を保持する</li>
+        </ul>
+        <p>{" "}Gemini会話履歴がオフの場合でも、新しいチャットはサービス提供とフィードバック処理のために最大72時間、ユーザーアカウント内に一時保存される（この72時間分のデータはGemini
+                    Apps Activityには表示されない）。{" "}</p>
+        <p>
+          <strong>プロンプトインジェクション対策：</strong>{" "}Geminiは新興の攻撃ベクトルであるプロンプトインジェクションに対して、多層防御戦略（layered
+                    defense strategy）で対応するよう設計されている。{" "}
+        </p>
+        <blockquote className="callout-practice">
+          <p>
+            <span className="callout-icon">💡</span>
+            <strong>ベストプラクティス：</strong>
+          </p>
+          <ul>
+            <li>{" "}業務上不要なサービスへのGeminiのアクセスは、Workspace
+                            Intelligenceのデータソース設定でオフにし、最小権限の原則を適用する{" "}</li>
+            <li>{" "}規制業界（医療・金融・公共部門）では、Vaultを用いたGemini関連データの保持ポリシー設定を、既存の他サービスの保持ポリシーと整合させる{" "}</li>
+            <li>{" "}個人アカウントとしてGeminiアプリを追加サービスとして利用しているユーザーには、機密情報・社外秘情報を入力しないよう周知する（追加サービスとしてのGeminiは、Workspaceアカウントに紐づく組織ポリシーの一部が適用されない場合がある）{" "}</li>
+          </ul>
+        </blockquote>
+        <h3 id="262-組織ou単位でのgeminiの有効化無効化">{" "}2.6.2 組織・OU単位でのGeminiの有効化・無効化{" "}</h3>
+        <p>{" "}Geminiの有効化・無効化には、
+          <strong>複数のレイヤー</strong>が存在する点が試験・実務双方で頻出の理解ポイントです。{" "}
+        </p>
+        <Diagram id="diag-12" label="AGWA Section 2 Diagram 12" />
+        <div className="table-scroll">
+          <table>
+            <thead>
+              <tr className="header">
+                <th>レイヤー</th>
+                <th>設定名</th>
+                <th>設定場所</th>
+                <th>既定値・補足</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="odd">
+                <td>
+                  <strong>① Workspaceサービス内のGemini機能</strong>
+                </td>
+                <td>Feature access</td>
+                <td>{" "}Admin console →「生成AI」→「Gemini for Workspace」→「Feature
+                                    access」パネル{" "}</td>
+                <td>{" "}既定オン。あるアプリでGeminiをオフにしても、別のアプリ経由でそのデータをGeminiが参照できる場合がある（例：Driveでオフでも、GmailからGeminiにDriveファイルについて質問すると参照される）{" "}</td>
+              </tr>
+              <tr className="even">
+                <td>
+                  <strong>② Geminiアプリ自体へのアクセス</strong>
+                </td>
+                <td>Turn the Gemini app on or off</td>
+                <td>Admin console →「生成AI」→「Gemini App」</td>
+                <td>{" "}既定で18歳以上かつ対応ライセンスを持つ全ユーザーに提供。ライセンスの有無に関わらず全ユーザーへのアクセス拡大も設定可能。モバイルアプリ専用の管理者コントロールは存在しないが、デバイス管理設定でアプリ自体をブロックすることは可能{" "}</td>
+              </tr>
+              <tr className="odd">
+                <td>
+                  <strong>③ Geminiアプリ内のWorkspace拡張機能</strong>
+                </td>
+                <td>Turn Google apps in Gemini on or off</td>
+                <td>Admin console →「生成AI」→「Gemini App」→「Apps」</td>
+                <td>{" "}Geminiアプリの利用には会話履歴のオンが前提。組織側で該当のWorkspaceサービス（例：Tasks）自体をオフにしている場合、対応する拡張機能も利用不可{" "}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>
+          <strong>利用の前提条件：</strong>{" "}Workspace拡張機能（Apps）を使うには{" "}
+          <strong>Gemini会話履歴（Gemini conversation history）</strong>{" "}をオンにする必要がある。また、複数のアプリ・サービスをまたぐ複合的なプロンプト（例：「カレンダーに予定を作成し、リマインダーも追加して」）を実行する場合、関与するすべてのサービス（この例ではCalendarとTasks）が有効になっていないと、一部のアクションが実行されないまま終わってしまう。{" "}
+        </p>
+        <p>
+          <strong>Gemini for App Creation / Gemini in AppSheet Solutions：</strong>{" "}AppSheet関連のGemini機能（自然言語でのアプリ作成、自動化タスクへのAI組み込み）は別個の設定として、チーム単位でオン・オフできる（2.7も参照）。{" "}
+        </p>
+        <blockquote className="callout-practice">
+          <p>
+            <span className="callout-icon">💡</span>
+            <strong>ベストプラクティス：</strong>{" "}段階的ロールアウトの初期フェーズでは、パイロットOUのみでレイヤー①②③をすべてオンにして検証し、フィードバックを収集してから全社展開する。生成AIの利用に消極的な組織は、まずレイヤー①（Workspaceアプリ内の機能）のみを許可し、レイヤー③（外部アプリであるGeminiアプリへのWorkspaceデータ連携）は慎重に判断する、という段階的な導入戦略も有効。{" "}
+          </p>
+        </blockquote>
+        <h3 id="263-geminiアプリ向けgoogle-workspace拡張機能の有効化">{" "}2.6.3 Geminiアプリ向けGoogle Workspace拡張機能の有効化{" "}</h3>
+        <p>{" "}「Turn Google apps in Gemini on or off」（Workspace apps、旧称Workspace
+                    Extensions）は、Geminiアプリ（gemini.google.com）がCalendar・Docs・Drive・Gmail・Keep・Tasksなどのユーザーコンテンツを参照し、より文脈に沿った応答を返せるようにする設定です。{" "}</p>
+        <p>
+          <strong>この機能で可能になること：</strong>
+        </p>
+        <ul>
+          <li>Gmailに関する追加情報へのリンク（引用）をGeminiの応答に含める</li>
+          <li>{" "}ユーザーがDriveファイルをGeminiアプリやGemの指示（Gem
+                        instructions）にアップロードして利用する{" "}</li>
+        </ul>
+        <p>
+          <strong>オフにした場合の挙動：</strong>{" "}既にWorkspace
+                    apps機能を使って行われたチャットのやり取り自体はユーザーに引き続き表示されるが、Geminiアプリは元のプロンプトに応答するために必要だった情報以外へのアクセスができなくなる（再度オンにするまで、Workspaceからの追加情報取得はできない）。{" "}
+        </p>
+        <p>
+          <strong>適用対象外のケース：</strong>{" "}追加サービスとしてGeminiにアクセスしているユーザー（＝Workspaceの標準ライセンスに含まれない形でGeminiアプリのみ追加提供されているケース）は、Workspace
+                    appsを利用できない。{" "}
+        </p>
+        <blockquote className="callout-practice">
+          <p>
+            <span className="callout-icon">💡</span>
+            <strong>ベストプラクティス：</strong>{" "}Workspace
+                        appsをオンにする際は、Drive内のファイルアクセス制御（本人が所有またはアクセス権を持つファイルのみ、共有ドライブ経由のファイルは除く）が、既存のDrive共有ポリシーと一貫していることを確認し、意図せず機密ファイルへのアクセス経路が広がらないようにする。{" "}
+          </p>
+        </blockquote>
+        <h3 id="264-gemini利用状況レポートの生成">2.6.4 Gemini利用状況レポートの生成</h3>
+        <p>{" "}管理者は、Gemini機能の利用状況を可視化し、導入効果・利用パターン・潜在的なセキュリティリスクを把握するための複数のレポートにアクセスできます。{" "}</p>
+        <p>
+          <strong>設定場所：</strong>{" "}Admin console →「生成AI」→「Gemini
+                    reports」→「ユーザーレベルの使用状況」{" "}
+        </p>
+        <p>
+          <strong>主なレポートの種類：</strong>
+        </p>
+        <div className="table-scroll">
+          <table>
+            <thead>
+              <tr className="header">
+                <th>レポート</th>
+                <th>内容</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="odd">
+                <td>
+                  <strong>組織レベルの利用状況（Org-level usage）</strong>
+                </td>
+                <td>{" "}アクティブなGeminiユーザー数、ライセンス割り当て状況、全体の利用推移、アプリ別の利用状況（Gemini
+                                    Adoption per app）{" "}</td>
+              </tr>
+              <tr className="even">
+                <td>
+                  <strong>ユーザーレベルの利用状況（User-level usage）</strong>
+                </td>
+                <td>{" "}利用強度（高・中・低・ゼロ）、アクティブ日数、ユーザーごとのアプリ別詳細な利用状況、利用上限に達した日数（Days
+                                    at limit）{" "}</td>
+              </tr>
+              <tr className="odd">
+                <td>
+                  <strong>利用インタラクション（Usage per interaction）</strong>
+                </td>
+                <td>{" "}Gmailの「文章作成のヒント」やSheetsでのデータ整理支援など、機能単位での詳細な利用実績{" "}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>
+          <strong>フィルタリング：</strong>{" "}OU単位・グループ単位でレポートをフィルタリングできる。組織構造の変更が反映されるまで最大72時間かかり、組織変更前の履歴データはその変更を遡って反映されない点に注意。{" "}
+        </p>
+        <p>
+          <strong>Gemini監査ログ（Reporting API経由）：</strong>{" "}Admin SDKのReporting
+                    APIを通じて、Geminiアプリ・Workspaceアプリ内でのユーザーのアクティビティ（実行されたアクション、使用されたアプリ、使用された機能、最終利用日時など）をより詳細に取得できる。このデータはセキュリティ調査ツール・監査調査ツールでも利用可能。{" "}
+        </p>
+        <p>
+          <strong>活用シーン：</strong>
+        </p>
+        <ul>
+          <li>{" "}利用状況が高いパワーユーザーを特定し、他ユーザーへの展開・トレーニングのアンバサダーとして活用する{" "}</li>
+          <li>{" "}ライセンス上限（使用制限）に達しているユーザーの傾向から、アドオン（AI
+                        Expanded Accessなど）へのアップグレード要否を判断する{" "}</li>
+          <li>{" "}特定ユーザーのGemini利用パターンの急激な変化から、潜在的な誤用・セキュリティリスクの兆候を検知する{" "}</li>
+        </ul>
+        <blockquote className="callout-practice">
+          <p>
+            <span className="callout-icon">💡</span>
+            <strong>ベストプラクティス：</strong>{" "}ライセンスコストの最適化のため、四半期ごとにGemini利用状況レポートをレビューし、利用実績が「ゼロ」のユーザーからライセンスを再配布することを検討する。同時に、利用強度が「高」のユーザー層を特定し、そのユースケースを社内のベストプラクティス共有会で展開する。{" "}
+          </p>
+        </blockquote>
+        <hr />
+        <h2 id="27-workspace開発のサポート">2.7 Workspace開発のサポート</h2>
+        <h3 id="271-appsheetとapps-scriptのユースケース">{" "}2.7.1 AppSheetとApps Scriptのユースケース{" "}</h3>
+        <p>{" "}AppSheetとApps
+                    Scriptは、いずれも「コードを書かずに、または最小限のコードでGoogle
+                    Workspaceを拡張・自動化する」ためのツールですが、性質が異なり、試験でも両者の使い分けの理解が問われます。{" "}</p>
+        <Diagram id="diag-13" label="AGWA Section 2 Diagram 13" />
+        <p>
+          <strong>AppSheetの主なユースケース：</strong>
+        </p>
+        <ul>
+          <li>Google Sheetsのデータからモバイル対応の業務アプリを作成する</li>
+          <li>{" "}出張申請フローで、申請が行われた際に上長を自動検索してChatまたはメールで承認通知を送る{" "}</li>
+          <li>{" "}現場作業員がモバイル端末で撮影した点検写真をDriveにアップロードし、監査担当者がアクセスできるよう共有設定を自動調整する{" "}</li>
+          <li>{" "}シフト・予約管理の簡易Webインターフェースを提供し、予約が入るとCalendarに自動でイベントを作成し招待する{" "}</li>
+          <li>Google Chat内でアプリを起動する（Launch apps in Google Chat）</li>
+        </ul>
+        <p>
+          <strong>Apps Scriptの主なユースケース：</strong>
+        </p>
+        <ul>
+          <li>ボタンクリックでカレンダーの予定を作成する</li>
+          <li>新しい行が追加された際にスライドを自動追加する</li>
+          <li>{" "}フォーム経由でアップロードされた写真をDriveに保存し、特定の人と自動共有する{" "}</li>
+          <li>テーブルデータから監査ログとしてGoogle Docsファイルを自動生成する</li>
+          <li>{" "}外部の機械学習サービスを呼び出し、予測結果を新しい行のデータとして書き戻す{" "}</li>
+        </ul>
+        <p>
+          <strong>AppSheet Apps Scriptコネクタ：</strong>{" "}AppSheetの自動化（Automation）から直接Apps
+                    Scriptの関数を呼び出せるコネクタが提供されており、AppSheetアプリからGoogle
+                    Workspace API（Drive、Docs、Sheets、Admin SDKなど）やYouTube、Google
+                    Analytics、BigQueryなど他のGoogleサービスにアクセスするワークフローを構築できる。この連携により、AppSheetのノーコードの手軽さと、Apps
+                    Scriptの柔軟なカスタムロジックを組み合わせられる。
+          <strong>Apps Scriptサービスが組織で有効になっている必要がある</strong>点に注意（AppSheetの自動化からApps Scriptを呼び出すための前提条件）。{" "}
+        </p>
+        <p>
+          <strong>制約事項：</strong>{" "}AppSheetからはスタンドアロンのApps
+                    Scriptスクリプトのみ呼び出し可能で、コンテナバインド型のスクリプト（特定のスプレッドシート等に紐づくスクリプト）は現時点でサポートされていない。また、Apps
+                    Scriptは常にヘッドデプロイメント（最新の保存済みバージョン）を実行し、特定のデプロイバージョンを指定して呼び出すことはできない。{" "}
+        </p>
+        <blockquote className="callout-exam">
+          <p>
+            <span className="callout-icon">🎯</span>
+            <strong>試験のポイント：</strong>{" "}「AppSheetとApps
+                        Scriptのユースケースを特定する」という出題観点は、両者の
+            <strong>二者択一ではなく、組み合わせて使うケースが多い</strong>ことを理解しているかを問う。AppSheetは「UI・データ入力・ワークフロートリガーの民主化」、Apps
+                        Scriptは「Workspaceサービスへの深いプログラマティックな統合」という役割分担で捉えるのが実務的。{" "}
+          </p>
+        </blockquote>
+        <h3 id="272-組織ou単位でのappsheetの有効化">{" "}2.7.2 組織・OU単位でのAppSheetの有効化{" "}</h3>
+        <p>{" "}AppSheetは他の追加Googleサービスと同様に、Admin
+                    console上で組織・OU・グループ単位の粒度で有効化・無効化を制御できます。{" "}</p>
+        <p>
+          <strong>設定手順：</strong>{" "}Admin console
+                    →「アプリ」→「追加のGoogleサービス」→「AppSheetの設定」から、組織全体または特定のOU・グループ・ユーザー単位でオン・オフを切り替える。{" "}
+        </p>
+        <p>
+          <strong>サブスクリプションがない場合の挙動（過去の移行時の仕様）：</strong>{" "}AppSheetのサブスクリプションを契約していない組織では、「個別に管理されないサービスへのアクセス管理」設定がOUごとにオン・オフ混在している場合、AppSheetの制御はそのOUレベルの設定に自動的に整合する。全OUでオフに設定されている組織では、AppSheet自体も全体でオフになる。{" "}
+        </p>
+        <p>
+          <strong>AppSheet管理の階層構造：</strong>
+        </p>
+        <div className="table-scroll">
+          <table>
+            <thead>
+              <tr className="header">
+                <th>概念</th>
+                <th>説明</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="odd">
+                <td>
+                  <strong>Organization（組織）</strong>
+                </td>
+                <td>{" "}Google
+                                    Workspace管理者に組織内の全チームを管理する一元的なツールを提供し、チーム管理をチーム管理者に委任できる{" "}</td>
+              </tr>
+              <tr className="even">
+                <td>
+                  <strong>Team（チーム）</strong>
+                </td>
+                <td>{" "}個々のアプリ開発チーム単位。Gemini for App
+                                    Creation（自然言語でのアプリ作成）などの機能はチーム単位でオン・オフを設定する{" "}</td>
+              </tr>
+              <tr className="odd">
+                <td>
+                  <strong>AppSheet Admin Console</strong>
+                </td>
+                <td>{" "}サブスクリプションのライセンス購入・割り当て・使用状況を可視化するための専用管理コンソール{" "}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>
+          <strong>Gemini関連機能の有効化：</strong>
+        </p>
+        <ul>
+          <li>
+            <strong>Gemini for App Creation</strong>：自然言語の指示だけでAppSheetアプリを構築できる機能。チーム単位で有効化を制御{" "}
+          </li>
+          <li>
+            <strong>Gemini in AppSheet Solutions</strong>：自動化（Automation）内にAIタスクを追加し、情報の抽出・分類を行える機能。どのアプリ作成者がAI機能を自動化内で使えるかを管理者が制御可能{" "}
+          </li>
+        </ul>
+        <blockquote className="callout-practice">
+          <p>
+            <span className="callout-icon">💡</span>
+            <strong>ベストプラクティス：</strong>{" "}AppSheetを初めて全社導入する際は、まず「Organization」機能を使って部門ごとの「Team」を作成し、各チームにチーム管理者を委任することで、シャドーIT化を防ぎながらも現場主導のアプリ開発を促進する、というガバナンスモデルを構築する。Apps
+                        Script同様、既定では組織全体でオンになっているため、まだ利用ポリシーが整っていない組織は、正式な運用ルール策定までの間、Admin
+                        console上で意図的にオフに設定しておくことも選択肢となる。{" "}
+          </p>
+        </blockquote>
+        <hr />
+        <h2 id="section-2-ベストプラクティス総括表">Section 2 ベストプラクティス総括表</h2>
+        <div className="table-scroll">
+          <table>
+            <thead>
+              <tr className="header">
+                <th>サービス</th>
+                <th>重要設定</th>
+                <th>ベストプラクティスの要点</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="odd">
+                <td>
+                  <strong>Gmail</strong>
+                </td>
+                <td>MXレコード</td>
+                <td>
+                  <code>smtp.google.com</code>単一レコードへの移行、切り替え前のユーザー作成完了{" "}
+                </td>
+              </tr>
+              <tr className="even">
+                <td>
+                  <strong>Gmail</strong>
+                </td>
+                <td>ルーティング</td>
+                <td>{" "}Default
+                                    routing（既定配送）とRouting（特定条件配送）を使い分け、テストは小規模OUから開始{" "}</td>
+              </tr>
+              <tr className="odd">
+                <td>
+                  <strong>Gmail</strong>
+                </td>
+                <td>コンテンツコンプライアンス</td>
+                <td>{" "}事前定義された検出器を活用し、正規表現の自作を最小化。ルール優先順位を必ず検証{" "}</td>
+              </tr>
+              <tr className="even">
+                <td>
+                  <strong>Gmail</strong>
+                </td>
+                <td>スパム・フィッシング対策</td>
+                <td>{" "}IPアレースリストはドメイン全体に影響するため範囲を絞り込み、インバウンドゲートウェイの
+                  <code>Reject all mail not from gateway IPs</code>は慎重に判断{" "}
+                </td>
+              </tr>
+              <tr className="odd">
+                <td>
+                  <strong>Gmail</strong>
+                </td>
+                <td>メール認証</td>
+                <td>{" "}SPF・DKIM・DMARCを三点セットで運用し、DMARCは
+                  <code>p=none</code>から段階的に
+                  <code>reject</code>へロールアウト{" "}
+                </td>
+              </tr>
+              <tr className="even">
+                <td>
+                  <strong>Gmail</strong>
+                </td>
+                <td>移行</td>
+                <td>{" "}パイロットグループでの先行移行、デルタ移行による差分同期の活用{" "}</td>
+              </tr>
+              <tr className="odd">
+                <td>
+                  <strong>Gmail</strong>
+                </td>
+                <td>Quarantine</td>
+                <td>{" "}最小権限のカスタムロール（Access Admin Quarantine/Access
+                                    Restricted Quarantines）でアクセスを委任{" "}</td>
+              </tr>
+              <tr className="even">
+                <td>
+                  <strong>Drive/Docs</strong>
+                </td>
+                <td>デフォルト共有</td>
+                <td>
+                  <code>Restricted</code>を既定にし、ターゲットオーディエンスの「Employees
+                                    Only」をプライマリに設定{" "}
+                </td>
+              </tr>
+              <tr className="odd">
+                <td>
+                  <strong>Drive/Docs</strong>
+                </td>
+                <td>Trust Rules</td>
+                <td>{" "}部門・ドメイン・グループ単位の細かい共有制御が必要な場合に採用し、既存Drive共有設定からの変換をプレビューで確認{" "}</td>
+              </tr>
+              <tr className="even">
+                <td>
+                  <strong>Drive/Docs</strong>
+                </td>
+                <td>共有ドライブ</td>
+                <td>{" "}永続的なチーム資産は共有ドライブに保存し、退職時のデータ喪失リスクを構造的に排除{" "}</td>
+              </tr>
+              <tr className="odd">
+                <td>
+                  <strong>Drive/Docs</strong>
+                </td>
+                <td>ストレージ</td>
+                <td>{" "}プールドストレージの使用状況を定期レビューし、ポリシー変更前にユーザー通知テンプレートで周知{" "}</td>
+              </tr>
+              <tr className="even">
+                <td>
+                  <strong>Drive/Docs</strong>
+                </td>
+                <td>ラベル</td>
+                <td>{" "}ラベル名・選択肢に機密情報を含めず、必須フィールドで入力を促す{" "}</td>
+              </tr>
+              <tr className="odd">
+                <td>
+                  <strong>Calendar</strong>
+                </td>
+                <td>リソース予約</td>
+                <td>{" "}高需要リソースはリソースマネージャーによる手動承認、一般リソースは自動承認{" "}</td>
+              </tr>
+              <tr className="even">
+                <td>
+                  <strong>Calendar</strong>
+                </td>
+                <td>委任</td>
+                <td>{" "}個人カレンダー＝共有権限付与、リソースカレンダー＝リソースマネージャー設定、と使い分けを明確化{" "}</td>
+              </tr>
+              <tr className="odd">
+                <td>
+                  <strong>Calendar</strong>
+                </td>
+                <td>不明送信者対策</td>
+                <td>{" "}「やり取りしたことがある送信者のみ表示」をOU単位で有効化し、既存スパムイベントは手動クリーンアップが必要な点をユーザーに周知{" "}</td>
+              </tr>
+              <tr className="even">
+                <td>
+                  <strong>Meet</strong>
+                </td>
+                <td>セーフティ</td>
+                <td>{" "}機密性の高い会議はHost
+                                    Managementをオン＋待機室併用、大規模会議はQuick
+                                    accessオン＋チャット権限制限{" "}</td>
+              </tr>
+              <tr className="odd">
+                <td>
+                  <strong>Meet</strong>
+                </td>
+                <td>ビデオ設定</td>
+                <td>{" "}記録が必須の会議シリーズ（商談等）は自動録画・自動文字起こしをOU/グループ単位で有効化{" "}</td>
+              </tr>
+              <tr className="even">
+                <td>
+                  <strong>Chat</strong>
+                </td>
+                <td>履歴設定</td>
+                <td>規制業界は履歴をALWAYS ONに固定しVaultで法的保持に対応</td>
+              </tr>
+              <tr className="odd">
+                <td>
+                  <strong>Chat</strong>
+                </td>
+                <td>外部連携</td>
+                <td>{" "}External Chat
+                                    Settingsで信頼済みドメインの許可リストを部門単位に整備{" "}</td>
+              </tr>
+              <tr className="even">
+                <td>
+                  <strong>Chat</strong>
+                </td>
+                <td>アプリ</td>
+                <td>{" "}社内標準アプリは管理者が一括インストール、サードパーティアプリはMarketplace許可リストで審査{" "}</td>
+              </tr>
+              <tr className="odd">
+                <td>
+                  <strong>生成AI</strong>
+                </td>
+                <td>データ保護</td>
+                <td>{" "}Workspace
+                                    Intelligenceのデータソース設定で不要なサービスへのアクセスをオフにし最小権限を徹底{" "}</td>
+              </tr>
+              <tr className="even">
+                <td>
+                  <strong>生成AI</strong>
+                </td>
+                <td>有効化の階層</td>
+                <td>{" "}Feature access／Geminiアプリアクセス／Workspace apps in
+                                    Geminiの3層を区別して段階的に展開{" "}</td>
+              </tr>
+              <tr className="odd">
+                <td>
+                  <strong>生成AI</strong>
+                </td>
+                <td>利用状況レポート</td>
+                <td>{" "}四半期ごとにレビューし、未利用ユーザーのライセンス再配布とパワーユーザーの知見共有を実施{" "}</td>
+              </tr>
+              <tr className="even">
+                <td>
+                  <strong>開発支援</strong>
+                </td>
+                <td>AppSheet/Apps Script</td>
+                <td>{" "}AppSheet＝UI・トリガーの民主化、Apps
+                                    Script＝深いプログラマティック統合、という役割分担で組み合わせて活用{" "}</td>
+              </tr>
+              <tr className="odd">
+                <td>
+                  <strong>開発支援</strong>
+                </td>
+                <td>ガバナンス</td>
+                <td>{" "}AppSheet「Organization/Team」構造でチーム管理者に委任し、シャドーIT化を防止{" "}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <hr />
+        <h2 id="学習チェックリスト">学習チェックリスト</h2>
+        <div className="checklist-card">
+          <div className="checklist-header">{" "}進捗:{" "}
+            <span className="checklist-counter" data-total="24">0 / 24 完了</span>
+          </div>
+          <ul className="checklist-list">
+            <li>
+              <label>
+                <input type="checkbox" />MXレコードを単一レコード方式（
+                <code>smtp.google.com</code>）とレガシー方式（複数aspmxレコード）の両方について説明できる
+              </label>
+            </li>
+            <li>
+              <label>
+                <input type="checkbox" />Default
+                                routingとRoutingの優先順位の違い、およびデュアルデリバリー・分割配信・キャッチオールの使い分けを説明できる
+              </label>
+            </li>
+            <li>
+              <label>
+                <input type="checkbox" />コンテンツコンプライアンスと添付ファイルコンプライアンスの違い、事前定義検出器の役割を説明できる
+              </label>
+            </li>
+            <li>
+              <label>
+                <input type="checkbox" />Email allowlist・Blocked senders・Inbound
+                                gatewayの3つの機能の違いと適用範囲（ドメイン全体かOU単位か）を説明できる
+              </label>
+            </li>
+            <li>
+              <label>
+                <input type="checkbox" />SPF・DKIM・DMARCそれぞれの役割と、大量送信者（1日5,000通以上）に対する必須要件を説明できる
+              </label>
+            </li>
+            <li>
+              <label>
+                <input type="checkbox" />データ移行サービス（Data
+                                migration）とデータインポートツール（Data
+                                import）の対象範囲の違いを説明できる
+              </label>
+            </li>
+            <li>
+              <label>
+                <input type="checkbox" />Gmailの委任機能（個人・グループ）とCollaborative
+                                Inboxの使い分けを説明できる
+              </label>
+            </li>
+            <li>
+              <label>
+                <input type="checkbox" />Email
+                                quarantineへのアクセス権を委任する2つの方法（全体アクセス／グループ単位アクセス）を説明できる
+              </label>
+            </li>
+            <li>
+              <label>
+                <input type="checkbox" />Drive共有の「全般的なアクセスのデフォルト設定」とターゲットオーディエンスの関係を説明できる
+              </label>
+            </li>
+            <li>
+              <label>
+                <input type="checkbox" />Trust
+                                Rulesが従来のDrive共有設定（外部共有オン・オフ・信頼済みドメイン）とどう関係し、いつ採用すべきかを説明できる
+              </label>
+            </li>
+            <li>
+              <label>
+                <input type="checkbox" />共有ドライブのOU割り当てとストレージ上限のカスタマイズ方法を説明できる
+              </label>
+            </li>
+            <li>
+              <label>
+                <input type="checkbox" />カスタムDocsテンプレートの3つの送信モード（Open/Moderated/Restricted）の違いを説明できる
+              </label>
+            </li>
+            <li>
+              <label>
+                <input type="checkbox" />Driveラベルの3つの自動適用方法（デフォルト分類・DLP・AI分類）とその優先順位を説明できる
+              </label>
+            </li>
+            <li>
+              <label>
+                <input type="checkbox" />オフラインアクセス設定がDrive for
+                                desktopには適用されない点を説明できる
+              </label>
+            </li>
+            <li>
+              <label>
+                <input type="checkbox" />建物・フロア・機能・リソースの階層構造とリソース予約の自動承認/手動承認の使い分けを説明できる
+              </label>
+            </li>
+            <li>
+              <label>
+                <input type="checkbox" />カレンダー・リソースの委任のメカニズムの違い（共有権限 vs
+                                リソースマネージャー）を説明できる
+              </label>
+            </li>
+            <li>
+              <label>
+                <input type="checkbox" />「送信元が判明している場合のみ」設定によるカレンダースパム対策のロジックを説明できる
+              </label>
+            </li>
+            <li>
+              <label>
+                <input type="checkbox" />Host Management・Waiting Room・Quick
+                                accessの3つの関係性を説明できる
+              </label>
+            </li>
+            <li>
+              <label>
+                <input type="checkbox" />Meet録画・文字起こし・Geminiノートテイキングの自動化設定とその前提ライセンスを説明できる
+              </label>
+            </li>
+            <li>
+              <label>
+                <input type="checkbox" />Chatの履歴設定（Chat履歴 vs
+                                Space履歴)とオーバーライドの仕組みを説明できる
+              </label>
+            </li>
+            <li>
+              <label>
+                <input type="checkbox" />External Chat SettingsとExternal
+                                spacesの設定の違い、ゲストと外部ユーザーの違いを説明できる
+              </label>
+            </li>
+            <li>
+              <label>
+                <input type="checkbox" />Geminiの有効化を構成する3つのレイヤー（Feature
+                                access／Geminiアプリ／Workspace apps in Gemini）を説明できる
+              </label>
+            </li>
+            <li>
+              <label>
+                <input type="checkbox" />Gemini利用状況レポートで取得できる情報の種類（組織レベル・ユーザーレベル・インタラクション単位）を説明できる
+              </label>
+            </li>
+            <li>
+              <label>
+                <input type="checkbox" />AppSheetとApps
+                                Scriptの役割分担、および両者を連携させるAppSheet Apps
+                                Scriptコネクタの仕組みを説明できる
+              </label>
+            </li>
+          </ul>
+        </div>
+        <hr />
+        <h2 id="参考文献">参考文献</h2>
+        <p className="ref-intro">{" "}すべてGoogle公式ドキュメント（
+          <code>support.google.com/a</code>、
+          <code>knowledge.workspace.google.com</code>、
+          <code>workspaceupdates.googleblog.com</code>、
+          <code>developers.google.com</code>）を一次情報として使用しています。{" "}
+        </p>
+        <div className="ref-grid">
+          <div className="ref-card">
+            <h3>認定試験公式情報</h3>
+            <ul className="ref-list">
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://cloud.google.com/learn/certification/associate-google-workspace-administrator?hl=en" rel="noopener" target="_blank">Associate Google Workspace Administrator 認定ページ（Google
+                                    Cloud）</a>
+              </li>
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://services.google.com/fh/files/misc/associate_google_workspace_administrator_exam_guide_english.pdf" rel="noopener" target="_blank">Associate Google Workspace Administrator Exam Guide（PDF）</a>
+              </li>
+            </ul>
+          </div>
+          <div className="ref-card">
+            <h3>2.1 Gmail</h3>
+            <ul className="ref-list">
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://knowledge.workspace.google.com/admin/domains/set-up-mx-records-for-google-workspace" rel="noopener" target="_blank">Set up MX records for Google Workspace</a>
+              </li>
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://knowledge.workspace.google.com/admin/domains/avoid-issues-when-changing-mx-records" rel="noopener" target="_blank">Avoid issues when changing MX records</a>
+              </li>
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://support.google.com/a/answer/2685650?hl=en" rel="noopener" target="_blank">Email routing and delivery options for Google Workspace</a>
+              </li>
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://support.google.com/a/answer/2368153" rel="noopener" target="_blank">Set up Default routing for your organization</a>
+              </li>
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://support.google.com/a/answer/12971016?hl=en" rel="noopener" target="_blank">Send email to 2 email systems with split delivery</a>
+              </li>
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://knowledge.workspace.google.com/admin/gmail/advanced/set-up-rules-for-advanced-email-content-filtering" rel="noopener" target="_blank">Set up rules for advanced email content filtering</a>
+              </li>
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://support.google.com/a/answer/6280516?hl=en" rel="noopener" target="_blank">Enhance rules for advanced email content filtering with
+                                    predefined detectors</a>
+              </li>
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://support.google.com/a/answer/2364580?hl=en" rel="noopener" target="_blank">Filter messages with attachments</a>
+              </li>
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://knowledge.workspace.google.com/admin/gmail/advanced/add-ip-addresses-to-allowlists-in-gmail" rel="noopener" target="_blank">Add IP addresses to allowlists in Gmail</a>
+              </li>
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://support.google.com/a/answer/2786758?hl=en" rel="noopener" target="_blank">Working with Gmail Admin settings in Google Workspace</a>
+              </li>
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://support.google.com/a/answer/105694?hl=en" rel="noopener" target="_blank">Turn POP &amp; IMAP on or off for users</a>
+              </li>
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://support.google.com/a/answer/14724207?hl=en" rel="noopener" target="_blank">Let users automatically forward their own Gmail emails</a>
+              </li>
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://knowledge.workspace.google.com/admin/security/set-up-spf" rel="noopener" target="_blank">Set up SPF</a>
+              </li>
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://knowledge.workspace.google.com/admin/security/set-up-dkim" rel="noopener" target="_blank">Set up DKIM</a>
+              </li>
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://knowledge.workspace.google.com/admin/security/set-up-dmarc" rel="noopener" target="_blank">Set up DMARC</a>
+              </li>
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://knowledge.workspace.google.com/admin/migrate/migrate-email-from-a-gmail-account?hl=en" rel="noopener" target="_blank">Migrate email from a Gmail account</a>
+              </li>
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://support.google.com/a/answer/9476255?hl=en" rel="noopener" target="_blank">Import email with the data import tool</a>
+              </li>
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://knowledge.workspace.google.com/admin/users/delegate-a-users-email-address" rel="noopener" target="_blank">Delegate a user&apos;s email address</a>
+              </li>
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://knowledge.workspace.google.com/admin/gmail/advanced/give-your-users-access-to-email-quarantine" rel="noopener" target="_blank">Give your users access to email quarantine</a>
+              </li>
+            </ul>
+          </div>
+          <div className="ref-card">
+            <h3>2.2 Google DriveとDocs</h3>
+            <ul className="ref-list">
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://support.google.com/a/answer/12732365?hl=en" rel="noopener" target="_blank">Set general access sharing options for your organization</a>
+              </li>
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://knowledge.workspace.google.com/admin/security/create-and-manage-trust-rules-for-drive-sharing" rel="noopener" target="_blank">Create and manage trust rules for Drive sharing</a>
+              </li>
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://support.google.com/a/answer/10356781?hl=en" rel="noopener" target="_blank">Best practices for deploying target audiences</a>
+              </li>
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://support.google.com/a/answer/3055325" rel="noopener" target="_blank">Turn custom Drive templates on or off for users</a>
+              </li>
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://knowledge.workspace.google.com/admin/drive/manage-data-policies-for-specific-shared-drives" rel="noopener" target="_blank">Manage data policies for specific shared drives</a>
+              </li>
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://support.google.com/a/answer/12033430?hl=en" rel="noopener" target="_blank">4. Set storage limits（Getting started）</a>
+              </li>
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://support.google.com/a/answer/9214707?hl=en" rel="noopener" target="_blank">Google Workspace storage FAQ for admins</a>
+              </li>
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://knowledge.workspace.google.com/admin/drive/get-started-drive-setup-guide-for-admins" rel="noopener" target="_blank">Get started: Drive setup guide for admins</a>
+              </li>
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://knowledge.workspace.google.com/admin/security/create-classification-labels-for-your-organization" rel="noopener" target="_blank">Create classification labels for your organization</a>
+              </li>
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://support.google.com/a/answer/11280938" rel="noopener" target="_blank">Apply Default classification labels to new files
+                                    automatically</a>
+              </li>
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://support.google.com/a/answer/9292382?hl=en-" rel="noopener" target="_blank">Get started as a classification labels admin</a>
+              </li>
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://support.google.com/a/answer/1642623?hl=en" rel="noopener" target="_blank">Set up offline access to Docs, Sheets &amp; Slides</a>
+              </li>
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://knowledge.workspace.google.com/admin/users/administrator-privilege-definitions" rel="noopener" target="_blank">Administrator privilege definitions</a>
+              </li>
+            </ul>
+          </div>
+          <div className="ref-card">
+            <h3>2.3 Google Calendar</h3>
+            <ul className="ref-list">
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://knowledge.workspace.google.com/admin/calendar/create-buildings-features-and-calendar-resources" rel="noopener" target="_blank">Create buildings, features &amp; Calendar resources</a>
+              </li>
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://support.google.com/a/answer/7046439?hl=en" rel="noopener" target="_blank">Approve or deny Calendar room &amp; resource bookings</a>
+              </li>
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://knowledge.workspace.google.com/admin/calendar/allow-free-busy-google-calendar-room-booking" rel="noopener" target="_blank">Allow Free/Busy Google Calendar room booking</a>
+              </li>
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://knowledge.workspace.google.com/admin/calendar/allow-external-invitations-in-google-calendar-events" rel="noopener" target="_blank">Allow external invitations in Google Calendar events</a>
+              </li>
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://support.google.com/a/users/answer/168126?hl=en" rel="noopener" target="_blank">Delegate access to your mail or calendar</a>
+              </li>
+            </ul>
+          </div>
+          <div className="ref-card">
+            <h3>2.4 Google Meet</h3>
+            <ul className="ref-list">
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://support.google.com/a/answer/7582940" rel="noopener" target="_blank">Google Meet security &amp; privacy for IT admins</a>
+              </li>
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://knowledge.workspace.google.com/admin/meet/manage-waiting-room-settings-for-your-users" rel="noopener" target="_blank">Manage waiting room settings for your users</a>
+              </li>
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://knowledge.workspace.google.com/admin/meet/manage-meet-settings" rel="noopener" target="_blank">Manage Meet settings (for admins)</a>
+              </li>
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://knowledge.workspace.google.com/admin/meet/turn-meet-recording-on-or-off-for-your-organization" rel="noopener" target="_blank">Turn Meet recording on or off for your organization</a>
+              </li>
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://support.google.com/meet/answer/12849897?hl=en" rel="noopener" target="_blank">Use Transcripts with Google Meet</a>
+              </li>
+            </ul>
+          </div>
+          <div className="ref-card">
+            <h3>2.5 Google Chat</h3>
+            <ul className="ref-list">
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://support.google.com/a/answer/9269628" rel="noopener" target="_blank">Set up Chat for your organization</a>
+              </li>
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://knowledge.workspace.google.com/admin/chat/set-a-space-history-option-for-users" rel="noopener" target="_blank">Set a space history option for users</a>
+              </li>
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://knowledge.workspace.google.com/admin/chat/chatting-with-external-users" rel="noopener" target="_blank">Chatting with external users &amp; guest accounts</a>
+              </li>
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://knowledge.workspace.google.com/admin/chat/control-external-chat-and-spaces-chat-options" rel="noopener" target="_blank">Control external Chat &amp; spaces chat options</a>
+              </li>
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://support.google.com/a/answer/13471510" rel="noopener" target="_blank">Set up content moderation for Chat</a>
+              </li>
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://support.google.com/a/answer/9269535?hl=en" rel="noopener" target="_blank">Automatically accept chat invitations</a>
+              </li>
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://support.google.com/a/answer/7651360" rel="noopener" target="_blank">Allow users to install Chat apps</a>
+              </li>
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://knowledge.workspace.google.com/admin/chat/set-up-app-authorization-for-chat" rel="noopener" target="_blank">Set up app authorization for Chat</a>
+              </li>
+            </ul>
+          </div>
+          <div className="ref-card">
+            <h3>2.6 生成AI（Gemini）</h3>
+            <ul className="ref-list">
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://workspace.google.com/blog/ai-and-machine-learning/enterprise-security-controls-google-workspace-gemini" rel="noopener" target="_blank">Enterprise security controls for Gemini in Google Workspace</a>
+              </li>
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://support.google.com/a/answer/15706919?hl=en" rel="noopener" target="_blank">Generative AI in Google Workspace Privacy Hub</a>
+              </li>
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://knowledge.workspace.google.com/admin/generative-ai/workspace-with-gemini/manage-access-to-gemini-features-in-workspace-services" rel="noopener" target="_blank">Manage access to Gemini features in Workspace services</a>
+              </li>
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://support.google.com/a/answer/14571493" rel="noopener" target="_blank">Turn the Gemini app on or off</a>
+              </li>
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://knowledge.workspace.google.com/admin/gemini/turn-google-apps-in-gemini-on-or-off" rel="noopener" target="_blank">Control Google Apps in Gemini on or off（Turn Google apps in
+                                    Gemini on or off）</a>
+              </li>
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://knowledge.workspace.google.com/admin/generative-ai/review-gemini-usage-in-your-organization" rel="noopener" target="_blank">Review Gemini usage in your organization</a>
+              </li>
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://knowledge.workspace.google.com/admin/appsheet/manage-access-to-gemini-in-appsheet" rel="noopener" target="_blank">Manage access to Gemini in AppSheet</a>
+              </li>
+            </ul>
+          </div>
+          <div className="ref-card">
+            <h3>2.7 Workspace開発のサポート</h3>
+            <ul className="ref-list">
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://knowledge.workspace.google.com/admin/appsheet/manage-appsheet-in-your-organization" rel="noopener" target="_blank">Manage AppSheet in your organization</a>
+              </li>
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://support.google.com/appsheet/answer/11997142?hl=en" rel="noopener" target="_blank">Call Apps Script from an automation（AppSheet Help）</a>
+              </li>
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://developers.googleblog.com/en/announcing-the-apps-script-connector-for-appsheet-automate-workflows-for-google-workspace/" rel="noopener" target="_blank">Announcing the Apps Script connector for AppSheet（Google
+                                    Developers Blog）</a>
+              </li>
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://knowledge.workspace.google.com/admin/users/access/turn-apps-script-on-or-off-for-users" rel="noopener" target="_blank">Turn Apps Script on or off for users</a>
+              </li>
+              <li>
+                <span className="ref-icon">↗</span>
+                <a href="https://workspaceupdates.googleblog.com/2020/11/admin-control-appsheet.html?m=1" rel="noopener" target="_blank">Google Workspace Updates: Control access to AppSheet with a new
+                                    Admin console setting</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div className="page-footer">{" "}本ガイドはGoogle
+                    Workspace管理者ヘルプセンターの公開情報（2026年8月時点）に基づいて作成されています。Admin
+                    consoleのUIやポリシーはGoogleにより随時更新されるため、実際の設定時は必ず最新の公式ヘルプページを確認してください。{" "}</div>
+      </main>
+    </div>
+  );
+};

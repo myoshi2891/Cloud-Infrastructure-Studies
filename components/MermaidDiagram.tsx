@@ -107,6 +107,10 @@ export const applySvgFixups = (
     svgEl.style.height = 'auto';
     svgEl.style.overflow = 'visible';
     svgEl.style.marginBottom = '10px';
+    // ⚠️ viewBox 検証による早期 return より前にクリアする。同一 SVG を再処理する経路
+    //    （HMR・再レンダリング）で前回の min-width が残ると、縮小されるべき図が
+    //    固定幅のまま横スクロールを発生させる。
+    svgEl.style.minWidth = '';
 
     const viewBox = svgEl.getAttribute('viewBox');
     if (!viewBox) {
@@ -133,6 +137,10 @@ export const applySvgFixups = (
         targetWidth = Math.min(650, Math.max(Math.round(w * 1.35), 480));
     }
     svgEl.style.width = `${targetWidth}px`;
+    // 有効な viewBox が取れた場合のみ、自然幅を min-width で固定する
+    if (preserveNaturalScale && targetWidth > 0) {
+        svgEl.style.minWidth = `${targetWidth}px`;
+    }
     svgEl.style.maxHeight = preserveNaturalScale ? 'none' : h > 550 ? '580px' : 'none';
     svgEl.setAttribute('viewBox', `${x} ${y} ${w} ${h + extraHeight}`);
 };

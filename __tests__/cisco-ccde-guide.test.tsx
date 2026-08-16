@@ -192,7 +192,7 @@ describe('Cisco CCDE Complete Guide Page', () => {
         const sourcesSection = screen.getByTestId('sources-section');
         const links = sourcesSection.querySelectorAll('a');
         expect(links.length).toBe(9);
-        expect(links[0].href).toContain('cisco.com');
+        expect(links.item(0).href).toContain('cisco.com');
     });
 
     it('製図フッター情報が描画されていること', () => {

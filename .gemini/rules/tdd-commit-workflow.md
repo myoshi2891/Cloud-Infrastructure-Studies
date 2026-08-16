@@ -14,13 +14,82 @@ paths:
 
 # TDD & Step-by-Step Commit Workflow Rules
 
-(最終更新日: 2026-08-13)
+(最終更新日: 2026-08-15)
 
 ## 目的 (Objective)
 
 LLM エージェント（Claude / Gemini / その他）がコードを実装する際、**要件漏れ・移行漏れ**と意図しない破壊的変更を防ぐため、**テスト駆動開発（TDD）**と**ステップバイステップの細かなコミット**を**絶対の義務（マスト）**として規定する。
 
 このファイルは特定のエージェントに依存しない。`.agents/` / `.claude/` / `.gemini/` の3系統に**同一内容で**配置され、`__tests__/skills/agent-mirror-sync.test.ts` が同一性を機械的に検証する。
+
+---
+
+## 0-A. エージェント非依存の実行契約（Claude Code / Gemini CLI 共通）
+
+本ファイルおよび `.agents/skills/*` の手順は、**どのエージェントでも同じ結果になること**を要件とする。
+
+| 項目 | 契約 |
+|---|---|
+| ルール・スキルの正本 | `.agents/` 配下。`.claude/` と `.gemini/` は読み取り用ミラー。**編集は必ず `.agents/` 側に行い、§8 の手順でミラーへ反映する** |
+| 本文中のパス表記 | 常に `.agents/...` のリポジトリ相対パスで書く。`.claude/...` / `.gemini/...` を手順本文に書かない（エージェントごとに異なる指示になる） |
+| スクリプトの実行パス | `.agents/skills/.../scripts/*.mjs` を実行する（ミラー配下のコピーを実行しない） |
+| ランタイム | `bun` に統一する。`node` / `npm` / `npx` / `yarn` を手順に書かない |
+| 絶対パス | ユーザー名を含む絶対パスを出力・記載しない（`.agents/rules/no-absolute-paths.md`） |
+| 応答・計画書 | 日本語で記述する |
+
+手順は**能力名**で書く。各エージェントは自分のツール名へ読み替えること。
+
+| 能力名（本文の表記） | Claude Code | Gemini CLI |
+|---|---|---|
+| ファイル読取 | `Read`（`offset` / `limit` で範囲指定） | `read_file`（`offset` / `limit` で範囲指定） |
+| 複数ファイルの一括読取 | `Read` を複数回 | `read_many_files` |
+| 全文検索 / ファイル探索 | `Grep` / `Glob` | `search_file_content` / `glob` |
+| 差分編集 | `Edit` | `replace` |
+| 新規作成 | `Write` | `write_file` |
+| コマンド実行 | `Bash` | `run_shell_command` |
+
+**エージェント固有機能に依存する手順を書かない。** サブエージェント、拡張機能、対話 UI 前提の操作は手順の必須要素にしてはならない。
+すべての手順は「シェルコマンド + ファイル編集」だけで完結する形で記述し、検証は `bun run test` / `bun run lint` / `bun run build` / `bun run test:e2e` の出力で行う。
+
+### 0-A-1. スキルの読み込み方法（エージェント別の入口）
+
+スキルの**内容**は3系統で同一だが、**読み込ませ方**だけがエージェントごとに異なる。手順本文にはこの差を書かず、ここに集約する。
+
+| エージェント | 入口 |
+|---|---|
+| Claude Code | `.claude/skills/<name>/SKILL.md` を自動検出。明示的に使う場合は `/<name>` |
+| Gemini CLI | `gemini skills install <name>.skill --scope workspace` → セッション内で `/skills reload`（詳細は `GEMINI.md` の「AI Skills」節） |
+| いずれも不可の場合 | **スキル機構を使わず、ファイル読取（上の能力対応表の「ファイル読取」）で `.agents/skills/<name>/SKILL.md` の本文をそのまま読み込む。** スキル機構が無くても手順は完結する |
+
+スキル本文は「読めば実行できる Markdown」として書く。ロード機構の有無を前提にした記述（「スキルが有効なら〜」等）を書かない。
+
+### 0-A-2. 差分編集の移植性契約
+
+エージェントによって差分編集ツールの能力が異なるため、**最小公倍数ではなく最大公約数**に合わせる。
+
+- **正規表現による一括置換を手順の必須要素にしない。** Gemini CLI の `replace` はリテラル一致であり、正規表現・全件置換フラグを前提にできない。
+- 置換対象は**周辺行を含めて一意になるアンカー**で指定する。「同じ文字列を全て置換」と書かず、「この前後関係の箇所を置換」と書く。
+- 同一文字列が複数箇所にある変更は、**箇所ごとに独立した編集**として記述する。
+- 大量の機械的置換が必要な場合は、編集ツールではなく**スクリプト（`bun` 実行）またはシェルコマンド**として手順に書く。こちらは全エージェントで同一に動く。
+
+### 0-A-3. シェルコマンドの移植性契約
+
+手順に書くコマンドは、macOS（BSD）と Linux（GNU）の双方、かつ任意のエージェントのシェル実行で同じ結果になること。
+
+| 禁止 | 理由 | 代替 |
+|---|---|---|
+| `grep` の先読み・後読み（`(?=...)` / `(?!...)`） | POSIX ERE の範囲外。BSD grep ではエラー、GNU grep でも `-E` では動かない | 「A を含み B を含まない行」は `grep ... \| grep -v ...` の2段で書く。**ただし JSX のように属性が複数行へまたがる対象では 1 行単位の除外は誤検出する** — その場合は `grep -rn` で候補箇所を列挙し、**各候補を構文上の範囲（JSX なら開始タグの閉じ `>`）まで読んで確認する**手順として書く。`-A<n>` の固定行数は範囲を取りこぼすため判定の根拠にしない（§4 のボタン a11y 行が実例） |
+| `rg`（ripgrep） | 環境に存在する保証がない | `grep -rn` |
+| `node` / `npx` / `npm` / `yarn` | ランタイムを `bun` に統一しているため（§0） | `bun` / `bunx` |
+| `sed -i` の GNU/BSD 依存記法 | BSD は `sed -i ''`、GNU は `sed -i` で非互換 | 編集ツールで直接編集するか、`.mjs` スクリプトを `bun` で実行 |
+
+Vitest の実行形式は次の2つだけを使う（どちらも動作確認済み）。
+
+```bash
+bun run test                       # 全体
+bun run test -- <名前の一部>        # 名前で絞り込み（例: bun run test -- agent-mirror-sync）
+bunx vitest run __tests__/path/to/foo.test.tsx   # ファイルパス指定
+```
 
 ---
 
@@ -80,123 +149,29 @@ HTML / Markdown からのページ移行では、実装にもテスト作成に�
 
 ### 1-1. 抽出コマンド（HTML ソースの場合）
 
-`jsdom` は devDependency として既に導入済み。モジュール解決をリポジトリ基準にするため、一時スクリプトはリポジトリ直下に作り、実行後に削除する。
+抽出ロジックは **`scripts/gen-inventory.mjs`（実行エントリ）** と **`scripts/inventory-extraction.mjs`（生成側・検証側の共有ロジック）** に実装済みである。
+**一時スクリプトを heredoc で書き起こしてはならない。** 生成側と検証側でセレクタや正規化規則が分岐すると、
+インベントリと検証結果が静かに乖離し、移行漏れを検出できなくなる。
 
 ```bash
-inventory_script=$(mktemp "$PWD/.inventory.XXXXXX.mjs") || exit 1
-trap 'rm -f "$inventory_script"' EXIT
-cat > "$inventory_script" <<'EOF'
-import fs from 'node:fs';
-import path from 'node:path';
-import { JSDOM } from 'jsdom';
-
-const [, , htmlPath] = process.argv;
-if (!htmlPath) {
-    throw new Error('usage: bun <script> <source.html>');
-}
-const repositoryRoot = process.cwd();
-const absoluteHtmlPath = path.resolve(repositoryRoot, htmlPath);
-const source = path.relative(repositoryRoot, absoluteHtmlPath).split(path.sep).join('/');
-if (!source || source.startsWith('../') || path.isAbsolute(source)) {
-    throw new Error('source.html must be inside the repository');
-}
-const repositoryRealPath = fs.realpathSync(repositoryRoot);
-const htmlRealPath = fs.realpathSync(absoluteHtmlPath);
-const realSource = path.relative(repositoryRealPath, htmlRealPath);
-if (
-    !realSource
-    || realSource === '..'
-    || realSource.startsWith(`..${path.sep}`)
-    || path.isAbsolute(realSource)
-) {
-    throw new Error('source.html must resolve inside the repository');
-}
-const doc = new JSDOM(fs.readFileSync(htmlRealPath, 'utf8')).window.document;
-const normalize = (value) => value.replace(/\s+/g, ' ').trim();
-const texts = (sel) =>
-    [...doc.querySelectorAll(sel)]
-        .map((el) => normalize(el.textContent ?? ''))
-        .filter(Boolean);
-const diagramSelector = '[data-testid="mermaid-diagram"], .mermaid, [id^="diag-"]';
-const diagrams = [...doc.querySelectorAll(diagramSelector)].filter(
-    (element) => !element.querySelector(diagramSelector),
-);
-const codeBlockSelector = 'pre:not(.mermaid), .code-block';
-const codeBlocks = [...doc.querySelectorAll(codeBlockSelector)].filter(
-    (element) => !element.parentElement?.closest(codeBlockSelector),
-);
-const codeLines = (block) => {
-    const explicitLines = [...block.querySelectorAll(':scope > .code-line')];
-    if (explicitLines.length > 0) {
-        return explicitLines.map((line) => line.textContent ?? '');
-    }
-    const text = (block.textContent ?? '')
-        .replace(/\r\n?/g, '\n')
-        .replace(/^\n|\n$/g, '');
-    return text ? text.split('\n') : [];
-};
-const codeText = (block) => codeLines(block).join('\n');
-const bodySelector = `p, aside, .annotation, [class*="callout"], img[alt], ${codeBlockSelector}`;
-const bodyElements = [...doc.body.querySelectorAll(bodySelector)].filter(
-    (element) => !element.parentElement?.closest(bodySelector),
-);
-const bodyContent = bodyElements
-    .map((element) => ({
-        kind: element.matches('img[alt]')
-            ? 'imageAlt'
-            : element.matches(codeBlockSelector)
-                ? 'code'
-                : element.matches('aside, .annotation, [class*="callout"]')
-                    ? 'annotation'
-                    : 'paragraph',
-        text: element.matches(codeBlockSelector)
-            ? codeText(element)
-            : normalize(
-                element.matches('img[alt]')
-                    ? element.getAttribute('alt') ?? ''
-                    : element.textContent ?? '',
-            ),
-    }))
-    .filter((entry) => entry.text);
-const codeLineCount = (block) => codeLines(block).length;
-
-console.log(
-    JSON.stringify(
-        {
-            source,
-            h1: texts('h1'),
-            h2: texts('h2'),
-            h3: texts('h3'),
-            h4: texts('h4'),
-            th: texts('th'),
-            td: texts('td'),
-            listItems: texts('li'),
-            links: [...doc.querySelectorAll('a[href^="http"]')].map((a) => ({
-                text: normalize(a.textContent ?? ''),
-                href: a.getAttribute('href'),
-            })),
-            bodyContent,
-            counts: {
-                table: doc.querySelectorAll('table').length,
-                diagram: diagrams.length,
-                codeBlock: codeBlocks.length,
-                figure: doc.querySelectorAll('img, svg').length,
-            },
-            structures: {
-                tableColumnHeaders: [...doc.querySelectorAll('table')].map(
-                    (table) => table.querySelectorAll('thead th[scope="col"]').length,
-                ),
-                codeLines: codeBlocks.map(codeLineCount),
-            },
-        },
-        null,
-        2,
-    ),
-);
-EOF
 mkdir -p docs/migration-inventory
-bun "$inventory_script" <移行元HTMLのパス> > docs/migration-inventory/<page-slug>.json
+bun scripts/gen-inventory.mjs <移行元HTMLのパス> > docs/migration-inventory/<page-slug>.json
 ```
+
+出力される JSON の構造（§3 のテストテンプレートはこのキーをそのまま参照する）:
+
+| キー | 内容 |
+|---|---|
+| `source` | 移行元のリポジトリ相対パス（リポジトリ外の入力はスクリプトが拒否する） |
+| `h1` / `h2` / `h3` / `h4` | 見出しテキストを出現順に保持 |
+| `th` / `td` / `listItems` | 表セル・リスト項目を出現順に保持 |
+| `links` | `href^="http"` の `{ text, href }` を出現順に保持 |
+| `bodyContent` | 段落・注釈・画像 alt・コード全文を `{ kind, text }` として出現順に保持 |
+| `counts` | `table` / `diagram` / `codeBlock` / `figure` の件数 |
+| `structures` | `tableColumnHeaders`（表ごとの `thead th[scope="col"]` 数）、`codeLines`（コードブロックごとの行数） |
+
+抽出仕様を変更する必要が生じた場合は、**`scripts/inventory-extraction.mjs` だけを単一の変更点として修正する**。
+§3 のテストは同モジュールを import しているため自動的に追従する。テスト側へ抽出ロジックを複製しない。
 
 Markdown ソースの場合は `marked`（導入済み）で HTML 化してから同じスクリプトに通す。
 
@@ -220,12 +195,14 @@ Red フェーズのテストは、以下を**すべて**満たさなければコ
 | 1 | 全見出し (`h1`〜`h4`) | インベントリの**全要素**を、空白除去後の**完全部分文字列一致**で検証 |
 | 2 | 全テーブルセル (`th` / `td`) | 同上。1セルも欠かさない |
 | 3 | 全リスト項目 (`li`) | 同上 |
-| 4 | 全外部リンク | `href` の**完全一致**集合を検証（テキストだけでなく URL も） |
+| 4 | 全外部リンク | `href` を**出現順の配列**として完全一致で検証（重複も順序も保持する。集合比較は重複・欠落を見逃す） |
 | 5 | 図の件数 | `inventory.counts.diagram` と描画された図の件数が**厳密一致** (`toBe`) |
 | 6 | 図の a11y | 各図に非空の `ariaLabel`、または `decorative={true}` |
 | 7 | テーブル構造 | `<thead>` と `<th scope="col">` の存在 |
 | 8 | コードブロック | `.code-block` 直下が `.code-line` でラップされていること。テキストに素の `\n` 依存がないこと |
 | 9 | 件数ゲート | `h2` / `h3` / `table` / `codeBlock` の件数が厳密一致 |
+| 10 | 図の必須 prop | 全図が `preserveNaturalScale === true` を持つこと（未指定の実装がテストを通過しないようにする） |
+| 11 | 表の列見出し | 表ごとに `thead th[scope="col"]` の数が `inventory.structures.tableColumnHeaders[i]` と一致 |
 
 ### 2-2. 禁止アサーション（これらは「テストを書いた」と認めない）
 
@@ -237,6 +214,8 @@ Red フェーズのテストは、以下を**すべて**満たさなければコ
 | 見出しだけを検証し本文・表を検証しない | 中身を空にしてもパスする |
 | スナップショット (`toMatchSnapshot`) を主たる検証にする | 実装に追従して自動更新され、漏れを追認する |
 | インベントリをハードコードした短い配列で代替する | 「書いた分だけ通る」ため網羅性が担保されない |
+| 節番号などをドット未エスケープの正規表現で検証する（`/2.1/`） | `.` が任意の1文字にマッチし `2A1` / `231` でも通る。`/2\.1/` とエスケープするか、文字列一致を使う |
+| 抽出ヘルパーやモックをテストファイル内へ再定義する | 生成側（`scripts/inventory-extraction.mjs`）と検証側が分岐し、片側だけの変更で検証が静かに無効化される |
 
 > `getAllByText(...).length > 0` 形式は、**サイドバー目次と本文の両方に同じ文言が出る**ページでの重複回避策として過去に使われてきた。
 > 重複回避が必要な場合は、`length > 0` ではなく **`container.textContent` に対する部分文字列一致**（§3 テンプレート参照）へ置き換えること。
@@ -247,10 +226,24 @@ Red フェーズのテストは、以下を**すべて**満たさなければコ
 
 - [ ] インベントリ JSON を `import` し、その**全要素**をループで検証しているか？
 - [ ] 件数検証を `toBe` で行っているか（`toBeGreaterThan` を使っていないか）？
-- [ ] 外部リンクを `href` の集合で検証しているか？
+- [ ] 外部リンクを `href` の出現順配列（重複保持）で検証しているか？
 - [ ] 全 Mermaid / SVG に `ariaLabel` または `decorative` の検証があるか？
 - [ ] 「意図的に本文を要約する」「表の行を1行削る」を試したらテストが**落ちる**か？（思考実験で必ず確認）
 - [ ] `bun run test` を実行し、**実装前に失敗すること**を出力で確認したか？
+- [ ] 抽出ヘルパーとモックを共有モジュールから import しているか（テストファイル内に再定義していないか）？
+- [ ] 正規表現に未エスケープの `.` が無いか？
+
+### 2-4. テストファイルの配置規約（レビュー指摘の再発防止）
+
+**テストのパスは対象ページのルートをそのまま写す。** 独自の説明的ディレクトリ名を作らない。
+
+| 対象ページ | 正 | 誤 |
+|---|---|---|
+| `app/gcl/agwa/section3/page.tsx` | `__tests__/gcl/agwa/section3/page.test.tsx` | `__tests__/gcl/agwa-section3-data-governance/page.test.tsx` |
+| `app/aws/solutions-architect-associate/domain1/page.tsx` | `__tests__/aws/solutions-architect-associate/domain1/page.test.tsx` | `__tests__/aws/saa-domain1.test.tsx` |
+
+`vitest.config.ts` の `include` は `__tests__/**/*.test.{ts,tsx}` である。**この配下以外に置いたテストは実行されない**（§0 参照）。
+インベントリ JSON のファイル名は `docs/migration-inventory/<page-slug>.json` とし、ページの slug と対応させる。
 
 ---
 
@@ -258,70 +251,30 @@ Red フェーズのテストは、以下を**すべて**満たさなければコ
 
 移行ページのテストは以下を出発点とする。`<...>` を置換するだけで §2 の基準を満たす。
 
+**ヘルパーとモックは共有モジュールから import する。テストファイル内に再定義しない。**
+
+| import 元 | 提供するもの |
+|---|---|
+| `@/scripts/inventory-extraction.mjs` | `codeBlockSelector` / `codeLines` / `codeText` / `codeLineCount` / `bodySelector` / `extractBodyContent` / `normalize`（**生成側 `scripts/gen-inventory.mjs` と同一実装**） |
+| `@/__tests__/gcl/agwa/migration-test-utils` | `MermaidDiagramMock`（`ariaLabel` / `decorative` / `preserveNaturalScale` をテスト用属性へ透過）、`squash`。同モジュールは `codeBlockSelector` / `codeLineCount` / `extractBodyContent` を再エクスポートするため、テストからの import 元はここ1箇所でよい |
+
 ```tsx
-// __tests__/<領域>/<page-slug>/page.test.tsx
+// __tests__/<領域>/<page-slug>/page.test.tsx   ← パスは対象ページのルートを写す（§2-4）
 // @vitest-environment jsdom
 import { render } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import inventory from '@/docs/migration-inventory/<page-slug>.json';
 import Page from '@/app/<route>/page';
+import {
+    MermaidDiagramMock,
+    codeBlockSelector,
+    codeLineCount,
+    extractBodyContent,
+    squash,
+} from '@/__tests__/gcl/agwa/migration-test-utils';
 
 // MermaidDiagram は名前付きエクスポート。default でモックすると必ず落ちる。
-vi.mock('@/components/MermaidDiagram', () => ({
-    MermaidDiagram: ({ chart, ariaLabel, decorative, preserveNaturalScale }: {
-        chart: string;
-        ariaLabel?: string;
-        decorative?: boolean;
-        preserveNaturalScale?: boolean;
-    }) => (
-        <div
-            data-testid="mermaid-diagram"
-            data-chart={chart}
-            data-decorative={String(decorative === true)}
-            data-preserve-natural-scale={String(preserveNaturalScale)}
-            aria-label={ariaLabel}
-            aria-hidden={decorative || undefined}
-        />
-    ),
-}));
-
-/** 空白差・改行差を無視して比較するための正規化 */
-const squash = (value: string): string => value.replace(/\s+/g, '');
-const normalize = (value: string): string => value.replace(/\s+/g, ' ').trim();
-const codeBlockSelector = 'pre:not(.mermaid), .code-block';
-const codeLines = (block: Element): string[] => {
-    const explicitLines = [...block.querySelectorAll(':scope > .code-line')];
-    if (explicitLines.length > 0) {
-        return explicitLines.map((line) => line.textContent ?? '');
-    }
-    const text = (block.textContent ?? '')
-        .replace(/\r\n?/g, '\n')
-        .replace(/^\n|\n$/g, '');
-    return text ? text.split('\n') : [];
-};
-const codeText = (block: Element): string => codeLines(block).join('\n');
-const codeLineCount = (block: Element): number => codeLines(block).length;
-const bodySelector = `p, aside, .annotation, [class*="callout"], img[alt], ${codeBlockSelector}`;
-const extractBodyContent = (container: HTMLElement) =>
-    [...container.querySelectorAll(bodySelector)]
-        .filter((element) => !element.parentElement?.closest(bodySelector))
-        .map((element) => ({
-            kind: element.matches('img[alt]')
-                ? 'imageAlt'
-                : element.matches(codeBlockSelector)
-                    ? 'code'
-                    : element.matches('aside, .annotation, [class*="callout"]')
-                        ? 'annotation'
-                        : 'paragraph',
-            text: element.matches(codeBlockSelector)
-                ? codeText(element)
-                : normalize(
-                    element.matches('img[alt]')
-                        ? element.getAttribute('alt') ?? ''
-                        : element.textContent ?? '',
-                ),
-        }))
-        .filter((entry) => entry.text);
+vi.mock('@/components/MermaidDiagram', () => ({ MermaidDiagram: MermaidDiagramMock }));
 
 describe('<page-slug> — 移行元コンテンツの全量移行', () => {
     const renderPage = () => {
@@ -354,13 +307,13 @@ describe('<page-slug> — 移行元コンテンツの全量移行', () => {
         expect(rendered).toEqual(items.map(squash));
     });
 
-    it('外部リンクの URL 集合が移行元と一致する', () => {
+    it('外部リンクが件数・順序・URL まで移行元と一致する', () => {
+        // 集合比較だけにすると重複や欠落を見逃すため、出現順の配列で比較する
         const container = renderPage();
-        const rendered = [...new Set(
-            [...container.querySelectorAll('a[href^="http"]')].map((a) => a.getAttribute('href')),
-        )].sort();
-        const expected = [...new Set(inventory.links.map((link) => link.href))].sort();
-        expect(rendered).toEqual(expected);
+        const rendered = [...container.querySelectorAll('a[href^="http"]')].map((anchor) =>
+            anchor.getAttribute('href'),
+        );
+        expect(rendered).toEqual(inventory.links.map((link) => link.href));
     });
 
     it('本文・注釈・画像 alt・コード全文が移行元の順序どおり一致する', () => {
@@ -368,7 +321,7 @@ describe('<page-slug> — 移行元コンテンツの全量移行', () => {
         expect(extractBodyContent(container)).toEqual(inventory.bodyContent);
     });
 
-    it('全形式の図が件数どおり存在し、説明または装飾指定を持つ', () => {
+    it('全形式の図が件数どおり存在し、説明または装飾指定と自然スケールを持つ', () => {
         const container = renderPage();
         const diagramSelector = '[data-testid="mermaid-diagram"], .mermaid, [id^="diag-"]';
         const diagrams = [...container.querySelectorAll(diagramSelector)].filter(
@@ -380,6 +333,8 @@ describe('<page-slug> — 移行元コンテンツの全量移行', () => {
             const isDecorative = element.getAttribute('data-decorative') === 'true'
                 || element.getAttribute('aria-hidden') === 'true';
             expect(hasLabel || isDecorative).toBe(true);
+            // preserveNaturalScale 未指定の実装を通過させない（§2-1 #10）
+            expect(element.getAttribute('data-preserve-natural-scale')).toBe('true');
         });
     });
 
@@ -414,9 +369,13 @@ describe('<page-slug> — 移行元コンテンツの全量移行', () => {
 });
 ```
 
-> **`missing` 配列を `toEqual([])` で検証する理由**: 失敗時に「どの文言が欠けているか」がそのまま出力され、
-> エージェントが次に何を追加すべきかを自力で判断できる。`expect(body).toContain(x)` を forEach で回すと
-> 最初の1件で停止し、残りの漏れが見えない。
+> **配列同士を `toEqual` で比較する理由**: 失敗時に「どの文言が欠けているか / どこで順序が崩れたか」が差分として
+> そのまま出力され、エージェントが次に何を直すべきかを自力で判断できる。`expect(body).toContain(x)` を
+> `forEach` で回すと最初の1件で停止し、残りの漏れが見えない。件数だけの `toHaveLength` も同じ理由で不十分。
+>
+> **共有モジュールを別領域へ広げる場合**: `migration-test-utils` は現在 `__tests__/gcl/agwa/` にある。
+> AGWA 以外の領域でも使う場合は `__tests__/helpers/migration-test-utils.tsx` へ**移動する単独のコミット**を切り、
+> 全 import を追随させる。領域ごとにコピーを作ることは禁止（PR レビューで実際に指摘された重複パターン）。
 
 ---
 
@@ -460,6 +419,34 @@ describe('<page-slug> — 移行元コンテンツの全量移行', () => {
   ```
 
   `bun run test:e2e` は移行または UI 変更で必須とする。文書・ルール・非 UI データだけの変更で画面挙動に影響しない場合に限り省略でき、その理由を検証記録へ明記する。
+
+- **定番レビュー指摘の自己点検（Refactor 前に必ず通す）**
+  以下は直近の PR レビューで**繰り返し指摘された**項目である。Refactor コミット前に機械的に確認する。
+
+  | 分類 | 要件 | 検出コマンド例 |
+  |---|---|---|
+  | CSS トークン | ページ固有 CSS でローカル `--*` を定義しない。必要な色は先に `app/globals.css` の `@theme` へ追加する | `grep -nE '^[[:space:]]*--[A-Za-z0-9_-]+:' app/<route>/*.css` が空（英小文字とハイフンだけに絞ると `--gcpBlue` / `--color_1` 等の定義を取りこぼす） |
+  | 固定色 | ページ CSS に生の hex を残さない（シンタックスハイライト色のみ例外） | `grep -nE '#[0-9a-fA-F]{3,8}' app/<route>/*.css` を目検（**対象を `*.css` に限定する。** ディレクトリ全体を `-r` で走査すると `constants.ts` のアンカー `#611-...` を hex 色と誤検出する） |
+  | 非推奨プロパティ | `word-break: break-word` を使わない → `overflow-wrap: anywhere` | `grep -rn 'word-break: break-word' app/` が空 |
+  | サイドバー契約 | 幅 `280px` / `margin-left: 280px` / `width: calc(100% - 280px)` | `__tests__/guide-content-widths.test.ts` |
+  | デッドコード | 未使用の CSS クラス・未使用の変数（`--sidebar-w` 等）を残さない | `grep` で定義と参照の突き合わせ |
+  | ボタン a11y | `<button>` に `type="button"`、開閉トグルに `aria-expanded` | `grep -rn '<button' app/<route>/` で全ヒットを列挙し、**各 `<button` について開始タグの閉じ `>` までを読んで `type=` があること**を確認する。`-A4` のような固定行数の文脈表示は、属性が5行目以降に来るボタンを取りこぼすため判定の根拠にしない（§0-A-3） |
+  | ナビ a11y | `<nav>` に `aria-label`、目次は `ul` / `li` 構造、リンク操作後にフォーカスと URL ハッシュを更新 | 目検 + E2E |
+  | ナビの導出 | 監視対象のセクション ID は `NAV_ITEMS` から導出し、二重管理しない。初期 `activeId` は `NAV_ITEMS[0]` に一致させる | 目検 |
+  | scroll 性能 | scroll ハンドラ内で毎回 `getBoundingClientRect()` を呼ばない。`IntersectionObserver` か `requestAnimationFrame` でまとめる | 目検 |
+  | JSDoc | 公開 React コンポーネントと共有ユーティリティに JSDoc を付ける | 目検 |
+  | ドキュメント日付 | `MIGRATION_PROGRESS.md` / 各 `SKILL.md` の「最終更新日」を実際の更新日に同期する | 目検 |
+  | ランタイム統一 | 手順・ドキュメントの実行例を `bun` に統一する | 下記「ランタイム統一の検出コマンド」が空 |
+
+  **ランタイム統一の検出コマンド**（表セル内では `|` を `\|` とエスケープする必要があり、
+  それをそのままシェルへ貼ると ERE の選択肢として解釈されず検出漏れになる。必ずこの fenced block から貼る）:
+
+  ```bash
+  grep -rnE '(^|[[:space:]`])(node|npx|npm|yarn)([[:space:]]|$)' <変更したドキュメント>
+  ```
+
+  `npm run` だけを列挙すると `npm test` / `npm install` / `npm ci` を取りこぼすため、
+  `npm` を単体のコマンドとして検出する。末尾は空白または行末のいずれもコマンド境界として扱う。
 
 - **🚨 ゲート条件（P レベルタスクまたは複数コミットのフェーズ完了時）**:
   - `.agents/skills/spec-sync/SKILL.md` の Section F「フェーズ完了時の Definition of Done」を適用する。

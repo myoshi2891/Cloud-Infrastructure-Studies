@@ -202,8 +202,12 @@ const ALL_EXAMS: Exam[] = [
         description:
             'Google Workspace のコアサービスの管理・設定、ユーザー・ドメインのプロビジョニング、セキュリティとアクセス制御などを認定。',
         domains: [
-            { label: 'Section 1: ユーザー・ドメイン・ディレクトリ管理', href: '/gcl/agwa/section1', pct: '—' },
+            { label: 'Section 1: ユーザー・ドメイン・ディレクトリ管理', href: '/gcl/agwa/section1', pct: '20%' },
             { label: 'Section 2: コアサービス管理', href: '/gcl/agwa/section2', pct: '—' },
+            { label: 'Section 3: データガバナンスとコンプライアンスの管理', href: '/gcl/agwa/section3', pct: '15%' },
+            { label: 'Section 4: セキュリティポリシーとアクセス制御の管理', href: '/gcl/agwa/section4', pct: '20%' },
+            { label: 'Section 5: ブラウザとエンドポイントの管理', href: '/gcl/agwa/section5', pct: '10%' },
+            { label: 'Section 6: 監視とトラブルシューティング', href: '/gcl/agwa/section6', pct: '13%' },
         ],
         badge: 'Workspace 管理向け',
         icon: '💼',

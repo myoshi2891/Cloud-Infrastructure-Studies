@@ -105,6 +105,8 @@ describe('GKE プライベートクラスタ セキュリティ実装ガイド �
         expect(mermaids.length).toBe(4);
         for (const [index, key] of diagramKeys.entries()) {
             const mermaid = mermaids[index];
+            // キー付き Error を先に投げることで、到達不能な expect を挟まず型も絞り込む
+            if (!mermaid) throw new Error(`Mermaid diagram ${key} was not rendered`);
             expect(mermaid.textContent).toBe(DIAGRAMS[key]);
             expect(mermaid.getAttribute('data-preserve-natural-scale')).toBe('true');
             expect(mermaid.getAttribute('aria-label')).toBeTruthy();

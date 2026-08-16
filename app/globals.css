@@ -77,6 +77,35 @@
     --color-guide-meta: #5f7291;
     --color-guide-hero-start: #ffffff;
 
+    /* AGWA Section 3 guide */
+    --color-agwa-s3-background: #07111e;
+    --color-agwa-s3-sidebar: #0c1930;
+    --color-agwa-s3-card: #0e1e38;
+    --color-agwa-s3-card-hover: #102040;
+    --color-agwa-s3-table-heading: #0f2038;
+    --color-agwa-s3-code-background: #0a1626;
+    --color-agwa-s3-border: #1b2f4d;
+    --color-agwa-s3-border-soft: #14243d;
+    --color-agwa-s3-foreground: #dce6f5;
+    --color-agwa-s3-heading: #a9c1ff;
+    --color-agwa-s3-muted: #5d7297;
+    --color-agwa-s3-muted-foreground: #90a4c2;
+    --color-agwa-s3-accent: #7c9eff;
+    --color-agwa-s3-red: #ff8a80;
+    --color-agwa-s3-green: #7ee0b0;
+    --color-agwa-s3-amber: #f4c26b;
+    --color-agwa-s3-purple: #c792ea;
+    --color-agwa-s3-white: #ffffff;
+    --color-agwa-s3-transparent: transparent;
+    --color-agwa-s3-shadow: rgba(0, 0, 0, 0.5);
+    --color-agwa-s3-accent-04: rgba(124, 158, 255, 0.04);
+    --color-agwa-s3-accent-05: rgba(124, 158, 255, 0.05);
+    --color-agwa-s3-accent-06: rgba(124, 158, 255, 0.06);
+    --color-agwa-s3-accent-09: rgba(124, 158, 255, 0.09);
+    --color-agwa-s3-accent-10: rgba(124, 158, 255, 0.1);
+    --color-agwa-s3-accent-12: rgba(124, 158, 255, 0.12);
+    --color-agwa-s3-green-05: rgba(126, 224, 176, 0.05);
+
     /* CompTIA Network+ guide */
     --color-network-background: #0d0f12;
     --color-network-surface: #15181d;

@@ -41,8 +41,10 @@ describe('dashboard-html / renderDashboardHtml', () => {
         expect(html).toMatch(/<script[^>]*type="application\/json"[^>]*id="dashboard-data"/);
         const match = html.match(/<script[^>]*id="dashboard-data"[^>]*>([\s\S]*?)<\/script>/);
         expect(match).not.toBeNull();
-        expect(match?.[1]).toBeTruthy();
-        const parsed = JSON.parse(match![1]);
+        const dashboardData = match?.[1];
+        // expect より前に throw することで、到達不能なガードにせず型も string へ絞り込む
+        if (!dashboardData) throw new Error('Dashboard data script is empty');
+        const parsed = JSON.parse(dashboardData);
         expect(parsed.totals.sources).toBe(100);
         expect(parsed.domains).toHaveLength(7);
     });

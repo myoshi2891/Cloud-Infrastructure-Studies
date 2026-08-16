@@ -1,0 +1,1009 @@
+{
+  "source": "Associate-google-workspace-admin-s1.html",
+  "h1": [
+    "ユーザーアカウント・ドメイン・ディレクトリの管理"
+  ],
+  "h2": [
+    "Section 1: ユーザーアカウント・ドメイン・ディレクトリの管理",
+    "この章の位置づけ",
+    "1.1 ユーザーライフサイクルの管理",
+    "1.2 組織部門(OU)の設計と作成",
+    "1.3 グループの管理",
+    "1.4 ドメインの管理",
+    "1.5 建物とリソースの管理",
+    "まとめ:実装チェックリスト",
+    "参考文献"
+  ],
+  "h3": [
+    "1.1.1 移行戦略とツールの選定",
+    "1.1.2 手動でのユーザーアカウント作成",
+    "1.1.3 プロビジョニング・デプロビジョニングの自動化",
+    "1.1.4 サードパーティIDプロバイダによるプロビジョニングと認可",
+    "1.1.5 基本的なSAML SSOの設定",
+    "1.1.6 ファーストパーティ同期ツールのユースケース",
+    "1.1.7 ユーザー属性の変更",
+    "1.1.8 削除・保留・復元・アーカイブ",
+    "1.1.9 Driveデータの所有権移転",
+    "1.1.10 ライセンス管理",
+    "1.1.11 パスワード管理",
+    "1.2.1 OUとドメイン・グループの違い",
+    "1.2.2 OU設計のベストプラクティス",
+    "1.2.3 OUの作成と管理",
+    "1.3.1 グループ構造の設計",
+    "1.3.2 配布リストの作成と管理",
+    "1.3.3 Collaborative Inbox(共同トレイ)の作成と管理",
+    "1.3.4 ダイナミックグループの作成と管理",
+    "1.3.5 セキュリティグループの作成・管理・適用",
+    "1.3.6 グループ種別の比較まとめ",
+    "1.4.1 プライマリドメインとセカンダリドメインの追加・検証",
+    "1.4.2 ドメインエイリアスの管理",
+    "1.5.1 建物と部屋の一括作成",
+    "1.5.2 新規リソースの作成・管理",
+    "1.5.3 リソース予約権限の設定",
+    "1.5.4 リソースの詳細機能(Features)の作成"
+  ],
+  "h4": [
+    "公式認定情報",
+    "ユーザーライフサイクル管理",
+    "組織部門(OU)",
+    "グループ",
+    "ドメイン管理",
+    "建物とリソース"
+  ],
+  "th": [
+    "タスク",
+    "内容",
+    "本ガイドの章",
+    "項目",
+    "推奨事項",
+    "比較項目",
+    "GCDS",
+    "Directory Sync",
+    "質問",
+    "回答",
+    "グループ種別",
+    "メンバー管理方式",
+    "主な用途",
+    "ポリシー適用への適性",
+    "項目",
+    "内容"
+  ],
+  "td": [
+    "1.1",
+    "ユーザーライフサイクルの管理(移行・作成・プロビジョニング・SSO・同期・属性変更・削除/保留/復元/アーカイブ・所有権移転・ライセンス・パスワード)",
+    "1.1",
+    "1.2",
+    "組織部門(OU)の設計と作成",
+    "1.2",
+    "1.3",
+    "グループの管理(構造設計・配布リスト・Collaborative Inbox・ダイナミックグループ・セキュリティグループ)",
+    "1.3",
+    "1.4",
+    "ドメインの管理(プライマリ/セカンダリドメインの追加と検証・ドメインエイリアス)",
+    "1.4",
+    "1.5",
+    "建物とリソースの管理(建物/部屋の一括作成・リソース管理・予約権限・機能設定)",
+    "1.5",
+    "命名規則",
+    "一貫した命名規則(例:firstname.lastname)を早期に確立し、後からの変更コストを避ける",
+    "アカウント共有の禁止",
+    "1人1アカウントを原則とし、複数人での共同利用アカウントは作らない(監査証跡・セキュリティの観点)",
+    "初期OU配置",
+    "作成時点で適切なOUに配置する(後からの移動も可能だが、初期設計を明確にしておくと運用が楽になる)",
+    "デフォルト言語・タイムゾーン",
+    "新規ユーザーの既定言語・タイムゾーンを組織の主要拠点に合わせて設定しておく",
+    "インストール",
+    "オンプレミスソフトウェアのインストールが必要",
+    "クラウドベースのソリューションでインストール不要",
+    "対応ディレクトリ",
+    "Active DirectoryやOpenLDAPを含む全てのLDAP準拠ディレクトリに対応",
+    "Microsoft Active Directory (AD) と Microsoft Azure Active Directory (Azure AD) に対応",
+    "接続方式",
+    "通常はLDAPサーバーと同一ネットワーク上に配置される",
+    "ADの場合はCloud VPNまたはCloud Interconnectを使用してオンプレミスのLDAPサーバーにアクセスし、Azure ADの場合は管理者のMicrosoft資格情報を使って接続する",
+    "同期対象データ",
+    "管理者を含むユーザー、グループ、カレンダーリソース、外部連絡先、パスワード",
+    "非管理者ユーザーとグループのみ",
+    "複数ソース同期",
+    "不可",
+    "ADは複数ディレクトリからの同期に対応するが、Azure ADは1つのディレクトリのみ対応",
+    "セットアップの複雑さ",
+    "組織のニーズによっては非常に複雑になり得る",
+    "Google Admin consoleを使ったシンプルなセットアップ",
+    "同期頻度",
+    "管理者が構成可能。自動化には別途スケジューリングソフトウェアが必要",
+    "フル同期は前回の同期完了から1時間後に開始し、この間隔は変更不可",
+    "トラブルシューティング",
+    "複数サーバーからログファイルを集約する必要がある場合がある",
+    "Google Admin consoleで一元的にレポートされ、フィルタ・検索・カスタムアラートの設定が可能",
+    "属性マッピング",
+    "最大35のシステム属性とカスタム属性をマッピング可能",
+    "姓・名・メールアドレス・復旧用電話番号・復旧用メールアドレスをマッピング可能",
+    "OUマッピング",
+    "指定したOUへ自動的にユーザーを配置",
+    "ユーザーを指定したOUへマッピング可能",
+    "組織構造を必ず定義する必要があるか",
+    "いいえ。組織構造を定義しない場合、Admin consoleで行う設定はすべてのユーザー・デバイスに等しく適用される",
+    "OUはドメインと関連しているか",
+    "いいえ。ユーザーの組織部門はそのユーザーに利用可能なサービス・機能を決定し、ユーザーのドメインはアカウントのユーザー名・メールアドレスを決定する。OUはドメインをまたいで複数のユーザーを含むことができ、同一ドメイン内のユーザーも任意の数のOUに分散できる",
+    "OUはアクセスグループ・構成グループと同じか",
+    "いいえ。OUはユーザー集合に対して利用可能なサービス・機能を決定するもので、アクセスグループはOU内または複数OUをまたいだユーザー集合に対してサービスをオンにするもの、構成グループはユーザー集合に対して設定をカスタマイズするもの",
+    "OUは社内LDAP構造と一致させる必要があるか",
+    "いいえ。Admin console内の組織構造はどのサービス・機能がユーザーに利用可能かのみを制御するものであり、LDAP構造に合わせることは任意。合わせたい場合はGoogle Cloud Directory Syncツールを使って実現できる",
+    "単一ユーザーだけに設定をカスタマイズできるか",
+    "はい。特定の1ユーザーだけにサービスアクセスをカスタマイズしたい場合は、そのユーザーのみを含むOUを作成すればよい",
+    "特定OUに対してのみ操作できる管理者を作れるか",
+    "はい。User managementロールを持つ管理者を割り当て、特定の組織部門内のユーザーに対してのみ操作を許可できる",
+    "大規模組織でOU構造は速度に影響するか",
+    "はい。5万人以上のユーザーを追加する場合は、アカウント作成のパフォーマンスを高めるため組織構造をできるだけシンプルかつフラットに保つのがよく、後からより深い階層を追加することも可能",
+    "配布リスト",
+    "手動",
+    "メール一括配信",
+    "低",
+    "Collaborative Inbox",
+    "手動",
+    "共有受信箱の運用(support@等)",
+    "低〜中",
+    "ダイナミックグループ",
+    "クエリによる自動",
+    "属性ベースの自動メンバー管理",
+    "高(セキュリティラベル併用時)",
+    "セキュリティグループ",
+    "手動 or ダイナミック(Securityラベル併用)",
+    "機密データ・リソースへのアクセス制御",
+    "最も高い(ポリシー適用の推奨形態)",
+    "アクセス/構成グループ",
+    "手動 or ダイナミック",
+    "サービスのオン/オフ・設定のカスタマイズ",
+    "中〜高",
+    "リソースタイプ",
+    "会議室(Conference room)、その他(社用車、備品等)",
+    "建物・フロア",
+    "所属する建物とフロア(構造化リソースを使う場合、Calendarの自動室提案機能に活用される)",
+    "収容人数",
+    "会議室の場合、参加人数に応じた検索・自動提案に使われる",
+    "説明・機能",
+    "ホワイトボード、モニター、ビデオ会議設備など"
+  ],
+  "listItems": [
+    "この章の位置づけ",
+    "1.1 ユーザーライフサイクルの管理 1.1.1 移行戦略とツールの選定 1.1.2 手動でのユーザーアカウント作成 1.1.3 プロビジョニング・デプロビジョニングの自動化 1.1.4 サードパーティIDプロバイダによるプロビジョニングと認可 1.1.5 基本的なSAML SSOの設定 1.1.6 ファーストパーティ同期ツールのユースケース 1.1.7 ユーザー属性の変更 1.1.8 削除・保留・復元・アーカイブ 1.1.9 Driveデータの所有権移転 1.1.10 ライセンス管理 1.1.11 パスワード管理",
+    "1.1.1 移行戦略とツールの選定",
+    "1.1.2 手動でのユーザーアカウント作成",
+    "1.1.3 プロビジョニング・デプロビジョニングの自動化",
+    "1.1.4 サードパーティIDプロバイダによるプロビジョニングと認可",
+    "1.1.5 基本的なSAML SSOの設定",
+    "1.1.6 ファーストパーティ同期ツールのユースケース",
+    "1.1.7 ユーザー属性の変更",
+    "1.1.8 削除・保留・復元・アーカイブ",
+    "1.1.9 Driveデータの所有権移転",
+    "1.1.10 ライセンス管理",
+    "1.1.11 パスワード管理",
+    "1.2 組織部門(OU)の設計と作成 1.2.1 OUとドメイン・グループの違い 1.2.2 OU設計のベストプラクティス 1.2.3 OUの作成と管理",
+    "1.2.1 OUとドメイン・グループの違い",
+    "1.2.2 OU設計のベストプラクティス",
+    "1.2.3 OUの作成と管理",
+    "1.3 グループの管理 1.3.1 グループ構造の設計 1.3.2 配布リストの作成と管理 1.3.3 Collaborative Inbox(共同トレイ)の作成と管理 1.3.4 ダイナミックグループの作成と管理 1.3.5 セキュリティグループの作成・管理・適用 1.3.6 グループ種別の比較まとめ",
+    "1.3.1 グループ構造の設計",
+    "1.3.2 配布リストの作成と管理",
+    "1.3.3 Collaborative Inbox(共同トレイ)の作成と管理",
+    "1.3.4 ダイナミックグループの作成と管理",
+    "1.3.5 セキュリティグループの作成・管理・適用",
+    "1.3.6 グループ種別の比較まとめ",
+    "1.4 ドメインの管理 1.4.1 プライマリドメインとセカンダリドメインの追加・検証 1.4.2 ドメインエイリアスの管理",
+    "1.4.1 プライマリドメインとセカンダリドメインの追加・検証",
+    "1.4.2 ドメインエイリアスの管理",
+    "1.5 建物とリソースの管理 1.5.1 建物と部屋の一括作成 1.5.2 新規リソースの作成・管理 1.5.3 リソース予約権限の設定 1.5.4 リソースの詳細機能(Features)の作成",
+    "1.5.1 建物と部屋の一括作成",
+    "1.5.2 新規リソースの作成・管理",
+    "1.5.3 リソース予約権限の設定",
+    "1.5.4 リソースの詳細機能(Features)の作成",
+    "まとめ:実装チェックリスト",
+    "参考文献",
+    "データ移行サービス(新しいセルフガイド型ツール):Admin console から直接実行できるシンプルな移行フロー。管理者向けの移行では、データソースの種類と組織の規模に応じて適切なドキュメントを選ぶことが推奨されている。",
+    "GWMME(Google Workspace Migration for Microsoft Outlook):IMAP・Gmail・Google Workspaceからの移行ではメールとラベルデータのみをコピーし、カレンダーの予定・カレンダーリソース・連絡先・Google Driveのファイル・Google Sitesなどのメール以外のコンテンツは対象に含まれない点に注意。",
+    "Google Workspace Migrate:1,001ユーザー以上の大規模移行向けに設計されており、製品のインストールや構成が複雑なため利用が難しい場合がある。",
+    "プロビジョニング:外部IdP側でユーザー・グループの正が管理され、SCIMまたはGoogle Cloud Directory Sync(GCDS)/Directory Syncを通じてGoogle Workspace側にミラーリングされる。",
+    "認可(認証):ユーザーがGoogleサービスにアクセスする際、SAML SSOを通じて外部IdPで認証が行われ、Googleはこれを信頼する(Google = Service Provider)。",
+    "セキュリティ > 認証 > SSO with third-party IdP へ移動(Security Settings 管理者権限が必要)。",
+    "「Third-party SSO profiles」で Add SAML profile をクリックし、プロファイル名を入力。",
+    "IdP側から取得した IdP entity ID、Sign-in page URL(SSO URL)、Sign-out page URL を入力。",
+    "Change password URL にIdP側のパスワード変更URLを設定。",
+    "IdPから発行された署名検証用証明書をアップロード(ローテーション用に最大2枚まで登録可能)。",
+    "保存後に生成される Entity ID と ACS URL をコピーし、IdP側の設定に反映する。",
+    "氏名の変更:プロフィール名の変更はDirectory上の表示に反映されるが、既存ファイルの共有権限やメール履歴には旧名義の記録が残る場合がある。",
+    "メールアドレス(プライマリ)の変更:多くのGoogleアプリのデータ(Drive、カレンダーなど)に影響するため、変更前に利用者への周知が推奨される。",
+    "エイリアス(alternate email address)の追加:1ユーザーに最大30個のメールエイリアスを追加可能。エイリアス宛のメールはプライマリの受信トレイに届く。",
+    "カスタム属性:組織固有の情報(社員番号、コストセンターなど)をユーザープロフィールに追加し、検索やダイナミックグループのクエリ条件として利用できる。",
+    "保留(Suspend):アカウントを一時的に無効化する。ログイン不可になるがデータ・ライセンスはそのまま保持される。不正が疑われるアカウントの緊急停止や、長期休職者の一時無効化に利用する。",
+    "削除(Delete):アカウントを組織から削除する。削除後20日間は管理者が復元可能な猶予期間があり、それを過ぎると完全に削除されデータは失われる。",
+    "復元(Restore):削除猶予期間内であれば、Admin consoleからユーザーとそのデータ(Gmail、Drive、カレンダーなど)を復元できる。",
+    "アーカイブ(Archive):退職者アカウントのデータを保持しつつ、通常ライセンスより低コストな Archived User license に切り替える機能。ログインはできないが、Vaultによる保持・eDiscoveryの対象にはなり続ける。",
+    "パスワードリセット:Admin consoleから個別ユーザーのパスワードを即座にリセット可能。次回ログイン時の強制変更も設定できる。",
+    "強制変更(Force password change):侵害の疑いがあるアカウントに対して、次回ログイン時にパスワード変更を要求する。",
+    "パスワード強度の監視:Admin consoleの「パスワード監査」レポートで、脆弱なパスワードや使い回されているパスワードを持つユーザーを一覧表示できる(パスワード自体は管理者にも表示されない)。",
+    "リカバリー情報:スーパー管理者自身のパスワード復旧用に、復旧用メールアドレス・電話番号の設定が強く推奨される(管理者アカウントのロックアウトを防ぐため)。",
+    "ポリシーは上位、例外は下位に:全社共通ポリシーはトップレベルOUで設定し、部門固有の例外のみを子OUで上書きする。子OUは親の設定を継承し、必要な項目だけをオーバーライドする。",
+    "職務・アクセス要件で分割する:部署名そのものより「どのサービスアクセスが必要か」という軸で設計すると、組織変更(部署名の変更など)に強い構造になる。",
+    "階層は浅く保つ:深すぎるネストは管理・トラブルシューティングを複雑にする。特に大規模ユーザー追加時はパフォーマンスにも影響する。",
+    "命名規則を統一する:OUパスは一意な識別子であり、命名が曖昧だと誤設定のリスクが高まる。",
+    "定期的な棚卸し:異動・組織変更に応じてOU所属を定期的に見直す運用を組み込む。",
+    "単一ユーザー例外にはOUを使う:特定の1人にだけ異なるサービス設定を適用したい場合、アクセスグループより先にOUによる分離を検討する(公式FAQで明示的にサポートされる方法)。",
+    "ディレクトリ > 組織部門 から対象の親OUにカーソルを合わせ、新しい組織部門を作成 を選択。",
+    "OU名と説明を入力し、親OUを指定して作成する。",
+    "ユーザーやデバイスは作成時、または後から ユーザーを組織部門に移動 の操作でOUへ割り当てる。",
+    "OUの移動・名称変更・削除を行う場合、ローカル設定(そのOUで個別に設定した項目)は保持されるが、継承設定(親から引き継いでいた項目)は新しい親OUの値に変わる点に注意する。",
+    "会話をメンバーに 割り当て(assign) できる",
+    "会話に ステータス(未対応・対応中・完了・重複) を設定できる",
+    "誰が現在どのメールに対応しているかを可視化する「衝突検知」に近い運用ができる",
+    "ディレクトリ > グループ から ダイナミックグループを作成 を選択(Groups管理者権限が必要)。",
+    "条件リスト(例:ユーザーの部署)と 値(具体的な部署名)を選び、条件式(クエリ)を組み立てる。クエリの最大文字数は10,000文字。",
+    "複数条件は And(&&) または Or(||) で結合可能。特定条件を除外する場合は Exclude を使う。",
+    "ゲストユーザーは外部コラボレーターであるためダイナミックグループには既定で含まれず、クエリには自動的に is_guest_user == false の除外条件が付加される。",
+    "プレビューでメンバー候補を確認してから作成。1組織あたり最大500個のダイナミックグループを作成できる(上限緩和は個別申請が必要)。",
+    "外部または非セキュリティグループが特定のグループに参加するのを防ぎたいとき —— セキュリティグループに参加できるのは同一組織内のセキュリティグループのみ",
+    "親グループが許可するメンバーのみをグループに含めたいとき —— セキュリティグループに参加するグループは、同等かそれ以上に制限的なメンバーシップ権限を持つ必要がある",
+    "グループにセキュリティポリシーを適用したいとき —— ポリシーを適用するグループは全てセキュリティグループにすることが推奨される",
+    "組織の全ユーザーをグループに自動追加するオプションを無効化したいとき —— セキュリティグループのメンバーシップは、許可したユーザー・サービスアカウント・セキュリティグループのみに限定される",
+    "Groups ReaderまたはGroups Editorロールを持つユーザーに、特定のグループのみへの権限を与えたいとき —— セキュリティグループがある組織では、これらのロールの権限範囲を全グループ・セキュリティグループのみ・非セキュリティグループのみのいずれかに限定できる",
+    "アカウント > ドメイン > ドメインを管理 から ドメインを追加 をクリックし、ドメイン種別(セカンダリ or ユーザーエイリアス)を選択。",
+    "Googleが提示するTXTレコードの値を、ドメインレジストラのDNS設定に追加する。",
+    "DNSの伝播(通常は数分〜最大8時間程度)を待ち、Admin console側で 確認 をクリックして検証を完了する。",
+    "メール送受信を行う場合は、別途MXレコードの設定も必要になる(ドメイン所有権の検証とメールルーティングの設定は別の作業)。",
+    "多言語・地域別サイトの統一的なメール受信(例:company.com と company.co.jp を統合)",
+    "企業合併・ブランド統合時に、旧ブランドのメールアドレス宛メールを新ドメインのメールボックスでシームレスに受信",
+    "マーケティング上の別ブランド名でのメール送受信の一元管理",
+    "既定の共有範囲:組織内の全員に共有し、競合しない予約は自動承認(Auto-accept)にするのが一般的な既定値。",
+    "限定共有:特定の部署やグループのみが予約できるようにカレンダー共有設定を制限することも可能。",
+    "承認制(Approve/Deny):役員会議室など重要なリソースについては、予約リクエストを管理者や特定の承認者が個別に承認・却下する運用に切り替えられる。",
+    "予約権限の委任:カレンダー・リソースへのアクセスを他のユーザーへ委任し、代理予約を可能にする。",
+    "ディレクトリ > 建物とリソース > 概要 の リソース管理 セクションを開く。",
+    "管理 > リソースの機能を管理 から 機能を追加 をクリック。",
+    "機能名(例:「ホワイトボードあり」「車椅子対応」「収容人数20名以上向け設備」)を入力して保存。",
+    "作成した機能は、各リソースの編集画面から個別に紐づける。ユーザーはリソース検索時にこれらの機能で絞り込める。",
+    "組織規模とデータソースに応じた移行ツール(データ移行サービス / GWMME / Google Workspace Migrate)を選定した",
+    "自動プロビジョニングを導入する場合、エラー監視の運用フローを組み込んだ",
+    "SAML SSOのIdP entity ID・Sign-in/Sign-out URL・証明書を正しく設定し、ロールオーバー用に予備証明書も登録した",
+    "GCDSとDirectory Syncのどちらが要件(対応ディレクトリ・同期対象・属性マッピング範囲)に合うかを比較した",
+    "退職者アカウントの保留 → データ移転・所有権移転 → 削除/アーカイブという順序を運用手順化した",
+    "スーパー管理者アカウントに復旧用メールアドレス・電話番号を設定した",
+    "OU階層は「ポリシーは上位、例外は下位」の原則に沿ってシンプルに設計されている",
+    "グループ作成前に「配布リスト/Collaborative Inbox/ダイナミックグループ/セキュリティグループ」のどれが目的に合うかを判断している",
+    "ポリシーを適用するグループはすべてセキュリティグループ化されている",
+    "ドメイン追加時に「セカンダリドメイン」と「ドメインエイリアス」の違いを理解した上で選択している",
+    "建物とリソースの管理権限を信頼できる担当者に限定している",
+    "会議室の自動提案機能を使うため、全ユーザーの勤務地情報と構造化リソース登録を整備した",
+    "↗Associate Google Workspace Administrator 認定ページ",
+    "↗Associate Google Workspace Administrator Exam Guide (PDF)",
+    "↗Google Workspace migration product matrix",
+    "↗About automated user provisioning",
+    "↗View auto-provisioning errors",
+    "↗Setting up SSO",
+    "↗About SSO",
+    "↗Technical overview of SAML-based SSO",
+    "↗Set up your own custom SAML app",
+    "↗About Google Cloud Directory Sync",
+    "↗Compare Directory Sync with GCDS",
+    "↗Overview: Changing a Directory user's name or email address",
+    "↗Add or delete an alternate email address (email alias)",
+    "↗Create custom attributes for user profiles",
+    "↗Delete or remove a user from your organization",
+    "↗Suspend a user temporarily",
+    "↗Restore a recently deleted user",
+    "↗Archive former employee accounts",
+    "↗Maintain data security after an employee leaves",
+    "↗Transfer Drive files to a new owner as an admin",
+    "↗Manage and assign licenses (GCDS)",
+    "↗Enforce and monitor password requirements for users",
+    "↗Reset a user's password",
+    "↗Allow super administrators to recover their password",
+    "↗Organizational policies FAQ",
+    "↗How the organizational structure works",
+    "↗Add an organizational unit",
+    "↗Move users to an organizational unit",
+    "↗Move, rename, or delete an organizational unit",
+    "↗Create a group in your organization",
+    "↗Make a group a Collaborative Inbox",
+    "↗Add features and manage conversations in Google Groups",
+    "↗Manage membership automatically with dynamic groups",
+    "↗Valid user fields for dynamic group queries",
+    "↗Control access to sensitive data with security groups",
+    "↗Add a user alias domain or secondary domain",
+    "↗FAQ for multiple domains",
+    "↗Limitations with multiple domains",
+    "↗Change your primary domain for Google Workspace",
+    "↗Create buildings, features & Calendar resources",
+    "↗Set up Google Calendar room booking suggestions",
+    "↗Approve or deny Calendar room & resource bookings",
+    "↗Share room and resource calendars"
+  ],
+  "links": [
+    {
+      "text": "Associate Google Workspace Administrator 認定ページ",
+      "href": "https://cloud.google.com/learn/certification/associate-google-workspace-administrator?hl=en"
+    },
+    {
+      "text": "公式 Exam Guide (PDF)",
+      "href": "https://services.google.com/fh/files/misc/associate_google_workspace_administrator_exam_guide_english.pdf"
+    },
+    {
+      "text": "Google Workspace migration product matrix",
+      "href": "https://support.google.com/a/answer/9413033?hl=en"
+    },
+    {
+      "text": "About automated user provisioning",
+      "href": "https://knowledge.workspace.google.com/admin/users/advanced/about-automated-user-provisioning"
+    },
+    {
+      "text": "View auto-provisioning errors",
+      "href": "https://knowledge.workspace.google.com/admin/users/advanced/view-auto-provisioning-errors"
+    },
+    {
+      "text": "Setting up SSO",
+      "href": "https://knowledge.workspace.google.com/admin/apps/setting-up-sso"
+    },
+    {
+      "text": "About SSO",
+      "href": "https://support.google.com/a/answer/60224?hl=en"
+    },
+    {
+      "text": "Technical overview of SAML-based SSO",
+      "href": "https://knowledge.workspace.google.com/admin/apps/technical-overview-of-saml-based-sso"
+    },
+    {
+      "text": "Set up your own custom SAML app",
+      "href": "https://support.google.com/a/answer/6087519?hl=en"
+    },
+    {
+      "text": "About Google Cloud Directory Sync",
+      "href": "https://knowledge.workspace.google.com/admin/users/about-google-cloud-directory-sync"
+    },
+    {
+      "text": "Compare Directory Sync with GCDS",
+      "href": "https://knowledge.workspace.google.com/admin/users/compare-directory-sync-with-gcds"
+    },
+    {
+      "text": "Overview: Changing a Directory user's name or email address",
+      "href": "https://knowledge.workspace.google.com/admin/users/overview-changing-a-directory-users-name-or-email-address"
+    },
+    {
+      "text": "Add or delete an alternate email address (email alias)",
+      "href": "https://knowledge.workspace.google.com/admin/users/add-or-delete-an-alternate-email-address-email-alias"
+    },
+    {
+      "text": "Create custom attributes for user profiles",
+      "href": "https://knowledge.workspace.google.com/admin/users/create-custom-attributes-for-user-profiles"
+    },
+    {
+      "text": "Delete or remove a user from your organization",
+      "href": "https://knowledge.workspace.google.com/admin/users/delete-or-remove-a-user-from-your-organization"
+    },
+    {
+      "text": "Suspend a user temporarily",
+      "href": "https://knowledge.workspace.google.com/admin/users/suspend-a-user-temporarily"
+    },
+    {
+      "text": "Restore a recently deleted user",
+      "href": "https://knowledge.workspace.google.com/admin/users/restore-a-recently-deleted-user"
+    },
+    {
+      "text": "Archive former employee accounts",
+      "href": "https://knowledge.workspace.google.com/admin/users/archive-former-employee-accounts"
+    },
+    {
+      "text": "Maintain data security after an employee leaves",
+      "href": "https://knowledge.workspace.google.com/admin/users/maintain-data-security-after-an-employee-leaves"
+    },
+    {
+      "text": "Transfer Drive files to a new owner as an admin",
+      "href": "https://knowledge.workspace.google.com/admin/drive/transfer-drive-files-to-a-new-owner-as-an-admin"
+    },
+    {
+      "text": "Manage and assign licenses (GCDS)",
+      "href": "https://knowledge.workspace.google.com/admin/users/manage-and-assign-licenses"
+    },
+    {
+      "text": "Enforce and monitor password requirements for users",
+      "href": "https://knowledge.workspace.google.com/admin/users/enforce-and-monitor-password-requirements-for-users"
+    },
+    {
+      "text": "Reset a user's password",
+      "href": "https://knowledge.workspace.google.com/admin/users/reset-a-users-password"
+    },
+    {
+      "text": "Allow super administrators to recover their password",
+      "href": "https://knowledge.workspace.google.com/admin/users/allow-super-administrators-to-recover-their-password"
+    },
+    {
+      "text": "Organizational policies FAQ",
+      "href": "https://support.google.com/a/answer/4390551?hl=en-na"
+    },
+    {
+      "text": "How the organizational structure works",
+      "href": "https://knowledge.workspace.google.com/admin/users/advanced/how-the-organizational-structure-works"
+    },
+    {
+      "text": "Add an organizational unit",
+      "href": "https://knowledge.workspace.google.com/admin/users/advanced/add-an-organizational-unit"
+    },
+    {
+      "text": "Move users to an organizational unit",
+      "href": "https://knowledge.workspace.google.com/admin/users/advanced/move-users-to-an-organizational-unit"
+    },
+    {
+      "text": "Move, rename, or delete an organizational unit",
+      "href": "https://knowledge.workspace.google.com/admin/users/advanced/move-rename-or-delete-an-organizational-unit"
+    },
+    {
+      "text": "Create a group in your organization",
+      "href": "https://knowledge.workspace.google.com/admin/groups/create-a-group-in-your-organization"
+    },
+    {
+      "text": "Make a group a Collaborative Inbox",
+      "href": "https://support.google.com/a/users/answer/10375787"
+    },
+    {
+      "text": "Add features and manage conversations in Google Groups",
+      "href": "https://knowledge.workspace.google.com/admin/groups/add-features-and-manage-conversations-in-google-groups"
+    },
+    {
+      "text": "Manage membership automatically with dynamic groups",
+      "href": "https://support.google.com/a/answer/10286834"
+    },
+    {
+      "text": "Valid user fields for dynamic group queries",
+      "href": "https://cloud.google.com/identity/docs/how-to/dynamic-groups-attributes"
+    },
+    {
+      "text": "Control access to sensitive data with security groups",
+      "href": "https://knowledge.workspace.google.com/admin/groups/control-access-to-sensitive-data-with-security-groups"
+    },
+    {
+      "text": "Add a user alias domain or secondary domain",
+      "href": "https://support.google.com/a/answer/7502379?hl=en"
+    },
+    {
+      "text": "FAQ for multiple domains",
+      "href": "https://support.google.com/a/answer/175747?hl=en"
+    },
+    {
+      "text": "Change your primary domain for Google Workspace",
+      "href": "https://support.google.com/a/answer/7009324?hl=en"
+    },
+    {
+      "text": "Limitations with multiple domains",
+      "href": "https://support.google.com/a/answer/182081?hl=en"
+    },
+    {
+      "text": "FAQ for multiple domains",
+      "href": "https://support.google.com/a/answer/175747?hl=en"
+    },
+    {
+      "text": "Create buildings, features & Calendar resources",
+      "href": "https://support.google.com/a/answer/1033925?hl=en"
+    },
+    {
+      "text": "Create buildings, features & Calendar resources",
+      "href": "https://support.google.com/a/answer/1033925?hl=en"
+    },
+    {
+      "text": "Set up Google Calendar room booking suggestions",
+      "href": "https://support.google.com/a/answer/9025584"
+    },
+    {
+      "text": "Approve or deny Calendar room & resource bookings",
+      "href": "https://knowledge.workspace.google.com/admin/calendar/approve-or-deny-calendar-room-and-resource-bookings"
+    },
+    {
+      "text": "Share room and resource calendars",
+      "href": "https://knowledge.workspace.google.com/admin/calendar/share-room-and-resource-calendars"
+    },
+    {
+      "text": "Create buildings, features & Calendar resources",
+      "href": "https://support.google.com/a/answer/1033925?hl=en"
+    },
+    {
+      "text": "↗Associate Google Workspace Administrator 認定ページ",
+      "href": "https://cloud.google.com/learn/certification/associate-google-workspace-administrator?hl=en"
+    },
+    {
+      "text": "↗Associate Google Workspace Administrator Exam Guide (PDF)",
+      "href": "https://services.google.com/fh/files/misc/associate_google_workspace_administrator_exam_guide_english.pdf"
+    },
+    {
+      "text": "↗Google Workspace migration product matrix",
+      "href": "https://support.google.com/a/answer/9413033?hl=en"
+    },
+    {
+      "text": "↗About automated user provisioning",
+      "href": "https://knowledge.workspace.google.com/admin/users/advanced/about-automated-user-provisioning"
+    },
+    {
+      "text": "↗View auto-provisioning errors",
+      "href": "https://knowledge.workspace.google.com/admin/users/advanced/view-auto-provisioning-errors"
+    },
+    {
+      "text": "↗Setting up SSO",
+      "href": "https://knowledge.workspace.google.com/admin/apps/setting-up-sso"
+    },
+    {
+      "text": "↗About SSO",
+      "href": "https://support.google.com/a/answer/60224?hl=en"
+    },
+    {
+      "text": "↗Technical overview of SAML-based SSO",
+      "href": "https://knowledge.workspace.google.com/admin/apps/technical-overview-of-saml-based-sso"
+    },
+    {
+      "text": "↗Set up your own custom SAML app",
+      "href": "https://support.google.com/a/answer/6087519?hl=en"
+    },
+    {
+      "text": "↗About Google Cloud Directory Sync",
+      "href": "https://knowledge.workspace.google.com/admin/users/about-google-cloud-directory-sync"
+    },
+    {
+      "text": "↗Compare Directory Sync with GCDS",
+      "href": "https://knowledge.workspace.google.com/admin/users/compare-directory-sync-with-gcds"
+    },
+    {
+      "text": "↗Overview: Changing a Directory user's name or email address",
+      "href": "https://knowledge.workspace.google.com/admin/users/overview-changing-a-directory-users-name-or-email-address"
+    },
+    {
+      "text": "↗Add or delete an alternate email address (email alias)",
+      "href": "https://knowledge.workspace.google.com/admin/users/add-or-delete-an-alternate-email-address-email-alias"
+    },
+    {
+      "text": "↗Create custom attributes for user profiles",
+      "href": "https://knowledge.workspace.google.com/admin/users/create-custom-attributes-for-user-profiles"
+    },
+    {
+      "text": "↗Delete or remove a user from your organization",
+      "href": "https://knowledge.workspace.google.com/admin/users/delete-or-remove-a-user-from-your-organization"
+    },
+    {
+      "text": "↗Suspend a user temporarily",
+      "href": "https://knowledge.workspace.google.com/admin/users/suspend-a-user-temporarily"
+    },
+    {
+      "text": "↗Restore a recently deleted user",
+      "href": "https://knowledge.workspace.google.com/admin/users/restore-a-recently-deleted-user"
+    },
+    {
+      "text": "↗Archive former employee accounts",
+      "href": "https://knowledge.workspace.google.com/admin/users/archive-former-employee-accounts"
+    },
+    {
+      "text": "↗Maintain data security after an employee leaves",
+      "href": "https://knowledge.workspace.google.com/admin/users/maintain-data-security-after-an-employee-leaves"
+    },
+    {
+      "text": "↗Transfer Drive files to a new owner as an admin",
+      "href": "https://knowledge.workspace.google.com/admin/drive/transfer-drive-files-to-a-new-owner-as-an-admin"
+    },
+    {
+      "text": "↗Manage and assign licenses (GCDS)",
+      "href": "https://knowledge.workspace.google.com/admin/users/manage-and-assign-licenses"
+    },
+    {
+      "text": "↗Enforce and monitor password requirements for users",
+      "href": "https://knowledge.workspace.google.com/admin/users/enforce-and-monitor-password-requirements-for-users"
+    },
+    {
+      "text": "↗Reset a user's password",
+      "href": "https://knowledge.workspace.google.com/admin/users/reset-a-users-password"
+    },
+    {
+      "text": "↗Allow super administrators to recover their password",
+      "href": "https://knowledge.workspace.google.com/admin/users/allow-super-administrators-to-recover-their-password"
+    },
+    {
+      "text": "↗Organizational policies FAQ",
+      "href": "https://support.google.com/a/answer/4390551?hl=en-na"
+    },
+    {
+      "text": "↗How the organizational structure works",
+      "href": "https://knowledge.workspace.google.com/admin/users/advanced/how-the-organizational-structure-works"
+    },
+    {
+      "text": "↗Add an organizational unit",
+      "href": "https://knowledge.workspace.google.com/admin/users/advanced/add-an-organizational-unit"
+    },
+    {
+      "text": "↗Move users to an organizational unit",
+      "href": "https://knowledge.workspace.google.com/admin/users/advanced/move-users-to-an-organizational-unit"
+    },
+    {
+      "text": "↗Move, rename, or delete an organizational unit",
+      "href": "https://knowledge.workspace.google.com/admin/users/advanced/move-rename-or-delete-an-organizational-unit"
+    },
+    {
+      "text": "↗Create a group in your organization",
+      "href": "https://knowledge.workspace.google.com/admin/groups/create-a-group-in-your-organization"
+    },
+    {
+      "text": "↗Make a group a Collaborative Inbox",
+      "href": "https://support.google.com/a/users/answer/10375787"
+    },
+    {
+      "text": "↗Add features and manage conversations in Google Groups",
+      "href": "https://knowledge.workspace.google.com/admin/groups/add-features-and-manage-conversations-in-google-groups"
+    },
+    {
+      "text": "↗Manage membership automatically with dynamic groups",
+      "href": "https://support.google.com/a/answer/10286834"
+    },
+    {
+      "text": "↗Valid user fields for dynamic group queries",
+      "href": "https://cloud.google.com/identity/docs/how-to/dynamic-groups-attributes"
+    },
+    {
+      "text": "↗Control access to sensitive data with security groups",
+      "href": "https://knowledge.workspace.google.com/admin/groups/control-access-to-sensitive-data-with-security-groups"
+    },
+    {
+      "text": "↗Add a user alias domain or secondary domain",
+      "href": "https://support.google.com/a/answer/7502379?hl=en"
+    },
+    {
+      "text": "↗FAQ for multiple domains",
+      "href": "https://support.google.com/a/answer/175747?hl=en"
+    },
+    {
+      "text": "↗Limitations with multiple domains",
+      "href": "https://support.google.com/a/answer/182081?hl=en"
+    },
+    {
+      "text": "↗Change your primary domain for Google Workspace",
+      "href": "https://support.google.com/a/answer/7009324?hl=en"
+    },
+    {
+      "text": "↗Create buildings, features & Calendar resources",
+      "href": "https://support.google.com/a/answer/1033925?hl=en"
+    },
+    {
+      "text": "↗Set up Google Calendar room booking suggestions",
+      "href": "https://support.google.com/a/answer/9025584"
+    },
+    {
+      "text": "↗Approve or deny Calendar room & resource bookings",
+      "href": "https://knowledge.workspace.google.com/admin/calendar/approve-or-deny-calendar-room-and-resource-bookings"
+    },
+    {
+      "text": "↗Share room and resource calendars",
+      "href": "https://knowledge.workspace.google.com/admin/calendar/share-room-and-resource-calendars"
+    }
+  ],
+  "bodyContent": [
+    {
+      "kind": "paragraph",
+      "text": "本ガイドは Google 公式の Associate Google Workspace Administrator 認定ページ および 公式 Exam Guide (PDF) の Section 1: Managing user accounts, domains, and Directory(出題比率 約20%) に完全準拠して構成しています。中級〜上級管理者を対象に、Admin console の操作手順だけでなく「なぜそう設計するのか」という設計判断の根拠までを解説します。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "Exam Guide が定義する Section 1 は、以下の5つのタスクで構成されます。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "ユーザーライフサイクル管理とは、入社(プロビジョニング)から異動、退職(デプロビジョニング)までの一連のアカウント状態遷移を、安全かつ再現性高く運用する仕組みです。試験では「どのツールをどの規模・要件に使うか」という判断軸が繰り返し問われます。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "既存のメール基盤(Microsoft Exchange、他社IMAPサーバーなど)から Google Workspace へ移行する際、組織の規模とデータ種別によって適切なツールが変わります。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "出典: Google Workspace migration product matrix"
+    },
+    {
+      "kind": "paragraph",
+      "text": "小規模組織や例外的なアカウントでは、Admin console から個別にユーザーを作成します。CSVファイルによる一括作成(複数ユーザーの追加・更新)も可能です。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "ベストプラクティス:"
+    },
+    {
+      "kind": "paragraph",
+      "text": "大規模組織では、人事システムや外部IdPと連携した自動プロビジョニングが標準です。Google Workspace は多数のSaaSアプリに対して自動ユーザープロビジョニングの構成ガイドを提供しています(Slack、Salesforce、Box、Zendesk、AWS など50以上のアプリ)。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "自動プロビジョニングを監視するには、Admin console でエラーを可視化する専用の画面が用意されています。設定後は必ず 自動プロビジョニングエラーの表示 機能でエラーを定期的に確認する運用を組み込むことがベストプラクティスです。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "出典: About automated user provisioning / View auto-provisioning errors"
+    },
+    {
+      "kind": "paragraph",
+      "text": "「プロビジョニング(アカウントの作成・属性同期)」と「認可(サインイン時の認証)」は別の関心事です。Okta、Microsoft Entra ID(旧Azure AD)、Ping Identity のような外部IdPを使う場合、一般的な構成は次の通りです。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "この「プロビジョニングは同期ツール、認証はSAML」という役割分担は、試験で頻出する設計上の区別です。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "Google Workspace は SAML ベースの SSO を2方向でサポートします。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "ユーザーがGmailやカレンダーなどのホスト型Googleアプリケーションにアクセスしようとすると、GoogleはSAML認証リクエストを生成し、これをエンコードしてパートナーのSSOサービスへのURLに埋め込む。RelayStateパラメータにはユーザーが本来アクセスしようとしていたGoogleアプリケーションのURLがエンコードされて含まれ、このRelayStateは変更・検査されることなくそのまま返送される、不透明な識別子として扱われる。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "Admin console での設定手順(Google = Service Provider):"
+    },
+    {
+      "kind": "paragraph",
+      "text": "出典: Setting up SSO / About SSO / Technical overview of SAML-based SSO"
+    },
+    {
+      "kind": "paragraph",
+      "text": "反対に、Google Workspace アカウントを Identity Provider としてサードパーティアプリのSSOに使う場合は、アプリ > Web と モバイルアプリ > Add App > Add custom SAML app からカスタムSAMLアプリを登録し、Google IdPのメタデータ(SSO URL・Entity ID・証明書)をサービスプロバイダ側に設定します。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "出典: Set up your own custom SAML app"
+    },
+    {
+      "kind": "paragraph",
+      "text": "「同期(Directory Sync系)」と「移行(GWMMEなど)」は別物です。GCDS(Google Cloud Directory Sync)はコンテンツ(メールメッセージ・カレンダーの予定・ファイルなど)を一切移行せず、LDAPサーバーの情報に合わせてGoogleのユーザー・グループ・共有連絡先を同期するためだけに使われる。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "Google は現在、レガシーな GCDS(オンプレミスにインストールするユーティリティ)と、新しい Directory Sync(クラウドベースのベータ機能)の2つの同期ツールを提供しています。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "GCDSの動作は、まずルールを設定してデータのリストをどのように生成するかを指定し、同期時にそのリストをLDAPサーバーからエクスポートし、GCDSがGoogleアカウントに接続して指定したユーザー・グループ・共有連絡先のリストを生成し、これらのリストを比較してGoogleアカウントをデータに一致するよう更新し、同期後に監視できるようメールレポートを受け取るという流れになる。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "試験のポイント:「LDAP準拠ディレクトリ全般(OpenLDAPを含む)からの同期」「35属性のカスタムマッピング」「パスワード同期」が必要な場合は GCDS。「AD/Azure ADのみで、クラウドネイティブかつセットアップの簡易性」を重視する場合は Directory Sync を選ぶ、という判断軸を押さえておきます。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "出典: About Google Cloud Directory Sync / Compare Directory Sync with GCDS"
+    },
+    {
+      "kind": "paragraph",
+      "text": "Admin console または Directory API を通じて、氏名・メールアドレス・パスワード・エイリアスなどの属性を変更できます。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "出典: Overview: Changing a Directory user's name or email address / Add or delete an alternate email address (email alias) / Create custom attributes for user profiles"
+    },
+    {
+      "kind": "paragraph",
+      "text": "ユーザーアカウントは以下の状態を遷移します。試験では「一時的な利用停止(保留)」「完全な削除」「ライセンスコストを抑えつつデータを保持するアーカイブ」の3つの使い分けが問われます。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "ベストプラクティス:退職者アカウントは即座に削除せず、まず保留にしてからデータ移転(下記1.1.9)とライセンス精算を行い、法的保持義務がある場合はアーカイブへ切り替える、という順序を踏むことでデータ損失リスクを避けられます。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "出典: Delete or remove a user from your organization / Suspend a user temporarily / Restore a recently deleted user / Archive former employee accounts / Maintain data security after an employee leaves"
+    },
+    {
+      "kind": "paragraph",
+      "text": "退職・異動時には、個人のマイドライブ配下にあるファイル・フォルダの所有権を後任者やチームの共有ドライブへ移す必要があります。Admin consoleの Transfer ownership ツール、またはユーザー削除フロー内の「データ移行」オプションから一括移転が可能です。移転後、新しい所有者は元の共有権限を引き継いだ状態でファイルを管理できます。恒久的なコラボレーションが前提のファイルは、個人所有からそもそも 共有ドライブ へ移しておくことで、退職時の所有権移転作業自体を不要にできます。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "出典: Transfer Drive files to a new owner as an admin"
+    },
+    {
+      "kind": "paragraph",
+      "text": "ユーザーごとに異なるエディション(Business Starter/Standard/Plus、Enterprise各種など)や追加プロダクト(Vault、Voice、Colab Proなど)のライセンスを個別に割り当てられます。GCDSを使う場合は同期プロセスの一部としてライセンスの自動割り当て・削除も設定可能です。ライセンス管理のベストプラクティスとして、OU単位でデフォルトのライセンスセットを決めておき、例外的なライセンス(高コストなアドオン等)は個別ユーザー単位で付与する運用が推奨されます。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "出典: Manage and assign licenses (GCDS)"
+    },
+    {
+      "kind": "paragraph",
+      "text": "管理者はパスワードポリシー(最小文字数、複雑性、有効期限)を組織またはOU単位で強制でき、パスワードのリセット・強制変更・強度モニタリングを行えます。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "出典: Enforce and monitor password requirements for users / Reset a user's password / Allow super administrators to recover their password"
+    },
+    {
+      "kind": "paragraph",
+      "text": "OU(Organizational Unit)は「どのユーザー・デバイスに、どのサービス設定を適用するか」を制御するための階層コンテナです。試験で頻出する誤解を、公式FAQに基づき整理します。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "出典: Organizational policies FAQ / How the organizational structure works"
+    },
+    {
+      "kind": "paragraph",
+      "text": "出典: Add an organizational unit / Move users to an organizational unit / Move, rename, or delete an organizational unit"
+    },
+    {
+      "kind": "paragraph",
+      "text": "Google Groups は「メーリングリスト」「Q&Aフォーラム/コミュニティフォーラム」「Collaborative Inbox(共同トレイ)」「アクセスグループ」「セキュリティグループ」など複数の機能を1つの基盤(Groups for Business)で提供します。設計時は「このグループの主目的は何か」を先に決め、目的に応じたグループ種別・アクセス設定を選びます。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "最も基本的なグループ形態で、グループ宛のメールをメンバー全員に配信します。作成は ディレクトリ > グループ > グループを作成 から行い、名前・メールアドレス・説明を設定した後、アクセス設定(誰が投稿できるか、外部からの投稿を許可するか等)を構成します。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "出典: Create a group in your organization"
+    },
+    {
+      "kind": "paragraph",
+      "text": "Collaborative Inbox は Google Groups を拡張し、チームで共有メールアドレス(support@、info@など)を運用するための機能です。標準の配布リストに対して以下の機能が追加されます。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "設定はグループの 管理 > 全般設定 から Collaborative Inbox のポスティング権限を有効化することで行います。既存の配布リストを後から Collaborative Inbox に切り替えることも可能です。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "出典: Make a group a Collaborative Inbox / Add features and manage conversations in Google Groups"
+    },
+    {
+      "kind": "paragraph",
+      "text": "ダイナミックグループは、メンバーシップクエリの条件に一致するユーザーを 自動的に 追加・削除するグループです。部署異動や拠点変更が多い組織で、手動メンテナンスの負荷を大きく下げられます。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "ダイナミックグループのメンバーシップは他のグループと異なり、メンバーを手動で追加することはできずメンバーを変更するにはメンバーシップクエリ自体を変更する必要があり、メンバーになれるのはユーザーのみでグループはメンバーシップ条件を満たせないためグループをダイナミックグループに追加することはできず、ダイナミックグループ自体も他のグループのメンバーにすることはできない。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "作成手順の要点:"
+    },
+    {
+      "kind": "paragraph",
+      "text": "ダイナミックセキュリティグループ:ダイナミックグループでポリシーを強制するには、まず条件を満たすユーザーのダイナミックグループを作成し、そのグループにSecurityラベルを追加し、構成グループの手順に従ってポリシーを作成し優先順位を選択するという3ステップで実現する。これにより、例えば「特定拠点に異動した瞬間に該当のセキュリティポリシーが自動適用される」といった運用が可能になります。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "出典: Manage membership automatically with dynamic groups / Valid user fields for dynamic group queries"
+    },
+    {
+      "kind": "paragraph",
+      "text": "セキュリティグループは、機密データやリソースへのアクセス制御を目的として設計された、より厳格なガバナンスを持つグループです。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "グループにSecurityラベルを付与することでセキュリティグループになり、この操作は永続的でセキュリティ機能を追加するが元のグループの他の機能を削除するものではない。Securityラベルが付いたグループはGoogle Admin console上で簡単にソートできる。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "セキュリティグループを使うべき場面:"
+    },
+    {
+      "kind": "paragraph",
+      "text": "注意: 外部サービスプロバイダのセキュリティ慣行を検証できないため、非Googleアカウントをセキュリティグループに追加することはできない。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "設定手順:新規作成時は作成ウィザードで Security チェックボックスを選択する。既存グループを後からセキュリティグループにする場合は、グループ名 → グループ情報 > ラベル から Security にチェックを入れて保存する(この操作は元に戻せない)。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "出典: Control access to sensitive data with security groups"
+    },
+    {
+      "kind": "paragraph",
+      "text": "Google Workspace アカウントには1つの プライマリドメイン と、複数の セカンダリドメイン を追加できます。組織のGoogle WorkspaceまたはCloud Identity Premiumアカウントには最大600ドメインを追加できる。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "ドメインを追加する際はセカンダリドメインまたはユーザーエイリアスドメインのいずれかとして追加し、いずれの場合もそのドメイン名を所有していることを確認・検証する必要がある。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "セカンダリドメイン vs ドメインエイリアスの使い分け:追加するドメインが独自のユーザーセットを持つ場合はセカンダリドメインとして追加し、既存の全ユーザーに別ドメインでの代替メールアドレスを付与したいだけの場合はユーザーエイリアスドメインとして追加する。例えばsolarmora.comをexample.comのエイリアスとして追加すると、bob@example.comはbob@solarmora.comという別のメールアドレスも持つことになる。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "ドメイン検証の手順(TXTレコード方式が一般的):"
+    },
+    {
+      "kind": "paragraph",
+      "text": "出典: Add a user alias domain or secondary domain / FAQ for multiple domains"
+    },
+    {
+      "kind": "paragraph",
+      "text": "制限事項:Admin consoleではプライマリドメインに対してのみドメインエイリアスを直接追加でき、セカンダリドメインにドメインエイリアスを追加したい場合はDirectory APIを使う必要がある。また、ドメインエイリアスから他の形態への移行はサポートされておらず、Googleは現時点でドメインエイリアスをマルチドメインアカウントへ変換することをサポートしていない。さらに全ドメインが共有できるグローバルなサービスURLは提供されないため、プライマリドメインと追加ドメインそれぞれに対してカスタムURL(例: mail.primary_domain.com と mail.secondary_domain.com)を用意する必要がある。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "プライマリドメインの変更:プライマリドメインを変更したい場合は、対象ドメインを先にセカンダリドメインとして追加・検証してから、プライマリドメインへ切り替えるという手順を踏む。切り替え可能になるまで検証完了後最大24時間待つ必要がある場合もある。切り替え後も旧ドメインをドメインエイリアスとして残しておけば、新旧両方のメールアドレスで受信を継続できます。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "出典: Change your primary domain for Google Workspace / Limitations with multiple domains"
+    },
+    {
+      "kind": "paragraph",
+      "text": "ドメインエイリアスは全ユーザーに対してグローバルに適用され、特定ユーザーだけに限定することはできません。エイリアスはメール送受信のためのものであり、原則としてサインイン用のドメインとしては使えません(高度な設定を除く)。管理は アカウント > ドメイン > ドメインを管理 > ドメインエイリアスを追加 から行い、TXTレコードによる検証を経て有効化されます。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "ユースケース例:"
+    },
+    {
+      "kind": "paragraph",
+      "text": "出典: FAQ for multiple domains"
+    },
+    {
+      "kind": "paragraph",
+      "text": "会議室・機材などの予約可能リソースは、まず「建物(Building)」を定義してから、その配下に「リソース(部屋・備品等)」を作成する構造になっています。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "建物は ディレクトリ > 建物とリソース > 概要 から作成でき、多数の建物を一度に登録する場合はCSV一括アップロードが利用できます(建物一覧のフォーマットに従ったCSVをインポート)。リソースは会社全体または各ドメインごとに最大10,000個まで追加でき、追加後は数分で利用可能になるのが一般的だが、場合によっては全員のカレンダーに反映されるまで最大24時間かかることもある。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "出典: Create buildings, features & Calendar resources"
+    },
+    {
+      "kind": "paragraph",
+      "text": "リソース作成は ディレクトリ > 建物とリソース > リソース管理 から行います。作成時に指定する主な項目:"
+    },
+    {
+      "kind": "paragraph",
+      "text": "Calendarの 自動ルーム提案 機能を活用するには、全ユーザーの主要な勤務地(work location)を設定しておくこと、構造化フォーマットでリソースを登録しておくことの2点が推奨される。ユーザーに勤務地が設定されていない場合、Calendarはその人を提案対象として考慮せず、提案される部屋が小さすぎたり、そもそも建物内の部屋が提案されなかったりする可能性がある。また、構造化された情報を持つ部屋のみが自動ルーム提案の対象になる。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "出典: Create buildings, features & Calendar resources / Set up Google Calendar room booking suggestions"
+    },
+    {
+      "kind": "paragraph",
+      "text": "リソースカレンダーの共有範囲・自動承認の可否を管理者が設定します。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "権限管理のベストプラクティス:建物とリソース(Buildings and Resources)の管理権限は、信頼できる施設管理担当者やIT担当者にのみ付与することが重要である。大規模組織では大量の部屋を管理するために、CSV一括アップロードに加えてAdmin SDK Directory APIの resources.calendars.insert を使ったスクリプトによる登録・レポーティングも選択肢になります。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "出典: Approve or deny Calendar room & resource bookings / Share room and resource calendars"
+    },
+    {
+      "kind": "paragraph",
+      "text": "部屋やその他のリソースにどのような設備・特徴が備わっているかをユーザーに知らせたい場合、Admin consoleを使ってその機能(Feature)を追加できる。例えばどの社用車にナビゲーションシステムが搭載されているかを知らせたい場合などに利用する。機能の追加はAdmin consoleまたはAPIを使う必要があり、CSVファイルへの機能詳細のアップロードによる追加はできない。機能(Feature)は、会社全体または各ドメインごとに最大100個まで作成できる。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "作成手順:"
+    },
+    {
+      "kind": "paragraph",
+      "text": "出典: Create buildings, features & Calendar resources"
+    },
+    {
+      "kind": "paragraph",
+      "text": "Section 1 の内容を実務導入する際に確認すべき項目です。"
+    }
+  ],
+  "counts": {
+    "table": 6,
+    "diagram": 10,
+    "codeBlock": 0,
+    "figure": 0
+  },
+  "structures": {
+    "tableColumnHeaders": [
+      3,
+      2,
+      3,
+      2,
+      4,
+      2
+    ],
+    "codeLines": []
+  }
+}

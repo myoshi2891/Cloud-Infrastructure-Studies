@@ -14,7 +14,7 @@ description: >
 
 # HTML → Next.js Migration Workflow（本リポジトリ専用）
 
-(最終更新日: 2026-08-13)
+(最終更新日: 2026-08-15)
 
 ## Goal
 
@@ -35,11 +35,20 @@ Provide the complete, ordered workflow for converting a standalone HTML page (wi
 3. **`.agents/rules/tdd-commit-workflow.md`** — TDD必須サイクル & コミット分割ルール
    — §0「現行スタック確定値」、§1「インベントリ作成」、§2「テスト強度の合格基準」、§3「正準テストテンプレート」は**このスキルの前提**であり、移行の可否判定に直結する。読まずに着手しないこと。
 
-## このスキルは3系統に複製されている
+## このスキルは3系統に複製されている（エージェント非依存）
 
 `.agents/skills/html-to-nextjs-migration/SKILL.md` を**正本**とし、`.claude/` と `.gemini/` 配下は複製である。
 このファイルを編集した場合は、`.agents/rules/tdd-commit-workflow.md` §8 の `rsync` 手順で必ず両ミラーへ反映すること。
 乖離は `__tests__/skills/agent-mirror-sync.test.ts` が検出する。
+
+本スキルは Claude Code / Gemini CLI のどちらでも**同じ結果**になることを要件とする。
+実行契約（正本パス、`bun` 統一、ツール名の読み替え表、エージェント固有機能に依存しない記述）は
+`.agents/rules/tdd-commit-workflow.md` **§0-A** に集約されている。着手前に必ず読むこと。
+
+- 本文中のパスは常に `.agents/...` 表記を使う。`.claude/...` / `.gemini/...` を手順に書かない。
+- スクリプトは `.agents/skills/.../scripts/*.mjs` を実行する（ミラー配下のコピーを実行しない）。
+- 「読む」「検索する」「編集する」は**能力名**であり、各エージェントが自分のツールへ読み替える
+  （Claude Code: `Read` / `Grep` / `Edit`、Gemini CLI: `read_file` / `search_file_content` / `replace`）。
 
 ## 未移行 HTML
 
@@ -123,6 +132,23 @@ HTML の `:root` ローカル変数を、本リポジトリの `globals.css` 既
 }
 ```
 
+### 3-b. NavBar（サイドバーナビ）の正準要件
+
+PR レビューで**セクションごとに同じ指摘が繰り返された**箇所である。新規 `NavBar.tsx` は以下をすべて満たすこと。
+
+| 要件 | 内容 |
+|---|---|
+| 単一の正本配列 | セクション ID・ラベルを `NAV_ITEMS`（または `constants.ts`）に1箇所だけ定義する。`IntersectionObserver` の監視対象も**この配列から導出**し、ID 一覧を別途ハードコードしない |
+| 初期 activeId | `NAV_ITEMS[0]` の ID と一致させる（別の値で初期化しない） |
+| マークアップ | 目次は `<nav aria-label="…"><ul><li><a href="#id">…</a></li></ul></nav>`。`<span>` ラッパーや `{' '}` による整形を入れない |
+| ボタン | `<button type="button">` を明示。開閉トグルには `aria-expanded` と `aria-controls` を付ける |
+| モバイル | サイドバーを `translateX(-100%)` で隠す場合、**開く手段（トグルボタン）を必ず用意する**。隠すだけの CSS は不可 |
+| 未使用要素 | `.sidebar-toggle` / `.sidebar-backdrop` などを CSS だけ書いて JSX で使わない（デッドコード禁止） |
+| リンク操作後 | クリック時に URL ハッシュを更新し、**ハッシュ更新後に同じ対象要素へ `focus()` を呼ぶ**（キーボード操作の継続性）。リンク先となる `section` または見出しには **`tabIndex={-1}`** を付与する（プログラム的フォーカスのみを受け付け、Tab 順序には割り込ませない）。ハッシュの対象と `focus()` の対象がずれると視覚位置とフォーカス位置が乖離するため、必ず同一要素にする |
+| scroll 性能 | scroll ハンドラ内で毎要素の `getBoundingClientRect()` を呼ばない。`IntersectionObserver` を使い、ページ末尾では最後の項目がアクティブになるよう終端条件を持たせる |
+| jsdom ガード | `typeof IntersectionObserver !== 'undefined'` で守り、cleanup で `disconnect()` |
+| JSDoc | 公開コンポーネントとユーティリティに JSDoc を付ける |
+
 ### 4. Mermaid 図の移行（MermaidDiagram を再利用 & preserveNaturalScale 必須）
 
 HTML 末尾 `<script>` の `DIAGRAMS` オブジェクト + `mermaid.render(...)` ループは**再実装しない**。
@@ -194,10 +220,10 @@ HTML 末尾 `<script>` の `DIAGRAMS` オブジェクト + `mermaid.render(...)`
 トークン浪費の最大要因は「ソースの再読」と「参照ファイルの再読」。以下を厳守する。
 
 1. **ソースHTMLは100%読む（要約・スキップ厳禁）。** ただし往復は最小化する:
-   - まず **1回の `grep`** で zone 境界の行番号を取得（例: `grep -nE '</style>|<body|<script' file.html`）。
-   - `<style>` ブロック・本文・末尾 `<script>` を、**大きめ（~800行）の連続・非重複チャンクで各1回** Read する。
-   - **同一行範囲を二度読まない。** 既読範囲はメモリ上の内容を使う。
-2. **既知の単一ファイル移行では Explore / Plan エージェントを使わない**（1エージェント ≈ 40K tokens のオーバーヘッド。対象パスが明確なら Read/Grep を直接使う）。
+   - まず **1回の全文検索** で zone 境界の行番号を取得（例: `grep -nE '</style>|<body|<script' file.html`）。
+   - `<style>` ブロック・本文・末尾 `<script>` を、**大きめ（~800行）の連続・非重複チャンクで各1回**読む。範囲指定はファイル読取能力の `offset` / `limit` で行う（§0-A の能力対応表）。
+   - **同一行範囲を二度読まない。** 既読範囲はコンテキスト上の内容を使う。
+2. **対象パスが判明している移行では、探索を委譲せず直接読む。** 対象 HTML と出力先ルートが確定している単一ファイル移行で、リポジトリ全体の探索を挟まない。委譲機構（サブエージェント等）を持つエージェントでも、その起動自体がコンテキストを再構築するオーバーヘッド（1回あたり数万トークン規模）になるため使わない。委譲機構を持たないエージェントとの結果同一性も、直接読み取りに統一することで担保される。
 3. **本 skill の「正準リファレンス」に載っている参照ファイルを移行のたびに読まない**
    （`components/MermaidDiagram.tsx`・参照ページの `page.tsx`/`NavBar.tsx`/`page.css`・`app/globals.css`）。
    値の陳腐化が疑われる時だけ、必要な数行を `grep` で照合する。
@@ -231,41 +257,13 @@ HTML 末尾 `<script>` の `DIAGRAMS` オブジェクト + `mermaid.render(...)`
 `docs/migration-inventory/<page-slug>.json` を生成し、コミットする。
 
 ```bash
-inventory_script=$(mktemp -t inventory.XXXXXX.mjs) || exit 1
-trap 'rm -f "$inventory_script"' EXIT
-cat > "$inventory_script" <<'EOF'
-import fs from 'node:fs';
-import { JSDOM } from 'jsdom';
-
-const [, , htmlPath] = process.argv;
-if (!htmlPath) {
-    throw new Error('usage: bun <script> <source.html>');
-}
-const doc = new JSDOM(fs.readFileSync(htmlPath, 'utf8')).window.document;
-const texts = (selector) =>
-    [...doc.querySelectorAll(selector)]
-        .map((element) => (element.textContent ?? '').replace(/\s+/g, ' ').trim())
-        .filter(Boolean);
-
-console.log(JSON.stringify({
-    source: htmlPath,
-    h1: texts('h1'), h2: texts('h2'), h3: texts('h3'), h4: texts('h4'),
-    th: texts('th'), td: texts('td'), listItems: texts('li'),
-    links: [...doc.querySelectorAll('a[href^="http"]')].map((anchor) => ({
-        text: (anchor.textContent ?? '').replace(/\s+/g, ' ').trim(),
-        href: anchor.getAttribute('href'),
-    })),
-    counts: {
-        table: doc.querySelectorAll('table').length,
-        diagram: doc.querySelectorAll('.mermaid, [id^="diag-"]').length,
-        codeBlock: doc.querySelectorAll('pre, .code-block').length,
-        figure: doc.querySelectorAll('img, svg').length,
-    },
-}, null, 2));
-EOF
 mkdir -p docs/migration-inventory
-bun "$inventory_script" <移行元HTMLのパス> > docs/migration-inventory/<page-slug>.json
+bun scripts/gen-inventory.mjs <移行元HTMLのパス> > docs/migration-inventory/<page-slug>.json
 ```
+
+抽出ロジックは `scripts/gen-inventory.mjs`（実行エントリ）と `scripts/inventory-extraction.mjs`（共有ロジック）に実装済みである。
+**一時スクリプトを heredoc で書き起こさない。** §Phase 6 のテストは同じ `scripts/inventory-extraction.mjs` を import するため、
+生成側と検証側が常に同一実装になる。ここを複製すると、片側だけの変更でインベントリと検証が静かに乖離する。
 
 生成された JSON を開き、以下を**声に出して確認する**（この確認を飛ばさない）:
 
@@ -306,9 +304,9 @@ Map every HTML CSS variable to the project's `globals.css` `@theme` token. Do NO
 | Border vars | `--color-border` |  |
 | Radius `--r` / `--rs` / `--r-sm` | `--radius-lg` (16px) / `--radius-md` (10px) / `--radius-sm` (4px) | Always add fallback: `var(--radius-lg, 16px)` |
 | Shadow vars | N/A | Use Tailwind shadow classes (shadow-lg, shadow-xl, etc.) |
-| Font display | `--font-display` | Resolved by next/font/google in layout.tsx |
-| Font body | `--font-body` | Resolved by next/font/google in layout.tsx |
-| Font mono | `--font-mono` | Resolved by next/font/google in layout.tsx |
+| Font display | `--font-display` | 自己ホスト（`@fontsource-variable/dm-sans`）を `app/layout.tsx` が import 済み |
+| Font body | `--font-body` | 自己ホスト（`@fontsource-variable/noto-sans-jp`） |
+| Font mono | `--font-mono` | 自己ホスト（`@fontsource-variable/jetbrains-mono`） |
 
 #### GCP テーマ HTML の確定マッピング
 
@@ -341,6 +339,12 @@ GCP 系ガイド HTML（`--gcp-blue` / `--bg-*` / `--text-*` などの `:root` �
 | Mermaid 図の文字縮小 | `preserveNaturalScale` なしの `<MermaidDiagram>` | `<MermaidDiagram chart={...} ariaLabel="..." preserveNaturalScale />` を指定し 1rem (16px) サイズを維持 |
 | 誤ったアーカイブ先 | リポジトリ直下や `Gcl_Archive/` 単体 | 原本を保持したまま `archive/Cisco/html/` と `archive/Cisco/md/` 等の階層化フォルダへコピーして保存 |
 | 英語での計画書作成 | 英語で `implementation_plan.md` を作成 | `implementation_plan.md` や報告メッセージはすべて**日本語**で記述 |
+| ページローカルのテーマ変数 | `page.css` に `--bg` / `--text` / `--accent` / `--sidebar-w` を定義 | 先に `app/globals.css` の `@theme` へ承認済みトークンを追加し、ページ CSS は `var(--color-*)` を参照するだけにする |
+| 固定色の直書き | `color: #8ab4f8;` | `color: var(--color-google-blue);`（シンタックスハイライト色のみ例外） |
+| 非推奨の折返し指定 | `word-break: break-word;` | `overflow-wrap: anywhere;` |
+| 自己参照するフォント変数 | `--font-mono: var(--font-mono);` | `globals.css` のトークンを直接参照（ページ側で再定義しない） |
+| 未使用 CSS のデッドコード | JSX で使っていない `.sidebar-toggle` / `.sidebar-backdrop` を残す | 使わないなら削除、必要なら JSX 側を実装する |
+| 同一セレクタの重複定義 | `scroll-margin-top` を別ブロックで上書きしアンカー位置が壊れる | 定義を1箇所に統一し、`grep` で重複を確認する |
 | Invalid property | `scrollbar-: none;` | `scrollbar-width: none;` |
 | z-index duplication | `nav { z-index: 100; }` in CSS + `z-50` in JSX | Single source: Tailwind `z-50` in JSX only |
 | Responsive outside @media | `.box { grid-template-columns: 1fr; }` at root | Wrap in `@media (max-width: 768px) { ... }` |
@@ -355,7 +359,7 @@ GCP 系ガイド HTML（`--gcp-blue` / `--bg-*` / `--text-*` などの `:root` �
 ### Phase 4: Convert HTML to TSX
 
 1. **Remove** `<html>`, `<head>`, `<body>`, `<style>`, `<script>` — handled by `layout.tsx`
-2. **Remove** `<link>` font tags — fonts loaded via `next/font/google` in `layout.tsx`
+2. **Remove** `<link>` font tags — フォントは `@fontsource-variable/*` を `app/layout.tsx` が import して自己ホストする（**`next/font/google` は使用禁止**。Netlify CI でビルドが落ちた実績があるため。CLAUDE.md「制約事項」参照）
 3. **`<nav>` ブロックの扱い**:
    - グローバルサイトナビ（全ページ共通）→ **削除**（`components/Header.tsx` が提供）
    - ページ固有のアンカーナビ（sticky + `IntersectionObserver` スクロールスパイ付き）→ **削除せず移行**:
@@ -470,26 +474,25 @@ bun run dashboard     # docs/coverage-dashboard.html 再生成
 #### 6b. Vitest（DOM 全量検証）
 
 テストは `.agents/rules/tdd-commit-workflow.md` §3 の**正準テストテンプレート**をコピーして作る。
-テンプレートが §2 の強度基準（全見出し・全表セル・全リンク href・図の件数厳密一致・a11y）を満たしている。
+テンプレートが §2 の強度基準（全見出し・全表セル・全リンク href の順序一致・図の件数厳密一致・`preserveNaturalScale`・a11y）を満たしている。
 
-**MermaidDiagram のモック（名前付きエクスポート）**:
+**テストの置き場所**: 対象ページのルートをそのまま写す（`app/gcl/agwa/section3/page.tsx` → `__tests__/gcl/agwa/section3/page.test.tsx`）。
+説明的な独自ディレクトリ名を作らない（`.agents/rules/tdd-commit-workflow.md` §2-4）。
+
+**ヘルパーとモックは共有モジュールから import する。テストファイル内に再定義しない**（同じ定義が複数ファイルへ複製され、
+検証ロジックの修正漏れを生む — PR レビューで実際に指摘された）:
 
 ```tsx
+import {
+    MermaidDiagramMock,   // ariaLabel / decorative / preserveNaturalScale をテスト用属性へ透過
+    codeBlockSelector,
+    codeLineCount,
+    extractBodyContent,   // 生成側 scripts/inventory-extraction.mjs と同一実装
+    squash,
+} from '@/__tests__/gcl/agwa/migration-test-utils';
+
 // ✅ 正しい: components/MermaidDiagram.tsx は export const MermaidDiagram
-vi.mock('@/components/MermaidDiagram', () => ({
-    MermaidDiagram: ({ chart, ariaLabel, preserveNaturalScale }: {
-        chart: string;
-        ariaLabel: string;
-        preserveNaturalScale?: boolean;
-    }) => (
-        <div
-            data-testid="mermaid-diagram"
-            data-chart={chart}
-            data-preserve-natural-scale={String(preserveNaturalScale)}
-            aria-label={ariaLabel}
-        />
-    ),
-}));
+vi.mock('@/components/MermaidDiagram', () => ({ MermaidDiagram: MermaidDiagramMock }));
 
 // ❌ 誤り: default エクスポートではないため undefined になり描画時に落ちる
 vi.mock('@/components/MermaidDiagram', () => ({ default: /* ... */ }));
@@ -513,14 +516,22 @@ vi.mock('@/components/MermaidDiagram', () => ({ default: /* ... */ }));
 
 #### 6d. コード品質の静的アサーション（Vitest / grep で機械検証）
 
+> **コマンドは POSIX ERE のみで書く。** `\s` は GNU 拡張で BSD grep（macOS 既定）と挙動が異なるため `[[:space:]]` を使う。
+> 先読み `(?!...)` は `grep -E` では動かない。ディレクトリを対象にする場合は必ず `-r` を付ける。詳細は
+> `.agents/rules/tdd-commit-workflow.md` §0-A-3。
+
 | 検証 | 方法 |
 |---|---|
-| `.code-block` 内に `{"\n"}` が残っていない | `grep -n '{"\\n"}' app/<route>/*.tsx` の結果が空 |
-| `class=` が JSX に残っていない | `grep -nE '<[a-zA-Z][^>]*\sclass=' app/<route>/*.tsx` が空 |
-| ページ CSS に新規 custom property が無い | `grep -nE '^\s*--[a-z-]+:' app/<route>/page.css` が空 |
-| `@layer components` を使っていない | `grep -n '@layer' app/<route>/page.css` が空 |
+| `.code-block` 内に `{"\n"}` が残っていない | `grep -rn '{"\\n"}' app/<route>/` の結果が空 |
+| `class=` が JSX に残っていない | `grep -rnwE 'class[[:space:]]*=' app/<route>/` で候補を列挙し（`-w` の語境界により、行頭に置かれた `class=` と `class = "…"` のように空白を挟む代入形式の双方を検出し、`className=` は語境界で自動的に除外される）、**各ヒットを開始タグの閉じ `>` まで読んで JSX 属性かどうかを判定**する。JSX で許されるのは `className` のみ。`[[:space:]]class=` は行頭の `class=` と空白を挟む代入を取りこぼし、開始タグと属性が同一行にある前提の `<[a-zA-Z][^>]*[[:space:]]class=` は、属性が次行以降へ折り返された複数行 JSX を取りこぼす（§0-A-3） |
+| ページ CSS に新規 custom property が無い | `grep -nE '^[[:space:]]*--[a-z-]+:' app/<route>/*.css` が空（`*.css` は `page.css` と `page.module.css` の双方にマッチする） |
+| `@layer components` を使っていない | `grep -n '@layer' app/<route>/*.css` が空 |
 | サイドバー幅契約 | `__tests__/guide-content-widths.test.ts` が全スタイルシートを検証（新規 CSS も自動的に対象） |
-| camelCase keyframes が無い | `grep -nE '@keyframes\s+[a-z]+[A-Z]' app/<route>/page.css` が空 |
+| camelCase keyframes が無い | `grep -nE '@keyframes[[:space:]]+[a-z]+[A-Z]' app/<route>/*.css` が空 |
+| 非推奨の `word-break: break-word` が無い | `grep -rn 'word-break: break-word' app/<route>/` が空 |
+| `next/font` を使っていない | `grep -rn 'next/font' app/<route>/` が空（自己ホストの `@fontsource-variable/*` のみ） |
+| `<button>` に `type` がある | `grep -rn '<button' app/<route>/` で全ヒットを列挙し、**各 `<button` について開始タグの閉じ `>` までを読んで `type=` があること**を1件ずつ確認する。JSX は属性が次行以降に来るため 1 行単位の除外（先読みや `grep -v`）では誤検出し、`-A4` のような固定行数も5行目以降の `type` を取りこぼすため判定の根拠にしない |
+| テストの配置がルートと一致 | `__tests__/<app 配下と同じ相対パス>/page.test.tsx` が存在する |
 
 #### 6e. `scripts/verify-html-migration.mjs` について（現状の制約）
 
@@ -549,7 +560,7 @@ Do NOT redefine these in page-specific CSS. Use them directly in TSX:
 
 ## Constraints
 
-- **Never import external fonts via `<link>` tags** — Use `next/font/google` in `layout.tsx` only.
+- **Never import external fonts via `<link>` tags, and never use `next/font/google`** — フォントは `@fontsource-variable/*` / `@fontsource/*` を `app/layout.tsx` で import する自己ホスト方式に統一する。可変フォントのファミリ名は `'<Name> Variable'`。この契約は `__tests__/fonts/self-hosted-fonts.test.ts` が検証する。
 - **Never define duplicate CSS variables** in page CSS that already exist in `globals.css @theme`
 - **Never define new theme custom properties in page CSS** — add approved three-layer tokens to `app/globals.css @theme` and reference them
 - **Never use `@layer components`** for page-specific styles — plain CSS only for proper specificity

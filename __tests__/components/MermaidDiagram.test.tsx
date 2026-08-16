@@ -143,6 +143,28 @@ describe('MermaidDiagram', () => {
             expect(svg.style.maxHeight).toBe('none');
         });
 
+        it('有効な viewBox で自然倍率を維持する場合は min-width に自然幅を設定すること', () => {
+            // Arrange: 前回処理の残骸が上書きされることも同時に確認する
+            const svg = makeSvg('0 0 250 600');
+            svg.style.minWidth = '800px';
+
+            // Act
+            applySvgFixups(svg, 'flowchart TD\nA-->B', true);
+
+            // Assert: 早期 return 前のクリアで終わらず、自然幅 250px が再設定される
+            expect(svg.style.minWidth).toBe('250px');
+            expect(svg.style.width).toBe('250px');
+        });
+
+        it('自然倍率を維持しない場合は以前の min-width を解除すること', () => {
+            const svg = makeSvg('0 0 800 600');
+            svg.style.minWidth = '800px';
+
+            applySvgFixups(svg, 'flowchart TD\nA-->B');
+
+            expect(svg.style.minWidth).toBe('');
+        });
+
         it('viewBox が無い場合も max-width のインライン上書きを行わないこと', () => {
             // Arrange
             const svg = makeSvg();
@@ -152,6 +174,30 @@ describe('MermaidDiagram', () => {
 
             // Assert
             expect(svg.style.maxWidth).toBe('');
+        });
+
+        it('viewBox が無い場合は自然倍率指定でも以前の min-width を解除すること', () => {
+            // Arrange: 前回処理の min-width が残っている SVG を再処理する
+            const svg = makeSvg();
+            svg.style.minWidth = '800px';
+
+            // Act
+            applySvgFixups(svg, 'flowchart TD\nA-->B', true);
+
+            // Assert: 自然幅を確定できないため固定幅を残さない
+            expect(svg.style.minWidth).toBe('');
+        });
+
+        it('viewBox が不正な場合も以前の min-width を解除すること', () => {
+            // Arrange
+            const svg = makeSvg('0 0 800');
+            svg.style.minWidth = '800px';
+
+            // Act
+            applySvgFixups(svg, 'flowchart TD\nA-->B', true);
+
+            // Assert
+            expect(svg.style.minWidth).toBe('');
         });
     });
 

@@ -35,7 +35,7 @@ const OK_THRESHOLD = 0.8;
  * @param {Array|undefined|null} params.tests - Test entries; treated as missing when falsy or empty.
  * @param {number|undefined|null} params.coveredSources - Number of covered source files; falsy values are treated as 0.
  * @param {number|undefined|null} params.sources - Total number of source files; falsy values are treated as 0.
- * @param {string|undefined} params.category - Category name; certain "horizontal" categories force an `ok` status when tests exist and sources > 0.
+ * @param {string} [params.category] - Category name; certain "horizontal" categories force an `ok` status when tests exist and sources > 0.
  * @returns {{status: 'missing'|'ok'|'warn', coverageRate: number, testCount: number, coveredSources: number, sources: number}}
  * An object with:
  * - `status`: `'missing'` when there are no tests or `sources` is 0; otherwise `'ok'` for horizontal quality categories (`Visual`, `A11y`, `Performance`, `Security`) when tests exist; for other categories `'ok'` when `coverageRate >= OK_THRESHOLD`, otherwise `'warn'`.
@@ -44,7 +44,7 @@ const OK_THRESHOLD = 0.8;
  * - `coveredSources`: coerced coveredSources count (falsy treated as 0).
  * - `sources`: coerced sources count (falsy treated as 0).
  */
-export function classifyCell({ tests, coveredSources, sources, category }) {
+export function classifyCell({ tests, coveredSources, sources, category = undefined }) {
     const safeSources = sources || 0;
     const safeCovered = coveredSources || 0;
     const coverageRate = safeSources > 0 ? safeCovered / safeSources : 0;
@@ -103,18 +103,21 @@ export function domainOf(filePath) {
 /**
  * Generate a prioritized list of actionable testing improvements from per-domain/category coverage cells.
  *
+ * @typedef {{priority: 'P0'|'P1'|'P2', area: string, detail: string, tool: string, cost: string, effect: string, impact: number}} Action
+ *
  * @param {Array<Object>} cells - Array of coverage "cell" objects. Each cell is expected to include at least:
  *   `domain` (string), `category` (string), `status` (string, e.g. "missing" | "ok" | "warn"),
  *   `sources` (number) and `coveredSources` (number).
  * @param {Object} [options] - Optional behaviour modifiers.
  * @param {number} [options.commonTargetCount=0] - Number of canonical shared targets in the completed P0 scope.
  * @param {number} [options.commonIntegrationCoveredCount=0] - Number of those targets covered by Integration tests.
- * @returns {Array<Object>} Sorted action objects. Each action contains:
+ * @returns {Array<Action>} Sorted action objects. Each action contains:
  *   `priority` (P0|P1|P2), `area` (string), `detail` (string), `tool` (string), `cost` (string),
  *   `effect` (string) and `impact` (number).
  */
 export function buildActions(cells, options = {}) {
     const { commonTargetCount = 0, commonIntegrationCoveredCount = 0 } = options;
+    /** @type {Action[]} */
     const actions = [];
 
     for (const cell of cells) {

@@ -33,7 +33,7 @@ describe('Home ページ', () => {
             level: 'Professional',
             score: '100',
             color: 'card-aws-saa',
-            href: examA.domains[0].href,
+            href: examA.domains[0]!.href,
             description: 'Fixture B description',
             domains: [{ label: 'Guide B', href: '/guide-b', pct: '100%' }],
             badge: 'Fixture',

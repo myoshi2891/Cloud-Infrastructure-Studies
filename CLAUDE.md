@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-Updated 2026-08-13
+Updated 2026-08-15
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
@@ -220,6 +220,30 @@ app/
       section2/
         page.tsx                    # Section 2: コアサービス管理
         page.css                    # ページ固有スタイル
+      section3/
+        page.tsx                    # Section 3: データガバナンスとコンプライアンスの管理
+        AgwaSection3Guide.tsx       # 本文＋全Mermaid図＋インタラクション
+        NavBar.tsx                  # サイドバーナビ
+        constants.ts                # Mermaid図定義
+        AgwaSection3Guide.module.css # ページ固有スタイル（CSS Modules）
+      section4/
+        page.tsx                    # Section 4: セキュリティポリシーとアクセス制御の管理
+        AgwaSection4Guide.tsx       # 本文＋全Mermaid図＋インタラクション
+        NavBar.tsx                  # サイドバーナビ
+        constants.ts                # Mermaid図定義
+        page.css                    # ページ固有スタイル
+      section5/
+        page.tsx                    # Section 5: ブラウザとエンドポイントの管理 (Server)
+        AgwaSection5Guide.tsx       # 本文＋全Mermaid図＋インタラクション (Client)
+        NavBar.tsx                  # サイドバーナビ
+        constants.ts                # Mermaid図定義 (10図)
+        page.css                    # ページ固有スタイル
+      section6/
+        page.tsx                    # Section 6: 監視とトラブルシューティング (Server)
+        NavBar.tsx                  # サイドバーナビ
+        constants.ts                # 目次定義
+        page.module.css             # ページ固有スタイル（CSS Modules）
+        components/sections/        # AgwaSection6Guide 本文コンポーネント
     professional-cloud-network-engineer/
       page.tsx                      # PCNE 試験対策ページ（概要・ドメイン別解説）
       components/                   # セクションコンポーネント（Section1-6 + Summary）

@@ -9,7 +9,7 @@ description: >
 
 # Mermaid 構文・描画修正スキル
 
-(最終更新日: 2026-08-13)
+(最終更新日: 2026-08-15)
 
 ## 前提バージョンと正準実装（推測禁止）
 
@@ -25,11 +25,20 @@ description: >
 > 以降の「Mermaid v10 の必須ルール」は **v11 でも有効な基本構文ルール**である（カラム0・1行1ステートメント等）。
 > v10 固有の記述であることを理由に読み飛ばさないこと。`references/mermaid-v10-guide.md` も同様に v11 で有効。
 
-## このスキルは3系統に複製されている
+## このスキルは3系統に複製されている（エージェント非依存）
 
 `.agents/skills/fix-mermaid/` を**正本**とし、`.claude/` と `.gemini/` 配下は複製である。
 過去に3系統が乖離し、`.gemini/` だけが古いルール（図ごとの `maxWidth` インライン指定を許容する記述等）で
 残っていた実績がある。編集後は `.agents/rules/tdd-commit-workflow.md` §8 の `rsync` 手順で必ず同期すること。
+
+本スキルは Claude Code / Gemini CLI のどちらでも**同じ結果**になることを要件とする。実行契約は
+`.agents/rules/tdd-commit-workflow.md` **§0-A**（正本パス・`bun` 統一・ツール名の読み替え表）に従う。
+
+- スクリプトは常に `.agents/skills/fix-mermaid/scripts/*` を実行する。**ミラー配下（`.claude/` / `.gemini/`）のコピーを実行しない。**
+- 本文の「検索する」「読む」「編集する」は能力名である（Claude Code: `Grep` / `Read` / `Edit`、Gemini CLI: `search_file_content` / `read_file` / `replace`）。
+- 実行コマンドは `bun` に統一する。`node` / `npx` を使わない。
+- **正規表現による一括置換を前提にしない**（§0-A-2）。差分編集は周辺行を含む一意なアンカーで1箇所ずつ行い、機械的な大量置換はスクリプト実行として書く。本スキルで一括置換が必要になるのは「§ ブラウザレンダラーで Syntax Error を起こす文字・構文」の全角→半角変換であり、その手順は同節に明記してある。
+- シェルコマンドは POSIX ERE のみを使う（§0-A-3）。`\s` ではなく `[[:space:]]`、先読み `(?!...)` は使わない。
 
 ## 🚀 まず再利用スクリプトを使う（トークン節約・最優先）
 
@@ -83,9 +92,9 @@ HTMLやコードのフォーマッタ（Prettier等）による破壊パター�
 
 ## 修正手順
 
-1. `Grep` で修正対象ファイルを検索し、Mermaid ブロックを把握する
-2. `Read` で各ブロックを確認し、上記ルール違反を特定する
-3. `Edit` または自動修正スクリプトで各ブロックの内容を修正する
+1. **全文検索**で修正対象ファイルを絞り込み、Mermaid ブロックを把握する
+2. **ファイル読取**で各ブロックを確認し、上記ルール違反を特定する
+3. **差分編集**または自動修正スクリプトで各ブロックの内容を修正する
 
 自動修正を行う場合は TypeScript 版スクリプト `fix_mermaid.ts` を `bun` で実行します:
 
@@ -177,6 +186,25 @@ mermaid.initialize({ startOnLoad: false });
 | 全ての図解 (全般) | 全角丸括弧 `（）` | 半角丸括弧 `( )` に置換する |
 | 全ての図解 (全般) | 全角ダッシュ `―` | 半角ハイフン `-` に置換する |
 | 全ての図解 (全般) | 全角コロン `：` | 半角コロン `:` に置換する |
+
+#### 全角文字の一括置換手順（エージェント非依存）
+
+**`fix_mermaid.ts` はこの置換を行わない。** 同スクリプトが直すのはインデント汚染と行分断だけであり、
+全角文字はそのまま残る。スクリプトを実行しただけで「対処済み」と判断しないこと。
+
+置換は正規表現の全件置換に頼らず、次の3段で行う（§0-A-2 の差分編集契約）。
+
+1. **検出**（POSIX 文字クラスのみ。全エージェント・BSD/GNU 双方で動作する）:
+
+   ```bash
+   grep -rn '[（）〜―：]' <対象ファイルまたはディレクトリ>
+   ```
+
+2. **置換**: ヒットした箇所を、**Mermaid ブロック内のものに限って**1件ずつ編集する。
+   周辺行を含む一意なアンカーで指定すること。本文・表・見出しの全角文字は Mermaid の
+   構文エラー要因ではないため**変更してはならない**（無差別な全件置換が起こす典型的な事故）。
+
+3. **再検証**: 手順1のコマンドを再実行し、残ったヒットがすべて Mermaid ブロック外であることを確認する。
 
 ### SVG サイズ制御
 
@@ -396,22 +424,30 @@ const Diagram = memo(function Diagram({ id, label }: { id: DiagramId; label: str
 
 **⚠️ エクスポート形態は「名前付き」です。`default` でモックすると `undefined` になり必ず落ちます。**
 
+**モックはテストごとに書き起こさず、共有モジュール `__tests__/gcl/agwa/migration-test-utils.tsx` の
+`MermaidDiagramMock` を使う。** 同一定義を複数テストへ複製すると、契約（`ariaLabel` / `decorative` /
+`preserveNaturalScale` の透過）を1箇所だけ直して他が古いまま残る。
+
 ```tsx
 // ✅ 正しい — components/MermaidDiagram.tsx は `export const MermaidDiagram`
-vi.mock('@/components/MermaidDiagram', () => ({
-    MermaidDiagram: ({ chart, ariaLabel, preserveNaturalScale }: {
-        chart: string;
-        ariaLabel: string;
-        preserveNaturalScale?: boolean;
-    }) => (
-        <div
-            data-testid="mermaid-diagram"
-            data-chart={chart}
-            data-preserve-natural-scale={String(preserveNaturalScale)}
-            aria-label={ariaLabel}
-        />
-    ),
-}));
+import { MermaidDiagramMock } from '@/__tests__/gcl/agwa/migration-test-utils';
+
+vi.mock('@/components/MermaidDiagram', () => ({ MermaidDiagram: MermaidDiagramMock }));
+```
+
+共有モジュールが提供するダミーは、実コンポーネントの契約をそのまま再現している:
+
+```tsx
+<div
+    role="img"
+    aria-roledescription="diagram"
+    data-testid="mermaid-diagram"
+    data-chart={chart}
+    data-decorative={String(decorative === true)}
+    data-preserve-natural-scale={String(preserveNaturalScale)}
+    aria-label={ariaLabel}
+    aria-hidden={decorative || undefined}
+/>
 ```
 
 ```tsx
@@ -487,6 +523,10 @@ const applySvgFixups = (
     svgEl.style.height = 'auto';
     svgEl.style.overflow = 'visible';   // viewBox から数px はみ出す描画の途切れ防止
     svgEl.style.marginBottom = '10px';
+    // ⚠️ viewBox 検証による早期 return より前にクリアする。同一 SVG を再処理する経路
+    //    （HMR・再レンダリング）で前回の minWidth が残ると、縮小されるべき図が
+    //    固定幅のまま横スクロールを発生させる。
+    svgEl.style.minWidth = '';
 
     const viewBox = svgEl.getAttribute('viewBox');
     if (!viewBox) {
@@ -508,10 +548,18 @@ const applySvgFixups = (
         targetWidth = Math.min(650, Math.max(Math.round(w * 1.35), 480));
     }
     svgEl.style.width = `${targetWidth}px`;
+    // 有効な viewBox が取れた場合のみ、preserveNaturalScale=true の自然幅を minWidth で固定する。
+    // （クリアは早期 return より前で済ませてあるため、ここに else 節は置かない）
+    if (preserveNaturalScale && targetWidth > 0) {
+        svgEl.style.minWidth = `${targetWidth}px`;
+    }
     svgEl.style.maxHeight = preserveNaturalScale ? 'none' : h > 550 ? '580px' : 'none';
     svgEl.setAttribute('viewBox', `${x} ${y} ${w} ${h + extraHeight}`);
 };
 ```
+
+> このコードは `components/MermaidDiagram.tsx` の実装と**同期している必要がある**。
+> 片方だけを変更しないこと。差異が疑われる場合は実装側を正とし、本節を更新する。
 
 ### Mermaid の採寸値と CSS 文字サイズを一致させる
 
@@ -534,6 +582,11 @@ const applySvgFixups = (
 
 ノード文字色の方針（ユーザー選択：**暗ノード＝白 / 黄ノード＝黒** が最も読みやすい）:
 
+> **明色ノードの判定は `classDef` 名を第一手段とする。** 図側で `classDef yellowFill fill:#fbbc04,...` を定義し、
+> CSS は `.yellowFill .nodeLabel` を対象にする。新しい明色を使うたびに `[style*="…"]` / `[fill*="…"]`
+> のカラーコード列挙を増やすやり方は、**追加漏れが即座に「白×黄で読めない」不具合になる**ため、
+> 既存図の互換用フォールバックとしてのみ残す。新規図では `classDef` 名を必ず付けること。
+
 ```css
 /* foreignObject のクリップ解除（emoji 採寸ズレによる右端切れ対策） */
 .mermaidTarget :global(foreignObject) { overflow: visible; }
@@ -547,7 +600,28 @@ const applySvgFixups = (
 .mermaidTarget :global(.node .nodeLabel),
 .mermaidTarget :global(.node .nodeLabel *) { color: #ffffff !important; }
 
-/* 黄色系ノード(#fbbc04, #ffe08a, #ffd479, #ffba00)は白×黄で同化するため、ラベルのみ黒に戻す */
+/* ── 第一手段: classDef 名で明色ノードを判定する（新規図はこちらだけで完結させる） ──
+   図側で `classDef yellowFill fill:#fbbc04,...` のように定義すると、mermaid は
+   そのクラス名を `.node` 要素へ付与するため、カラーコードを列挙せずに黒文字を当てられる */
+.mermaidTarget :global(.yellowFill),
+.mermaidTarget :global(.yellowFill .nodeLabel),
+.mermaidTarget :global(.yellowFill .nodeLabel *),
+.mermaidTarget :global(.yellowFill text),
+.mermaidTarget :global(.yellowFill tspan),
+.mermaidTarget :global(.lightRedFill),
+.mermaidTarget :global(.lightRedFill .nodeLabel),
+.mermaidTarget :global(.lightRedFill .nodeLabel *),
+.mermaidTarget :global(.lightGreenFill),
+.mermaidTarget :global(.lightGreenFill .nodeLabel),
+.mermaidTarget :global(.lightGreenFill .nodeLabel *),
+.mermaidTarget :global(.lightBlueFill),
+.mermaidTarget :global(.lightBlueFill .nodeLabel),
+.mermaidTarget :global(.lightBlueFill .nodeLabel *),
+.mermaidTarget :global(.grayFill),
+.mermaidTarget :global(.grayFill .nodeLabel),
+.mermaidTarget :global(.grayFill .nodeLabel *),
+/* ── 以下は classDef 名を持たない既存図のための互換フォールバック ──
+   新しい明色を使うたびにここへカラーコードを足す運用はしない（追加漏れが即不具合になる） */
 .mermaidTarget :global(.node[style*="fbbc04" i] .nodeLabel),
 .mermaidTarget :global(.node[style*="fbbc04" i] .nodeLabel *),
 .mermaidTarget :global(.node[style*="ffe08a" i] .nodeLabel),

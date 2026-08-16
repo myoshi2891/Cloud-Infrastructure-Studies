@@ -1,4 +1,63 @@
-# Migration Progress
+# 移行作業進捗管理ドキュメント (Migration Progress)
+
+(最終更新日: 2026-08-15)
+
+---
+
+## 2026-08-15: AGWA Section 5「ブラウザとエンドポイントの管理」100%全量移行 (完了)
+
+### 目的
+
+`Agwa-s5-browsers-endpoints.html` を、Next.js App Router 5ファイル構成 (`page.tsx`, `AgwaSection5Guide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/gcl/agwa/section5` ルートへ移行。見出し(h1:1, h2:5, h3:11, h4:16)、全4個のテーブル、10個のMermaid図解、全リスト、全外部リンク・本文・注釈を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for agwa-s5-browsers-endpoints` (`17f26d4`)
+- [x] **Step 1 (Red)**: `test(agwa): add failing tests for agwa section 5` (`a2f2542`)
+- [x] **Step 2 (Green)**: `feat(agwa): implement section 5 browsers and endpoints guide to pass tests` (`a81f7b2`)
+- [x] **Step 3 (Refactor)**: `refactor(agwa): integrate section 5 into routing and update docs` (`349aaa7`)
+- [x] **Step 4 (Archive & Sync)**: `chore(docs): update MIGRATION_PROGRESS.md — agwa section 5 complete`
+
+### 関連ファイル
+
+- [app/gcl/agwa/section5/page.tsx](app/gcl/agwa/section5/page.tsx)
+- [app/gcl/agwa/section5/AgwaSection5Guide.tsx](app/gcl/agwa/section5/AgwaSection5Guide.tsx)
+- [app/gcl/agwa/section5/NavBar.tsx](app/gcl/agwa/section5/NavBar.tsx)
+- [app/gcl/agwa/section5/constants.ts](app/gcl/agwa/section5/constants.ts)
+- [app/gcl/agwa/section5/page.css](app/gcl/agwa/section5/page.css)
+- [`__tests__/gcl/agwa/section5/page.test.tsx`](__tests__/gcl/agwa/section5/page.test.tsx)
+- [docs/migration-inventory/agwa-s5-browsers-endpoints.json](docs/migration-inventory/agwa-s5-browsers-endpoints.json)
+- [archive/Gcl/Associate-Google-Workspace-Administrator/html/Agwa-s5-browsers-endpoints.html](archive/Gcl/Associate-Google-Workspace-Administrator/html/Agwa-s5-browsers-endpoints.html)
+- [archive/Gcl/Associate-Google-Workspace-Administrator/md/Agwa-s5-browsers-endpoints.md](archive/Gcl/Associate-Google-Workspace-Administrator/md/Agwa-s5-browsers-endpoints.md)
+
+---
+
+## 2026-08-14: AGWA Section 4「セキュリティポリシーとアクセス制御の管理」100%全量移行 (完了)
+
+### 目的
+
+`S4-security-access-control.html` を、Next.js App Router 5ファイル構成 (`page.tsx`, `AgwaSection4Guide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/gcl/agwa/section4` ルートへ移行。見出し(h1:1, h2:6, h3:20, h4:53)、全20個のテーブル、10個のMermaid図解、全71要素のリスト、全外部リンク・本文・注釈を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for agwa-section4` (`be48454`)
+- [x] **Step 1 (Red)**: `test(gcl): add failing tests for agwa-section4` (`df2f55f`)
+- [x] **Step 2 (Green)**: `feat(gcl): implement agwa-section4 to pass tests` (`83c9f88`)
+- [x] **Step 3 (Refactor)**: `refactor(gcl): integrate agwa-section4 into routing and update docs` (`b20096c`)
+- [x] **Step 4 (Archive & Sync)**: `chore(docs): update MIGRATION_PROGRESS.md — migrate S4-security-access-control.html to Next.js`
+
+### 関連ファイル
+
+- [app/gcl/agwa/section4/page.tsx](app/gcl/agwa/section4/page.tsx)
+- [app/gcl/agwa/section4/AgwaSection4Guide.tsx](app/gcl/agwa/section4/AgwaSection4Guide.tsx)
+- [app/gcl/agwa/section4/NavBar.tsx](app/gcl/agwa/section4/NavBar.tsx)
+- [app/gcl/agwa/section4/constants.ts](app/gcl/agwa/section4/constants.ts)
+- [app/gcl/agwa/section4/page.css](app/gcl/agwa/section4/page.css)
+- [`__tests__/gcl/agwa/section4/page.test.tsx`](__tests__/gcl/agwa/section4/page.test.tsx)
+- [docs/migration-inventory/agwa-section4.json](docs/migration-inventory/agwa-section4.json)
+- [archive/Gcl_Archive/Associate-Google-Workspace-Administrator/html/S4-security-access-control.html](archive/Gcl_Archive/Associate-Google-Workspace-Administrator/html/S4-security-access-control.html)
+
+---
 
 <!-- markdownlint-disable MD050 -->
 
@@ -7,8 +66,88 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 ## 現在地
 
 - **ブランチ:** dev
-- **最新完了タスク:** Google Cloud PCNE Section 2: VPCネットワークの実装ガイド 100%全量移行完了
-- **最終更新日時(UTC):** 2026-08-14T02:53:47Z
+- **最新完了タスク:** AGWA Section 2〜6・共通コンポーネント・教材レビュー指摘対応完了
+- **最終更新日時(UTC):** 2026-08-15T01:54:24Z
+
+## 2026-08-15: AGWA Section 2〜6・教材レビュー指摘対応 (完了)
+
+- [x] **共通テスト契約:** Mermaid の `min-width` リセット、モックの図ロール、Section 5 テーブル構造検証を追加（`7a4de72`）。
+- [x] **ナビゲーション:** Section 2/4 の最下部 active 補正と Section 5 のモバイル目次・`NAV_ITEMS` 正本化を実装（`6db863b`）。
+- [x] **Section 6:** 本文コンポーネントを `components/sections/` へ移し、CSS Modules とグローバル色トークンへ移行（`105d89c`）。
+- [x] **教材:** AGWA の Vault・DLP・MX・Data regions・権限・安全なCSV例と、PCA のネットワーク・ストレージ・Cloud Run記述を公式資料に合わせて更新（`2341fe8`, `725cd2a`）。
+- [x] **検証:** 2026-08-15T03:13:14Z に対象コミット `9ddf12a` を全体スコープで検証し、`bun run test` は131ファイル・1118件成功、`bun run lint` も成功。対象Markdown lintは0件。ユーザー指示に従いビルドと目視確認は未実施。
+
+## 2026-08-14: AGWA Section 1〜4 レビュー指摘対応 (完了)
+
+- [x] **テスト検証基盤:** Section 3 テストを正規配置へ移動し、移行抽出ヘルパーと Mermaid モックを共通化 (`5740b43`)。
+- [x] **ナビゲーション:** Section 1〜4 の目次データ、IntersectionObserver、モバイル状態、フォーカス・URL履歴を改善 (`7df21cf`)。
+- [x] **インベントリ:** Section 3 の9テーブルについて列見出し数を厳密化し、生成処理とテストの抽出ロジックを共有 (`0a7e24a`)。
+- [x] **CSS:** サイドバー幅、非推奨宣言、Section 2 重複定義、Section 3 CSS Modules、Section 4 Mermaid セレクタを整理 (`5bf90b5`)。
+- [x] **検証:** 2026-08-14T16:50:02Z に対象コミット `5bf90b5` を全体スコープで検証し、`bun run test` は127ファイル・1099件成功、`bun run lint` も成功。後続のサンドボックス実行は条件が異なるため `docs/TEST_COVERAGE_PROGRESS.md` に別記。ユーザー指示に従いビルドと目視確認は未実施。
+
+## 2026-08-15: AGWA Section 1「ユーザーアカウント・ドメイン・ディレクトリの管理」100%全量移行 (完了)
+
+### 目的
+
+`Associate-google-workspace-admin-s1.html` を、Next.js App Router 構成 (`page.tsx`, `AgwaSection1Guide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/gcl/agwa/section1` ルートへ移行。見出し(h1:1, h2:9, h3:19, h4:5)、全テーブル、10個のMermaid図解、全外部リンク・全本文・注釈を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- **Step 0 — Inventory:** `docs/migration-inventory/agwa-section1.json` を生成・保存 (`6c1427f`)。
+- **Step 1 — Red (失敗テスト):** `__tests__/gcl/agwa/section1/page.test.tsx` を作成し、全要素（見出し・本文・表セル・リスト・外部リンク・Mermaid図・コードブロック）のアサーションで失敗を確認 (`8f4f8a1`)。
+- **Step 2 — Green (実装):** `app/gcl/agwa/section1/` 配下を実装・修正し、13件全テストのPASSを確認 (`23a5efb`)。
+- **Step 3 — Refactor:** `app/constants.ts` ルーティング統合 (`pct: '20%'`) を完了。
+
+## 2026-08-14: AGWA Section 3「データガバナンスとコンプライアンスの管理」100%全量移行 (完了)
+
+### 目的
+
+`Agwa-section3-data-governance.html` を、Next.js App Router 5ファイル構成 (`page.tsx`, `AgwaSection3Guide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/gcl/agwa/section3` ルートへ移行。見出し(h1:1, h2:8, h3:27, h4:6)、全9個のテーブル、10個のMermaid図解、全外部リンク・全本文・注釈を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for agwa-section3-data-governance`
+- [x] **Step 1 (Red)**: `test(gcl): add failing tests for agwa-section3-data-governance`
+- [x] **Step 2 (Green)**: `feat(gcl): implement agwa-section3-data-governance to pass tests`
+- [x] **Step 3 (Refactor)**: `refactor(gcl): integrate agwa-section3-data-governance into routing and update docs`
+- [x] **Step 4 (Archive & Sync)**: `chore(docs): update MIGRATION_PROGRESS.md — migrate Agwa-section3-data-governance.html to Next.js`
+
+### 関連ファイル
+
+- [app/gcl/agwa/section3/page.tsx](app/gcl/agwa/section3/page.tsx)
+- [app/gcl/agwa/section3/AgwaSection3Guide.tsx](app/gcl/agwa/section3/AgwaSection3Guide.tsx)
+- [app/gcl/agwa/section3/NavBar.tsx](app/gcl/agwa/section3/NavBar.tsx)
+- [app/gcl/agwa/section3/constants.ts](app/gcl/agwa/section3/constants.ts)
+- [app/gcl/agwa/section3/page.css](app/gcl/agwa/section3/page.css)
+- [__tests__/gcl/agwa-section3-data-governance/page.test.tsx](__tests__/gcl/agwa-section3-data-governance/page.test.tsx)
+- [docs/migration-inventory/agwa-section3-data-governance.json](docs/migration-inventory/agwa-section3-data-governance.json)
+- [archive/Gcl_Archive/Associate-Google-Workspace-Administrator/html/Agwa-section3-data-governance.html](archive/Gcl_Archive/Associate-Google-Workspace-Administrator/html/Agwa-section3-data-governance.html)
+- [archive/Gcl_Archive/Associate-Google-Workspace-Administrator/md/Agwa-section3-data-governance.md](archive/Gcl_Archive/Associate-Google-Workspace-Administrator/md/Agwa-section3-data-governance.md)
+
+## 2026-08-14: AGWA Section 2「コアWorkspaceサービスの管理」100%全量移行 (完了)
+
+### 目的
+
+`Agwa-section2.html` を、Next.js App Router 5ファイル構成 (`page.tsx`, `AgwaSection2Guide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/gcl/agwa/section2` ルートへ移行。見出し(h1:1, h2:11, h3:50)、全16個のテーブル、13個のMermaid図解、全外部リンク・全本文・注釈を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for agwa-section2`
+- [x] **Step 1 (Red)**: `test(gcl): add failing tests for agwa-section2`
+- [x] **Step 2 (Green)**: `feat(gcl): implement agwa-section2 to pass tests`
+- [x] **Step 3 (Refactor)**: `refactor(gcl): integrate agwa-section2 into routing and update docs`
+- [x] **Step 4 (Archive & Sync)**: `chore(docs): update MIGRATION_PROGRESS.md — migrate Agwa-section2.html to Next.js`
+
+### 関連ファイル
+
+- [app/gcl/agwa/section2/page.tsx](app/gcl/agwa/section2/page.tsx)
+- [app/gcl/agwa/section2/AgwaSection2Guide.tsx](app/gcl/agwa/section2/AgwaSection2Guide.tsx)
+- [app/gcl/agwa/section2/NavBar.tsx](app/gcl/agwa/section2/NavBar.tsx)
+- [app/gcl/agwa/section2/constants.ts](app/gcl/agwa/section2/constants.ts)
+- [app/gcl/agwa/section2/page.css](app/gcl/agwa/section2/page.css)
+- [__tests__/gcl/agwa/section2.test.tsx](__tests__/gcl/agwa/section2.test.tsx)
+- [docs/migration-inventory/agwa-section2.json](docs/migration-inventory/agwa-section2.json)
+- [archive/Gcl_Archive/Associate-Google-Workspace-Administrator/html/Agwa-section2.html](archive/Gcl_Archive/Associate-Google-Workspace-Administrator/html/Agwa-section2.html)
 
 ## 2026-08-14: Google Cloud「PCNE Section 2: VPCネットワークの実装 完全ガイド」100%全量移行・デザイン完全復元 (完了)
 
@@ -1268,8 +1407,8 @@ bun run test:e2e e2e/nav.spec.ts  # Chromium 2 件 pass
 ## 次回セッションでの再開プロンプト
 
 あなたは熟練したフロントエンドエンジニアであり、Next.js (App Router) の移行スペシャリストです。
-最新実装 HEAD は `3dbc0fa`、前回進捗同期コミットは `7ec1df8` です。
-コミット認可フロー、移行インベントリ契約、AGWA Section 6のDrive復元分岐はカテゴリー別コミットで対応済みです。全体ESLint、対象Markdown lint、3ミラー一致、インベントリスクリプト、Mermaid構文解析は成功しています。E2E、Visualテスト、ビルドは未実施です。
+最新実装 HEAD は `725cd2a`、前回進捗同期コミットは `9b2bac0` です。
+AGWA Section 2〜6 と共通 Mermaid コンポーネントのレビュー指摘は、テスト契約、ナビゲーション、Section 6 CSS Modules、教材修正のカテゴリー別コミットで対応済みです。最新の全体テストとESLintの結果は `docs/TEST_COVERAGE_PROGRESS.md` のAGWA実行記録を参照してください。E2E、Visualテスト、ビルドは未実施です。
 
 標準ワークフローの正準は `.agents/rules/tdd-commit-workflow.md` で、`.claude` / `.gemini` は同期ミラーです。次回は次の4ステップを維持してください。
 
@@ -1278,7 +1417,7 @@ bun run test:e2e e2e/nav.spec.ts  # Chromium 2 件 pass
 3. **Step 2 — Pass:** 最小実装でテストを成功させる。
 4. **Step 3 — Refactor:** 整理・統合後に対象検証を再実行する。
 
-各ステップのコミットは、ユーザーが明示的に認可した場合だけ実行してください。未認可ならコミット可能な状態で停止します。サンドボックス実行記録として、今回の `npm test` は987件成功し、既存ホームと異なる見出しを期待するスモーク1件と、`window.localStorage.clear` が利用できない環境依存30件が失敗しました。次回はアプリ実装を変更する前に、これらのテスト環境と期待値を切り分けてください。
+各ステップのコミットは、ユーザーが明示的に認可した場合だけ実行してください。未認可ならコミット可能な状態で停止します。標準検証コマンドは `bun run test` です。最新のサンドボックス実行の件数・実行日時・対象コミット・スコープは `docs/TEST_COVERAGE_PROGRESS.md` のAGWA実行記録を参照してください。
 
 ---
 
