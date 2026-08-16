@@ -184,7 +184,7 @@
     "Kubernetes Gateway API（標準仕様）",
     "実装されるLB",
     "常にClassic Application Load Balancer",
-    "GatewayClasseに応じて外部/内部・global/regionalを選択可能",
+    "GatewayClassに応じて外部/内部・global/regionalを選択可能",
     "リソース構成",
     "Ingressリソース1つに集約",
     "GatewayClass／Gateway／HTTPRouteに分離",
@@ -196,7 +196,7 @@
     "名前空間をまたいだルーティング委譲が可能",
     "ヘルスチェック",
     "パラメータを自動推測",
-    "HealthCheckPolicyによる明示設定が必要"
+    "標準の / と既定ポリシーを自動作成。追加パス・ヘッダー・タイムアウトなどを変更する場合のみHealthCheckPolicyを使用"
   ],
   "listItems": [
     "はじめに：このタスクの位置づけと出題範囲",
@@ -611,7 +611,7 @@
     },
     {
       "kind": "paragraph",
-      "text": "この分離により、プラットフォームチームがGatewayのインフラ設定を管理し、アプリケーションチームがクラスタ全体の権限を持たずに自分たちのHTTPRouteだけを管理する、という役割分担が可能になります。GKE Gateway controllerは常にGCE_VM_IP_PORTゾーンNEGバックエンドを使用し、Ingressと異なりヘルスチェックパラメータを自動推測しないため、明示的なHealthCheckPolicyの設定が必要です。"
+      "text": "この分離により、プラットフォームチームがGatewayのインフラ設定を管理し、アプリケーションチームがクラスタ全体の権限を持たずに自分たちのHTTPRouteだけを管理する、という役割分担が可能になります。GKE Gateway controllerは常にGCE_VM_IP_PORTゾーンNEGバックエンドを使用します。IngressのようにPodのreadiness probeからパラメータを推測はしませんが、標準パス / と既定値を使うヘルスチェックは自動作成されるため、HealthCheckPolicyは必須ではありません。アプリケーションが / にHTTP 200を返さない場合や、追加のパス、ヘッダー、タイムアウトなどの既定値を変更する場合にのみHealthCheckPolicyを設定します。"
     },
     {
       "kind": "paragraph",
@@ -666,13 +666,13 @@
   },
   "structures": {
     "tableColumnHeaders": [
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0
+      2,
+      5,
+      4,
+      4,
+      4,
+      3,
+      3
     ],
     "codeLines": []
   }

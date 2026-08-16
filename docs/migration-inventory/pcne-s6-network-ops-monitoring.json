@@ -1290,13 +1290,13 @@
   },
   "structures": {
     "tableColumnHeaders": [
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0
+      3,
+      3,
+      2,
+      3,
+      3,
+      3,
+      2
     ],
     "codeLines": []
   }
