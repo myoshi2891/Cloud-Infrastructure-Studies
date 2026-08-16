@@ -64,7 +64,7 @@
 
 ### 目的
 
-`S3-load-balancing-traffic-management.html` を、Next.js App Router 5ファイル構成 (`page.tsx`, `PcneSection3LoadBalancingGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/gcl/professional-cloud-network-engineer/section3-load-balancing` ルートへ移行。見出し(h1:1, h2:7, h3:18)、全7個のテーブル、10個のMermaid図解、全リスト、全外部リンク・全本文・注釈を一切の省略・要約なしで100%全量移植。
+`S3-load-balancing-traffic-management.html` を、Next.js App Router 5ファイル構成 (`page.tsx`, `PcneSection3LoadBalancingGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/gcl/professional-cloud-network-engineer/section3-load-balancing` ルートへ移行。見出し(h1:1, h2:8, h3:18)、全7個のテーブル、10個のMermaid図解、全リスト、全外部リンク・全本文・注釈を一切の省略・要約なしで100%全量移植。
 
 ### 完了済みステップ
 
