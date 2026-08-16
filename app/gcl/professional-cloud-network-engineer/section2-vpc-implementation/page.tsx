@@ -5,7 +5,7 @@ import './page.css';
 import PcneSection2VpcImplementationGuide from './PcneSection2VpcImplementationGuide';
 
 export const metadata: Metadata = {
-  title: 'PCNE 学習ガイド S2: VPCネットワークの実装',
+  title: 'PCNE S2: VPCネットワークの実装 | Google Cloud 認定試験対策',
   description:
     'Google Cloud Professional Cloud Network Engineer (PCNE) 試験対策ガイド S2: VPCネットワークの実装。VPC構成、Peering, Shared VPC, Private Access, VPC Service Controls, VPCルーティング, NCC, GKEネットワーキングを徹底解説。',
 };

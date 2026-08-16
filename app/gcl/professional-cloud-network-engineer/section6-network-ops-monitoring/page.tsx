@@ -3,7 +3,7 @@ import { PcneSection6NetworkOpsMonitoringGuide } from './PcneSection6NetworkOpsM
 import './page.css';
 
 export const metadata: Metadata = {
-    title: 'PCNE試験対策ガイド S6: ネットワーク操作と監視',
+    title: 'PCNE S6: ネットワーク操作と監視 | Google Cloud 認定試験対策',
     description:
         'Google Cloud Observability（Cloud Logging / Cloud Monitoring）、各種ネットワークコンポーネントのトラブルシューティング、Network Intelligence Centerによる可視化と予防診断を包括的に解説します。',
 };
