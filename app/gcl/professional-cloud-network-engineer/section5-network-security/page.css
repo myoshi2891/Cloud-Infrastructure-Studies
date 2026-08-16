@@ -140,7 +140,7 @@
     font-size: 34px;
     line-height: 1.4;
     margin: 0 0 20px;
-    background: linear-gradient(90deg, #ffffff, var(--color-google-blue, #a5c0ff));
+    background: linear-gradient(90deg, var(--color-guide-foreground-bright), var(--color-google-blue, #a5c0ff));
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;

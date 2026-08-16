@@ -274,7 +274,7 @@ export function PcneSection6NetworkOpsMonitoringGuide() {
                 </h3>{" "}<p>
                     BGPセッションは、確立までに複数の状態を遷移します。試験では状態遷移の理解に加え、「どのログ/メトリクスでどの状態を確認するか」が問われます。
                 </p>{" "}
-<Diagram id="diag-10" label="2.4 Cloud RouterのBGPピアリングのトラブルシューティング" />
+<Diagram id="diag-10" label="2.4 BGPセッションの状態遷移（Idle から Established まで）" />
 {" "}<p>代表的な障害パターンと対処の要点は次のとおりです。</p>{" "}<div className="table-scroll">{" "}<table><thead><tr className="header"><th scope="col">障害パターン</th><th scope="col">原因</th><th scope="col">対処</th></tr></thead><tbody><tr className="odd"><td>ローカルASNとピアASNの重複</td><td>
                                     同一リージョン・同一ネットワーク内で同じASNを持つオンプレミスデバイスとセッションを試みている
                                 </td><td>Cloud RouterまたはオンプレミスルータのASN設計を見直す</td></tr><tr className="even"><td>MD5認証エラー(<code>MD5_AUTH_INTERNAL_PROBLEM</code>)</td><td>Cloud Router内部でMD5認証設定に失敗(内部エラー)</td><td>通常は自動復旧を待つ(1時間以上続く場合はサポートに連絡)</td></tr><tr className="odd"><td>MD5認証エラー(鍵不一致)</td><td>Cloud Routerとピアの事前共有鍵(認証キー)が一致していない</td><td>認証キーを更新して再同期</td></tr><tr className="even"><td>最大経路数超過によるセッション遮断</td><td>オンプレミスルータが5,000プレフィックスを超えて広告</td><td>{" "}<code>CEASE/MAX_PREFIXES_REACHED</code>ログを確認し、広告プレフィックス数を削減するか、手動でBGPピアリングをリセット
@@ -282,7 +282,7 @@ export function PcneSection6NetworkOpsMonitoringGuide() {
                                     オンプレミスルータでGraceful
                                     Restartに対応し、ホールドタイマーを60秒以上に設定していれば通常は問題ない
                                 </td></tr><tr className="even"><td>BFDの検知タイムアウト</td><td>制御パケットが検知タイマー(既定5,000ms)以内に届かない</td><td>BFDのMinRx/MinTx間隔・マルチプライヤの双方一致を確認</td></tr></tbody></table>{" "}</div>{" "}<p>BFDを併用している場合は、BGPとは独立した状態機械としてBFDの状態を確認します。</p>{" "}
-<Diagram id="diag-11" label="2.4 Cloud RouterのBGPピアリングのトラブルシューティング" />
+<Diagram id="diag-11" label="2.4 BFDセッションの状態遷移（AdminDown・Down・Init・Up）" />
 {" "}<p>
                     BFDの診断コード(<code>NO_DIAGNOSTIC</code>、<code>CONTROL_DETECTION_TIME_EXPIRED</code>、<code>NEIGHBOR_SIGNALED_SESSION_DOWN</code>、<code>ADMINISTRATIVELY_DOWN</code>など)は、<code>gcloud compute routers get-status</code>の<code>bfdStatus</code>フィールドで確認できます。BFDとBGP Graceful
                     Restartを併用している場合、Cloud
@@ -298,12 +298,12 @@ export function PcneSection6NetworkOpsMonitoringGuide() {
                 </h3>{" "}<p>
                     3つのツールはそれぞれ異なる「見え方」を提供するため、組み合わせて使うことで根本原因への到達が早まります。
                 </p>{" "}
-<Diagram id="diag-12" label="2.5 VPC Flow Logs・ファイアウォールログ・Packet Mirroringを使ったトラブルシューティング" />
+<Diagram id="diag-12" label="2.5 疎通・性能の問い合わせを Flow Logs・ファイアウォールログ・Packet Mirroring で切り分ける判断フロー" />
 {" "}<p>
                     VPC Flow
                     Logsは「通信があったかどうか、どれだけの量か」を5-tuple単位で示しますが、パケットのペイロード自体は含みません。ペイロードレベルでの分析(アプリケーションプロトコルの異常、侵入検知システムとの連携など)が必要な場合は<strong>Packet Mirroring</strong>を使用します。
                 </p>{" "}
-<Diagram id="diag-13" label="2.5 VPC Flow Logs・ファイアウォールログ・Packet Mirroringを使ったトラブルシューティング" />
+<Diagram id="diag-13" label="2.5 Packet Mirroring のミラー対象からコレクタ・解析ツールまでのデータ経路" />
 {" "}<p>Packet Mirroringの主な制約・特性は次のとおりです。</p>{" "}<ul>{" "}<li>
                         ミラー対象とコレクタ宛先は同一プロジェクト・同一リージョンである必要がある(コレクタは同一VPCまたはVPC
                         Network Peeringで接続されたVPCに配置可能)

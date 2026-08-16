@@ -45,6 +45,18 @@ export function NavBar({ isOpen, onToggle, onClose }: NavBarProps) {
         return () => observer.disconnect();
     }, [allNavIds]);
 
+    // モバイルのオーバーレイ表示中は Escape で閉じられるようにする
+    useEffect(() => {
+        if (!isOpen) return;
+
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (event.key === 'Escape') onClose();
+        };
+
+        document.addEventListener('keydown', handleKeyDown);
+        return () => document.removeEventListener('keydown', handleKeyDown);
+    }, [isOpen, onClose]);
+
     const handleNavClick = useCallback(
         (id: string) => (e: React.MouseEvent<HTMLAnchorElement>) => {
             e.preventDefault();
@@ -71,7 +83,7 @@ export function NavBar({ isOpen, onToggle, onClose }: NavBarProps) {
                 type="button"
                 className="menu-toggle"
                 id="menuToggle"
-                aria-label="目次を開く"
+                aria-label={isOpen ? '目次を閉じる' : '目次を開く'}
                 aria-expanded={isOpen}
                 aria-controls="sidebar"
                 onClick={onToggle}

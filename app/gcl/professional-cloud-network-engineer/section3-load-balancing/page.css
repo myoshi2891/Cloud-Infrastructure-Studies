@@ -3,8 +3,8 @@
 .pcne-s3-page {
     display: block;
     min-height: 100vh;
-    background: var(--color-pcne-s3-background, #07111e);
-    color: var(--color-pcne-s3-foreground, #dce6f4);
+    background: var(--color-pcne-s3-background);
+    color: var(--color-pcne-s3-foreground);
     font-family: var(--font-body, var(--font-sans, system-ui, sans-serif));
     line-height: 1.85;
     font-size: 16px;

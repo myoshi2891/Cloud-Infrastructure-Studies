@@ -78,7 +78,7 @@
 }
 
 .pcne-s4-page .nav-list li a:hover {
-    background: rgba(124, 158, 255, 0.15);
+    background: var(--color-pcne-s4-accent-soft);
     color: var(--color-foreground, #e8edf7);
     text-decoration: none;
 }
@@ -86,7 +86,7 @@
 .pcne-s4-page .nav-list li a.active {
     color: var(--color-google-blue, #7c9eff);
     border-left-color: var(--color-google-blue, #7c9eff);
-    background: rgba(124, 158, 255, 0.15);
+    background: var(--color-pcne-s4-accent-soft);
     font-weight: 600;
 }
 
@@ -118,7 +118,7 @@
     font-size: 2.1rem;
     line-height: 1.4;
     margin: 0 0 18px 0;
-    background: linear-gradient(90deg, #ffffff 0%, var(--color-google-blue, #7c9eff) 100%);
+    background: linear-gradient(90deg, var(--color-guide-foreground-bright) 0%, var(--color-google-blue, #7c9eff) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -268,7 +268,7 @@
 }
 
 .pcne-s4-page tbody tr:hover {
-    background: rgba(124, 158, 255, 0.05);
+    background: var(--color-pcne-s4-accent-wash);
 }
 
 /* ---------- Mermaid ---------- */
@@ -312,7 +312,7 @@
 /* ---------- Citation blockquotes ---------- */
 .pcne-s4-page blockquote.citation {
     border-left: 3px solid var(--color-pcne-s4-primary-muted);
-    background: rgba(124, 158, 255, 0.05);
+    background: var(--color-pcne-s4-accent-wash);
     margin: 0 0 26px 0;
     padding: 12px 20px;
     border-radius: 0 8px 8px 0;
@@ -355,7 +355,7 @@
 .pcne-s4-page .checklist-counter {
     font-size: 0.8rem;
     color: var(--color-google-blue, #7c9eff);
-    background: rgba(124, 158, 255, 0.15);
+    background: var(--color-pcne-s4-accent-soft);
     padding: 4px 12px;
     border-radius: 999px;
     font-weight: 600;
@@ -383,7 +383,7 @@
 }
 
 .pcne-s4-page ul.checklist-list li label:hover {
-    background: rgba(124, 158, 255, 0.06);
+    background: var(--color-pcne-s4-accent-subtle);
 }
 
 .pcne-s4-page ul.checklist-list input[type='checkbox'] {
@@ -461,7 +461,7 @@
 }
 
 .pcne-s4-page .ref-card a.ref-link:hover {
-    background: rgba(124, 158, 255, 0.08);
+    background: var(--color-pcne-s4-accent-faint);
     color: var(--color-google-blue, #7c9eff);
     text-decoration: none;
 }
