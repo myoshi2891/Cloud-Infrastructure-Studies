@@ -139,6 +139,10 @@ export function defineMigrationSuite(
             const container = renderPage();
             const tables = [...container.querySelectorAll('table')];
             expect(tables).toHaveLength(inventory.counts.table);
+            // 列見出し数の期待値が表の件数だけ揃っていないと、以降の
+            // tableColumnHeaders[index] が undefined になり「0 件」と誤検出される。
+            // 件数不一致はここで明示的に落とす。
+            expect(inventory.structures.tableColumnHeaders).toHaveLength(inventory.counts.table);
             tables.forEach((table, index) => {
                 expect(table.querySelector('thead')).not.toBeNull();
                 expect(table.querySelectorAll('thead th[scope="col"]').length).toBe(
