@@ -1,0 +1,417 @@
+/* PCNE Section 6: ネットワーク操作と監視 ページスタイル */
+
+.pcne-s6-page {
+    display: block;
+    min-height: 100vh;
+    background: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-body, var(--font-sans, system-ui, sans-serif));
+    line-height: 1.85;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+}
+
+.pcne-s6-page * {
+    box-sizing: border-box;
+}
+
+/* ---------------- Sidebar ---------------- */
+.pcne-s6-page .sidebar {
+    position: fixed;
+    top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px));
+    left: 0;
+    bottom: 0;
+    width: 280px;
+    overflow-y: auto;
+    background: var(--color-surface, #0d1a2e);
+    border-right: 1px solid var(--color-border, #1c2f4a);
+    padding: 28px 0 60px 0;
+    z-index: 40;
+    transition: transform 0.25s ease;
+}
+
+.pcne-s6-page .side-nav-brand {
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--color-foreground, #e8edf7);
+    padding: 0 24px;
+    letter-spacing: 0.02em;
+}
+
+.pcne-s6-page .side-nav-brand span {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--color-google-blue, #7c9eff);
+    padding: 4px 0 20px 0;
+    border-bottom: 1px solid var(--color-border, #16273f);
+    margin-bottom: 8px;
+    font-weight: normal;
+    letter-spacing: normal;
+}
+
+.pcne-s6-page .nav-list {
+    list-style: none;
+    margin: 0;
+    padding: 8px 0 0 0;
+}
+
+.pcne-s6-page .nav-list li {
+    margin: 0;
+}
+
+.pcne-s6-page .nav-list li a {
+    display: block;
+    padding: 7px 24px;
+    color: var(--color-muted-foreground, #94a3bd);
+    font-size: 0.88rem;
+    border-left: 2px solid transparent;
+    text-decoration: none;
+    transition:
+        background 0.15s,
+        color 0.15s,
+        border-color 0.15s;
+}
+
+.pcne-s6-page .nav-list li.nav-h3 a {
+    padding-left: 38px;
+    font-size: 0.82rem;
+    color: var(--color-muted-foreground, #5f7292);
+}
+
+.pcne-s6-page .nav-list li a:hover {
+    background: rgba(124, 158, 255, 0.15);
+    color: var(--color-foreground, #e8edf7);
+    text-decoration: none;
+}
+
+.pcne-s6-page .nav-list li a.active {
+    color: var(--color-google-blue, #7c9eff);
+    border-left-color: var(--color-google-blue, #7c9eff);
+    background: rgba(124, 158, 255, 0.15);
+    font-weight: 600;
+}
+
+.pcne-s6-page .menu-toggle {
+    display: none;
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 60;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--color-google-blue, #7c9eff);
+    color: var(--color-background, #07111e);
+    border: none;
+    font-size: 1.3rem;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.pcne-s6-page .nav-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 39;
+}
+
+/* ---------------- Main Content ---------------- */
+.pcne-s6-page .main {
+    margin-left: 280px;
+    width: calc(100% - 280px);
+    max-width: none;
+    padding: 0 56px 100px 56px;
+    min-height: 100vh;
+}
+
+/* ---------------- Hero Section ---------------- */
+.pcne-s6-page .hero {
+    padding: 48px 0 36px 0;
+    border-bottom: 1px solid var(--color-border, #16273f);
+    margin-bottom: 48px;
+}
+
+.pcne-s6-page .kicker {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-google-blue, #7c9eff);
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.pcne-s6-page .hero h1 {
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: var(--color-foreground, #e8edf7);
+    line-height: 1.3;
+    margin: 0 0 20px 0;
+}
+
+.pcne-s6-page .meta-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 24px;
+}
+
+.pcne-s6-page .meta-badge {
+    background: var(--color-surface, #0d1a2e);
+    border: 1px solid var(--color-border, #1c2f4a);
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 0.82rem;
+}
+
+.pcne-s6-page .meta-badge .label {
+    color: var(--color-muted-foreground, #7e91ad);
+    margin-right: 6px;
+}
+
+.pcne-s6-page .meta-badge .value {
+    color: var(--color-foreground, #e8edf7);
+    font-weight: 600;
+}
+
+.pcne-s6-page .hero-note {
+    background: var(--color-surface, #0d1a2e);
+    border-left: 4px solid var(--color-google-blue, #7c9eff);
+    padding: 16px 20px;
+    border-radius: 0 8px 8px 0;
+    font-size: 0.92rem;
+    color: var(--color-muted-foreground, #becce2);
+    line-height: 1.7;
+}
+
+/* ---------------- Typography & Headings ---------------- */
+.pcne-s6-page h2 {
+    font-size: 1.55rem;
+    font-weight: 800;
+    color: var(--color-foreground, #e8edf7);
+    margin: 56px 0 20px 0;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--color-border, #16273f);
+    scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 24px);
+}
+
+.pcne-s6-page h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-google-blue, #7c9eff);
+    margin: 40px 0 16px 0;
+    scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 24px);
+}
+
+.pcne-s6-page h4 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--color-foreground, #e8edf7);
+    margin: 28px 0 12px 0;
+    scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 24px);
+}
+
+.pcne-s6-page p {
+    margin: 0 0 16px 0;
+    color: var(--color-foreground, #d0dbe8);
+    font-size: 0.95rem;
+    line-height: 1.85;
+}
+
+.pcne-s6-page ul,
+.pcne-s6-page ol {
+    margin: 0 0 20px 0;
+    padding-left: 24px;
+    color: var(--color-foreground, #d0dbe8);
+    font-size: 0.95rem;
+    line-height: 1.85;
+}
+
+.pcne-s6-page li {
+    margin-bottom: 8px;
+}
+
+.pcne-s6-page strong {
+    color: var(--color-foreground, #ffffff);
+    font-weight: 700;
+}
+
+.pcne-s6-page a {
+    color: var(--color-google-blue, #7c9eff);
+    text-decoration: none;
+}
+
+.pcne-s6-page a:hover {
+    text-decoration: underline;
+}
+
+.pcne-s6-page code {
+    background: var(--color-surface, #0d1a2e);
+    border: 1px solid var(--color-border, #1c2f4a);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: var(--font-mono, monospace);
+    font-size: 0.88em;
+    color: var(--color-foreground, #e8edf7);
+}
+
+/* ---------------- Tables ---------------- */
+.pcne-s6-page .table-scroll,
+.pcne-s6-page .table-wrapper {
+    overflow-x: auto;
+    margin: 24px 0;
+    border: 1px solid var(--color-border, #1c2f4a);
+    border-radius: 8px;
+    background: var(--color-surface, #0d1a2e);
+}
+
+.pcne-s6-page table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+    text-align: left;
+}
+
+.pcne-s6-page th {
+    background: var(--color-card, #122238);
+    color: var(--color-foreground, #ffffff);
+    font-weight: 700;
+    padding: 12px 16px;
+    border-bottom: 2px solid var(--color-border, #1c2f4a);
+    white-space: nowrap;
+}
+
+.pcne-s6-page td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--color-border, #16273f);
+    color: var(--color-foreground, #d0dbe8);
+    vertical-align: top;
+    line-height: 1.6;
+}
+
+.pcne-s6-page tr:last-child td {
+    border-bottom: none;
+}
+
+.pcne-s6-page tr:hover td {
+    background: rgba(124, 158, 255, 0.04);
+}
+
+/* ---------------- Callouts & Boxes ---------------- */
+.pcne-s6-page .callout,
+.pcne-s6-page .callout-warn,
+.pcne-s6-page .callout-good,
+.pcne-s6-page .callout-source,
+.pcne-s6-page .annotation {
+    padding: 18px 22px;
+    border-radius: 8px;
+    margin: 24px 0;
+    font-size: 0.92rem;
+    line-height: 1.75;
+    background: var(--color-surface, #0d1a2e);
+    border: 1px solid var(--color-border, #1c2f4a);
+    border-left-width: 4px;
+}
+
+.pcne-s6-page .callout {
+    border-left-color: var(--color-google-blue, #7c9eff);
+}
+
+.pcne-s6-page .callout-warn {
+    border-left-color: var(--color-google-yellow, #ffb454);
+    background: rgba(255, 180, 84, 0.05);
+}
+
+.pcne-s6-page .callout-good {
+    border-left-color: var(--color-google-green, #5ee6a8);
+    background: rgba(94, 230, 168, 0.05);
+}
+
+.pcne-s6-page .callout-source {
+    border-left-color: var(--color-google-blue, #8fa8ff);
+    background: rgba(143, 168, 255, 0.05);
+}
+
+.pcne-s6-page .callout-title {
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--color-foreground, #ffffff);
+}
+
+/* ---------------- Checklist Cards ---------------- */
+.pcne-s6-page .checklist-card {
+    background: var(--color-surface, #0d1a2e);
+    border: 1px solid var(--color-border, #1c2f4a);
+    border-radius: 8px;
+    padding: 24px;
+    margin: 24px 0;
+}
+
+.pcne-s6-page .checklist-card h4 {
+    margin-top: 0;
+    color: var(--color-google-blue, #7c9eff);
+}
+
+.pcne-s6-page .checklist-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 14px;
+    font-size: 0.92rem;
+    color: var(--color-foreground, #d0dbe8);
+    line-height: 1.6;
+}
+
+.pcne-s6-page .checklist-item:last-child {
+    margin-bottom: 0;
+}
+
+.pcne-s6-page .checklist-item input[type="checkbox"] {
+    margin-top: 4px;
+    accent-color: var(--color-google-blue, #7c9eff);
+    cursor: pointer;
+}
+
+/* ---------------- Mermaid Wrap ---------------- */
+.pcne-s6-page .mermaid-wrap {
+    display: flex;
+    justify-content: safe center;
+    overflow-x: auto;
+    width: 100%;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    background: var(--color-surface, #0d1a2e);
+    border: 1px solid var(--color-border, #1c2f4a);
+    border-radius: 12px;
+}
+
+/* ---------------- Responsive ---------------- */
+@media (max-width: 900px) {
+    .pcne-s6-page .sidebar {
+        transform: translateX(-100%);
+    }
+
+    .pcne-s6-page .sidebar.open {
+        transform: translateX(0);
+    }
+
+    .pcne-s6-page .nav-backdrop.open {
+        display: block;
+    }
+
+    .pcne-s6-page .menu-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .pcne-s6-page .main {
+        margin-left: 0;
+        width: 100%;
+        padding: 0 24px 80px 24px;
+    }
+
+    .pcne-s6-page .hero h1 {
+        font-size: 1.7rem;
+    }
+}
