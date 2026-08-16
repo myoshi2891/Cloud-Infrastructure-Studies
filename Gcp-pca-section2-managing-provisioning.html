@@ -3645,37 +3645,95 @@ flowchart TD
                         }
                     };
 
+                    // Keep the original diagram sources: mermaid replaces the
+                    // <pre> content with an <svg>, so a *re-render* (the only way
+                    // to recompute polygons, edge paths, node placement and the
+                    // viewBox with the final font metrics) needs the definitions
+                    // back. The self-heal pass above stays only as a last-resort
+                    // net for the residual foreignObject/rect mismatch.
+                    var blocks = Array.prototype.slice.call(
+                        document.querySelectorAll('pre.mermaid'),
+                    );
+                    var definitions = blocks.map(function (el) {
+                        return el.textContent;
+                    });
+
                     var renderAll = function () {
                         try {
-                            mermaid
-                                .run({ querySelector: 'pre.mermaid' })
+                            blocks.forEach(function (el, i) {
+                                el.textContent = definitions[i];
+                                el.removeAttribute('data-processed');
+                            });
+                            return mermaid
+                                .run({ nodes: blocks })
                                 .then(function () {
-                                    // First pass right after render.
                                     healOverflowingLabels();
-                                    // Second pass a beat later, in case a web-font subset
-                                    // (e.g. Noto Sans JP) was still mid-download during the
-                                    // first pass and swapped in afterward.
-                                    setTimeout(function () {
-                                        healOverflowingLabels();
-                                    }, 600);
                                 })
                                 .catch(function (e) {
                                     console.error('mermaid render error', e);
                                 });
                         } catch (e) {
                             console.error('mermaid render error', e);
+                            return Promise.resolve();
                         }
                     };
+
+                    // Serialize render passes so a font event that lands while a
+                    // render is still running cannot start a second mermaid.run
+                    // over the same nodes.
+                    var renderChain = Promise.resolve();
+                    var queueRender = function () {
+                        renderChain = renderChain.then(renderAll, renderAll);
+                        return renderChain;
+                    };
+
+                    // A font swap after the first render changes text metrics, so
+                    // redraw once when the font set settles instead of waiting a
+                    // fixed 600ms and patching boxes.
+                    if (document.fonts && document.fonts.addEventListener) {
+                        var fontRedrawDone = false;
+                        var onFontsSettled = function () {
+                            if (fontRedrawDone) return;
+                            fontRedrawDone = true;
+                            document.fonts.removeEventListener('loadingdone', onFontsSettled);
+                            document.fonts.removeEventListener('loadingerror', onFontsSettled);
+                            queueRender();
+                        };
+                        document.fonts.addEventListener('loadingdone', onFontsSettled);
+                        document.fonts.addEventListener('loadingerror', onFontsSettled);
+                    }
 
                     // Force the exact font/weight combinations used on this page to
                     // finish loading -- with a sample string that actually contains
                     // CJK glyphs -- *before* mermaid does its first text measurement
                     // pass. This closes the race that the self-heal pass above is
                     // also guarding against.
-                    var sample =
+                    // The diagram labels themselves are included: any glyph mermaid
+                    // will measure must be in the subset before it measures. Only
+                    // distinct characters are kept -- coverage is per glyph, so the
+                    // raw concatenation would just be a longer identical request.
+                    var uniqueChars = function (text) {
+                        var seen = Object.create(null);
+                        var out = '';
+                        for (var i = 0; i < text.length; ) {
+                            var code = text.charCodeAt(i);
+                            // Keep surrogate pairs intact so dedupe cannot leave a
+                            // lone half behind.
+                            var size = code >= 0xd800 && code <= 0xdbff ? 2 : 1;
+                            var ch = text.substr(i, size);
+                            i += size;
+                            if (seen[ch]) continue;
+                            seen[ch] = true;
+                            out += ch;
+                        }
+                        return out;
+                    };
+                    var sample = uniqueChars(
                         'AWS Azure VPC VNet Google Cloud 0123456789 ' +
-                        'プロジェクトネットワークサービスハブオンプレミス構成管理接続' +
-                        'ストレージコンピュートセキュリティベストプラクティス出典参考文献';
+                            'プロジェクトネットワークサービスハブオンプレミス構成管理接続' +
+                            'ストレージコンピュートセキュリティベストプラクティス出典参考文献' +
+                            definitions.join(' '),
+                    );
                     var weights = ['400', '500', '600', '700', '800'];
                     var families = ['Inter', 'Noto Sans JP'];
                     var loadPromises = [];
@@ -3690,14 +3748,32 @@ flowchart TD
                             });
                         });
                     }
-                    Promise.all(loadPromises)
-                        .catch(function () {})
-                        .then(function () {
-                            if (document.fonts && document.fonts.ready) {
-                                return document.fonts.ready.catch(function () {});
-                            }
-                        })
-                        .then(renderAll);
+                    // Never let a pending font promise keep the diagrams unrendered:
+                    // whichever settles first -- the font wait or the deadline --
+                    // triggers the first render pass.
+                    var withDeadline = function (promise, ms) {
+                        return new Promise(function (resolve) {
+                            var settled = false;
+                            var finish = function () {
+                                if (settled) return;
+                                settled = true;
+                                resolve();
+                            };
+                            setTimeout(finish, ms);
+                            Promise.resolve(promise).then(finish, finish);
+                        });
+                    };
+
+                    withDeadline(
+                        Promise.all(loadPromises)
+                            .catch(function () {})
+                            .then(function () {
+                                if (document.fonts && document.fonts.ready) {
+                                    return document.fonts.ready.catch(function () {});
+                                }
+                            }),
+                        1500,
+                    ).then(queueRender);
                 } catch (e) {
                     console.error('mermaid init error', e);
                 }
