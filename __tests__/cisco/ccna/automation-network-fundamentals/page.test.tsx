@@ -251,15 +251,18 @@ describe('CcnaNetworkFundamentalsGuide - scroll spy via IntersectionObserver', (
     const entryFor = (target: Element, isIntersecting: boolean): IntersectionObserverEntry =>
         ({ target, isIntersecting }) as unknown as IntersectionObserverEntry;
 
+    /** observe された要素から id 一致のセクションを返す。見つからない場合はその場で失敗させる。 */
     const sectionById = (captured: CapturedObserver, id: string): Element => {
         const section = captured.observed.find((element) => element.id === id);
         expect(section, `observed section not found: ${id}`).toBeDefined();
         return section as Element;
     };
 
+    /** 現在アクティブなナビリンクの href を返す。該当リンクが無ければ undefined。 */
     const activeHref = (container: HTMLElement): string | null | undefined =>
         container.querySelector('a[aria-current="location"]')?.getAttribute('href');
 
+    /** スタブした IntersectionObserver のコールバックを act 内で発火させ、scroll spy の再描画を反映する。 */
     const notify = (captured: CapturedObserver, entries: IntersectionObserverEntry[]): void => {
         act(() => {
             captured.callback(entries, {} as IntersectionObserver);
@@ -274,7 +277,6 @@ describe('CcnaNetworkFundamentalsGuide - scroll spy via IntersectionObserver', (
         const captured = installObserverStub();
         render(<CcnaNetworkFundamentalsGuide />);
 
-        expect(captured.observed.length).toBeGreaterThan(0);
         expect(captured.observed.map((element) => element.id)).toContain('step1');
         expect(captured.observed.map((element) => element.id)).toContain('step3');
     });
