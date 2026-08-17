@@ -14,7 +14,7 @@ import { DiagramSVG } from '@/components/DiagramSVG';
 export function Section5() {
     return (
         <section className={sharedStyles.section} id="s5" aria-labelledby="s5-title">
-            <div className={sharedStyles.sectionLabel}>Section 5 (~12%)</div>
+            <div className={sharedStyles.sectionLabel}>Section 5 (~13%)</div>
             <h2
                 className={sharedStyles.sectionTitle}
                 id="s5-title"
@@ -23,7 +23,7 @@ export function Section5() {
                 ネットワークセキュリティ設計と実装
             </h2>
             <p className={sharedStyles.sectionDesc}>
-                約12%を占めるセクション。Cloud Armor・VPC Service
+                公式 Section 6 に対応し、約13%を占めるセクション。Cloud Armor・VPC Service
                 Controls・IAP・SSL/TLSの組み合わせが頻出。「どのサービスを使えばデータ漏洩を防げるか」が問われる。
             </p>
             <div className={sharedStyles.divider}></div>

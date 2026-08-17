@@ -13,7 +13,7 @@ import sharedStyles from './SharedSection.module.css';
 export function Section1() {
     return (
         <section className={sharedStyles.section} id="s1" aria-labelledby="s1-title">
-            <div className={sharedStyles.sectionLabel}>Section 1 (21%)</div>
+            <div className={sharedStyles.sectionLabel}>Section 1 (~41%)</div>
             <h2 className={sharedStyles.sectionTitle} id="s1-title" style={{ color: 'var(--color-primary)' }}>
                 VPC ネットワークの設計・実装
             </h2>

@@ -8,7 +8,7 @@ describe('Professional Cloud Network Engineer - Section5', () => {
         expect(
             screen.getByRole('heading', { name: /ネットワークセキュリティ設計と実装/, level: 2 }),
         ).toBeInTheDocument();
-        expect(screen.getByText('Section 5 (~12%)')).toBeInTheDocument();
+        expect(screen.getByText('Section 5 (~13%)')).toBeInTheDocument();
     });
 
     it('renders the Cloud Armor section correctly', () => {

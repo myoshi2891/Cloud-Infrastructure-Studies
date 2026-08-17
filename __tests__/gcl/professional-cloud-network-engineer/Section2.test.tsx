@@ -6,7 +6,7 @@ describe('Professional Cloud Network Engineer - Section2', () => {
     it('renders the section title correctly', () => {
         render(<Section2 />);
         expect(screen.getByRole('heading', { name: /ハイブリッド接続とネットワーク相互接続/, level: 2 })).toBeInTheDocument();
-        expect(screen.getByText('Section 2 (23%)')).toBeInTheDocument();
+        expect(screen.getByText('Section 2 (~16%)')).toBeInTheDocument();
     });
 
     it('renders the connectivity comparison correctly', () => {

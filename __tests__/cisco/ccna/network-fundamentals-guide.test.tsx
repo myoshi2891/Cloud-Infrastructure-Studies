@@ -8,7 +8,7 @@ import Page, { metadata } from '@/app/cisco/ccna/network-fundamentals-guide/page
 describe('CcnaNetworkFundamentalsGuide Page & Component', () => {
   it('renders page metadata correctly', () => {
     expect(metadata.title).toBe(
-      'Cisco CCNA試験対策：ネットワークの基礎 入門ガイド | Cloud Infrastructure Studies'
+      'Cisco CCNA試験対策：ネットワークの基礎 入門ガイド'
     );
     expect(metadata.description).toBe(
       'Cisco CCNA（200-301）認定試験の「ネットワークの基礎」領域を、OSI参照モデル、TCP/IP、IPv4/IPv6、機器の動作などの完全図解と詳細表でわかりやすく解説します。'

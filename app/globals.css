@@ -56,6 +56,8 @@
     --color-guide-border-soft: #16253d;
     --color-guide-border-strong: #274460;
     --color-guide-foreground: #e7edf7;
+    /* 見出しグラデーションの明端・本文 strong の強調に使う純白 */
+    --color-guide-foreground-bright: #ffffff;
     --color-guide-foreground-soft: #a9b8d3;
     --color-guide-foreground-faint: #6f83a5;
     --color-guide-accent: #7c9eff;
@@ -156,6 +158,61 @@
     --color-pcne-design-amber: #e8a35f;
     --color-pcne-design-red: #e2716f;
     --color-pcne-design-purple: #c78dea;
+
+    /* PCNE Section 3 Load Balancing guide */
+    --color-pcne-s3-background: #07111e;
+    --color-pcne-s3-elevated: #0d1a2c;
+    --color-pcne-s3-elevated2: #122238;
+    --color-pcne-s3-border: #1c3350;
+    --color-pcne-s3-border-soft: #16283f;
+    --color-pcne-s3-foreground: #dce6f4;
+    --color-pcne-s3-foreground-dim: #8fa3bd;
+    --color-pcne-s3-foreground-dimmer: #5f7691;
+    --color-pcne-s3-accent: #7c9eff;
+    --color-pcne-s3-accent-soft: rgba(124, 158, 255, 0.133);
+    --color-pcne-s3-accent-strong: #a8c0ff;
+    --color-pcne-s3-green: #5fd6a8;
+    --color-pcne-s3-amber: #f2c14e;
+    --color-pcne-s3-red: #f2765e;
+    --color-pcne-s3-purple: #c39bf2;
+
+    /* PCNE Section 4 CDN/DNS/IPAM guide */
+    --color-pcne-s4-surface: #0d1a2e;
+    --color-pcne-s4-primary-muted: #3d5480;
+    --color-pcne-s4-prose: #d4dceb;
+    --color-pcne-s4-prose-dim: #c7d3ea;
+    --color-pcne-s4-code: #ffcf8b;
+    --color-pcne-s4-accent-soft: rgba(124, 158, 255, 0.15);
+    --color-pcne-s4-accent-faint: rgba(124, 158, 255, 0.08);
+    --color-pcne-s4-accent-subtle: rgba(124, 158, 255, 0.06);
+    --color-pcne-s4-accent-wash: rgba(124, 158, 255, 0.05);
+
+    /* PCNE Section 6 Network Ops & Monitoring guide */
+    --color-pcne-s6-background: #07111e;
+    --color-pcne-s6-elevated: #0d1a2c;
+    --color-pcne-s6-elevated2: #122238;
+    --color-pcne-s6-border: #1e3350;
+    --color-pcne-s6-border-soft: #16273e;
+    --color-pcne-s6-foreground: #e6edf7;
+    --color-pcne-s6-foreground-dim: #96a7c2;
+    --color-pcne-s6-foreground-faint: #5f7396;
+    --color-pcne-s6-accent: #7c9eff;
+    --color-pcne-s6-accent-soft: rgba(124, 158, 255, 0.12);
+    --color-pcne-s6-accent-border: rgba(124, 158, 255, 0.35);
+    --color-pcne-s6-accent-border-soft: rgba(124, 158, 255, 0.3);
+    --color-pcne-s6-accent-2: #5ee6c8;
+    --color-pcne-s6-accent-2-border: rgba(94, 230, 200, 0.35);
+    --color-pcne-s6-accent-2-soft: rgba(94, 230, 200, 0.08);
+    --color-pcne-s6-backdrop: rgba(0, 0, 0, 0.5);
+    --color-pcne-s6-shadow: rgba(0, 0, 0, 0.5);
+    --color-pcne-s6-row-stripe: rgba(255, 255, 255, 0.015);
+    --color-pcne-s6-warn: #ffb454;
+    --color-pcne-s6-warn-soft: rgba(255, 180, 84, 0.1);
+    --color-pcne-s6-good: #5ee6a8;
+    --color-pcne-s6-good-soft: rgba(94, 230, 168, 0.1);
+    --color-pcne-s6-source: #8fa8ff;
+    --color-pcne-s6-source-soft: rgba(143, 168, 255, 0.08);
+
 
     /* Cisco guide page themes */
     --color-ccna-fundamentals-elevated: #0d1a2e;

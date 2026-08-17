@@ -15,10 +15,10 @@ test.describe('Professional Cloud Network Engineer ページ', () => {
 
     test('主要セクションが表示されること', async ({ page }) => {
         // 各セクションの見出しなどを検証
-        await expect(page.locator('h2', { hasText: '試験仕様と出題ドメイン' })).toBeVisible();
-        await expect(page.locator('h2', { hasText: 'VPC の設計と実装' })).toBeVisible();
-        await expect(page.locator('h2', { hasText: 'ネットワークサービスの設計と実装' })).toBeVisible();
-        await expect(page.locator('h2', { hasText: 'ハイブリッド接続の設計と実装' })).toBeVisible();
+        await expect(page.locator('h2', { hasText: '試験の全体像と準備方法' })).toBeVisible();
+        await expect(page.locator('h2', { hasText: 'VPC ネットワークの設計・実装' })).toBeVisible();
+        await expect(page.locator('h2', { hasText: 'ハイブリッド接続とネットワーク相互接続' })).toBeVisible();
+        await expect(page.locator('h2', { hasText: 'ロードバランシングとトラフィック管理' })).toBeVisible();
     });
 
     test('コンソールエラーがないこと', async ({ page }) => {

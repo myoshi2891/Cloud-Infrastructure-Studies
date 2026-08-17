@@ -1,0 +1,653 @@
+/* PCNE Section 6: ネットワーク操作と監視 ページスタイル (元HTMLのデザインを100%完全移植) */
+
+/* 配色は app/globals.css の @theme に --color-pcne-s6-* として定義する（本ファイルでは新規に定義しない）。 */
+.pcne-s6-page {
+    display: block;
+    min-height: 100vh;
+    background: var(--color-pcne-s6-background);
+    color: var(--color-pcne-s6-foreground);
+    font-family: var(--font-body, 'Noto Sans JP', 'Inter', system-ui, -apple-system, sans-serif);
+    font-size: 16px;
+    line-height: 1.85;
+    font-weight: 400;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+}
+
+.pcne-s6-page * {
+    box-sizing: border-box;
+}
+
+.pcne-s6-page ::selection {
+    background: var(--color-pcne-s6-accent-soft);
+    color: var(--color-pcne-s6-accent);
+}
+
+/* ---------- Layout ---------- */
+.pcne-s6-page .layout {
+    display: block;
+    position: relative;
+    min-height: 100vh;
+}
+
+.pcne-s6-page .sidebar {
+    position: fixed;
+    top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px));
+    left: 0;
+    bottom: 0;
+    width: 280px;
+    overflow-y: auto;
+    background: var(--color-pcne-s6-elevated);
+    border-right: 1px solid var(--color-pcne-s6-border-soft);
+    padding: 24px 0 40px 0;
+    z-index: 40;
+    transition: transform 0.25s ease;
+}
+
+.pcne-s6-page .sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.pcne-s6-page .sidebar::-webkit-scrollbar-thumb {
+    background: var(--color-pcne-s6-border);
+    border-radius: 3px;
+}
+
+.pcne-s6-page .sidebar-brand {
+    padding: 0 24px 20px 24px;
+    border-bottom: 1px solid var(--color-pcne-s6-border-soft);
+    margin-bottom: 16px;
+}
+
+.pcne-s6-page .sidebar-brand .tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--color-pcne-s6-accent);
+    background: var(--color-pcne-s6-accent-soft);
+    border: 1px solid var(--color-pcne-s6-accent-border-soft);
+    border-radius: 4px;
+    padding: 3px 8px;
+    margin-bottom: 10px;
+}
+
+.pcne-s6-page .sidebar-brand .title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--color-pcne-s6-foreground);
+    line-height: 1.5;
+}
+
+.pcne-s6-page .nav-list,
+.pcne-s6-page .nav-sublist {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.pcne-s6-page .nav-list > li {
+    margin: 0;
+}
+
+.pcne-s6-page .nav-list a.nav-h2 {
+    display: block;
+    padding: 9px 24px;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--color-pcne-s6-foreground-dim);
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    transition: all 0.15s ease;
+}
+
+.pcne-s6-page .nav-list a.nav-h2:hover {
+    color: var(--color-pcne-s6-foreground);
+    background: var(--color-pcne-s6-elevated2);
+}
+
+.pcne-s6-page .nav-list a.nav-h2.active {
+    color: var(--color-pcne-s6-accent);
+    border-left-color: var(--color-pcne-s6-accent);
+    background: var(--color-pcne-s6-accent-soft);
+}
+
+.pcne-s6-page .nav-sublist {
+    padding-left: 0;
+}
+
+.pcne-s6-page .nav-sublist a.nav-h3 {
+    display: block;
+    padding: 6px 24px 6px 38px;
+    font-size: 12.5px;
+    color: var(--color-pcne-s6-foreground-faint);
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    transition: all 0.15s ease;
+}
+
+.pcne-s6-page .nav-sublist a.nav-h3:hover {
+    color: var(--color-pcne-s6-foreground-dim);
+}
+
+.pcne-s6-page .nav-sublist a.nav-h3.active {
+    color: var(--color-pcne-s6-accent-2);
+    border-left-color: var(--color-pcne-s6-accent-2);
+}
+
+.pcne-s6-page .sidebar-toggle,
+.pcne-s6-page .menu-toggle {
+    display: none;
+    position: fixed;
+    top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 16px);
+    left: 16px;
+    z-index: 50;
+    width: 44px;
+    height: 44px;
+    background: var(--color-pcne-s6-elevated2);
+    border: 1px solid var(--color-pcne-s6-border);
+    border-radius: 8px;
+    color: var(--color-pcne-s6-foreground);
+    font-size: 20px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.pcne-s6-page .sidebar-backdrop,
+.pcne-s6-page .nav-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: var(--color-pcne-s6-backdrop);
+    z-index: 39;
+}
+
+.pcne-s6-page .main {
+    margin-left: 280px;
+    width: calc(100% - 280px);
+    max-width: none;
+    padding: 56px 64px 100px 64px;
+    min-height: 100vh;
+}
+
+/* ---------- Hero ---------- */
+.pcne-s6-page .hero {
+    margin-bottom: 48px;
+}
+
+.pcne-s6-page .hero .badges {
+    margin-bottom: 18px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.pcne-s6-page .hero .badge {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--color-pcne-s6-accent-border);
+    color: var(--color-pcne-s6-accent);
+    background: var(--color-pcne-s6-accent-soft);
+}
+
+.pcne-s6-page .hero .badge.alt {
+    border-color: var(--color-pcne-s6-accent-2-border);
+    color: var(--color-pcne-s6-accent-2);
+    background: var(--color-pcne-s6-accent-2-soft);
+}
+
+.pcne-s6-page .hero h1 {
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 900;
+    line-height: 1.3;
+    margin: 0 0 18px 0;
+    background: linear-gradient(
+        120deg,
+        var(--color-guide-foreground-bright) 10%,
+        var(--color-pcne-s6-accent) 55%,
+        var(--color-pcne-s6-accent-2) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.pcne-s6-page .hero .subtitle {
+    font-size: 17px;
+    color: var(--color-pcne-s6-foreground-dim);
+    line-height: 1.8;
+    max-width: 900px;
+}
+
+.pcne-s6-page .hero hr {
+    border: none;
+    border-top: 1px solid var(--color-pcne-s6-border-soft);
+    margin: 32px 0 0 0;
+}
+
+/* ---------- Prose ---------- */
+.pcne-s6-page .main h2 {
+    font-size: 26px;
+    font-weight: 700;
+    margin: 56px 0 20px 0;
+    color: var(--color-pcne-s6-foreground);
+    scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 24px);
+    border-top: 1px solid var(--color-pcne-s6-border-soft);
+    padding-top: 40px;
+}
+
+.pcne-s6-page .main h2:first-of-type {
+    border-top: none;
+    padding-top: 0;
+}
+
+.pcne-s6-page .main h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 40px 0 16px 0;
+    color: var(--color-pcne-s6-foreground);
+    scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 24px);
+}
+
+.pcne-s6-page .main h4 {
+    font-size: 16.5px;
+    font-weight: 700;
+    margin: 28px 0 12px 0;
+    color: var(--color-pcne-s6-accent);
+    scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 24px);
+}
+
+.pcne-s6-page .main p {
+    margin: 0 0 18px 0;
+    color: var(--color-pcne-s6-foreground);
+}
+
+.pcne-s6-page .main ul,
+.pcne-s6-page .main ol {
+    margin: 0 0 18px 0;
+    padding-left: 1.4em;
+    color: var(--color-pcne-s6-foreground);
+}
+
+.pcne-s6-page .main li {
+    margin: 0 0 8px 0;
+}
+
+.pcne-s6-page .main li:last-child {
+    margin-bottom: 0;
+}
+
+.pcne-s6-page .main a {
+    color: var(--color-pcne-s6-accent);
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-pcne-s6-accent-border);
+    overflow-wrap: anywhere;
+}
+
+.pcne-s6-page .main a:hover {
+    color: var(--color-pcne-s6-accent-2);
+    border-bottom-color: var(--color-pcne-s6-accent-2);
+}
+
+.pcne-s6-page .main strong {
+    color: var(--color-guide-foreground-bright);
+    font-weight: 700;
+}
+
+.pcne-s6-page .main hr {
+    border: none;
+    border-top: 1px solid var(--color-pcne-s6-border-soft);
+    margin: 48px 0;
+}
+
+.pcne-s6-page code:not(pre code) {
+    background: var(--color-pcne-s6-elevated2);
+    border: 1px solid var(--color-pcne-s6-border-soft);
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-family: var(--font-mono, 'JetBrains Mono', ui-monospace, Consolas, monospace);
+    font-size: 0.88em;
+    color: var(--color-pcne-s6-accent-2);
+    overflow-wrap: anywhere;
+}
+
+/* ---------- Tables ---------- */
+.pcne-s6-page .table-scroll {
+    overflow-x: auto;
+    margin: 0 0 24px 0;
+    border-radius: 10px;
+    border: 1px solid var(--color-pcne-s6-border-soft);
+}
+
+.pcne-s6-page table {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 600px;
+    font-size: 14.5px;
+}
+
+.pcne-s6-page thead th {
+    background: var(--color-pcne-s6-elevated2);
+    color: var(--color-pcne-s6-foreground);
+    font-weight: 700;
+    text-align: left;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--color-pcne-s6-border);
+    white-space: nowrap;
+}
+
+.pcne-s6-page tbody td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--color-pcne-s6-border-soft);
+    color: var(--color-pcne-s6-foreground-dim);
+    overflow-wrap: anywhere;
+    vertical-align: top;
+}
+
+.pcne-s6-page tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.pcne-s6-page tbody tr:hover {
+    background: var(--color-pcne-s6-elevated);
+}
+
+.pcne-s6-page tbody tr:nth-child(odd) {
+    background: var(--color-pcne-s6-row-stripe);
+}
+
+/* ---------- Mermaid ---------- */
+.pcne-s6-page pre.mermaid,
+.pcne-s6-page .mermaid-wrap {
+    width: 100%;
+    display: flex;
+    /* safe 未対応ブラウザ向けフォールバック（宣言全体が破棄されるため 2 回宣言する） */
+    justify-content: center;
+    justify-content: safe center;
+    overflow-x: auto;
+    margin: 28px 0;
+    padding: 20px 8px;
+    background: var(--color-pcne-s6-elevated);
+    border: 1px solid var(--color-pcne-s6-border-soft);
+    border-radius: 12px;
+}
+
+.pcne-s6-page pre.mermaid svg,
+.pcne-s6-page .mermaid-wrap svg {
+    height: auto;
+}
+
+/* ---------- Callouts ---------- */
+.pcne-s6-page blockquote.callout {
+    margin: 0 0 22px 0;
+    padding: 16px 20px 18px 20px;
+    border-radius: 10px;
+    border: 1px solid var(--color-pcne-s6-border-soft);
+    border-left: 3px solid var(--color-pcne-s6-foreground-faint);
+    background: var(--color-pcne-s6-elevated);
+}
+
+.pcne-s6-page blockquote.callout p {
+    margin: 0 0 8px 0;
+    color: var(--color-pcne-s6-foreground-dim);
+}
+
+.pcne-s6-page blockquote.callout p:last-child {
+    margin-bottom: 0;
+}
+
+.pcne-s6-page blockquote.callout ul {
+    margin: 0;
+    padding-left: 1.2em;
+}
+
+.pcne-s6-page blockquote.callout li {
+    margin-bottom: 6px;
+    color: var(--color-pcne-s6-foreground-dim);
+}
+
+.pcne-s6-page .callout-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.pcne-s6-page .callout-icon {
+    font-size: 15px;
+    line-height: 1;
+}
+
+.pcne-s6-page .callout-label {
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+}
+
+.pcne-s6-page blockquote.callout-source {
+    background: var(--color-pcne-s6-source-soft);
+    border-left-color: var(--color-pcne-s6-source);
+}
+
+.pcne-s6-page blockquote.callout-source .callout-label {
+    color: var(--color-pcne-s6-source);
+}
+
+.pcne-s6-page blockquote.callout-best {
+    background: var(--color-pcne-s6-good-soft);
+    border-left-color: var(--color-pcne-s6-good);
+}
+
+.pcne-s6-page blockquote.callout-best .callout-label {
+    color: var(--color-pcne-s6-good);
+}
+
+.pcne-s6-page blockquote.callout-warning {
+    background: var(--color-pcne-s6-warn-soft);
+    border-left-color: var(--color-pcne-s6-warn);
+}
+
+.pcne-s6-page blockquote.callout-warning .callout-label {
+    color: var(--color-pcne-s6-warn);
+}
+
+/* ---------- Checklist ---------- */
+.pcne-s6-page .checklist-card {
+    list-style: none;
+    margin: 0 0 22px 0;
+    padding: 8px;
+    background: var(--color-pcne-s6-elevated);
+    border: 1px solid var(--color-pcne-s6-border-soft);
+    border-radius: 12px;
+}
+
+.pcne-s6-page .checklist-card li {
+    margin: 0;
+    border-radius: 8px;
+    transition: background 0.15s ease;
+}
+
+.pcne-s6-page .checklist-card li:hover {
+    background: var(--color-pcne-s6-elevated2);
+}
+
+.pcne-s6-page .checklist-card li label {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 11px 12px;
+    cursor: pointer;
+    color: var(--color-pcne-s6-foreground-dim);
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.pcne-s6-page .checklist-card input[type='checkbox'] {
+    appearance: none;
+    -webkit-appearance: none;
+    flex: 0 0 auto;
+    width: 19px;
+    height: 19px;
+    margin-top: 2px;
+    border: 1.5px solid var(--color-pcne-s6-border);
+    border-radius: 5px;
+    background: var(--color-pcne-s6-background);
+    position: relative;
+    cursor: pointer;
+}
+
+.pcne-s6-page .checklist-card input[type='checkbox']:checked {
+    background: var(--color-pcne-s6-accent);
+    border-color: var(--color-pcne-s6-accent);
+}
+
+.pcne-s6-page .checklist-card input[type='checkbox']:checked::after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 1px;
+    width: 5px;
+    height: 10px;
+    border: solid var(--color-pcne-s6-background);
+    border-width: 0 2px 2px 0;
+    transform: rotate(40deg);
+}
+
+.pcne-s6-page .checklist-card li:has(input:checked) label {
+    color: var(--color-pcne-s6-foreground-faint);
+    text-decoration: line-through;
+}
+
+.pcne-s6-page .checklist-progress {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    margin-bottom: 6px;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--color-pcne-s6-accent);
+}
+
+.pcne-s6-page .checklist-progress .bar {
+    flex: 1;
+    height: 5px;
+    margin-left: 14px;
+    background: var(--color-pcne-s6-border-soft);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.pcne-s6-page .checklist-progress .bar-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--color-pcne-s6-accent), var(--color-pcne-s6-accent-2));
+    transition: width 0.2s ease;
+}
+
+/* ---------- Reference grid ---------- */
+.pcne-s6-page .ref-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin: 24px 0 0 0;
+}
+
+.pcne-s6-page .ref-card {
+    background: var(--color-pcne-s6-elevated);
+    border: 1px solid var(--color-pcne-s6-border-soft);
+    border-radius: 12px;
+    padding: 18px 20px;
+    min-width: 0;
+}
+
+.pcne-s6-page .ref-card h3 {
+    margin: 0 0 12px 0;
+    font-size: 14.5px;
+    font-weight: 700;
+    color: var(--color-pcne-s6-accent-2);
+}
+
+.pcne-s6-page .ref-card ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.pcne-s6-page .ref-card li {
+    margin: 0 0 9px 0;
+}
+
+.pcne-s6-page .ref-card li:last-child {
+    margin-bottom: 0;
+}
+
+.pcne-s6-page .ref-card a {
+    display: block;
+    font-size: 12.5px;
+    color: var(--color-pcne-s6-foreground-dim);
+    border-bottom: none;
+    overflow-wrap: anywhere;
+    min-width: 0;
+    padding-left: 16px;
+    position: relative;
+}
+
+.pcne-s6-page .ref-card a::before {
+    content: '\2197';
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: var(--color-pcne-s6-foreground-faint);
+}
+
+.pcne-s6-page .ref-card a:hover {
+    color: var(--color-pcne-s6-accent);
+}
+
+.pcne-s6-page .ref-card a:hover::before {
+    color: var(--color-pcne-s6-accent);
+}
+
+@media (max-width: 720px) {
+    .pcne-s6-page .ref-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+/* ---------- Mobile ---------- */
+@media (max-width: 960px) {
+    .pcne-s6-page .sidebar {
+        transform: translateX(-100%);
+    }
+
+    .pcne-s6-page .sidebar.open {
+        transform: translateX(0);
+        box-shadow: 0 0 40px var(--color-pcne-s6-shadow);
+    }
+
+    .pcne-s6-page .sidebar-toggle,
+    .pcne-s6-page .menu-toggle {
+        display: flex;
+    }
+
+    .pcne-s6-page .sidebar-backdrop.open,
+    .pcne-s6-page .nav-backdrop.open {
+        display: block;
+    }
+
+    .pcne-s6-page .main {
+        margin-left: 0;
+        width: 100%;
+        padding: 56px 20px 80px 20px;
+    }
+
+    .pcne-s6-page .hero h1 {
+        font-size: 26px;
+    }
+}

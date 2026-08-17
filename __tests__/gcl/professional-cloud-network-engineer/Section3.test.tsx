@@ -8,7 +8,7 @@ describe('Professional Cloud Network Engineer - Section3', () => {
         expect(
             screen.getByRole('heading', { name: /ロードバランシングとトラフィック管理/, level: 2 }),
         ).toBeInTheDocument();
-        expect(screen.getByText('Section 3 (~19%)')).toBeInTheDocument();
+        expect(screen.getByText('Section 3 (公式S3 ~16%)')).toBeInTheDocument();
     });
 
     it('renders the load balancer flow correctly', () => {

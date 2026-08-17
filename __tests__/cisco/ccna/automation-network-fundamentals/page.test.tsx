@@ -10,7 +10,7 @@ const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>', { url: 'http:
 (globalThis as any).SVGElement = dom.window.SVGElement;
 
 import { act, render } from '@testing-library/react';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import CcnaNetworkFundamentalsGuide from '@/app/cisco/ccna/automation-network-fundamentals/CcnaNetworkFundamentalsGuide';
 import NavBar from '@/app/cisco/ccna/automation-network-fundamentals/NavBar';
 import Page, { metadata } from '@/app/cisco/ccna/automation-network-fundamentals/page';
@@ -39,7 +39,7 @@ vi.mock('@/components/MermaidDiagram', () => ({
 describe('CCNA Automation Network Fundamentals Guide - Automated 100% Text & Structure Verification', () => {
     it('identifies the CCNAAUTO 200-901 Network Fundamentals domain in metadata', () => {
         expect(metadata.title).toBe(
-            'CCNAAUTO 200-901 | 6.0 Network Fundamentals 完全対策ガイド | Cloud Infrastructure Studies',
+            'CCNAAUTO 200-901 | 6.0 Network Fundamentals 完全対策ガイド',
         );
         expect(metadata.description).toContain('CCNA Automation 200-901');
         expect(metadata.description).not.toContain('CCNA 200-301');
@@ -207,5 +207,121 @@ describe('CCNA Automation Network Fundamentals Guide - Automated 100% Text & Str
             container,
             '.table-wrapper > table, .diagram-block, .callout',
         );
+    });
+});
+
+describe('CcnaNetworkFundamentalsGuide - scroll spy via IntersectionObserver', () => {
+    interface CapturedObserver {
+        callback: IntersectionObserverCallback;
+        observed: Element[];
+    }
+
+    /**
+     * IntersectionObserver を差し替え、生成されたコールバックと監視対象を取り出す。
+     * jsdom は IntersectionObserver を実装しないため、スタブが無いと useEffect が即 return する。
+     */
+    const installObserverStub = (): CapturedObserver => {
+        const captured: CapturedObserver = { callback: () => undefined, observed: [] };
+
+        class StubIntersectionObserver {
+            constructor(callback: IntersectionObserverCallback) {
+                captured.callback = callback;
+            }
+
+            observe(target: Element): void {
+                captured.observed.push(target);
+            }
+
+            unobserve(): void {}
+
+            disconnect(): void {
+                captured.observed.length = 0;
+            }
+
+            takeRecords(): IntersectionObserverEntry[] {
+                return [];
+            }
+        }
+
+        vi.stubGlobal('IntersectionObserver', StubIntersectionObserver);
+        return captured;
+    };
+
+    /** 交差状態の通知だけを持つ最小限のエントリ。コールバックは target.id と isIntersecting しか読まない。 */
+    const entryFor = (target: Element, isIntersecting: boolean): IntersectionObserverEntry =>
+        ({ target, isIntersecting }) as unknown as IntersectionObserverEntry;
+
+    /** observe された要素から id 一致のセクションを返す。見つからない場合はその場で失敗させる。 */
+    const sectionById = (captured: CapturedObserver, id: string): Element => {
+        const section = captured.observed.find((element) => element.id === id);
+        expect(section, `observed section not found: ${id}`).toBeDefined();
+        return section as Element;
+    };
+
+    /** 現在アクティブなナビリンクの href を返す。該当リンクが無ければ undefined。 */
+    const activeHref = (container: HTMLElement): string | null | undefined =>
+        container.querySelector('a[aria-current="location"]')?.getAttribute('href');
+
+    /** スタブした IntersectionObserver のコールバックを act 内で発火させ、scroll spy の再描画を反映する。 */
+    const notify = (captured: CapturedObserver, entries: IntersectionObserverEntry[]): void => {
+        act(() => {
+            captured.callback(entries, {} as IntersectionObserver);
+        });
+    };
+
+    afterEach(() => {
+        vi.unstubAllGlobals();
+    });
+
+    it('observes every guide section so the scroll spy covers the whole document', () => {
+        const captured = installObserverStub();
+        render(<CcnaNetworkFundamentalsGuide />);
+
+        expect(captured.observed.map((element) => element.id)).toContain('step1');
+        expect(captured.observed.map((element) => element.id)).toContain('step3');
+    });
+
+    it.each([
+        ['document order', ['step1', 'step3']],
+        ['reverse order', ['step3', 'step1']],
+    ])(
+        'picks the last intersecting section in document order regardless of entry %s',
+        (_label, order) => {
+            const captured = installObserverStub();
+            const { container } = render(<CcnaNetworkFundamentalsGuide />);
+
+            notify(
+                captured,
+                order.map((id) => entryFor(sectionById(captured, id), true)),
+            );
+
+            expect(activeHref(container)).toBe('#step3');
+        },
+    );
+
+    it('keeps the active section stable when an earlier section is reported afterwards', () => {
+        const captured = installObserverStub();
+        const { container } = render(<CcnaNetworkFundamentalsGuide />);
+
+        notify(captured, [entryFor(sectionById(captured, 'step3'), true)]);
+        expect(activeHref(container)).toBe('#step3');
+
+        // 別コールバックで上側のセクションが後から届いても、下側が帯に残っている限り選択は変わらない
+        notify(captured, [entryFor(sectionById(captured, 'step1'), true)]);
+        expect(activeHref(container)).toBe('#step3');
+    });
+
+    it('drops stale ids so the active section falls back when a section leaves the band', () => {
+        const captured = installObserverStub();
+        const { container } = render(<CcnaNetworkFundamentalsGuide />);
+
+        notify(captured, [
+            entryFor(sectionById(captured, 'step1'), true),
+            entryFor(sectionById(captured, 'step3'), true),
+        ]);
+        expect(activeHref(container)).toBe('#step3');
+
+        notify(captured, [entryFor(sectionById(captured, 'step3'), false)]);
+        expect(activeHref(container)).toBe('#step1');
     });
 });

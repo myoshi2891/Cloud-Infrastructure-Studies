@@ -1437,7 +1437,7 @@ flowchart TD
                 <p>
                     この分離により、プラットフォームチームがGatewayのインフラ設定を管理し、アプリケーションチームがクラスタ全体の権限を持たずに自分たちのHTTPRouteだけを管理する、という役割分担が可能になります。GKE
                     Gateway
-                    controllerは常にGCE_VM_IP_PORTゾーンNEGバックエンドを使用し、Ingressと異なりヘルスチェックパラメータを自動推測しないため、明示的なHealthCheckPolicyの設定が必要です。
+                    controllerは常にGCE_VM_IP_PORTゾーンNEGバックエンドを使用します。IngressのようにPodのreadiness probeからパラメータを推測はしませんが、標準パス <code>/</code> と既定値を使うヘルスチェックは自動作成されるため、HealthCheckPolicyは必須ではありません。アプリケーションが <code>/</code> にHTTP 200を返さない場合や、追加のパス、ヘッダー、タイムアウトなどの既定値を変更する場合にのみHealthCheckPolicyを設定します。
                 </p>
                 <div class="table-scroll">
                     <table>
@@ -1457,7 +1457,7 @@ flowchart TD
                             <tr class="even">
                                 <td>実装されるLB</td>
                                 <td>常にClassic Application Load Balancer</td>
-                                <td>GatewayClasseに応じて外部/内部・global/regionalを選択可能</td>
+                                <td>GatewayClassごとに実装されるLBが決まる（gke-l7-gxlb → Classic Application Load Balancer、gke-l7-global-external-managed → グローバル外部Application Load Balancer、gke-l7-regional-external-managed → リージョン外部Application Load Balancer、gke-l7-rilb → 内部Application Load Balancer、gke-l7-cross-regional-internal-managed-mc → クロスリージョン内部Application Load Balancer）</td>
                             </tr>
                             <tr class="odd">
                                 <td>リソース構成</td>
@@ -1477,7 +1477,7 @@ flowchart TD
                             <tr class="even">
                                 <td>ヘルスチェック</td>
                                 <td>パラメータを自動推測</td>
-                                <td>HealthCheckPolicyによる明示設定が必要</td>
+                                <td>標準の <code>/</code> と既定ポリシーを自動作成。追加パス・ヘッダー・タイムアウトなどを変更する場合のみHealthCheckPolicyを使用</td>
                             </tr>
                         </tbody>
                     </table>

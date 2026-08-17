@@ -1,6 +1,118 @@
 # 移行作業進捗管理ドキュメント (Migration Progress)
 
-(最終更新日: 2026-08-15)
+(最終更新日: 2026-08-16)
+
+---
+
+## 2026-08-16: PCNE Section 6「ネットワーク操作と監視」100%全量移行 (完了)
+
+### 目的
+
+`S6-network-ops-monitoring.html` および `S6-network-ops-monitoring.md` を、Next.js App Router 5ファイル構成 (`page.tsx`, `PcneSection6NetworkOpsMonitoringGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/gcl/professional-cloud-network-engineer/section6-network-ops-monitoring` ルートへ移行。見出し(h1:1, h2:7, h3:24, h4:14)、全7個のテーブル、20個のMermaid図解、全リスト、全外部リンク・全本文・注釈を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for pcne-s6-network-ops-monitoring` (`7b5be75`)
+- [x] **Step 1 (Red)**: `test(pcne): add failing tests for pcne section 6 network ops monitoring` (`9871b99`)
+- [x] **Step 2 (Green)**: `feat(pcne): implement section 6 network ops monitoring guide to pass tests` (`36319f9`)
+- [x] **Step 3 (Refactor)**: `refactor(pcne): integrate section 6 into routing and update docs` (`3d5683d`)
+- [x] **Step 4 (Archive & Sync)**: `chore(docs): update MIGRATION_PROGRESS.md — pcne section 6 complete`
+
+### 関連ファイル
+
+- [app/gcl/professional-cloud-network-engineer/section6-network-ops-monitoring/page.tsx](app/gcl/professional-cloud-network-engineer/section6-network-ops-monitoring/page.tsx)
+- [app/gcl/professional-cloud-network-engineer/section6-network-ops-monitoring/PcneSection6NetworkOpsMonitoringGuide.tsx](app/gcl/professional-cloud-network-engineer/section6-network-ops-monitoring/PcneSection6NetworkOpsMonitoringGuide.tsx)
+- [app/gcl/professional-cloud-network-engineer/section6-network-ops-monitoring/NavBar.tsx](app/gcl/professional-cloud-network-engineer/section6-network-ops-monitoring/NavBar.tsx)
+- [app/gcl/professional-cloud-network-engineer/section6-network-ops-monitoring/constants.ts](app/gcl/professional-cloud-network-engineer/section6-network-ops-monitoring/constants.ts)
+- [app/gcl/professional-cloud-network-engineer/section6-network-ops-monitoring/page.css](app/gcl/professional-cloud-network-engineer/section6-network-ops-monitoring/page.css)
+- [`__tests__/gcl/professional-cloud-network-engineer/section6-network-ops-monitoring/page.test.tsx`](__tests__/gcl/professional-cloud-network-engineer/section6-network-ops-monitoring/page.test.tsx)
+- [docs/migration-inventory/pcne-s6-network-ops-monitoring.json](docs/migration-inventory/pcne-s6-network-ops-monitoring.json)
+- [archive/Gcl/Professional-Cloud-Network-Engineer/S6-network-ops-monitoring.html](archive/Gcl/Professional-Cloud-Network-Engineer/S6-network-ops-monitoring.html)
+- [archive/Gcl/Professional-Cloud-Network-Engineer/S6-network-ops-monitoring.md](archive/Gcl/Professional-Cloud-Network-Engineer/S6-network-ops-monitoring.md)
+
+---
+
+## 2026-08-16: PCNE Section 4「CDN・DNS・IPアドレス管理」100%全量移行 (完了)
+
+### 目的
+
+`Pcne-s4-cdn-dns-ipam.html` を、Next.js App Router 5ファイル構成 (`page.tsx`, `PcneSection4CdnDnsIpamGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/gcl/professional-cloud-network-engineer/section4-cdn-dns-ipam` ルートへ移行。見出し(h1:1, h2:6, h3:26, h4:7)、全24個のテーブル、20個のMermaid図解、全リスト、全外部リンク・全本文・注釈を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for pcne-s4-cdn-dns-ipam` (`1943e9a`)
+- [x] **Step 1 (Red)**: `test(pcne): add failing tests for pcne section 4 cdn dns ipam` (`7adf3e1`)
+- [x] **Step 2 (Green)**: `feat(pcne): implement section 4 cdn dns ipam guide to pass tests` (`964d0ec`)
+- [x] **Step 3 (Refactor)**: `refactor(pcne): integrate section 4 into routing and update docs` (`24b5651`)
+- [x] **Step 4 (Archive & Sync)**: `chore(docs): update MIGRATION_PROGRESS.md — pcne section 4 complete`
+
+### 関連ファイル
+
+- [app/gcl/professional-cloud-network-engineer/section4-cdn-dns-ipam/page.tsx](app/gcl/professional-cloud-network-engineer/section4-cdn-dns-ipam/page.tsx)
+- [app/gcl/professional-cloud-network-engineer/section4-cdn-dns-ipam/PcneSection4CdnDnsIpamGuide.tsx](app/gcl/professional-cloud-network-engineer/section4-cdn-dns-ipam/PcneSection4CdnDnsIpamGuide.tsx)
+- [app/gcl/professional-cloud-network-engineer/section4-cdn-dns-ipam/NavBar.tsx](app/gcl/professional-cloud-network-engineer/section4-cdn-dns-ipam/NavBar.tsx)
+- [app/gcl/professional-cloud-network-engineer/section4-cdn-dns-ipam/constants.ts](app/gcl/professional-cloud-network-engineer/section4-cdn-dns-ipam/constants.ts)
+- [app/gcl/professional-cloud-network-engineer/section4-cdn-dns-ipam/page.css](app/gcl/professional-cloud-network-engineer/section4-cdn-dns-ipam/page.css)
+- [`__tests__/gcl/professional-cloud-network-engineer/section4-cdn-dns-ipam/page.test.tsx`](__tests__/gcl/professional-cloud-network-engineer/section4-cdn-dns-ipam/page.test.tsx)
+- [docs/migration-inventory/pcne-s4-cdn-dns-ipam.json](docs/migration-inventory/pcne-s4-cdn-dns-ipam.json)
+- [archive/Gcl/Professional-Cloud-Network-Engineer/Pcne-s4-cdn-dns-ipam.html](archive/Gcl/Professional-Cloud-Network-Engineer/Pcne-s4-cdn-dns-ipam.html)
+- [archive/Gcl/Professional-Cloud-Network-Engineer/Pcne-s4-cdn-dns-ipam.md](archive/Gcl/Professional-Cloud-Network-Engineer/Pcne-s4-cdn-dns-ipam.md)
+
+---
+
+## 2026-08-16: PCNE Section 3「ロードバランシングとトラフィック管理」100%全量移行 (完了)
+
+### 目的
+
+`S3-load-balancing-traffic-management.html` を、Next.js App Router 5ファイル構成 (`page.tsx`, `PcneSection3LoadBalancingGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/gcl/professional-cloud-network-engineer/section3-load-balancing` ルートへ移行。見出し(h1:1, h2:8, h3:18)、全7個のテーブル、10個のMermaid図解、全リスト、全外部リンク・全本文・注釈を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for pcne-s3-load-balancing` (`083be34`)
+- [x] **Step 1 (Red)**: `test(pcne): add failing tests for pcne section 3 load balancing` (`6b17a61`)
+- [x] **Step 2 (Green)**: `feat(pcne): implement section 3 load balancing guide to pass tests` (`9d58aa4`)
+- [x] **Step 3 (Refactor)**: `refactor(pcne): integrate section 3 into routing and update docs` (`6b89e70`)
+- [x] **Step 4 (Archive & Sync)**: `chore(docs): update MIGRATION_PROGRESS.md — pcne section 3 complete`
+
+### 関連ファイル
+
+- [app/gcl/professional-cloud-network-engineer/section3-load-balancing/page.tsx](app/gcl/professional-cloud-network-engineer/section3-load-balancing/page.tsx)
+- [app/gcl/professional-cloud-network-engineer/section3-load-balancing/PcneSection3LoadBalancingGuide.tsx](app/gcl/professional-cloud-network-engineer/section3-load-balancing/PcneSection3LoadBalancingGuide.tsx)
+- [app/gcl/professional-cloud-network-engineer/section3-load-balancing/NavBar.tsx](app/gcl/professional-cloud-network-engineer/section3-load-balancing/NavBar.tsx)
+- [app/gcl/professional-cloud-network-engineer/section3-load-balancing/constants.ts](app/gcl/professional-cloud-network-engineer/section3-load-balancing/constants.ts)
+- [app/gcl/professional-cloud-network-engineer/section3-load-balancing/page.css](app/gcl/professional-cloud-network-engineer/section3-load-balancing/page.css)
+- [`__tests__/gcl/professional-cloud-network-engineer/section3-load-balancing/page.test.tsx`](__tests__/gcl/professional-cloud-network-engineer/section3-load-balancing/page.test.tsx)
+- [docs/migration-inventory/pcne-s3-load-balancing.json](docs/migration-inventory/pcne-s3-load-balancing.json)
+- [archive/Gcl/Professional-Cloud-Network-Engineer/S3-load-balancing-traffic-management.html](archive/Gcl/Professional-Cloud-Network-Engineer/S3-load-balancing-traffic-management.html)
+- [archive/Gcl/Professional-Cloud-Network-Engineer/S3-load-balancing-traffic-management.md](archive/Gcl/Professional-Cloud-Network-Engineer/S3-load-balancing-traffic-management.md)
+
+---
+
+## 2026-08-16: PCNE Section 5「ネットワークセキュリティの設計と実装」100%全量移行 (完了)
+
+### 目的
+
+`Gcp-pcne-s5-network-security.html` を、Next.js App Router 5ファイル構成 (`page.tsx`, `PcneSection5NetworkSecurityGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/gcl/professional-cloud-network-engineer/section5-network-security` ルートへ移行。見出し(h1:1, h2:7, h3:30, h4:11)、全30個のテーブル、17個のMermaid図解、全リスト、全外部リンク・全本文・注釈を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for pcne-s5-network-security` (`cbb5b4d`)
+- [x] **Step 1 (Red)**: `test(pcne): add failing tests for pcne section 5 network security` (`c8d8e09`)
+- [x] **Step 2 (Green)**: `feat(pcne): implement section 5 network security guide to pass tests` (`0d6e834`)
+- [x] **Step 3 (Refactor)**: `refactor(pcne): integrate section 5 into routing and update docs` (`f3951c8`)
+- [x] **Step 4 (Archive & Sync)**: `chore(docs): update MIGRATION_PROGRESS.md — pcne section 5 complete`
+
+### 関連ファイル
+
+- [app/gcl/professional-cloud-network-engineer/section5-network-security/page.tsx](app/gcl/professional-cloud-network-engineer/section5-network-security/page.tsx)
+- [app/gcl/professional-cloud-network-engineer/section5-network-security/PcneSection5NetworkSecurityGuide.tsx](app/gcl/professional-cloud-network-engineer/section5-network-security/PcneSection5NetworkSecurityGuide.tsx)
+- [app/gcl/professional-cloud-network-engineer/section5-network-security/NavBar.tsx](app/gcl/professional-cloud-network-engineer/section5-network-security/NavBar.tsx)
+- [app/gcl/professional-cloud-network-engineer/section5-network-security/constants.ts](app/gcl/professional-cloud-network-engineer/section5-network-security/constants.ts)
+- [app/gcl/professional-cloud-network-engineer/section5-network-security/page.css](app/gcl/professional-cloud-network-engineer/section5-network-security/page.css)
+- [`__tests__/gcl/professional-cloud-network-engineer/section5-network-security/page.test.tsx`](__tests__/gcl/professional-cloud-network-engineer/section5-network-security/page.test.tsx)
+- [docs/migration-inventory/pcne-s5-network-security.json](docs/migration-inventory/pcne-s5-network-security.json)
+- [archive/Gcl/Professional-Cloud-Network-Engineer/Gcp-pcne-s5-network-security.html](archive/Gcl/Professional-Cloud-Network-Engineer/Gcp-pcne-s5-network-security.html)
+- [archive/Gcl/Professional-Cloud-Network-Engineer/Gcp-pcne-s5-network-security.md](archive/Gcl/Professional-Cloud-Network-Engineer/Gcp-pcne-s5-network-security.md)
 
 ---
 

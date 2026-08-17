@@ -9,12 +9,12 @@ import sharedStyles from './SharedSection.module.css';
 export function Section2() {
     return (
         <section className={sharedStyles.section} id="s2" aria-labelledby="s2-title">
-            <div className={sharedStyles.sectionLabel}>Section 2 (23%)</div>
+            <div className={sharedStyles.sectionLabel}>Section 2 (~16%)</div>
             <h2 className={sharedStyles.sectionTitle} id="s2-title" style={{ color: 'var(--color-primary)' }}>
                 ハイブリッド接続とネットワーク相互接続
             </h2>
             <p className={sharedStyles.sectionDesc}>
-                試験最大配点（約23%）のセクション。Cloud VPN・Interconnect・Cloud Routerの選択基準と設定方法、SLAの違いが頻出。シナリオベースで「どの接続方式を選ぶか」が問われます。
+                公式 Section 4「ハイブリッド／マルチクラウド接続」に対応し、約16%を占めるセクション。Cloud VPN・Interconnect・Cloud Routerの選択基準と設定方法、SLAの違いが頻出。シナリオベースで「どの接続方式を選ぶか」が問われます。
             </p>
             <div className={sharedStyles.divider}></div>
 

@@ -121,10 +121,14 @@ export const DIAGRAMS: Record<DiagramId, string> = {
         D-->>G: 違反を検出
         G->>G: 管理者レビュー用に隔離
         G->>U: 通知は隔離設定またはレビュー結果次第
-    else Warn usersアクション - 第三者SMTPクライアント・自動送信
+    else Warn usersアクション - 第三者SMTPクライアント
         D-->>G: 違反を検出
-        G->>G: Block message相当として配信をブロック
+        G->>G: Block message相当として配信をブロック<br/>(メッセージは送信済みフォルダに残る)
         G->>U: 別メールで送信者に通知
+    else Warn usersアクション - 自動送信
+        D-->>G: 違反を検出
+        G->>R: 警告を表示できないため配信は継続<br/>(メッセージは送信済みフォルダに残る)
+        G->>G: Rule log eventsに記録
     else Warn usersアクション - Web・モバイル送信の再スキャン
         D-->>G: 違反を検出
         G->>R: 配信は継続<br/>(メッセージは送信済みフォルダに残る)

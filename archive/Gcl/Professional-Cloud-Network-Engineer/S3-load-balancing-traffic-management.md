@@ -24,7 +24,7 @@
 公式Exam Guideは、Task 3.1「Configuring load balancing」を次の5つの観点で定義しています。
 
 | 観点 | 内容 |
-|---|---|
+| --- | --- |
 | ① LBソリューションの決定 | internal/external、regional/global、application/proxy/passthroughの区別 |
 | ② バックエンドサービスの設定 | NEG・MIGを含むオートスケーリング構成 |
 | ③ バックエンドの詳細設定 | バランシング方式・セッションアフィニティ・サービング容量・URLマップ・ヘルスチェック・グローバルアクセス |
@@ -70,7 +70,7 @@ flowchart TD
 ### 主要ロードバランサー比較表
 
 | ロードバランサー | スコープ | 公開範囲 | 実装方式 | 主なユースケース |
-|---|---|---|---|---|
+| --- | --- | --- | --- | --- |
 | グローバル外部 Application LB | グローバル | External | GFE（管理型） | 世界中のユーザー向けWebアプリ、マルチリージョン公開API |
 | リージョン外部 Application LB | リージョン | External | Envoy（管理型） | 特定リージョンに閉じたコンプライアンス要件のあるWeb公開 |
 | リージョン内部 Application LB | リージョン | Internal | Envoy（管理型） | マイクロサービス間のL7ロードバランシング |
@@ -112,7 +112,7 @@ flowchart TD
 ```
 
 | NEGタイプ | エンドポイント形式 | 主な用途 | 制約 |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | ゾーンNEG（GCE_VM_IP_PORT） | IPアドレス＋ポート | プロキシ型LBの標準バックエンド、GKEのコンテナネイティブLB | UTILIZATIONバランシング非対応。RATE/CONNECTIONのみ |
 | ゾーンNEG（GCE_VM_IP） | IPアドレスのみ（ポート指定不可） | 内部パススルーNetwork LB、外部パススルーNetwork LB（リージョン） | ポート指定不可、デュアルスタックエンドポイント不可 |
 | サーバーレスNEG | Cloud Run / App Engine / Cloud Run functions | サーバーレスサービスをLB配下に統合 | Proxy/Passthrough Network LBからは利用不可 |
@@ -132,7 +132,7 @@ flowchart TD
 MIGバックエンドにオートスケーラーをアタッチすると、オートスケーラーは「ロードバランシングのサービング容量の一定割合」を維持するようにインスタンス数を増減します。たとえばMIGのサービング容量が1インスタンスあたり100RPSと定義されており、オートスケーラーの目標使用率を80%に設定した場合、オートスケーラーは各インスタンスが80RPSを維持するようにインスタンスを追加・削除します。
 
 > **ベストプラクティス**：NEGバックエンド（特にGKEのコンテナネイティブLB）を使う場合はUTILIZATIONが使えないため、RATEまたはCONNECTIONベースでキャパシティ計画を行い、Pod単位のHorizontal Pod Autoscalerと組み合わせて容量を制御します。
-
+>
 > **出典**: https://docs.cloud.google.com/compute/docs/autoscaler/scaling-load-balancing
 
 ---
@@ -144,7 +144,7 @@ MIGバックエンドにオートスケーラーをアタッチすると、オ�
 バックエンドサービスは、バックエンドごとに「バランシングモード」と「ターゲット容量」を持ち、これに「キャパシティスケーラー」を乗算した値が実効容量になります。
 
 | バランシングモード | 容量の測定基準 | 対応バックエンド | 備考 |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | UTILIZATION | インスタンスグループのCPU使用率（近似値） | MIGのみ（NEG非対応） | セッションアフィニティはNONEと併用すること |
 | RATE | 新規HTTPリクエストのレート（RPS） | MIG・NEG両方 | グループ全体またはエンドポイント単位で指定可能 |
 | CONNECTION | 新規TCPコネクション数 | MIG・NEG両方 | L4系ロードバランサーで使用 |
@@ -165,7 +165,7 @@ MIGバックエンドにオートスケーラーをアタッチすると、オ�
 セッションアフィニティは、同一クライアントからの後続リクエストを可能な限り同じバックエンドに送るための仕組みです。
 
 | アフィニティ種別 | ハッシュ対象 | 適したケース | 注意点 |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | NONE | なし（デフォルト） | ステートレスなアプリケーション | 最も均等な分散が得られる |
 | CLIENT_IP | 送信元・宛先IPの2-tuple | NAT配下にクライアントが少ないL4/L7ワークロード | 多数のクライアントが同一送信元IP（NAT）を共有すると偏りが生じる |
 | GENERATED_COOKIE | LBが発行するCookie | HTTP(S)ワークロードでの一般的な選択肢 | NATやIPアドレス変化の影響を受けない |
@@ -173,9 +173,9 @@ MIGバックエンドにオートスケーラーをアタッチすると、オ�
 | HEADER_FIELD | 指定したHTTPヘッダーの値 | ユーザーIDなどをヘッダーで伝搬するAPIクライアント | ロードバランシングロケーションポリシーがRING_HASHまたはMAGLEVである必要がある |
 
 > セッションアフィニティは認証やセキュリティの目的では使用しないでください。バックエンドの健全性やスケール状況によって、ベストエフォートでしか維持されません。
-
+>
 > **ベストプラクティス**：UTILIZATIONバランシングモードと組み合わせて使用しないこと。ウェイト付きトラフィックスプリッティングを設定した場合、セッションアフィニティの設定より分割設定が優先されるため、両者を同時に有効化しないことが推奨されています。
-
+>
 > **出典**
 >
 > - https://docs.cloud.google.com/load-balancing/docs/l7-internal
@@ -216,7 +216,7 @@ flowchart TD
 判定基準は「チェック間隔」「タイムアウト」「healthy閾値（連続成功回数）」「unhealthy閾値（連続失敗回数）」の4パラメータで構成され、プロトコルはHTTP/HTTPS/HTTP2/TCP/SSL/gRPCから選択できます。ヘルスチェックはHTTPリダイレクト（3xx）を失敗として扱うため、HTTPをHTTPSへ強制リダイレクトしているアプリケーションでヘルスチェックパスまでリダイレクトしてしまうと誤検知の原因になります。
 
 > **ベストプラクティス**：ヘルスチェックには本番トラフィックのエンドポイントとは別の軽量な専用パス（例：`/healthz`）を用意し、200固定を返すようにします。GKEのNEGバックエンドでは、ヘルスチェックはノードIPではなくPod IPに対して直接行われるため、NetworkPolicyやPodのファイアウォール設定も併せて確認する必要があります。
-
+>
 > **出典**
 >
 > - https://docs.cloud.google.com/compute/docs/instance-groups/autohealing-instances-in-migs
@@ -235,7 +235,7 @@ flowchart TD
 リージョン内部Application Load Balancerは、デフォルトでは同一リージョンのクライアントからのみアクセス可能です。フォワーディングルールで「グローバルアクセス」を有効化すると、VPC内の任意のリージョンからクライアントがアクセスできるようになります。一方、クロスリージョン内部Application Load Balancerはグローバルアクセスが常に有効であり、さらにバックエンド自体を複数リージョンに配置できる点がリージョン内部LBとの決定的な違いです。
 
 | 比較項目 | リージョン内部 Application LB | クロスリージョン内部 Application LB |
-|---|---|---|
+| --- | --- | --- |
 | VIPの割り当て | 特定リージョンのサブネットから割り当て | 特定リージョンのサブネットから割り当て（複数リージョンのVIPが同一バックエンドサービスを共有可） |
 | クライアントアクセス | デフォルトは同一リージョンのみ、グローバルアクセスで拡張可 | 常にグローバルアクセス可能 |
 | バックエンドの分散 | 単一リージョンのみ | 複数リージョンに分散可能 |
@@ -282,9 +282,9 @@ GKE Gateway controllerはKubernetes Gateway APIの実装であり、責務が3�
 この分離により、プラットフォームチームがGatewayのインフラ設定を管理し、アプリケーションチームがクラスタ全体の権限を持たずに自分たちのHTTPRouteだけを管理する、という役割分担が可能になります。GKE Gateway controllerは常にGCE_VM_IP_PORTゾーンNEGバックエンドを使用します。IngressのようにPodのreadiness probeからパラメータを推測はしませんが、標準パス `/` と既定値を使うヘルスチェックは自動作成されるため、HealthCheckPolicyは必須ではありません。アプリケーションが `/` にHTTP 200を返さない場合や、追加のパス、ヘッダー、タイムアウトなどの既定値を変更する場合にのみHealthCheckPolicyを設定します。
 
 | 比較項目 | GKE Ingress controller | GKE Gateway controller |
-|---|---|---|
+| --- | --- | --- |
 | 準拠仕様 | GKE独自のIngress拡張（アノテーションベース） | Kubernetes Gateway API（標準仕様） |
-| 実装されるLB | 常にClassic Application Load Balancer | GatewayClasseに応じて外部/内部・global/regionalを選択可能 |
+| 実装されるLB | 常にClassic Application Load Balancer | GatewayClassごとに実装されるLBが決まる（gke-l7-gxlb → Classic Application Load Balancer、gke-l7-global-external-managed → グローバル外部Application Load Balancer、gke-l7-regional-external-managed → リージョン外部Application Load Balancer、gke-l7-rilb → 内部Application Load Balancer、gke-l7-cross-regional-internal-managed-mc → クロスリージョン内部Application Load Balancer） |
 | リソース構成 | Ingressリソース1つに集約 | GatewayClass／Gateway／HTTPRouteに分離 |
 | トラフィック分割 | 非対応（1ルートにつき1バックエンドのみ） | HTTPRouteでネイティブにトラフィックスプリッティング対応 |
 | マルチテナンシー | Ingressリソースの所有者が全ルールを管理 | 名前空間をまたいだルーティング委譲が可能 |

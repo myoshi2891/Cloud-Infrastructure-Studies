@@ -29,12 +29,27 @@ export default function CcnaNetworkFundamentalsGuide() {
         if (typeof IntersectionObserver === 'undefined') return;
 
         const sections = document.querySelectorAll('section.section, footer.footer');
+        // 検出帯に入っているセクションを id 単位で保持する。
+        // entries には「交差状態が変化した要素」しか含まれず、その順序もドキュメント順とは
+        // 限らないため、コールバック内の最後のエントリを採用すると大きくスクロールした際に
+        // 帯へ同時に入った上側のセクションが選ばれてしまう。
+        const intersectingIds = new Map<string, boolean>();
+
         const handleIntersections: IntersectionObserverCallback = (entries) => {
             entries.forEach((entry) => {
-                if (entry.isIntersecting && entry.target.id) {
-                    setActiveSectionId(entry.target.id);
+                if (entry.target.id) {
+                    intersectingIds.set(entry.target.id, entry.isIntersecting);
                 }
             });
+
+            // 帯に入っているもののうち、ドキュメント順で最も下のセクションを採用する
+            let nextActiveId: string | undefined;
+            sections.forEach((section) => {
+                if (section.id && intersectingIds.get(section.id)) {
+                    nextActiveId = section.id;
+                }
+            });
+            if (nextActiveId) setActiveSectionId(nextActiveId);
         };
         let observer: IntersectionObserver | undefined;
 

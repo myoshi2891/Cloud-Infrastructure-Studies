@@ -66,8 +66,11 @@ console.log(
                 figure: doc.querySelectorAll('img, svg').length,
             },
             structures: {
+                // 移行元が列数の正本。scope="col" は移行先で必須化する属性であり
+                // 移行元（Markdown 由来 HTML など）には無いことが多いため、
+                // ここでの絞り込みに使うと常に 0 になり検証が空振りする。
                 tableColumnHeaders: [...doc.querySelectorAll('table')].map(
-                    (table) => table.querySelectorAll('thead th[scope="col"]').length,
+                    (table) => table.querySelectorAll('thead th').length,
                 ),
                 codeLines: codeBlocks.map(codeLineCount),
             },

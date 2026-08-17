@@ -223,10 +223,20 @@ const ALL_EXAMS: Exam[] = [
         href: '/gcl/professional-cloud-network-engineer',
         description:
             'Google Cloud のネットワークインフラの設計・実装・管理能力を認定。VPC・ハイブリッド接続・ロードバランシング・セキュリティなどを網羅。',
+        // pct は公式 Exam Guide の配点が正本（公式 Section 1〜6 = 21/20/16/16/14/13、合計100%）。
+        // ページ側のセクション番号は公式番号と一対一ではない:
+        //   ページ S1 → 公式 S1 / ページ S2 → 公式 S2
+        //   ページ S3・S4 → 公式 S3（~16%）を Task 3.1 と Task 3.2〜3.3 で分担（タスク単位の配点は非公開）
+        //   ページ S5 → 公式 S6 / ページ S6 → 公式 S5
+        // 公式 S4（ハイブリッド／マルチクラウド接続 ~16%）に対応する専用ページは未作成。
         domains: [
             { label: '試験対策ガイド', href: '/gcl/professional-cloud-network-engineer', pct: '概要' },
             { label: 'Section 1: VPCネットワーク設計', href: '/gcl/professional-cloud-network-engineer/section1-vpc-design', pct: '~21%' },
             { label: 'Section 2: VPCネットワークの実装', href: '/gcl/professional-cloud-network-engineer/section2-vpc-implementation', pct: '~20%' },
+            { label: 'Section 3: ロードバランシングとトラフィック管理', href: '/gcl/professional-cloud-network-engineer/section3-load-balancing', pct: '公式S3 ~16%' },
+            { label: 'Section 4: CDN・DNS・IPアドレス管理', href: '/gcl/professional-cloud-network-engineer/section4-cdn-dns-ipam', pct: '公式S3 ~16%' },
+            { label: 'Section 5: ネットワークセキュリティの設計と実装', href: '/gcl/professional-cloud-network-engineer/section5-network-security', pct: '~13%' },
+            { label: 'Section 6: ネットワーク操作と監視', href: '/gcl/professional-cloud-network-engineer/section6-network-ops-monitoring', pct: '~14%' },
             { label: 'ステップバイステップガイド', href: '/gcl/professional-cloud-network-engineer-step-by-step', pct: '詳細' },
         ],
         badge: 'ネットワーク特化',
