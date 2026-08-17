@@ -263,8 +263,8 @@
 }
 .weightFillS1 { background: var(--color-primary); }
 .weightFillS2 { background: color-mix(in srgb, var(--color-primary) 85%, transparent); }
+/* S3 と S4 は公式 Section 3 を分担するため配点バーは 1 本に統合済み（S4 用の塗りは不要） */
 .weightFillS3 { background: color-mix(in srgb, var(--color-primary) 70%, transparent); }
-.weightFillS4 { background: color-mix(in srgb, var(--color-primary) 55%, transparent); }
 .weightFillS5 { background: color-mix(in srgb, var(--color-primary) 40%, transparent); }
 .weightFillS6 { background: color-mix(in srgb, var(--color-primary) 25%, transparent); }
 
@@ -289,12 +289,12 @@
     font-family: var(--font-mono);
     color: var(--color-primary);
 }
-.weightW21 { width: 21%; }
-.weightW23 { width: 23%; }
-.weightW19 { width: 19%; }
-.weightW15 { width: 15%; }
-.weightW12 { width: 12%; }
-.weightW10 { width: 10%; }
+/* 公式 Exam Guide の配点（合計100%）に対応する幅。数値を変える場合は
+   SectionIntro.tsx の表示値と必ず一致させること */
+.weightW41 { width: 41%; }
+.weightW16 { width: 16%; }
+.weightW14 { width: 14%; }
+.weightW13 { width: 13%; }
 
 .flowSteps {
     display: flex;

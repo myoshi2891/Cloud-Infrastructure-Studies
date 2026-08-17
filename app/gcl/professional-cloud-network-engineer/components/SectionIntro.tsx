@@ -24,59 +24,59 @@ export function SectionIntro() {
                 <div className={sharedStyles.weightRow}>
                     <div className={sharedStyles.weightItem}>
                         <div className={sharedStyles.weightHeader}>
-                            <span className={sharedStyles.weightLabel}>S1: VPCネットワーク設計</span>
-                            <span className={sharedStyles.weightPercent}>~21%</span>
+                            <span className={sharedStyles.weightLabel}>S1: VPCネットワークの設計・実装</span>
+                            <span className={sharedStyles.weightPercent}>~41%</span>
                         </div>
                         <div className={sharedStyles.weightTrack}>
-                            <div className={`${sharedStyles.weightFill} ${sharedStyles.weightFillS1} ${sharedStyles.weightW21}`}></div>
+                            <div className={`${sharedStyles.weightFill} ${sharedStyles.weightFillS1} ${sharedStyles.weightW41}`}></div>
                         </div>
                     </div>
                     <div className={sharedStyles.weightItem}>
                         <div className={sharedStyles.weightHeader}>
                             <span className={sharedStyles.weightLabel}>S2: ハイブリッド接続・ネットワーク相互接続</span>
-                            <span className={sharedStyles.weightPercent}>~23%</span>
+                            <span className={sharedStyles.weightPercent}>~16%</span>
                         </div>
                         <div className={sharedStyles.weightTrack}>
-                            <div className={`${sharedStyles.weightFill} ${sharedStyles.weightFillS2} ${sharedStyles.weightW23}`}></div>
+                            <div className={`${sharedStyles.weightFill} ${sharedStyles.weightFillS2} ${sharedStyles.weightW16}`}></div>
                         </div>
                     </div>
                     <div className={sharedStyles.weightItem}>
                         <div className={sharedStyles.weightHeader}>
-                            <span className={sharedStyles.weightLabel}>S3: ロードバランシングとトラフィック管理</span>
-                            <span className={sharedStyles.weightPercent}>~19%</span>
+                            <span className={sharedStyles.weightLabel}>
+                                S3・S4: ロードバランシング / CDN・DNS・IPアドレス管理
+                            </span>
+                            <span className={sharedStyles.weightPercent}>~16%</span>
                         </div>
                         <div className={sharedStyles.weightTrack}>
-                            <div className={`${sharedStyles.weightFill} ${sharedStyles.weightFillS3} ${sharedStyles.weightW19}`}></div>
-                        </div>
-                    </div>
-                    <div className={sharedStyles.weightItem}>
-                        <div className={sharedStyles.weightHeader}>
-                            <span className={sharedStyles.weightLabel}>S4: CDN・DNS・IPアドレス管理</span>
-                            <span className={sharedStyles.weightPercent}>~15%</span>
-                        </div>
-                        <div className={sharedStyles.weightTrack}>
-                            <div className={`${sharedStyles.weightFill} ${sharedStyles.weightFillS4} ${sharedStyles.weightW15}`}></div>
+                            <div className={`${sharedStyles.weightFill} ${sharedStyles.weightFillS3} ${sharedStyles.weightW16}`}></div>
                         </div>
                     </div>
                     <div className={sharedStyles.weightItem}>
                         <div className={sharedStyles.weightHeader}>
                             <span className={sharedStyles.weightLabel}>S5: ネットワークセキュリティの設計と実装</span>
-                            <span className={sharedStyles.weightPercent}>~12%</span>
+                            <span className={sharedStyles.weightPercent}>~13%</span>
                         </div>
                         <div className={sharedStyles.weightTrack}>
-                            <div className={`${sharedStyles.weightFill} ${sharedStyles.weightFillS5} ${sharedStyles.weightW12}`}></div>
+                            <div className={`${sharedStyles.weightFill} ${sharedStyles.weightFillS5} ${sharedStyles.weightW13}`}></div>
                         </div>
                     </div>
                     <div className={sharedStyles.weightItem}>
                         <div className={sharedStyles.weightHeader}>
                             <span className={sharedStyles.weightLabel}>S6: ネットワーク操作と監視</span>
-                            <span className={sharedStyles.weightPercent}>~10%</span>
+                            <span className={sharedStyles.weightPercent}>~14%</span>
                         </div>
                         <div className={sharedStyles.weightTrack}>
-                            <div className={`${sharedStyles.weightFill} ${sharedStyles.weightFillS6} ${sharedStyles.weightW10}`}></div>
+                            <div className={`${sharedStyles.weightFill} ${sharedStyles.weightFillS6} ${sharedStyles.weightW14}`}></div>
                         </div>
                     </div>
                 </div>
+                <p className={sharedStyles.sectionDesc}>
+                    配点は公式 Exam Guide（Section 1〜6 = 21% / 20% / 16% / 16% / 14% / 13%、合計100%）に基づきます。
+                    本ページの S1 は公式 Section 1（設計・計画）と Section 2（実装）を統合したもの、
+                    S2 は公式 Section 4（ハイブリッド／マルチクラウド接続）、S5 は公式 Section 6、S6 は公式 Section 5 に対応します。
+                    S3 と S4 は公式 Section 3（マネージドネットワークサービス ~16%）を Task 3.1 と Task 3.2〜3.3 で分担しており、
+                    タスク単位の配点は公式に公開されていないため 1 本にまとめて表示しています。
+                </p>
             </div>
 
             {/* 学習ステップ */}

@@ -7,7 +7,7 @@ import sharedStyles from './SharedSection.module.css';
 export function Section6() {
     return (
         <section className={sharedStyles.section} id="s6" aria-labelledby="s6-title">
-            <div className={sharedStyles.sectionLabel}>Section 6 (~10%)</div>
+            <div className={sharedStyles.sectionLabel}>Section 6 (~14%)</div>
             <h2
                 className={sharedStyles.sectionTitle}
                 id="s6-title"
@@ -16,7 +16,7 @@ export function Section6() {
                 ネットワーク監視・トラブルシューティング
             </h2>
             <p className={sharedStyles.sectionDesc}>
-                約10%を占めるセクション。Network Intelligence Centerの5ツール、VPC Flow Logs、Packet
+                公式 Section 5 に対応し、約14%を占めるセクション。Network Intelligence Centerの5ツール、VPC Flow Logs、Packet
                 Mirroringの使い方と使い分けが問われる。
             </p>
             <div className={sharedStyles.divider}></div>

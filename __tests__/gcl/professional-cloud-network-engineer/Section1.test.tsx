@@ -6,7 +6,7 @@ describe('Professional Cloud Network Engineer - Section1', () => {
     it('renders the section title correctly', () => {
         render(<Section1 />);
         expect(screen.getByRole('heading', { name: /VPC ネットワークの設計・実装/, level: 2 })).toBeInTheDocument();
-        expect(screen.getByText('Section 1 (21%)')).toBeInTheDocument();
+        expect(screen.getByText('Section 1 (~41%)')).toBeInTheDocument();
     });
 
     it('renders the VPC mode comparison correctly', () => {

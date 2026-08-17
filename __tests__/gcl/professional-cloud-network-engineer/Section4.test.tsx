@@ -6,7 +6,7 @@ describe('Professional Cloud Network Engineer - Section4', () => {
     it('renders the section title correctly', () => {
         render(<Section4 />);
         expect(screen.getByRole('heading', { name: /CDN・DNS・IPアドレス管理/, level: 2 })).toBeInTheDocument();
-        expect(screen.getByText('Section 4 (~15%)')).toBeInTheDocument();
+        expect(screen.getByText('Section 4 (公式S3 ~16%)')).toBeInTheDocument();
     });
 
     it('renders the Cloud DNS zone table correctly', () => {

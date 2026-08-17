@@ -11,7 +11,7 @@ describe('Professional Cloud Network Engineer - Section6', () => {
                 level: 2,
             }),
         ).toBeInTheDocument();
-        expect(screen.getByText('Section 6 (~10%)')).toBeInTheDocument();
+        expect(screen.getByText('Section 6 (~14%)')).toBeInTheDocument();
     });
 
     it('renders the Network Intelligence Center tools correctly', () => {

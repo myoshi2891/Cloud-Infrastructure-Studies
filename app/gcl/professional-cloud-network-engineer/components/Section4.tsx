@@ -8,7 +8,7 @@ import { DiagramSVG } from '@/components/DiagramSVG';
 export function Section4() {
     return (
         <section className={sharedStyles.section} id="s4" aria-labelledby="s4-title">
-            <div className={sharedStyles.sectionLabel}>Section 4 (~15%)</div>
+            <div className={sharedStyles.sectionLabel}>Section 4 (公式S3 ~16%)</div>
             <h2
                 className={sharedStyles.sectionTitle}
                 id="s4-title"
@@ -17,7 +17,8 @@ export function Section4() {
                 CDN・DNS・IPアドレス管理
             </h2>
             <p className={sharedStyles.sectionDesc}>
-                約15%を占めるセクション。Cloud
+                公式 Section 3「マネージドネットワークサービス」（約16%）の Task 3.2〜3.3
+                にあたるセクション。Cloud
                 DNSのゾーン種別と転送設定、IPアドレスのエフェメラル/静的の違い、グローバル/リージョンのスコープが頻出。
             </p>
             <div className={sharedStyles.divider}></div>

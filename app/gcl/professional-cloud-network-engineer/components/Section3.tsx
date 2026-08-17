@@ -8,7 +8,7 @@ import { DiagramSVG } from '@/components/DiagramSVG';
 export function Section3() {
     return (
         <section className={sharedStyles.section} id="s3" aria-labelledby="s3-title">
-            <div className={sharedStyles.sectionLabel}>Section 3 (~19%)</div>
+            <div className={sharedStyles.sectionLabel}>Section 3 (公式S3 ~16%)</div>
             <h2
                 className={sharedStyles.sectionTitle}
                 id="s3-title"
@@ -17,7 +17,8 @@ export function Section3() {
                 ロードバランシングとトラフィック管理
             </h2>
             <p className={sharedStyles.sectionDesc}>
-                約19%を占める重要セクション。6種類のLBを状況に応じて選択できるかが問われる。Global
+                公式 Section 3「マネージドネットワークサービス」（約16%）の Task 3.1
+                にあたる重要セクション。6種類のLBを状況に応じて選択できるかが問われる。Global
                 vs Regional、Proxy型 vs Passthrough型の違いが最重要。
             </p>
             <div className={sharedStyles.divider}></div>
