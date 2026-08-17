@@ -17,17 +17,19 @@ describe('Professional Cloud Network Engineer - SectionIntro', () => {
         render(<SectionIntro />);
         // 配点バッジは完全一致で拾う。部分一致にすると解説文中の「~16%」も
         // 巻き込んで件数がずれるため。
-        expect(screen.getByText(/S1: VPCネットワークの設計・実装/)).toBeInTheDocument();
+        // セクション見出しも完全一致で拾う。正規表現の部分一致では文言の
+        // 追記・改変を検知できないため。
+        expect(screen.getByText('S1: VPCネットワークの設計・実装')).toBeInTheDocument();
         expect(screen.getByText('~41%')).toBeInTheDocument();
-        expect(screen.getByText(/S2: ハイブリッド接続・ネットワーク相互接続/)).toBeInTheDocument();
+        expect(screen.getByText('S2: ハイブリッド接続・ネットワーク相互接続')).toBeInTheDocument();
         expect(
-            screen.getByText(/S3・S4: ロードバランシング \/ CDN・DNS・IPアドレス管理/),
+            screen.getByText('S3・S4: ロードバランシング / CDN・DNS・IPアドレス管理'),
         ).toBeInTheDocument();
         // S2（公式 Section 4）と S3・S4（公式 Section 3）がともに ~16%
         expect(screen.getAllByText('~16%')).toHaveLength(2);
-        expect(screen.getByText(/S5: ネットワークセキュリティの設計と実装/)).toBeInTheDocument();
+        expect(screen.getByText('S5: ネットワークセキュリティの設計と実装')).toBeInTheDocument();
         expect(screen.getByText('~13%')).toBeInTheDocument();
-        expect(screen.getByText(/S6: ネットワーク操作と監視/)).toBeInTheDocument();
+        expect(screen.getByText('S6: ネットワーク操作と監視')).toBeInTheDocument();
         expect(screen.getByText('~14%')).toBeInTheDocument();
     });
 
