@@ -166,13 +166,14 @@ export const DIAGRAMS: Record<DiagramId, string> = {
     G -->|複数リージョンのバックエンド| J["クロスリージョン内部<br/>Application Load Balancer"]
     G -->|単一リージョンのバックエンド| K["リージョン内部<br/>Application Load Balancer"]`,
 
+    // 分類は直後の「NEGの6分類」表を正本とし、図と表で分類名・粒度を一致させる
     'diag-neg-types': `flowchart TD
-    NEG["Network Endpoint Group"] --> Z["ゾーンNEG<br/>GCE_VM_IP / GCE_VM_IP_PORT"]
+    NEG["Network Endpoint Group"] --> ZP["ゾーンNEG<br/>GCE_VM_IP_PORT<br/>IPアドレス＋ポート"]
+    NEG --> ZI["ゾーンNEG<br/>GCE_VM_IP<br/>IPアドレスのみ"]
     NEG --> S["サーバーレスNEG<br/>Cloud Run / App Engine / Cloud Run functions"]
     NEG --> I["インターネットNEG<br/>グローバル / リージョナル"]
     NEG --> H["ハイブリッド接続NEG<br/>オンプレミス・他クラウド"]
-    NEG --> P["PSC NEG<br/>Private Service Connect"]
-    NEG --> PM["ポートマッピングNEG<br/>同一IPで複数コンテナポート"]`,
+    NEG --> P["PSC NEG<br/>Private Service Connect"]`,
 
     'diag-url-map-structure': `flowchart TD
     UM["URLマップ"] --> HR["ホストルール<br/>例: example.com"]
