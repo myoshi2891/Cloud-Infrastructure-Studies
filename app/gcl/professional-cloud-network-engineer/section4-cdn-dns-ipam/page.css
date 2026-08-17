@@ -400,6 +400,12 @@
     cursor: pointer;
 }
 
+/* appearance: none でネイティブのフォーカスリングが消えるため明示的に復元する */
+.pcne-s4-page ul.checklist-list input[type='checkbox']:focus-visible {
+    outline: 2px solid var(--color-google-blue, #7c9eff);
+    outline-offset: 2px;
+}
+
 .pcne-s4-page ul.checklist-list input[type='checkbox']:checked {
     background: var(--color-google-blue, #7c9eff);
     border-color: var(--color-google-blue, #7c9eff);
