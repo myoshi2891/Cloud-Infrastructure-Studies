@@ -288,7 +288,7 @@ GKE Gateway controllerはKubernetes Gateway APIの実装であり、責務が3�
 | リソース構成 | Ingressリソース1つに集約 | GatewayClass／Gateway／HTTPRouteに分離 |
 | トラフィック分割 | 非対応（1ルートにつき1バックエンドのみ） | HTTPRouteでネイティブにトラフィックスプリッティング対応 |
 | マルチテナンシー | Ingressリソースの所有者が全ルールを管理 | 名前空間をまたいだルーティング委譲が可能 |
-| ヘルスチェック | パラメータを自動推測 | 標準の `/` と既定ポリシーを自動作成。追加パス・ヘッダー・タイムアウトなどを変更する場合のみHealthCheckPolicyを使用 |
+| ヘルスチェック | パラメータを自動推測 | 標準の `/` と既定値を使うヘルスチェックが自動的に使われる（HealthCheckPolicyは作成されない）。追加パス・ヘッダー・タイムアウトなどを変更する場合のみHealthCheckPolicyを使用 |
 
 > **出典**
 >

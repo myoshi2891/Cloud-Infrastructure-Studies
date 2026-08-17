@@ -10,6 +10,9 @@ interface DiagramProps {
     label: string;
 }
 
+/**
+ * 図表データを Mermaid 図として描画する（未定義の id は何も描画しない）。
+ */
 const Diagram = memo(function Diagram({ id, label }: DiagramProps) {
     const chart = DIAGRAMS[id];
     if (!chart) return null;
@@ -752,7 +755,7 @@ export function PcneSection3LoadBalancingGuide() {
                                 <tr className="even">
                                     <td>ヘルスチェック</td>
                                     <td>パラメータを自動推測</td>
-                                    <td>標準の <code>/</code> と既定ポリシーを自動作成。追加パス・ヘッダー・タイムアウトなどを変更する場合のみHealthCheckPolicyを使用</td>
+                                    <td>標準の <code>/</code> と既定値を使うヘルスチェックが自動的に使われる（HealthCheckPolicyは作成されない）。追加パス・ヘッダー・タイムアウトなどを変更する場合のみHealthCheckPolicyを使用</td>
                                 </tr>
                             </tbody>
                         </table>
