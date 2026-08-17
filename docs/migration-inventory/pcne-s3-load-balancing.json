@@ -184,7 +184,7 @@
     "Kubernetes Gateway API（標準仕様）",
     "実装されるLB",
     "常にClassic Application Load Balancer",
-    "GatewayClassごとに実装されるLBが決まる（gke-l7-gxlb → Classic Application Load Balancer、gke-l7-global-external-managed → グローバル外部Application Load Balancer、gke-l7-regional-external-managed → リージョン外部Application Load Balancer、gke-l7-rilb → 内部Application Load Balancer、gke-l7-cross-regional-internal-managed → クロスリージョン内部Application Load Balancer）",
+    "GatewayClassごとに実装されるLBが決まる（gke-l7-gxlb → Classic Application Load Balancer、gke-l7-global-external-managed → グローバル外部Application Load Balancer、gke-l7-regional-external-managed → リージョン外部Application Load Balancer、gke-l7-rilb → 内部Application Load Balancer、gke-l7-cross-regional-internal-managed-mc → クロスリージョン内部Application Load Balancer）",
     "リソース構成",
     "Ingressリソース1つに集約",
     "GatewayClass／Gateway／HTTPRouteに分離",
