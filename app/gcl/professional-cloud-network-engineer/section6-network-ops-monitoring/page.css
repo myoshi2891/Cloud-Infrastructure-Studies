@@ -67,7 +67,7 @@
     letter-spacing: 0.08em;
     color: var(--color-pcne-s6-accent);
     background: var(--color-pcne-s6-accent-soft);
-    border: 1px solid rgba(124, 158, 255, 0.3);
+    border: 1px solid var(--color-pcne-s6-accent-border-soft);
     border-radius: 4px;
     padding: 3px 8px;
     margin-bottom: 10px;
@@ -160,7 +160,7 @@
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.5);
+    background: var(--color-pcne-s6-backdrop);
     z-index: 39;
 }
 
@@ -190,15 +190,15 @@
     letter-spacing: 0.04em;
     padding: 5px 12px;
     border-radius: 20px;
-    border: 1px solid rgba(124, 158, 255, 0.35);
+    border: 1px solid var(--color-pcne-s6-accent-border);
     color: var(--color-pcne-s6-accent);
     background: var(--color-pcne-s6-accent-soft);
 }
 
 .pcne-s6-page .hero .badge.alt {
-    border-color: rgba(94, 230, 200, 0.35);
+    border-color: var(--color-pcne-s6-accent-2-border);
     color: var(--color-pcne-s6-accent-2);
-    background: rgba(94, 230, 200, 0.08);
+    background: var(--color-pcne-s6-accent-2-soft);
 }
 
 .pcne-s6-page .hero h1 {
@@ -285,7 +285,7 @@
 .pcne-s6-page .main a {
     color: var(--color-pcne-s6-accent);
     text-decoration: none;
-    border-bottom: 1px solid rgba(124, 158, 255, 0.35);
+    border-bottom: 1px solid var(--color-pcne-s6-accent-border);
     overflow-wrap: anywhere;
 }
 
@@ -358,7 +358,7 @@
 }
 
 .pcne-s6-page tbody tr:nth-child(odd) {
-    background: rgba(255, 255, 255, 0.015);
+    background: var(--color-pcne-s6-row-stripe);
 }
 
 /* ---------- Mermaid ---------- */
@@ -628,7 +628,7 @@
 
     .pcne-s6-page .sidebar.open {
         transform: translateX(0);
-        box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+        box-shadow: 0 0 40px var(--color-pcne-s6-shadow);
     }
 
     .pcne-s6-page .sidebar-toggle,

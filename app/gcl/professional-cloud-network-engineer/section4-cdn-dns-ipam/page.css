@@ -305,7 +305,8 @@
     font-family: var(--font-mono, 'SFMono-Regular', Consolas, monospace);
     color: var(--color-pcne-s4-code);
     font-size: 0.95rem;
-    white-space: pre-wrap;
+    /* インデントを保持し折り返さない。横溢れは親 .code-block の overflow-x に委ねる */
+    white-space: pre;
     line-height: 1.6;
 }
 

@@ -198,7 +198,14 @@
     --color-pcne-s6-foreground-faint: #5f7396;
     --color-pcne-s6-accent: #7c9eff;
     --color-pcne-s6-accent-soft: rgba(124, 158, 255, 0.12);
+    --color-pcne-s6-accent-border: rgba(124, 158, 255, 0.35);
+    --color-pcne-s6-accent-border-soft: rgba(124, 158, 255, 0.3);
     --color-pcne-s6-accent-2: #5ee6c8;
+    --color-pcne-s6-accent-2-border: rgba(94, 230, 200, 0.35);
+    --color-pcne-s6-accent-2-soft: rgba(94, 230, 200, 0.08);
+    --color-pcne-s6-backdrop: rgba(0, 0, 0, 0.5);
+    --color-pcne-s6-shadow: rgba(0, 0, 0, 0.5);
+    --color-pcne-s6-row-stripe: rgba(255, 255, 255, 0.015);
     --color-pcne-s6-warn: #ffb454;
     --color-pcne-s6-warn-soft: rgba(255, 180, 84, 0.1);
     --color-pcne-s6-good: #5ee6a8;
