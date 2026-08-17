@@ -10,10 +10,12 @@ import { metadata as section6 } from '@/app/gcl/professional-cloud-network-engin
 /**
  * PCNE セクションページの `<title>` 規約。
  *
- * `app/gcl/professional-cloud-network-engineer/layout.tsx` が `title` を
- * プレーン文字列で定義しているため、ルート layout の
- * `template: '%s | Cloud Infrastructure Studies'` はこのサブツリーでは適用されない。
- * セクションページの title は自動接尾辞に頼れず、自己完結している必要がある。
+ * ルート layout の `template: '%s | Cloud Infrastructure Studies'` は子ルートへ
+ * 継承され、プレーン文字列の title はこの template に流し込まれる
+ * （`app/gcl/professional-cloud-network-engineer/layout.tsx` は title を
+ * プレーン文字列で置いているだけで、新しい template を定義していない）。
+ * `| Google Cloud 認定試験対策` はその上に乗せる PCNE セクション固有の
+ * 命名規約であり、本テストはその規約への準拠のみを検証する。
  */
 const TITLE_PATTERN = /^PCNE S[1-6]: .+ \| Google Cloud 認定試験対策$/;
 
