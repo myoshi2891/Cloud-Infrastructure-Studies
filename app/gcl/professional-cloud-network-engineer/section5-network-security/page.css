@@ -540,7 +540,7 @@
 
 /* appearance: none でネイティブのフォーカスリングが消えるため明示的に復元する */
 .pcne-s5-page ul.checklist-list input[type='checkbox']:focus-visible {
-    outline: 2px solid var(--color-google-blue, #7c9eff);
+    outline: 2px solid var(--color-google-blue);
     outline-offset: 2px;
 }
 
