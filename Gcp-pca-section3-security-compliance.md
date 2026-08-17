@@ -362,7 +362,7 @@ flowchart TD
 
 #### (1) Cloud Audit Logs
 
-Cloud Audit Logsは「誰が」「いつ」「どのリソースに対して」「どのAPIを呼び出したか」を記録する証跡です。4種類のログタイプがあります。Admin Activity・System Event・Policy Deniedはコントロールプレーン（構成変更やポリシー適用）の記録ですが、**Data Accessはコントロールプレーンに限定されず、リソースのメタデータの読み取りに加えて、ユーザー提供データそのものの読み取り・書き込みも記録します**。
+Cloud Audit Logsは「誰が」「いつ」「どのリソースに対して」「どのAPIを呼び出したか」を記録する証跡です。4種類のログタイプがあります。Admin Activityはリソースの構成・メタデータを変更するAPI呼び出しを、System EventはGoogleのシステムによるリソース変更を記録します。Policy Deniedはこれらとは性質が異なり、**セキュリティポリシー違反によりアクセスが拒否された事象**を記録します。一方、**Data Accessはコントロールプレーンに限定されず、リソースのメタデータの読み取りに加えて、ユーザー提供データそのものの読み取り・書き込みも記録します**。
 
 | ログタイプ | 内容 | デフォルトで有効か | 既定の保存先ログバケット |
 | --- | --- | --- | --- |
@@ -403,7 +403,7 @@ flowchart LR
 | 機密データを扱うサービスでData Accessログを個別に有効化する | Cloud Storageの機密バケット、Secret Manager、BigQueryの規制対象データセットなど、優先度の高い領域から有効化する[^79][^80] |
 | ログシンクを事前に設定する | シンクは過去のログを遡って取り込まないため、必要になる前にCloud Storage・BigQuery・Log Bucketへのエクスポート設定を行う[^79] |
 | IAM変更やサービスアカウントキー作成をアラート対象にする | `SetIamPolicy`やサービスアカウントキー作成イベントなど高リスク操作を監視し、異常検知に活用する[^79] |
-| Access TransparencyログとあわせてGoogle人員によるアクセスも監査する | 顧客側の操作記録（Cloud Audit Logs）とGoogle人員の操作記録（Access Transparency）を併用し、完全な証跡を確保する（詳細は[3.2.4](#324-監査ログを含む)） |
+| Access TransparencyログとあわせてGoogle人員によるアクセスも監査する | 顧客側の操作記録（Cloud Audit Logs）とGoogle人員の操作記録（Access Transparency）を併用し、監査証跡を相互に補完する。ただし網羅性は無条件ではなく、Cloud Audit LogsのData Accessログを明示的に有効化していること、およびAccess Transparencyの対応サービス・適用条件の範囲内であることが前提となる（詳細は[3.2.4](#324-監査ログを含む)） |
 
 #### (2) VPC Service Controls
 
@@ -698,7 +698,7 @@ SLSA v1.2では、レベルが単一の連番ではなく**トラック（track�
 | Source L1 | ソースがバージョン管理され、リビジョンが一意に識別できる |
 | Source L2 | ブランチ履歴が連続的かつ不変な形で保持され、各ソースリビジョンに対してソースプロベナンス構成証明（attestation）が発行される |
 | Source L3 | 組織が定めた技術的統制が Named Reference に対して継続的に強制され、その証跡が記録される |
-| Source L4（最高レベル） | すべての変更に対する**2名以上のレビュー（two-party review）**を要求する最も厳格なレベル |
+| Source L4（最高レベル） | 保護対象の Named Reference（保護ブランチ・保護タグ）に対する変更に**2名以上のレビュー（two-party review）**を要求する最も厳格なレベル |
 
 出典: [^87]
 
@@ -965,7 +965,7 @@ flowchart TD
 | 前提 | 内容 |
 | --- | --- |
 | 対応サービスの範囲 | Cloud Audit Logs・Access Transparencyのいずれも、対応しているサービスの操作のみが記録される。未対応のサービスは記録対象外となる |
-| 明示的な有効化 | Access Transparencyは対象の課金アカウント／サポートプランを満たしたうえで有効化する必要がある。Data Access audit logsはBigQueryを除き**既定で無効**で、サービスごとに有効化しなければ記録されない |
+| 明示的な有効化 | Access Transparencyは**組織単位**で有効化する必要があり、その組織が所定のGoogle Cloudサポートレベルを満たしていることが条件となる。Data Access audit logsはBigQueryを除き**既定で無効**で、サービスごとに有効化しなければ記録されない |
 | 保存先と保持期間 | ログはCloud Loggingのログバケットに保存され、保持期間はバケット設定に従う（`_Default`は標準30日、`_Required`は400日で変更不可）。監査要件がこれを超える場合は保持期間の延長かシンクによるエクスポートが必要 |
 
 ```mermaid

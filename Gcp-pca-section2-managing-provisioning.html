@@ -3701,13 +3701,18 @@ flowchart TD
                         var fontRedrawDone = false;
                         var onFontsSettled = function () {
                             if (fontRedrawDone) return;
+                            // loadingdone fires once per load batch, not once for
+                            // the whole page. Before the first render is scheduled
+                            // we cannot yet tell whether a redraw will be needed,
+                            // so stay subscribed instead of consuming the one-shot
+                            // redraw on an early batch -- unsubscribing here would
+                            // leave a later fallback-font render uncorrected.
+                            if (!initialRenderScheduled) return;
                             fontRedrawDone = true;
                             document.fonts.removeEventListener('loadingdone', onFontsSettled);
                             document.fonts.removeEventListener('loadingerror', onFontsSettled);
-                            // Fonts settled before the first render was even
-                            // scheduled: that render will already measure with the
-                            // real font, so a redraw would only duplicate work.
-                            if (!initialRenderScheduled) return;
+                            // The first render already measured with the real
+                            // font, so a redraw would only duplicate work.
                             if (!initialRenderUsedFallback) return;
                             queueRender();
                         };

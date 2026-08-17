@@ -439,7 +439,7 @@ flowchart LR
 
 ### 5.2 Google Cloud AI/機械学習ソリューション
 
-v6.1で新設された領域です。Gemini Enterprise Agent Platform（旧 Vertex AI）が中核となります。[^20]
+v6.1で新設された領域です。Vertex AI の各機能を統合・発展させたエージェント基盤である Gemini Enterprise Agent Platform が中核となります（Vertex AI 自体は引き続き提供されており、モデル学習・デプロイ・MLOps の基盤として利用できます）。[^20]
 
 ```mermaid
 flowchart TD
