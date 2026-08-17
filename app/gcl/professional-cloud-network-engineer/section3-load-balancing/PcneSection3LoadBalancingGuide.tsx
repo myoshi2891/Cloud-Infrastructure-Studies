@@ -732,7 +732,7 @@ export function PcneSection3LoadBalancingGuide() {
                                 <tr className="even">
                                     <td>実装されるLB</td>
                                     <td>常にClassic Application Load Balancer</td>
-                                    <td>GatewayClassに応じて外部/内部・global/regionalを選択可能</td>
+                                    <td>GatewayClassごとに実装されるLBが決まる（gke-l7-gxlb → Classic Application Load Balancer、gke-l7-global-external-managed → グローバル外部Application Load Balancer、gke-l7-regional-external-managed → リージョン外部Application Load Balancer、gke-l7-rilb → 内部Application Load Balancer、gke-l7-cross-regional-internal-managed → クロスリージョン内部Application Load Balancer）</td>
                                 </tr>
                                 <tr className="odd">
                                     <td>リソース構成</td>

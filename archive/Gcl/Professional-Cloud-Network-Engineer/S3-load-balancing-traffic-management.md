@@ -284,7 +284,7 @@ GKE Gateway controllerはKubernetes Gateway APIの実装であり、責務が3�
 | 比較項目 | GKE Ingress controller | GKE Gateway controller |
 | --- | --- | --- |
 | 準拠仕様 | GKE独自のIngress拡張（アノテーションベース） | Kubernetes Gateway API（標準仕様） |
-| 実装されるLB | 常にClassic Application Load Balancer | GatewayClassに応じて外部/内部・global/regionalを選択可能 |
+| 実装されるLB | 常にClassic Application Load Balancer | GatewayClassごとに実装されるLBが決まる（gke-l7-gxlb → Classic Application Load Balancer、gke-l7-global-external-managed → グローバル外部Application Load Balancer、gke-l7-regional-external-managed → リージョン外部Application Load Balancer、gke-l7-rilb → 内部Application Load Balancer、gke-l7-cross-regional-internal-managed → クロスリージョン内部Application Load Balancer） |
 | リソース構成 | Ingressリソース1つに集約 | GatewayClass／Gateway／HTTPRouteに分離 |
 | トラフィック分割 | 非対応（1ルートにつき1バックエンドのみ） | HTTPRouteでネイティブにトラフィックスプリッティング対応 |
 | マルチテナンシー | Ingressリソースの所有者が全ルールを管理 | 名前空間をまたいだルーティング委譲が可能 |
