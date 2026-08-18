@@ -519,7 +519,7 @@ describe('<page-slug> — 移行元コンテンツの全量移行', () => {
 # .agents/ を編集したあと、両ミラーへ反映する
 rsync -a --delete .agents/rules/ .claude/rules/
 rsync -a --delete .agents/rules/ .gemini/rules/
-for skill in fix-mermaid html-to-nextjs-migration md-to-nextjs-migration markdown-formatter spec-sync; do
+for skill in fix-mermaid html-to-nextjs-migration md-to-html md-to-nextjs-migration markdown-formatter spec-sync; do
   rsync -a --delete ".agents/skills/$skill/" ".claude/skills/$skill/" || exit 1
   rsync -a --delete ".agents/skills/$skill/" ".gemini/skills/$skill/" || exit 1
 done
