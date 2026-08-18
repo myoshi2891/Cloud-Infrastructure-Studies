@@ -45,18 +45,24 @@ const SEGMENT_MIN_LENGTH = 6;
 /** 存在判定のフォールバックで使う下限。偽陽性を避けるため本判定より緩く取る。 */
 const SURVIVAL_SEGMENT_MIN_LENGTH = 3;
 
-/** `DIAGRAMS` に書いてよい配色。`references/design-system.md` の 3 役 + 既定色。 */
+/**
+ * `pre.mermaid` に書いてよい配色。`references/design-system.md` の 4 役。
+ * 原本 Markdown の `style X fill:...` は同じ値のまま `classDef <role>Fill` へ移す。
+ */
 const APPROVED_DIAGRAM_COLORS = new Set([
-  "#eef1f8", // box / step の塗り（indigo tint）
-  "#2e3f72", // box / step の線（indigo）
-  "#faf1df", // hub の塗り（gold tint）
-  "#b8802a", // hub の線（gold）
-  "#eaf4ec", // done の塗り（success bg）
-  "#2f6b3d", // done の線（success text）
-  "#161b26", // ラベル文字色（ink）
-  "#ffffff", // 図中の白抜き
-  "#dfe3ea", // 外周線（border）
+  "#1a3a5c", // highlight の塗り
+  "#4a90d9", // highlight の線
+  "#5c1a1a", // danger の塗り
+  "#d94a4a", // danger の線
+  "#1a4a2a", // success の塗り
+  "#4ad97a", // success の線
+  "#5c3a1a", // warn の塗り
+  "#d9904a", // warn の線
+  "#ffffff", // ラベル文字色
 ]);
+
+/** サイドバーへ再型付けされる目次見出し。本文セクションとしては存在しない。 */
+const TOC_HEADING = "目次";
 
 // --------------------------------------------------------------------------
 // テキスト正規化
@@ -131,6 +137,9 @@ function stripMarkup(fragment) {
  */
 function stripMarkdownInline(raw) {
   return raw
+    // 脚注参照 `[^12]` はページ側では `<sup>12</sup>` を持つ `.footnote-ref` になる。
+    // 記法が違うだけで同じ位置に存在するため、両側から落として本文だけを照合する。
+    .replace(/\[\^[^\]]+\]/g, "")
     .replace(/!\[([^\]]*)\]\([^)]*\)/g, "$1")
     .replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")
     .replace(/<[^>]*>/g, " ");
@@ -274,7 +283,10 @@ function inventoryMarkdown(src) {
   const listTexts = [];
   const tableRowTexts = [];
   const paragraphTexts = [];
+  const referenceTexts = [];
+  const tocAnchors = [];
   const mermaidSources = [];
+  let inToc = false;
 
   let inFence = false;
   let fenceLanguage = "";
@@ -308,12 +320,29 @@ function inventoryMarkdown(src) {
     const heading = /^(#{1,6})\s+(.*?)\s*#*\s*$/.exec(line);
     if (heading) {
       flushParagraph();
-      headings.push({ level: heading[1].length, text: normalize(stripMarkdownInline(heading[2])) });
+      const text = normalize(stripMarkdownInline(heading[2]));
+      // `## 目次` は本文セクションではなくサイドバーへ再型付けされる。
+      // 見出しとしても、その配下のリンク一覧としても照合対象から外す。
+      inToc = heading[1].length === 2 && text === TOC_HEADING;
+      if (!inToc) headings.push({ level: heading[1].length, text });
+      continue;
+    }
+    // 脚注定義 `[^12]: 名称. https://…` は `.ref-card` へ再型付けされるため、
+    // 段落ではなく参考文献として別枠で照合する。
+    const footnoteDefinition = /^\s*\[\^([^\]]+)\]:\s*(\S.*)$/.exec(line);
+    if (footnoteDefinition) {
+      flushParagraph();
+      referenceTexts.push(normalize(stripMarkdownInline(footnoteDefinition[2])));
       continue;
     }
     const listItem = /^\s*(?:[-*+]|\d+\.)\s+(\S.*)$/.exec(line);
     if (listItem) {
       flushParagraph();
+      if (inToc) {
+        const anchor = /\]\(#([^)]+)\)/.exec(listItem[1]);
+        if (anchor !== null) tocAnchors.push(decodeURIComponent(anchor[1]));
+        continue;
+      }
       listTexts.push(normalize(stripMarkdownInline(listItem[1])));
       continue;
     }
@@ -341,27 +370,40 @@ function inventoryMarkdown(src) {
     listTexts,
     tableRowTexts,
     paragraphTexts,
+    referenceTexts,
+    tocAnchors,
     mermaidSources,
     externalLinks: collectUrls(src),
   };
 }
 
 /**
- * Extracts the `DIAGRAMS` entries from the page's inline script.
+ * Extracts the Mermaid sources the page carries inline.
+ *
+ * 本 repo の生成 HTML は `pre.mermaid` に直書きする（`var DIAGRAMS` は使わない）。
+ * 中身は実体参照でエスケープされているため、照合前にデコードする。
+ *
  * @param {string} src - The complete HTML source.
- * @returns {Array<{id: string, source: string}>} The diagram ids and sources in declaration order.
+ * @returns {Array<{id: string, source: string}>} The diagram sources in document order.
  */
 function extractDiagramEntries(src) {
-  const block = /var\s+DIAGRAMS\s*=\s*\{([\s\S]*?)\n\s*\};/.exec(src);
-  if (block === null) return [];
-  const entries = [];
-  const entryRe = /(?:^|,)\s*["']?([A-Za-z_$][\w$]*)["']?\s*:\s*`([\s\S]*?)`/g;
-  let entry = entryRe.exec(block[1]);
-  while (entry !== null) {
-    entries.push({ id: entry[1], source: entry[2] });
-    entry = entryRe.exec(block[1]);
-  }
-  return entries;
+  return [...src.matchAll(/<pre class="mermaid">([\s\S]*?)<\/pre\s*>/g)].map((match, index) => ({
+    id: `pre${index + 1}`,
+    source: decodeEntities(match[1]),
+  }));
+}
+
+/**
+ * Extracts the sidebar navigation targets.
+ * @param {string} src - The complete HTML source.
+ * @returns {string[]} The anchor targets in document order.
+ */
+function extractNavTargets(src) {
+  const nav = /<nav\b[^>]*id="sidebarNav"[^>]*>([\s\S]*?)<\/nav>/.exec(src);
+  if (nav === null) return [];
+  return [...nav[1].matchAll(/<a\s[^>]*href="#([^"]+)"/g)].map((match) =>
+    decodeURIComponent(match[1])
+  );
 }
 
 /**
@@ -371,8 +413,20 @@ function extractDiagramEntries(src) {
  */
 function inventoryHtml(src) {
   const diagrams = extractDiagramEntries(src);
-  // 本文は <style> / <script> を除いた領域から採る。図のソースは別枠で保持する。
-  const body = src.replace(/<(script|style)\b[\s\S]*?<\/\1>/gi, " ");
+  const navTargets = extractNavTargets(src);
+  const headingIds = [...src.matchAll(/<h[23]\s[^>]*id="([^"]+)"/g)].map((match) =>
+    decodeURIComponent(match[1])
+  );
+
+  // 本文は <style> / <script> と、サイドバー（目次の再型付け先）を除いた領域から採る。
+  // 脚注参照は `[^12]` の対応物なので、原本側の除去と対称になるよう落とす。
+  const body = src
+    .replace(/<(script|style)\b[\s\S]*?<\/\1>/gi, " ")
+    .replace(/<a\s[^>]*class="footnote-ref"[\s\S]*?<\/a>/gi, "");
+
+  const referenceTexts = [...body.matchAll(/<div class="txt">([\s\S]*?)<\/div>/g)].map((match) =>
+    normalize(stripMarkup(match[1]))
+  );
 
   const headings = [];
   const headingRe = /<h([1-6])\b[^>]*>([\s\S]*?)<\/h\1>/gi;
@@ -386,15 +440,15 @@ function inventoryHtml(src) {
 
   return {
     headings,
+    headingIds,
+    navTargets,
+    referenceTexts,
     listTexts: extractTagContents(body, "li").map((content) => normalize(stripMarkup(content))),
     tableRowTexts: extractTagContents(body, "tr").map((content) => normalize(stripMarkup(content))),
     paragraphTexts: extractTagContents(body, "p").map((content) => normalize(stripMarkup(content))),
     // 図のラベルもページ上に現れる文言なので、包含判定の対象テキストに含める。
     pageText: matchKey(`${stripMarkup(body)} ${diagramText}`),
     diagrams,
-    diagramContainerIds: [...body.matchAll(/class="diagram-container"[^>]*\bid="([^"]+)"/g)].map(
-      (m) => m[1]
-    ),
     externalLinks: collectUrls(body),
   };
 }
@@ -462,15 +516,22 @@ function missingSegments(text, pageText) {
  */
 function compare(source, page) {
   // 見出しは階層で扱いを分ける。
-  //   h1 / h2 = 原本のセクション見出し。消えていればセクションごと落ちた可能性が高く blocking。
-  //   h3 以下 = `.step-title` / callout のラベル / `.domain-tag` へ再型付けされるのが正常な
-  //             変換であり（CAPM 実績で 12 件）、blocking にすると偽陽性で監査が形骸化する。
-  //             本文（段落・リスト・表行）の照合が別途 blocking なので、本文の消失は見逃さない。
-  const absentHeadings = source.headings.filter(
-    (heading) => !survivesInPage(heading.text, page.pageText)
+  //   h1 / h2 = 原本のセクション見出し。**見出し要素として実在すること**を求める。
+  //             このデザインはサイドバーが全見出しの文言を複製するため、ページ全文への
+  //             包含で判定すると h2 を削除しても必ず「残っている」と誤判定してしまう。
+  //   h3 以下 = `.callout-practice` のラベル等へ再型付けされるのが正常な変換であり、
+  //             blocking にすると偽陽性で監査が形骸化する。文言がページのどこかに
+  //             残っていれば漏れとしない（本文の照合が別途 blocking なので見逃さない）。
+  const pageHeadingKeySet = new Set(page.headings.map((heading) => matchKey(heading.text)));
+  const missingHeadings = source.headings.filter(
+    (heading) => heading.level <= 2 && !pageHeadingKeySet.has(matchKey(heading.text))
   );
-  const missingHeadings = absentHeadings.filter((heading) => heading.level <= 2);
-  const missingSubHeadings = absentHeadings.filter((heading) => heading.level > 2);
+  const missingSubHeadings = source.headings.filter(
+    (heading) =>
+      heading.level > 2 &&
+      !pageHeadingKeySet.has(matchKey(heading.text)) &&
+      !survivesInPage(heading.text, page.pageText)
+  );
 
   // レベル変更は blocking にしない（再型付けは正当）。ただし必ず目に触れるよう列挙する。
   const pageHeadingKeys = new Map();
@@ -479,7 +540,11 @@ function compare(source, page) {
     if (!pageHeadingKeys.has(key)) pageHeadingKeys.set(key, heading.level);
   }
   const retypedHeadings = source.headings
-    .filter((heading) => survivesInPage(heading.text, page.pageText))
+    .filter(
+      (heading) =>
+        pageHeadingKeySet.has(matchKey(heading.text)) ||
+        survivesInPage(heading.text, page.pageText)
+    )
     .map((heading) => ({
       level: heading.level,
       text: heading.text,
@@ -500,14 +565,43 @@ function compare(source, page) {
 
   const missingLinks = [...source.externalLinks].filter((url) => !page.externalLinks.has(url));
 
+  // 脚注定義は `.ref-card` へ再型付けされる。同種要素同士で照合し、外れたものだけ
+  // ページ全文への包含にフォールバックする（本文へ移した場合を漏れ扱いしないため）。
+  const missingReferences = missingOccurrences(
+    source.referenceTexts,
+    page.referenceTexts
+  ).filter((text) => !survivesInPage(text, page.pageText));
+
+  // 原本の目次アンカー ≡ 見出し id ≡ サイドバーのリンク先。
+  // 三者が一致しないと目次から辿れない節やリンク切れが生まれる。
+  const anchorMismatches = [];
+  const tocAnchors = new Set(source.tocAnchors);
+  const headingIds = new Set(page.headingIds);
+  const navTargets = new Set(page.navTargets);
+  for (const anchor of tocAnchors) {
+    if (!headingIds.has(anchor)) {
+      anchorMismatches.push({ kind: "見出しが無い目次アンカー", anchor });
+    }
+  }
+  for (const id of headingIds) {
+    if (tocAnchors.size > 0 && !tocAnchors.has(id)) {
+      anchorMismatches.push({ kind: "目次に無い見出し id", anchor: id });
+    }
+    if (!navTargets.has(id)) {
+      anchorMismatches.push({ kind: "サイドバーに無い見出し id", anchor: id });
+    }
+  }
+  for (const target of navTargets) {
+    if (!headingIds.has(target)) {
+      anchorMismatches.push({ kind: "見出しが無いサイドバーのリンク", anchor: target });
+    }
+  }
+
   const diagramCounts = {
     markdownFences: source.mermaidSources.length,
-    diagramsKeys: page.diagrams.length,
-    containers: page.diagramContainerIds.length,
+    preMermaid: page.diagrams.length,
   };
-  const diagramCountMatch =
-    diagramCounts.markdownFences === diagramCounts.diagramsKeys &&
-    diagramCounts.diagramsKeys === diagramCounts.containers;
+  const diagramCountMatch = diagramCounts.markdownFences === diagramCounts.preMermaid;
 
   // 図のラベルを構成する語句が、ページのどこか（本文 or いずれかの図）に残っているか。
   const missingDiagramLabels = [];
@@ -523,12 +617,8 @@ function compare(source, page) {
   });
 
   // 図ごとのラベル差分（非 blocking。短縮の妥当性を人が確認するための材料）。
-  // `DIAGRAMS` の宣言順は文書順と一致しないため、`.diagram-container` の出現順に並べ替えて
-  // 原本の fence 順と突き合わせる（宣言順のまま zip すると別の図同士を比較してしまう）。
-  const diagramsById = new Map(page.diagrams.map((diagram) => [diagram.id, diagram]));
-  const orderedPageDiagrams = page.diagramContainerIds
-    .map((id) => diagramsById.get(id))
-    .filter((diagram) => diagram !== undefined);
+  // `pre.mermaid` は文書順に並ぶため、原本の fence 順とそのまま突き合わせられる。
+  const orderedPageDiagrams = page.diagrams;
   const rewrittenDiagramLabels = [];
   source.mermaidSources.forEach((diagramSource, index) => {
     const pageDiagram = orderedPageDiagrams[index];
@@ -554,7 +644,8 @@ function compare(source, page) {
     listItems: { source: source.listTexts.length, page: page.listTexts.length },
     tableRows: { source: source.tableRowTexts.length, page: page.tableRowTexts.length },
     externalLinks: { source: source.externalLinks.size, page: page.externalLinks.size },
-    diagrams: { source: diagramCounts.markdownFences, page: diagramCounts.diagramsKeys },
+    references: { source: source.referenceTexts.length, page: page.referenceTexts.length },
+    diagrams: { source: diagramCounts.markdownFences, page: diagramCounts.preMermaid },
   };
 
   const blocking =
@@ -563,6 +654,8 @@ function compare(source, page) {
     missingListItems.length > 0 ||
     missingTableRows.length > 0 ||
     missingLinks.length > 0 ||
+    missingReferences.length > 0 ||
+    anchorMismatches.length > 0 ||
     missingDiagramLabels.length > 0 ||
     unapprovedColors.length > 0 ||
     !diagramCountMatch;
@@ -573,6 +666,8 @@ function compare(source, page) {
     missingListItems,
     missingTableRows,
     missingLinks,
+    missingReferences,
+    anchorMismatches,
     missingDiagramLabels,
     unapprovedColors,
     diagramCountMatch,

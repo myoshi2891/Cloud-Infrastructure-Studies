@@ -24,22 +24,36 @@
 import { readFileSync } from "node:fs";
 
 /** 既定の参照元（デザインの正）。 */
-const DEFAULT_REFERENCE = "Certified-Associate-in-Project-Management.html";
+const DEFAULT_REFERENCE = "Gcp-pca-section4-process-optimization.html";
 
 /** ページに必ず存在しなければならない描画 JS の関数。 */
-const REQUIRED_FUNCTIONS = [
-  "extendViewBoxHeight",
-  "renderAllDiagrams",
-  "setupSidebarHighlight",
-  "setupMobileToggle",
+const REQUIRED_FUNCTIONS = ["initMermaid", "healOverflowingLabels"];
+
+/** インラインの配線（名前付き関数ではない）。`pattern` に一致しなければ欠落とみなす。 */
+const REQUIRED_WIRINGS = [
+  { name: "スクロールスパイ", pattern: /new\s+IntersectionObserver\s*\(/ },
+  { name: "サイドバートグル", pattern: /getElementById\(\s*["']sidebarToggle["']\s*\)/ },
+  { name: "チェックリスト進捗", pattern: /querySelectorAll\(\s*["']\.checklist-card["']\s*\)/ },
 ];
 
-/** CDN から読み込む資産。`pattern` に一致する tag が `count` 個必要。 */
+/**
+ * CDN から読み込む資産。`pattern` に一致する tag が `count` 個必要。
+ *
+ * 読み込み自体は必須だが、`SRI_EXEMPT_HOST` に該当するものはバージョン固定・SRI を要求しない。
+ * Google Fonts の CSS は UA ごとに異なる応答（配信される woff2 の組み合わせが変わる）を
+ * 返すため integrity ハッシュを一意に決められない。
+ */
 const REQUIRED_ASSETS = [
-  { name: "@tabler/icons-webfont", pattern: /@tabler\/icons-webfont@/, count: 1 },
-  { name: "@fontsource/source-serif-4", pattern: /@fontsource\/source-serif-4@/, count: 3 },
-  { name: "mermaid", pattern: /\/mermaid@/, count: 1 },
+  { name: "mermaid", pattern: /\/mermaid[@/]/, count: 1 },
+  {
+    name: "Noto Sans JP",
+    pattern: /fonts\.googleapis\.com\/css2\?family=Noto\+Sans\+JP/,
+    count: 1,
+  },
 ];
+
+/** バージョン固定と SRI の検査から外すホスト。 */
+const SRI_EXEMPT_HOST = /fonts\.googleapis\.com|fonts\.gstatic\.com/;
 
 // --------------------------------------------------------------------------
 // CSS
@@ -181,57 +195,70 @@ function collectThemeVariables(src) {
 // --------------------------------------------------------------------------
 
 /**
- * Collects the sidebar navigation entries.
+ * Collects the sidebar navigation targets.
  * @param {string} src - The complete HTML source.
- * @returns {Array<{id: string, icon: string}>} The anchor targets and their icons in document order.
+ * @returns {string[]} The anchor targets in document order.
  */
-function collectNavEntries(src) {
-  const nav = /<ul class="sidebar-nav">([\s\S]*?)<\/ul>/.exec(src);
+function collectNavTargets(src) {
+  const nav = /<nav\b[^>]*id="sidebarNav"[^>]*>([\s\S]*?)<\/nav>/.exec(src);
   if (nav === null) return [];
-  return [...nav[1].matchAll(/<a\s+href="#([^"]+)"[^>]*>\s*<i class="ti (ti-[\w-]+)"><\/i>/g)].map(
-    (match) => ({ id: match[1], icon: match[2] })
+  return [...nav[1].matchAll(/<a\s[^>]*href="#([^"]+)"/g)].map((match) =>
+    decodeURIComponent(match[1])
   );
 }
 
 /**
- * Collects the content sections with their eyebrow icon and number.
+ * Collects the identifiers of the content headings.
  * @param {string} src - The complete HTML source.
- * @returns {Array<{id: string, icon: string|null, number: string|null}>} The sections in document order.
+ * @returns {string[]} The heading ids in document order.
  */
-function collectSections(src) {
-  const sections = [];
-  const sectionRe = /<section id="([^"]+)"[^>]*>([\s\S]*?)<\/section>/g;
-  let match = sectionRe.exec(src);
-  while (match !== null) {
-    const eyebrow = /<div class="section-eyebrow">\s*<i class="ti (ti-[\w-]+)"><\/i>\s*([^<]*)</.exec(
-      match[2]
-    );
-    sections.push({
-      id: match[1],
-      icon: eyebrow === null ? null : eyebrow[1],
-      number: eyebrow === null ? null : eyebrow[2].trim(),
+function collectHeadingIds(src) {
+  return [...src.matchAll(/<h[23]\s[^>]*id="([^"]+)"/g)].map((match) =>
+    decodeURIComponent(match[1])
+  );
+}
+
+/**
+ * Collects the reference card identifiers.
+ * @param {string} src - The complete HTML source.
+ * @returns {string[]} The `ref-card` ids in document order.
+ */
+function collectReferenceCardIds(src) {
+  return [...src.matchAll(/<div class="ref-card"\s+id="([^"]+)"/g)].map((match) => match[1]);
+}
+
+/**
+ * Collects the checklist cards with their advertised and actual item counts.
+ * @param {string} src - The complete HTML source.
+ * @returns {Array<{advertised: string|null, declared: number|null, actual: number}>} The checklist cards.
+ */
+function collectChecklists(src) {
+  const cards = [];
+  // `.checklist-card` は入れ子にならないので、次のカード開始か本文終端までを 1 枚とみなす。
+  const parts = src.split(/<div class="checklist-card">/).slice(1);
+  for (const part of parts) {
+    const body = part.split(/<div class="checklist-card">/)[0];
+    const advertised = /<span class="count">([^<]*)<\/span>/.exec(body)?.[1] ?? null;
+    const declared = advertised === null ? null : Number(/(\d+)\s*完了/.exec(advertised)?.[1] ?? NaN);
+    cards.push({
+      advertised,
+      declared: Number.isNaN(declared) ? null : declared,
+      actual: (body.match(/type="checkbox"/g) ?? []).length,
     });
-    match = sectionRe.exec(src);
   }
-  return sections;
+  return cards;
 }
 
 /**
- * Collects the `DIAGRAMS` keys declared in the inline script.
+ * Reads the number a hero pill advertises.
  * @param {string} src - The complete HTML source.
- * @returns {string[]} The diagram identifiers in declaration order.
+ * @param {RegExp} pattern - The pattern whose first capture group holds the number.
+ * @returns {number|null} The advertised count, or null when the pill is absent.
  */
-function collectDiagramKeys(src) {
-  const block = /var\s+DIAGRAMS\s*=\s*\{([\s\S]*?)\n\s*\};/.exec(src);
-  if (block === null) return [];
-  return [...block[1].matchAll(/(?:^|,)\s*["']?([A-Za-z_$][\w$]*)["']?\s*:\s*`/g)].map(
-    (match) => match[1]
-  );
+function readPillCount(src, pattern) {
+  const match = pattern.exec(src);
+  return match === null ? null : Number(match[1]);
 }
-
-// --------------------------------------------------------------------------
-// 検査
-// --------------------------------------------------------------------------
 
 /**
  * Runs every design parity check.
@@ -294,9 +321,11 @@ function audit(page, reference, isTemplate) {
   // `preconnect` / `dns-prefetch` は資産の取得ではなく接続のヒントなので、
   // バージョン固定・SRI の対象から外す。
   const assetTags = [
-    ...(page.match(/<link\b[^>]*cdn\.jsdelivr\.net[^>]*>/g) ?? []),
-    ...(page.match(/<script\b[^>]*cdn\.jsdelivr\.net[^>]*>/g) ?? []),
-  ].filter((tag) => !/rel="(?:preconnect|dns-prefetch)"/.test(tag));
+    ...(page.match(/<link\b[^>]*>/g) ?? []),
+    ...(page.match(/<script\b[^>]*src="[^"]*"[^>]*>/g) ?? []),
+  ].filter(
+    (tag) => /https?:\/\//.test(tag) && !/rel="(?:preconnect|dns-prefetch)"/.test(tag)
+  );
   for (const { name, pattern, count } of REQUIRED_ASSETS) {
     const matched = assetTags.filter((tag) => pattern.test(tag));
     if (matched.length !== count) {
@@ -305,13 +334,14 @@ function audit(page, reference, isTemplate) {
   }
   for (const tag of assetTags) {
     const url = /(?:href|src)="([^"]+)"/.exec(tag)?.[1] ?? tag;
-    if (!/@\d+\.\d+\.\d+/.test(url)) {
+    if (SRI_EXEMPT_HOST.test(url)) continue;
+    if (!/@\d+\.\d+\.\d+|\/\d+\.\d+\.\d+\//.test(url)) {
       add("cdn", `バージョンが完全固定されていません（@latest / メジャー指定は不可）: ${url}`);
     }
     if (!/integrity="sha(?:256|384|512)-[\w+/=]+"/.test(tag)) {
       add("cdn", `integrity 属性がありません: ${url}`);
     }
-    if (!/crossorigin=/.test(tag)) {
+    if (!/crossorigin/.test(tag)) {
       add("cdn", `crossorigin 属性がありません: ${url}`);
     }
   }
@@ -322,8 +352,10 @@ function audit(page, reference, isTemplate) {
       add("javascript", `描画 JS の関数が欠落しています: ${name}()`);
     }
   }
-  if (!/addEventListener\("DOMContentLoaded"/.test(page)) {
-    add("javascript", "DOMContentLoaded による初期化の配線がありません");
+  for (const { name, pattern } of REQUIRED_WIRINGS) {
+    if (!pattern.test(page)) {
+      add("javascript", `${name}の配線がありません`);
+    }
   }
   if (!/flowchart\s*:\s*\{[^}]*useMaxWidth\s*:\s*false/.test(page)) {
     add("javascript", "mermaid の flowchart.useMaxWidth が false に設定されていません");
@@ -351,61 +383,79 @@ function audit(page, reference, isTemplate) {
     add("structure", `h1 はちょうど 1 個である必要がありますが ${headingCount} 個です`);
   }
 
-  const navEntries = collectNavEntries(page);
-  const sections = collectSections(page);
-  const navIds = new Set(navEntries.map((entry) => entry.id));
-  const sectionIds = new Set(sections.map((section) => section.id));
-  for (const id of navIds) {
-    if (!sectionIds.has(id)) add("structure", `サイドバーのリンク先セクションが存在しません: #${id}`);
+  // サイドバーのリンクと本文見出しは 1:1 でなければならない。
+  // どちらかが欠けるとリンク切れか、目次から辿れない節になる。
+  const navTargets = new Set(collectNavTargets(page));
+  const headingIds = new Set(collectHeadingIds(page));
+  for (const id of navTargets) {
+    if (!headingIds.has(id)) {
+      add("structure", `サイドバーのリンク先の見出しが存在しません: #${id}`);
+    }
   }
-  for (const id of sectionIds) {
-    if (!navIds.has(id)) add("structure", `サイドバーに載っていないセクションがあります: #${id}`);
+  for (const id of headingIds) {
+    if (!navTargets.has(id)) {
+      add("structure", `サイドバーに載っていない見出しがあります: #${id}`);
+    }
   }
 
-  const iconById = new Map(navEntries.map((entry) => [entry.id, entry.icon]));
-  sections.forEach((section, index) => {
-    if (section.icon === null) {
-      add("structure", `.section-eyebrow がありません: #${section.id}`);
-      return;
-    }
-    const navIcon = iconById.get(section.id);
-    if (navIcon !== undefined && navIcon !== section.icon) {
-      add(
-        "structure",
-        `サイドバーとセクションでアイコンが異なります: #${section.id} — nav ${navIcon} / eyebrow ${section.icon}`
-      );
-    }
-    const expected = `SECTION ${String(index + 1).padStart(2, "0")}`;
-    if (section.number !== expected) {
-      add("structure", `.section-eyebrow の採番が連番ではありません: #${section.id} — 期待 "${expected}" / 実際 "${section.number}"`);
+  const tableCount = (page.match(/<table\b/g) ?? []).length;
+  const wrappedCount = (page.match(/<div class="table-scroll">\s*<table\b/g) ?? []).length;
+  if (tableCount !== wrappedCount) {
+    add(
+      "structure",
+      `.table-scroll に包まれていない table があります（table ${tableCount} / wrap ${wrappedCount}）`
+    );
+  }
+
+  const unclassedRows = (page.match(/<tr(?![^>]*class=)[^>]*>/g) ?? []).length;
+  if (unclassedRows > 0) {
+    add("structure", `表の行に header / odd / even のクラスが付いていません: ${unclassedRows} 行`);
+  }
+
+  const referenceIds = collectReferenceCardIds(page);
+  referenceIds.forEach((id, index) => {
+    const expected = `ref${index + 1}`;
+    if (id !== expected) {
+      add("structure", `.ref-card の id が連番ではありません: 期待 "${expected}" / 実際 "${id}"`);
     }
   });
 
-  const tableCount = (page.match(/<table\b/g) ?? []).length;
-  const wrappedCount = (page.match(/<div class="table-wrap">\s*<table\b/g) ?? []).length;
-  if (tableCount !== wrappedCount) {
-    add("structure", `.table-wrap に包まれていない table があります（table ${tableCount} / wrap ${wrappedCount}）`);
+  const referenceIdSet = new Set(referenceIds);
+  for (const match of page.matchAll(/class="footnote-ref"\s+href="#([^"]+)"/g)) {
+    if (!referenceIdSet.has(match[1])) {
+      add("structure", `参照先の無い脚注があります: #${match[1]}`);
+    }
   }
 
-  const diagramKeys = new Set(collectDiagramKeys(page));
-  const containerIds = new Set(
-    [...page.matchAll(/class="diagram-container"[^>]*\bid="([^"]+)"/g)].map((match) => match[1])
-  );
-  for (const id of containerIds) {
-    if (!diagramKeys.has(id)) add("structure", `DIAGRAMS に定義のない図コンテナがあります: #${id}`);
-  }
-  for (const key of diagramKeys) {
-    if (!containerIds.has(key)) add("structure", `描画先コンテナのない DIAGRAMS のキーがあります: ${key}`);
+  for (const card of collectChecklists(page)) {
+    if (card.declared !== null && card.declared !== card.actual) {
+      add(
+        "structure",
+        `チェックリストの静的カウントが実数と一致しません: 表記 "${card.advertised}" / 実際 ${card.actual} 個`
+      );
+    }
   }
 
-  for (const anchor of page.match(/<a\b[^>]*href="https?:\/\/[^"]*"[^>]*>/g) ?? []) {
-    const href = /href="([^"]+)"/.exec(anchor)?.[1] ?? "";
-    if (!/target="_blank"/.test(anchor)) {
-      add("structure", `外部リンクに target="_blank" がありません: ${href}`);
-    }
-    if (!/rel="[^"]*noopener/.test(anchor)) {
-      add("structure", `外部リンクに rel="noopener" がありません: ${href}`);
-    }
+  const pillCount = (page.match(/<span class="pill">/g) ?? []).length;
+  if (pillCount !== 4) {
+    add("structure", `hero の .pill はちょうど 4 枚である必要がありますが ${pillCount} 枚です`);
+  }
+
+  const diagramCount = (page.match(/<pre class="mermaid">/g) ?? []).length;
+  const advertisedDiagrams = readPillCount(page, /Mermaid\s*(\d+)\s*点/);
+  if (advertisedDiagrams !== null && advertisedDiagrams !== diagramCount) {
+    add(
+      "structure",
+      `hero の .pill の図解数が実数と一致しません: 表記 ${advertisedDiagrams} / 実際 ${diagramCount}`
+    );
+  }
+
+  const advertisedReferences = readPillCount(page, /参考文献[^<]*<strong>\s*(\d+)\s*件/);
+  if (advertisedReferences !== null && advertisedReferences !== referenceIds.length) {
+    add(
+      "structure",
+      `hero の .pill の参考文献数が実数と一致しません: 表記 ${advertisedReferences} / 実際 ${referenceIds.length}`
+    );
   }
 
   return { findings, blocking: findings.length > 0 };
