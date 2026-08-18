@@ -37,7 +37,9 @@ const STYLE = `<style>
   }
 </style>`;
 
-const SCRIPT = `<script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.13.0/mermaid.min.js" ${SRI}></script>
+const MERMAID_SRC = "https://cdn.jsdelivr.net/npm/mermaid@11.13.0/dist/mermaid.min.js";
+
+const SCRIPT = `<script src="${MERMAID_SRC}" ${SRI}></script>
 <script>
 (function () {
   'use strict';
@@ -263,7 +265,7 @@ test("CSS 文字列リテラル内の波括弧はルール階層を変えない"
 
 test("バージョン未固定の CDN 参照を検出する", () => {
   const result = audit(
-    BASELINE.replace("/mermaid/11.13.0/mermaid.min.js", "/mermaid/11/mermaid.min.js")
+    BASELINE.replace("mermaid@11.13.0/dist/mermaid.min.js", "mermaid@11/dist/mermaid.min.js")
   );
 
   assert.equal(result.status, 1);
@@ -283,6 +285,22 @@ test("integrity と crossorigin の欠落を検出する", () => {
   assert.ok(findings.some((detail) => detail.startsWith("crossorigin 属性がありません")));
 });
 
+test("SRI を付けた cdnjs 参照を検出する", () => {
+  // cdnjs は事前圧縮した brotli 変種の末尾改行が欠けており、identity 応答とバイト列が
+  // 一致しない。SRI はデコード後のバイト列で検証されるため、正しく計算したつもりの
+  // ハッシュでもブラウザ側で digest 不一致となり資産が丸ごとブロックされる。
+  const result = audit(
+    BASELINE.replace(MERMAID_SRC, "https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.13.0/mermaid.min.js")
+  );
+
+  assert.equal(result.status, 1);
+  assert.ok(
+    category(result.json, "cdn").some((detail) =>
+      detail.startsWith("integrity を付けた cdnjs 参照は使えません")
+    )
+  );
+});
+
 test("fonts.googleapis.com のスタイルシートは SRI 検査の対象外とする", () => {
   // UA 依存の応答を返すため integrity を計算できない。preconnect も資産取得ではない。
   const result = audit(BASELINE);
@@ -292,7 +310,7 @@ test("fonts.googleapis.com のスタイルシートは SRI 検査の対象外と
 });
 
 test("必要な CDN 資産が足りなければ検出する", () => {
-  const result = audit(BASELINE.replace(/<script src="https:\/\/cdnjs[^>]*><\/script>/, ""));
+  const result = audit(BASELINE.replace(/<script src="https:\/\/cdn\.jsdelivr[^>]*><\/script>/, ""));
 
   assert.equal(result.status, 1);
   assert.ok(
