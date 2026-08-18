@@ -26,7 +26,7 @@ description: >
 他のエージェントは解釈しない。本スキルは本文だけで完結させる。
 
 - **起動**: 下記トリガー語句が出たら、自動発火しない環境では本ファイルを明示的に開いてから作業する。
-- **参照ファイル・雛形は自動で開かれない**。§1 の 5 ファイルと
+- **参照ファイル・雛形は自動で開かれない**。§1 の 7 ファイルと
   `templates/skeleton.html.tmpl` を**手動で開く**。開かずに markup を推測しない。
 - **同梱スクリプトは依存パッケージ無しで動く**。実行は `bun` に統一する
   （`bun .agents/skills/md-to-html/scripts/audit_content_parity.mjs …`）。
@@ -136,11 +136,14 @@ grep -oE 'https?://[^ )）"]+' "$SRC" | sort -u | wc -l   # 外部リンクの�
 次に**目次アンカーの一覧**を取る。これがそのまま見出しの `id` とサイドバーの `href` になる。
 
 ```bash
-grep -oE '\(#[^)]+\)' "$SRC" | sed 's/(#//;s/)//'
+# `## 目次` ブロックだけを切り出してからアンカーを取る。
+# 文書全体に `grep` を掛けると本文中の内部リンクまで拾い、件数が合わなくなる。
+awk '/^## 目次/{inToc=1; next} inToc && /^## /{inToc=0} inToc' "$SRC" \
+  | grep -oE '\(#[^)]+\)' | sed 's/(#//;s/)//' | awk '!seen[$0]++'
 ```
 
-**通過条件**: アンカーの件数が `^##` と `^###` の見出しの合計（`## 目次` を除く）と一致すること。
-一致しなければ原本 `.md` の目次が古い。**先に `.md` を直す**（`.md` が正）。
+**通過条件**: 重複を除いたアンカーの件数が `^##` と `^###` の見出しの合計（`## 目次` を除く）と
+一致すること。一致しなければ原本 `.md` の目次が古い。**先に `.md` を直す**（`.md` が正）。
 
 ### Phase 1: スケルトンの生成
 
@@ -193,8 +196,15 @@ echo "exit=$?"   # 0 であること（CSS 変数・CSS ルール・CDN・JS が
 
 ```bash
 NAME=<ガイド名>
-bun .agents/skills/md-to-html/scripts/audit_content_parity.mjs "$NAME.md" "$NAME.html"; echo "content exit=$?"
-bun .agents/skills/md-to-html/scripts/audit_design_parity.mjs  "$NAME.html";            echo "design  exit=$?"
+bun .agents/skills/md-to-html/scripts/audit_content_parity.mjs "$NAME.md" "$NAME.html"
+content_exit=$?; echo "content exit=$content_exit"
+bun .agents/skills/md-to-html/scripts/audit_design_parity.mjs "$NAME.html"
+design_exit=$?; echo "design  exit=$design_exit"
+# どちらかが非 0 ならゲート不合格として全体も非 0 で終える
+[ "$content_exit" -eq 0 ] && [ "$design_exit" -eq 0 ] || {
+  echo 'ゲート不合格 — コミット禁止' >&2
+  exit 1
+}
 ```
 
 > [!CAUTION]

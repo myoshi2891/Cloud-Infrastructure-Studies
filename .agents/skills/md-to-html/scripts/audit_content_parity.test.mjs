@@ -4,8 +4,9 @@ import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
+import { fileURLToPath } from "node:url";
 
-const auditScript = new URL("./audit_content_parity.mjs", import.meta.url);
+const auditScript = fileURLToPath(new URL("./audit_content_parity.mjs", import.meta.url));
 
 /**
  * Runs the content parity audit over a synthetic Markdown / HTML pair.
@@ -21,7 +22,7 @@ function audit(markdown, html) {
   writeFileSync(htmlPath, html);
 
   try {
-    const result = spawnSync(process.execPath, [auditScript.pathname, markdownPath, htmlPath, "--json"], {
+    const result = spawnSync(process.execPath, [auditScript, markdownPath, htmlPath, "--json"], {
       encoding: "utf8",
     });
     const stdout = result.stdout.trim();
@@ -340,6 +341,49 @@ A["最初のノード"] --> B["次のノード"]
   assert.deepEqual(result.json.diagramCounts, { markdownFences: 1, preMermaid: 0 });
 });
 
+test("--json なしの実行でも図数の不一致が実数付きで報告される", () => {
+  // 人間向けの出力経路は --json を通らない。存在しないキーを参照していると
+  // ここでだけ `undefined` が印字されるため、実数が出ることを固定する。
+  const markdown = `# タイトル
+
+## 目次
+
+- [1. 図のあるセクション](#1-図のあるセクション)
+
+## 1. 図のあるセクション
+
+\`\`\`mermaid
+flowchart LR
+    A["最初のノード"]
+\`\`\`
+`;
+  const html = page(
+    `
+<h1>タイトル</h1>
+<h2 id="1-図のあるセクション">1. 図のあるセクション</h2>`,
+    [],
+    '<a href="#1-図のあるセクション">1. 図のあるセクション</a>'
+  );
+
+  const fixtureDir = mkdtempSync(join(tmpdir(), "content-parity-text-"));
+  const markdownPath = join(fixtureDir, "source.md");
+  const htmlPath = join(fixtureDir, "page.html");
+  writeFileSync(markdownPath, markdown);
+  writeFileSync(htmlPath, html);
+  let result;
+  try {
+    result = spawnSync(process.execPath, [auditScript, markdownPath, htmlPath], {
+      encoding: "utf8",
+    });
+  } finally {
+    rmSync(fixtureDir, { recursive: true, force: true });
+  }
+
+  assert.equal(result.status, 1);
+  assert.match(result.stdout, /原本の fence=1 \/ pre\.mermaid=0/);
+  assert.doesNotMatch(result.stdout, /undefined/);
+});
+
 test("実体参照でエスケープされたラベルをデコードして照合する", () => {
   const markdown = `# タイトル
 
@@ -478,7 +522,7 @@ flowchart TB
 // --------------------------------------------------------------------------
 
 test("引数が足りなければ終了コード 2 を返す", () => {
-  const result = spawnSync(process.execPath, [auditScript.pathname, "only-one.md"], {
+  const result = spawnSync(process.execPath, [auditScript, "only-one.md"], {
     encoding: "utf8",
   });
 
@@ -489,7 +533,7 @@ test("引数が足りなければ終了コード 2 を返す", () => {
 test("ファイルが存在しなければ終了コード 2 を返す", () => {
   const result = spawnSync(
     process.execPath,
-    [auditScript.pathname, "missing.md", "missing.html"],
+    [auditScript, "missing.md", "missing.html"],
     { encoding: "utf8" }
   );
 

@@ -4,8 +4,9 @@ import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
+import { fileURLToPath } from "node:url";
 
-const auditScript = new URL("./audit_design_parity.mjs", import.meta.url);
+const auditScript = fileURLToPath(new URL("./audit_design_parity.mjs", import.meta.url));
 
 const SRI = 'integrity="sha384-AAAABBBBCCCCDDDDEEEEFFFFGGGGHHHHIIIIJJJJKKKKLLLL" crossorigin="anonymous"';
 
@@ -156,7 +157,7 @@ function audit(pageHtml, referenceHtml = BASELINE, extraFlags = []) {
 
   const result = spawnSync(
     process.execPath,
-    [auditScript.pathname, pagePath, "--reference", referencePath, "--json", ...extraFlags],
+    [auditScript, pagePath, "--reference", referencePath, "--json", ...extraFlags],
     { encoding: "utf8" }
   );
   rmSync(fixtureDir, { recursive: true, force: true });
@@ -414,12 +415,7 @@ test("サイドバーのリンク先の見出しが存在しなければ検出�
 });
 
 test("table-scroll に包まれていない table を検出する", () => {
-  const result = audit(
-    BASELINE.replace('<div class="table-scroll">', "<div>").replace(
-      "      </table>\n    </div>",
-      "      </table>\n    </div>"
-    )
-  );
+  const result = audit(BASELINE.replace('<div class="table-scroll">', "<div>"));
 
   assert.equal(result.status, 1);
   assert.ok(
@@ -517,11 +513,21 @@ test("hero の pill が示す参考文献数と実数の不一致を検出する
   );
 });
 
-test("外部リンクに target=_blank を要求しない", () => {
+test("外部リンクは target=_blank の有無どちらでも指摘しない", () => {
   // 本 repo の .ref-card のリンクは素の <a href> である（移行元の必須規則は適用しない）。
-  const result = audit(BASELINE);
+  // 素のリンクと target 付きリンクの双方を監査し、どちらも無指摘であることを固定する。
+  const plain = audit(BASELINE);
+  const withTarget = audit(
+    BASELINE.replace(
+      '<a href="https://example.com/official">',
+      '<a href="https://example.com/official" target="_blank" rel="noopener">'
+    )
+  );
 
-  assert.equal(result.status, 0);
+  assert.equal(plain.status, 0);
+  assert.deepEqual(plain.json.findings, []);
+  assert.equal(withTarget.status, 0);
+  assert.deepEqual(withTarget.json.findings, []);
 });
 
 // --------------------------------------------------------------------------
@@ -539,13 +545,13 @@ test("--template ではマーカーと本文構造の検査を省く", () => {
 });
 
 test("引数が足りなければ終了コード 2 を返す", () => {
-  const result = spawnSync(process.execPath, [auditScript.pathname], { encoding: "utf8" });
+  const result = spawnSync(process.execPath, [auditScript], { encoding: "utf8" });
 
   assert.equal(result.status, 2);
 });
 
 test("ファイルが存在しなければ終了コード 2 を返す", () => {
-  const result = spawnSync(process.execPath, [auditScript.pathname, "no-such-file.html"], {
+  const result = spawnSync(process.execPath, [auditScript, "no-such-file.html"], {
     encoding: "utf8",
   });
 

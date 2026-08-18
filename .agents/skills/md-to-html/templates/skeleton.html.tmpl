@@ -524,7 +524,16 @@
     </head>
     <body>
         <div class="layout">
-            <button class="sidebar-toggle" id="sidebarToggle" aria-label="メニュー">☰</button>
+            <button
+                class="sidebar-toggle"
+                id="sidebarToggle"
+                type="button"
+                aria-label="メニュー"
+                aria-controls="sidebar"
+                aria-expanded="false"
+            >
+                ☰
+            </button>
             <aside class="sidebar" id="sidebar">
                 <div class="sidebar-header">
                     <div class="kicker">{{SIDEBAR_KICKER}}</div>
@@ -676,16 +685,26 @@
                 // ---------- Sidebar toggle (mobile) ----------
                 var sidebar = document.getElementById('sidebar');
                 var toggle = document.getElementById('sidebarToggle');
+                function syncToggleState() {
+                    if (!toggle || !sidebar) return;
+                    toggle.setAttribute(
+                        'aria-expanded',
+                        sidebar.classList.contains('open') ? 'true' : 'false',
+                    );
+                }
                 if (toggle) {
                     toggle.addEventListener('click', function () {
                         sidebar.classList.toggle('open');
+                        syncToggleState();
                     });
                 }
                 document.querySelectorAll('#sidebarNav a').forEach(function (a) {
                     a.addEventListener('click', function () {
                         sidebar.classList.remove('open');
+                        syncToggleState();
                     });
                 });
+                syncToggleState();
 
                 // ---------- Scroll-spy ----------
                 var navLinks = Array.from(document.querySelectorAll('#sidebarNav a'));

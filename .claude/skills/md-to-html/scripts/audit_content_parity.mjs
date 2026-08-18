@@ -6,7 +6,7 @@
  * 依存パッケージなし。node / bun どちらでも動く（ESM）。
  *
  * 使い方:
- *   node .claude/skills/md-to-html/scripts/audit_content_parity.mjs \
+ *   bun .agents/skills/md-to-html/scripts/audit_content_parity.mjs \
  *     Certified-Associate-in-Project-Management.md \
  *     Certified-Associate-in-Project-Management.html
  *
@@ -749,7 +749,7 @@ function main() {
     (m) => `図${m.diagram} "${m.label}" → 消失: "${m.segment}"`
   );
   printFindings(
-    "デザインシステム外の配色が DIAGRAMS に混入",
+    "デザインシステム外の配色が pre.mermaid に混入",
     result.unapprovedColors,
     (c) => `${c.id}: ${c.color}`
   );
@@ -758,8 +758,7 @@ function main() {
     console.log("\n❌ Mermaid 図の数が一致しません:");
     console.log(
       `  原本の fence=${result.diagramCounts.markdownFences} / ` +
-        `DIAGRAMS のキー=${result.diagramCounts.diagramsKeys} / ` +
-        `.diagram-container=${result.diagramCounts.containers}`
+        `pre.mermaid=${result.diagramCounts.preMermaid}`
     );
   }
 
@@ -799,4 +798,4 @@ function main() {
   return result.blocking ? 1 : 0;
 }
 
-process.exit(main());
+process.exitCode = main();

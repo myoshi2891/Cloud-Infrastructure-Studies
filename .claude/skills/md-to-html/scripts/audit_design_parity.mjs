@@ -6,7 +6,7 @@
  * 依存パッケージなし。node / bun どちらでも動く（ESM）。
  *
  * 使い方:
- *   node .claude/skills/md-to-html/scripts/audit_design_parity.mjs <page.html>
+ *   bun .agents/skills/md-to-html/scripts/audit_design_parity.mjs <page.html>
  *   ... --reference Certified-Associate-in-Project-Management.html
  *   ... --template     # テンプレート自身の健全性検査（マーカーと本文構造の検査を省く）
  *   ... --json
@@ -349,13 +349,15 @@ function audit(page, reference, isTemplate) {
   for (const tag of assetTags) {
     const url = /(?:href|src)="([^"]+)"/.exec(tag)?.[1] ?? tag;
     if (SRI_EXEMPT_HOST.test(url)) continue;
-    if (!/@\d+\.\d+\.\d+|\/\d+\.\d+\.\d+\//.test(url)) {
+    // 完全な x.y.z が区切り文字で囲まれている場合だけ「固定済み」と認める。
+    // 境界を張らないと `@11.13.0.4` や `@11.13.02` の先頭一致で通過してしまう。
+    if (!/@\d+\.\d+\.\d+(?![\w.])|\/\d+\.\d+\.\d+\//.test(url)) {
       add("cdn", `バージョンが完全固定されていません（@latest / メジャー指定は不可）: ${url}`);
     }
     if (!/integrity="sha(?:256|384|512)-[\w+/=]+"/.test(tag)) {
       add("cdn", `integrity 属性がありません: ${url}`);
     }
-    if (!/crossorigin/.test(tag)) {
+    if (!/(?:^|\s)crossorigin(?=[\s=>/]|$)/i.test(tag)) {
       add("cdn", `crossorigin 属性がありません: ${url}`);
     }
     if (SRI_INCOMPATIBLE_HOST.test(url)) {
