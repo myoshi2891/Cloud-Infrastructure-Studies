@@ -259,7 +259,7 @@ Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
 - [ ] `<h1>` がページに 1 個だけ（hero 内）
 - [ ] `.pill` が 4 枚で、図解数・参考文献数が実数と一致
 - [ ] Noto Sans JP の読み込み 3 行がある
-- [ ] mermaid がバージョン完全固定 + `integrity` + `crossorigin`
+- [ ] mermaid が **jsdelivr** からバージョン完全固定 + `integrity` + `crossorigin`
 - [ ] ブラウザで図が描画され、スクロール連動・チェックリスト・モバイルナビが動く
 - [ ] PII 検査（絶対パス混入チェック）が無出力
 
@@ -281,6 +281,13 @@ Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
 - `<svg>` への幅・高さ指定（描画 JS の後処理と競合する）
 - 存在しないコンポーネント（アイコンフォント / back-to-top / タブ / ライトモード切替等）の追加
 - CDN の `@latest` / メジャー指定での参照、`integrity` 無しでの読み込み
+- **`cdnjs.cloudflare.com` からの読み込み**。cdnjs は事前圧縮した brotli 変種の末尾改行 1 バイトが
+  欠けており、identity 応答とバイト列が一致しない。SRI はデコード後のバイト列で検証されるため、
+  どちらの変種から算出したハッシュでも他方でブロックされ、図が Mermaid ソースのまま表示される。
+  SRI を付ける資産は encoding をまたいでバイト同一な jsdelivr から読み込む
+  （`https://cdn.jsdelivr.net/npm/mermaid@<x.y.z>/dist/mermaid.min.js`）。
+  ハッシュは `curl -sS --compressed <url> | openssl dgst -sha384 -binary | openssl base64 -A` で算出し、
+  `audit_design_parity.mjs` が cdnjs 参照を blocking で弾く
 - 既存ファイル全体への `prettier --write`（§ 8 の誤検知表を参照）
 
 ### 手順
