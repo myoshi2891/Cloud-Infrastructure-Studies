@@ -405,12 +405,12 @@ Google CloudのほぼすべてのサービスはREST/gRPC APIとして公開さ�
 ```mermaid
 flowchart TD
     Start{呼び出し元は?}
-    Start -->|Google Cloud上で<br/動作するサービス| ADC["Application Default<br/>Credentials (ADC)<br/>メタデータサーバーから<br/>自動的に認証情報取得"]
-    Start -->|CI/CDや外部システムから<br/の呼び出し| WIF["Workload Identity<br/>Federation<br/>外部IDプロバイダの<br/トークンと連携"]
-    Start -->|ユーザーに代わって<br/操作するアプリ| OAuth["OAuth 2.0<br/>ユーザー同意フロー"]
-    Start -->|公開データへの<br/単純アクセス| APIKey["APIキー<br/>(認可なし識別のみ)"]
+    Start -->|Google Cloud上で<br/>動作するサービス| ADC["Application Default<br/>Credentials (ADC)<br/>メタデータサーバーから<br/>自動的に認証情報取得"]
+    Start -->|CI/CDや外部システムから<br/>の呼び出し| WIF["Workload Identity<br/>Federation<br/>外部IDプロバイダの<br/>トークンと連携"]
+    Start -->|ユーザーに代わって<br/>操作するアプリ| OAuth["OAuth 2.0<br/>ユーザー同意フロー"]
+    Start -->|公開データへの<br/>単純アクセス| APIKey["APIキー<br/>(認可なし識別のみ)"]
 
-    ADC --> Best["推奨: サービスアカウントキーの<br/直接発行・配布は最終手段とする"]
+    ADC --> Best["推奨: サービスアカウントキーの<br/>直接発行・配布は最終手段とする"]
     WIF --> Best
     OAuth --> Best
 ```
