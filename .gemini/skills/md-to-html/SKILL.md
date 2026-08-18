@@ -18,7 +18,7 @@ description: >
 
 # 資格ガイド MD → 単一ファイル HTML 変換スキル
 
-(最終更新日: 2026-08-18)
+(最終更新日: 2026-08-19)
 
 ## エージェント互換（Claude Code / Gemini CLI / その他）
 
@@ -169,6 +169,15 @@ cp .agents/skills/md-to-html/templates/skeleton.html.tmpl <ガイド名>.html
 `{{META_PILLS}}` の「図解 N 点」「参考文献 N 件」は Phase 0 の実数を入れる。
 `<!-- ##CONTENT_INSERT## -->` は**この段階では消さない**。
 
+> [!CAUTION]
+> **置換対象は上の 8 個だけである。** `<head>` の CDN 行と末尾の `<script>` は
+> テンプレートが原本から逐語コピーしたものであり、**1 文字も書き換えない**
+> （URL・`integrity`・`crossorigin`・並び順を含む）。
+> 特に **他のガイド HTML から `<script>` 行をコピーしてこない**。
+> リポジトリ直下の既存 HTML の多く（`Gcp-pca-section1/2/3` を含む）は本スキル以前に
+> 作られており **cdnjs 参照のまま残っている**。真似ると § 7「デザイン」の禁止事項に触れ、
+> mermaid が読み込まれず図がソースのまま表示される。
+
 **通過条件**:
 
 ```bash
@@ -218,8 +227,12 @@ design_exit=$?; echo "design  exit=$design_exit"
 
 ### Phase 5: 最終確認とコミット
 
-1. ブラウザで開き、次の 4 点を目視する
-   - Mermaid 図が全て描画される（ソースが露出したまま残っていない）
+1. ブラウザで開き、**DevTools の Console を開いたまま**次の 4 点を確認する
+   - Mermaid 図が全て描画される（ソースが露出したまま残っていない）。
+     露出している場合は Console を読む。`mermaid not loaded` /
+     `Failed to find a valid digest in the 'integrity' attribute` は CDN 行の問題、
+     `Syntax error in text` は図のソースの問題（`.agents/skills/fix-mermaid/SKILL.md` へ）。
+     切り分けずに図のソースを書き換えない
    - サイドバーのリンクが全て機能し、スクロールに応じて `.active` が移動する
    - チェックリストのカウンタが操作に応じて増減する
    - ウィンドウ幅 980px 未満でトグルからナビゲーションに到達できる
@@ -269,7 +282,8 @@ Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
 - [ ] `<h1>` がページに 1 個だけ（hero 内）
 - [ ] `.pill` が 4 枚で、図解数・参考文献数が実数と一致
 - [ ] Noto Sans JP の読み込み 3 行がある
-- [ ] mermaid が **jsdelivr** からバージョン完全固定 + `integrity` + `crossorigin`
+- [ ] mermaid の `<script>` が雛形と**同一**（jsdelivr / バージョン完全固定 / `integrity` /
+      `crossorigin` の組をそのまま保持。他ガイドからコピーしていない）
 - [ ] ブラウザで図が描画され、スクロール連動・チェックリスト・モバイルナビが動く
 - [ ] PII 検査（絶対パス混入チェック）が無出力
 
@@ -298,6 +312,13 @@ Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
   （`https://cdn.jsdelivr.net/npm/mermaid@<x.y.z>/dist/mermaid.min.js`）。
   ハッシュは `curl -sS --compressed <url> | openssl dgst -sha384 -binary | openssl base64 -A` で算出し、
   `audit_design_parity.mjs` が cdnjs 参照を blocking で弾く
+- **CDN の URL と `integrity` を別々に触ること**。両者は 1 つの組であり、片方だけ
+  書き換えた tag（ホストだけ cdnjs に替える / バージョンだけ上げる）は「integrity がある」
+  「バージョンが固定されている」という個別の検査を通り抜ける。
+  `audit_design_parity.mjs` は組そのものを参照元と照合して blocking で弾く
+- **既存の兄弟 HTML から `<script>` / `<link>` の CDN 行をコピーすること。**
+  デザインの正は `Gcp-pca-section4-process-optimization.html` と雛形だけであり、
+  他のガイド HTML は正ではない
 - 既存ファイル全体への `prettier --write`（§ 8 の誤検知表を参照）
 
 ### 手順
@@ -315,6 +336,8 @@ Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
 | `grep -c` の誤用 | `grep -c 'type="checkbox"'` は**行数**を返す。描画 JS も同じ字面を含むため項目数が +2 される | 出現数は `grep -o … \| wc -l`、または `id="chkN"` を数える |
 | `prettier` の版ずれ | `prettier` は `package.json` に固定されていない。`bunx prettier --write` を既存 HTML に掛けると `</pre\n>` → `</pre>` 等の無関係な差分が広範囲に混ざる | 既存ファイルの一括整形はしない。新規記述だけ周囲のインデントに合わせる |
 | 閉じタグの改行 | 原本の `pre.mermaid` は `</pre\n                >` の形で閉じる。属性内改行と同じく描画には影響しない | 監査は両形式を受ける。手で書き換えない |
+| 図が Mermaid ソースのまま表示される | 最頻出の原因は**構文エラーではなく資産のブロック**。SRI 不一致で `mermaid.min.js` が読み込まれず、`initMermaid()` が `console.warn('mermaid not loaded')` で即 return する。`pre.mermaid` の中身がそのまま見えるため「インデント汚染」「全角文字」を疑って時間を溶かしやすい | まず DevTools の Console と Network を見る。`Failed to find a valid digest ...` / `mermaid not loaded` が出ていれば CDN 行の問題であり、Mermaid ソースは無関係。§ 7 の CDN 規則へ戻る |
+| `curl` で SRI を検算しても cdnjs は通ってしまう | `curl --compressed` は brotli 変種を取得できるとは限らず、identity/gzip の応答から算出したハッシュは `integrity` と一致する。**ブラウザだけが失敗する** | ハッシュの再計算を「cdnjs でも大丈夫」の根拠にしない。判定はホスト規則（jsdelivr）と参照元との組一致で行う |
 | SonarQube `javascript:S3776` 等 | 監査スクリプトの認知的複雑度・正規表現 | 検査項目を列挙する性質上のもの。動作はテストで担保 |
 
 ## 9. 監査スクリプトの仕様
@@ -346,6 +369,16 @@ bun .agents/skills/md-to-html/scripts/audit_design_parity.mjs <page.html> \
 ```
 
 `--template` はマーカーと本文構造の検査を省く（雛形自身の健全性検査用）。
+
+blocking: CSS 変数の値のドリフト / コンポーネント CSS・メディアクエリの欠落 /
+描画 JS の関数・配線の欠落 / CDN のバージョン未固定・`integrity` / `crossorigin` の欠落 /
+cdnjs 参照 / **SRI を付ける資産（mermaid）の `src` と `integrity` の組が参照元と不一致** /
+構造不変条件。
+
+最後の組一致検査は、URL とハッシュを別々に書き換えた tag を捕まえるためにある。
+個別の検査（固定されているか・`integrity` があるか）はすべて通るのに、ブラウザは
+digest 不一致で資産をブロックし、図が Mermaid ソースのまま残る——という
+静かな失敗が実際に発生した（`Gcp-pca-section6-operational-excellence.html`）。
 
 ### テスト
 

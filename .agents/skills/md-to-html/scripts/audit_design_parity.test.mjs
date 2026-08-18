@@ -302,6 +302,33 @@ test("SRI を付けた cdnjs 参照を検出する", () => {
   );
 });
 
+test("参照元と異なる integrity ハッシュを検出する", () => {
+  // URL とハッシュの組が壊れると、静的な「integrity がある」検査は通るのにブラウザは
+  // 資産を丸ごとブロックし、図が Mermaid ソースのまま残る。組そのものを参照元に固定する。
+  const result = audit(
+    BASELINE.replace(SRI, 'integrity="sha384-ZZZZBBBBCCCCDDDDEEEEFFFFGGGGHHHHIIIIJJJJKKKKLLLL" crossorigin="anonymous"')
+  );
+
+  assert.equal(result.status, 1);
+  assert.ok(
+    category(result.json, "cdn").some((detail) =>
+      detail.startsWith("mermaid の src と integrity の組が参照元と一致しません")
+    )
+  );
+});
+
+test("参照元と異なるバージョンの mermaid を検出する", () => {
+  // 完全固定されていてもバージョンだけ差し替えると、そのハッシュは古い版のものになる。
+  const result = audit(BASELINE.replace("mermaid@11.13.0", "mermaid@11.12.0"));
+
+  assert.equal(result.status, 1);
+  assert.ok(
+    category(result.json, "cdn").some((detail) =>
+      detail.startsWith("mermaid の src と integrity の組が参照元と一致しません")
+    )
+  );
+});
+
 test("fonts.googleapis.com のスタイルシートは SRI 検査の対象外とする", () => {
   // UA 依存の応答を返すため integrity を計算できない。preconnect も資産取得ではない。
   const result = audit(BASELINE);

@@ -44,7 +44,11 @@ const REQUIRED_WIRINGS = [
  * 返すため integrity ハッシュを一意に決められない。
  */
 const REQUIRED_ASSETS = [
-  { name: "mermaid", pattern: /\/mermaid[@/]/, count: 1 },
+  // `pinnedToReference` を付けた資産は、`src` と `integrity` の**組**まで参照元に一致させる。
+  // 片方だけ書き換わった tag（例: ホストを cdnjs へ替えて integrity を据え置き、
+  // バージョンだけ上げてハッシュを据え置き）は静的検査を通り抜けるが、ブラウザは
+  // digest 不一致で資産を丸ごとブロックし、図が Mermaid ソースのまま残る。
+  { name: "mermaid", pattern: /\/mermaid[@/]/, count: 1, pinnedToReference: true },
   {
     name: "Noto Sans JP",
     pattern: /fonts\.googleapis\.com\/css2\?family=Noto\+Sans\+JP/,
@@ -64,6 +68,17 @@ const SRI_EXEMPT_HOST = /fonts\.googleapis\.com|fonts\.gstatic\.com/;
  * SRI を付ける資産は jsdelivr（encoding をまたいでバイト同一）から読み込む。
  */
 const SRI_INCOMPATIBLE_HOST = /cdnjs\.cloudflare\.com/;
+
+/**
+ * Extracts the identity of a CDN asset tag: its URL and integrity hash.
+ * @param {string} tag - The `link` or `script` tag.
+ * @returns {string} The `<url> <integrity>` pair used for reference comparison.
+ */
+function assetIdentity(tag) {
+  const url = /(?:href|src)="([^"]+)"/.exec(tag)?.[1] ?? "";
+  const integrity = /integrity="([^"]+)"/.exec(tag)?.[1] ?? "";
+  return `${url} ${integrity}`;
+}
 
 // --------------------------------------------------------------------------
 // CSS
@@ -340,10 +355,31 @@ function audit(page, reference, isTemplate) {
   ].filter(
     (tag) => /https?:\/\//.test(tag) && !/rel="(?:preconnect|dns-prefetch)"/.test(tag)
   );
-  for (const { name, pattern, count } of REQUIRED_ASSETS) {
+  const referenceAssetTags = [
+    ...(reference.match(/<link\b[^>]*>/g) ?? []),
+    ...(reference.match(/<script\b[^>]*src="[^"]*"[^>]*>/g) ?? []),
+  ].filter(
+    (tag) => /https?:\/\//.test(tag) && !/rel="(?:preconnect|dns-prefetch)"/.test(tag)
+  );
+  for (const { name, pattern, count, pinnedToReference } of REQUIRED_ASSETS) {
     const matched = assetTags.filter((tag) => pattern.test(tag));
     if (matched.length !== count) {
       add("cdn", `${name} の読み込みが ${count} 件必要ですが ${matched.length} 件です`);
+    }
+    if (!pinnedToReference) continue;
+    const referenceMatched = referenceAssetTags.filter((tag) => pattern.test(tag));
+    // 件数が食い違う場合は上の検査（あるいは参照元自体の不備）の問題なので、
+    // ここでは重ねて報告しない。
+    if (matched.length !== 1 || referenceMatched.length !== 1) continue;
+    const pageRef = assetIdentity(matched[0]);
+    const referenceRef = assetIdentity(referenceMatched[0]);
+    if (pageRef !== referenceRef) {
+      add(
+        "cdn",
+        `${name} の src と integrity の組が参照元と一致しません（SRI はデコード後のバイト列で` +
+          `検証されるため、組が崩れると資産ごとブロックされ図が Mermaid ソースのまま残る）。` +
+          `page: ${pageRef} / 参照元: ${referenceRef}`
+      );
     }
   }
   for (const tag of assetTags) {
