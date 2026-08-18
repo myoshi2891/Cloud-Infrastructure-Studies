@@ -157,6 +157,15 @@ bun run build && bun run perf:report
 bun run test:security
 ```
 
+### md-to-html 監査の自己テスト
+
+ガイド Markdown を単一 HTML へ変換する `md-to-html` スキルには、転写漏れとデザイン漏れを
+検出する 2 本の監査スクリプトが同梱されています。その自己テストを実行します。
+
+```bash
+bun run test:md-to-html
+```
+
 ## 📂 ディレクトリ構造
 
 - `app/`: 各試験セクションのページとスタイル。

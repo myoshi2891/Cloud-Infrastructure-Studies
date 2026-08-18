@@ -25,6 +25,7 @@ bun run test:watch   # Vitest ウォッチモード（単一ファイル: vitest
 bun run test:e2e     # Playwright E2E（chromium project: smoke / nav / a11y / visual / 各ドメイン）
 bun run test:perf    # Playwright perf project: Core Web Vitals (LCP/CLS/TBT) を perf-budgets.json と比較
 bun run test:security # bun audit --json を集計し high/critical 検出時に exit 1 (scripts/security-audit.mjs)
+bun run test:md-to-html # md-to-html スキルの監査 2 本の自己テスト (node --test)
 
 # カバレッジ可視化
 bun run dashboard    # 静的スキャンで docs/coverage-dashboard.html を再生成
@@ -458,6 +459,8 @@ archive/                            # 移行済み資料の正規アーカイブ
 3. **Step 2 — Pass:** テストをPassさせる実装を行いコミットする。
 4. **Step 3 — Refactor:** リファクタリング/統合を行いコミットする。
 ※ LLMはタスク実行前に必ずこのルールをPlanに組み込み、まとめて実装・コミットすることを避けること。
+
+**ガイド Markdown → 単一 HTML 変換タスク時**: `.claude/skills/md-to-html/SKILL.md` を読むこと。デザインの正は `Gcp-pca-section4-process-optimization.html`（暗色テーマ / `<section>` を使わないフラット構造 / `pre.mermaid` インライン / 脚注 `.footnote-ref` + `.ref-grid`）。転写漏れとデザイン漏れを検出する 2 本の監査（`bun run test:md-to-html` で自己テスト）が Green の前提条件であり、**両方 exit 0 になるまでコミットしない**。生成した HTML を `app/` 配下へ移す作業は別スキル（`html-to-nextjs-migration`）の責務で、本スキルからは `app/` を編集しない。
 
 **HTML → Next.js 移行タスク時**: まず `.claude/skills/html-to-nextjs-migration/SKILL.md` の「正準リファレンス」を読むこと。GCPトークンマップ・サイドバー配置値・MermaidDiagram契約・ガイドページのファイル構成が前出しされており、参照 `page.tsx`/`NavBar.tsx`/`MermaidDiagram.tsx`/`page.css` や `globals.css` の再読込・再 grep が不要になる（ソースHTMLは100%読む — 要約・スキップ厳禁）。
 

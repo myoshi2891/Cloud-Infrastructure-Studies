@@ -22,6 +22,7 @@ Updated 2026-08-15
 - **単体テスト実行:** `bun run test` (Vitest)
 - **E2E テスト実行:** `bunx playwright install`（初回のみ）、その後 `bun run test:e2e` (Playwright `chromium` project)
 - **Performance テスト実行:** `bun run test:perf` (Playwright `perf` project: LCP / CLS / TBT を [e2e/perf-budgets.json](e2e/perf-budgets.json) と比較)
+- **md-to-html 監査の自己テスト:** `bun run test:md-to-html`（実体は `node --test`。`bun test` は `.test.mjs` を収集しない）
 - **Security テスト実行:** `bun run test:security` (`bun audit --json` を [scripts/security-audit.mjs](scripts/security-audit.mjs) が集計し、high/critical 検出で exit 1)
 - **Performance 手動レポート:** `bun run build && bun run perf:report` (`@lhci/cli` autorun → `.lighthouseci/` に HTML/JSON 出力)
 - **Lint 実行:** `bun run lint`
@@ -118,6 +119,7 @@ Updated 2026-08-15
 本プロジェクトにはAIエージェント（Gemini CLI 等）向けの専用スキルが用意されています。
 
 - **`infra-md-to-nextjs-migration`**: Markdownの学習資料からNext.js（App Router）の `page.tsx` および `constants.ts` への移行ワークフローを定義したスキルです（スキル名は `infra-md-to-nextjs-migration`、インストール用パッケージファイルは `infra-md-to-nextjs-migration.skill` です）。
+- **`infra-md-to-html`**: リポジトリ直下のガイド Markdown を、`Gcp-pca-section4-process-optimization.html` のデザイン（暗色テーマ / サイドバー + スクロールスパイ / `pre.mermaid` インライン / 脚注 + `.ref-grid`）で単一 HTML へ変換するスキルです。転写漏れとデザイン漏れを検出する 2 本の監査スクリプトを同梱し、両方 exit 0 がコミットの前提条件になります。実装は [.gemini/skills/md-to-html/](.gemini/skills/md-to-html/) にあります。
 
 **インストール・利用手順 (Gemini CLI)**:
 
