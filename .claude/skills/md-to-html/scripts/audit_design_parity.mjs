@@ -55,6 +55,16 @@ const REQUIRED_ASSETS = [
 /** バージョン固定と SRI の検査から外すホスト。 */
 const SRI_EXEMPT_HOST = /fonts\.googleapis\.com|fonts\.gstatic\.com/;
 
+/**
+ * SRI と両立しないホスト。
+ *
+ * cdnjs は事前圧縮した brotli 変種の末尾改行 1 バイトが欠けており、identity 応答と
+ * バイト列が一致しない。SRI はデコード後のバイト列で検証されるため、どちらの変種から
+ * 算出したハッシュでも他方の応答で digest 不一致となり、資産が丸ごとブロックされる。
+ * SRI を付ける資産は jsdelivr（encoding をまたいでバイト同一）から読み込む。
+ */
+const SRI_INCOMPATIBLE_HOST = /cdnjs\.cloudflare\.com/;
+
 // --------------------------------------------------------------------------
 // CSS
 // --------------------------------------------------------------------------
@@ -347,6 +357,12 @@ function audit(page, reference, isTemplate) {
     }
     if (!/crossorigin/.test(tag)) {
       add("cdn", `crossorigin 属性がありません: ${url}`);
+    }
+    if (SRI_INCOMPATIBLE_HOST.test(url)) {
+      add(
+        "cdn",
+        `integrity を付けた cdnjs 参照は使えません（brotli 変種とバイト列が一致せずブロックされる）。jsdelivr を使ってください: ${url}`
+      );
     }
   }
 
