@@ -66,7 +66,10 @@ const SCRIPT = `<script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.1
   var spyObserver = new IntersectionObserver(function () {}, { threshold: 0 });
   spyObserver.observe(document.body);
 
-  document.querySelectorAll('.checklist-card').forEach(function (card) { return card; });
+  document.querySelectorAll('.checklist-card').forEach(function (card) {
+    var boxes = card.querySelectorAll('input[type="checkbox"]');
+    return boxes.length;
+  });
 })();
 </script>`;
 
@@ -454,6 +457,15 @@ test("チェックリストの静的カウントが実数と食い違えば検�
       detail.includes("チェックリストの静的カウント")
     )
   );
+});
+
+test("描画 JS のセレクタ文字列はチェックリストの実数に数えない", () => {
+  // 進捗カウンタの実装は `card.querySelectorAll('input[type="checkbox"]')` を含む。
+  // これを項目として数えると、正しいページが必ず不一致と判定されてしまう。
+  const result = audit(BASELINE);
+
+  assert.equal(result.status, 0);
+  assert.deepEqual(category(result.json, "structure"), []);
 });
 
 test("hero の pill が 4 枚でなければ検出する", () => {

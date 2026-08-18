@@ -1,792 +1,742 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="{{LANG}}">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{{PAGE_TITLE}}</title>
-<meta name="description" content="{{META_DESCRIPTION}}">
-
-<link rel="preconnect" href="https://cdn.jsdelivr.net">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.46.0/dist/tabler-icons.min.css" integrity="sha384-ND+q1IVc0KDElX60dZaqKc7Xl9cdxd2PpU2JfVUHcurCkFVtVLFdt9vJfxtHSL3p" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/source-serif-4@5.3.0/index.css" integrity="sha384-cy72LeqRhBcptH+f75cB3vrpLw/jxRh/JFcONF8ojDGHnPbPW8ms9mFfeRcjatlf" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/source-serif-4@5.3.0/600.css" integrity="sha384-+yaCg0e7ycPGPQXb75FA+X65pLlc36UEZiIaA8ph5o9epSIlfAq9gNVjLkSyyLta" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/source-serif-4@5.3.0/700.css" integrity="sha384-qhpg1+yChOWG1duNtwQt4p+5G015BD1o+VF8/aRV+4P3Sx/PsIbVNxX+p/wvQf9W" crossorigin="anonymous">
-
-<style>
-  :root {
-    /* ---- Named palette (paper / ink / indigo / gold / forest / plum) ---- */
-    --color-paper:        #F6F7F9;
-    --color-paper-raised: #FFFFFF;
-    --color-paper-sunken: #EEF0F4;
-
-    --color-ink:          #161B26;
-    --color-ink-soft:     #4B5566;
-    --color-ink-faint:    #8A93A3;
-
-    --color-border:       #DFE3EA;
-    --color-border-strong:#C7CDD9;
-
-    --color-indigo:       #2E3F72;
-    --color-indigo-dark:  #1F2C57;
-    --color-indigo-tint:  #EEF1F8;
-
-    --color-gold:         #B8802A;
-    --color-gold-tint:    #FAF1DF;
-
-    --color-forest:       #1B6E6A;
-    --color-forest-tint:  #E7F3F2;
-
-    --color-plum:         #8C3A5C;
-    --color-plum-tint:    #F6EAEF;
-
-    --color-success-bg:    #EAF4EC;
-    --color-success-text:  #2F6B3D;
-    --color-success-border:#BFE0C6;
-
-    --color-info-bg:       #EEF1F8;
-    --color-info-text:     #2E3F72;
-    --color-info-border:   #C7D1EA;
-
-    /* ---- Typography ---- */
-    --font-display: "Source Serif 4", "Hiragino Mincho ProN", "Yu Mincho", Georgia, serif;
-    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Noto Sans JP", sans-serif;
-    --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-
-    --sidebar-width: 288px;
-  }
-
-  * { box-sizing: border-box; }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    margin: 0;
-    background: var(--color-paper);
-    color: var(--color-ink);
-    font-family: var(--font-sans);
-    font-size: 16px;
-    line-height: 1.75;
-    -webkit-font-smoothing: antialiased;
-  }
-
-  a { color: var(--color-indigo); text-decoration: none; }
-  a:hover { text-decoration: underline; }
-  a:focus-visible, button:focus-visible { outline: 2px solid var(--color-indigo); outline-offset: 2px; }
-
-  img, svg { max-width: 100%; }
-
-  .layout {
-    display: block;
-  }
-
-  /* ===================== Sidebar ===================== */
-  .sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: var(--sidebar-width);
-    height: 100vh;
-    overflow-y: auto;
-    background: var(--color-paper-raised);
-    border-right: 1px solid var(--color-border);
-    padding: 32px 24px 40px;
-    z-index: 20;
-  }
-
-  .sidebar-brand {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 28px;
-  }
-
-  .seal {
-    flex: none;
-    width: 36px;
-    height: 36px;
-  }
-
-  .brand-text .brand-title {
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 19px;
-    color: var(--color-ink);
-    letter-spacing: 0.02em;
-  }
-
-  .brand-text .brand-subtitle {
-    font-size: 16px;
-    color: var(--color-ink-faint);
-    margin-top: 2px;
-  }
-
-  .sidebar-nav {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  .sidebar-nav .nav-group-label {
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--color-ink-faint);
-    letter-spacing: 0.06em;
-    margin: 22px 0 8px;
-    padding-left: 12px;
-  }
-
-  .sidebar-nav .nav-group-label:first-child { margin-top: 0; }
-
-  .sidebar-nav li { margin: 2px 0; }
-
-  .sidebar-nav a {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 8px 12px;
-    border-radius: 8px;
-    color: var(--color-ink-soft);
-    font-size: 16px;
-    line-height: 1.4;
-    border-left: 2px solid transparent;
-  }
-
-  .sidebar-nav a i { font-size: 17px; color: var(--color-ink-faint); flex: none; }
-
-  .sidebar-nav a:hover {
-    background: var(--color-indigo-tint);
-    text-decoration: none;
-    color: var(--color-indigo);
-  }
-
-  .sidebar-nav a.active {
-    background: var(--color-indigo-tint);
-    color: var(--color-indigo);
-    font-weight: 600;
-    border-left: 2px solid var(--color-indigo);
-  }
-
-  .sidebar-nav a.active i { color: var(--color-indigo); }
-
-  .sidebar-toggle {
-    display: none;
-    position: fixed;
-    top: 16px;
-    left: 16px;
-    z-index: 30;
-    background: var(--color-paper-raised);
-    border: 1px solid var(--color-border);
-    border-radius: 8px;
-    width: 42px;
-    height: 42px;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    color: var(--color-ink);
-    cursor: pointer;
-  }
-
-  /* ===================== Main content ===================== */
-  .main-content {
-    margin-left: var(--sidebar-width);
-    padding: 56px 72px 120px;
-  }
-
-  .hero {
-    margin-bottom: 56px;
-  }
-
-  .hero-eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 16px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    color: var(--color-gold);
-    text-transform: uppercase;
-    margin-bottom: 18px;
-  }
-
-  .hero-eyebrow i { font-size: 17px; }
-
-  .hero h1 {
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 42px;
-    line-height: 1.28;
-    margin: 0 0 16px;
-    color: var(--color-ink);
-  }
-
-  .hero .hero-lede {
-    font-size: 18px;
-    color: var(--color-ink-soft);
-    margin: 0 0 28px;
-  }
-
-  .stat-row {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(140px, 1fr));
-    gap: 16px;
-  }
-
-  .stat-card {
-    border: 1px solid var(--color-border);
-    background: var(--color-paper-raised);
-    border-radius: 10px;
-    padding: 18px 20px;
-  }
-
-  .stat-card .stat-number {
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 28px;
-    color: var(--color-indigo);
-    line-height: 1.1;
-  }
-
-  .stat-card .stat-label {
-    font-size: 16px;
-    color: var(--color-ink-soft);
-    margin-top: 6px;
-  }
-
-  .disclaimer-box {
-    border: 1px solid var(--color-info-border);
-    background: var(--color-info-bg);
-    color: var(--color-info-text);
-    border-radius: 10px;
-    padding: 16px 20px;
-    font-size: 16px;
-    margin-top: 28px;
-  }
-
-  section {
-    margin: 72px 0;
-    scroll-margin-top: 32px;
-  }
-
-  section:first-of-type { margin-top: 0; }
-
-  .section-eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--color-ink-faint);
-    letter-spacing: 0.05em;
-    margin-bottom: 10px;
-  }
-
-  h2 {
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 29px;
-    color: var(--color-ink);
-    margin: 0 0 24px;
-    padding-bottom: 16px;
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  h3 {
-    font-family: var(--font-display);
-    font-weight: 600;
-    font-size: 21px;
-    color: var(--color-ink);
-    margin: 40px 0 16px;
-  }
-
-  h4 {
-    font-family: var(--font-sans);
-    font-weight: 600;
-    font-size: 17px;
-    color: var(--color-ink);
-    margin: 28px 0 12px;
-  }
-
-  p { margin: 0 0 18px; }
-
-  ul, ol { margin: 0 0 18px; padding-left: 24px; }
-  li { margin-bottom: 8px; }
-
-  strong { font-weight: 600; color: var(--color-ink); }
-
-  em { color: var(--color-ink-soft); }
-
-  /* ===================== Domain badge cards ===================== */
-  .domain-grid {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(160px, 1fr));
-    gap: 16px;
-    margin: 28px 0 8px;
-  }
-
-  .domain-card {
-    border: 1px solid var(--color-border);
-    background: var(--color-paper-raised);
-    border-radius: 10px;
-    padding: 20px;
-    border-top: 3px solid var(--d-color);
-  }
-
-  .domain-card .domain-pct {
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 30px;
-    color: var(--d-color);
-  }
-
-  .domain-card .domain-name {
-    font-size: 16px;
-    color: var(--color-ink-soft);
-    margin-top: 6px;
-  }
-
-  .domain-card.d1 { --d-color: var(--color-indigo); }
-  .domain-card.d2 { --d-color: var(--color-forest); }
-  .domain-card.d3 { --d-color: var(--color-gold); }
-  .domain-card.d4 { --d-color: var(--color-plum); }
-
-  .domain-tag {
-    display: inline-block;
-    font-size: 16px;
-    font-weight: 600;
-    padding: 3px 12px;
-    border-radius: 999px;
-    margin-bottom: 14px;
-  }
-
-  .domain-tag.d1 { background: var(--color-indigo-tint); color: var(--color-indigo); }
-  .domain-tag.d2 { background: var(--color-forest-tint); color: var(--color-forest); }
-  .domain-tag.d3 { background: var(--color-gold-tint); color: var(--color-gold); }
-  .domain-tag.d4 { background: var(--color-plum-tint); color: var(--color-plum); }
-
-  /* ===================== Tables ===================== */
-  .table-wrap {
-    overflow-x: auto;
-    border: 1px solid var(--color-border);
-    border-radius: 10px;
-    margin: 0 0 24px;
-    max-width: 100%;
-  }
-
-  table {
-    border-collapse: collapse;
-    width: 100%;
-    font-size: 16px;
-  }
-
-  thead th {
-    background: var(--color-paper-sunken);
-    text-align: left;
-    font-weight: 600;
-    color: var(--color-ink);
-    padding: 12px 16px;
-    border-bottom: 1px solid var(--color-border-strong);
-    white-space: nowrap;
-  }
-
-  tbody td {
-    padding: 12px 16px;
-    border-bottom: 1px solid var(--color-border);
-    color: var(--color-ink-soft);
-    vertical-align: top;
-  }
-
-  tbody tr:last-child td { border-bottom: none; }
-  tbody tr:nth-child(even) { background: var(--color-paper); }
-
-  td strong, th strong { color: var(--color-ink); }
-
-  /* ===================== Callouts ===================== */
-  .callout {
-    border: 1px solid var(--color-border);
-    border-left: 4px solid var(--color-indigo);
-    background: var(--color-paper-raised);
-    border-radius: 10px;
-    padding: 20px 24px;
-    margin: 28px 0;
-  }
-
-  .callout-title {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-weight: 600;
-    font-size: 16px;
-    color: var(--color-indigo);
-    margin-bottom: 10px;
-  }
-
-  .callout ul { margin-bottom: 0; padding-left: 20px; }
-  .callout p:last-child { margin-bottom: 0; }
-
-  .callout.practice { border-left-color: var(--color-gold); }
-  .callout.practice .callout-title { color: var(--color-gold); }
-
-  .callout.source { border-left-color: var(--color-forest); background: var(--color-forest-tint); }
-  .callout.source .callout-title { color: var(--color-forest); }
-  .callout.source a { color: var(--color-forest); font-weight: 500; }
-  .callout.source ul { list-style: none; padding-left: 0; }
-  .callout.source li { margin-bottom: 6px; font-size: 16px; word-break: break-all; }
-
-  .callout.note { border-left-color: var(--color-plum); }
-  .callout.note .callout-title { color: var(--color-plum); }
-
-  /* ===================== Diagram containers ===================== */
-  .diagram-card {
-    border: 1px solid var(--color-border);
-    background: var(--color-paper-raised);
-    border-radius: 12px;
-    padding: 28px;
-    margin: 28px 0;
-  }
-
-  .diagram-card .diagram-caption {
-    font-size: 16px;
-    color: var(--color-ink-faint);
-    margin-top: 14px;
-    text-align: center;
-  }
-
-  .diagram-container {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    min-height: 60px;
-  }
-
-  .diagram-loading {
-    color: var(--color-ink-faint);
-    font-size: 16px;
-    padding: 20px 0;
-  }
-
-  .diagram-error {
-    color: var(--color-plum);
-    font-size: 16px;
-  }
-
-  /* ===================== Step list (roadmap) ===================== */
-  .step-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    gap: 16px;
-  }
-
-  .step-list li {
-    display: flex;
-    gap: 16px;
-    margin-bottom: 0;
-  }
-
-  .step-num {
-    flex: none;
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-    border: 1.5px solid var(--color-indigo);
-    color: var(--color-indigo);
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .step-body .step-title { font-weight: 600; color: var(--color-ink); margin-bottom: 4px; }
-  .step-body .step-desc { color: var(--color-ink-soft); font-size: 16px; }
-
-  /* ===================== Glossary ===================== */
-  .glossary-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(280px, 1fr));
-    gap: 16px;
-  }
-
-  .glossary-item {
-    border: 1px solid var(--color-border);
-    background: var(--color-paper-raised);
-    border-radius: 10px;
-    padding: 16px 20px;
-  }
-
-  .glossary-item .g-term {
-    font-weight: 600;
-    color: var(--color-indigo);
-    margin-bottom: 4px;
-  }
-
-  .glossary-item .g-def {
-    color: var(--color-ink-soft);
-    font-size: 16px;
-  }
-
-  /* ===================== Reference list ===================== */
-  .ref-group { margin-bottom: 28px; }
-  .ref-group h4 { margin-top: 0; }
-  .ref-list { list-style: none; margin: 0; padding: 0; }
-  .ref-list li {
-    padding: 12px 0;
-    border-bottom: 1px solid var(--color-border);
-    font-size: 16px;
-  }
-  .ref-list li:last-child { border-bottom: none; }
-  .ref-list .ref-name { color: var(--color-ink); font-weight: 500; display: block; margin-bottom: 2px; }
-  .ref-list .ref-url { color: var(--color-ink-faint); word-break: break-all; }
-
-  footer {
-    margin-top: 96px;
-    padding-top: 32px;
-    border-top: 1px solid var(--color-border);
-    color: var(--color-ink-faint);
-    font-size: 16px;
-  }
-
-  code {
-    font-family: var(--font-mono);
-    background: var(--color-paper-sunken);
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-size: 16px;
-    color: var(--color-ink);
-  }
-
-  /* ===================== Responsive ===================== */
-  @media (max-width: 980px) {
-    .sidebar-toggle { display: flex; }
-    .sidebar {
-      transform: translateX(-100%);
-      /* 画面外のリンクがキーボードフォーカスを受け取らないよう visibility も落とす */
-      visibility: hidden;
-      transition: transform 0.2s ease, visibility 0.2s ease;
-      box-shadow: none;
-    }
-    .sidebar.open { transform: translateX(0); visibility: visible; }
-    .main-content { margin-left: 0; padding: 88px 24px 100px; }
-    .hero h1 { font-size: 32px; }
-    .stat-row { grid-template-columns: repeat(2, 1fr); }
-    .domain-grid { grid-template-columns: repeat(2, 1fr); }
-    .glossary-grid { grid-template-columns: 1fr; }
-  }
-
-  @media (max-width: 560px) {
-    .stat-row { grid-template-columns: 1fr; }
-    .domain-grid { grid-template-columns: 1fr; }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    html { scroll-behavior: auto; }
-    .sidebar { transition: none; }
-  }
-</style>
-</head>
-<body>
-
-<button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="目次を開閉する" aria-controls="sidebar" aria-expanded="false"><i class="ti ti-menu-2"></i></button>
-
-<div class="layout">
-
-  <!-- ===================== Sidebar ===================== -->
-  <nav class="sidebar" id="sidebar" aria-label="目次">
-    <div class="sidebar-brand">
-      <svg class="seal" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <circle cx="20" cy="20" r="18" stroke="#B8802A" stroke-width="1.4"/>
-        <circle cx="20" cy="20" r="13" stroke="#B8802A" stroke-width="1"/>
-        <path d="M14 20.5L18 24.5L26 15.5" stroke="#2E3F72" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      <div class="brand-text">
-        <div class="brand-title">{{BRAND_TITLE}}</div>
-        <div class="brand-subtitle">{{BRAND_SUBTITLE}}</div>
-      </div>
-    </div>
-
-    <ul class="sidebar-nav">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>{{PAGE_TITLE}}</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            :root {
+                --bg: #07111e;
+                --bg-card: #0d1a2b;
+                --bg-card-2: #101f33;
+                --border: #1d3350;
+                --border-soft: #16283f;
+                --text: #dbe4f3;
+                --text-dim: #8fa2c0;
+                --text-faint: #6a7d9c;
+                --accent: #7c9eff;
+                --accent-soft: #3a4f80;
+                --accent-bg: #15233d;
+                --danger: #ff8fa3;
+                --danger-bg: #3a1420;
+                --warn: #ffbd6e;
+                --warn-bg: #3a2810;
+                --success: #7fe0a8;
+                --success-bg: #0f2c1e;
+                --sidebar-w: 300px;
+                --font-jp: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', sans-serif;
+            }
+            * {
+                box-sizing: border-box;
+            }
+            html,
+            body {
+                overflow-x: hidden;
+            }
+            body {
+                margin: 0;
+                background: var(--bg);
+                color: var(--text);
+                font-family: var(--font-jp);
+                font-size: 16px;
+                line-height: 1.85;
+                -webkit-font-smoothing: antialiased;
+            }
+            a {
+                color: var(--accent);
+                text-decoration: none;
+            }
+            a:hover {
+                text-decoration: underline;
+            }
+
+            /* ---------- layout ---------- */
+            .layout {
+                display: block;
+            }
+
+            /* Sidebar */
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                width: var(--sidebar-w);
+                background: #060d17;
+                border-right: 1px solid var(--border-soft);
+                overflow-y: auto;
+                padding: 28px 0 40px;
+                z-index: 50;
+            }
+            .sidebar-header {
+                padding: 0 24px 20px;
+                border-bottom: 1px solid var(--border-soft);
+                margin-bottom: 16px;
+            }
+            .sidebar-header .kicker {
+                font-size: 12px;
+                letter-spacing: 0.08em;
+                color: var(--accent);
+                font-weight: 700;
+                text-transform: uppercase;
+            }
+            .sidebar-header h2 {
+                font-size: 16px;
+                margin: 6px 0 0;
+                color: var(--text);
+                line-height: 1.5;
+                font-weight: 700;
+            }
+            .sidebar nav {
+                padding: 0 12px;
+            }
+            .sidebar nav a {
+                display: block;
+                padding: 9px 12px;
+                border-radius: 8px;
+                font-size: 13.5px;
+                color: var(--text-dim);
+                line-height: 1.5;
+                margin-bottom: 2px;
+                transition:
+                    background 0.15s,
+                    color 0.15s;
+            }
+            .sidebar nav a:hover {
+                background: var(--accent-bg);
+                color: var(--text);
+                text-decoration: none;
+            }
+            .sidebar nav a.active {
+                background: var(--accent-bg);
+                color: var(--accent);
+                font-weight: 700;
+            }
+            .sidebar nav a.lvl3 {
+                padding-left: 28px;
+                font-size: 12.5px;
+            }
+            .sidebar-toggle {
+                display: none;
+                position: fixed;
+                top: 14px;
+                left: 14px;
+                z-index: 60;
+                width: 42px;
+                height: 42px;
+                border-radius: 10px;
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                color: var(--text);
+                font-size: 18px;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+            }
+
+            /* Main content */
+            .main {
+                margin-left: var(--sidebar-w);
+                padding: 56px 64px 120px;
+            }
+            .hero {
+                margin-bottom: 8px;
+            }
+            .hero .kicker {
+                font-size: 13px;
+                font-weight: 700;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+                color: var(--accent);
+                margin-bottom: 14px;
+            }
+            .hero h1 {
+                font-size: clamp(28px, 3.6vw, 42px);
+                line-height: 1.35;
+                margin: 0 0 18px;
+                background: linear-gradient(135deg, #dbe4f3 0%, #7c9eff 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                font-weight: 800;
+            }
+            .hero .meta-row {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+                margin-bottom: 32px;
+            }
+            .pill {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                padding: 6px 14px;
+                border-radius: 999px;
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                font-size: 12.5px;
+                color: var(--text-dim);
+            }
+            .pill strong {
+                color: var(--text);
+            }
+
+            .main h2 {
+                font-size: 26px;
+                margin: 56px 0 20px;
+                padding-top: 8px;
+                border-top: 1px solid var(--border-soft);
+                color: var(--text);
+                font-weight: 800;
+                letter-spacing: -0.01em;
+                scroll-margin-top: 24px;
+            }
+            .main > h2:first-of-type {
+                border-top: none;
+                padding-top: 0;
+                margin-top: 8px;
+            }
+            .main h3 {
+                font-size: 20px;
+                margin: 38px 0 16px;
+                color: var(--text);
+                font-weight: 700;
+                scroll-margin-top: 24px;
+            }
+            .main h3::before {
+                content: '';
+                display: inline-block;
+                width: 5px;
+                height: 18px;
+                background: var(--accent);
+                border-radius: 3px;
+                margin-right: 10px;
+                vertical-align: -2px;
+            }
+            .main p {
+                margin: 0 0 18px;
+                color: var(--text);
+            }
+            .main ul,
+            .main ol {
+                margin: 0 0 18px;
+                padding-left: 1.4em;
+                color: var(--text);
+            }
+            .main li {
+                margin-bottom: 8px;
+            }
+            .main hr {
+                border: none;
+                border-top: 1px solid var(--border-soft);
+                margin: 44px 0;
+            }
+            .main strong {
+                color: #f0f4fc;
+                font-weight: 700;
+            }
+            .footnote-ref {
+                margin-left: 2px;
+            }
+            .footnote-ref sup {
+                font-size: 11px;
+                color: var(--accent);
+                font-weight: 700;
+            }
+            .main code:not(pre code) {
+                background: var(--bg-card-2);
+                border: 1px solid var(--border);
+                border-radius: 5px;
+                padding: 1px 6px;
+                font-size: 0.9em;
+                color: #ffd08a;
+                overflow-wrap: break-word;
+                word-break: break-word;
+            }
+
+            /* Tables */
+            .table-scroll {
+                overflow-x: auto;
+                margin: 0 0 26px;
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                background: var(--bg-card);
+            }
+            table {
+                border-collapse: collapse;
+                width: 100%;
+                font-size: 14.5px;
+            }
+            thead th {
+                background: var(--accent-bg);
+                color: var(--text);
+                text-align: left;
+                padding: 12px 16px;
+                font-weight: 700;
+                border-bottom: 1px solid var(--border);
+                white-space: nowrap;
+            }
+            tbody td {
+                padding: 12px 16px;
+                border-bottom: 1px solid var(--border-soft);
+                color: var(--text-dim);
+                vertical-align: top;
+            }
+            tbody tr:last-child td {
+                border-bottom: none;
+            }
+            tbody tr:hover td {
+                background: rgba(124, 158, 255, 0.04);
+            }
+
+            /* Mermaid */
+            pre.mermaid {
+                width: 100%;
+                display: flex;
+                justify-content: safe center;
+                overflow-x: auto;
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-radius: 14px;
+                padding: 28px 20px;
+                margin: 0 0 30px;
+            }
+            pre.mermaid svg {
+                flex-shrink: 0;
+            }
+            pre.mermaid p {
+                color: inherit;
+                margin: 0;
+            }
+
+            /* Callouts */
+            .callout-practice {
+                display: flex;
+                gap: 14px;
+                background: var(--success-bg);
+                border: 1px solid #1d5a3a;
+                border-left: 4px solid var(--success);
+                border-radius: 12px;
+                padding: 20px 22px;
+                margin: 0 0 26px;
+            }
+            .callout-practice .icon {
+                flex-shrink: 0;
+                width: 26px;
+                height: 26px;
+                border-radius: 7px;
+                background: var(--success);
+                color: #08150e;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 14px;
+                font-weight: 900;
+            }
+            .callout-practice .body {
+                color: var(--text);
+            }
+            .callout-practice .label {
+                font-size: 11.5px;
+                font-weight: 800;
+                letter-spacing: 0.06em;
+                color: var(--success);
+                text-transform: uppercase;
+                margin-bottom: 6px;
+            }
+            .callout-practice p {
+                margin: 0;
+                color: var(--text);
+            }
+
+            .practice-label {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 12px;
+                font-weight: 800;
+                letter-spacing: 0.06em;
+                color: var(--success);
+                text-transform: uppercase;
+                margin: 0 0 10px;
+            }
+            .practice-label::before {
+                content: '✓';
+                font-size: 13px;
+            }
+
+            /* Reference grid */
+            .ref-grid {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 12px;
+                margin: 0 0 30px;
+            }
+            .ref-card {
+                display: flex;
+                gap: 12px;
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                padding: 14px 16px;
+                min-width: 0;
+            }
+            .ref-card .num {
+                flex-shrink: 0;
+                width: 26px;
+                height: 26px;
+                border-radius: 7px;
+                background: var(--accent-bg);
+                color: var(--accent);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 12px;
+                font-weight: 800;
+            }
+            .ref-card .txt {
+                font-size: 13px;
+                color: var(--text-dim);
+                min-width: 0;
+                overflow-wrap: break-word;
+                word-break: break-word;
+            }
+            .ref-card .txt a {
+                color: var(--accent);
+                font-weight: 600;
+            }
+
+            /* Checklist */
+            .checklist-card {
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-radius: 14px;
+                padding: 8px 22px 12px;
+                margin: 0 0 30px;
+            }
+            .checklist-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 14px 0;
+                border-bottom: 1px solid var(--border-soft);
+                margin-bottom: 6px;
+            }
+            .checklist-header .title {
+                font-weight: 700;
+                color: var(--text);
+                font-size: 14.5px;
+            }
+            .checklist-header .count {
+                font-size: 13px;
+                color: var(--accent);
+                font-weight: 700;
+            }
+            .checklist-card ul {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+            .checklist-card li {
+                display: flex;
+                align-items: flex-start;
+                gap: 12px;
+                padding: 11px 4px;
+                border-radius: 8px;
+                margin: 0;
+                transition: background 0.15s;
+            }
+            .checklist-card li:hover {
+                background: rgba(124, 158, 255, 0.05);
+            }
+            .checklist-card input[type='checkbox'] {
+                appearance: none;
+                -webkit-appearance: none;
+                width: 19px;
+                height: 19px;
+                flex-shrink: 0;
+                margin-top: 2px;
+                border: 1.5px solid var(--border);
+                border-radius: 5px;
+                background: var(--bg-card-2);
+                cursor: pointer;
+                position: relative;
+            }
+            .checklist-card input[type='checkbox']:checked {
+                background: var(--accent);
+                border-color: var(--accent);
+            }
+            .checklist-card input[type='checkbox']:checked::after {
+                content: '';
+                position: absolute;
+                left: 5px;
+                top: 1px;
+                width: 5px;
+                height: 10px;
+                border: solid #08101f;
+                border-width: 0 2px 2px 0;
+                transform: rotate(40deg);
+            }
+            .checklist-card label {
+                color: var(--text);
+                font-size: 14.5px;
+                cursor: pointer;
+                line-height: 1.6;
+            }
+            .checklist-card li:has(input:checked) label {
+                text-decoration: line-through;
+                color: var(--text-faint);
+            }
+
+            /* Footnotes (pandoc) */
+            aside.footnotes {
+                display: none;
+            } /* replaced entirely by ref-grid */
+
+            /* Responsive */
+            @media (max-width: 980px) {
+                .sidebar {
+                    transform: translateX(-100%);
+                    transition: transform 0.25s ease;
+                    box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+                }
+                .sidebar.open {
+                    transform: translateX(0);
+                }
+                .main {
+                    margin-left: 0;
+                    padding: 80px 20px 100px;
+                }
+                .sidebar-toggle {
+                    display: flex;
+                }
+                .ref-grid {
+                    grid-template-columns: 1fr;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="layout">
+            <button class="sidebar-toggle" id="sidebarToggle" aria-label="メニュー">☰</button>
+            <aside class="sidebar" id="sidebar">
+                <div class="sidebar-header">
+                    <div class="kicker">{{SIDEBAR_KICKER}}</div>
+                    <h2>{{SIDEBAR_TITLE}}</h2>
+                </div>
+                <nav id="sidebarNav">
 {{SIDEBAR_NAV}}
-    </ul>
-  </nav>
+                </nav>
+            </aside>
+            <main class="main">
+                <div class="hero">
+                    <div class="kicker">{{HERO_KICKER}}</div>
+                    <h1>{{HERO_H1}}</h1>
+                    <div class="meta-row">
+{{META_PILLS}}
+                    </div>
+                </div>
 
-  <!-- ===================== Main content ===================== -->
-  <main class="main-content">
+                <!-- ##CONTENT_INSERT## -->
+            </main>
+        </div>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.13.0/mermaid.min.js"
+            integrity="sha384-tI0sDqjGJcqrQ8e/XKiQGS+ee11v5knTNWx2goxMBxe4DO9U0uKlfxJtYB9ILZ4j"
+            crossorigin="anonymous"
+        ></script>
+        <script>
+            (function () {
+                'use strict';
 
-    <div class="hero">
-      <div class="hero-eyebrow"><i class="ti {{HERO_EYEBROW_ICON}}"></i>{{HERO_EYEBROW}}</div>
-      <h1>{{HERO_H1}}</h1>
-      <p class="hero-lede">
-        {{HERO_LEDE}}
-      </p>
+                // ---------- Mermaid init + render ----------
+                function initMermaid() {
+                    if (typeof mermaid === 'undefined') {
+                        console.warn('mermaid not loaded');
+                        return;
+                    }
+                    var fontFamily = getComputedStyle(document.body).fontFamily;
+                    mermaid.initialize({
+                        startOnLoad: false,
+                        theme: 'base',
+                        securityLevel: 'loose',
+                        fontFamily: fontFamily,
+                        themeVariables: {
+                            fontSize: '16px',
+                            background: '#0d1a2b',
+                            primaryColor: '#12233b',
+                            primaryTextColor: '#dbe4f3',
+                            primaryBorderColor: '#2c4770',
+                            lineColor: '#4a6390',
+                            secondaryColor: '#101f33',
+                            tertiaryColor: '#101f33',
+                            edgeLabelBackground: '#0d1a2b',
+                            clusterBkg: '#0d1a2b',
+                            clusterBorder: '#2c4770',
+                            nodeTextColor: '#dbe4f3',
+                        },
+                        flowchart: {
+                            useMaxWidth: false,
+                            htmlLabels: true,
+                            subGraphTitleMargin: { top: 12, bottom: 18 },
+                            nodeSpacing: 70,
+                            rankSpacing: 60,
+                            curve: 'basis',
+                        },
+                    });
 
-      <div class="stat-row">
-{{STAT_CARDS}}
-      </div>
+                    var fontSpecs = [
+                        ['700', '"Noto Sans JP"'],
+                        ['400', '"Noto Sans JP"'],
+                    ];
+                    var sample = '設計とアーキテクチャ0123ABC';
+                    var loadPromises = fontSpecs.map(function (spec) {
+                        try {
+                            return document.fonts.load(spec[0] + ' 16px ' + spec[1], sample);
+                        } catch (e) {
+                            return Promise.resolve();
+                        }
+                    });
 
-      <div class="disclaimer-box">
-        <i class="ti ti-info-circle"></i>
-        {{DISCLAIMER_HTML}}
-      </div>
-    </div>
+                    Promise.all(loadPromises)
+                        .then(function () {
+                            return document.fonts ? document.fonts.ready : Promise.resolve();
+                        })
+                        .catch(function () {})
+                        .then(function () {
+                            try {
+                                mermaid
+                                    .run({ querySelector: 'pre.mermaid' })
+                                    .then(function () {
+                                        healOverflowingLabels();
+                                        setTimeout(healOverflowingLabels, 600);
+                                    })
+                                    .catch(function (err) {
+                                        console.error('mermaid render error', err);
+                                    });
+                            } catch (e) {
+                                console.error('mermaid run failed', e);
+                            }
+                        });
+                }
 
-    <!-- ##SECTION_INSERT## -->
+                function healOverflowingLabels() {
+                    document.querySelectorAll('pre.mermaid svg').forEach(function (svg) {
+                        svg.querySelectorAll('.node').forEach(function (node) {
+                            var rect = node.querySelector('rect.basic, rect');
+                            var fo = node.querySelector('foreignObject');
+                            if (!rect || !fo) return;
+                            var div = fo.querySelector('div');
+                            if (!div) return;
+                            var neededW = div.scrollWidth;
+                            var neededH = div.scrollHeight;
+                            var curW = parseFloat(fo.getAttribute('width')) || 0;
+                            var curH = parseFloat(fo.getAttribute('height')) || 0;
+                            if (neededW > curW - 2 || neededH > curH - 2) {
+                                var buffer = 6;
+                                var newW = Math.max(curW, neededW + buffer);
+                                var newH = Math.max(curH, neededH + buffer);
+                                var x = parseFloat(fo.getAttribute('x')) || 0;
+                                var y = parseFloat(fo.getAttribute('y')) || 0;
+                                var dx = (newW - curW) / 2;
+                                var dy = (newH - curH) / 2;
+                                fo.setAttribute('width', newW);
+                                fo.setAttribute('height', newH);
+                                fo.setAttribute('x', x - dx);
+                                fo.setAttribute('y', y - dy);
+                                var rx = parseFloat(rect.getAttribute('x'));
+                                var ry = parseFloat(rect.getAttribute('y'));
+                                var rw = parseFloat(rect.getAttribute('width'));
+                                var rh = parseFloat(rect.getAttribute('height'));
+                                if (!isNaN(rx) && !isNaN(rw)) {
+                                    rect.setAttribute('x', rx - dx);
+                                    rect.setAttribute('width', rw + newW - curW);
+                                }
+                                if (!isNaN(ry) && !isNaN(rh)) {
+                                    rect.setAttribute('y', ry - dy);
+                                    rect.setAttribute('height', rh + newH - curH);
+                                }
+                            }
+                        });
+                    });
+                }
 
-    <footer>
-      {{FOOTER_HTML}}
-    </footer>
+                try {
+                    initMermaid();
+                } catch (e) {
+                    console.error('mermaid init failed', e);
+                }
 
-  </main>
-</div>
+                // ---------- Sidebar toggle (mobile) ----------
+                var sidebar = document.getElementById('sidebar');
+                var toggle = document.getElementById('sidebarToggle');
+                if (toggle) {
+                    toggle.addEventListener('click', function () {
+                        sidebar.classList.toggle('open');
+                    });
+                }
+                document.querySelectorAll('#sidebarNav a').forEach(function (a) {
+                    a.addEventListener('click', function () {
+                        sidebar.classList.remove('open');
+                    });
+                });
 
-<script src="https://cdn.jsdelivr.net/npm/mermaid@11.16.1/dist/mermaid.min.js" integrity="sha384-aBQXj4hK6Jm05i7aQAsUV3bLdSUrHX1BGYfMB0166TtWt/RRaw+h0Eelme9OCOvy" crossorigin="anonymous"></script>
-<script>
-(function () {
-  "use strict";
+                // ---------- Scroll-spy ----------
+                var navLinks = Array.from(document.querySelectorAll('#sidebarNav a'));
+                var linkMap = new Map();
+                navLinks.forEach(function (a) {
+                    var id = decodeURIComponent(a.getAttribute('href').slice(1));
+                    linkMap.set(id, a);
+                });
 
-  var DIAGRAMS = {
-/* ##DIAGRAMS_INSERT## */
-  };
+                var headings = Array.from(linkMap.keys())
+                    .map(function (id) {
+                        return document.getElementById(id);
+                    })
+                    .filter(Boolean);
 
-  function extendViewBoxHeight(svgEl, extra) {
-    var vb = svgEl.getAttribute("viewBox");
-    if (!vb) return;
-    var parts = vb.split(/\s+/).map(Number);
-    if (parts.length !== 4) return;
-    svgEl.style.width = parts[2] + "px";
-    svgEl.setAttribute("viewBox", parts[0] + " " + parts[1] + " " + parts[2] + " " + (parts[3] + extra));
-  }
+                var spyObserver = new IntersectionObserver(
+                    function (entries) {
+                        entries.forEach(function (entry) {
+                            var link = linkMap.get(entry.target.id);
+                            if (!link) return;
+                            if (entry.isIntersecting) {
+                                navLinks.forEach(function (a) {
+                                    a.classList.remove('active');
+                                });
+                                link.classList.add('active');
+                            }
+                        });
+                    },
+                    { rootMargin: '-15% 0px -75% 0px', threshold: 0 },
+                );
 
-  async function renderAllDiagrams() {
-    if (typeof mermaid === "undefined") {
-      Object.keys(DIAGRAMS).forEach(function (id) {
-        var el = document.getElementById(id);
-        if (el) el.innerHTML = '<p class="diagram-error">図の読み込みに失敗しました(ネットワークを確認してください)。</p>';
-      });
-      return;
-    }
+                headings.forEach(function (h) {
+                    spyObserver.observe(h);
+                });
 
-    if (document.fonts && document.fonts.ready) {
-      try { await document.fonts.ready; } catch (e) { /* ignore */ }
-    }
-
-    mermaid.initialize({
-      startOnLoad: false,
-      securityLevel: "strict",
-      theme: "base",
-      themeVariables: {
-        background: "transparent",
-        primaryColor: "#EEF1F8",
-        primaryBorderColor: "#2E3F72",
-        primaryTextColor: "#161B26",
-        lineColor: "#2E3F72",
-        secondaryColor: "#FAF1DF",
-        secondaryBorderColor: "#B8802A",
-        tertiaryColor: "#FFFFFF",
-        fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', sans-serif",
-        fontSize: "16px",
-        pie1: "#C7D1EA",
-        pie2: "#AEDBD6",
-        pie3: "#F0D9A6",
-        pie4: "#E7C0D0",
-        pieOpacity: "1",
-        pieStrokeColor: "#FFFFFF",
-        pieStrokeWidth: "2px",
-        pieOuterStrokeWidth: "1px",
-        pieOuterStrokeColor: "#DFE3EA",
-        pieSectionTextColor: "#161B26",
-        pieLegendTextColor: "#161B26",
-        pieTitleTextColor: "#161B26"
-      },
-      flowchart: {
-        useMaxWidth: false,
-        htmlLabels: true,
-        nodeSpacing: 45,
-        rankSpacing: 48,
-        curve: "basis"
-      },
-      pie: {
-        useMaxWidth: false
-      }
-    });
-
-    var entries = Object.keys(DIAGRAMS);
-    for (var i = 0; i < entries.length; i++) {
-      var id = entries[i];
-      var container = document.getElementById(id);
-      if (!container) continue;
-      try {
-        var result = await mermaid.render(id + "-svg", DIAGRAMS[id]);
-        // mermaid v10 系は SVG 文字列を、v11 系は { svg } を返す。両形態を受け付ける。
-        container.innerHTML = typeof result === "string" ? result : result.svg;
-        var svgEl = container.querySelector("svg");
-        if (svgEl) {
-          svgEl.removeAttribute("width");
-          svgEl.removeAttribute("height");
-          svgEl.style.maxWidth = "100%";
-          svgEl.style.height = "auto";
-          svgEl.style.overflow = "visible";
-          extendViewBoxHeight(svgEl, 15);
-        }
-      } catch (err) {
-        container.innerHTML = '<p class="diagram-error">図の読み込みに失敗しました。</p>';
-        if (window.console) console.error("Mermaid render error [" + id + "]:", err);
-      }
-    }
-  }
-
-  function setupSidebarHighlight() {
-    var sections = document.querySelectorAll("main section[id]");
-    var navLinks = document.querySelectorAll(".sidebar-nav a");
-    var linkMap = {};
-    navLinks.forEach(function (link) {
-      var href = link.getAttribute("href").replace("#", "");
-      linkMap[href] = link;
-    });
-    if (!("IntersectionObserver" in window)) return;
-    var observer = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        var link = linkMap[entry.target.id];
-        if (!link) return;
-        if (entry.isIntersecting) {
-          navLinks.forEach(function (l) { l.classList.remove("active"); });
-          link.classList.add("active");
-        }
-      });
-    }, { rootMargin: "-20% 0px -70% 0px" });
-    sections.forEach(function (section) { observer.observe(section); });
-  }
-
-  function setupMobileToggle() {
-    var toggle = document.getElementById("sidebarToggle");
-    var sidebar = document.getElementById("sidebar");
-    if (!toggle || !sidebar) return;
-    toggle.addEventListener("click", function () {
-      var isOpen = sidebar.classList.toggle("open");
-      toggle.setAttribute("aria-expanded", String(isOpen));
-    });
-    document.querySelectorAll(".sidebar-nav a").forEach(function (link) {
-      link.addEventListener("click", function () {
-        // 開いていたときだけフォーカスをトグルボタンへ退避する。
-        // モバイルの閉じたサイドバーは visibility: hidden になるため、
-        // クリックしたリンクにフォーカスを残すとフォーカスが body へ落ちる。
-        // 逆に閉じた状態（デスクトップ相当）で退避すると、リンク先へ
-        // 移動したい利用者からフォーカスを奪ってしまう。
-        var wasOpen = sidebar.classList.contains("open");
-        sidebar.classList.remove("open");
-        toggle.setAttribute("aria-expanded", "false");
-        if (wasOpen) toggle.focus();
-      });
-    });
-  }
-
-  document.addEventListener("DOMContentLoaded", function () {
-    renderAllDiagrams();
-    setupSidebarHighlight();
-    setupMobileToggle();
-  });
-})();
-</script>
-</body>
+                // ---------- Checklist progress ----------
+                document.querySelectorAll('.checklist-card').forEach(function (card) {
+                    var boxes = card.querySelectorAll('input[type="checkbox"]');
+                    var counter = card.querySelector('.count');
+                    function update() {
+                        var checked = card.querySelectorAll(
+                            'input[type="checkbox"]:checked',
+                        ).length;
+                        if (counter) counter.textContent = checked + ' / ' + boxes.length + ' 完了';
+                    }
+                    boxes.forEach(function (b) {
+                        b.addEventListener('change', update);
+                    });
+                    update();
+                });
+            })();
+        </script>
+    </body>
 </html>

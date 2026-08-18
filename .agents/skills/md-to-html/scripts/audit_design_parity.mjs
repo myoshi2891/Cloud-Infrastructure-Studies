@@ -234,16 +234,20 @@ function collectReferenceCardIds(src) {
  */
 function collectChecklists(src) {
   const cards = [];
-  // `.checklist-card` は入れ子にならないので、次のカード開始か本文終端までを 1 枚とみなす。
-  const parts = src.split(/<div class="checklist-card">/).slice(1);
+  // 描画 JS は `card.querySelectorAll('input[type="checkbox"]')` のように
+  // セレクタ文字列として同じ字面を含む。本文だけを数えるため <script> / <style> を除く。
+  const body = src.replace(/<(script|style)\b[\s\S]*?<\/\1>/gi, " ");
+  // `.checklist-card` は入れ子にならない。カードの項目は直後の <ul>…</ul> に収まる。
+  const parts = body.split(/<div class="checklist-card">/).slice(1);
   for (const part of parts) {
-    const body = part.split(/<div class="checklist-card">/)[0];
-    const advertised = /<span class="count">([^<]*)<\/span>/.exec(body)?.[1] ?? null;
-    const declared = advertised === null ? null : Number(/(\d+)\s*完了/.exec(advertised)?.[1] ?? NaN);
+    const advertised = /<span class="count">([^<]*)<\/span>/.exec(part)?.[1] ?? null;
+    const declared =
+      advertised === null ? null : Number(/(\d+)\s*完了/.exec(advertised)?.[1] ?? NaN);
+    const list = /<ul\b[^>]*>([\s\S]*?)<\/ul>/.exec(part);
     cards.push({
       advertised,
       declared: Number.isNaN(declared) ? null : declared,
-      actual: (body.match(/type="checkbox"/g) ?? []).length,
+      actual: (list === null ? "" : list[1]).match(/type="checkbox"/g)?.length ?? 0,
     });
   }
   return cards;
