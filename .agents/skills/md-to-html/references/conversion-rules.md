@@ -1,13 +1,13 @@
 # Markdown → HTML 変換規則
 
-最終更新: 2026-08-14
+最終更新: 2026-08-18
 
-内容の正は `<資格名>.md`、デザインの正は `Certified-Associate-in-Project-Management.html`。
+内容の正は `<ガイド名>.md`、デザインの正は `Gcp-pca-section4-process-optimization.html`。
 本書は両者の実測から導いた**変換規則の全表**である。
 
 > [!CAUTION]
-> 変換は機械的な Markdown レンダリングでは**ない**。5 つの構造は意味に応じて別要素へ
-> 再型付けし、10 種類ほどのページ要素は新規に執筆する。
+> 変換は機械的な Markdown レンダリングでは**ない**。目次・脚注・チェックリストの 3 構造は
+> 意味に応じて別要素へ再型付けし、hero とサイドバーは新規に組み立てる。
 > ただし **原本の文言を削る・要約する・言い換えることは一切許されない**。
 > 「短くした方が図が綺麗」は理由にならない。図に入り切らない語句は本文側へ移す。
 
@@ -15,147 +15,181 @@
 
 | 原本 Markdown | 生成 HTML |
 |---|---|
-| `# タイトル` | `<title>` と hero の `<h1>`（短縮形にしてよいが、原本の語句は hero-lede か本文に残す） |
-| タイトル直後の副題行 | `.brand-subtitle` と `.hero-lede`（**原本の文はそのまま `.hero-lede` に入れる**） |
-| 冒頭の `> 免責` blockquote | `.disclaimer-box`。URL は `<a target="_blank" rel="noopener">` にする |
-| `## 目次` とそのリンク一覧 | `<ul class="sidebar-nav">`。セクションにはしない |
-| `---`（水平線） | 破棄。境界は `<!-- ===== N. Name ===== -->` コメントで表す |
-| 末尾の italic 行 | `<footer>` |
-
-## 2. 見出しの対応
-
-| 原本 | 生成 HTML |
-|---|---|
-| `## N. タイトル` | `<section id="kebab-slug">` + `.section-eyebrow`「SECTION 0N」+ `<h2>タイトル</h2>` |
-| `### N.M タイトル` | `<h3>タイトル</h3>` |
+| `# タイトル` | `<title>` と hero の `<h1>`（**原本の文をそのまま**） |
+| `## 目次` とそのリンク一覧 | `<nav id="sidebarNav">` の `<a>` 群。見出しにも本文にもしない |
+| `## N. タイトル` | `<h2 id="<目次アンカー>">N. タイトル</h2>`（採番を外さない） |
+| `### N.M タイトル` | `<h3 id="<目次アンカー>">N.M タイトル</h3>` |
 | `#### タイトル` | `<h4>タイトル</h4>` |
+| `---`（水平線） | `<hr />` |
+| `[^n]` | `.footnote-ref` の `<a>`（§4） |
+| `[^n]: 名称. URL` | `.ref-card`（§4） |
 
-- 採番（`N.` / `N.M`）は見出しから外し、`.section-eyebrow` の `SECTION NN` で表現する
-- `## N. ドメインX: 主題（YY%）` の形は、`.domain-tag dX`（`ドメインX &middot; YY%`）と
-  `<h2>主題</h2>` に**分割**する。語句は失われないので監査を通る
+**`<section>` でくくらない。** `SECTION 01` のような通し番号ラベルも付けない。
+本文は `<main class="main">` 直下に平坦に並べる。
 
-### 見出しから別要素へ再型付けしてよいケース（原本 CAPM の実績）
+## 2. 見出しの id は目次アンカーをそのまま使う
 
-| 原本 | 生成先 |
-|---|---|
-| `### ステップN: …` の連続 | `<ol class="step-list">` の `.step-title` |
-| `### …のベストプラクティス` + リスト | `.callout practice` |
-| `### タスク構成` | 直後の表に吸収（見出しを持たない `.table-wrap`） |
-| 参考文献セクション内の `###` | `.ref-group` の `<h4>` |
+原本の `## 目次` は GitHub 互換のアンカーを持つ。
 
-`audit_content_parity.mjs` は h3 以下の再型付けを **blocking にしない**（警告として列挙する）。
-ただし **h1 / h2 の消失は blocking**。セクション見出しの言い換えは許されない。
+```markdown
+- [1. Section 4の全体像](#1-section-4の全体像)
+  - [1.1 配点と出題範囲](#11-配点と出題範囲)
+```
 
-## 3. 意味的に再型付けする 5 構造
+生成 HTML はこの文字列を**そのまま** `id` と `href` に使う。
 
-| 原本の書き方 | 生成先 | 判定条件 |
-|---|---|---|
-| `### ステップN:` が 3 つ以上連続 | `.step-list` | 手順として順序があるとき |
-| `**ベストプラクティス**` または `### …のベストプラクティス` + 箇条書き | `.callout practice` | 常に |
-| `**ソース**: [リンク]` / `**ソース**:` + リンクのリスト | `.callout source` | 常に |
-| `> 補足: …` の blockquote | `.callout note` | 常に |
-| 比率テーブル（分類 × %） | `.domain-grid` | 分類が 4 個のとき |
-| 用語テーブル（用語 × 定義） | `.glossary-grid` | 行数が 10 以上のとき |
+```html
+<a href="#1-section-4の全体像" class="">1. Section 4の全体像</a>
+<a href="#11-配点と出題範囲" class="lvl3">1.1 配点と出題範囲</a>
+...
+<h2 id="1-section-4の全体像">1. Section 4の全体像</h2>
+<h3 id="11-配点と出題範囲">1.1 配点と出題範囲</h3>
+```
 
-判断がつかない場合の既定:
+- **英語 kebab-case へ翻訳しない。** 日本語のまま使う
+- 目次アンカー ≡ 見出しの `id` ≡ サイドバーの `href` の三者一致を監査が blocking で強制する
+- 原本の目次に無い見出しを足さない。足すなら原本 `.md` の目次にも足す（`.md` が正）
 
-| 状況 | 既定 |
-|---|---|
-| callout の種別が決められない | `.callout note` |
-| 表を再型付けすべきか迷う | **再型付けせず `.table-wrap` の表のままにする** |
-| アイコンが決められない | `ti-file-text` |
-| 図のキャプションが思いつかない | 「<図が示す関係の名詞句>」（例: 「要求の引き出しから管理までの循環プロセス」） |
+サイドバーの `<a>` は h2 が既定クラス、h3 が `class="lvl3"`。
+h4 以下はサイドバーに載せない。
 
-## 4. 本文要素の対応
+## 3. 本文要素の対応
 
 | 原本 | 生成 HTML |
 |---|---|
 | 段落 | `<p>…</p>` |
 | `- 項目` | `<ul><li>…</li></ul>` |
 | `1. 項目` | `<ol><li>…</li></ol>` |
-| GFM 表 | `<div class="table-wrap"><table><thead>…</thead><tbody>…</tbody></table></div>` |
+| GFM 表 | `<div class="table-scroll"><table><thead><tr class="header">…</tr></thead><tbody><tr class="odd">…</tr></tbody></table></div>` |
 | `**強調**` | `<strong>強調</strong>` |
 | `*書名*` | `<em>書名</em>` |
-| `[文字列](URL)` | `<a href="URL" target="_blank" rel="noopener">文字列</a>` |
-| `名称: https://URL`（参考文献） | `<li><span class="ref-name">名称</span><a class="ref-url" href="URL" target="_blank" rel="noopener">URL</a></li>` |
-| 表セル内の計算式 | `<code>SV = EV − PV</code>`（原本にバッククォートが無くても付ける） |
+| `` `コマンド` `` | `<code>コマンド</code>` |
+| `[文字列](URL)` | `<a href="URL">文字列</a>`（`target` / `rel` は付けない） |
+| `**ベストプラクティス**` + 箇条書き | `.callout-practice`（`references/design-system.md` §5.3） |
+| チェックリスト（`- [ ] 項目`、または「チェックリスト」節の箇条書き） | `.checklist-card`（同 §5.4） |
 
-`- **要点。** 続きの文` は `<li><strong>要点。</strong>続きの文</li>` にする（`</strong>` の直後に空白を入れない）。
+表の `<tr>` は**全行に class が要る**。`thead` は `header`、`tbody` は先頭から
+`odd` / `even` を交互に付ける。
+
+`- **要点。** 続きの文` は `<li><strong>要点。</strong>続きの文</li>` にする。
+
+## 4. 脚注の変換（本 repo 固有）
+
+原本は Pandoc 形式の脚注を使う。**1 つの脚注につき 2 箇所**を編集する。
+
+### 4.1 本文中の参照
+
+```markdown
+…認定する資格です[^1]。
+```
+
+```html
+<p>
+    …認定する資格です<a class="footnote-ref" href="#ref1" id="fnref1" role="doc-noteref"
+        ><sup>1</sup></a
+    >。
+</p>
+```
+
+- `href` は脚注番号に対応する `.ref-card` の `id`（`[^1]` → `#ref1`）
+- `id="fnrefN"` の N は**本文中の出現順の通し番号**。脚注番号とは一致しない
+  （同じ `[^1]` が 2 回出れば `fnref1` と `fnref2` になる）
+- `<sup>` の中身は脚注番号そのもの
+
+### 4.2 参考文献セクション
+
+```markdown
+## 7. 参考文献
+
+[^1]: Professional Cloud Architect Certification | Learn | Google Cloud. https://cloud.google.com/learn/certification/cloud-architect
+```
+
+```html
+<h2 id="7-参考文献">7. 参考文献</h2>
+<div class="ref-grid" id="referenceGrid">
+    <div class="ref-card" id="ref1">
+        <div class="num">1</div>
+        <div class="txt">
+            Professional Cloud Architect Certification | Learn | Google Cloud.
+            <a href="https://cloud.google.com/learn/certification/cloud-architect"
+                >https://cloud.google.com/learn/certification/cloud-architect</a
+            >
+        </div>
+    </div>
+</div>
+```
+
+- `.num` は脚注番号、`.ref-card` の `id` は `ref1` からの連番。原本の脚注が
+  `[^1]` から連番であれば両者は一致する
+- 末尾の URL は `.txt` の中で `<a>` にする。**リンクテキストは URL そのもの**
+- `<a>` に `target="_blank"` / `rel="noopener"` は**付けない**
+
+`audit_content_parity.mjs` は脚注定義の本文を `.ref-card .txt` と突き合わせる。
+`[^n]` と `<sup>n</sup>` は両側から除去して照合するため、記法の違いは漏れ扱いされない。
 
 ## 5. Mermaid の変換
 
-fence 1 つにつき **3 箇所**を編集する。
+fence 1 つにつき `pre.mermaid` を 1 つ置く。**`var DIAGRAMS` は使わない。**
 
-1. 本文の該当位置に図カードを置く
+````markdown
+```mermaid
+flowchart LR
+    S1["Section 1<br/>設計と計画<br/>(約25%)"] --> S4a["4.1 技術的プロセス"]
 
-    ```html
-    <div class="diagram-card">
-      <div class="diagram-container" id="camelCaseId"><div class="diagram-loading">図を読み込み中...</div></div>
-      <div class="diagram-caption">日本語キャプション</div>
-    </div>
-    ```
+    style S4a fill:#1a3a5c,stroke:#4a90d9,color:#ffffff
+```
+````
 
-2. `DIAGRAMS` にテンプレートリテラルで追加する（キー = コンテナの `id`）
+```html
+<pre class="mermaid">
+flowchart LR
+    S1["Section 1&lt;br/&gt;設計と計画&lt;br/&gt;(約25%)"] --&gt; S4a["4.1 技術的プロセス"]
 
-    ```js
-    camelCaseId: `flowchart TB
-    A["ラベル"] --> B["ラベル"]
-
-    classDef box fill:#EEF1F8,stroke:#2E3F72,color:#161B26,stroke-width:1px;
-    class A,B box;`,
-    ```
-
-3. キャプションは原本の見出しまたは図ラベルを**変更せず再利用**する。どちらも無い場合は新規に執筆せず、ユーザーに確認する
+    classDef highlightFill fill:#1a3a5c,stroke:#4a90d9,color:#ffffff;
+    class S4a highlightFill</pre
+>
+```
 
 ### ソースの書き換え規則
 
 | 原本の書き方 | 生成 HTML |
 |---|---|
-| 行頭のインデント | すべて除去（フラットに並べる） |
-| `classDef … fill:#111827,stroke:#7c9eff,color:#e5e7eb` | `fill:#EEF1F8,stroke:#2E3F72,color:#161B26,stroke-width:1px` |
-| `<br/>` を含むラベル | `<br/>` を除去し半角空白で連結 |
-| ラベル内の `（）` `：` `／` | 除去または空白化（Mermaid パーサ対策） |
-| `A -.説明.-> B` | `A -.->\|"説明"\| B` |
-| `pie` のラベル末尾の `36%` | 削除（`showData` が値を描画するため） |
+| `<`, `>`, `&` | `&lt;`, `&gt;`, `&amp;` に実体化（`-->` は `--&gt;`） |
+| 行頭のインデント | **そのまま保持してよい** |
+| `style X fill:…,stroke:…,color:…` | `classDef <役>Fill …;` + `class X <役>Fill`（値は変えない） |
+| 同じ `style` が複数ノードに付く | `classDef` を 1 つ定義し `class A,B,C <役>Fill` にまとめる |
+| ラベル内の `（）` `：` `／` | Mermaid パーサ対策で半角化・空白化してよい（**本文側は据え置き**） |
+
+ノードラベルは常にダブルクォートで囲む。
 
 > [!WARNING]
 > **ラベルの語句を消してはならない。** 図に入り切らない補足（英語名・詳細説明）は、
-> 削除するのではなく**本文の段落・表・用語集へ移す**。
+> 削除するのではなく**本文の段落・表へ移す**。
 > `audit_content_parity.mjs` はラベルの語句がページのどこにも無いことを検出して exit 1 にする。
->
-> 原本 CAPM.html にはこの規則に反した実例（`Elicitation` / `Hot Spot / Hot Area` /
-> `プログラムとプロジェクトの集合` などがページから消失）が残っている。**真似しないこと。**
 
-ノードラベルは常にダブルクォートで囲む。丸括弧・コロン・スラッシュを含めない。
+配色は `references/design-system.md` §8 の 4 役 9 色のみ。
+原本 Markdown に明色パレットが混ざっていたら、原本側を直してから変換する。
 
-## 6. 全角 → 半角の正規化
+## 6. 全角文字は正規化しない
 
-本文全体に一貫して適用する。
+**原本の `（）` `／` `：` はそのまま HTML へ運ぶ。**
+`2.1 ソフトウェア開発ライフサイクル（SDLC）` は括弧を含めて逐語で移す。
 
-| 原本 | 生成 HTML |
-|---|---|
-| `（` `）` | `(` `)` |
-| `／` | ` / ` |
-| `＝` | `=` |
-| `＋` | ` + ` |
-| `：` | `:` + 半角空白 |
+例外は Mermaid のラベルだけで、これはパーサの制約による（§5）。
+その場合も語句自体は消さない。
 
-据え置く文字: `、` `・` `〜` `「」` `®` `−`（全角マイナス）。
-使用してよい実体参照は `&middot;` のみ（`.domain-tag` の中黒）。
-`&` は素のまま書いてよい（原本の `Maintain & Renew` が実例）。
+使用してよい実体参照は `&middot;`（hero と sidebar の中黒）と、
+Mermaid ソース内の `&lt;` `&gt;` `&amp;` のみ。
 
-この正規化は `matchKey` の NFKC 正規化が吸収するため、監査で漏れ扱いされることはない。
+## 7. 整形
 
-## 7. 命名規約
+生成 HTML は `prettier.config.cjs`（`tabWidth: 4` / `printWidth: 100` / `singleQuote`）に従う。
 
-| 対象 | 規約 | 例 |
-|---|---|---|
-| セクション `id` | 英語 kebab-case | `what-is-capm` / `exam-format` / `study-plan` |
-| 図の `id` / `DIAGRAMS` のキー | 英語 camelCase | `roadmap5` / `domainPie` / `baProcess` |
-| `.section-eyebrow` | `SECTION` + ゼロ埋め連番 | `SECTION 01` |
-| 出力ファイル名 | 資格の正式名称をハイフン区切り、リポジトリ直下 | `Certified-Associate-in-Project-Management.html` |
-
-セクション id とアイコンは日本語見出しから機械的に導けないため、**Phase 0 で対応表を作って先に確定する**。
+> [!NOTE]
+> **`prettier` はこのリポジトリの `package.json` に固定されていない。**
+> `bunx prettier --write` を既存ファイルに掛けると、別バージョンの整形差分
+> （`</pre\n>` → `</pre>` など）が広範囲に混ざる。既存ファイルの一括整形はしない。
+> 新規に書く箇所だけ、周囲のインデント（本文は 16 スペース）に合わせる。
 
 ## 8. 監査で警告として出るが許容される差分
 
@@ -165,21 +199,23 @@ fence 1 つにつき **3 箇所**を編集する。
 
 | 警告カテゴリ | 典型例 |
 |---|---|
-| 文言がページに見当たらない小見出し | `### 6.3 ドメイン1のベストプラクティス` が `.callout practice` になった |
-| 見出しレベルが変わった項目 | `## 目次` がサイドバーになった / `### ステップ1:` が `.step-title` になった |
+| 文言がページに見当たらない小見出し | `### …のベストプラクティス` が `.callout-practice` のラベルになった |
+| 見出しレベルが変わった項目 | `### ステップ1:` が本文の `<strong>` になった |
 | 図のラベルが短縮・書き換えされた項目 | `["A<br/>B"]` が `["A"]` になった（語句 B が本文に残っていれば blocking ではない） |
 
 blocking になるのは次だけである。ここに出たものは**必ず転写して解消する**。
 
-- h1 / h2 の消失
+- h1 / h2 の消失（見出し要素として実在しないこと）
 - 段落・リスト項目・表行の消失
 - 外部リンクの消失
+- 脚注定義の本文の消失
+- 目次アンカー / 見出し `id` / サイドバー `href` の不一致
 - Mermaid の図数不一致
 - Mermaid ラベルの語句がページのどこにも無い
-- `DIAGRAMS` にデザインシステム外の配色が残っている
+- `pre.mermaid` にデザインシステム外の配色が残っている
 
 ## 9. 関連
 
 - `references/design-system.md` — コンポーネントの確定 markup
 - `templates/skeleton.html.tmpl` — ページ雛形
-- `.claude/skills/markdown-formatter/SKILL.md` — 原本 Markdown 側の書式修正
+- `.agents/skills/markdown-formatter/SKILL.md` — 原本 Markdown 側の書式修正
