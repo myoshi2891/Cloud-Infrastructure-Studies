@@ -8,7 +8,7 @@
 > [!CAUTION]
 > **クラス名・色を記憶で書かないこと。** 必ず本書か原本 HTML の該当行からコピーする。
 > ここに載っていない class を発明した時点でデザイン移植漏れになる。
-> 判断に迷ったら `node .agents/skills/md-to-html/scripts/audit_design_parity.mjs <page.html>`
+> 判断に迷ったら `bun .agents/skills/md-to-html/scripts/audit_design_parity.mjs <page.html>`
 > を実行して確かめる。
 
 ## 1. CSS カスタムプロパティ（`:root`）
