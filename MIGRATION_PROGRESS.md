@@ -1,6 +1,34 @@
 # 移行作業進捗管理ドキュメント (Migration Progress)
 
-(最終更新日: 2026-08-16)
+(最終更新日: 2026-08-19)
+
+---
+
+## 2026-08-19: CompTIA Network+ Domain 1.0「Networking Concepts」100%全量移行 (完了)
+
+### 目的
+
+`Comptia-network-plus-networking-concepts-guide.html` および `Comptia-network-plus-networking-concepts-guide.md` を、Next.js App Router 5ファイル構成 (`page.tsx`, `ComptiaNetworkingConceptsGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/comptia/network-plus/networking-concepts-guide` ルートへ移行。見出し(h1:2, h2:11, h3:40, h4:0)、全24個のテーブル、19個のMermaid図解、全リスト、全外部リンク・全本文・コードブロックを一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for comptia-network-plus-networking-concepts-guide` (`a829feb`)
+- [x] **Step 1 (Red)**: `test(comptia): add failing tests for comptia network plus networking concepts guide` (`42f1b80`)
+- [x] **Step 2 (Green)**: `feat(comptia): implement networking concepts guide to pass tests` (`a778eab`)
+- [x] **Step 3 (Refactor)**: `refactor(comptia): integrate networking concepts guide into routing and update docs` (`4627003`)
+- [x] **Step 4 (Archive & Sync)**: `chore(docs): update MIGRATION_PROGRESS.md — comptia network plus networking concepts complete`
+
+### 関連ファイル
+
+- [app/comptia/network-plus/networking-concepts-guide/page.tsx](app/comptia/network-plus/networking-concepts-guide/page.tsx)
+- [app/comptia/network-plus/networking-concepts-guide/ComptiaNetworkingConceptsGuide.tsx](app/comptia/network-plus/networking-concepts-guide/ComptiaNetworkingConceptsGuide.tsx)
+- [app/comptia/network-plus/networking-concepts-guide/NavBar.tsx](app/comptia/network-plus/networking-concepts-guide/NavBar.tsx)
+- [app/comptia/network-plus/networking-concepts-guide/constants.ts](app/comptia/network-plus/networking-concepts-guide/constants.ts)
+- [app/comptia/network-plus/networking-concepts-guide/page.css](app/comptia/network-plus/networking-concepts-guide/page.css)
+- [`__tests__/comptia/network-plus/networking-concepts-guide/page.test.tsx`](__tests__/comptia/network-plus/networking-concepts-guide/page.test.tsx)
+- [docs/migration-inventory/comptia-network-plus-networking-concepts-guide.json](docs/migration-inventory/comptia-network-plus-networking-concepts-guide.json)
+- [archive/Comptia/Network-Plus/Comptia-network-plus-networking-concepts-guide.html](archive/Comptia/Network-Plus/Comptia-network-plus-networking-concepts-guide.html)
+- [archive/Comptia/Network-Plus/Comptia-network-plus-networking-concepts-guide.md](archive/Comptia/Network-Plus/Comptia-network-plus-networking-concepts-guide.md)
 
 ---
 
