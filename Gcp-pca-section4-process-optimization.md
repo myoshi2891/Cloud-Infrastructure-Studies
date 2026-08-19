@@ -43,8 +43,6 @@ Section 4は6つのセクションの中では配点が比較的小さい部類�
 - Professional Cloud Architect Certification（認定資格ページ）[^1]
 - Professional Cloud Architect Certification exam guide（公式試験ガイドPDF）[^2]
 
-このガイドの図解はすべてMermaid記法のフローチャート、表はすべてMarkdown表で構成しており、ASCIIアートは一切使用していません。
-
 ---
 
 ## 1. Section 4の全体像
