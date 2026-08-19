@@ -1,0 +1,423 @@
+.comptia-networking-concepts-page {
+    --color-background-info: #17273a;
+    --color-background-danger: #331a1d;
+    --color-background-success: #163023;
+    --color-background-warning: #33270f;
+
+    --color-text-info: #86caf2;
+    --color-text-danger: #ec9a9a;
+    --color-text-success: #8ce0b3;
+    --color-text-warning: #edc986;
+
+    --color-accent-purple: #b3a1fb;
+    --color-accent-purple-bg: #241f3d;
+    --color-accent-teal: #6ee8d3;
+    --color-accent-teal-bg: #123330;
+
+    background: var(--color-background, #131318);
+    color: var(--color-foreground, #eeeef3);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.7;
+    font-weight: 400;
+    min-height: 100vh;
+}
+
+.comptia-networking-concepts-page .layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+.comptia-networking-concepts-page .sidebar {
+    position: fixed;
+    left: 0;
+    top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px));
+    bottom: 0;
+    width: 280px;
+    z-index: 40;
+    overflow-y: auto;
+    background: var(--color-card, #1a1a22);
+    border-right: 1px solid var(--color-border, #292935);
+    padding: 28px 18px;
+}
+
+.comptia-networking-concepts-page .sidebar-header {
+    padding: 0 8px 20px 8px;
+    border-bottom: 1px solid var(--color-border, #292935);
+    margin-bottom: 16px;
+}
+
+.comptia-networking-concepts-page .sidebar-header .badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--color-accent-purple);
+    background: var(--color-accent-purple-bg);
+    border-radius: var(--radius-md, 8px);
+    padding: 3px 8px;
+    margin-bottom: 10px;
+}
+
+.comptia-networking-concepts-page .sidebar-header h1 {
+    font-size: 16px;
+    font-weight: 500;
+    margin: 0 0 4px 0;
+    color: var(--color-foreground, #eeeef3);
+    font-family: var(--font-display, inherit);
+}
+
+.comptia-networking-concepts-page .sidebar-header p {
+    font-size: 12px;
+    color: var(--color-muted-foreground, #797986);
+    margin: 0;
+}
+
+.comptia-networking-concepts-page .sidebar nav {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.comptia-networking-concepts-page .sidebar nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.comptia-networking-concepts-page .sidebar nav a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--color-muted-foreground, #b3b3c0);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 400;
+    padding: 8px 10px 8px 8px;
+    border-left: 2px solid transparent;
+    border-radius: var(--radius-md, 8px);
+    transition: background 0.15s ease, color 0.15s ease, border-left-color 0.15s ease;
+}
+
+.comptia-networking-concepts-page .sidebar nav a:hover,
+.comptia-networking-concepts-page .sidebar nav a.active {
+    background: var(--color-secondary, #23232e);
+    color: var(--color-foreground, #eeeef3);
+    border-left: 2px solid var(--color-accent-teal);
+}
+
+.comptia-networking-concepts-page .sidebar nav a i {
+    font-size: 16px;
+    color: var(--color-muted, #797986);
+    width: 18px;
+    text-align: center;
+}
+
+.comptia-networking-concepts-page .sidebar nav .nav-group-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--color-muted, #797986);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 14px 10px 6px 10px;
+}
+
+.comptia-networking-concepts-page .main {
+    margin-left: 280px;
+    width: calc(100% - 280px);
+    max-width: none;
+}
+
+.comptia-networking-concepts-page .content {
+    padding: 48px 64px 96px 64px;
+}
+
+.comptia-networking-concepts-page .content section,
+.comptia-networking-concepts-page .content header {
+    scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 24px);
+}
+
+.comptia-networking-concepts-page h1 {
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--color-foreground, #eeeef3);
+    margin: 0 0 12px 0;
+    font-family: var(--font-display, inherit);
+}
+
+.comptia-networking-concepts-page h2 {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--color-foreground, #eeeef3);
+    margin: 58px 0 20px 0;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--color-border, #34343f);
+    letter-spacing: 0.01em;
+    font-family: var(--font-display, inherit);
+}
+
+.comptia-networking-concepts-page h3 {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--color-foreground, #eeeef3);
+    margin: 32px 0 14px 0;
+    font-family: var(--font-display, inherit);
+}
+
+.comptia-networking-concepts-page section:first-of-type h2:first-child {
+    margin-top: 0;
+}
+
+.comptia-networking-concepts-page .hero {
+    padding-bottom: 36px;
+    margin-bottom: 12px;
+    border-bottom: 1px solid var(--color-border, #34343f);
+}
+
+.comptia-networking-concepts-page .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    color: var(--color-accent-purple);
+    background: var(--color-accent-purple-bg);
+    border-radius: var(--radius-md, 8px);
+    padding: 6px 12px;
+    margin-bottom: 20px;
+}
+
+.comptia-networking-concepts-page .hero-title {
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--color-foreground, #eeeef3);
+    margin: 0 0 12px 0;
+    letter-spacing: 0.01em;
+}
+
+.comptia-networking-concepts-page .hero-sub {
+    font-size: 14px;
+    color: var(--color-muted-foreground, #b3b3c0);
+    margin: 0 0 18px 0;
+    max-width: 640px;
+}
+
+.comptia-networking-concepts-page .hero-meta {
+    font-size: 13px;
+    color: var(--color-muted, #797986);
+    margin: 0;
+}
+
+.comptia-networking-concepts-page .hero-meta span {
+    color: var(--color-muted-foreground, #b3b3c0);
+}
+
+.comptia-networking-concepts-page .hero-meta .dot {
+    margin: 0 10px;
+    color: var(--color-border, #454551);
+}
+
+.comptia-networking-concepts-page p {
+    margin: 0 0 14px 0;
+    color: var(--color-muted-foreground, #b3b3c0);
+}
+
+.comptia-networking-concepts-page strong {
+    font-weight: 500;
+    color: var(--color-foreground, #eeeef3);
+}
+
+.comptia-networking-concepts-page a.inline-link {
+    color: var(--color-text-info);
+}
+
+.comptia-networking-concepts-page .callout {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    border: 1px solid var(--color-border, #34343f);
+    border-left: 3px solid var(--color-text-info);
+    border-radius: var(--radius-lg, 12px);
+    padding: 14px 16px;
+    margin: 0 0 20px 0;
+    background: var(--color-background-info);
+}
+
+.comptia-networking-concepts-page .callout i {
+    font-size: 16px;
+    color: var(--color-text-info);
+    margin-top: 2px;
+}
+
+.comptia-networking-concepts-page .callout p {
+    margin: 0;
+    font-size: 13px;
+    color: var(--color-muted-foreground, #b3b3c0);
+}
+
+.comptia-networking-concepts-page .toc-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0 8px 0;
+}
+
+.comptia-networking-concepts-page .toc-table tr {
+    border-bottom: 1px solid var(--color-border, #292935);
+}
+
+.comptia-networking-concepts-page .toc-table tr:last-child {
+    border-bottom: none;
+}
+
+.comptia-networking-concepts-page .toc-table td {
+    padding: 13px 4px;
+    font-size: 14px;
+}
+
+.comptia-networking-concepts-page .toc-table td:first-child {
+    width: 76px;
+    white-space: nowrap;
+    color: var(--color-muted, #797986);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.02em;
+}
+
+.comptia-networking-concepts-page .toc-table td:last-child {
+    color: var(--color-muted-foreground, #b3b3c0);
+}
+
+.comptia-networking-concepts-page .toc-table tr:hover td:last-child {
+    color: var(--color-accent-teal);
+}
+
+.comptia-networking-concepts-page table.data {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0 22px 0;
+    font-size: 14px;
+}
+
+.comptia-networking-concepts-page table.data th {
+    text-align: left;
+    background: var(--color-secondary, #23232e);
+    color: var(--color-foreground, #eeeef3);
+    font-weight: 500;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--color-border, #454551);
+}
+
+.comptia-networking-concepts-page table.data td {
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--color-border, #292935);
+    color: var(--color-muted-foreground, #b3b3c0);
+    vertical-align: top;
+}
+
+.comptia-networking-concepts-page table.data tr:last-child td {
+    border-bottom: none;
+}
+
+.comptia-networking-concepts-page table.data tr:nth-child(even) td {
+    background: var(--color-card, #1a1a22);
+}
+
+.comptia-networking-concepts-page table.data tr:hover td {
+    background: var(--color-secondary, #23232e);
+}
+
+.comptia-networking-concepts-page .mermaid-wrap {
+    text-align: center;
+    background: var(--color-card, #1a1a22);
+    border: 1px solid var(--color-border, #292935);
+    border-top: 2px solid var(--color-accent-teal);
+    border-radius: var(--radius-lg, 12px);
+    padding: 24px 16px;
+    margin: 8px 0 22px 0;
+}
+
+.comptia-networking-concepts-page .mermaid-wrap svg {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    height: auto;
+    overflow: visible;
+}
+
+.comptia-networking-concepts-page .mermaid-caption {
+    font-size: 12px;
+    color: var(--color-muted, #797986);
+    text-align: center;
+    margin: -12px 0 22px 0;
+}
+
+.comptia-networking-concepts-page .code-block {
+    background: var(--color-secondary, #23232e);
+    border: 1px solid var(--color-border, #292935);
+    border-radius: var(--radius-md, 8px);
+    padding: 14px 16px;
+    margin: 8px 0 20px 0;
+    overflow-x: auto;
+}
+
+.comptia-networking-concepts-page .code-block .code-line {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--color-foreground, #eeeef3);
+    line-height: 1.6;
+    white-space: pre;
+}
+
+.comptia-networking-concepts-page .formula {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    background: var(--color-secondary, #23232e);
+    border-radius: var(--radius-md, 8px);
+    padding: 10px 14px;
+    color: var(--color-text-info);
+    margin: 0 0 18px 0;
+}
+
+.comptia-networking-concepts-page .references {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.comptia-networking-concepts-page .references li {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--color-border, #292935);
+    font-size: 13px;
+    color: var(--color-muted-foreground, #b3b3c0);
+}
+
+.comptia-networking-concepts-page .references li:last-child {
+    border-bottom: none;
+}
+
+.comptia-networking-concepts-page .references a {
+    color: var(--color-text-info);
+    text-decoration: none;
+    overflow-wrap: anywhere;
+}
+
+.comptia-networking-concepts-page .references a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 900px) {
+    .comptia-networking-concepts-page .sidebar {
+        display: none;
+    }
+    .comptia-networking-concepts-page .main {
+        margin-left: 0;
+        width: 100%;
+    }
+    .comptia-networking-concepts-page .content {
+        padding: 32px 20px 72px 20px;
+    }
+}
