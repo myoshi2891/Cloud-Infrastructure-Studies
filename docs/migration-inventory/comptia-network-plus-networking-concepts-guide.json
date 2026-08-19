@@ -634,7 +634,7 @@
     },
     {
       "kind": "code",
-      "text": "                        import socket\n\ndef check_tcp_port(host, port, timeout=2):\n    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:\n        sock.settimeout(timeout)\n        result = sock.connect_ex((host, port))\n        return result == 0\n\ntargets = [(\"example.com\", 443), (\"example.com\", 80)]\nfor host, port in targets:\n    is_open = check_tcp_port(host, port)\n    print(f\"{host}:{port} -> {'open' if is_open else 'closed/filtered'}\")\n                    "
+      "text": "import socket\n\ndef check_tcp_port(host, port, timeout=2):\n    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:\n        sock.settimeout(timeout)\n        result = sock.connect_ex((host, port))\n        return result == 0\n\ntargets = [(\"example.com\", 443), (\"example.com\", 80)]\nfor host, port in targets:\n    is_open = check_tcp_port(host, port)\n    print(f\"{host}:{port} -> {'open' if is_open else 'closed/filtered'}\")"
     },
     {
       "kind": "paragraph",
@@ -678,7 +678,7 @@
     },
     {
       "kind": "code",
-      "text": "                        import ipaddress\n\nbase_network = ipaddress.ip_network(\"192.168.1.0/24\")\nrequired_hosts = {\"sales\": 100, \"dev\": 50, \"admin\": 20}\n\nfor name, hosts in required_hosts.items():\n    prefix = 32\n    while (2 ** (32 - prefix)) - 2 < hosts:\n        prefix -= 1\n    print(f\"{name}: needs {hosts} hosts -> /{prefix} \"\n          f\"({(2 ** (32 - prefix)) - 2} usable hosts)\")\n                    "
+      "text": "import ipaddress\n\nbase_network = ipaddress.ip_network(\"192.168.1.0/24\")\nrequired_hosts = {\"sales\": 100, \"dev\": 50, \"admin\": 20}\n\nfor name, hosts in required_hosts.items():\n    prefix = 32\n    while (2 ** (32 - prefix)) - 2 < hosts:\n        prefix -= 1\n    print(f\"{name}: needs {hosts} hosts -> /{prefix} \"\n          f\"({(2 ** (32 - prefix)) - 2} usable hosts)\")"
     },
     {
       "kind": "paragraph",
@@ -747,8 +747,8 @@
       0
     ],
     "codeLines": [
-      13,
-      12
+      12,
+      11
     ]
   }
 }

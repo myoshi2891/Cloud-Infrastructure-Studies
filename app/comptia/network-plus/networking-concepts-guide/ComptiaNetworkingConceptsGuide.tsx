@@ -631,19 +631,18 @@ export function ComptiaNetworkingConceptsGuide() {
                             試験範囲ではありませんが、上表のポート番号を実際に確認する感覚をつかむために、TCPポートへの疎通確認を行う簡単なPythonの例を示します。
                         </p>
                         <div className="code-block" role="region" aria-label="TCPポートの疎通確認を行うPythonスクリプト例">
-                            <div className="code-line">{'                        import socket'}</div>
-                            <div className="code-line">{''}</div>
-                            <div className="code-line">{'def check_tcp_port(host, port, timeout=2):'}</div>
-                            <div className="code-line">{'    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:'}</div>
-                            <div className="code-line">{'        sock.settimeout(timeout)'}</div>
-                            <div className="code-line">{'        result = sock.connect_ex((host, port))'}</div>
-                            <div className="code-line">{'        return result == 0'}</div>
-                            <div className="code-line">{''}</div>
-                            <div className="code-line">{'targets = [("example.com", 443), ("example.com", 80)]'}</div>
-                            <div className="code-line">{'for host, port in targets:'}</div>
-                            <div className="code-line">{'    is_open = check_tcp_port(host, port)'}</div>
-                            <div className="code-line">{'    print(f"{host}:{port} -> {\'open\' if is_open else \'closed/filtered\'}")'}</div>
-                            <div className="code-line">{'                    '}</div>
+                            <div className="code-line"><span className="code-keyword">import</span> socket</div>
+                            <div className="code-line"></div>
+                            <div className="code-line"><span className="code-keyword">def</span> <span className="code-function">check_tcp_port</span>(host, port, timeout=<span className="code-number">2</span>):</div>
+                            <div className="code-line">{'    '}<span className="code-keyword">with</span> socket.socket(socket.AF_INET, socket.SOCK_STREAM) <span className="code-keyword">as</span> sock:</div>
+                            <div className="code-line">{'        '}sock.settimeout(timeout)</div>
+                            <div className="code-line">{'        '}result = sock.connect_ex((host, port))</div>
+                            <div className="code-line">{'        '}<span className="code-keyword">return</span> result == <span className="code-number">0</span></div>
+                            <div className="code-line"></div>
+                            <div className="code-line">targets = [(<span className="code-string">&quot;example.com&quot;</span>, <span className="code-number">443</span>), (<span className="code-string">&quot;example.com&quot;</span>, <span className="code-number">80</span>)]</div>
+                            <div className="code-line"><span className="code-keyword">for</span> host, port <span className="code-keyword">in</span> targets:</div>
+                            <div className="code-line">{'    '}is_open = check_tcp_port(host, port)</div>
+                            <div className="code-line">{'    '}<span className="code-builtin">print</span>(f<span className="code-string">&quot;&#123;host&#125;:&#123;port&#125; -&gt; &#123;&apos;open&apos; if is_open else &apos;closed/filtered&apos;&#125;&quot;</span>)</div>
                         </div>
                     </section>
 
@@ -1080,18 +1079,17 @@ export function ComptiaNetworkingConceptsGuide() {
 
                         <h3>実装例: PythonのipaddressモジュールでVLSMを検算する</h3>
                         <div className="code-block" role="region" aria-label="PythonのipaddressモジュールでVLSMを検算するスクリプト例">
-                            <div className="code-line">{'                        import ipaddress'}</div>
-                            <div className="code-line">{''}</div>
-                            <div className="code-line">{'base_network = ipaddress.ip_network("192.168.1.0/24")'}</div>
-                            <div className="code-line">{'required_hosts = {"sales": 100, "dev": 50, "admin": 20}'}</div>
-                            <div className="code-line">{''}</div>
-                            <div className="code-line">{'for name, hosts in required_hosts.items():'}</div>
-                            <div className="code-line">{'    prefix = 32'}</div>
-                            <div className="code-line">{'    while (2 ** (32 - prefix)) - 2 < hosts:'}</div>
-                            <div className="code-line">{'        prefix -= 1'}</div>
-                            <div className="code-line">{'    print(f"{name}: needs {hosts} hosts -> /{prefix} "'}</div>
-                            <div className="code-line">{'          f"({(2 ** (32 - prefix)) - 2} usable hosts)")'}</div>
-                            <div className="code-line">{'                    '}</div>
+                            <div className="code-line"><span className="code-keyword">import</span> ipaddress</div>
+                            <div className="code-line"></div>
+                            <div className="code-line">base_network = ipaddress.ip_network(<span className="code-string">&quot;192.168.1.0/24&quot;</span>)</div>
+                            <div className="code-line">required_hosts = &#123;<span className="code-string">&quot;sales&quot;</span>: <span className="code-number">100</span>, <span className="code-string">&quot;dev&quot;</span>: <span className="code-number">50</span>, <span className="code-string">&quot;admin&quot;</span>: <span className="code-number">20</span>&#125;</div>
+                            <div className="code-line"></div>
+                            <div className="code-line"><span className="code-keyword">for</span> name, hosts <span className="code-keyword">in</span> required_hosts.items():</div>
+                            <div className="code-line">{'    '}prefix = <span className="code-number">32</span></div>
+                            <div className="code-line">{'    '}<span className="code-keyword">while</span> (<span className="code-number">2</span> ** (<span className="code-number">32</span> - prefix)) - <span className="code-number">2</span> &lt; hosts:</div>
+                            <div className="code-line">{'        '}prefix -= <span className="code-number">1</span></div>
+                            <div className="code-line">{'    '}<span className="code-builtin">print</span>(f<span className="code-string">&quot;&#123;name&#125;: needs &#123;hosts&#125; hosts -&gt; /&#123;prefix&#125; &quot;</span></div>
+                            <div className="code-line">{'          '}f<span className="code-string">&quot;(&#123;(2 ** (32 - prefix)) - 2&#125; usable hosts)&quot;</span>)</div>
                         </div>
                     </section>
 

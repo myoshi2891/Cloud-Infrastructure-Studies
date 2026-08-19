@@ -369,7 +369,38 @@
     font-size: 13px;
     color: var(--color-foreground, #eeeef3);
     line-height: 1.6;
+    min-height: 1.6em;
     white-space: pre;
+}
+
+/* Syntax Highlighting (Atom One Dark theme) */
+.comptia-networking-concepts-page .code-keyword {
+    color: #c678dd;
+    font-weight: 500;
+}
+.comptia-networking-concepts-page .code-function,
+.comptia-networking-concepts-page .code-title {
+    color: #61afef;
+}
+.comptia-networking-concepts-page .code-string {
+    color: #98c379;
+}
+.comptia-networking-concepts-page .code-number {
+    color: #d19a66;
+}
+.comptia-networking-concepts-page .code-builtin {
+    color: #e5c07b;
+}
+.comptia-networking-concepts-page .code-comment {
+    color: #5c6370;
+    font-style: italic;
+}
+.comptia-networking-concepts-page .code-operator {
+    color: #56b6c2;
+}
+.comptia-networking-concepts-page .code-variable,
+.comptia-networking-concepts-page .code-param {
+    color: #e06c75;
 }
 
 .comptia-networking-concepts-page .formula {
