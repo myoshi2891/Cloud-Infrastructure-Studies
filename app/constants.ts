@@ -528,6 +528,11 @@ const ALL_EXAMS: Exam[] = [
                 href: '/comptia/network-plus/networking-concepts-guide',
                 pct: '23%',
             },
+            {
+                label: 'Domain 3.0 Network Operations 徹底解説ガイド',
+                href: '/comptia/network-plus/network-operations-guide',
+                pct: '19%',
+            },
         ],
         badge: 'ネットワーク基礎',
         icon: '⚡',

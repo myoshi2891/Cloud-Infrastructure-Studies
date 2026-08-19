@@ -55,7 +55,7 @@ Updated 2026-08-15
   - `/app/cisco/ccna/automation-programmability`: CCNA 200-301 6.0 自動化とプログラマビリティ 完全ガイド。
   - `/app/cisco/ccna/security-fundamentals`: CCNA 200-301 Security Fundamentals 完全ガイド。
   - `/app/cisco/ccna/network-fundamentals-guide`: CCNA 200-301 Network Fundamentals ネットワークの基礎 入門ガイド。
-  - `/app/comptia/network-plus`: CompTIA Network+ (N10-009 / V9) 完全ガイド（`networking-concepts-guide` を含む）。
+  - `/app/comptia/network-plus`: CompTIA Network+ (N10-009 / V9) 完全ガイド（`networking-concepts-guide`, `network-operations-guide` を含む）。
   - `/app/aws/solutions-architect-associate`: AWS Certified Solutions Architect – Associate (SAA-C03) 完全対策ガイド（`domain1` を含む）。
 - `/app/constants.ts`: 試験データ正本（EXAMS / STATS）。`provider: 'GCP' | 'AWS' | 'Cisco' | 'CompTIA'` で分類され、`toNavTree` が自動グルーピング。
 - AWS: `app/aws/` 配下（`solutions-architect-associate/page.tsx` 完全対策ガイド、`solutions-architect-associate/domain1/page.tsx` ドメイン1ガイド、`solutions-architect-associate/domain2/page.tsx` ドメイン2ガイド、`solutions-architect-associate/domain3/page.tsx` ドメイン3ガイド、`solutions-architect-associate/domain4/page.tsx` ドメイン4ガイド）
