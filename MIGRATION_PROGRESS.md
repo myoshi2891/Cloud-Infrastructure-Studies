@@ -4,6 +4,34 @@
 
 ---
 
+## 2026-08-19: CompTIA Network+ Domain 3.0「Network Operations」100%全量移行 (完了)
+
+### 目的
+
+`Comptia-network-plus-network-operations.html` および `Comptia-network-plus-network-operations.md` を、Next.js App Router 5ファイル構成 (`page.tsx`, `ComptiaNetworkOperationsGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/comptia/network-plus/network-operations-guide` ルートへ移行。見出し(h1:1, h2:12, h3:7, h4:0)、全14個のテーブル、10個のMermaid図解、全リスト、全外部リンク・全本文・コールアウト注記を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for comptia-network-plus-network-operations-guide` (`396b915`)
+- [x] **Step 1 (Red)**: `test(comptia): add failing tests for comptia network plus network operations guide` (`fea4217`)
+- [x] **Step 2 (Green)**: `feat(comptia): implement network operations guide to pass tests` (`d8905b3`)
+- [x] **Step 3 (Refactor)**: `refactor(comptia): integrate network operations guide into routing and update docs` (`66333e9`)
+- [x] **Step 4 (Archive & Sync)**: `chore(docs): update MIGRATION_PROGRESS.md — comptia network plus network operations complete`
+
+### 関連ファイル
+
+- [app/comptia/network-plus/network-operations-guide/page.tsx](app/comptia/network-plus/network-operations-guide/page.tsx)
+- [app/comptia/network-plus/network-operations-guide/ComptiaNetworkOperationsGuide.tsx](app/comptia/network-plus/network-operations-guide/ComptiaNetworkOperationsGuide.tsx)
+- [app/comptia/network-plus/network-operations-guide/NavBar.tsx](app/comptia/network-plus/network-operations-guide/NavBar.tsx)
+- [app/comptia/network-plus/network-operations-guide/constants.ts](app/comptia/network-plus/network-operations-guide/constants.ts)
+- [app/comptia/network-plus/network-operations-guide/page.css](app/comptia/network-plus/network-operations-guide/page.css)
+- [`__tests__/comptia/network-plus/network-operations-guide/page.test.tsx`](__tests__/comptia/network-plus/network-operations-guide/page.test.tsx)
+- [docs/migration-inventory/comptia-network-plus-network-operations-guide.json](docs/migration-inventory/comptia-network-plus-network-operations-guide.json)
+- [archive/Comptia/Network-Plus/Comptia-network-plus-network-operations.html](archive/Comptia/Network-Plus/Comptia-network-plus-network-operations.html)
+- [archive/Comptia/Network-Plus/Comptia-network-plus-network-operations.md](archive/Comptia/Network-Plus/Comptia-network-plus-network-operations.md)
+
+---
+
 ## 2026-08-19: CompTIA Network+ Domain 1.0「Networking Concepts」100%全量移行 (完了)
 
 ### 目的
