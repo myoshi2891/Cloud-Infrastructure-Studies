@@ -523,6 +523,11 @@ const ALL_EXAMS: Exam[] = [
                 href: '/comptia/network-plus',
                 pct: '完全解説',
             },
+            {
+                label: 'Domain 1.0 Networking Concepts ステップバイステップガイド',
+                href: '/comptia/network-plus/networking-concepts-guide',
+                pct: '23%',
+            },
         ],
         badge: 'ネットワーク基礎',
         icon: '⚡',

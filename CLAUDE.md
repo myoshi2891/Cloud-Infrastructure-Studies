@@ -128,7 +128,12 @@ app/
       NavBar.tsx                    # サイドバーナビ (IntersectionObserver)
       constants.ts                  # Mermaid 図定義（4図）
       page.css                      # ページ固有スタイル（サイドバー幅280px契約準拠）
-      architecture-guide/page.tsx   # アーキテクチャガイドページ
+      networking-concepts-guide/
+        page.tsx                    # Domain 1.0: Networking Concepts ガイド (Server)
+        ComptiaNetworkingConceptsGuide.tsx # 本文＋インタラクション (Client。8ステップ、Mermaid 19図)
+        NavBar.tsx                  # サイドバーナビ (ScrollSpy)
+        constants.ts                # Mermaid 図定義（19図）、ナビ項目
+        page.css                    # ページ固有スタイル（サイドバー幅280px契約準拠）
     hands-on/
       cloud-load-balancing-guide/
         page.tsx                    # Cloud Load Balancing 完全入門（Server。メタデータ定義）
