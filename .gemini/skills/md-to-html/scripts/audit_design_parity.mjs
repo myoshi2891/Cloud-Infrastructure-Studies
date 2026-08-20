@@ -172,12 +172,17 @@ function collectRules(css) {
 // --------------------------------------------------------------------------
 
 /**
- * Extracts the `themeVariables` declaration of the Mermaid initialisation call.
+ * Extracts the body of the object literal assigned to a key.
+ *
+ * ブレースを数えながら走査する。ネストしたオブジェクトを含んでいても本体の末尾を
+ * 正しく見つけられるため、キーの並び順に依存せず中身を検査できる。
+ *
  * @param {string} src - The complete HTML source.
- * @returns {Map<string, string>|null} The theme variables, or null when the block is absent or incomplete.
+ * @param {string} key - The property name whose object literal is wanted.
+ * @returns {string|null} The object body, or null when the block is absent or incomplete.
  */
-function collectThemeVariables(src) {
-  const declaration = /themeVariables\s*:\s*\{/.exec(src);
+function extractObjectBody(src, key) {
+  const declaration = new RegExp(`${key}\\s*:\\s*\\{`).exec(src);
   if (declaration === null) return null;
 
   const bodyStart = declaration.index + declaration[0].length;
@@ -207,8 +212,19 @@ function collectThemeVariables(src) {
   }
   if (bodyEnd < 0) return null;
 
+  return src.slice(bodyStart, bodyEnd);
+}
+
+/**
+ * Extracts the `themeVariables` declaration of the Mermaid initialisation call.
+ * @param {string} src - The complete HTML source.
+ * @returns {Map<string, string>|null} The theme variables, or null when the block is absent or incomplete.
+ */
+function collectThemeVariables(src) {
+  const body = extractObjectBody(src, "themeVariables");
+  if (body === null) return null;
+
   const variables = new Map();
-  const body = src.slice(bodyStart, bodyEnd);
   for (const entry of body.matchAll(/([\w-]+)\s*:\s*["']([^"']*)["']/g)) {
     variables.set(entry[1], entry[2]);
   }
@@ -218,6 +234,19 @@ function collectThemeVariables(src) {
 // --------------------------------------------------------------------------
 // 構造
 // --------------------------------------------------------------------------
+
+/**
+ * Extracts the content range of the document.
+ *
+ * 描画 JS や CSS は `card.querySelectorAll('input[type="checkbox"]')` のように
+ * セレクタ文字列として本文と同じ字面を含む。本文だけを数える走査は必ずここを通す。
+ *
+ * @param {string} src - The complete HTML source.
+ * @returns {string} The source with `script` and `style` elements removed.
+ */
+function extractBody(src) {
+  return src.replace(/<(script|style)\b[\s\S]*?<\/\1>/gi, " ");
+}
 
 /**
  * Collects the sidebar navigation targets.
@@ -249,7 +278,14 @@ function collectHeadingIds(src) {
  * @returns {string[]} The `ref-card` ids in document order.
  */
 function collectReferenceCardIds(src) {
-  return [...src.matchAll(/<div class="ref-card"\s+id="([^"]+)"/g)].map((match) => match[1]);
+  const ids = [];
+  // 属性の並び順で見分けない。整形によって `id` が `class` より前へ来ることがあり、
+  // 並び順に依存した走査はそのカードを取りこぼして連番検査を黙って無効化する。
+  for (const tag of src.match(/<div\s[^>]*>/g) ?? []) {
+    if (!/\bclass="[^"]*\bref-card\b[^"]*"/.test(tag)) continue;
+    ids.push(/\bid="([^"]*)"/.exec(tag)?.[1] ?? "");
+  }
+  return ids;
 }
 
 /**
@@ -259,9 +295,7 @@ function collectReferenceCardIds(src) {
  */
 function collectChecklists(src) {
   const cards = [];
-  // 描画 JS は `card.querySelectorAll('input[type="checkbox"]')` のように
-  // セレクタ文字列として同じ字面を含む。本文だけを数えるため <script> / <style> を除く。
-  const body = src.replace(/<(script|style)\b[\s\S]*?<\/\1>/gi, " ");
+  const body = extractBody(src);
   // `.checklist-card` は入れ子にならない。カードの項目は直後の <ul>…</ul> に収まる。
   const parts = body.split(/<div class="checklist-card">/).slice(1);
   for (const part of parts) {
@@ -428,7 +462,10 @@ function audit(page, reference, isTemplate) {
       add("javascript", `${name}の配線がありません`);
     }
   }
-  if (!/flowchart\s*:\s*\{[^}]*useMaxWidth\s*:\s*false/.test(page)) {
+  // キーの並び順やネストしたオブジェクトに依存させない。`[^}]*` で走査すると
+  // useMaxWidth の前に入れ子が 1 つ入っただけで、正しい設定を欠落と誤判定する。
+  const flowchartBody = extractObjectBody(page, "flowchart");
+  if (flowchartBody === null || !/(?:^|[{,\s])useMaxWidth\s*:\s*false\b/.test(flowchartBody)) {
     add("javascript", "mermaid の flowchart.useMaxWidth が false に設定されていません");
   }
   const pageTheme = collectThemeVariables(page);
@@ -480,7 +517,9 @@ function audit(page, reference, isTemplate) {
 
   // `class` の有無だけを見ると `<tr class="row">` のような別のクラスを素通ししてしまう。
   // header / odd / even のいずれかを実際に持っているかで判定する。
-  const unclassedRows = (page.match(/<tr\b[^>]*>/g) ?? []).filter((tag) => {
+  // 行の走査も本文範囲で行う。<script> / <style> に `<tr>` の字面が含まれていると、
+  // 本文には存在しない行をクラス欠落として報告してしまう。
+  const unclassedRows = (extractBody(page).match(/<tr\b[^>]*>/g) ?? []).filter((tag) => {
     const classes = /\bclass="([^"]*)"/.exec(tag)?.[1] ?? "";
     return !classes.split(/\s+/).some((name) => ["header", "odd", "even"].includes(name));
   }).length;

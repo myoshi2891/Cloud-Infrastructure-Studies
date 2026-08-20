@@ -707,3 +707,43 @@ test("ファイルが存在しなければ終了コード 2 を返す", () => {
 
   assert.equal(result.status, 2);
 });
+
+// --------------------------------------------------------------------------
+// 属性順・キー順への非依存
+// --------------------------------------------------------------------------
+
+test("属性の並び順が違っても .ref-card を数える", () => {
+  // 整形によって `id` が `class` より前へ来ることがある。並び順に依存した走査は
+  // カードを丸ごと取りこぼし、連番検査・脚注のリンク切れ検査・pill の実数照合を
+  // まとめて黙って無効化する。
+  const result = audit(BASELINE.replace('<div class="ref-card" id="ref1">', '<div id="ref1" class="ref-card">'));
+
+  assert.equal(result.status, 0);
+  assert.deepEqual(result.json.findings, []);
+});
+
+test("script 内の tr の字面を表の行として数えない", () => {
+  const result = audit(
+    BASELINE.replace(
+      "  function healOverflowingLabels() { return null; }",
+      "  var rowTemplate = '<tr><td></td></tr>';\n\n  function healOverflowingLabels() { return rowTemplate; }"
+    )
+  );
+
+  assert.equal(result.status, 0);
+  assert.deepEqual(category(result.json, "structure"), []);
+});
+
+test("flowchart 設定にネストしたオブジェクトがあっても useMaxWidth を読み取る", () => {
+  // `[^}]*` で走査すると useMaxWidth の手前に入れ子が 1 つ入っただけで
+  // 正しい設定を欠落と誤判定する。
+  const result = audit(
+    BASELINE.replace(
+      "      flowchart: {\n        useMaxWidth: false\n      }",
+      "      flowchart: {\n        subGraphTitleMargin: { top: 4, bottom: 4 },\n        useMaxWidth: false\n      }"
+    )
+  );
+
+  assert.equal(result.status, 0);
+  assert.deepEqual(category(result.json, "javascript"), []);
+});

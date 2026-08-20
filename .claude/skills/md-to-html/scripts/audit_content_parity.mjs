@@ -438,7 +438,9 @@ function extractDiagramEntries(src) {
 function extractFootnoteRefs(src) {
   // 生成 HTML は整形の都合で属性が改行で折り返され、閉じ tag も `</a\n>` になりうる。
   // `<\/a>` 決め打ちでは 1 件も拾えないため、閉じ tag の空白を許容する。
-  return [...src.matchAll(/<a\s[^>]*class="footnote-ref"[^>]*>([\s\S]*?)<\/a\s*>/gi)].map((match) => ({
+  // クラス属性は単語境界で照合する。`class="footnote-ref extra"` のように追加クラスが
+  // 付いた参照を取りこぼすと、脚注の照合そのものが黙って無効化される。
+  return [...src.matchAll(/<a\s[^>]*\bclass="[^"]*\bfootnote-ref\b[^"]*"[^>]*>([\s\S]*?)<\/a\s*>/gi)].map((match) => ({
     id: /\bid="([^"]*)"/.exec(match[0])?.[1] ?? null,
     href: /\bhref="([^"]*)"/.exec(match[0])?.[1] ?? null,
     sup: /<sup[^>]*>([\s\S]*?)<\/sup>/i.exec(match[1])?.[1].trim() ?? null,
@@ -475,7 +477,7 @@ function inventoryHtml(src) {
   // その参照から次の `</a>` までを丸ごと飲み込み、転写済みの本文を消失扱いしてしまう。
   const body = src
     .replace(/<(script|style)\b[\s\S]*?<\/\1>/gi, " ")
-    .replace(/<a\s[^>]*class="footnote-ref"[\s\S]*?<\/a\s*>/gi, "");
+    .replace(/<a\s[^>]*\bclass="[^"]*\bfootnote-ref\b[^"]*"[\s\S]*?<\/a\s*>/gi, "");
 
   // 見出し id も headings と同じ本文領域から採る。走査範囲が食い違うと、
   // 一方だけが拾った見出しがアンカーの三者照合で偽の指摘になる。
@@ -490,11 +492,19 @@ function inventoryHtml(src) {
   // `.footnote-ref` の `<sup>` は、参照先 `.ref-card` が掲げる番号と一致していなければ
   // ならない。原本の `[^25]` はページ上で通し番号へ振り直されるため、原本の番号その
   // ものではなくこの対応表と突き合わせる。
-  const referenceCardNumbers = new Map(
-    [...src.matchAll(/<div class="ref-card"\s+id="([^"]+)">\s*<div class="num">([\s\S]*?)<\/div>/g)].map(
-      (match) => [match[1], normalize(stripMarkup(match[2]))]
-    )
-  );
+  // 属性の並び順で見分けない。整形によって `id` が `class` より前へ来ることがあり、
+  // 並び順に依存した走査はそのカードを取りこぼして表示番号の照合を無効化する。
+  const referenceCardNumbers = new Map();
+  for (const card of src.matchAll(/<div\s[^>]*>/g)) {
+    if (!/\bclass="[^"]*\bref-card\b[^"]*"/.test(card[0])) continue;
+    const id = /\bid="([^"]*)"/.exec(card[0])?.[1];
+    if (id === undefined) continue;
+    const number = /^\s*(<div\s[^>]*>)([\s\S]*?)<\/div>/.exec(
+      src.slice(card.index + card[0].length)
+    );
+    if (number === null || !/\bclass="[^"]*\bnum\b[^"]*"/.test(number[1])) continue;
+    referenceCardNumbers.set(id, normalize(stripMarkup(number[2])));
+  }
 
   const headings = [];
   const headingRe = /<h([1-6])\b[^>]*>([\s\S]*?)<\/h\1>/gi;

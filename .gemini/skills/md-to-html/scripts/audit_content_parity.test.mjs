@@ -749,6 +749,150 @@ flowchart TB
 });
 
 // --------------------------------------------------------------------------
+// 属性順・クラス属性への非依存
+// --------------------------------------------------------------------------
+
+test("追加クラスの付いた .footnote-ref も脚注として数える", () => {
+  // クラス属性を完全一致で見ると `class="footnote-ref extra"` を取りこぼし、
+  // 脚注の照合そのものが黙って無効化される。
+  const { markdown, html } = footnoteFixture(
+    '<a class="footnote-ref extra" href="#ref1" id="fnref1" role="doc-noteref"><sup>1</sup></a>'
+      + '<a class="footnote-ref extra" href="#ref1" id="fnref2" role="doc-noteref"><sup>1</sup></a>'
+  );
+  const result = audit(markdown, html);
+
+  assert.equal(result.status, 0);
+  assert.deepEqual(result.json.counts.footnoteRefs, { source: 2, page: 2 });
+  assert.deepEqual(result.json.footnoteRefMismatches, []);
+});
+
+test("属性の並び順が違う .ref-card でも表示番号を照合する", () => {
+  // `id` が `class` より前へ来る整形でカードを取りこぼすと、表示番号のずれを
+  // 検出できなくなる。
+  const { markdown, html } = footnoteFixture(
+    '<a class="footnote-ref" href="#ref1" id="fnref1" role="doc-noteref"><sup>1</sup></a>'
+      + '<a class="footnote-ref" href="#ref1" id="fnref2" role="doc-noteref"><sup>2</sup></a>'
+  );
+  const result = audit(
+    markdown,
+    html.replace('<div class="ref-card" id="ref1">', '<div id="ref1" class="ref-card">')
+  );
+
+  assert.equal(result.status, 1);
+  assert.deepEqual(
+    result.json.footnoteRefMismatches.map((finding) => finding.kind),
+    ["脚注参照の表示番号が参照先の番号と一致しません"]
+  );
+});
+
+// --------------------------------------------------------------------------
+// 非 blocking 警告（終了コードを変えずに列挙されること）
+// --------------------------------------------------------------------------
+
+const WARNING_MD = `# タイトル
+
+## 目次
+
+- [1. 節](#1-節)
+
+## 1. 節
+
+導入の段落をここに置いて十分な長さを確保しています。
+
+### 再型付けされる小見出し
+
+再型付けされた小見出しに続く本文の段落です。
+
+### ページから消えた小見出し
+`;
+
+const WARNING_HTML = page(
+  `
+<h1>タイトル</h1>
+<h2 id="1-節">1. 節</h2>
+<p>導入の段落をここに置いて十分な長さを確保しています。</p>
+<div class="callout-practice"><div class="label">再型付けされる小見出し</div>
+<p>再型付けされた小見出しに続く本文の段落です。</p></div>`,
+  [],
+  '<a href="#1-節">1. 節</a>'
+);
+
+test("h3 の再型付けと消失は終了コードを変えずに警告として列挙する", () => {
+  const result = audit(WARNING_MD, WARNING_HTML);
+
+  assert.equal(result.status, 0);
+  assert.equal(result.json.blocking, false);
+  assert.deepEqual(
+    result.json.missingSubHeadings.map((heading) => [heading.level, heading.text]),
+    [[3, "ページから消えた小見出し"]]
+  );
+  assert.deepEqual(
+    result.json.retypedHeadings.map((heading) => [heading.level, heading.pageLevel, heading.text]),
+    [[3, null, "再型付けされる小見出し"]]
+  );
+});
+
+test("--json なしでも h3 の警告が件数付きで印字される", () => {
+  const result = audit(WARNING_MD, WARNING_HTML, "text");
+
+  assert.equal(result.status, 0);
+  assert.match(result.stdout, /文言がページに見当たらない小見出し \(1 件、要確認\)/);
+  assert.match(result.stdout, /h3: ページから消えた小見出し/);
+  assert.match(result.stdout, /見出しレベルが変わった項目 \(1 件、要確認\)/);
+  assert.match(result.stdout, /h3 → 見出し以外の要素: 再型付けされる小見出し/);
+  assert.doesNotMatch(result.stdout, /undefined/);
+});
+
+const REWRITTEN_LABEL_MD = `# タイトル
+
+## 目次
+
+- [1. 図](#1-図)
+
+## 1. 図
+
+要求の引き出し Elicitation は分析工程の前段に位置する活動です。
+
+\`\`\`mermaid
+flowchart LR
+    E["要求の引き出し<br/>Elicitation"] --> A["分析工程の実施"]
+\`\`\`
+`;
+
+const REWRITTEN_LABEL_HTML = page(
+  `
+<h1>タイトル</h1>
+<h2 id="1-図">1. 図</h2>
+<p>要求の引き出し Elicitation は分析工程の前段に位置する活動です。</p>`,
+  [
+    `flowchart LR
+    E["要求の引き出し"] --> A["分析工程の実施"]`,
+  ],
+  '<a href="#1-図">1. 図</a>'
+);
+
+test("短縮された図のラベルは語句が本文に残っていれば警告に留める", () => {
+  const result = audit(REWRITTEN_LABEL_MD, REWRITTEN_LABEL_HTML);
+
+  assert.equal(result.status, 0);
+  assert.equal(result.json.blocking, false);
+  // 語句は本文に残っているので blocking の消失リストには載らない。
+  assert.deepEqual(result.json.missingDiagramLabels, []);
+  assert.equal(result.json.rewrittenDiagramLabels.length, 1);
+  assert.equal(result.json.rewrittenDiagramLabels[0].diagram, 1);
+  assert.equal(result.json.rewrittenDiagramLabels[0].id, "pre1");
+});
+
+test("--json なしでも図のラベル警告が件数付きで印字される", () => {
+  const result = audit(REWRITTEN_LABEL_MD, REWRITTEN_LABEL_HTML, "text");
+
+  assert.equal(result.status, 0);
+  assert.match(result.stdout, /図のラベルが短縮・書き換えされた項目 \(1 図、要確認\)/);
+  assert.match(result.stdout, /図1 \(pre1\):.*elicitation/);
+  assert.doesNotMatch(result.stdout, /undefined/);
+});
+
+// --------------------------------------------------------------------------
 // CLI
 // --------------------------------------------------------------------------
 
