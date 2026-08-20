@@ -84,7 +84,7 @@ export function NavBar() {
                         <React.Fragment key={item.id}>
                             {item.sectionLabel && (
                                 <>
-                                    <a className="section-label">{item.sectionLabel}</a>
+                                    <span className="section-label">{item.sectionLabel}</span>
                                     {' '}
                                 </>
                             )}

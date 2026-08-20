@@ -8,6 +8,10 @@ interface DiagramProps {
     label: string;
 }
 
+/**
+ * 指定された id に対応する Mermaid チャートを図として描画する。
+ * 図の再描画コストが高いため memo 化し、id / label が変わらない限り再レンダリングしない。
+ */
 const Diagram = memo(function Diagram({ id, label }: DiagramProps) {
     const chart = DIAGRAMS[id];
     if (!chart) return null;

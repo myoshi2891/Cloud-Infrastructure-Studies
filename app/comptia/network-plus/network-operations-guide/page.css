@@ -101,7 +101,7 @@
     flex-shrink: 0;
 }
 
-.comptia-network-operations-page .sidebar nav a.section-label {
+.comptia-network-operations-page .sidebar nav .section-label {
     margin-top: 14px;
     font-size: 11px;
     font-weight: 500;

@@ -58,7 +58,7 @@ export function NavBar() {
             <div className="sidebar-header">
                 <span className="badge">Domain 1.0 · 23%</span>
                 {' '}
-                <h1>Networking Concepts</h1>
+                <span className="sidebar-title">Networking Concepts</span>
                 {' '}
                 <p>CompTIA Network+ (N10-009)</p>
             </div>
