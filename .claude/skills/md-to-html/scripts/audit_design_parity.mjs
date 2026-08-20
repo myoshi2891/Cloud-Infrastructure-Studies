@@ -250,7 +250,7 @@ function extractBody(src) {
 
 /**
  * Collects the sidebar navigation targets.
- * @param {string} src - The complete HTML source.
+ * @param {string} src - The document body (`extractBody` の戻り値)。
  * @returns {string[]} The anchor targets in document order.
  */
 function collectNavTargets(src) {
@@ -263,7 +263,7 @@ function collectNavTargets(src) {
 
 /**
  * Collects the identifiers of the content headings.
- * @param {string} src - The complete HTML source.
+ * @param {string} src - The document body (`extractBody` の戻り値)。
  * @returns {string[]} The heading ids in document order.
  */
 function collectHeadingIds(src) {
@@ -274,7 +274,7 @@ function collectHeadingIds(src) {
 
 /**
  * Collects the reference card identifiers.
- * @param {string} src - The complete HTML source.
+ * @param {string} src - The document body (`extractBody` の戻り値)。
  * @returns {string[]} The `ref-card` ids in document order.
  */
 function collectReferenceCardIds(src) {
@@ -290,14 +290,13 @@ function collectReferenceCardIds(src) {
 
 /**
  * Collects the checklist cards with their advertised and actual item counts.
- * @param {string} src - The complete HTML source.
+ * @param {string} src - The document body (`extractBody` の戻り値)。
  * @returns {Array<{advertised: string|null, declared: number|null, actual: number}>} The checklist cards.
  */
 function collectChecklists(src) {
   const cards = [];
-  const body = extractBody(src);
   // `.checklist-card` は入れ子にならない。カードの項目は直後の <ul>…</ul> に収まる。
-  const parts = body.split(/<div class="checklist-card">/).slice(1);
+  const parts = src.split(/<div class="checklist-card">/).slice(1);
   for (const part of parts) {
     const advertised = /<span class="count">([^<]*)<\/span>/.exec(part)?.[1] ?? null;
     // 「表記が無い」と「表記はあるが数値を読めない」を区別する。後者を null へ潰すと
@@ -322,7 +321,7 @@ function collectChecklists(src) {
  * 後者を黙って読み飛ばすと、表記が崩れたページで実数照合そのものが無効化されるため、
  * どちらも構造の指摘として報告する。
  *
- * @param {string} src - The complete HTML source.
+ * @param {string} src - The document body (`extractBody` の戻り値)。
  * @param {string} label - The pill label that precedes the `strong` element.
  * @returns {{present: boolean, count: number|null, text: string|null}} The advertised state.
  */
@@ -490,15 +489,15 @@ function audit(page, reference, isTemplate) {
   // <script> / <style> を含めるものと含めないものが混在し、判定基準が静かにずれる。
   const body = extractBody(page);
 
-  const headingCount = (page.match(/<h1\b/g) ?? []).length;
+  const headingCount = (body.match(/<h1\b/g) ?? []).length;
   if (headingCount !== 1) {
     add("structure", `h1 はちょうど 1 個である必要がありますが ${headingCount} 個です`);
   }
 
   // サイドバーのリンクと本文見出しは 1:1 でなければならない。
   // どちらかが欠けるとリンク切れか、目次から辿れない節になる。
-  const navTargets = new Set(collectNavTargets(page));
-  const headingIds = new Set(collectHeadingIds(page));
+  const navTargets = new Set(collectNavTargets(body));
+  const headingIds = new Set(collectHeadingIds(body));
   for (const id of navTargets) {
     if (!headingIds.has(id)) {
       add("structure", `サイドバーのリンク先の見出しが存在しません: #${id}`);
@@ -510,8 +509,8 @@ function audit(page, reference, isTemplate) {
     }
   }
 
-  const tableCount = (page.match(/<table\b/g) ?? []).length;
-  const wrappedCount = (page.match(/<div class="table-scroll">\s*<table\b/g) ?? []).length;
+  const tableCount = (body.match(/<table\b/g) ?? []).length;
+  const wrappedCount = (body.match(/<div class="table-scroll">\s*<table\b/g) ?? []).length;
   if (tableCount !== wrappedCount) {
     add(
       "structure",
@@ -555,7 +554,7 @@ function audit(page, reference, isTemplate) {
     }
   }
 
-  for (const card of collectChecklists(page)) {
+  for (const card of collectChecklists(body)) {
     if (card.advertised === null) continue;
     if (card.declared === null) {
       add(

@@ -747,3 +747,29 @@ test("flowchart 設定にネストしたオブジェクトがあっても useMax
   assert.equal(result.status, 0);
   assert.deepEqual(category(result.json, "javascript"), []);
 });
+
+test("script / style の中だけに現れる本文の字面を構造検査に数えない", () => {
+  // 本文の走査を `page` に対して行うと、描画 JS のテンプレート文字列や CSS の
+  // `content` に含まれる字面が本文として数えられ、正しいページが h1 の重複・
+  // 未ラップの table・pill の枚数超過として黙って落ちる。
+  const injectedMarkup =
+    '<h1>ダミー</h1>' +
+    '<table></table>' +
+    '<pre class="mermaid"></pre>' +
+    '<span class="pill">図解 <strong>Mermaid 99点</strong></span>' +
+    '<div class="checklist-card">' +
+    '<span class="count">9 / 9 完了</span><ul></ul></div>' +
+    '<nav id="sidebarNav"><a href="#存在しない見出し">x</a></nav>';
+  const page = BASELINE.replace(
+    "  function healOverflowingLabels() { return null; }",
+    `  var markupTemplate = '${injectedMarkup}';\n\n  function healOverflowingLabels() { return markupTemplate; }`
+  ).replace(
+    "  body { background: var(--bg); color: var(--text); }",
+    `  body { background: var(--bg); color: var(--text); }\n  .sr-only::after { content: "${injectedMarkup.replace(/"/g, "'")}"; }`
+  );
+
+  const result = audit(page);
+
+  assert.equal(result.status, 0);
+  assert.deepEqual(result.json.findings, []);
+});

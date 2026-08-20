@@ -49,10 +49,8 @@ description: >
   **ミラー配下（`.claude/` / `.gemini/`）のコピーを実行しない。**
 - 本文の「検索する」「読む」「編集する」は能力名である
   （Claude Code: `Grep` / `Read` / `Edit`、Gemini CLI: `search_file_content` / `read_file` / `replace`）。
-- 実行コマンドは `bun` に統一する。
-  **唯一の例外が監査スクリプトの自己テストで、`node --test` を使う**
-  （`bun test` は `.test.mjs` を収集せず、`node:test` の実行器も別物であるため）。
-  日常的には `bun run test:md-to-html` を呼べばよい。
+- 実行コマンドは `bun` に統一する。監査スクリプトの自己テストも例外ではなく、
+  `bun run test:md-to-html`（実体は `bun test` にテストファイルのパスを明示指定）で実行する。
 
 > [!NOTE]
 > **出力はリポジトリ直下の単一 HTML であり、Next.js アプリのページではない。**
@@ -389,8 +387,10 @@ bun run test:md-to-html
 ```
 
 > [!NOTE]
-> 実体は `node --test`（`bun test` は `.test.mjs` を収集しない）。
+> 実体は `bun test` に 2 本のテストファイルのパスを明示指定したものである。
 > ディレクトリ指定ではなく**ファイルパスを直接指定する**。
+> `bun test` は `./` で始まらない引数を「ファイル名フィルタ」として解釈するため、
+> パスは必ず `./.agents/skills/md-to-html/scripts/...` の形で渡す。
 
 ### 既知の実行結果（基準値）
 
