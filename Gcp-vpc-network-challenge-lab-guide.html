@@ -387,12 +387,14 @@
                 margin: 1rem 0;
             }
             ul.checklist li {
-                display: flex;
-                align-items: flex-start;
-                gap: 0.6rem;
                 padding: 0.5rem 0;
                 border-bottom: 1px dashed var(--border);
                 color: var(--text);
+            }
+            ul.checklist li label {
+                display: flex;
+                align-items: flex-start;
+                gap: 0.6rem;
             }
             ul.checklist li:last-child {
                 border-bottom: none;
@@ -1353,29 +1355,41 @@
                     <h3>事前チェックリスト（本番移行前）</h3>
                     <ul class="checklist">
                         <li>
-                            <input type="checkbox" disabled /> SSH/RDPの送信元範囲を
-                            <code class="inline">0.0.0.0/0</code>
-                            からIAP範囲またはVPN/踏み台経由に変更したか
+                            <label>
+                                <input type="checkbox" disabled /> SSH/RDPの送信元範囲を
+                                <code class="inline">0.0.0.0/0</code>
+                                からIAP範囲またはVPN/踏み台経由に変更したか
+                            </label>
                         </li>
                         <li>
-                            <input type="checkbox" disabled />
-                            ファイアウォールのターゲットを「すべてのインスタンス」からネットワークタグ／サービスアカウント単位に変更したか
+                            <label>
+                                <input type="checkbox" disabled />
+                                ファイアウォールのターゲットを「すべてのインスタンス」からネットワークタグ／サービスアカウント単位に変更したか
+                            </label>
                         </li>
                         <li>
-                            <input type="checkbox" disabled />
-                            Egress（送信）方向のルールも最小権限で設計したか
+                            <label>
+                                <input type="checkbox" disabled />
+                                Egress（送信）方向のルールも最小権限で設計したか
+                            </label>
                         </li>
                         <li>
-                            <input type="checkbox" disabled /> VPC Flow LogsとFirewall Rules
-                            Loggingを有効化したか
+                            <label>
+                                <input type="checkbox" disabled /> VPC Flow LogsとFirewall Rules
+                                Loggingを有効化したか
+                            </label>
                         </li>
                         <li>
-                            <input type="checkbox" disabled />
-                            defaultネットワークを無効化・削除し、カスタムVPCへ統一したか
+                            <label>
+                                <input type="checkbox" disabled />
+                                defaultネットワークを無効化・削除し、カスタムVPCへ統一したか
+                            </label>
                         </li>
                         <li>
-                            <input type="checkbox" disabled />
-                            サブネットCIDRの拡張余地と、他VPC/オンプレミスとの重複有無を確認したか
+                            <label>
+                                <input type="checkbox" disabled />
+                                サブネットCIDRの拡張余地と、他VPC/オンプレミスとの重複有無を確認したか
+                            </label>
                         </li>
                     </ul>
                 </section>

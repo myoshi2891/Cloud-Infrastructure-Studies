@@ -190,7 +190,7 @@ flowchart LR
     style ROLLBACK fill:#5c1a1a,stroke:#d94a4a,color:#ffffff
 ```
 
-CI/CDパイプラインの成熟度を測る指標として、Google Cloudの前身であるDORA（DevOps Research and Assessment）チームが提唱した**「Four Keys（4つの主要指標）」**が広く使われています。DORAチームは6年間の研究を通じて、ソフトウェア開発チームのパフォーマンスを示す4つの主要指標を特定しました[^9]。
+CI/CDパイプラインの成熟度を測る指標として、Googleが買収した独立研究組織であるDORA（DevOps Research and Assessment）チームが提唱した**「Four Keys（4つの主要指標）」**が広く使われています。DORAチームは6年間の研究を通じて、ソフトウェア開発チームのパフォーマンスを示す4つの主要指標を特定しました[^9]。
 
 | 指標 | 定義 | 意味 |
 |---|---|---|

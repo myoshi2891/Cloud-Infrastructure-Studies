@@ -811,6 +811,7 @@ flowchart LR
                                 Deployでは<strong>デプロイポリシー</strong>を用いて、特定の時間帯やチャンネルへのデプロイを制限し、変更管理プロセスと整合させる<a
                                     class="footnote-ref"
                                     href="#ref3"
+                                    id="fnref3"
                                     role="doc-noteref"
                                     ><sup>3</sup></a
                                 >。
@@ -820,6 +821,7 @@ flowchart LR
                                 Deployの組み込み機能で自動化し、手動オペレーションのミスを排除する<a
                                     class="footnote-ref"
                                     href="#ref4"
+                                    id="fnref4"
                                     role="doc-noteref"
                                     ><sup>4</sup></a
                                 >。
@@ -829,6 +831,7 @@ flowchart LR
                                 Managerを使う場合でも、Terraform構成そのものはソースリポジトリでバージョン管理し、レビューを経てから適用する運用を徹底する<a
                                     class="footnote-ref"
                                     href="#ref5"
+                                    id="fnref5"
                                     role="doc-noteref"
                                     ><sup>5</sup></a
                                 >。
@@ -845,6 +848,7 @@ flowchart LR
                     RunやGKEでバックエンドを稼働させるだけでは「認証」「レート制限」「バージョニング」「アナリティクス」といった横断的関心事に対応できません。<strong>Apigee</strong>はこれらを一元的に扱うフルライフサイクルAPI管理プラットフォームです<a
                         class="footnote-ref"
                         href="#ref6"
+                        id="fnref6"
                         role="doc-noteref"
                         ><sup>6</sup></a
                     >。
@@ -925,6 +929,7 @@ flowchart TB
                                 新規APIには必ず<strong>バージョニング戦略</strong>（URLパスバージョニングが一般的）を定め、破壊的変更が既存クライアントに影響しないようにする<a
                                     class="footnote-ref"
                                     href="#ref6"
+                                    id="fnref7"
                                     role="doc-noteref"
                                     ><sup>6</sup></a
                                 >。
@@ -933,6 +938,7 @@ flowchart TB
                                 レート制限（クォータ）とスパイクアレストポリシーを組み合わせ、バックエンドサービスを過負荷から保護する<a
                                     class="footnote-ref"
                                     href="#ref7"
+                                    id="fnref8"
                                     role="doc-noteref"
                                     ><sup>7</sup></a
                                 >。
@@ -945,6 +951,7 @@ flowchart TB
                                 Group）を用いてテナント分離を設計する<a
                                     class="footnote-ref"
                                     href="#ref6"
+                                    id="fnref9"
                                     role="doc-noteref"
                                     ><sup>6</sup></a
                                 >。
@@ -1110,6 +1117,7 @@ flowchart TD
                                     移行計画立案の起点となる統合ハブ<a
                                         class="footnote-ref"
                                         href="#ref8"
+                                        id="fnref10"
                                         role="doc-noteref"
                                         ><sup>8</sup></a
                                     >
@@ -1128,6 +1136,7 @@ flowchart TD
                                 Centerでアセスメントを実施し、依存関係とサイジングを把握してから個別ツールに落とし込む<a
                                     class="footnote-ref"
                                     href="#ref8"
+                                    id="fnref11"
                                     role="doc-noteref"
                                     ><sup>8</sup></a
                                 >。
@@ -1153,6 +1162,7 @@ flowchart TD
                     CloudコンソールやAPI経由で利用できる生成AIベースの支援機能で、設計・トラブルシューティング・コスト分析など、クラウド運用の様々な場面でアーキテクトと運用チームを支援します<a
                         class="footnote-ref"
                         href="#ref9"
+                        id="fnref12"
                         role="doc-noteref"
                         ><sup>9</sup></a
                     >。
@@ -1239,6 +1249,7 @@ sequenceDiagram
                     Cloudの操作・開発ができます<a
                         class="footnote-ref"
                         href="#ref10"
+                        id="fnref13"
                         role="doc-noteref"
                         ><sup>10</sup></a
                     >。
@@ -1289,6 +1300,7 @@ flowchart TB
                                     Runの開発・デプロイ・デバッグが可能<a
                                         class="footnote-ref"
                                         href="#ref11"
+                                        id="fnref14"
                                         role="doc-noteref"
                                         ><sup>11</sup></a
                                     >
@@ -1399,6 +1411,7 @@ flowchart LR
                                 >コマンドの利用を優先的に検討する<a
                                     class="footnote-ref"
                                     href="#ref12"
+                                    id="fnref15"
                                     role="doc-noteref"
                                     ><sup>12</sup></a
                                 >。
@@ -1426,6 +1439,7 @@ flowchart LR
                     一部のマネージドサービスには、<strong>ローカル環境で本番同等のAPIを模倣するエミュレータ</strong>が提供されています。これにより、開発中に実際の課金対象リソースを作成せずに統合テストを実施できます<a
                         class="footnote-ref"
                         href="#ref13"
+                        id="fnref16"
                         role="doc-noteref"
                         ><sup>13</sup></a
                     >。
@@ -1507,6 +1521,7 @@ sequenceDiagram
                     Cloudでは<strong>Terraform</strong>が事実上の標準ツールとして広く採用されています<a
                         class="footnote-ref"
                         href="#ref14"
+                        id="fnref17"
                         role="doc-noteref"
                         ><sup>14</sup></a
                     >。
@@ -1554,6 +1569,7 @@ flowchart LR
                                     Cloud側に任せられる<a
                                         class="footnote-ref"
                                         href="#ref5"
+                                        id="fnref18"
                                         role="doc-noteref"
                                         ><sup>5</sup></a
                                     >
@@ -1566,6 +1582,7 @@ flowchart LR
                                     Cloudリソースを宣言的に管理する仕組み。GitOpsとの親和性が高い<a
                                         class="footnote-ref"
                                         href="#ref15"
+                                        id="fnref19"
                                         role="doc-noteref"
                                         ><sup>15</sup></a
                                     >
@@ -1584,6 +1601,7 @@ flowchart LR
                                 Storage＋状態ロック）で管理し、ローカルファイルとしての運用を避ける<a
                                     class="footnote-ref"
                                     href="#ref14"
+                                    id="fnref20"
                                     role="doc-noteref"
                                     ><sup>14</sup></a
                                 >。
@@ -1603,6 +1621,7 @@ flowchart LR
                                 Managerの採用を検討する<a
                                     class="footnote-ref"
                                     href="#ref5"
+                                    id="fnref21"
                                     role="doc-noteref"
                                     ><sup>5</sup></a
                                 >。
@@ -1619,6 +1638,7 @@ flowchart LR
                     APIとして公開されており、コンソールやCLIもすべて内部的にはこれらのAPIを呼び出しています。プログラムからAPIへ安全にアクセスするための認証パターンを理解することが重要です<a
                         class="footnote-ref"
                         href="#ref16"
+                        id="fnref22"
                         role="doc-noteref"
                         ><sup>16</sup></a
                     >。
@@ -1663,6 +1683,7 @@ flowchart TD
                                     サービスアカウントキーの発行を回避できる推奨パターン<a
                                         class="footnote-ref"
                                         href="#ref17"
+                                        id="fnref23"
                                         role="doc-noteref"
                                         ><sup>17</sup></a
                                     >
@@ -1703,6 +1724,7 @@ flowchart TD
                                 Identity Federationを優先する<a
                                     class="footnote-ref"
                                     href="#ref17"
+                                    id="fnref24"
                                     role="doc-noteref"
                                     ><sup>17</sup></a
                                 >。
@@ -1728,6 +1750,7 @@ flowchart TD
                     APIクライアントライブラリは、各言語向けにイディオマティックなインターフェースを提供し、認証・リトライ・ページネーションといった定型処理を隠蔽してくれます<a
                         class="footnote-ref"
                         href="#ref18"
+                        id="fnref25"
                         role="doc-noteref"
                         ><sup>18</sup></a
                     >。
