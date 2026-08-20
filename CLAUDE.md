@@ -25,7 +25,7 @@ bun run test:watch   # Vitest ウォッチモード（単一ファイル: vitest
 bun run test:e2e     # Playwright E2E（chromium project: smoke / nav / a11y / visual / 各ドメイン）
 bun run test:perf    # Playwright perf project: Core Web Vitals (LCP/CLS/TBT) を perf-budgets.json と比較
 bun run test:security # bun audit --json を集計し high/critical 検出時に exit 1 (scripts/security-audit.mjs)
-bun run test:md-to-html # md-to-html スキルの監査 2 本の自己テスト (node --test)
+bun run test:md-to-html # md-to-html スキルの監査 2 本の自己テスト (bun test にパス明示)
 
 # カバレッジ可視化
 bun run dashboard    # 静的スキャンで docs/coverage-dashboard.html を再生成
