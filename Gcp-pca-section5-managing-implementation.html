@@ -1449,7 +1449,7 @@ flowchart LR
 sequenceDiagram
     participant Dev as 開発者のローカル環境
     participant App as テスト対象アプリケーション
-    participant Emu as ローカルエミュレータ&lt;br/&gt;(Bigtable/Spanner/Pub-Sub/Firestore)
+    participant Emu as ローカルエミュレータ&lt;br/&gt;(Bigtable/Spanner/Pub/Sub/Firestore)
     participant Prod as 本番マネージドサービス
 
     Dev-&gt;&gt;Emu: エミュレータを起動&lt;br/&gt;(gcloud emulators ... start)
@@ -1835,7 +1835,7 @@ flowchart TB
 flowchart TB
     subgraph Dev["開発フェーズ"]
         CSE[Cloud Shell Editor&lt;br/&gt;Cloud Code]
-        Emu[Cloudエミュレータ&lt;br/&gt;Bigtable/Spanner/Pub-Sub/Firestore]
+        Emu[Cloudエミュレータ&lt;br/&gt;Bigtable/Spanner/Pub/Sub/Firestore]
         CSE --&gt; Emu
     end
 
@@ -2058,7 +2058,7 @@ flowchart TB
                                 ><input
                                     id="chk11"
                                     type="checkbox"
-                                />Bigtable/Spanner/Pub-Sub/Firestoreエミュレータを使う目的とメリットを説明できる</label
+                                />Bigtable/Spanner/Pub/Sub/Firestoreエミュレータを使う目的とメリットを説明できる</label
                             >
                         </li>
                         <li>

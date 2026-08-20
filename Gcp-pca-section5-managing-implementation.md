@@ -344,7 +344,7 @@ flowchart LR
 sequenceDiagram
     participant Dev as 開発者のローカル環境
     participant App as テスト対象アプリケーション
-    participant Emu as ローカルエミュレータ<br/>(Bigtable/Spanner/Pub-Sub/Firestore)
+    participant Emu as ローカルエミュレータ<br/>(Bigtable/Spanner/Pub/Sub/Firestore)
     participant Prod as 本番マネージドサービス
 
     Dev->>Emu: エミュレータを起動<br/>(gcloud emulators ... start)
@@ -472,7 +472,7 @@ flowchart TB
 flowchart TB
     subgraph Dev["開発フェーズ"]
         CSE[Cloud Shell Editor<br/>Cloud Code]
-        Emu[Cloudエミュレータ<br/>Bigtable/Spanner/Pub-Sub/Firestore]
+        Emu[Cloudエミュレータ<br/>Bigtable/Spanner/Pub/Sub/Firestore]
         CSE --> Emu
     end
 
@@ -556,7 +556,7 @@ PCA試験の各セクションは、公式ケーススタディ（Altostrat Medi
 - [ ] Gemini Cloud Assistが支援できる代表的なユースケースを3つ以上挙げられる
 - [ ] Cloud Shell Terminal、Cloud Shell Editor、Cloud Codeの違いを説明できる
 - [ ] gcloud、gsutil（およびgcloud storage）、bqのそれぞれの主対象サービスを説明できる
-- [ ] Bigtable/Spanner/Pub-Sub/Firestoreエミュレータを使う目的とメリットを説明できる
+- [ ] Bigtable/Spanner/Pub/Sub/Firestoreエミュレータを使う目的とメリットを説明できる
 - [ ] Terraformのinit/plan/applyのワークフローとStateのリモート管理の重要性を説明できる
 - [ ] ADC、Workload Identity Federation、OAuth 2.0、APIキーの適切な使い分けを説明できる
 - [ ] サービスアカウントキーを避けるべき理由と代替手段を説明できる
