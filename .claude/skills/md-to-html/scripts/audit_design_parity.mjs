@@ -486,6 +486,10 @@ function audit(page, reference, isTemplate) {
   // --- 7. 構造の不変条件 ---------------------------------------------------
   if (isTemplate) return { findings, blocking: findings.length > 0 };
 
+  // 本文の走査は必ずこの 1 本を通す。呼び出しごとに切り出し直すと、走査ごとに
+  // <script> / <style> を含めるものと含めないものが混在し、判定基準が静かにずれる。
+  const body = extractBody(page);
+
   const headingCount = (page.match(/<h1\b/g) ?? []).length;
   if (headingCount !== 1) {
     add("structure", `h1 はちょうど 1 個である必要がありますが ${headingCount} 個です`);
@@ -519,7 +523,7 @@ function audit(page, reference, isTemplate) {
   // header / odd / even のいずれかを実際に持っているかで判定する。
   // 行の走査も本文範囲で行う。<script> / <style> に `<tr>` の字面が含まれていると、
   // 本文には存在しない行をクラス欠落として報告してしまう。
-  const unclassedRows = (extractBody(page).match(/<tr\b[^>]*>/g) ?? []).filter((tag) => {
+  const unclassedRows = (body.match(/<tr\b[^>]*>/g) ?? []).filter((tag) => {
     const classes = /\bclass="([^"]*)"/.exec(tag)?.[1] ?? "";
     return !classes.split(/\s+/).some((name) => ["header", "odd", "even"].includes(name));
   }).length;
@@ -527,7 +531,7 @@ function audit(page, reference, isTemplate) {
     add("structure", `表の行に header / odd / even のクラスが付いていません: ${unclassedRows} 行`);
   }
 
-  const pageReferenceCardIds = collectReferenceCardIds(page);
+  const pageReferenceCardIds = collectReferenceCardIds(body);
   pageReferenceCardIds.forEach((id, index) => {
     const expected = `ref${index + 1}`;
     if (id !== expected) {
@@ -538,7 +542,7 @@ function audit(page, reference, isTemplate) {
   const referenceIdSet = new Set(pageReferenceCardIds);
   // 脚注は属性の並び順で見分けない。整形によって `href` が `class` より前へ来ることがあり、
   // 並び順に依存した走査はその脚注を素通りさせてリンク切れを見逃す。
-  for (const tag of page.match(/<a\s[^>]*>/g) ?? []) {
+  for (const tag of body.match(/<a\s[^>]*>/g) ?? []) {
     if (!/\bclass="[^"]*\bfootnote-ref\b[^"]*"/.test(tag)) continue;
     const href = /\bhref="([^"]*)"/.exec(tag)?.[1] ?? null;
     if (href === null) {
@@ -568,13 +572,13 @@ function audit(page, reference, isTemplate) {
     }
   }
 
-  const pillCount = (page.match(/<span class="pill">/g) ?? []).length;
+  const pillCount = (body.match(/<span class="pill">/g) ?? []).length;
   if (pillCount !== 4) {
     add("structure", `hero の .pill はちょうど 4 枚である必要がありますが ${pillCount} 枚です`);
   }
 
-  const diagramCount = (page.match(/<pre class="mermaid">/g) ?? []).length;
-  const advertisedDiagrams = readPillCount(page, "図解");
+  const diagramCount = (body.match(/<pre class="mermaid">/g) ?? []).length;
+  const advertisedDiagrams = readPillCount(body, "図解");
   if (!advertisedDiagrams.present) {
     add("structure", `hero に「図解」の .pill がありません（実際の図解数 ${diagramCount}）`);
   } else if (advertisedDiagrams.count === null) {
@@ -589,7 +593,7 @@ function audit(page, reference, isTemplate) {
     );
   }
 
-  const advertisedReferences = readPillCount(page, "参考文献");
+  const advertisedReferences = readPillCount(body, "参考文献");
   if (!advertisedReferences.present) {
     add(
       "structure",
