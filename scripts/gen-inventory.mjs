@@ -4,6 +4,7 @@ import { JSDOM } from 'jsdom';
 import {
     codeBlockSelector,
     codeLineCount,
+    columnHeaderCount,
     extractBodyContent,
     normalize,
 } from './inventory-extraction.mjs';
@@ -69,9 +70,8 @@ console.log(
                 // 移行元が列数の正本。scope="col" は移行先で必須化する属性であり
                 // 移行元（Markdown 由来 HTML など）には無いことが多いため、
                 // ここでの絞り込みに使うと常に 0 になり検証が空振りする。
-                tableColumnHeaders: [...doc.querySelectorAll('table')].map(
-                    (table) => table.querySelectorAll('thead th').length,
-                ),
+                // <thead> の無い移行元も同じ理由で columnHeaderCount 側で吸収する。
+                tableColumnHeaders: [...doc.querySelectorAll('table')].map(columnHeaderCount),
                 codeLines: codeBlocks.map(codeLineCount),
             },
         },
