@@ -817,14 +817,15 @@ flowchart LR
                                 >。
                             </li>
                             <li>
-                                本番環境へのロールアウトは、カナリアやBlue-Greenなど段階的デプロイ戦略をCloud
-                                Deployの組み込み機能で自動化し、手動オペレーションのミスを排除する<a
+                                本番環境へのロールアウトは、Cloud
+                                Deployの組み込みデプロイ戦略である<strong>Standard</strong>と<strong>Canary</strong>で自動化し、手動オペレーションのミスを排除する<a
                                     class="footnote-ref"
                                     href="#ref4"
                                     id="fnref4"
                                     role="doc-noteref"
                                     ><sup>4</sup></a
-                                >。
+                                >。Blue-Greenは組み込み戦略ではないため、Cloud
+                                Runのトラフィック分割などの仕組みを使って別途構成する。
                             </li>
                             <li>
                                 Infrastructure
@@ -2001,7 +2002,8 @@ flowchart TB
                         <li>
                             <label
                                 ><input id="chk3" type="checkbox" />Cloud
-                                Deployのカナリア/Blue-Greenデプロイ戦略の違いを説明できる</label
+                                Deployの組み込み戦略（Standard /
+                                Canary）の違いと、Blue-Greenを別途構成する方法を説明できる</label
                             >
                         </li>
                         <li>

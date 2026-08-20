@@ -125,7 +125,7 @@ flowchart LR
 
 - アプリケーションのデプロイとインフラのデプロイは、それぞれ独立したパイプラインとリポジトリで管理し、変更の影響範囲を明確に分離する。
 - Cloud Deployでは**デプロイポリシー**を用いて、特定の時間帯やチャンネルへのデプロイを制限し、変更管理プロセスと整合させる[^1]。
-- 本番環境へのロールアウトは、カナリアやBlue-Greenなど段階的デプロイ戦略をCloud Deployの組み込み機能で自動化し、手動オペレーションのミスを排除する[^2]。
+- 本番環境へのロールアウトは、Cloud Deployの組み込みデプロイ戦略である**Standard**と**Canary**で自動化し、手動オペレーションのミスを排除する[^2]。Blue-Greenは組み込み戦略ではないため、Cloud Runのトラフィック分割などの仕組みを使って別途構成する。
 - Infrastructure Managerを使う場合でも、Terraform構成そのものはソースリポジトリでバージョン管理し、レビューを経てから適用する運用を徹底する[^3]。
 
 ### 5.1.2 API管理のベストプラクティス（Apigee）
@@ -548,7 +548,7 @@ PCA試験の各セクションは、公式ケーススタディ（Altostrat Medi
 
 - [ ] Cloud Build、Artifact Registry、Cloud Deployの役割分担をアプリデプロイの文脈で説明できる
 - [ ] Infrastructure Manager／Config Connector／Deployment Managerの違いと使い分けを説明できる
-- [ ] Cloud Deployのカナリア/Blue-Greenデプロイ戦略の違いを説明できる
+- [ ] Cloud Deployの組み込み戦略（Standard / Canary）の違いと、Blue-Greenを別途構成する方法を説明できる
 - [ ] Apigeeが提供する主要機能（プロキシ、ポリシー、デベロッパーポータル、アナリティクス）を列挙できる
 - [ ] Spike ArrestポリシーとQuotaポリシーの違いを説明できる
 - [ ] 単体テスト・統合テスト・負荷テストの目的と実施タイミングの違いを説明できる
