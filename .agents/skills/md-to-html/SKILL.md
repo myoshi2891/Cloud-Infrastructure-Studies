@@ -81,7 +81,7 @@ description: >
 
 1. `CLAUDE.md` — プロジェクト規約
 2. `.agents/rules/tdd-commit-workflow.md` — TDD とコミット分割の必須ルール
-3. `.claude/rules/no-absolute-paths.md` — コミット前の PII 検査
+3. `.agents/rules/no-absolute-paths.md` — コミット前の PII 検査
 4. 原本 `<ガイド名>.md` — **全文**。要約して読まない
 5. `Gcp-pca-section4-process-optimization.html` — デザインの正
    （少なくとも `<body>` 冒頭と 1 セクション分）
@@ -236,7 +236,7 @@ design_exit=$?; echo "design  exit=$design_exit"
    - サイドバーのリンクが全て機能し、スクロールに応じて `.active` が移動する
    - チェックリストのカウンタが操作に応じて増減する
    - ウィンドウ幅 980px 未満でトグルからナビゲーションに到達できる
-2. コミット前検査は `.claude/rules/no-absolute-paths.md` の手順に従う
+2. コミット前検査は `.agents/rules/no-absolute-paths.md` の手順に従う
    （**ステージ差分に絶対パスが無いこと**。同ルールの検証スクリプトをそのまま使う）
 
 ## 5. コミット戦略（4 分割）
@@ -349,7 +349,9 @@ bun .agents/skills/md-to-html/scripts/audit_content_parity.mjs <source.md> <page
 ```
 
 blocking: h1/h2 の消失（**見出し要素としての実在**を求める）/ 段落・リスト項目・表行の消失 /
-外部リンクの消失 / 脚注定義の本文の消失 / 目次アンカー・見出し `id`・サイドバー `href` の不一致 /
+外部リンクの消失 / 脚注定義の本文の消失 / 脚注参照 `[^n]` と `.footnote-ref` の不一致
+（件数・`fnrefN` の連番・`<sup>` と参照先 `.ref-card` の番号）/
+目次アンカー・見出し `id`・サイドバー `href` の不一致 /
 Mermaid の図数不一致 / Mermaid ラベルの語句がページのどこにも無い / 承認外の図の配色。
 
 warning: h3 以下の文言がページに見当たらない / 見出しレベルの変化 / 図のラベルの短縮。
@@ -412,4 +414,4 @@ bun run test:md-to-html
 | `.agents/skills/markdown-formatter/SKILL.md` | 原本 Markdown 側の書式修正 |
 | `.agents/skills/html-to-nextjs-migration/SKILL.md` | 生成 HTML を `app/` 配下へ移行する場合 |
 | `.agents/rules/tdd-commit-workflow.md` | TDD とコミット分割、3 系統同期（§8） |
-| `.claude/rules/no-absolute-paths.md` | PII 検査（常時有効） |
+| `.agents/rules/no-absolute-paths.md` | PII 検査（常時有効） |

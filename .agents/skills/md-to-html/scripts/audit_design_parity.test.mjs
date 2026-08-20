@@ -155,14 +155,25 @@ function audit(pageHtml, referenceHtml = BASELINE, extraFlags = []) {
   writeFileSync(pagePath, pageHtml);
   writeFileSync(referencePath, referenceHtml);
 
-  const result = spawnSync(
-    process.execPath,
-    [auditScript, pagePath, "--reference", referencePath, "--json", ...extraFlags],
-    { encoding: "utf8" }
-  );
-  rmSync(fixtureDir, { recursive: true, force: true });
-
-  return { status: result.status, json: JSON.parse(result.stdout) };
+  try {
+    const result = spawnSync(
+      process.execPath,
+      [auditScript, pagePath, "--reference", referencePath, "--json", ...extraFlags],
+      { encoding: "utf8" }
+    );
+    const stdout = result.stdout.trim();
+    try {
+      return { status: result.status, json: JSON.parse(stdout) };
+    } catch (error) {
+      throw new Error(
+        `監査結果を解析できません（終了コード: ${result.status ?? "null"}）\n` +
+          `stderr: ${result.stderr.trim() || "(空)"}\nstdout: ${stdout || "(空)"}`,
+        { cause: error }
+      );
+    }
+  } finally {
+    rmSync(fixtureDir, { recursive: true, force: true });
+  }
 }
 
 /**
@@ -463,6 +474,19 @@ test("表の行に header / odd / even のクラスが無ければ検出する",
   );
 });
 
+test("class はあるが header / odd / even 以外の表の行も検出する", () => {
+  // `class` の有無だけを見る検査は `<tr class="row">` を素通しし、縞模様が崩れた表を
+  // 見逃す。必要なクラスを実際に持っているかで判定する。
+  const result = audit(BASELINE.replace('<tr class="odd">', '<tr class="row">'));
+
+  assert.equal(result.status, 1);
+  assert.ok(
+    category(result.json, "structure").some((detail) =>
+      detail.includes("header / odd / even")
+    )
+  );
+});
+
 test("ref-card の id が連番でなければ検出する", () => {
   const withTwo = BASELINE.replace(
     '      </div>\n    </div>\n  </main>',
@@ -540,6 +564,47 @@ test("hero の pill が示す参考文献数と実数の不一致を検出する
   );
 });
 
+test("図解の pill が示す数を読み取れなければ検出する", () => {
+  // 読み取れないときに黙って照合を飛ばすと、表記が崩れたページで実数チェックごと
+  // 無効化される。件数不明であること自体を構造の指摘として立てる。
+  const result = audit(BASELINE.replace("Mermaid 1点", "Mermaid 多数"));
+
+  assert.equal(result.status, 1);
+  assert.ok(
+    category(result.json, "structure").some((detail) =>
+      detail.includes("図解数を読み取れません")
+    )
+  );
+});
+
+test("図解の pill 自体が無ければ検出する", () => {
+  // .pill を 4 枚に保ったままラベルだけを差し替えると枚数の検査は通ってしまう。
+  const result = audit(
+    BASELINE.replace(
+      '<span class="pill">図解 <strong>Mermaid 1点</strong></span>',
+      '<span class="pill">図版 <strong>Mermaid 1点</strong></span>'
+    )
+  );
+
+  assert.equal(result.status, 1);
+  assert.ok(
+    category(result.json, "structure").some((detail) =>
+      detail.includes("「図解」の .pill がありません")
+    )
+  );
+});
+
+test("参考文献の pill が示す数を読み取れなければ検出する", () => {
+  const result = audit(BASELINE.replace("<strong>1件</strong>", "<strong>多数</strong>"));
+
+  assert.equal(result.status, 1);
+  assert.ok(
+    category(result.json, "structure").some((detail) =>
+      detail.includes("参考文献数を読み取れません")
+    )
+  );
+});
+
 test("外部リンクは target=_blank の有無どちらでも指摘しない", () => {
   // 本 repo の .ref-card のリンクは素の <a href> である（移行元の必須規則は適用しない）。
   // 素のリンクと target 付きリンクの双方を監査し、どちらも無指摘であることを固定する。
@@ -575,6 +640,22 @@ test("引数が足りなければ終了コード 2 を返す", () => {
   const result = spawnSync(process.execPath, [auditScript], { encoding: "utf8" });
 
   assert.equal(result.status, 2);
+});
+
+test("--reference の値が無ければ終了コード 2 を返す", () => {
+  // 値を伴わない `--reference` は参照元を決められない。既定値へ黙って落とすと
+  // 別のデザインを正として監査が通ってしまうため、引数エラーとして落とす。
+  const missingValue = spawnSync(process.execPath, [auditScript, "page.html", "--reference"], {
+    encoding: "utf8",
+  });
+  const followedByFlag = spawnSync(
+    process.execPath,
+    [auditScript, "page.html", "--reference", "--json"],
+    { encoding: "utf8" }
+  );
+
+  assert.equal(missingValue.status, 2);
+  assert.equal(followedByFlag.status, 2);
 });
 
 test("ファイルが存在しなければ終了コード 2 を返す", () => {

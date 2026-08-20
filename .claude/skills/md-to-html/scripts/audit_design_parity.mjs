@@ -280,13 +280,25 @@ function collectChecklists(src) {
 
 /**
  * Reads the number a hero pill advertises.
+ *
+ * pill の確定 markup は `<span class="pill">図解 <strong>Mermaid 15点</strong></span>` /
+ * `<span class="pill">参考文献 <strong>32件</strong></span>` である。`<strong>` の中身から
+ * 数値を取り出し、「pill が無い」と「pill はあるが数値を読めない」を区別する。
+ * 後者を黙って読み飛ばすと、表記が崩れたページで実数照合そのものが無効化されるため、
+ * どちらも構造の指摘として報告する。
+ *
  * @param {string} src - The complete HTML source.
- * @param {RegExp} pattern - The pattern whose first capture group holds the number.
- * @returns {number|null} The advertised count, or null when the pill is absent.
+ * @param {string} label - The pill label that precedes the `strong` element.
+ * @returns {{present: boolean, count: number|null, text: string|null}} The advertised state.
  */
-function readPillCount(src, pattern) {
-  const match = pattern.exec(src);
-  return match === null ? null : Number(match[1]);
+function readPillCount(src, label) {
+  const pill = new RegExp(`<span class="pill">\\s*${label}[^<]*<strong>([\\s\\S]*?)<\\/strong>`).exec(
+    src
+  );
+  if (pill === null) return { present: false, count: null, text: null };
+  const text = pill[1].trim();
+  const number = /(\d+)/.exec(text);
+  return { present: true, count: number === null ? null : Number(number[1]), text };
 }
 
 /**
@@ -465,20 +477,25 @@ function audit(page, reference, isTemplate) {
     );
   }
 
-  const unclassedRows = (page.match(/<tr(?![^>]*class=)[^>]*>/g) ?? []).length;
+  // `class` の有無だけを見ると `<tr class="row">` のような別のクラスを素通ししてしまう。
+  // header / odd / even のいずれかを実際に持っているかで判定する。
+  const unclassedRows = (page.match(/<tr\b[^>]*>/g) ?? []).filter((tag) => {
+    const classes = /\bclass="([^"]*)"/.exec(tag)?.[1] ?? "";
+    return !classes.split(/\s+/).some((name) => ["header", "odd", "even"].includes(name));
+  }).length;
   if (unclassedRows > 0) {
     add("structure", `表の行に header / odd / even のクラスが付いていません: ${unclassedRows} 行`);
   }
 
-  const referenceIds = collectReferenceCardIds(page);
-  referenceIds.forEach((id, index) => {
+  const pageReferenceCardIds = collectReferenceCardIds(page);
+  pageReferenceCardIds.forEach((id, index) => {
     const expected = `ref${index + 1}`;
     if (id !== expected) {
       add("structure", `.ref-card の id が連番ではありません: 期待 "${expected}" / 実際 "${id}"`);
     }
   });
 
-  const referenceIdSet = new Set(referenceIds);
+  const referenceIdSet = new Set(pageReferenceCardIds);
   for (const match of page.matchAll(/class="footnote-ref"\s+href="#([^"]+)"/g)) {
     if (!referenceIdSet.has(match[1])) {
       add("structure", `参照先の無い脚注があります: #${match[1]}`);
@@ -500,19 +517,36 @@ function audit(page, reference, isTemplate) {
   }
 
   const diagramCount = (page.match(/<pre class="mermaid">/g) ?? []).length;
-  const advertisedDiagrams = readPillCount(page, /Mermaid\s*(\d+)\s*点/);
-  if (advertisedDiagrams !== null && advertisedDiagrams !== diagramCount) {
+  const advertisedDiagrams = readPillCount(page, "図解");
+  if (!advertisedDiagrams.present) {
+    add("structure", `hero に「図解」の .pill がありません（実際の図解数 ${diagramCount}）`);
+  } else if (advertisedDiagrams.count === null) {
     add(
       "structure",
-      `hero の .pill の図解数が実数と一致しません: 表記 ${advertisedDiagrams} / 実際 ${diagramCount}`
+      `hero の .pill の図解数を読み取れません: 表記 "${advertisedDiagrams.text}" / 実際 ${diagramCount}`
+    );
+  } else if (advertisedDiagrams.count !== diagramCount) {
+    add(
+      "structure",
+      `hero の .pill の図解数が実数と一致しません: 表記 ${advertisedDiagrams.count} / 実際 ${diagramCount}`
     );
   }
 
-  const advertisedReferences = readPillCount(page, /参考文献[^<]*<strong>\s*(\d+)\s*件/);
-  if (advertisedReferences !== null && advertisedReferences !== referenceIds.length) {
+  const advertisedReferences = readPillCount(page, "参考文献");
+  if (!advertisedReferences.present) {
     add(
       "structure",
-      `hero の .pill の参考文献数が実数と一致しません: 表記 ${advertisedReferences} / 実際 ${referenceIds.length}`
+      `hero に「参考文献」の .pill がありません（実際の参考文献数 ${pageReferenceCardIds.length}）`
+    );
+  } else if (advertisedReferences.count === null) {
+    add(
+      "structure",
+      `hero の .pill の参考文献数を読み取れません: 表記 "${advertisedReferences.text}" / 実際 ${pageReferenceCardIds.length}`
+    );
+  } else if (advertisedReferences.count !== pageReferenceCardIds.length) {
+    add(
+      "structure",
+      `hero の .pill の参考文献数が実数と一致しません: 表記 ${advertisedReferences.count} / 実際 ${pageReferenceCardIds.length}`
     );
   }
 

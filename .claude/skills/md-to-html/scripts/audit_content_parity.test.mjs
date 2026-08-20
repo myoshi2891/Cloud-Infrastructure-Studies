@@ -10,11 +10,16 @@ const auditScript = fileURLToPath(new URL("./audit_content_parity.mjs", import.m
 
 /**
  * Runs the content parity audit over a synthetic Markdown / HTML pair.
+ *
+ * 一時ディレクトリの生成・後片付けとプロセス実行はここに集約する。テスト側で
+ * 同じ手順を書き起こすと、片方だけが後片付けを失うなどの差が静かに入り込む。
+ *
  * @param {string} markdown - The Markdown source fixture.
  * @param {string} html - The generated HTML fixture.
- * @returns {{status: number, json: object}} The exit status and parsed JSON report.
+ * @param {"json"|"text"} [format] - The output path to exercise.
+ * @returns {{status: number, stdout: string, stderr: string, json?: object}} The audit result.
  */
-function audit(markdown, html) {
+function audit(markdown, html, format = "json") {
   const fixtureDir = mkdtempSync(join(tmpdir(), "content-parity-"));
   const markdownPath = join(fixtureDir, "source.md");
   const htmlPath = join(fixtureDir, "page.html");
@@ -22,12 +27,14 @@ function audit(markdown, html) {
   writeFileSync(htmlPath, html);
 
   try {
-    const result = spawnSync(process.execPath, [auditScript, markdownPath, htmlPath, "--json"], {
-      encoding: "utf8",
-    });
+    const args = [auditScript, markdownPath, htmlPath];
+    if (format === "json") args.push("--json");
+    const result = spawnSync(process.execPath, args, { encoding: "utf8" });
     const stdout = result.stdout.trim();
+    const base = { status: result.status, stdout: result.stdout, stderr: result.stderr };
+    if (format !== "json") return base;
     try {
-      return { status: result.status, json: JSON.parse(stdout) };
+      return { ...base, json: JSON.parse(stdout) };
     } catch (error) {
       throw new Error(
         `監査結果を解析できません（終了コード: ${result.status ?? "null"}）\n` +
@@ -166,7 +173,9 @@ test("h2 セクション見出しの消失は blocking として検出する", (
   );
 
   assert.equal(result.status, 1);
-  assert.ok(result.json.missingHeadings.length >= 1);
+  // 消えた見出しは `## 1. 最初のセクション` の 1 個だけである。下限比較にすると
+  // 過剰検出（他の見出しまで漏れ扱い）や重複検出を素通しするため、実数で固定する。
+  assert.equal(result.json.missingHeadings.length, 1);
 });
 
 test("`## 目次` のサイドバー化は漏れ扱いしない", () => {
@@ -220,6 +229,142 @@ test("MD の [^n] と HTML の <sup>n</sup> を同一視する", () => {
   assert.deepEqual(result.json.missingTableRows, []);
 });
 
+/**
+ * Builds a Markdown / HTML pair whose body wording matches but whose footnote
+ * references differ, so only the reference check can tell them apart.
+ *
+ * @param {string} refs - The `.footnote-ref` markup the page carries in the paragraph.
+ * @returns {{markdown: string, html: string}} The fixture pair.
+ */
+function footnoteFixture(refs) {
+  const markdown = `# タイトル
+
+## 目次
+
+- [1. 節](#1-節)
+
+## 1. 節
+
+冗長化は可用性設計の基本となる考え方です[^1]。停止時間の見積もりにも同じ根拠を使います[^1]。
+
+[^1]: 可用性の設計指針. https://example.com/availability
+`;
+  const html = page(
+    `
+<h1>タイトル</h1>
+<h2 id="1-節">1. 節</h2>
+<p>冗長化は可用性設計の基本となる考え方です${refs}。停止時間の見積もりにも同じ根拠を使います。</p>
+<div class="ref-grid"><div class="ref-card" id="ref1"><div class="num">1</div>
+<div class="txt">可用性の設計指針. <a href="https://example.com/availability">https://example.com/availability</a></div></div></div>`,
+    [],
+    '<a href="#1-節">1. 節</a>'
+  );
+  return { markdown, html };
+}
+
+test("同じ脚注を 2 回参照する原本で参照が 1 つ落ちていれば blocking として検出する", () => {
+  // 本文の文言はページ側に残っているため、段落・表・参考文献の照合はすべて通る。
+  // 参照そのものを数えない限り、この漏れは検出できない。
+  const { markdown, html } = footnoteFixture(
+    '<a class="footnote-ref" href="#ref1" id="fnref1" role="doc-noteref"><sup>1</sup></a>'
+  );
+  const result = audit(markdown, html);
+
+  assert.equal(result.status, 1);
+  assert.equal(result.json.blocking, true);
+  assert.deepEqual(result.json.counts.footnoteRefs, { source: 2, page: 1 });
+  assert.deepEqual(
+    result.json.footnoteRefMismatches.map((finding) => finding.kind),
+    ["脚注参照の数が原本と一致しません"]
+  );
+});
+
+test("参照が数どおり揃っていれば脚注の指摘を出さない", () => {
+  const { markdown, html } = footnoteFixture(
+    '<a class="footnote-ref" href="#ref1" id="fnref1" role="doc-noteref"><sup>1</sup></a>'
+      + '<a class="footnote-ref" href="#ref1" id="fnref2" role="doc-noteref"><sup>1</sup></a>'
+  );
+  const result = audit(markdown, html);
+
+  assert.equal(result.status, 0);
+  assert.deepEqual(result.json.footnoteRefMismatches, []);
+});
+
+test("脚注参照の表示番号が参照先 .ref-card の番号とずれていれば検出する", () => {
+  // ページ側の番号は初出順へ振り直されるため、原本の `[^n]` とは一致しなくてよい。
+  // 一致しなければならないのは参照先カードが掲げている番号のほうである。
+  const { markdown, html } = footnoteFixture(
+    '<a class="footnote-ref" href="#ref1" id="fnref1" role="doc-noteref"><sup>1</sup></a>'
+      + '<a class="footnote-ref" href="#ref1" id="fnref2" role="doc-noteref"><sup>2</sup></a>'
+  );
+  const result = audit(markdown, html);
+
+  assert.equal(result.status, 1);
+  assert.deepEqual(
+    result.json.footnoteRefMismatches.map((finding) => finding.kind),
+    ["脚注参照の表示番号が参照先の番号と一致しません"]
+  );
+});
+
+test("同じ脚注の参照先がページ内で割れていれば検出する", () => {
+  const { markdown, html } = footnoteFixture(
+    '<a class="footnote-ref" href="#ref1" id="fnref1" role="doc-noteref"><sup>1</sup></a>'
+      + '<a class="footnote-ref" href="#ref2" id="fnref2" role="doc-noteref"><sup>1</sup></a>'
+  );
+  const result = audit(markdown, html);
+
+  assert.equal(result.status, 1);
+  assert.deepEqual(
+    result.json.footnoteRefMismatches.map((finding) => finding.kind),
+    ["同じ脚注の参照先がページ内で割れています"]
+  );
+});
+
+test("同一の出典を 1 枚の .ref-card へまとめても漏れ扱いしない", () => {
+  // 原本が同じ出典を別番号で二重定義している場合、ページ側が 1 枚へまとめるのは正しい。
+  const markdown = `# タイトル
+
+## 目次
+
+- [1. 節](#1-節)
+
+## 1. 節
+
+構成管理の考え方はここで押さえておきます[^1]。運用設計でも同じ出典を参照します[^2]。
+
+[^1]: 構成管理の設計指針. https://example.com/config
+[^2]: 構成管理の設計指針. https://example.com/config
+`;
+  const html = page(
+    `
+<h1>タイトル</h1>
+<h2 id="1-節">1. 節</h2>
+<p>構成管理の考え方はここで押さえておきます<a class="footnote-ref" href="#ref1" id="fnref1" role="doc-noteref"><sup>1</sup></a>。運用設計でも同じ出典を参照します<a class="footnote-ref" href="#ref1" id="fnref2" role="doc-noteref"><sup>1</sup></a>。</p>
+<div class="ref-grid"><div class="ref-card" id="ref1"><div class="num">1</div>
+<div class="txt">構成管理の設計指針. <a href="https://example.com/config">https://example.com/config</a></div></div></div>`,
+    [],
+    '<a href="#1-節">1. 節</a>'
+  );
+  const result = audit(markdown, html);
+
+  assert.equal(result.status, 0);
+  assert.deepEqual(result.json.footnoteRefMismatches, []);
+});
+
+test("脚注参照の id が連番でなければ検出する", () => {
+  const { markdown, html } = footnoteFixture(
+    '<a class="footnote-ref" href="#ref1" id="fnref1" role="doc-noteref"><sup>1</sup></a>'
+      + '<a class="footnote-ref" href="#ref1" id="fnref1" role="doc-noteref"><sup>1</sup></a>'
+  );
+  const result = audit(markdown, html);
+
+  assert.equal(result.status, 1);
+  assert.deepEqual(
+    result.json.footnoteRefMismatches.map((finding) => finding.kind),
+    ["脚注参照の id が連番ではありません"]
+  );
+});
+
 test("脚注定義が .ref-card へ再型付けされていても漏れ扱いしない", () => {
   const result = audit(BASELINE_MD, BASELINE_HTML);
 
@@ -261,7 +406,17 @@ test("見出し id が MD の目次アンカーと一致しなければ検出す
   );
 
   assert.equal(result.status, 1);
-  assert.ok(result.json.anchorMismatches.length >= 1);
+  // 三者（目次アンカー / 見出し id / サイドバー href）の一致を見るため、id を 1 箇所
+  // 書き換えると 4 件が立つ。下限比較では過剰検出も重複検出も素通しするので実数で固定する。
+  assert.deepEqual(
+    result.json.anchorMismatches.map((finding) => [finding.kind, finding.anchor]),
+    [
+      ["見出しが無い目次アンカー", "1-最初のセクション"],
+      ["目次に無い見出し id", "1-first-section"],
+      ["サイドバーに無い見出し id", "1-first-section"],
+      ["見出しが無いサイドバーのリンク", "1-最初のセクション"],
+    ]
+  );
 });
 
 test("サイドバーのリンクが見出し id と一致しなければ検出する", () => {
@@ -271,7 +426,13 @@ test("サイドバーのリンクが見出し id と一致しなければ検出�
   );
 
   assert.equal(result.status, 1);
-  assert.ok(result.json.anchorMismatches.length >= 1);
+  assert.deepEqual(
+    result.json.anchorMismatches.map((finding) => [finding.kind, finding.anchor]),
+    [
+      ["サイドバーに無い見出し id", "1-最初のセクション"],
+      ["見出しが無いサイドバーのリンク", "missing-anchor"],
+    ]
+  );
 });
 
 // --------------------------------------------------------------------------
@@ -365,19 +526,7 @@ flowchart LR
     '<a href="#1-図のあるセクション">1. 図のあるセクション</a>'
   );
 
-  const fixtureDir = mkdtempSync(join(tmpdir(), "content-parity-text-"));
-  const markdownPath = join(fixtureDir, "source.md");
-  const htmlPath = join(fixtureDir, "page.html");
-  writeFileSync(markdownPath, markdown);
-  writeFileSync(htmlPath, html);
-  let result;
-  try {
-    result = spawnSync(process.execPath, [auditScript, markdownPath, htmlPath], {
-      encoding: "utf8",
-    });
-  } finally {
-    rmSync(fixtureDir, { recursive: true, force: true });
-  }
+  const result = audit(markdown, html, "text");
 
   assert.equal(result.status, 1);
   assert.match(result.stdout, /原本の fence=1 \/ pre\.mermaid=0/);

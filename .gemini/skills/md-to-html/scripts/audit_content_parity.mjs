@@ -284,6 +284,7 @@ function inventoryMarkdown(src) {
   const tableRowTexts = [];
   const paragraphTexts = [];
   const referenceTexts = [];
+  const footnoteRefs = [];
   const tocAnchors = [];
   const mermaidSources = [];
   let inToc = false;
@@ -315,6 +316,12 @@ function inventoryMarkdown(src) {
     if (inFence) {
       fenceLines.push(line);
       continue;
+    }
+
+    // 脚注参照 `[^12]` は本文照合では両側から落とす（記法が違うだけで同じ位置にある）。
+    // そのままでは「参照だけが落ちたページ」を検出できないため、出現順に別枠で数える。
+    for (const reference of line.matchAll(/\[\^([^\]]+)\](?!:)/g)) {
+      footnoteRefs.push(reference[1].trim());
     }
 
     const heading = /^(#{1,6})\s+(.*?)\s*#*\s*$/.exec(line);
@@ -371,6 +378,7 @@ function inventoryMarkdown(src) {
     tableRowTexts,
     paragraphTexts,
     referenceTexts,
+    footnoteRefs,
     tocAnchors,
     mermaidSources,
     externalLinks: collectUrls(src),
@@ -390,6 +398,26 @@ function extractDiagramEntries(src) {
   return [...src.matchAll(/<pre class="mermaid">([\s\S]*?)<\/pre\s*>/g)].map((match, index) => ({
     id: `pre${index + 1}`,
     source: decodeEntities(match[1]),
+  }));
+}
+
+/**
+ * Extracts the footnote references the page carries inline.
+ *
+ * 原本の `[^12]` に対応するページ側の実体は `.footnote-ref` である。本文照合では
+ * 両側から落としているため、参照だけが落ちた・番号がずれた・id が重複した状態を
+ * ここで別枠として拾う。
+ *
+ * @param {string} src - The complete HTML source.
+ * @returns {Array<{id: string|null, href: string|null, sup: string|null}>} The references in document order.
+ */
+function extractFootnoteRefs(src) {
+  // 生成 HTML は整形の都合で属性が改行で折り返され、閉じ tag も `</a\n>` になりうる。
+  // `<\/a>` 決め打ちでは 1 件も拾えないため、閉じ tag の空白を許容する。
+  return [...src.matchAll(/<a\s[^>]*class="footnote-ref"[^>]*>([\s\S]*?)<\/a\s*>/gi)].map((match) => ({
+    id: /\bid="([^"]*)"/.exec(match[0])?.[1] ?? null,
+    href: /\bhref="([^"]*)"/.exec(match[0])?.[1] ?? null,
+    sup: /<sup[^>]*>([\s\S]*?)<\/sup>/i.exec(match[1])?.[1].trim() ?? null,
   }));
 }
 
@@ -418,14 +446,24 @@ function inventoryHtml(src) {
     decodeURIComponent(match[1])
   );
 
-  // 本文は <style> / <script> と、サイドバー（目次の再型付け先）を除いた領域から採る。
-  // 脚注参照は `[^12]` の対応物なので、原本側の除去と対称になるよう落とす。
+  // 本文は <style> / <script> を除いた領域から採る。
+  // 脚注参照は `[^12]` の対応物なので、原本側の除去と対称になるよう落とす
+  // （落とした分は footnoteRefMismatches で別途照合する）。
   const body = src
     .replace(/<(script|style)\b[\s\S]*?<\/\1>/gi, " ")
     .replace(/<a\s[^>]*class="footnote-ref"[\s\S]*?<\/a>/gi, "");
 
   const referenceTexts = [...body.matchAll(/<div class="txt">([\s\S]*?)<\/div>/g)].map((match) =>
     normalize(stripMarkup(match[1]))
+  );
+
+  // `.footnote-ref` の `<sup>` は、参照先 `.ref-card` が掲げる番号と一致していなければ
+  // ならない。原本の `[^25]` はページ上で通し番号へ振り直されるため、原本の番号その
+  // ものではなくこの対応表と突き合わせる。
+  const referenceCardNumbers = new Map(
+    [...src.matchAll(/<div class="ref-card"\s+id="([^"]+)">\s*<div class="num">([\s\S]*?)<\/div>/g)].map(
+      (match) => [match[1], normalize(stripMarkup(match[2]))]
+    )
   );
 
   const headings = [];
@@ -443,6 +481,8 @@ function inventoryHtml(src) {
     headingIds,
     navTargets,
     referenceTexts,
+    footnoteRefs: extractFootnoteRefs(src),
+    referenceCardNumbers,
     listTexts: extractTagContents(body, "li").map((content) => normalize(stripMarkup(content))),
     tableRowTexts: extractTagContents(body, "tr").map((content) => normalize(stripMarkup(content))),
     paragraphTexts: extractTagContents(body, "p").map((content) => normalize(stripMarkup(content))),
@@ -572,6 +612,54 @@ function compare(source, page) {
     page.referenceTexts
   ).filter((text) => !survivesInPage(text, page.pageText));
 
+  // 脚注参照は本文照合から落としているため、ここで出現数・対応関係・表示番号・id を照合する。
+  // 参照が 1 つ落ちても本文の文言は一致してしまい、他の検査では検出できない。
+  //
+  // ページ側の番号は「初出順の通し番号」へ振り直される（原本の `[^25]` が 4 番になる）。
+  // したがって原本の番号そのものではなく、原本のラベルとページの参照先が
+  // 一対一に対応していること、表示番号が参照先 `.ref-card` の番号と一致することを見る。
+  const footnoteRefMismatches = [];
+  if (source.footnoteRefs.length !== page.footnoteRefs.length) {
+    footnoteRefMismatches.push({
+      kind: "脚注参照の数が原本と一致しません",
+      detail: `原本 ${source.footnoteRefs.length} 件 / ページ ${page.footnoteRefs.length} 件`,
+    });
+  }
+  // 逆向き（別のラベルが同じ参照先を指す）は指摘しない。原本が同一の出典を
+  // 別番号で二重定義している場合、ページ側が 1 枚の `.ref-card` へまとめるのは正しい。
+  const labelToTarget = new Map();
+  const refCount = Math.min(source.footnoteRefs.length, page.footnoteRefs.length);
+  for (let index = 0; index < refCount; index += 1) {
+    const label = source.footnoteRefs[index];
+    const target = page.footnoteRefs[index].href ?? "(href 無し)";
+    const knownTarget = labelToTarget.get(label);
+    if (knownTarget === undefined) {
+      labelToTarget.set(label, target);
+    } else if (knownTarget !== target) {
+      footnoteRefMismatches.push({
+        kind: "同じ脚注の参照先がページ内で割れています",
+        detail: `${index + 1} 番目: 原本 "[^${label}]" → "${target}"（既出は "${knownTarget}"）`,
+      });
+    }
+  }
+  page.footnoteRefs.forEach((pageRef, index) => {
+    const expectedId = `fnref${index + 1}`;
+    if (pageRef.id !== expectedId) {
+      footnoteRefMismatches.push({
+        kind: "脚注参照の id が連番ではありません",
+        detail: `${index + 1} 番目: 期待 "${expectedId}" / 実際 "${pageRef.id ?? "(id 無し)"}"`,
+      });
+    }
+    const target = (pageRef.href ?? "").replace(/^#/, "");
+    const cardNumber = page.referenceCardNumbers.get(target);
+    if (cardNumber !== undefined && pageRef.sup !== cardNumber) {
+      footnoteRefMismatches.push({
+        kind: "脚注参照の表示番号が参照先の番号と一致しません",
+        detail: `${index + 1} 番目: 表示 "${pageRef.sup ?? "(sup 無し)"}" / #${target} の番号 "${cardNumber}"`,
+      });
+    }
+  });
+
   // 原本の目次アンカー ≡ 見出し id ≡ サイドバーのリンク先。
   // 三者が一致しないと目次から辿れない節やリンク切れが生まれる。
   const anchorMismatches = [];
@@ -645,6 +733,7 @@ function compare(source, page) {
     tableRows: { source: source.tableRowTexts.length, page: page.tableRowTexts.length },
     externalLinks: { source: source.externalLinks.size, page: page.externalLinks.size },
     references: { source: source.referenceTexts.length, page: page.referenceTexts.length },
+    footnoteRefs: { source: source.footnoteRefs.length, page: page.footnoteRefs.length },
     diagrams: { source: diagramCounts.markdownFences, page: diagramCounts.preMermaid },
   };
 
@@ -655,6 +744,7 @@ function compare(source, page) {
     missingTableRows.length > 0 ||
     missingLinks.length > 0 ||
     missingReferences.length > 0 ||
+    footnoteRefMismatches.length > 0 ||
     anchorMismatches.length > 0 ||
     missingDiagramLabels.length > 0 ||
     unapprovedColors.length > 0 ||
@@ -667,6 +757,7 @@ function compare(source, page) {
     missingTableRows,
     missingLinks,
     missingReferences,
+    footnoteRefMismatches,
     anchorMismatches,
     missingDiagramLabels,
     unapprovedColors,
@@ -743,6 +834,11 @@ function main() {
   printFindings("HTML に存在しない原本のリスト項目", result.missingListItems, (t) => `- ${t}`);
   printFindings("HTML に存在しない原本の表行", result.missingTableRows, (t) => JSON.stringify(t));
   printFindings("HTML に存在しない原本の外部リンク", result.missingLinks, (u) => u);
+  printFindings(
+    "脚注参照が原本と一致しません",
+    result.footnoteRefMismatches,
+    (f) => `${f.kind}: ${f.detail}`
+  );
   printFindings(
     "ページのどこにも残っていない Mermaid ラベルの語句",
     result.missingDiagramLabels,
