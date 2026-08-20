@@ -106,13 +106,13 @@ Google Cloud のサービスにはグローバル（例: Cloud Load Balancing �
 | 内部パススルー ネットワークロードバランサ | 内部TCP/UDPトラフィックの低レイテンシ分散 |
 | Cloud Run/GKEの組み込みロードバランシング | Cloud Runはリージョナルサービス。マルチリージョン配信には複数リージョンへデプロイし、その前段にグローバル外部アプリケーション ロードバランサを構成する。GKEはService/Ingressで制御 |
 
-**セッションアフィニティ**: 同一クライアントのリクエストを同じバックエンドインスタンスにルーティングし続けたい場合（例: ステートフルなWebSocket接続）に有効化します。Cloud Runでトラフィック分割と併用する場合は、セッションアフィニティがトラフィック比率の実際の分配に影響する点に注意が必要です。
+**セッションアフィニティ**: 同一クライアントのリクエストを同じバックエンドインスタンスにルーティングし続けたい場合（例: ステートフルなWebSocket接続）に有効化します。ただしCloud Runのセッションアフィニティは**ベストエフォート**であり、インスタンスが終了したときや処理能力を超えたときには別のインスタンスへリクエストが振り向けられます。セッション状態はMemorystoreなどの外部ストアで共有し、WebSocketなどのステートフルな接続は再接続を前提に実装してください。Cloud Runでトラフィック分割と併用する場合は、セッションアフィニティがトラフィック比率の実際の分配に影響する点にも注意が必要です。
 
 > **出典**: [Rollbacks, gradual rollouts, and traffic migration | Cloud Run](https://docs.cloud.google.com/run/docs/rollouts-rollbacks-traffic-migration)
 
 #### キャッシング（Memorystore）
 
-Memorystore（Redis/Valkey/Memcached互換）を使い、頻繁に読み取られるデータをサブミリ秒でアクセスできるようキャッシュします。データベースへの負荷軽減とレイテンシ短縮が主目的です。Memorystore への呼び出しでも、5xx・429エラーに対しては指数バックオフでのリトライが推奨されます。
+Memorystore（Redis/Valkey/Memcached互換）を使い、頻繁に読み取られるデータをサブミリ秒でアクセスできるようキャッシュします。データベースへの負荷軽減とレイテンシ短縮が主目的です。なお**Memorystore for Memcachedは非推奨（deprecated）**であり、新規設計ではMemorystore for Valkeyを優先します。Memorystore への呼び出しでも、5xx・429エラーに対しては指数バックオフでのリトライが推奨されます。
 
 > **出典**: [Exponential backoff | Memorystore for Redis](https://docs.cloud.google.com/memorystore/docs/redis/exponential-backoff)
 
@@ -165,10 +165,10 @@ flowchart LR
 - **Eventarc**: Pub/Sub、Cloud Storage、Cloud Audit Logs など130以上のイベントソースを CloudEvents 形式に正規化し、Cloud Run・GKE・Workflows にルーティングする。Pub/Subトランスポート経由のため少なくとも1回配信が保証され、イベントハンドラは冪等に実装する必要がある。
 - **Pub/Sub**: メッセージング基盤そのもの。Eventarcより細かい制御（サブスクリプションのフィルタ、デッドレタートピック等）が必要な場合は直接利用する。
 - **Workflows**: 複数サービス・APIの呼び出し順序を宣言的に定義するフルマネージドオーケストレーションサービス。HTTP呼び出し、Pub/Sub、Cloud Schedulerからトリガー可能。
-- **Cloud Tasks**: 配信タイミングの制御・レート制御・リトライ設定・重複排除ができる非同期タスクキュー。
+- **Cloud Tasks**: 配信タイミングの制御・レート制御・リトライ設定ができる非同期タスクキュー。配信は**少なくとも1回**であり、タスク名の指定は同名タスクの重複追加を抑止するものであって、実行時の重複配信を防ぐものではない。
 - **Cloud Scheduler**: cron形式でWorkflows・Pub/Sub・HTTPエンドポイントを定期実行する。
 
-> **ベストプラクティス**: Eventarcは「イベントが発生したら実行する」宣言的なルーティングに、Cloud Tasksは「特定のタイミング・レートで確実に1回実行したい」制御されたディスパッチに使い分ける。イベントハンドラは常に冪等に実装し、CloudEventのIDで重複を検出する。
+> **ベストプラクティス**: Eventarcは「イベントが発生したら実行する」宣言的なルーティングに、Cloud Tasksは「特定のタイミング・レートで確実に実行したい」制御されたディスパッチに使い分ける。ただしCloud Tasksも少なくとも1回配信であり、1回だけ実行されることは保証されない。イベントハンドラとタスクハンドラは常に冪等に実装し、CloudEventのIDやタスク名で重複を検出する。
 > **出典**: [Create triggers with Eventarc | Cloud Run](https://docs.cloud.google.com/run/docs/triggering/trigger-with-events)、[Workflows overview](https://docs.cloud.google.com/workflows/docs/overview)、[Understand Cloud Tasks](https://docs.cloud.google.com/tasks/docs/dual-overview)、[Cloud Scheduler documentation](https://docs.cloud.google.com/scheduler/docs)
 
 #### トラフィック分割戦略（段階的ロールアウト・ロールバック・A/Bテスト）
@@ -188,7 +188,7 @@ flowchart LR
     Before --> Canary --> Full
 ```
 
-Cloud Runはリビジョン単位でトラフィックを分割でき、`gcloud run services update-traffic` でパーセンテージを指定するだけでカナリアデプロイ・Blue-Greenデプロイ・A/Bテストが実現できます。問題があれば即座に旧リビジョンへ100%戻すことでロールバックも一瞬で完了します。
+Cloud Runはリビジョン単位でトラフィックを分割でき、`gcloud run services update-traffic` でパーセンテージを指定するだけでカナリアデプロイ・Blue-Greenデプロイ・A/Bテストが実現できます。問題があれば旧リビジョンへ100%戻すことでロールバックできます。ただし切り替えは瞬時ではなく反映には時間がかかり、移行中の新規リクエストは新旧いずれかのリビジョンへ送られ、処理中のリクエストは割り当てられたリビジョンで完了します。
 
 > **ベストプラクティス**: 新リビジョンには最初トラフィック0%〜少量を割り当て、Cloud Monitoringでエラー率・レイテンシを確認しながら段階的に拡大する。両リビジョンが並行稼働する間はリソース課金も両方に発生するため、カナリア期間は必要以上に長引かせない。
 > **出典**: [Rollbacks, gradual rollouts, and traffic migration | Cloud Run](https://docs.cloud.google.com/run/docs/rollouts-rollbacks-traffic-migration)、[Manage revisions | Cloud Run](https://docs.cloud.google.com/run/docs/managing/revisions)
@@ -362,7 +362,7 @@ flowchart TD
 | Firestore | ドキュメント（NoSQL） | モバイル/Webアプリのバックエンド、リアルタイム同期 |
 | Bigtable | ワイドカラム（NoSQL） | IoTテレメトリ、時系列データ、大規模低レイテンシ処理 |
 | BigQuery | 列指向（analytics） | データウェアハウス、SQLベースの大規模分析・機械学習 |
-| Memorystore | インメモリ（Redis/Valkey/Memcached） | キャッシュ、セッションストア |
+| Memorystore | インメモリ（Valkey/Redis。Memcachedは非推奨） | キャッシュ、セッションストア |
 
 > **出典**: [Google Cloud databases](https://cloud.google.com/products/databases)、[Databases on Google Cloud part 2 | Google Cloud Blog](https://cloud.google.com/blog/topics/developers-practitioners/databases-google-cloud-part-2-options-glance/)
 
@@ -387,7 +387,7 @@ flowchart TD
 
 #### 署名付きURLの作成
 
-Cloud Storageの署名付きURL（Signed URL）は、Googleアカウントを持たない第三者に対しても、有効期限付きで特定オブジェクトへのアクセス（GET/PUT等）を許可します。サービスアカウントの秘密鍵で署名し、期限を過ぎると自動的に失効します。
+Cloud Storageの署名付きURL（Signed URL）は、Googleアカウントを持たない第三者に対しても、有効期限付きで特定オブジェクトへのアクセス（GET/PUT等）を許可します。署名にはサービスアカウントの鍵を使いますが、**秘密鍵をエクスポートする必要はありません**。ADCで認証したうえでサービスアカウントの権限を借用（impersonate）し、IAMの `signBlob` で署名するキーレスな方法を優先します（前述のサービスアカウントキーを持たない方針と揃えます）。期限を過ぎるとURLは自動的に失効します。
 
 > **ベストプラクティス**: 有効期限はユースケースに対して可能な限り短く設定する。アップロード先バケットにはObject Lifecycle Managementを設定し、未完了・不要なアップロードを自動削除する。より細かいアップロード条件（サイズ、Content-Type等）を強制したい場合はSigned Policy Documentを使う。
 > **出典**: [Object Lifecycle Management | Cloud Storage](https://docs.cloud.google.com/storage/docs/lifecycle)
