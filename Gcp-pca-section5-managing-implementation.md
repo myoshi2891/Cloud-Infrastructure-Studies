@@ -110,6 +110,8 @@ flowchart LR
     F -.プロビジョニング.-> E3
 ```
 
+なお、図中のCloud Source Repositoriesは**2024年6月17日以降、新規顧客に提供されていません**。同日より前にCloud Source Repositoriesを利用していた組織は引き続き利用できますが、それ以外の組織・プロジェクトではAPIを有効化できません。新規に構築する場合は**Secure Source Manager**（Google Cloudのマネージドな単一テナント型リポジトリ）か、GitHub・GitLabなどの外部Gitサービスを選択します。
+
 代表的なデプロイ関連サービスの役割分担は次のとおりです。
 
 | サービス | 主な役割 | 対象レイヤー |
@@ -119,7 +121,7 @@ flowchart LR
 | Cloud Deploy | GKE/Cloud Run向けのマネージドCDパイプライン | アプリケーション（デリバリー） |
 | Infrastructure Manager | Terraform構成をGoogle Cloudがマネージドで実行するサービス | インフラストラクチャ |
 | Config Connector | KubernetesのCRDとしてGoogle Cloudリソースを宣言的に管理 | インフラストラクチャ（GKE運用者向け） |
-| Deployment Manager | レガシーなGoogle Cloudネイティブのテンプレートベースプロビジョニング（新規は非推奨、Infrastructure Manager/Terraformが推奨） | インフラストラクチャ（旧世代） |
+| Deployment Manager | レガシーなGoogle Cloudネイティブのテンプレートベースプロビジョニング。**2026年4月1日にサポート終了**し、**2026年6月30日以降は新規ユーザーがAPI有効化・初回デプロイを行えない**。既存ユーザーは自己責任で既存リソースの管理・移行・削除を継続できるが（延長サポートの上限は2027年3月31日）、標準サポートの対象外。移行先はInfrastructure Manager（Terraform）またはTerraform単体 | インフラストラクチャ（旧世代・移行対象） |
 
 **ベストプラクティス**
 
@@ -189,7 +191,7 @@ flowchart TB
 |---|---|---|
 | 単体テスト | 個々の関数・メソッドのロジック検証 | Cloud Build上でのCI実行（言語標準のテストフレームワークを利用） |
 | 統合テスト | サービス間のAPI呼び出し・データフローの検証 | Cloud Buildのステップ内でエミュレータやステージング環境を利用 |
-| 負荷テスト | 想定ピーク時のスループット・レイテンシ・エラー率の検証 | Cloud Load Testing（旧称含む）や、OSSツール（Locust、k6、JMeter）をGKE/Compute Engine上で実行 |
+| 負荷テスト | 想定ピーク時のスループット・レイテンシ・エラー率の検証 | OSSツール（Locust、k6、JMeter）をGKE/Compute Engine上で分散実行 |
 | カナリア分析 | 新バージョンのメトリクスを旧バージョンと自動比較 | Cloud Deployのカナリアデプロイ＋Cloud Monitoringによる自動判定 |
 
 **ベストプラクティス**
@@ -299,7 +301,7 @@ flowchart TB
 
 | ツール | 特徴 | 主なユースケース |
 |---|---|---|
-| Cloud Shell Terminal | ブラウザ上のマネージドLinux環境、gcloud/kubectl/Terraform等がプリインストール | 一時的な検証、緊急時のCLI操作、学習用途 |
+| Cloud Shell Terminal | ブラウザ上のマネージドLinux環境、gcloud/kubectl等がプリインストール（**Terraform CLIは2026年6月20日以降プリインストールされない**ため、必要な場合は環境の起動時にインストールするか、セッション間で永続するホームディレクトリへバイナリを配置する） | 一時的な検証、緊急時のCLI操作、学習用途 |
 | Cloud Shell Editor | Cloud Shell上で動くコードエディタ、Cloud Codeが標準搭載 | 軽量なマニフェスト編集、簡易デバッグ |
 | Cloud Code | VS Code/IntelliJ向け拡張機能。ローカルIDEからKubernetes/Cloud Runの開発・デプロイ・デバッグが可能[^9] | 本格的なアプリケーション開発、ローカルでのKubernetesデバッグ |
 
@@ -529,14 +531,14 @@ flowchart TB
 
 ## ケーススタディ適用の視点
 
-PCA試験の各セクションは、公式ケーススタディ（Altostrat Media、Cymbal Retail、EHR Healthcare、KnightMotives Automotive）と組み合わせて出題されることがあります。Section 5の技術要素がそれぞれのケーススタディでどう問われうるか、学習の視点として整理します（以下は各ケーススタディの一般的な業種特性から想定される学習ポイントであり、試験本番の設問内容を示すものではありません）。
+PCA試験の各セクションは、公式ケーススタディ（EHR Healthcare、Helicopter Racing League、Mountkirk Games、TerramEarth）と組み合わせて出題されることがあります。試験では4つのうち2つが出題され、ケーススタディ問題は全体の20〜30%を占めます。Section 5の技術要素がそれぞれのケーススタディでどう問われうるか、学習の視点として整理します（以下は各ケーススタディの一般的な業種特性から想定される学習ポイントであり、試験本番の設問内容を示すものではありません）。
 
 | ケーススタディ | 業種の特性 | Section 5の技術要素との接点（学習の視点） |
 |---|---|---|
-| Altostrat Media | メディア/コンテンツ配信、AIによるメタデータ抽出・モデレーション | パートナー向けAPI公開でのApigee活用、コンテンツ処理パイプラインのCI/CD設計 |
-| Cymbal Retail | 小売、パーソナライゼーションと在庫最適化 | 繁忙期に向けた負荷テスト設計、需要変動に対応するデプロイ戦略 |
-| EHR Healthcare | 医療記録管理、厳格なコンプライアンス要件 | レガシーオンプレミスDBからのデータ移行ツール選定、変更管理を伴う慎重なデプロイポリシー |
-| KnightMotives Automotive | コネクテッドカー、グローバルなテレメトリデータ収集 | Pub/Subエミュレータを用いたテレメトリ取り込みのテスト、Terraformによるマルチリージョンインフラの一貫した展開 |
+| EHR Healthcare | 電子カルテSaaS、規制対応と高可用性が必須、レガシーなオンプレミス環境が残存 | コンテナ化したアプリのCI/CDパイプライン整備、変更管理と整合したCloud Deployのデプロイポリシー、オンプレミスからのデータ移行ツール選定 |
+| Helicopter Racing League | ライブ動画配信とAI予測、視聴者に近いリージョンでの低レイテンシ提供 | 配信ピークに向けた負荷テスト設計、複数リージョンへ一貫して展開するTerraform/Infrastructure Manager運用 |
+| Mountkirk Games | モバイルゲーム、GKE上のマルチリージョン展開とリリース頻度の高さ | Cloud Deployのカナリアデプロイとロールバック、リリースごとの自動テストとカナリア分析 |
+| TerramEarth | 製造業/IoT、大量の車両テレメトリ収集とパートナー向けAPI公開 | Pub/Subエミュレータを用いた取り込み処理のテスト、パートナー向けAPIのApigee公開とバージョニング |
 
 **学習のポイント**: ケーススタディの詳細を丸暗記する必要はありませんが、「この業種ならどんな制約（コンプライアンス、データローカリティ、トラフィックの急増など）が生じ、Section 5のどのツールで対応するか」を自分の言葉で説明できるようにしておくと、シナリオ問題への対応力が高まります。
 
