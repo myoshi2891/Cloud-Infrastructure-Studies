@@ -1,5 +1,3 @@
-'use client';
-
 import React, { memo } from 'react';
 import { MermaidDiagram } from '@/components/MermaidDiagram';
 import { NavBar } from './NavBar';
@@ -21,7 +19,7 @@ const Diagram = memo(function Diagram({ id, label }: DiagramProps) {
 });
 
 /**
- * CompTIA Network+「ネットワークの運用」徹底解説ガイドコンポーネント (Client Component)
+ * CompTIA Network+「ネットワークの運用」徹底解説ガイドコンポーネント (Server Component)
  */
 export function ComptiaNetworkOperationsGuide() {
     return (

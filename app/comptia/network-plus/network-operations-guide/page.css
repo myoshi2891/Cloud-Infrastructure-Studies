@@ -1,10 +1,10 @@
-@import 'https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/3.44.0/tabler-icons.min.css';
+@import '@tabler/icons-webfont/tabler-icons.min.css';
 
 /* CompTIA Network+ Network Operations ガイドスタイル */
 
 .comptia-network-operations-page {
-    background-color: var(--color-background, #0b0d10);
-    color: var(--color-foreground, #e8eaed);
+    background-color: var(--color-network-background);
+    color: var(--color-network-foreground);
     font-family: var(--font-body);
     font-size: 16px;
     line-height: 1.7;
@@ -24,9 +24,9 @@
     bottom: 24px;
     right: 24px;
     z-index: 45;
-    background: #5b21b6;
-    color: #ede9fe;
-    border: 1px solid #ddd6fe;
+    background: var(--color-network-purple-deep);
+    color: var(--color-network-purple-soft);
+    border: 1px solid var(--color-network-purple);
     border-radius: var(--radius-xl, 16px);
     padding: 10px 16px;
     font-size: 14px;
@@ -47,8 +47,8 @@
     z-index: 40;
     overflow-y: auto;
     padding: 32px 20px;
-    background: var(--color-card, #14171c);
-    border-right: 1px solid var(--color-border, #2a2f38);
+    background: var(--color-network-surface);
+    border-right: 1px solid var(--color-network-border);
 }
 
 .comptia-network-operations-page .sidebar-title {
@@ -57,7 +57,7 @@
     gap: 8px;
     font-size: 13px;
     font-weight: 500;
-    color: var(--color-muted-foreground, #6b7280);
+    color: var(--color-network-foreground-faint);
     letter-spacing: 0.04em;
     margin: 0 0 16px 8px;
 }
@@ -74,7 +74,7 @@
     gap: 10px;
     padding: 9px 10px;
     border-radius: var(--radius-md, 8px);
-    color: var(--color-muted-foreground, #a8adb5);
+    color: var(--color-network-foreground-muted);
     text-decoration: none;
     font-size: 14px;
     font-weight: 400;
@@ -82,22 +82,22 @@
 }
 
 .comptia-network-operations-page .sidebar nav a:hover {
-    background: #1c2027;
-    color: var(--color-foreground, #e8eaed);
+    background: var(--color-network-surface-elevated);
+    color: var(--color-network-foreground);
 }
 
 .comptia-network-operations-page .sidebar nav a.active {
-    background: #1c2027;
-    color: #7dd3fc;
+    background: var(--color-network-surface-elevated);
+    color: var(--color-network-info);
 }
 
 .comptia-network-operations-page .sidebar nav a.active i {
-    color: #7dd3fc;
+    color: var(--color-network-info);
 }
 
 .comptia-network-operations-page .sidebar nav a i {
     font-size: 16px;
-    color: var(--color-muted-foreground, #6b7280);
+    color: var(--color-network-foreground-faint);
     flex-shrink: 0;
 }
 
@@ -105,7 +105,7 @@
     margin-top: 14px;
     font-size: 11px;
     font-weight: 500;
-    color: var(--color-muted-foreground, #6b7280);
+    color: var(--color-network-foreground-faint);
     pointer-events: none;
     padding: 4px 10px;
 }
@@ -130,9 +130,9 @@
     gap: 8px;
     font-size: 13px;
     font-weight: 500;
-    color: #7dd3fc;
-    background: #12202b;
-    border: 1px solid #22262e;
+    color: var(--color-network-info);
+    background: var(--color-network-info-background);
+    border: 1px solid var(--color-network-border-soft);
     padding: 6px 12px;
     border-radius: var(--radius-xl, 16px);
     margin-bottom: 20px;
@@ -141,7 +141,7 @@
 .comptia-network-operations-page h1 {
     font-size: 22px;
     font-weight: 500;
-    color: var(--color-foreground, #e8eaed);
+    color: var(--color-network-foreground);
     margin: 0 0 12px 0;
     line-height: 1.4;
     font-family: var(--font-display, inherit);
@@ -150,10 +150,10 @@
 .comptia-network-operations-page h2 {
     font-size: 18px;
     font-weight: 500;
-    color: var(--color-foreground, #e8eaed);
+    color: var(--color-network-foreground);
     margin: 56px 0 16px 0;
     padding-top: 20px;
-    border-top: 1px solid #1a1d23;
+    border-top: 1px solid var(--color-network-border-soft);
     display: flex;
     align-items: center;
     gap: 10px;
@@ -161,31 +161,31 @@
 }
 
 .comptia-network-operations-page h2 i {
-    color: #7dd3fc;
+    color: var(--color-network-info);
     font-size: 18px;
 }
 
 .comptia-network-operations-page h3 {
     font-size: 16px;
     font-weight: 500;
-    color: var(--color-foreground, #e8eaed);
+    color: var(--color-network-foreground);
     margin: 28px 0 12px 0;
     font-family: var(--font-display, inherit);
 }
 
 .comptia-network-operations-page p {
-    color: var(--color-foreground, #e8eaed);
+    color: var(--color-network-foreground);
     margin: 0 0 16px 0;
 }
 
 .comptia-network-operations-page .subtitle {
-    color: var(--color-muted-foreground, #a8adb5);
+    color: var(--color-network-foreground-muted);
     font-size: 15px;
     margin: 0 0 32px 0;
 }
 
 .comptia-network-operations-page a {
-    color: #7dd3fc;
+    color: var(--color-network-info);
 }
 
 .comptia-network-operations-page table {
@@ -196,24 +196,24 @@
 }
 
 .comptia-network-operations-page thead th {
-    background: #1c2027;
-    color: var(--color-foreground, #e8eaed);
+    background: var(--color-network-surface-elevated);
+    color: var(--color-network-foreground);
     font-weight: 500;
     text-align: left;
     padding: 10px 14px;
-    border: 1px solid #22262e;
+    border: 1px solid var(--color-network-border-soft);
 }
 
 .comptia-network-operations-page tbody td {
     padding: 10px 14px;
-    border: 1px solid #22262e;
-    color: var(--color-muted-foreground, #a8adb5);
+    border: 1px solid var(--color-network-border-soft);
+    color: var(--color-network-foreground-muted);
     vertical-align: top;
     overflow-wrap: anywhere;
 }
 
 .comptia-network-operations-page tbody tr td:first-child {
-    color: var(--color-foreground, #e8eaed);
+    color: var(--color-network-foreground);
     font-weight: 500;
     white-space: nowrap;
 }
@@ -221,16 +221,16 @@
 .comptia-network-operations-page .callout {
     display: flex;
     gap: 12px;
-    background: #1c2027;
-    border: 1px solid #22262e;
-    border-left: 3px solid #99f6e4;
+    background: var(--color-network-surface-elevated);
+    border: 1px solid var(--color-network-border-soft);
+    border-left: 3px solid var(--color-network-teal);
     border-radius: var(--radius-lg, 12px);
     padding: 16px 18px;
     margin: 20px 0 28px 0;
 }
 
 .comptia-network-operations-page .callout i {
-    color: #6ee7b7;
+    color: var(--color-network-success);
     font-size: 18px;
     margin-top: 2px;
     flex-shrink: 0;
@@ -242,16 +242,16 @@
 
 .comptia-network-operations-page .callout-body strong {
     font-weight: 500;
-    color: var(--color-foreground, #e8eaed);
+    color: var(--color-network-foreground);
 }
 
 .comptia-network-operations-page .note-box {
-    background: var(--color-card, #14171c);
-    border: 1px solid #22262e;
+    background: var(--color-network-surface);
+    border: 1px solid var(--color-network-border-soft);
     border-radius: var(--radius-lg, 12px);
     padding: 18px 20px;
     margin: 24px 0;
-    color: var(--color-muted-foreground, #a8adb5);
+    color: var(--color-network-foreground-muted);
     font-size: 14px;
 }
 
@@ -260,8 +260,8 @@
     justify-content: center;
     margin: 28px 0;
     padding: 20px;
-    background: var(--color-card, #14171c);
-    border: 1px solid #22262e;
+    background: var(--color-network-surface);
+    border: 1px solid var(--color-network-border-soft);
     border-radius: var(--radius-lg, 12px);
     overflow-x: auto;
     width: 100%;
@@ -288,8 +288,8 @@
     gap: 14px;
     align-items: flex-start;
     padding: 14px 16px;
-    background: var(--color-card, #14171c);
-    border: 1px solid #22262e;
+    background: var(--color-network-surface);
+    border: 1px solid var(--color-network-border-soft);
     border-radius: var(--radius-md, 8px);
 }
 
@@ -298,8 +298,8 @@
     width: 24px;
     height: 24px;
     border-radius: 50%;
-    background: #5b21b6;
-    color: #ede9fe;
+    background: var(--color-network-purple-deep);
+    color: var(--color-network-purple-soft);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -309,12 +309,12 @@
 
 .comptia-network-operations-page .step-list p {
     margin: 0;
-    color: var(--color-muted-foreground, #a8adb5);
+    color: var(--color-network-foreground-muted);
     font-size: 14px;
 }
 
 .comptia-network-operations-page .step-list strong {
-    color: var(--color-foreground, #e8eaed);
+    color: var(--color-network-foreground);
     font-weight: 500;
 }
 
@@ -330,19 +330,19 @@
     align-items: center;
     gap: 12px;
     padding: 14px 16px;
-    background: var(--color-card, #14171c);
-    border: 1px solid #22262e;
+    background: var(--color-network-surface);
+    border: 1px solid var(--color-network-border-soft);
     border-radius: var(--radius-md, 8px);
     text-decoration: none;
     transition: background 0.15s;
 }
 
 .comptia-network-operations-page .ref-card:hover {
-    background: #1c2027;
+    background: var(--color-network-surface-elevated);
 }
 
 .comptia-network-operations-page .ref-card i {
-    color: #7dd3fc;
+    color: var(--color-network-info);
     font-size: 18px;
     flex-shrink: 0;
 }
@@ -354,13 +354,13 @@
 }
 
 .comptia-network-operations-page .ref-card-title {
-    color: var(--color-foreground, #e8eaed);
+    color: var(--color-network-foreground);
     font-size: 14px;
     font-weight: 500;
 }
 
 .comptia-network-operations-page .ref-card-url {
-    color: var(--color-muted-foreground, #6b7280);
+    color: var(--color-network-foreground-faint);
     font-size: 13px;
     overflow-wrap: anywhere;
 }
@@ -368,8 +368,8 @@
 .comptia-network-operations-page footer {
     margin-top: 64px;
     padding-top: 24px;
-    border-top: 1px solid #1a1d23;
-    color: var(--color-muted-foreground, #6b7280);
+    border-top: 1px solid var(--color-network-border-soft);
+    color: var(--color-network-foreground-faint);
     font-size: 13px;
 }
 

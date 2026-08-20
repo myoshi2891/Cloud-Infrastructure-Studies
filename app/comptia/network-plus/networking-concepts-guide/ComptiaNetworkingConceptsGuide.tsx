@@ -109,11 +109,11 @@ export function ComptiaNetworkingConceptsGuide() {
                         <table className="data">
                             <thead>
                                 <tr>
-                                    <th>層番号</th>
-                                    <th>層の名前（英語）</th>
-                                    <th>日本語</th>
-                                    <th>主なPDU</th>
-                                    <th>代表的な例</th>
+                                    <th scope="col">層番号</th>
+                                    <th scope="col">層の名前（英語）</th>
+                                    <th scope="col">日本語</th>
+                                    <th scope="col">主なPDU</th>
+                                    <th scope="col">代表的な例</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -194,9 +194,9 @@ export function ComptiaNetworkingConceptsGuide() {
                         <table className="data">
                             <thead>
                                 <tr>
-                                    <th>機器</th>
-                                    <th>主に動作するOSI層</th>
-                                    <th>役割</th>
+                                    <th scope="col">機器</th>
+                                    <th scope="col">主に動作するOSI層</th>
+                                    <th scope="col">役割</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -257,8 +257,8 @@ export function ComptiaNetworkingConceptsGuide() {
                         <table className="data">
                             <thead>
                                 <tr>
-                                    <th>用語</th>
-                                    <th>説明</th>
+                                    <th scope="col">用語</th>
+                                    <th scope="col">説明</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -292,8 +292,8 @@ export function ComptiaNetworkingConceptsGuide() {
                         <table className="data">
                             <thead>
                                 <tr>
-                                    <th>用語</th>
-                                    <th>説明</th>
+                                    <th scope="col">用語</th>
+                                    <th scope="col">説明</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -347,9 +347,9 @@ export function ComptiaNetworkingConceptsGuide() {
                         <table className="data">
                             <thead>
                                 <tr>
-                                    <th>モデル</th>
-                                    <th>説明</th>
-                                    <th>主な用途</th>
+                                    <th scope="col">モデル</th>
+                                    <th scope="col">説明</th>
+                                    <th scope="col">主な用途</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -375,10 +375,10 @@ export function ComptiaNetworkingConceptsGuide() {
                         <table className="data">
                             <thead>
                                 <tr>
-                                    <th>レイヤー</th>
-                                    <th>IaaS</th>
-                                    <th>PaaS</th>
-                                    <th>SaaS</th>
+                                    <th scope="col">レイヤー</th>
+                                    <th scope="col">IaaS</th>
+                                    <th scope="col">PaaS</th>
+                                    <th scope="col">SaaS</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -417,10 +417,10 @@ export function ComptiaNetworkingConceptsGuide() {
                         <table className="data">
                             <thead>
                                 <tr>
-                                    <th>プロトコル</th>
-                                    <th>ポート番号</th>
-                                    <th>トランスポート</th>
-                                    <th>用途</th>
+                                    <th scope="col">プロトコル</th>
+                                    <th scope="col">ポート番号</th>
+                                    <th scope="col">トランスポート</th>
+                                    <th scope="col">用途</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -551,8 +551,8 @@ export function ComptiaNetworkingConceptsGuide() {
                         <table className="data">
                             <thead>
                                 <tr>
-                                    <th>プロトコル</th>
-                                    <th>説明</th>
+                                    <th scope="col">プロトコル</th>
+                                    <th scope="col">説明</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -583,9 +583,9 @@ export function ComptiaNetworkingConceptsGuide() {
                         <table className="data">
                             <thead>
                                 <tr>
-                                    <th>種類</th>
-                                    <th>説明</th>
-                                    <th>典型的な用途</th>
+                                    <th scope="col">種類</th>
+                                    <th scope="col">説明</th>
+                                    <th scope="col">典型的な用途</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -653,8 +653,8 @@ export function ComptiaNetworkingConceptsGuide() {
                         <table className="data">
                             <thead>
                                 <tr>
-                                    <th>種類</th>
-                                    <th>内容</th>
+                                    <th scope="col">種類</th>
+                                    <th scope="col">内容</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -677,8 +677,8 @@ export function ComptiaNetworkingConceptsGuide() {
                         <table className="data">
                             <thead>
                                 <tr>
-                                    <th>種類</th>
-                                    <th>内容</th>
+                                    <th scope="col">種類</th>
+                                    <th scope="col">内容</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -717,8 +717,8 @@ export function ComptiaNetworkingConceptsGuide() {
                         <table className="data">
                             <thead>
                                 <tr>
-                                    <th>分類</th>
-                                    <th>内容</th>
+                                    <th scope="col">分類</th>
+                                    <th scope="col">内容</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -745,8 +745,8 @@ export function ComptiaNetworkingConceptsGuide() {
                         <table className="data">
                             <thead>
                                 <tr>
-                                    <th>コネクタ</th>
-                                    <th>主な用途</th>
+                                    <th scope="col">コネクタ</th>
+                                    <th scope="col">主な用途</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -839,11 +839,11 @@ export function ComptiaNetworkingConceptsGuide() {
                         <table className="data">
                             <thead>
                                 <tr>
-                                    <th>トポロジー</th>
-                                    <th>冗長性</th>
-                                    <th>拡張性</th>
-                                    <th>管理の複雑さ</th>
-                                    <th>代表的な利用場面</th>
+                                    <th scope="col">トポロジー</th>
+                                    <th scope="col">冗長性</th>
+                                    <th scope="col">拡張性</th>
+                                    <th scope="col">管理の複雑さ</th>
+                                    <th scope="col">代表的な利用場面</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -907,8 +907,8 @@ export function ComptiaNetworkingConceptsGuide() {
                         <table className="data">
                             <thead>
                                 <tr>
-                                    <th>区分</th>
-                                    <th>内容</th>
+                                    <th scope="col">区分</th>
+                                    <th scope="col">内容</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -939,11 +939,11 @@ export function ComptiaNetworkingConceptsGuide() {
                         <table className="data">
                             <thead>
                                 <tr>
-                                    <th>クラス</th>
-                                    <th>先頭ビットパターン</th>
-                                    <th>範囲（先頭オクテット）</th>
-                                    <th>デフォルトマスク</th>
-                                    <th>用途</th>
+                                    <th scope="col">クラス</th>
+                                    <th scope="col">先頭ビットパターン</th>
+                                    <th scope="col">範囲（先頭オクテット）</th>
+                                    <th scope="col">デフォルトマスク</th>
+                                    <th scope="col">用途</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -992,9 +992,9 @@ export function ComptiaNetworkingConceptsGuide() {
                         <table className="data">
                             <thead>
                                 <tr>
-                                    <th>CIDR表記</th>
-                                    <th>サブネットマスク</th>
-                                    <th>利用可能ホスト数</th>
+                                    <th scope="col">CIDR表記</th>
+                                    <th scope="col">サブネットマスク</th>
+                                    <th scope="col">利用可能ホスト数</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -1049,10 +1049,10 @@ export function ComptiaNetworkingConceptsGuide() {
                         <table className="data">
                             <thead>
                                 <tr>
-                                    <th>部門</th>
-                                    <th>必要ホスト数</th>
-                                    <th>割り当てるCIDR</th>
-                                    <th>割り当て範囲（例）</th>
+                                    <th scope="col">部門</th>
+                                    <th scope="col">必要ホスト数</th>
+                                    <th scope="col">割り当てるCIDR</th>
+                                    <th scope="col">割り当て範囲（例）</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -1106,8 +1106,8 @@ export function ComptiaNetworkingConceptsGuide() {
                         <table className="data">
                             <thead>
                                 <tr>
-                                    <th>特性</th>
-                                    <th>内容</th>
+                                    <th scope="col">特性</th>
+                                    <th scope="col">内容</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -1143,8 +1143,8 @@ export function ComptiaNetworkingConceptsGuide() {
                         <table className="data">
                             <thead>
                                 <tr>
-                                    <th>原則</th>
-                                    <th>内容</th>
+                                    <th scope="col">原則</th>
+                                    <th scope="col">内容</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -1175,8 +1175,8 @@ export function ComptiaNetworkingConceptsGuide() {
                         <table className="data">
                             <thead>
                                 <tr>
-                                    <th>分類</th>
-                                    <th>内容</th>
+                                    <th scope="col">分類</th>
+                                    <th scope="col">内容</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -1199,8 +1199,8 @@ export function ComptiaNetworkingConceptsGuide() {
                         <table className="data">
                             <thead>
                                 <tr>
-                                    <th>移行技術</th>
-                                    <th>内容</th>
+                                    <th scope="col">移行技術</th>
+                                    <th scope="col">内容</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -1225,8 +1225,8 @@ export function ComptiaNetworkingConceptsGuide() {
                         <table className="data">
                             <thead>
                                 <tr>
-                                    <th>ステップ</th>
-                                    <th>一言でまとめると</th>
+                                    <th scope="col">ステップ</th>
+                                    <th scope="col">一言でまとめると</th>
                                 </tr>
                             </thead>
                             <tbody>

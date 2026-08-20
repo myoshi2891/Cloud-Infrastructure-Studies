@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState, useCallback } from 'react';
-import { NAV_ITEMS } from './constants';
+import { NAV_ITEMS, type NavItem } from './constants';
 
 /**
  * CompTIA Network+ Networking Concepts ガイドのサイドバーナビゲーションコンポーネント。
@@ -64,119 +64,26 @@ export function NavBar() {
             </div>
             {' '}
             <nav aria-label="目次ナビゲーション">
-                <a
-                    href="#intro"
-                    className={activeId === 'intro' ? 'active' : ''}
-                    onClick={(e) => handleClick(e, 'intro')}
-                >
-                    <i className="ti ti-info-circle"></i>
-                    {' '}
-                    はじめに
-                </a>
-                {' '}
-                <div className="nav-group-label">Step by step</div>
-                {' '}
-                <a
-                    href="#step1"
-                    className={activeId === 'step1' ? 'active' : ''}
-                    onClick={(e) => handleClick(e, 'step1')}
-                >
-                    <i className="ti ti-layers-intersect"></i>
-                    {' '}
-                    1. OSI参照モデル
-                </a>
-                {' '}
-                <a
-                    href="#step2"
-                    className={activeId === 'step2' ? 'active' : ''}
-                    onClick={(e) => handleClick(e, 'step2')}
-                >
-                    <i className="ti ti-router"></i>
-                    {' '}
-                    2. ネットワーク機器
-                </a>
-                {' '}
-                <a
-                    href="#step3"
-                    className={activeId === 'step3' ? 'active' : ''}
-                    onClick={(e) => handleClick(e, 'step3')}
-                >
-                    <i className="ti ti-cloud"></i>
-                    {' '}
-                    3. クラウドの概念
-                </a>
-                {' '}
-                <a
-                    href="#step4"
-                    className={activeId === 'step4' ? 'active' : ''}
-                    onClick={(e) => handleClick(e, 'step4')}
-                >
-                    <i className="ti ti-plug-connected"></i>
-                    {' '}
-                    4. ポート/プロトコル
-                </a>
-                {' '}
-                <a
-                    href="#step5"
-                    className={activeId === 'step5' ? 'active' : ''}
-                    onClick={(e) => handleClick(e, 'step5')}
-                >
-                    <i className="ti ti-cable"></i>
-                    {' '}
-                    5. 伝送メディア
-                </a>
-                {' '}
-                <a
-                    href="#step6"
-                    className={activeId === 'step6' ? 'active' : ''}
-                    onClick={(e) => handleClick(e, 'step6')}
-                >
-                    <i className="ti ti-topology-star-3"></i>
-                    {' '}
-                    6. トポロジー
-                </a>
-                {' '}
-                <a
-                    href="#step7"
-                    className={activeId === 'step7' ? 'active' : ''}
-                    onClick={(e) => handleClick(e, 'step7')}
-                >
-                    <i className="ti ti-binary"></i>
-                    {' '}
-                    7. IPv4アドレッシング
-                </a>
-                {' '}
-                <a
-                    href="#step8"
-                    className={activeId === 'step8' ? 'active' : ''}
-                    onClick={(e) => handleClick(e, 'step8')}
-                >
-                    <i className="ti ti-rocket"></i>
-                    {' '}
-                    8. 進化する環境
-                </a>
-                {' '}
-                <div className="nav-group-label">Wrap up</div>
-                {' '}
-                <a
-                    href="#summary"
-                    className={activeId === 'summary' ? 'active' : ''}
-                    onClick={(e) => handleClick(e, 'summary')}
-                >
-                    <i className="ti ti-checklist"></i>
-                    {' '}
-                    まとめ
-                </a>
-                {' '}
-                <a
-                    href="#references"
-                    className={activeId === 'references' ? 'active' : ''}
-                    onClick={(e) => handleClick(e, 'references')}
-                >
-                    <i className="ti ti-books"></i>
-                    {' '}
-                    参考文献・出典
-                </a>
+                {NAV_ITEMS.map((item: NavItem, index: number) => (
+                    <React.Fragment key={item.id}>
+                        {item.group && item.group !== NAV_ITEMS[index - 1]?.group && (
+                            <>
+                                <div className="nav-group-label">{item.group}</div>
+                                {' '}
+                            </>
+                        )}
+                        <a
+                            href={`#${item.id}`}
+                            className={activeId === item.id ? 'active' : ''}
+                            onClick={(e) => handleClick(e, item.id)}
+                        >
+                            <i className={item.icon}></i>
+                            {' '}
+                            {item.label}
+                        </a>
+                        {' '}
+                    </React.Fragment>
+                ))}
             </nav>
         </aside>
     );
