@@ -715,7 +715,7 @@ export function PcneSection3LoadBalancingGuide() {
                     <p>
                         この分離により、プラットフォームチームがGatewayのインフラ設定を管理し、アプリケーションチームがクラスタ全体の権限を持たずに自分たちのHTTPRouteだけを管理する、という役割分担が可能になります。GKE
                         Gateway
-                        controllerは常にGCE_VM_IP_PORTゾーンNEGバックエンドを使用します。IngressのようにPodのreadiness probeからパラメータを推測はしませんが、標準パス <code>/</code> と既定値を使うヘルスチェックが自動作成されます（HealthCheckPolicyリソース自体は自動作成されません）。そのためHealthCheckPolicyは必須ではなく、アプリケーションが <code>/</code> にHTTP 200を返さない場合や、追加のパス、ヘッダー、タイムアウトなどの既定値を変更する場合にのみHealthCheckPolicyを設定します。
+                        controllerは常にGCE_VM_IP_PORTゾーンNEGバックエンドを使用します。IngressのようにPodのreadiness probeからパラメータを推測はしませんが、標準パス <code>/</code> と既定値を使うヘルスチェックが自動作成されます（HealthCheckPolicyリソース自体は自動作成されません）。そのためHealthCheckPolicyは必須ではなく、アプリケーションが <code>/</code> にHTTP 200を返さない場合や、追加のパス、ヘッダー、タイムアウトなどの既定値を変更する場合にHealthCheckPolicyを設定します。<code>/</code> がHTTP 200を返す場合でも、readiness probeを独自のパスや間隔にチューニングしているならその設定はヘルスチェックへ反映されないため、同じ内容をHealthCheckPolicyで明示する必要があります。
                     </p>
                     <div className="table-scroll">
                         <table>
@@ -755,7 +755,7 @@ export function PcneSection3LoadBalancingGuide() {
                                 <tr className="even">
                                     <td>ヘルスチェック</td>
                                     <td>パラメータを自動推測</td>
-                                    <td>標準の <code>/</code> と既定値を使うヘルスチェックが自動的に使われる（HealthCheckPolicyは作成されない）。追加パス・ヘッダー・タイムアウトなどを変更する場合のみHealthCheckPolicyを使用</td>
+                                    <td>標準の <code>/</code> と既定値を使うヘルスチェックが自動的に使われる（HealthCheckPolicyは作成されない）。追加パス・ヘッダー・タイムアウトなどを変更する場合や、readiness probeをチューニングしている場合はHealthCheckPolicyで明示する</td>
                                 </tr>
                             </tbody>
                         </table>
