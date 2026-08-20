@@ -35,6 +35,11 @@
  *      図のラベルはレイアウト上どうしても短縮せざるを得ないが、
  *      短縮した語句が本文にも図にも存在しないなら、それは純粋な文言の消失である。
  *      図ごとのラベル差分は warnings として別途出力する。
+ *
+ *   4. 引用ブロック（`> …`、GitHub alert の `> [!NOTE]` を含む）は本文として照合する。
+ *      このデザインでは引用が `.callout-practice` へ再型付けされるため、照合対象から
+ *      外すとベストプラクティスや注意書きを丸ごと落としても監査が通ってしまう。
+ *      種別マーカー（`[!NOTE]` 等）だけはページ側に文言として現れないため除外する。
  */
 
 import { readFileSync } from "node:fs";
@@ -362,10 +367,29 @@ function inventoryMarkdown(src) {
     if (
       line.trim() === "" ||
       /^\s*(?:---+|___+|\*\*\*+)\s*$/.test(line) ||
-      /^\s*>/.test(line) ||
       /^\s*\|?\s*:?-{3,}/.test(line)
     ) {
       flushParagraph();
+      continue;
+    }
+    // 引用ブロックは `.callout-practice` へ再型付けされる本文である（設計上の判断 4）。
+    // 引用記号だけを外して通常の段落 / リスト項目として照合する。
+    const quote = /^\s*>\s?(.*)$/.exec(line);
+    if (quote) {
+      const inner = quote[1].trim();
+      // GitHub alert のマーカー（`[!NOTE]` 等）はページ側に文言として現れない。
+      // callout の種別を表す記法であり、本文ではないので照合対象から外す。
+      if (inner === "" || /^\[![A-Z]+\]$/.test(inner)) {
+        flushParagraph();
+        continue;
+      }
+      const quotedList = /^(?:[-*+]|\d+\.)\s+(\S.*)$/.exec(inner);
+      if (quotedList) {
+        flushParagraph();
+        listTexts.push(normalize(stripMarkdownInline(quotedList[1])));
+        continue;
+      }
+      paragraphLines.push(inner);
       continue;
     }
     paragraphLines.push(line.trim());
@@ -442,16 +466,22 @@ function extractNavTargets(src) {
 function inventoryHtml(src) {
   const diagrams = extractDiagramEntries(src);
   const navTargets = extractNavTargets(src);
-  const headingIds = [...src.matchAll(/<h[23]\s[^>]*id="([^"]+)"/g)].map((match) =>
-    decodeURIComponent(match[1])
-  );
 
   // 本文は <style> / <script> を除いた領域から採る。
   // 脚注参照は `[^12]` の対応物なので、原本側の除去と対称になるよう落とす
   // （落とした分は footnoteRefMismatches で別途照合する）。
+  // 閉じ tag の空白・改行を許容するのは extractFootnoteRefs と同じ理由である。
+  // 生成 HTML は整形の都合で `</a\n>` の形に折り返されるため、`</a>` 決め打ちだと
+  // その参照から次の `</a>` までを丸ごと飲み込み、転写済みの本文を消失扱いしてしまう。
   const body = src
     .replace(/<(script|style)\b[\s\S]*?<\/\1>/gi, " ")
-    .replace(/<a\s[^>]*class="footnote-ref"[\s\S]*?<\/a>/gi, "");
+    .replace(/<a\s[^>]*class="footnote-ref"[\s\S]*?<\/a\s*>/gi, "");
+
+  // 見出し id も headings と同じ本文領域から採る。走査範囲が食い違うと、
+  // 一方だけが拾った見出しがアンカーの三者照合で偽の指摘になる。
+  const headingIds = [...body.matchAll(/<h[23]\s[^>]*id="([^"]+)"/g)].map((match) =>
+    decodeURIComponent(match[1])
+  );
 
   const referenceTexts = [...body.matchAll(/<div class="txt">([\s\S]*?)<\/div>/g)].map((match) =>
     normalize(stripMarkup(match[1]))

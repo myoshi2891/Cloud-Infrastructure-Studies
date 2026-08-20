@@ -27,7 +27,7 @@ description: >
 
 - **起動**: 下記トリガー語句が出たら、自動発火しない環境では本ファイルを明示的に開いてから作業する。
 - **参照ファイル・雛形は自動で開かれない**。§1 の 7 ファイルと
-  `templates/skeleton.html.tmpl` を**手動で開く**。開かずに markup を推測しない。
+  `.agents/skills/md-to-html/templates/skeleton.html.tmpl` を**手動で開く**。開かずに markup を推測しない。
 - **同梱スクリプトは依存パッケージ無しで動く**。実行は `bun` に統一する
   （`bun .agents/skills/md-to-html/scripts/audit_content_parity.mjs …`）。
 - **判定は終了コード**で行う（出力の目視ではなく `echo "exit=$?"`）。
@@ -85,8 +85,8 @@ description: >
 4. 原本 `<ガイド名>.md` — **全文**。要約して読まない
 5. `Gcp-pca-section4-process-optimization.html` — デザインの正
    （少なくとも `<body>` 冒頭と 1 セクション分）
-6. `references/design-system.md` — コンポーネントの確定 markup
-7. `references/conversion-rules.md` — 変換規則の全表
+6. `.agents/skills/md-to-html/references/design-system.md` — コンポーネントの確定 markup
+7. `.agents/skills/md-to-html/references/conversion-rules.md` — 変換規則の全表
 
 ## 2. 入力と出力
 
@@ -192,7 +192,7 @@ echo "exit=$?"   # 0 であること（CSS 変数・CSS ルール・CDN・JS が
 > [!IMPORTANT]
 > **1 回の `Edit` で挿入する `##` セクションは最大 3 個まで。**
 > 大きな書き込みは脱落を招く。原本の該当箇所を `Read` してから、
-> `references/conversion-rules.md` の対応表どおりに変換する。
+> `.agents/skills/md-to-html/references/conversion-rules.md` の対応表どおりに変換する。
 
 ### Phase 3: 後半の本文と参考文献
 
@@ -223,7 +223,7 @@ design_exit=$?; echo "design  exit=$design_exit"
 
 `⚠️` の警告は blocking ではないが、**1 件ずつ本文ごと落ちていないか目視し**、
 正当と判断した理由をコミットメッセージ本文に書き残す。
-警告カテゴリの意味は `references/conversion-rules.md` §8 を参照。
+警告カテゴリの意味は `.agents/skills/md-to-html/references/conversion-rules.md` §8 を参照。
 
 ### Phase 5: 最終確認とコミット
 
@@ -295,11 +295,11 @@ Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
 - Mermaid ラベルの語句を削り、本文にも残さないこと
 - 原本に存在しない要素の追加（監査を通すための捏造を含む）
 - 数値（出題比率・料金・問題数）の推測による書き換え
-- 全角括弧の半角化などの本文の正規化（`references/conversion-rules.md` §6）
+- 全角括弧の半角化などの本文の正規化（`.agents/skills/md-to-html/references/conversion-rules.md` §6）
 
 ### デザイン
 
-- `references/design-system.md` に無い class の発明
+- `.agents/skills/md-to-html/references/design-system.md` に無い class の発明
 - CSS 変数の値の改変、コンポーネント CSS の削除
 - 見出し `id` の英語化・kebab-case 化
 - `<svg>` への幅・高さ指定（描画 JS の後処理と競合する）
@@ -405,11 +405,11 @@ bun run test:md-to-html
 
 | ファイル | 役割 |
 |---|---|
-| `templates/skeleton.html.tmpl` | CSS/JS を原本から逐語保持したページ雛形 |
-| `references/design-system.md` | コンポーネントの確定 markup とトークン一覧 |
-| `references/conversion-rules.md` | MD → HTML の変換規則の全表 |
-| `scripts/audit_content_parity.mjs` | 転写漏れ検出ゲート |
-| `scripts/audit_design_parity.mjs` | デザイン漏れ検出ゲート |
+| `.agents/skills/md-to-html/templates/skeleton.html.tmpl` | CSS/JS を原本から逐語保持したページ雛形 |
+| `.agents/skills/md-to-html/references/design-system.md` | コンポーネントの確定 markup とトークン一覧 |
+| `.agents/skills/md-to-html/references/conversion-rules.md` | MD → HTML の変換規則の全表 |
+| `.agents/skills/md-to-html/scripts/audit_content_parity.mjs` | 転写漏れ検出ゲート |
+| `.agents/skills/md-to-html/scripts/audit_design_parity.mjs` | デザイン漏れ検出ゲート |
 | `.agents/skills/fix-mermaid/SKILL.md` | Mermaid の構文エラー・配色・サイズの修正 |
 | `.agents/skills/markdown-formatter/SKILL.md` | 原本 Markdown 側の書式修正 |
 | `.agents/skills/html-to-nextjs-migration/SKILL.md` | 生成 HTML を `app/` 配下へ移行する場合 |

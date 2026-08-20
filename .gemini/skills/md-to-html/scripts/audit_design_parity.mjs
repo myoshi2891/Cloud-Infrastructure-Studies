@@ -266,12 +266,13 @@ function collectChecklists(src) {
   const parts = body.split(/<div class="checklist-card">/).slice(1);
   for (const part of parts) {
     const advertised = /<span class="count">([^<]*)<\/span>/.exec(part)?.[1] ?? null;
-    const declared =
-      advertised === null ? null : Number(/(\d+)\s*完了/.exec(advertised)?.[1] ?? NaN);
+    // 「表記が無い」と「表記はあるが数値を読めない」を区別する。後者を null へ潰すと
+    // 表記の崩れたカードで実数照合そのものが黙って無効化される（readPillCount と同じ理由）。
+    const declaredMatch = advertised === null ? null : /(\d+)\s*完了/.exec(advertised);
     const list = /<ul\b[^>]*>([\s\S]*?)<\/ul>/.exec(part);
     cards.push({
       advertised,
-      declared: Number.isNaN(declared) ? null : declared,
+      declared: declaredMatch === null ? null : Number(declaredMatch[1]),
       actual: (list === null ? "" : list[1]).match(/type="checkbox"/g)?.length ?? 0,
     });
   }
@@ -496,14 +497,31 @@ function audit(page, reference, isTemplate) {
   });
 
   const referenceIdSet = new Set(pageReferenceCardIds);
-  for (const match of page.matchAll(/class="footnote-ref"\s+href="#([^"]+)"/g)) {
-    if (!referenceIdSet.has(match[1])) {
-      add("structure", `参照先の無い脚注があります: #${match[1]}`);
+  // 脚注は属性の並び順で見分けない。整形によって `href` が `class` より前へ来ることがあり、
+  // 並び順に依存した走査はその脚注を素通りさせてリンク切れを見逃す。
+  for (const tag of page.match(/<a\s[^>]*>/g) ?? []) {
+    if (!/\bclass="[^"]*\bfootnote-ref\b[^"]*"/.test(tag)) continue;
+    const href = /\bhref="([^"]*)"/.exec(tag)?.[1] ?? null;
+    if (href === null) {
+      add("structure", `脚注に href がありません: ${tag.replace(/\s+/g, " ")}`);
+      continue;
+    }
+    const target = href.replace(/^#/, "");
+    if (!referenceIdSet.has(target)) {
+      add("structure", `参照先の無い脚注があります: #${target}`);
     }
   }
 
   for (const card of collectChecklists(page)) {
-    if (card.declared !== null && card.declared !== card.actual) {
+    if (card.advertised === null) continue;
+    if (card.declared === null) {
+      add(
+        "structure",
+        `チェックリストの静的カウントを読み取れません: 表記 "${card.advertised}" / 実際 ${card.actual} 個`
+      );
+      continue;
+    }
+    if (card.declared !== card.actual) {
       add(
         "structure",
         `チェックリストの静的カウントが実数と一致しません: 表記 "${card.advertised}" / 実際 ${card.actual} 個`

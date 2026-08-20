@@ -513,6 +513,48 @@ test("参照先の無い脚注を検出する", () => {
   );
 });
 
+test("属性の並び順が違っても参照先の無い脚注を検出する", () => {
+  // 整形によって href が class より前に来ることがある。並び順に依存した走査は
+  // そのとき脚注そのものを見つけられず、リンク切れが素通りする。
+  const result = audit(
+    BASELINE.replace(
+      '<a class="footnote-ref" href="#ref1" id="fnref1" role="doc-noteref">',
+      '<a href="#ref9" class="footnote-ref" id="fnref1" role="doc-noteref">'
+    )
+  );
+
+  assert.equal(result.status, 1);
+  assert.ok(
+    category(result.json, "structure").some((detail) =>
+      detail.includes("参照先の無い脚注があります: #ref9")
+    )
+  );
+});
+
+test("href を持たない脚注を検出する", () => {
+  const result = audit(BASELINE.replace('href="#ref1" id="fnref1"', 'id="fnref1"'));
+
+  assert.equal(result.status, 1);
+  assert.ok(
+    category(result.json, "structure").some((detail) =>
+      detail.includes("脚注に href がありません")
+    )
+  );
+});
+
+test("チェックリストの静的カウントを読み取れなければ検出する", () => {
+  // 読み取れないときに黙って飛ばすと、表記が崩れたカードで実数照合ごと無効化される。
+  // .pill と同じく、件数不明であること自体を構造の指摘として立てる。
+  const result = audit(BASELINE.replace("0 / 2 完了", "未着手"));
+
+  assert.equal(result.status, 1);
+  assert.ok(
+    category(result.json, "structure").some((detail) =>
+      detail.includes("チェックリストの静的カウントを読み取れません")
+    )
+  );
+});
+
 test("チェックリストの静的カウントが実数と食い違えば検出する", () => {
   const result = audit(BASELINE.replace("0 / 2 完了", "0 / 20 完了"));
 

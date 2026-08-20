@@ -279,6 +279,21 @@ test("同じ脚注を 2 回参照する原本で参照が 1 つ落ちていれ�
   );
 });
 
+test("閉じ tag が改行で折り返された脚注参照でも本文を巻き込まない", () => {
+  // 生成 HTML は整形の都合で `</a\n>` の形に折り返される。本文側の除去だけが
+  // `</a>` 決め打ちだと、この参照から次の `</a>` までを丸ごと飲み込み、
+  // 実際には転写済みの本文が「段落の消失」として報告される。
+  const { markdown, html } = footnoteFixture(
+    '<a class="footnote-ref" href="#ref1" id="fnref1" role="doc-noteref"><sup>1</sup></a>'
+      + '<a class="footnote-ref" href="#ref1" id="fnref2" role="doc-noteref"><sup>1</sup></a\n>'
+  );
+  const result = audit(markdown, html);
+
+  assert.deepEqual(result.json.missingParagraphs, []);
+  assert.deepEqual(result.json.missingReferences, []);
+  assert.equal(result.status, 0);
+});
+
 test("参照が数どおり揃っていれば脚注の指摘を出さない", () => {
   const { markdown, html } = footnoteFixture(
     '<a class="footnote-ref" href="#ref1" id="fnref1" role="doc-noteref"><sup>1</sup></a>'
@@ -393,6 +408,73 @@ test("外部リンクが落ちていれば検出する", () => {
 
   assert.equal(result.status, 1);
   assert.equal(result.json.missingLinks.length, 1);
+});
+
+// --------------------------------------------------------------------------
+// 引用ブロック（GitHub alert を含む）
+// --------------------------------------------------------------------------
+
+const QUOTE_MD = `# タイトル
+
+## 目次
+
+- [1. 節](#1-節)
+
+## 1. 節
+
+> [!NOTE]
+> 本番環境では専用のサービスアカウントを用意し、最小権限のみを付与すること。
+
+> **ベストプラクティス**: 監査ログは別プロジェクトへ集約し、保持期間を明示する。
+`;
+
+/**
+ * Builds the page for {@link QUOTE_MD} with the quoted wording under caller control.
+ * @param {string} calloutBody - The markup carrying the quoted wording.
+ * @returns {string} The complete HTML fixture.
+ */
+function quotePage(calloutBody) {
+  return page(
+    `
+<h1>タイトル</h1>
+<h2 id="1-節">1. 節</h2>
+<div class="callout-practice"><div class="icon">✓</div><div class="body">${calloutBody}</div></div>`,
+    [],
+    '<a href="#1-節">1. 節</a>'
+  );
+}
+
+test("引用ブロックの本文が転写されていれば漏れ扱いしない", () => {
+  // `[!NOTE]` のマーカー自体はページ側に文言として現れない。これを段落として
+  // 数えると、正しく転写されたページが必ず不一致と判定されてしまう。
+  const result = audit(
+    QUOTE_MD,
+    quotePage(
+      '<p>本番環境では専用のサービスアカウントを用意し、最小権限のみを付与すること。</p>'
+        + '<div class="label">ベストプラクティス</div>'
+        + '<p>監査ログは別プロジェクトへ集約し、保持期間を明示する。</p>'
+    )
+  );
+
+  assert.deepEqual(result.json.missingParagraphs, []);
+  assert.equal(result.status, 0);
+});
+
+test("引用ブロックの本文が落ちていれば検出する", () => {
+  // callout へ再型付けされる引用は本文そのものである。照合対象から外すと、
+  // ベストプラクティスや注意書きを丸ごと落としても監査が通ってしまう。
+  const result = audit(
+    QUOTE_MD,
+    quotePage(
+      '<div class="label">ベストプラクティス</div>'
+        + '<p>監査ログは別プロジェクトへ集約し、保持期間を明示する。</p>'
+    )
+  );
+
+  assert.equal(result.status, 1);
+  assert.deepEqual(result.json.missingParagraphs, [
+    "本番環境では専用のサービスアカウントを用意し、最小権限のみを付与すること。",
+  ]);
 });
 
 // --------------------------------------------------------------------------
