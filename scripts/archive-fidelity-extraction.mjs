@@ -177,7 +177,7 @@ export const snapshotPlacement = (root, selector) =>
         kind:
             element.matches('table') ? 'table'
             : element.matches('pre, .code-block') ? 'code'
-            : element.matches('figure, .diagram-block, .diagram-wrapper') ? 'diagram'
+            : element.matches('figure, .diagram-block, .diagram-wrapper, .diagram-wrap, .mermaid-wrap') ? 'diagram'
             : 'supplemental',
     }));
 

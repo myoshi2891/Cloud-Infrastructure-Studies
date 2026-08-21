@@ -64,6 +64,11 @@ export const FIDELITY_PAGES = {
         source: 'archive/Cisco/html/ccna/Ccna-network-access-guide.html',
         sourceCommit: '7d5d3ad^',
         textSelector: 'main h1, main h2, main h3, main p, main li, main th, main td, main a',
+        tables: true,
+        supplementalSelector: '.callout, .diagram-caption',
+        // 図のラッパーは移行元が .diagram-wrap、移行先が .mermaid-wrap。両方を選び、
+        // それぞれの側では片方だけが一致するため、配置列は同じ長さ・同じ kind になる。
+        placementSelector: 'table, .callout, .diagram-wrap, .mermaid-wrap',
     },
     'ccna-automation-infrastructure-and-automation': {
         source: 'archive/Cisco/html/ccna/Ccna-automation-infrastructure-and-automation.html',

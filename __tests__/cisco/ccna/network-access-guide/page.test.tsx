@@ -14,7 +14,12 @@ import CcnaNetworkAccessGuide from '@/app/cisco/ccna/network-access-guide/CcnaNe
 import NavBar from '@/app/cisco/ccna/network-access-guide/NavBar';
 import { DIAGRAMS } from '@/app/cisco/ccna/network-access-guide/constants';
 import fidelity from '@/docs/migration-inventory/ccna-network-access-guide.fidelity.json';
-import { expectTextFidelity } from '../archive-fidelity';
+import {
+    expectElementPlacementFidelity,
+    expectSupplementalFidelity,
+    expectTableFidelity,
+    expectTextFidelity,
+} from '../archive-fidelity';
 
 // Mock MermaidDiagram
 vi.mock('@/components/MermaidDiagram', () => ({
@@ -83,6 +88,22 @@ describe('CCNA Network Access Guide Page - Automated 100% Fidelity & Structural 
         const { container } = render(<CcnaNetworkAccessGuide />);
 
         expectTextFidelity(fidelity.texts, container);
+    });
+
+    it('preserves every table cell, supplemental item, and element placement', () => {
+        const { container } = render(<CcnaNetworkAccessGuide />);
+
+        // 表は結合属性（colspan / rowspan）とセルの並び順まで移行元と一致すること
+        expectTableFidelity(fidelity.tables, container);
+        // コールアウトと図キャプションは、所属セクションと本文まで一致すること
+        expectSupplementalFidelity(fidelity.supplemental, container, '.callout, .diagram-caption');
+        // 表・図・補足の並び順が、セクション単位で移行元と一致すること
+        // （図のラッパーは移行元 .diagram-wrap / 移行先 .mermaid-wrap の双方を選択する）
+        expectElementPlacementFidelity(
+            fidelity.placements,
+            container,
+            'table, .callout, .diagram-wrap, .mermaid-wrap',
+        );
     });
 
     it('renders NavBar component with TOC links', () => {
