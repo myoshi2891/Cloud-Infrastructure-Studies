@@ -162,6 +162,7 @@
 }
 
 .pca-page .main ul {
+    list-style-type: disc !important;
     color: var(--color-guide-foreground);
     padding-left: 26px;
     margin: 14px 0;
