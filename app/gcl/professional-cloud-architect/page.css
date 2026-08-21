@@ -161,7 +161,7 @@
     margin: 14px 0;
 }
 
-.pca-page .main ul:not(.checklist-list) {
+.pca-page .main ul {
     list-style-type: disc !important;
     color: var(--color-guide-foreground);
     padding-left: 26px;
@@ -370,14 +370,18 @@
     font-weight: 700;
 }
 
-.pca-page ul.checklist-list {
+.pca-page .main ul.checklist-list,
+.pca-page .main .checklist-card ul {
     list-style: none !important;
     list-style-type: none !important;
     padding-left: 0 !important;
     margin: 0;
 }
 
-.pca-page ul.checklist-list li {
+.pca-page .main ul.checklist-list li,
+.pca-page .main .checklist-card li {
+    list-style: none !important;
+    list-style-type: none !important;
     margin: 2px 0;
 }
 
@@ -459,14 +463,18 @@
     color: var(--color-guide-foreground) !important;
 }
 
-.pca-page .ref-card ul {
+.pca-page .main .ref-grid ul,
+.pca-page .main .ref-card ul {
     list-style: none !important;
     list-style-type: none !important;
     padding-left: 0 !important;
     margin: 0;
 }
 
-.pca-page .ref-card li {
+.pca-page .main .ref-grid li,
+.pca-page .main .ref-card li {
+    list-style: none !important;
+    list-style-type: none !important;
     margin: 8px 0;
 }
 
