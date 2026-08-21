@@ -21,7 +21,7 @@ const Diagram = memo(function Diagram({ id, label }: DiagramProps) {
 });
 
 /**
- * CompTIA Network+ (N10-009) Networking Concepts ステップバイステップガイド
+ * CompTIA Network+（N10-009）Domain 1.0「Networking Concepts」を8ステップで学べる日本語ガイドを表示します。
  */
 export function ComptiaNetworkingConceptsGuide() {
     return (

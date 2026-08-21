@@ -87,8 +87,8 @@ function normalize(raw) {
 }
 
 /**
- * Normalizes display text into a comparison key that ignores whitespace, heading numbering, punctuation, and letter case.
- * @param {string} raw - The display text to normalize.
+ * Creates a case-insensitive comparison key from display text by removing whitespace, heading numbering, and punctuation.
+ * @param {string} raw - The display text to convert.
  * @return {string} The normalized comparison key.
  */
 function matchKey(raw) {
@@ -404,13 +404,9 @@ function inventoryMarkdown(src) {
 }
 
 /**
- * Extracts the Mermaid sources the page carries inline.
- *
- * 本 repo の生成 HTML は `pre.mermaid` に直書きする（`var DIAGRAMS` は使わない）。
- * 中身は実体参照でエスケープされているため、照合前にデコードする。
- *
+ * Extracts inline Mermaid diagrams from HTML in document order.
  * @param {string} src - The complete HTML source.
- * @returns {Array<{id: string, source: string}>} The diagram sources in document order.
+ * @return {Array<{id: string, source: string}>} The extracted diagrams with sequential identifiers and decoded source text.
  */
 function extractDiagramEntries(src) {
   return [...src.matchAll(/<pre class="mermaid">([\s\S]*?)<\/pre\s*>/g)].map((match, index) => ({
@@ -579,7 +575,7 @@ function missingSegments(text, pageText) {
 }
 
 /**
- * Audits the generated page against the Markdown source for missing content and structural mismatches.
+ * Compares Markdown and generated HTML inventories for missing content, structural mismatches, diagram differences, and unapproved colors.
  * @param {object} source - Inventory extracted from the Markdown source.
  * @param {object} page - Inventory extracted from the generated HTML page.
  * @returns {object} Comparison findings, element counts, diagram status, and a `blocking` flag.
@@ -818,8 +814,8 @@ function printFindings(title, items, format) {
 }
 
 /**
- * Audits Markdown and HTML content parity and reports the results.
- * @returns {number} `0` when no blocking differences are found, `1` when content is missing, or `2` when arguments or input files are invalid.
+ * Audits Markdown and HTML content parity and reports blocking differences.
+ * @returns {number} `0` if no blocking differences are found, `1` if parity issues are found, or `2` if arguments are missing or input files cannot be read.
  */
 function main() {
   const args = process.argv.slice(2);

@@ -270,9 +270,9 @@ function collectHeadingIds(src) {
 }
 
 /**
- * Collects the reference card identifiers.
- * @param {string} src - The document body (`extractBody` の戻り値)。
- * @returns {string[]} The `ref-card` ids in document order.
+ * Collects identifiers from reference cards in document order.
+ * @param {string} src - The document body to inspect.
+ * @return {string[]} The identifiers of elements with the `ref-card` class.
  */
 function collectReferenceCardIds(src) {
   const ids = [];
@@ -326,11 +326,11 @@ function readPillCount(src, label) {
 }
 
 /**
- * Runs every design parity check.
+ * Audits a page against a reference HTML document for design, asset, rendering, and structural parity.
  * @param {string} page - The page HTML source.
  * @param {string} reference - The reference HTML source.
- * @param {boolean} isTemplate - Whether the page is the skeleton template rather than a finished page.
- * @returns {{findings: Array<{category: string, detail: string}>, blocking: boolean}} The findings.
+ * @param {boolean} isTemplate - Whether the page is a skeleton template whose content markers and structure are exempt from validation.
+ * @returns {{findings: Array<{category: string, detail: string}>, blocking: boolean}} Findings grouped by category and whether any findings block parity.
  */
 function audit(page, reference, isTemplate) {
   const findings = [];
