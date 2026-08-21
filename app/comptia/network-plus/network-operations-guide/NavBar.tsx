@@ -18,7 +18,16 @@ const DEFAULT_ACTIVE_ID = NAV_ITEMS[0]?.id ?? 'overview';
  */
 function readHashSectionId(): string | null {
     if (typeof window === 'undefined') return null;
-    const id = decodeURIComponent(window.location.hash.replace(/^#/, ''));
+    const raw = window.location.hash.replace(/^#/, '');
+    // 壊れたパーセントエスケープ（例: "#%"）は decodeURIComponent が URIError を投げる。
+    // 例外を effect の外へ漏らすとマウント自体が失敗するため、ここで「該当なし」に倒す。
+    let id: string;
+    try {
+        id = decodeURIComponent(raw);
+    } catch (error) {
+        if (error instanceof URIError) return null;
+        throw error;
+    }
     return SECTION_IDS.includes(id) ? id : null;
 }
 
@@ -53,21 +62,30 @@ export function NavBar() {
 
         if (elements.length === 0) return;
 
+        // IntersectionObserver は「交差状態が変化した要素」だけを entries に載せる。
+        // 都度の entries だけで最上部を決めると、上方のセクションが交差したまま
+        // 下方のセクションだけが後続コールバックに現れた際に active が飛ぶ。
+        // 交差中の集合をコールバックをまたいで保持し、その中の最上部を採用する。
+        const intersectingTops = new Map<string, number>();
+
         const observer = new IntersectionObserver(
             (entries) => {
-                // 複数のセクションが同時に交差する。エントリ順に setActiveId を呼ぶと
-                // 最後に評価されたものが勝ち、active が下方のセクションへ飛ぶ。
-                // 交差中のうちビューポート最上部にあるものだけを採用する。
-                const topmost = entries
-                    .filter((entry) => entry.isIntersecting)
-                    .reduce<IntersectionObserverEntry | null>(
-                        (current, entry) =>
-                            current === null || entry.boundingClientRect.top < current.boundingClientRect.top
-                                ? entry
-                                : current,
-                        null,
-                    );
-                if (topmost !== null) setActiveId(topmost.target.id);
+                for (const entry of entries) {
+                    if (entry.isIntersecting) {
+                        intersectingTops.set(entry.target.id, entry.boundingClientRect.top);
+                        continue;
+                    }
+                    intersectingTops.delete(entry.target.id);
+                }
+
+                let topmostId: string | null = null;
+                let topmostTop = Number.POSITIVE_INFINITY;
+                for (const [id, top] of intersectingTops) {
+                    if (top >= topmostTop) continue;
+                    topmostId = id;
+                    topmostTop = top;
+                }
+                if (topmostId !== null) setActiveId(topmostId);
             },
             { rootMargin: '-20% 0px -70% 0px' },
         );

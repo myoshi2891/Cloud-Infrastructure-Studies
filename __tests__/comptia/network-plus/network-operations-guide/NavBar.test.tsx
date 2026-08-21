@@ -88,6 +88,35 @@ describe('network-operations-guide NavBar', () => {
         expect(linkFor('lifecycle')).not.toHaveAttribute('aria-current');
     });
 
+    it('上方のセクションが交差したままなら、下方のセクションだけの通知で active を奪われない', () => {
+        render(<NavBar />);
+
+        // IntersectionObserver は状態が変化した要素だけを通知する。
+        // domain-structure は交差したままなので、2 回目の通知には現れない。
+        act(() => {
+            observerCallback?.([entry('domain-structure', 120)]);
+        });
+        act(() => {
+            observerCallback?.([entry('lifecycle', 900)]);
+        });
+
+        expect(linkFor('domain-structure')).toHaveAttribute('aria-current', 'location');
+        expect(linkFor('lifecycle')).not.toHaveAttribute('aria-current');
+    });
+
+    it('上方のセクションが交差から外れたら下方のセクションへ active を移す', () => {
+        render(<NavBar />);
+
+        act(() => {
+            observerCallback?.([entry('domain-structure', 120), entry('lifecycle', 900)]);
+        });
+        act(() => {
+            observerCallback?.([entry('domain-structure', -400, false)]);
+        });
+
+        expect(linkFor('lifecycle')).toHaveAttribute('aria-current', 'location');
+    });
+
     it('交差していないエントリは active を書き換えない', () => {
         render(<NavBar />);
 
@@ -146,6 +175,13 @@ describe('network-operations-guide NavBar', () => {
         expect(window.location.hash).toBe('#lifecycle');
         expect(document.activeElement).toBe(target);
         expect(linkFor('lifecycle')).toHaveAttribute('aria-current', 'location');
+    });
+
+    it('壊れたパーセントエスケープのハッシュでも例外を投げず active を保つ', () => {
+        window.history.replaceState(null, '', '#%');
+
+        expect(() => render(<NavBar />)).not.toThrow();
+        expect(linkFor(NAV_ITEMS[0]!.id)).toHaveAttribute('aria-current', 'location');
     });
 
     it('存在しないハッシュでは active を書き換えない', () => {
