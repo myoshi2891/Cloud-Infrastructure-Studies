@@ -205,17 +205,18 @@ fidelity fixture の対象ページと抽出セレクタは `scripts/archive-fid
 **アーカイブを削除したあとに fixture を作り直す手順**（移行元は履歴から取り出せる）:
 
 ```bash
-# 1. 設定の sourceCommit から一時復元（/archive/ は .gitignore 済みなのでコミット対象にならない）
-mkdir -p "$(dirname <source>)"   # アーカイブ整理でディレクトリごと消えている場合に備える
-git show <sourceCommit>:<source> > <source>
-# 2. fixture を生成
+# 1. fixture を生成する。生成器は設定の sourceCommit が指すリビジョンから
+#    `git show <sha>:<source>` で移行元を直接読むため、作業ツリーへの一時復元は不要。
 bun scripts/gen-fidelity-fixture.mjs <slug>
-# 3. 復元した移行元を削除し、移行元が無い状態でテストが通ることを確認する
-rm <source>
+# 2. 移行元が無い状態でテストが通ることを確認する
 bun run test
 ```
 
-最後の「移行元を消した状態で緑になること」の確認は必須である。ここを飛ばすと、
+移行元を作業ツリーへ復元してはならない。復元物を読ませると fixture の中身と
+`sourceCommit` が別のリビジョンを指しうる（復元し忘れによる残留物・別リビジョンからの
+復元・手元での編集）。git から直接読むことで、この 2 つは常に同じ固定リビジョンに対応する。
+
+「移行元を消した状態で緑になること」の確認は必須である。ここを飛ばすと、
 ローカルにだけ残った移行元にテストが依存したままであることに気づけない。
 
 ---
