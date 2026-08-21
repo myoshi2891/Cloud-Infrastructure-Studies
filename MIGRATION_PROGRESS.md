@@ -4,6 +4,34 @@
 
 ---
 
+## 2026-08-22: Google Cloud Professional Cloud Architect (PCA) Section 1: 設計と計画 完全ガイド 100%全量移行 (完了)
+
+### 目的
+
+`Gcp-pca-section1-design-planning.html` および `Gcp-pca-section1-design-planning.md` を、Next.js App Router 5ファイル構成 (`page.tsx`, `PcaSection1Guide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/gcl/professional-cloud-architect/section1-design-planning` ルートへ移行。見出し(h1:1, h2:10, h3:33, h4:9)、全14個のテーブル、17個のMermaid図解、全リスト、全外部リンク(110件)・全本文・コールアウト注記・脚注を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for pca-section1-design-planning` (`bdef5a8`)
+- [x] **Step 1 (Red)**: `test(gcl): add failing tests for pca-section1-design-planning` (`dcc24b9`)
+- [x] **Step 2 (Green)**: `feat(gcl): implement pca-section1-design-planning to pass tests` (`1de7252`)
+- [x] **Step 3 (Refactor)**: `refactor(gcl): integrate pca-section1-design-planning into routing and update docs` (`beba48a`)
+- [x] **Step 4 (Archive & Sync)**: `chore(docs): update MIGRATION_PROGRESS.md — pca section 1 complete`
+
+### 関連ファイル
+
+- [app/gcl/professional-cloud-architect/section1-design-planning/page.tsx](app/gcl/professional-cloud-architect/section1-design-planning/page.tsx)
+- [app/gcl/professional-cloud-architect/section1-design-planning/PcaSection1Guide.tsx](app/gcl/professional-cloud-architect/section1-design-planning/PcaSection1Guide.tsx)
+- [app/gcl/professional-cloud-architect/section1-design-planning/NavBar.tsx](app/gcl/professional-cloud-architect/section1-design-planning/NavBar.tsx)
+- [app/gcl/professional-cloud-architect/section1-design-planning/constants.ts](app/gcl/professional-cloud-architect/section1-design-planning/constants.ts)
+- [app/gcl/professional-cloud-architect/section1-design-planning/page.css](app/gcl/professional-cloud-architect/section1-design-planning/page.css)
+- [`__tests__/gcl/professional-cloud-architect/section1-design-planning/page.test.tsx`](__tests__/gcl/professional-cloud-architect/section1-design-planning/page.test.tsx)
+- [docs/migration-inventory/pca-section1-design-planning.json](docs/migration-inventory/pca-section1-design-planning.json)
+- [archive/Gcl/Professional-Cloud-Architect/Gcp-pca-section1-design-planning.html](archive/Gcl/Professional-Cloud-Architect/Gcp-pca-section1-design-planning.html)
+- [archive/Gcl/Professional-Cloud-Architect/Gcp-pca-section1-design-planning.md](archive/Gcl/Professional-Cloud-Architect/Gcp-pca-section1-design-planning.md)
+
+---
+
 ## 2026-08-22: Google Cloud Professional Cloud Architect (PCA) 認定試験 完全対策ガイド 100%全量移行 (完了)
 
 ### 目的
