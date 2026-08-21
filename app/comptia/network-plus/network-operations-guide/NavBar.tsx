@@ -7,13 +7,11 @@ const SECTION_IDS: readonly string[] = NAV_ITEMS.map((item) => item.id);
 const DEFAULT_ACTIVE_ID = NAV_ITEMS[0]?.id ?? 'overview';
 
 /**
- * URL のハッシュが目次のセクションを指していれば、その id を返します。
+ * Resolves the current URL hash to a valid navigation section ID.
  *
- * SSR では `window` が存在しないため必ず null を返し、サーバーとクライアントの初回描画を一致させます
- * （active の初期値は state 初期化子ではなく effect で反映する）。不正なパーセントエスケープは
- * 「該当なし」に倒し、例外をマウント処理へ漏らしません。
+ * Returns `null` during server-side rendering, for unknown section IDs, or for malformed percent escapes.
  *
- * @returns 目次に存在するセクション id。該当しない場合（SSR・不正ハッシュ・未知の id）は null。
+ * @returns The matching section ID, or `null` when the hash does not identify a valid section.
  */
 function readHashSectionId(): string | null {
     if (typeof window === 'undefined') return null;
@@ -31,14 +29,10 @@ function readHashSectionId(): string | null {
 }
 
 /**
- * Domain 3.0 ガイドのサイドバーナビゲーション（Client Component）。
+ * Domain 3.0ガイドのサイドバーナビゲーションを表示します。
  *
- * 次の 3 つを担います。
- * - IntersectionObserver による ScrollSpy で、表示中セクションへ active を追随させる
- * - `hashchange` / `popstate` を購読し、直リンクやブラウザの戻る/進むに追随する
- * - リンク操作時に URL ハッシュ・フォーカス・モバイル開閉状態を更新する
- *
- * 監視対象のセクション id は `NAV_ITEMS` から導出し、二重管理しません。
+ * スクロール位置、URLハッシュ、リンク操作に応じてアクティブなセクションを更新し、
+ * モバイル表示ではサイドバーの開閉を管理します。
  */
 export function NavBar() {
     const [activeId, setActiveId] = useState<string>(DEFAULT_ACTIVE_ID);

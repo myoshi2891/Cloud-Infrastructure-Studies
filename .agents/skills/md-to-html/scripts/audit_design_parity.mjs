@@ -172,14 +172,11 @@ function collectRules(css) {
 // --------------------------------------------------------------------------
 
 /**
- * Extracts the body of the object literal assigned to a key.
+ * Extracts the contents of an object literal assigned to a property.
  *
- * ブレースを数えながら走査する。ネストしたオブジェクトを含んでいても本体の末尾を
- * 正しく見つけられるため、キーの並び順に依存せず中身を検査できる。
- *
- * @param {string} src - The complete HTML source.
- * @param {string} key - The property name whose object literal is wanted.
- * @returns {string|null} The object body, or null when the block is absent or incomplete.
+ * @param {string} src - The source containing the object literal.
+ * @param {string} key - The property name to locate.
+ * @return {string|null} The object contents, or `null` if the object is absent or incomplete.
  */
 function extractObjectBody(src, key) {
   const declaration = new RegExp(`${key}\\s*:\\s*\\{`).exec(src);
@@ -216,9 +213,9 @@ function extractObjectBody(src, key) {
 }
 
 /**
- * Extracts the `themeVariables` declaration of the Mermaid initialisation call.
+ * Extracts Mermaid theme variables from the HTML source.
  * @param {string} src - The complete HTML source.
- * @returns {Map<string, string>|null} The theme variables, or null when the block is absent or incomplete.
+ * @return {Map<string, string>|null} The theme variables, or null when no theme variables block is found.
  */
 function collectThemeVariables(src) {
   const body = extractObjectBody(src, "themeVariables");
@@ -249,9 +246,9 @@ function extractBody(src) {
 }
 
 /**
- * Collects the sidebar navigation targets.
- * @param {string} src - The document body (`extractBody` の戻り値)。
- * @returns {string[]} The anchor targets in document order.
+ * Collects the sidebar navigation targets in document order.
+ * @param {string} src - The document body to inspect.
+ * @returns {string[]} Decoded fragment identifiers from sidebar navigation links.
  */
 function collectNavTargets(src) {
   const nav = /<nav\b[^>]*id="sidebarNav"[^>]*>([\s\S]*?)<\/nav>/.exec(src);
@@ -262,9 +259,9 @@ function collectNavTargets(src) {
 }
 
 /**
- * Collects the identifiers of the content headings.
- * @param {string} src - The document body (`extractBody` の戻り値)。
- * @returns {string[]} The heading ids in document order.
+ * Collects the decoded IDs of `h2` and `h3` headings in document order.
+ * @param {string} src - The document body to inspect.
+ * @return {string[]} The heading IDs.
  */
 function collectHeadingIds(src) {
   return [...src.matchAll(/<h[23]\s[^>]*id="([^"]+)"/g)].map((match) =>
@@ -313,17 +310,10 @@ function collectChecklists(src) {
 }
 
 /**
- * Reads the number a hero pill advertises.
- *
- * pill の確定 markup は `<span class="pill">図解 <strong>Mermaid 15点</strong></span>` /
- * `<span class="pill">参考文献 <strong>32件</strong></span>` である。`<strong>` の中身から
- * 数値を取り出し、「pill が無い」と「pill はあるが数値を読めない」を区別する。
- * 後者を黙って読み飛ばすと、表記が崩れたページで実数照合そのものが無効化されるため、
- * どちらも構造の指摘として報告する。
- *
- * @param {string} src - The document body (`extractBody` の戻り値)。
- * @param {string} label - The pill label that precedes the `strong` element.
- * @returns {{present: boolean, count: number|null, text: string|null}} The advertised state.
+ * Reads the advertised count from a labeled hero pill.
+ * @param {string} src - The document body to inspect.
+ * @param {string} label - The pill label preceding its advertised count.
+ * @returns {{present: boolean, count: number|null, text: string|null}} The pill's presence, parsed count, and displayed text.
  */
 function readPillCount(src, label) {
   const pill = new RegExp(`<span class="pill">\\s*${label}[^<]*<strong>([\\s\\S]*?)<\\/strong>`).exec(

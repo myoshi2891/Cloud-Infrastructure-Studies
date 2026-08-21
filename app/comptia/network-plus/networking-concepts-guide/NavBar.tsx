@@ -4,8 +4,9 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { NAV_ITEMS, type NavItem } from './constants';
 
 /**
- * CompTIA Network+ Networking Concepts ガイドのサイドバーナビゲーションコンポーネント。
- * ScrollSpy によるアクティブ見出しのハイライトと、キーボードアクセシビリティを提供します。
+ * CompTIA Network+ Networking Concepts ガイドのサイドバーナビゲーションを表示します。
+ *
+ * スクロール位置に応じたアクティブセクションの表示と、各セクションへのスムーズな移動を提供します。
  */
 export function NavBar() {
     const [activeId, setActiveId] = useState<string>(NAV_ITEMS[0]?.id ?? 'intro');

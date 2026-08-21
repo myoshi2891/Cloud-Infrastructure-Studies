@@ -172,14 +172,11 @@ function collectRules(css) {
 // --------------------------------------------------------------------------
 
 /**
- * Extracts the body of the object literal assigned to a key.
+ * Extracts the contents of an object literal assigned to a property.
  *
- * ブレースを数えながら走査する。ネストしたオブジェクトを含んでいても本体の末尾を
- * 正しく見つけられるため、キーの並び順に依存せず中身を検査できる。
- *
- * @param {string} src - The complete HTML source.
- * @param {string} key - The property name whose object literal is wanted.
- * @returns {string|null} The object body, or null when the block is absent or incomplete.
+ * @param {string} src - The source text containing the object literal.
+ * @param {string} key - The property name assigned to the object literal.
+ * @return {string|null} The object contents, or `null` if the object is missing or incomplete.
  */
 function extractObjectBody(src, key) {
   const declaration = new RegExp(`${key}\\s*:\\s*\\{`).exec(src);
@@ -289,9 +286,9 @@ function collectReferenceCardIds(src) {
 }
 
 /**
- * Collects the checklist cards with their advertised and actual item counts.
- * @param {string} src - The document body (`extractBody` の戻り値)。
- * @returns {Array<{advertised: string|null, declared: number|null, actual: number}>} The checklist cards.
+ * Collect checklist cards with their displayed count, parsed count, and checkbox count.
+ * @param {string} src - The document body to inspect.
+ * @returns {Array<{advertised: string|null, declared: number|null, actual: number}>} Checklist count details for each card.
  */
 function collectChecklists(src) {
   const cards = [];
@@ -336,11 +333,11 @@ function readPillCount(src, label) {
 }
 
 /**
- * Runs every design parity check.
+ * Audits a page for design, asset, JavaScript, Mermaid, and structural parity with a reference document.
  * @param {string} page - The page HTML source.
  * @param {string} reference - The reference HTML source.
- * @param {boolean} isTemplate - Whether the page is the skeleton template rather than a finished page.
- * @returns {{findings: Array<{category: string, detail: string}>, blocking: boolean}} The findings.
+ * @param {boolean} isTemplate - Whether the page is a skeleton template rather than a finished page.
+ * @returns {{findings: Array<{category: string, detail: string}>, blocking: boolean}} The categorized findings and whether any findings block acceptance.
  */
 function audit(page, reference, isTemplate) {
   const findings = [];
@@ -618,8 +615,8 @@ function audit(page, reference, isTemplate) {
 // --------------------------------------------------------------------------
 
 /**
- * Runs the audit as a command-line program.
- * @returns {number} The process exit code.
+ * Executes the design parity audit from command-line arguments.
+ * @returns {number} `0` if the audit passes, `1` if blocking findings exist, or `2` for invalid arguments or file-read failures.
  */
 function main() {
   const args = process.argv.slice(2);

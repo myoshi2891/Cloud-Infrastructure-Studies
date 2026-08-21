@@ -18,6 +18,9 @@ const Diagram = memo(function Diagram({ id, label }: { id: string; label: string
     );
 });
 
+/**
+ * Presents a Japanese study guide for the CCNA Automation Cisco Platforms and Development domain.
+ */
 export function CcnaCiscoPlatformsDevelopmentGuide() {
     return (
         <div className={styles.ccnaPlatformsDevPage}>

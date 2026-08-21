@@ -20,7 +20,7 @@ function Diagram({ id, label }: { id: string; label: string }) {
 }
 
 /**
- * Renders a Japanese study guide for the CCNA Automation Domain 4.0 exam topics.
+ * Renders a Japanese study guide covering the CCNA Automation 200-901 exam's Application Deployment and Security domain.
  */
 export function CcnaAppDeploymentSecurityGuide() {
     return (

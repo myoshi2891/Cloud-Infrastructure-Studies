@@ -23,7 +23,7 @@ const Diagram = memo(function Diagram({ id, label }: DiagramProps) {
 });
 
 /**
- * CompTIA Network+「ネットワークの運用」徹底解説ガイドコンポーネント (Server Component)
+ * CompTIA Network+ N10-009の「ネットワークの運用」ドメインを解説するガイドページを表示します。
  */
 export function ComptiaNetworkOperationsGuide() {
     return (

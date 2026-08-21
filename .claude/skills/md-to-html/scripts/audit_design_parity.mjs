@@ -172,14 +172,11 @@ function collectRules(css) {
 // --------------------------------------------------------------------------
 
 /**
- * Extracts the body of the object literal assigned to a key.
+ * Extracts the contents of the object literal assigned to a property.
  *
- * ブレースを数えながら走査する。ネストしたオブジェクトを含んでいても本体の末尾を
- * 正しく見つけられるため、キーの並び順に依存せず中身を検査できる。
- *
- * @param {string} src - The complete HTML source.
- * @param {string} key - The property name whose object literal is wanted.
- * @returns {string|null} The object body, or null when the block is absent or incomplete.
+ * @param {string} src - The source text containing the property.
+ * @param {string} key - The property name to locate.
+ * @return {string|null} The object contents, or `null` if the object is absent or incomplete.
  */
 function extractObjectBody(src, key) {
   const declaration = new RegExp(`${key}\\s*:\\s*\\{`).exec(src);
@@ -236,13 +233,10 @@ function collectThemeVariables(src) {
 // --------------------------------------------------------------------------
 
 /**
- * Extracts the content range of the document.
- *
- * 描画 JS や CSS は `card.querySelectorAll('input[type="checkbox"]')` のように
- * セレクタ文字列として本文と同じ字面を含む。本文だけを数える走査は必ずここを通す。
+ * Removes script and style elements from HTML source for document-content inspection.
  *
  * @param {string} src - The complete HTML source.
- * @returns {string} The source with `script` and `style` elements removed.
+ * @returns {string} The source with script and style elements removed.
  */
 function extractBody(src) {
   return src.replace(/<(script|style)\b[\s\S]*?<\/\1>/gi, " ");
@@ -262,9 +256,9 @@ function collectNavTargets(src) {
 }
 
 /**
- * Collects the identifiers of the content headings.
- * @param {string} src - The document body (`extractBody` の戻り値)。
- * @returns {string[]} The heading ids in document order.
+ * Collects the decoded IDs of h2 and h3 headings in document order.
+ * @param {string} src - The document body without script and style elements.
+ * @return {string[]} The heading IDs.
  */
 function collectHeadingIds(src) {
   return [...src.matchAll(/<h[23]\s[^>]*id="([^"]+)"/g)].map((match) =>
@@ -313,17 +307,10 @@ function collectChecklists(src) {
 }
 
 /**
- * Reads the number a hero pill advertises.
- *
- * pill の確定 markup は `<span class="pill">図解 <strong>Mermaid 15点</strong></span>` /
- * `<span class="pill">参考文献 <strong>32件</strong></span>` である。`<strong>` の中身から
- * 数値を取り出し、「pill が無い」と「pill はあるが数値を読めない」を区別する。
- * 後者を黙って読み飛ばすと、表記が崩れたページで実数照合そのものが無効化されるため、
- * どちらも構造の指摘として報告する。
- *
- * @param {string} src - The document body (`extractBody` の戻り値)。
- * @param {string} label - The pill label that precedes the `strong` element.
- * @returns {{present: boolean, count: number|null, text: string|null}} The advertised state.
+ * Reads the advertised count from a labeled hero pill.
+ * @param {string} src - The document body to inspect.
+ * @param {string} label - The label preceding the pill's `strong` element.
+ * @return {{present: boolean, count: number|null, text: string|null}} The pill presence, parsed count, and displayed text.
  */
 function readPillCount(src, label) {
   const pill = new RegExp(`<span class="pill">\\s*${label}[^<]*<strong>([\\s\\S]*?)<\\/strong>`).exec(
@@ -336,11 +323,11 @@ function readPillCount(src, label) {
 }
 
 /**
- * Runs every design parity check.
+ * Audits a page against a reference HTML document for design and structural parity.
  * @param {string} page - The page HTML source.
  * @param {string} reference - The reference HTML source.
- * @param {boolean} isTemplate - Whether the page is the skeleton template rather than a finished page.
- * @returns {{findings: Array<{category: string, detail: string}>, blocking: boolean}} The findings.
+ * @param {boolean} isTemplate - Whether to skip finished-page structural checks.
+ * @returns {{findings: Array<{category: string, detail: string}>, blocking: boolean}} The categorized findings and whether any findings block validation.
  */
 function audit(page, reference, isTemplate) {
   const findings = [];
@@ -618,8 +605,8 @@ function audit(page, reference, isTemplate) {
 // --------------------------------------------------------------------------
 
 /**
- * Runs the audit as a command-line program.
- * @returns {number} The process exit code.
+ * Executes the design audit command and reports its findings.
+ * @return {number} `0` when no blocking findings exist, `1` when the audit finds blocking issues, or `2` for invalid arguments or file-read failures.
  */
 function main() {
   const args = process.argv.slice(2);

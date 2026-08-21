@@ -77,10 +77,11 @@ function readSourceAtCommit(commit, source) {
 }
 
 /**
- * 1 ページ分の fixture を組み立てる。
+ * 1 ページ分の移行忠実性確認用 fixture を組み立てる。
+ * 指定された Git リビジョンから HTML を読み込み、設定された項目を抽出して fixture に格納する。
  * @param {string} slug - ページの slug。
- * @param {import('./archive-fidelity-config.mjs').FidelityPageConfig} config - 抽出設定。
- * @returns {Record<string, unknown>} fixture の中身。
+ * @param {import('./archive-fidelity-config.mjs').FidelityPageConfig} config - HTML の取得元と抽出項目の設定。
+ * @returns {Record<string, unknown>} ページの slug、取得元、解決済みコミット SHA、および抽出結果を含む fixture。
  */
 function buildFixture(slug, config) {
     // 先に SHA を解決し、その 1 つの値で「中身の読み出し」と「fixture への記録」の両方を行う。

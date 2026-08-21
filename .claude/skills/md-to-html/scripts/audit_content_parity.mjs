@@ -87,13 +87,10 @@ function normalize(raw) {
 }
 
 /**
- * Creates a comparison key that ignores whitespace, leading numbering, punctuation, and letter case.
+ * Creates a comparison key that treats equivalent Markdown text as identical.
  *
- * 全角→半角の正規化（`（）`→`()` 等）は NFKC が吸収し、括弧・句読点はここで除去される。
- * したがって `references/conversion-rules.md` の句読点正規化は漏れとして検出されない。
- *
- * @param {string} raw - The display text to normalize for comparison.
- * @returns {string} The normalized comparison key.
+ * @param {string} raw - The text to convert into a comparison key.
+ * @return {string} The comparison key with whitespace, leading numbering, punctuation, and letter-case differences removed.
  */
 function matchKey(raw) {
   return (
@@ -136,9 +133,9 @@ function stripMarkup(fragment) {
 }
 
 /**
- * Removes Markdown links, images, and inline HTML from a fragment.
+ * Removes Markdown link, image, footnote-reference, and inline HTML syntax while preserving link and image text.
  * @param {string} raw - The raw Markdown inline fragment.
- * @returns {string} The fragment with links, images, and HTML tags removed.
+ * @return {string} The fragment's plain text content.
  */
 function stripMarkdownInline(raw) {
   return raw
@@ -151,9 +148,9 @@ function stripMarkdownInline(raw) {
 }
 
 /**
- * Normalizes a URL for comparison.
- * @param {string} url - The raw URL string.
- * @returns {string} The URL with HTML character references decoded and all URL semantics preserved.
+ * Prepares a URL for comparison by decoding HTML character references.
+ * @param {string} url - The URL to normalize.
+ * @returns {string} The URL with HTML character references decoded.
  */
 function normalizeUrl(url) {
   return decodeEntities(url);
@@ -239,16 +236,11 @@ function extractMermaidLabels(source) {
 }
 
 /**
- * Splits a text into the wording segments that must survive somewhere on the page.
+ * Splits text into comparison segments that may appear independently on the page.
  *
- * 空白 / `<br/>` / ` - ` / 区切り記号 で分かれた各片を独立した語句として扱う。
- * 見出しや図のラベルは、情報設計やレイアウトの都合で並べ替え・分割・短縮されうる
- * （`## 6. ドメイン1: X（36%）` → `.domain-tag` + `<h2>X</h2>` など）。
- * 全文一致を求めると正当な再型付けを漏れと誤判定するため、片単位で存在を確認する。
- * 逆に、短縮された語句がページのどこにも残っていないなら、それは文言の消失である。
- *
- * @param {string} text - The raw text.
- * @returns {string[]} The comparison keys of each segment worth checking.
+ * @param {string} text - The text to split.
+ * @param {number} [minLength=SEGMENT_MIN_LENGTH] - The minimum comparison-key length to include.
+ * @returns {string[]} The comparison keys for segments meeting the minimum length.
  */
 function splitSegments(text, minLength = SEGMENT_MIN_LENGTH) {
   return text
@@ -279,9 +271,9 @@ function collectDiagramColors(source) {
 // --------------------------------------------------------------------------
 
 /**
- * Extracts structural elements from Markdown source.
+ * Extracts Markdown content and metadata used to compare the source with generated HTML.
  * @param {string} src - The complete Markdown source.
- * @returns {object} The inventory of headings, paragraphs, list items, table rows, links, and diagrams.
+ * @returns {object} An inventory of headings, paragraphs, list items, table rows, references, footnote references, table-of-contents anchors, Mermaid sources, and external links.
  */
 function inventoryMarkdown(src) {
   const headings = [];
@@ -426,14 +418,9 @@ function extractDiagramEntries(src) {
 }
 
 /**
- * Extracts the footnote references the page carries inline.
- *
- * 原本の `[^12]` に対応するページ側の実体は `.footnote-ref` である。本文照合では
- * 両側から落としているため、参照だけが落ちた・番号がずれた・id が重複した状態を
- * ここで別枠として拾う。
- *
+ * Extracts inline footnote references from HTML.
  * @param {string} src - The complete HTML source.
- * @returns {Array<{id: string|null, href: string|null, sup: string|null}>} The references in document order.
+ * @return {Array<{id: string|null, href: string|null, sup: string|null}>} Footnote references in document order, including their IDs, links, and displayed numbers when present.
  */
 function extractFootnoteRefs(src) {
   // 生成 HTML は整形の都合で属性が改行で折り返され、閉じ tag も `</a\n>` になりうる。
@@ -461,9 +448,9 @@ function extractNavTargets(src) {
 }
 
 /**
- * Builds an inventory of the visible content of a generated HTML page.
+ * Builds an inventory of the visible content and navigation metadata in generated HTML.
  * @param {string} src - The complete HTML source.
- * @returns {object} The inventory of headings, paragraphs, list items, table rows, links, and diagrams.
+ * @returns {object} The extracted headings, anchors, references, lists, tables, paragraphs, diagrams, and external links.
  */
 function inventoryHtml(src) {
   const diagrams = extractDiagramEntries(src);
@@ -559,14 +546,14 @@ function missingOccurrences(sourceValues, pageValues) {
 }
 
 /**
- * Determines whether a source text survives anywhere in the page.
+ * Determines whether source text is preserved in the page content.
  *
- * まとまりのまま残っていれば合格。並べ替え・分割された場合に備えて、
- * 語句単位で全ての片が残っているかもフォールバックとして判定する。
+ * Short text is accepted automatically; longer text is accepted when it appears
+ * as a whole or all of its significant segments appear in the page.
  *
- * @param {string} text - The source text.
- * @param {string} pageText - The flattened page text.
- * @returns {boolean} True when the text is short enough to skip or survives in the page.
+ * @param {string} text - The source text to locate.
+ * @param {string} pageText - The normalized text extracted from the page.
+ * @return {boolean} `true` if the text is preserved or short enough to accept, `false` otherwise.
  */
 function survivesInPage(text, pageText) {
   const key = matchKey(text);
@@ -589,10 +576,10 @@ function missingSegments(text, pageText) {
 }
 
 /**
- * Compares the Markdown source and the generated page.
+ * Compares Markdown and HTML inventories to identify missing or inconsistent content.
  * @param {object} source - The Markdown inventory.
  * @param {object} page - The HTML inventory.
- * @returns {object} The comparison result including blocking status.
+ * @returns {object} Comparison findings, counts, warnings, and blocking status.
  */
 function compare(source, page) {
   // 見出しは階層で扱いを分ける。
@@ -816,11 +803,10 @@ function compare(source, page) {
 // --------------------------------------------------------------------------
 
 /**
- * Prints a blocking finding list when it is non-empty.
+ * Prints a formatted finding section when findings are present.
  * @param {string} title - The section title.
- * @param {Array} items - The findings.
- * @param {(item: unknown) => string} format - Formats a single finding.
- * @returns {void}
+ * @param {unknown[]} items - The findings to print.
+ * @param {(item: unknown) => string} format - Formats each finding.
  */
 function printFindings(title, items, format) {
   if (items.length === 0) return;
@@ -829,8 +815,8 @@ function printFindings(title, items, format) {
 }
 
 /**
- * Runs the audit as a command-line program.
- * @returns {number} The process exit code.
+ * Runs the content parity audit as a command-line program.
+ * @returns {number} `0` if the audit passes, `1` if blocking discrepancies are found, or `2` if arguments are invalid or an input file cannot be read.
  */
 function main() {
   const args = process.argv.slice(2);
