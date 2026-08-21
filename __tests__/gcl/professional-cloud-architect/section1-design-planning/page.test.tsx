@@ -71,7 +71,7 @@ describe('PCA Section 1: 視覚デザイン・UIコンポーネント構造の�
         expect(cards).toHaveLength(9);
 
         const items = grid?.querySelectorAll('a.ref-item');
-        expect(items?.length).toBeGreaterThanOrEqual(30);
+        expect(items).toHaveLength(32);
         items?.forEach((item) => {
             expect(item.querySelector('.ref-icon')?.textContent?.trim()).toBe('↗');
         });
@@ -99,7 +99,7 @@ describe('PCA Section 1: 視覚デザイン・UIコンポーネント構造の�
         const container = renderPage();
         const footnotes = container.querySelector('aside#footnotes');
         expect(footnotes).not.toBeNull();
-        expect(footnotes?.querySelectorAll('ol li').length).toBeGreaterThan(0);
+        expect(footnotes?.querySelectorAll('ol li')).toHaveLength(40);
     });
 });
 

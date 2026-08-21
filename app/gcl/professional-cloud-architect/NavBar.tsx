@@ -87,6 +87,7 @@ export function NavBar({ isOpen, onToggle, onClose }: NavBarProps) {
                                 href={`#${item.id}`}
                                 data-target={item.id}
                                 className={`${item.level === 2 ? 'nav-l2' : 'nav-l3'} ${activeId === item.id ? 'active' : ''}`}
+                                aria-current={activeId === item.id ? 'location' : undefined}
                                 onClick={(e) => handleNavClick(e, item.id)}
                             >
                                 {item.label}

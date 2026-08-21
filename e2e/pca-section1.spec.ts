@@ -63,5 +63,9 @@ test.describe('PCA Section 1: クラウドソリューションアーキテク�
 
         await toggleBtn.click();
         await expect(sidebar).toHaveClass(/open/);
+
+        // 再クリックで閉じることまで確認する（開くだけの検証では閉じる回帰を見逃す）
+        await toggleBtn.click();
+        await expect(sidebar).not.toHaveClass(/open/);
     });
 });

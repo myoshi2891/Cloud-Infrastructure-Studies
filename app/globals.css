@@ -48,6 +48,9 @@
 
     --color-theme-pca-bg: hsl(215 65% 55% / 0.25);
     --color-theme-pca-fg: hsl(215 100% 75%);
+    /* アクセント面に乗せる文字・記号の色（親ページと Section 1 で共有） */
+    --color-pca-on-accent: #0b1220;
+    --color-pca-hero-grad-end: #9db8ff;
 
     /* PCA Section 1 guide */
     --color-pca-s1-background: #07111e;
@@ -66,6 +69,15 @@
     --color-pca-s1-amber: #f9ab00;
     --color-pca-s1-red: #f28b82;
     --color-pca-s1-green: #81c995;
+    --color-pca-s1-accent-tint: rgba(124, 158, 255, 0.08);
+    --color-pca-s1-accent-tint-strong: rgba(124, 158, 255, 0.18);
+    --color-pca-s1-accent-outline: rgba(124, 158, 255, 0.28);
+    --color-pca-s1-row-hover: rgba(124, 158, 255, 0.05);
+    --color-pca-s1-item-hover: rgba(124, 158, 255, 0.06);
+    --color-pca-s1-green-tint: rgba(129, 201, 149, 0.08);
+    --color-pca-s1-green-tint-strong: rgba(129, 201, 149, 0.18);
+    --color-pca-s1-green-outline: rgba(129, 201, 149, 0.28);
+    --color-pca-s1-sidebar-shadow: rgba(0, 0, 0, 0.5);
 
 
     /* Shared dark-guide surfaces */
