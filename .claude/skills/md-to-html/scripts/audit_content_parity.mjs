@@ -402,13 +402,9 @@ function inventoryMarkdown(src) {
 }
 
 /**
- * Extracts the Mermaid sources the page carries inline.
- *
- * 本 repo の生成 HTML は `pre.mermaid` に直書きする（`var DIAGRAMS` は使わない）。
- * 中身は実体参照でエスケープされているため、照合前にデコードする。
- *
+ * Extracts Mermaid diagrams embedded in `pre.mermaid` elements.
  * @param {string} src - The complete HTML source.
- * @returns {Array<{id: string, source: string}>} The diagram sources in document order.
+ * @return {Array<{id: string, source: string}>} The decoded diagram sources in document order.
  */
 function extractDiagramEntries(src) {
   return [...src.matchAll(/<pre class="mermaid">([\s\S]*?)<\/pre\s*>/g)].map((match, index) => ({

@@ -112,11 +112,7 @@ function collectRootVariables(css) {
 }
 
 /**
- * Collects every style rule with its at-rule context.
- *
- * ブレースを数えながら走査する。`@media` 内のネストしたルールも、外側の prelude を
- * 文脈として保持したまま平坦化して取り出す。
- *
+ * Collects stylesheet selectors and at-rule preludes, preserving the at-rule context for nested rules.
  * @param {string} css - The stylesheet text.
  * @returns {{rules: Set<string>, atRules: Set<string>}} The context-qualified selectors and at-rule preludes.
  */
@@ -233,13 +229,9 @@ function collectThemeVariables(src) {
 // --------------------------------------------------------------------------
 
 /**
- * Extracts the content range of the document.
- *
- * 描画 JS や CSS は `card.querySelectorAll('input[type="checkbox"]')` のように
- * セレクタ文字列として本文と同じ字面を含む。本文だけを数える走査は必ずここを通す。
- *
+ * Extracts document content while excluding scripts and styles.
  * @param {string} src - The complete HTML source.
- * @returns {string} The source with `script` and `style` elements removed.
+ * @returns {string} The source with `script` and `style` elements and their contents removed.
  */
 function extractBody(src) {
   return src.replace(/<(script|style)\b[\s\S]*?<\/\1>/gi, " ");
@@ -310,17 +302,13 @@ function collectChecklists(src) {
 }
 
 /**
- * Reads the number a hero pill advertises.
+ * Reads the advertised count from a hero pill.
  *
- * pill の確定 markup は `<span class="pill">図解 <strong>Mermaid 15点</strong></span>` /
- * `<span class="pill">参考文献 <strong>32件</strong></span>` である。`<strong>` の中身から
- * 数値を取り出し、「pill が無い」と「pill はあるが数値を読めない」を区別する。
- * 後者を黙って読み飛ばすと、表記が崩れたページで実数照合そのものが無効化されるため、
- * どちらも構造の指摘として報告する。
+ * Distinguishes between a missing pill and a pill whose text does not contain a number.
  *
- * @param {string} src - The document body (`extractBody` の戻り値)。
- * @param {string} label - The pill label that precedes the `strong` element.
- * @returns {{present: boolean, count: number|null, text: string|null}} The advertised state.
+ * @param {string} src - The document body to inspect.
+ * @param {string} label - The label preceding the pill's `strong` element.
+ * @returns {{present: boolean, count: number|null, text: string|null}} The pill's presence, text, and parsed count.
  */
 function readPillCount(src, label) {
   const pill = new RegExp(`<span class="pill">\\s*${label}[^<]*<strong>([\\s\\S]*?)<\\/strong>`).exec(

@@ -33,13 +33,11 @@ const repositoryRoot = process.cwd();
 const outputDirectory = path.join(repositoryRoot, 'docs', 'migration-inventory');
 
 /**
- * 設定の `sourceCommit`（`<sha>^` のような相対リビジョンを含む）を 40 桁の絶対 SHA へ解決する。
+ * 設定された Git リビジョンを 40 桁の絶対 commit SHA に解決する。
  *
- * 相対リビジョンのまま fixture へ書くと、履歴の見え方が変わったときに指し先がずれる。
- * fixture には解決済みの SHA を残し、`git show <sha>:<source>` がいつでも同じ内容を返すようにする。
- *
- * @param {string} revision - 設定に書かれた git リビジョン。
- * @returns {string} 解決した 40 桁の commit SHA。
+ * @param {string} revision - 設定に指定された Git リビジョン。
+ * @returns {string} 解決された 40 桁の commit SHA。
+ * @throws {Error} リビジョンを commit SHA に解決できない場合。
  */
 function resolveCommit(revision) {
     const resolved = execFileSync('git', ['rev-parse', `${revision}^{commit}`], {

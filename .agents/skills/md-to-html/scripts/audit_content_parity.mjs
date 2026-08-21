@@ -147,8 +147,8 @@ function stripMarkdownInline(raw) {
 }
 
 /**
- * Decodes HTML character references in a URL for comparison.
- * @param {string} url - The URL to normalize.
+ * Decodes HTML character references in a URL.
+ * @param {string} url - The URL containing HTML character references.
  * @returns {string} The URL with HTML character references decoded.
  */
 function normalizeUrl(url) {
@@ -546,14 +546,13 @@ function missingOccurrences(sourceValues, pageValues) {
 }
 
 /**
- * Checks whether source text is preserved in the page text.
+ * Determines whether source text is represented in the extracted page text.
  *
- * Short source text is accepted automatically. Longer text may match contiguously
- * or through all of its significant segments.
+ * Text with fewer than eight normalized characters is accepted automatically. Longer text must appear contiguously or have all significant segments represented.
  *
  * @param {string} text - The source text to locate.
  * @param {string} pageText - The normalized text extracted from the page.
- * @return {boolean} `true` if the text is accepted as preserved, `false` otherwise.
+ * @return {boolean} `true` if the text is represented in the page text, `false` otherwise.
  */
 function survivesInPage(text, pageText) {
   const key = matchKey(text);

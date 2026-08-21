@@ -213,9 +213,9 @@ function extractObjectBody(src, key) {
 }
 
 /**
- * Extracts the `themeVariables` declaration of the Mermaid initialisation call.
+ * Collects Mermaid theme variable names and string values from the initialization configuration.
  * @param {string} src - The complete HTML source.
- * @returns {Map<string, string>|null} The theme variables, or null when the block is absent or incomplete.
+ * @return {Map<string, string>|null} The theme variables, or `null` if the configuration is absent or incomplete.
  */
 function collectThemeVariables(src) {
   const body = extractObjectBody(src, "themeVariables");
@@ -283,9 +283,9 @@ function collectReferenceCardIds(src) {
 }
 
 /**
- * Collects the checklist cards with their advertised and actual item counts.
- * @param {string} src - The document body (`extractBody` の戻り値)。
- * @returns {Array<{advertised: string|null, declared: number|null, actual: number}>} The checklist cards.
+ * Collects checklist cards and their displayed, declared, and actual item counts.
+ * @param {string} src - The document body returned by `extractBody`.
+ * @returns {Array<{advertised: string|null, declared: number|null, actual: number}>} The checklist card counts.
  */
 function collectChecklists(src) {
   const cards = [];
@@ -323,11 +323,11 @@ function readPillCount(src, label) {
 }
 
 /**
- * Audits a page against a reference HTML document for design and structural parity.
+ * Audits a page against a reference HTML document for design, configuration, and structural parity.
  * @param {string} page - The page HTML source.
  * @param {string} reference - The reference HTML source.
- * @param {boolean} isTemplate - Whether to skip finished-page structural checks.
- * @returns {{findings: Array<{category: string, detail: string}>, blocking: boolean}} The categorized findings and whether any findings block validation.
+ * @param {boolean} isTemplate - Whether to omit completed-page structural checks.
+ * @returns {{findings: Array<{category: string, detail: string}>, blocking: boolean}} Categorized audit findings and whether any findings block validation.
  */
 function audit(page, reference, isTemplate) {
   const findings = [];

@@ -28,7 +28,7 @@ const Diagram = memo(function Diagram({ id, label }: DiagramProps) {
 });
 
 /**
- * PCNE Section 3 ガイドコンポーネント
+ * PCNE Section 3 Task 3.1のロードバランシングとトラフィック管理を解説するガイドを表示します。
  */
 export function PcneSection3LoadBalancingGuide() {
     const [isNavOpen, setIsNavOpen] = useState(false);
