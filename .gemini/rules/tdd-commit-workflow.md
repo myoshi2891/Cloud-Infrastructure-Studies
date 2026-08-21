@@ -206,6 +206,7 @@ fidelity fixture の対象ページと抽出セレクタは `scripts/archive-fid
 
 ```bash
 # 1. 設定の sourceCommit から一時復元（/archive/ は .gitignore 済みなのでコミット対象にならない）
+mkdir -p "$(dirname <source>)"   # アーカイブ整理でディレクトリごと消えている場合に備える
 git show <sourceCommit>:<source> > <source>
 # 2. fixture を生成
 bun scripts/gen-fidelity-fixture.mjs <slug>

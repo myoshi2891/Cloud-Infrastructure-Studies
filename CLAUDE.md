@@ -472,9 +472,9 @@ archive/                            # 移行済み資料の正規アーカイブ
 4. **Step 3 — Refactor:** リファクタリング/統合を行いコミットする。
 ※ LLMはタスク実行前に必ずこのルールをPlanに組み込み、まとめて実装・コミットすることを避けること。
 
-**ガイド Markdown → 単一 HTML 変換タスク時**: `.claude/skills/md-to-html/SKILL.md` を読むこと。デザインの正は `Gcp-pca-section4-process-optimization.html`（暗色テーマ / `<section>` を使わないフラット構造 / `pre.mermaid` インライン / 脚注 `.footnote-ref` + `.ref-grid`）。転写漏れとデザイン漏れを検出する 2 本の監査（`bun run test:md-to-html` で自己テスト）が Green の前提条件であり、**両方 exit 0 になるまでコミットしない**。生成した HTML を `app/` 配下へ移す作業は別スキル（`html-to-nextjs-migration`）の責務で、本スキルからは `app/` を編集しない。
+**ガイド Markdown → 単一 HTML 変換タスク時**: `.agents/skills/md-to-html/SKILL.md` を読むこと。デザインの正は `Gcp-pca-section4-process-optimization.html`（暗色テーマ / `<section>` を使わないフラット構造 / `pre.mermaid` インライン / 脚注 `.footnote-ref` + `.ref-grid`）。転写漏れとデザイン漏れを検出する 2 本の監査（`bun run test:md-to-html` で自己テスト）が Green の前提条件であり、**両方 exit 0 になるまでコミットしない**。生成した HTML を `app/` 配下へ移す作業は別スキル（`html-to-nextjs-migration`）の責務で、本スキルからは `app/` を編集しない。
 
-**HTML → Next.js 移行タスク時**: まず `.claude/skills/html-to-nextjs-migration/SKILL.md` の「正準リファレンス」を読むこと。GCPトークンマップ・サイドバー配置値・MermaidDiagram契約・ガイドページのファイル構成が前出しされており、参照 `page.tsx`/`NavBar.tsx`/`MermaidDiagram.tsx`/`page.css` や `globals.css` の再読込・再 grep が不要になる（ソースHTMLは100%読む — 要約・スキップ厳禁）。
+**HTML → Next.js 移行タスク時**: まず `.agents/skills/html-to-nextjs-migration/SKILL.md` の「正準リファレンス」を読むこと。GCPトークンマップ・サイドバー配置値・MermaidDiagram契約・ガイドページのファイル構成が前出しされており、参照 `page.tsx`/`NavBar.tsx`/`MermaidDiagram.tsx`/`page.css` や `globals.css` の再読込・再 grep が不要になる（ソースHTMLは100%読む — 要約・スキップ厳禁）。
 
 ## 制約事項
 
