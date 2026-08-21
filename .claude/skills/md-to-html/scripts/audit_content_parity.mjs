@@ -87,10 +87,9 @@ function normalize(raw) {
 }
 
 /**
- * Creates a comparison key that treats equivalent Markdown text as identical.
- *
- * @param {string} raw - The text to convert into a comparison key.
- * @return {string} The comparison key with whitespace, leading numbering, punctuation, and letter-case differences removed.
+ * Normalizes display text into a comparison key.
+ * @param {string} raw - The display text to normalize.
+ * @returns {string} The normalized text with whitespace, leading numbering, punctuation, and letter-case differences removed.
  */
 function matchKey(raw) {
   return (
@@ -133,9 +132,9 @@ function stripMarkup(fragment) {
 }
 
 /**
- * Removes Markdown link, image, footnote-reference, and inline HTML syntax while preserving link and image text.
+ * Strips Markdown footnote references, links, images, and inline HTML tags while preserving link and image text.
  * @param {string} raw - The raw Markdown inline fragment.
- * @return {string} The fragment's plain text content.
+ * @returns {string} The fragment with inline markup removed.
  */
 function stripMarkdownInline(raw) {
   return raw
@@ -148,8 +147,8 @@ function stripMarkdownInline(raw) {
 }
 
 /**
- * Prepares a URL for comparison by decoding HTML character references.
- * @param {string} url - The URL to normalize.
+ * Decodes HTML character references in a URL.
+ * @param {string} url - The URL containing HTML character references.
  * @returns {string} The URL with HTML character references decoded.
  */
 function normalizeUrl(url) {
@@ -196,9 +195,9 @@ function extractTagContents(src, tag) {
 // --------------------------------------------------------------------------
 
 /**
- * Extracts node, edge, pie, title, and subgraph labels from Mermaid source.
+ * Extracts labels from Mermaid nodes, edges, pie slices, titles, and subgraphs.
  * @param {string} source - The Mermaid diagram source.
- * @returns {string[]} The raw label strings in occurrence order.
+ * @returns {string[]} The extracted label strings.
  */
 function extractMermaidLabels(source) {
   const labels = [];
@@ -236,11 +235,11 @@ function extractMermaidLabels(source) {
 }
 
 /**
- * Splits text into comparison segments that may appear independently on the page.
+ * Splits text into comparison segments that may survive independently on the page.
  *
  * @param {string} text - The text to split.
- * @param {number} [minLength=SEGMENT_MIN_LENGTH] - The minimum comparison-key length to include.
- * @returns {string[]} The comparison keys for segments meeting the minimum length.
+ * @param {number} [minLength=SEGMENT_MIN_LENGTH] - The minimum segment length to include.
+ * @return {string[]} The normalized comparison keys for segments meeting the minimum length.
  */
 function splitSegments(text, minLength = SEGMENT_MIN_LENGTH) {
   return text
@@ -271,9 +270,9 @@ function collectDiagramColors(source) {
 // --------------------------------------------------------------------------
 
 /**
- * Extracts Markdown content and metadata used to compare the source with generated HTML.
+ * Extracts comparable structural elements from Markdown source, including headings, paragraphs, lists, tables, references, footnote references, table-of-contents anchors, Mermaid diagrams, and external links.
  * @param {string} src - The complete Markdown source.
- * @returns {object} An inventory of headings, paragraphs, list items, table rows, references, footnote references, table-of-contents anchors, Mermaid sources, and external links.
+ * @returns {object} An inventory of the extracted Markdown elements.
  */
 function inventoryMarkdown(src) {
   const headings = [];
@@ -402,9 +401,13 @@ function inventoryMarkdown(src) {
 }
 
 /**
- * Extracts Mermaid diagrams embedded in `pre.mermaid` elements.
+ * Extracts the Mermaid sources the page carries inline.
+ *
+ * 本 repo の生成 HTML は `pre.mermaid` に直書きする（`var DIAGRAMS` は使わない）。
+ * 中身は実体参照でエスケープされているため、照合前にデコードする。
+ *
  * @param {string} src - The complete HTML source.
- * @return {Array<{id: string, source: string}>} The decoded diagram sources in document order.
+ * @returns {Array<{id: string, source: string}>} The diagram sources in document order.
  */
 function extractDiagramEntries(src) {
   return [...src.matchAll(/<pre class="mermaid">([\s\S]*?)<\/pre\s*>/g)].map((match, index) => ({
@@ -414,9 +417,10 @@ function extractDiagramEntries(src) {
 }
 
 /**
- * Extracts inline footnote references from HTML.
+ * Extracts inline footnote references from an HTML document.
+ *
  * @param {string} src - The complete HTML source.
- * @return {Array<{id: string|null, href: string|null, sup: string|null}>} Footnote references in document order, including their IDs, links, and displayed numbers when present.
+ * @return {Array<{id: string|null, href: string|null, sup: string|null}>} The footnote references in document order.
  */
 function extractFootnoteRefs(src) {
   // 生成 HTML は整形の都合で属性が改行で折り返され、閉じ tag も `</a\n>` になりうる。
@@ -444,9 +448,9 @@ function extractNavTargets(src) {
 }
 
 /**
- * Builds an inventory of the visible content and navigation metadata in generated HTML.
+ * Builds an inventory of the content and navigation elements in a generated HTML page.
  * @param {string} src - The complete HTML source.
- * @returns {object} The extracted headings, anchors, references, lists, tables, paragraphs, diagrams, and external links.
+ * @return {object} The extracted headings, anchors, references, footnote references, navigation targets, text content, diagrams, and external links.
  */
 function inventoryHtml(src) {
   const diagrams = extractDiagramEntries(src);
@@ -542,14 +546,13 @@ function missingOccurrences(sourceValues, pageValues) {
 }
 
 /**
- * Determines whether source text is preserved in the page content.
+ * Determines whether source text is represented in the extracted page text.
  *
- * Short text is accepted automatically; longer text is accepted when it appears
- * as a whole or all of its significant segments appear in the page.
+ * Text with fewer than eight normalized characters is accepted automatically. Longer text must appear contiguously or have all significant segments represented.
  *
  * @param {string} text - The source text to locate.
  * @param {string} pageText - The normalized text extracted from the page.
- * @return {boolean} `true` if the text is preserved or short enough to accept, `false` otherwise.
+ * @return {boolean} `true` if the text is represented in the page text, `false` otherwise.
  */
 function survivesInPage(text, pageText) {
   const key = matchKey(text);
@@ -573,9 +576,9 @@ function missingSegments(text, pageText) {
 
 /**
  * Compares Markdown and HTML inventories to identify missing or inconsistent content.
- * @param {object} source - The Markdown inventory.
- * @param {object} page - The HTML inventory.
- * @returns {object} Comparison findings, counts, warnings, and blocking status.
+ * @param {object} source - Inventory extracted from the Markdown source.
+ * @param {object} page - Inventory extracted from the generated HTML page.
+ * @return {object} Comparison findings, element counts, warnings, and a `blocking` flag indicating whether blocking discrepancies were found.
  */
 function compare(source, page) {
   // 見出しは階層で扱いを分ける。
@@ -799,10 +802,10 @@ function compare(source, page) {
 // --------------------------------------------------------------------------
 
 /**
- * Prints a formatted finding section when findings are present.
+ * Prints a non-empty list of blocking findings under the specified title.
  * @param {string} title - The section title.
  * @param {unknown[]} items - The findings to print.
- * @param {(item: unknown) => string} format - Formats each finding.
+ * @param {(item: unknown) => string} format - Converts each finding to display text.
  */
 function printFindings(title, items, format) {
   if (items.length === 0) return;
@@ -811,8 +814,8 @@ function printFindings(title, items, format) {
 }
 
 /**
- * Runs the content parity audit as a command-line program.
- * @returns {number} `0` if the audit passes, `1` if blocking discrepancies are found, or `2` if arguments are invalid or an input file cannot be read.
+ * Audits a Markdown source file against its generated HTML page.
+ * @returns {number} `0` when no blocking issues are found, `1` when parity issues are detected, or `2` when arguments are missing or files cannot be read.
  */
 function main() {
   const args = process.argv.slice(2);

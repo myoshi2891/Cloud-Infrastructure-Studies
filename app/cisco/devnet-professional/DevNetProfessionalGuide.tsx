@@ -15,7 +15,8 @@ function Diagram({ id, label }: { id: keyof typeof DIAGRAMS; label: string }) {
 }
 
 /**
- * CCNP Automation認定の概要、試験構成、学習方法、再認定制度を解説するガイドを表示します。
+ * 自動化プロフェッショナルガイドを表示します。
+ * CCNP Automation認定の概要、試験構成、学習方法、再認定制度を解説します。
  */
 export default function AutomationProfessionalGuide() {
     return (

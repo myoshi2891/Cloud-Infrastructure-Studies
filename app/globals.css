@@ -46,6 +46,9 @@
     --color-theme-ace-bg-page: #050a14;
     --color-theme-ace-accent: #00c8ff;
 
+    --color-theme-pca-bg: hsl(215 65% 55% / 0.25);
+    --color-theme-pca-fg: hsl(215 100% 75%);
+
     /* Shared dark-guide surfaces */
     --color-guide-background: #07111e;
     --color-guide-surface-1: #0b1729;
@@ -463,6 +466,7 @@ body {
 .card-cdl { --card-accent: var(--color-theme-cdl-fg); }
 .card-agwa { --card-accent: var(--color-theme-agwa-fg); }
 .card-pcne { --card-accent: var(--color-theme-pcne-fg); }
+.card-pca { --card-accent: var(--color-theme-pca-fg); }
 .card-ccna { --card-accent: var(--color-theme-cisco-fg); }
 .card-aws-saa { --card-accent: var(--color-theme-aws-fg); }
 
@@ -481,6 +485,11 @@ body {
 @utility icon-theme-ace {
     background: var(--color-theme-ace-bg);
     color: var(--color-theme-ace-fg);
+}
+
+@utility icon-theme-pca {
+    background: var(--color-theme-pca-bg);
+    color: var(--color-theme-pca-fg);
 }
 
 @utility icon-theme-cdl {

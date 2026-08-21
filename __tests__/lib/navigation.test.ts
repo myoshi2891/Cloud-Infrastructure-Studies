@@ -267,7 +267,7 @@ describe('toNavTree', () => {
             ).toBe(true);
         });
 
-        it('GCP グループに ace, agwa, cdl, genai, pcne, hands-on 試験が含まれる', () => {
+        it('GCP グループに ace, agwa, cdl, genai, pca, pcne, hands-on 試験が含まれる', () => {
             // Arrange & Act
             const result = toNavTree(EXAMS);
             const gcp = result.find((g) => g.provider === 'GCP');
@@ -276,7 +276,7 @@ describe('toNavTree', () => {
             expect(gcp).toBeDefined();
             if (!gcp) return;
             const ids = gcp.exams.map((e) => e.id).sort();
-            expect(ids).toEqual(['ace', 'agwa', 'cdl', 'genai', 'hands-on', 'pcne']);
+            expect(ids).toEqual(['ace', 'agwa', 'cdl', 'genai', 'hands-on', 'pca', 'pcne']);
         });
 
         it('AWS グループに公開済み試験が含まれる', () => {
