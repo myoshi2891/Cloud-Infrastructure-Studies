@@ -263,7 +263,7 @@ const ALL_EXAMS: Exam[] = [
             },
             {
                 label: 'Section 1: 設計と計画',
-                href: '/gcl/professional-cloud-architect#section-1-クラウドソリューションアーキテクチャの設計と計画約25',
+                href: '/gcl/professional-cloud-architect/section1-design-planning',
                 pct: '~25%',
             },
             {
