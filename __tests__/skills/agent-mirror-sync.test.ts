@@ -22,6 +22,7 @@ const SYNCED_SUBTREES = [
     'skills/html-to-nextjs-migration',
     'skills/md-to-nextjs-migration',
     'skills/markdown-formatter',
+    'skills/md-to-html',
     'skills/spec-sync',
 ] as const;
 

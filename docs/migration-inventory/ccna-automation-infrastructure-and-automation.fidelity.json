@@ -1,0 +1,2905 @@
+{
+  "slug": "ccna-automation-infrastructure-and-automation",
+  "source": "archive/Cisco/html/ccna/Ccna-automation-infrastructure-and-automation.html",
+  "sourceCommit": "a5b4085a8cc9e85013ba37fbc547b1e5d7e438be",
+  "tables": [
+    [
+      [
+        {
+          "tag": "th",
+          "text": "#",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "th",
+          "text": "ドメイン名",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "th",
+          "text": "出題比率",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "1.0",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "Software Development and Design",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "15%",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "2.0",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "Understanding and Using APIs",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "20%",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "3.0",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "Cisco Platforms and Development",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "15%",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "4.0",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "Application Deployment and Security",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "15%",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "5.0",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "Infrastructure and Automation（本記事）",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "20%",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "6.0",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "Network Fundamentals",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "15%",
+          "colspan": null,
+          "rowspan": null
+        }
+      ]
+    ],
+    [
+      [
+        {
+          "tag": "th",
+          "text": "ライフサイクルの段階",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "th",
+          "text": "対応する出題項目",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "設計（モデル駆動プログラマビリティ）",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "5.1, 5.11",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "コード化（IaC / 自動化ツール）",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "5.5, 5.6, 5.8, 5.9",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "バージョン管理・レビュー",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "5.12, 5.13",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "CI/CDパイプライン",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "5.4",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "テスト・シミュレーション",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "5.3",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "本番適用・運用管理",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "5.2, 5.7, 5.10",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "コミュニケーション（設計共有）",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "5.14",
+          "colspan": null,
+          "rowspan": null
+        }
+      ]
+    ],
+    [
+      [
+        {
+          "tag": "th",
+          "text": "観点",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "th",
+          "text": "CLIスクリーンスクレイピング",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "th",
+          "text": "モデル駆動プログラマビリティ",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "データ形式",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "非構造化テキスト（表示用）",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "構造化データ（XML/JSON、YANGベース）",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "安定性",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "OSバージョンで出力が変わり壊れやすい",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "データモデルが変わらない限り安定",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "移植性",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "ベンダー/機種ごとに書き直しが必要",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "同一モデルなら共通コードで再利用可能",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "検証（Validation）",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "クライアント側で独自に実装",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "モデル定義（型・制約）に基づき検証可能",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "主なプロトコル",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "SSH + CLI",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "NETCONF, RESTCONF, gNMI",
+          "colspan": null,
+          "rowspan": null
+        }
+      ]
+    ],
+    [
+      [
+        {
+          "tag": "th",
+          "text": "観点",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "th",
+          "text": "コントローラーレベル管理",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "th",
+          "text": "デバイスレベル管理",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "抽象度",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "高い（意図ベースの単一API）",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "低い（デバイス個別のAPI/CLI）",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "スケーラビリティ",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "高い（多数デバイスを一括操作）",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "低い（台数分の接続・処理が必要）",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "一貫性の担保",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "コントローラーが状態を一元管理",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "スクリプト側で整合性を担保する必要",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "きめ細かい制御",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "コントローラーの機能範囲に依存",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "デバイス固有機能へフルアクセス可能",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "代表例",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "Cisco Catalyst Center, ACI APIC, Meraki Dashboard",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "各デバイスへのNETCONF/RESTCONF/CLI接続",
+          "colspan": null,
+          "rowspan": null
+        }
+      ]
+    ],
+    [
+      [
+        {
+          "tag": "th",
+          "text": "ツール",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "th",
+          "text": "主な役割",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "th",
+          "text": "特徴",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "Cisco Modeling Labs（CML）",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "仮想ネットワークの構築・シミュレーション",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "実機イメージに近い仮想ノードでトポロジーを再現、GUIとAPIの両方を提供",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "pyATS",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "ネットワークの自動テスト・検証",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "Python製、CI/CDに統合しやすい、Genieライブラリと組み合わせて機種差分を吸収",
+          "colspan": null,
+          "rowspan": null
+        }
+      ]
+    ],
+    [
+      [
+        {
+          "tag": "th",
+          "text": "構成要素",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "th",
+          "text": "役割",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "バージョン管理（Git）",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "変更内容と履歴の一元管理、トリガーの起点",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "Lint／構文チェック",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "コードやAnsible Playbookなどの記述ミスを早期検出",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "ビルド",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "必要なアーティファクト（パッケージ、コンテナイメージ等）の生成",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "自動テスト",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "CML/pyATSなどを用いた仮想環境での事前検証",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "ステージング環境",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "本番に近い環境での最終確認",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "承認プロセス",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "人間によるレビュー・ゲート",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "デプロイ（本番適用）",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "自動化ツールによる実際の設定投入",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "モニタリング／ロールバック",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "異常時に前の状態へ迅速に戻す仕組み",
+          "colspan": null,
+          "rowspan": null
+        }
+      ]
+    ],
+    [
+      [
+        {
+          "tag": "th",
+          "text": "利点",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "th",
+          "text": "説明",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "リスクの低減",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "小さい変更を都度検証するため大規模障害を防ぎやすい",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "再現性",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "誰が実行しても同じ手順・同じ結果になる",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "スピード",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "手動作業を排除し、変更のリードタイムを短縮",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "可視化",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "パイプラインの各段階の成功／失敗が記録・追跡できる",
+          "colspan": null,
+          "rowspan": null
+        }
+      ]
+    ],
+    [
+      [
+        {
+          "tag": "th",
+          "text": "ツール",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "th",
+          "text": "主な用途",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "th",
+          "text": "記述言語",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "th",
+          "text": "動作方式",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "th",
+          "text": "状態管理",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "Ansible",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "サーバー/ネットワーク機器の構成管理、アプリ配備",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "YAML（Playbook）",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "エージェントレス（SSH/APIでプッシュ型）",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "実行のたびに現在の状態をチェックし収束させる",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "Terraform",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "クラウドやインフラリソースのプロビジョニング（VM、ネットワーク、サブネット等）",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "HCL",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "宣言的、プロバイダー経由でAPIを呼び出す",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "ステートファイルで管理対象の状態を保持",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "Cisco NSO",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "マルチベンダー環境でのネットワークサービスのオーケストレーション",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "YANGベースのサービスモデル",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "トランザクション的（全成功 or 全ロールバック）",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "サービスモデルと実機構成の同期を一元管理",
+          "colspan": null,
+          "rowspan": null
+        }
+      ]
+    ],
+    [
+      [
+        {
+          "tag": "th",
+          "text": "確認するポイント",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "th",
+          "text": "このスクリプトでの内容",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "どのAPIエンドポイントを呼んでいるか",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "/networks/{network_id}/devices",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "認証方式は何か",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "Bearerトークン（カスタムトークン方式）",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "HTTPメソッドは何か",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "GET（取得系の操作）",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "レスポンスをどう扱っているか",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "JSONをパースしてデバイス名・機種・シリアルを表示",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "このスクリプトが自動化している業務",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "特定ネットワーク配下のデバイス一覧の取得",
+          "colspan": null,
+          "rowspan": null
+        }
+      ]
+    ],
+    [
+      [
+        {
+          "tag": "th",
+          "text": "プラットフォーム",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "th",
+          "text": "領域",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "th",
+          "text": "典型的なタスク例",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "Meraki",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "クラウド管理型ネットワーク",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "デバイス一覧取得、クライアント一覧取得、ネットワーク設定変更",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "Cisco Catalyst Center",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "エンタープライズネットワーク管理",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "デバイスインベントリ取得、テンプレート適用、ヘルス状態確認",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "ACI",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "データセンターSDN",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "テナント/EPG（エンドポイントグループ）の作成・照会",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "RESTCONF",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "デバイス単体のモデル駆動API",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "インターフェース設定の取得・変更（YANGモデルベース）",
+          "colspan": null,
+          "rowspan": null
+        }
+      ]
+    ],
+    [
+      [
+        {
+          "tag": "th",
+          "text": "Playbookの要素",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "th",
+          "text": "このサンプルでの内容",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "対象ホスト（hosts）",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "web_servers グループ",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "権限昇格（become）",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "有効（root権限で実行）",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "パッケージ管理タスク",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "apt モジュールで nginx をインストール",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "ユーザー管理タスク",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "user モジュールで webadmin を作成",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "サービス設定タスク",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "template モジュールで設定ファイルを配置",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "起動・停止タスク",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "service モジュールで起動＋自動起動を有効化",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "Handler（変更時のみ実行）",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "設定ファイルが変更された場合のみ nginx を再起動",
+          "colspan": null,
+          "rowspan": null
+        }
+      ]
+    ],
+    [
+      [
+        {
+          "tag": "th",
+          "text": "行・処理",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "th",
+          "text": "意味",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "set -e",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "コマンドが失敗した時点でスクリプトを終了する（エラー時の安全策）",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "cd \"$APP_DIR\"",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "作業ディレクトリへ移動（ディレクトリナビゲーション）",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "if [ ! -f ... ]",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "ファイルが存在しない場合のみ処理を実行する条件分岐",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "apt-get install",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "パッケージ（アプリ）のインストール",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "id ... || useradd",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "ユーザーが存在しなければ作成する（ユーザー管理）",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "chown / chmod",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "所有者・権限設定（ファイル管理）",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "ログ出力",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "実行結果を後から追跡できるよう記録",
+          "colspan": null,
+          "rowspan": null
+        }
+      ]
+    ],
+    [
+      [
+        {
+          "tag": "th",
+          "text": "観点",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "th",
+          "text": "RESTCONF",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "th",
+          "text": "NETCONF",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "トランスポート",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "HTTPS",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "SSH",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "データ形式",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "JSON（またはXML）",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "XML",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "操作方法",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "GET/POST/PUT/PATCH/DELETEなどHTTPメソッド",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "<get-config>, <edit-config> などのRPC操作",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "設計思想",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "RESTfulなWeb API親和性",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "トランザクション性・複数candidate/runningデータストア管理に強み",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "主なユースケース",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "Web/自動化ツールとの連携がしやすい",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "厳密な設定変更のトランザクション管理",
+          "colspan": null,
+          "rowspan": null
+        }
+      ]
+    ],
+    [
+      [
+        {
+          "tag": "th",
+          "text": "要素",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "th",
+          "text": "意味",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "module",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "YANGモデル全体の名前空間・単位",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "container",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "関連するデータをグループ化する入れ物（リストではない）",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "list",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "複数のインスタンスを持てる要素（key で一意に識別）",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "leaf",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "単一の値を持つデータ項目（型を持つ）",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "leaf-list",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "同じ型の値を複数持てるリスト",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "key",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "list 内の各エントリを一意に識別するための項目",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "type",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "データ型（string, boolean, uint16など）",
+          "colspan": null,
+          "rowspan": null
+        }
+      ]
+    ],
+    [
+      [
+        {
+          "tag": "th",
+          "text": "記号・要素",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "th",
+          "text": "意味",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "--- a/...",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "変更前ファイル（オリジナル）を示す行",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "+++ b/...",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "変更後ファイルを示す行",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "@@ -5,7 +5,7 @@",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "ハンク（変更箇所）の位置。変更前ファイルの5行目から7行分、変更後も5行目から7行分を意味する",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "行頭が -",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "変更前ファイルにのみ存在した行（削除された行）",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "行頭が +",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "変更後ファイルにのみ存在する行（追加された行）",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "行頭が空白",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "変更前後で変わらない「文脈（コンテキスト）」の行",
+          "colspan": null,
+          "rowspan": null
+        }
+      ]
+    ],
+    [
+      [
+        {
+          "tag": "th",
+          "text": "原則",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "th",
+          "text": "説明",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "小さい単位でレビューする",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "変更が大きすぎるとレビューの質が下がるため、小さく分割する",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "客観的な基準を持つ",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "スタイルガイドやチェックリストに基づいて評価する",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "自動チェックを併用する",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "Lintやユニットテストで機械的に検出できる問題は自動化に任せる",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "建設的なフィードバック",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "個人攻撃ではなく、コードの改善点を具体的に伝える",
+          "colspan": null,
+          "rowspan": null
+        }
+      ]
+    ],
+    [
+      [
+        {
+          "tag": "th",
+          "text": "利点",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "th",
+          "text": "説明",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "品質向上",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "バグや設計上の問題を本番投入前に発見できる",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "知識共有",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "チーム内でコードやシステムの理解が広がる",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "一貫性の担保",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "コーディング規約や設計方針の統一が図れる",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "リスク低減",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "重大な設定ミスがネットワーク全体に波及する前に防止できる",
+          "colspan": null,
+          "rowspan": null
+        }
+      ]
+    ],
+    [
+      [
+        {
+          "tag": "th",
+          "text": "図の要素",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "th",
+          "text": "意味",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "縦の線（ライフライン）",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "各参加者（Participant）が存在する時間軸",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "実線の矢印（→）",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "同期的なリクエスト（呼び出し）",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "破線の矢印（-->）",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "レスポンス（応答）",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "上から下への時間順",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "図の上にあるやり取りほど時間的に先に発生する",
+          "colspan": null,
+          "rowspan": null
+        }
+      ]
+    ],
+    [
+      [
+        {
+          "tag": "th",
+          "text": "項目",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "th",
+          "text": "タイトル",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "th",
+          "text": "ひとことまとめ",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "5.1",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "モデル駆動プログラマビリティの価値",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "YANG構造化データによる自動化の一貫性・スケーラビリティ",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "5.2",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "コントローラー vs デバイスレベル管理",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "抽象度とスケールのトレードオフ",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "5.3",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "シミュレーション・テストツール",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "CMLで作る前に試し、pyATSで作った後に確かめる",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "5.4",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "CI/CDパイプライン",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "小さく・頻繁に・自動テストしながら安全に届ける",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "5.5",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "Infrastructure as Codeの原則",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "宣言的・冪等性・単一の情報源",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "5.6",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "自動化ツール（Ansible/Terraform/NSO）",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "プロビジョニング・構成管理・オーケストレーションの補完関係",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "5.7",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "Pythonスクリプトのワークフロー識別",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "どのAPI・どの操作・何を自動化しているかを特定する",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "5.8",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "Ansible Playbookの解釈",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "Task単位で処理内容とHandlerの発火条件を追う",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "5.9",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "Bashスクリプトの解釈",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "ファイル/ユーザー/パッケージ操作の目的を読み取る",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "5.10",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "RESTCONF/NETCONFクエリ結果の解釈",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "JSON(REST)とXML(NETCONF)の構造を読み解く",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "5.11",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "YANGモデルの解釈",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "module/container/list/leafの役割の違い",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "5.12",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "Unified Diffの解釈",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "-/+/文脈行から変更内容を特定する",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "5.13",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "コードレビューの原則と利点",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "品質・知識共有・一貫性・リスク低減",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "5.14",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "シーケンス図の解釈",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "参加者・矢印の向き・時間順序を追う",
+          "colspan": null,
+          "rowspan": null
+        }
+      ]
+    ]
+  ],
+  "supplemental": [
+    {
+      "section": "hero",
+      "tag": "div",
+      "text": "出題比率 20%"
+    },
+    {
+      "section": "hero",
+      "tag": "div",
+      "text": "試験コード 200-901"
+    },
+    {
+      "section": "hero",
+      "tag": "div",
+      "text": "試験時間 120分"
+    },
+    {
+      "section": "hero",
+      "tag": "div",
+      "text": "言語 EN / JA"
+    },
+    {
+      "section": "hero",
+      "tag": "div",
+      "text": "出題項目数 5.1–5.14"
+    },
+    {
+      "section": "overview",
+      "tag": "div",
+      "text": "Figure 0 · 自動化ライフサイクル全体図"
+    },
+    {
+      "section": "s5-1",
+      "tag": "div",
+      "text": "Describe the value of model driven programmability for infrastructure automation"
+    },
+    {
+      "section": "s5-1",
+      "tag": "div",
+      "text": "Figure 5.1 · CLIスクリーンスクレイピング vs モデル駆動プログラマビリティ"
+    },
+    {
+      "section": "s5-1",
+      "tag": "div",
+      "text": "学習のポイント： 出題では「なぜモデル駆動プログラマビリティが価値を持つのか」を一貫性・自動化のしやすさ・スケーラビリティという観点で説明できるかが問われます。丸暗記ではなく「CLI出力は人間向け、YANGモデルは機械向け」という軸で理解すると応用が効きます。"
+    },
+    {
+      "section": "s5-2",
+      "tag": "div",
+      "text": "Compare controller-level to device-level management"
+    },
+    {
+      "section": "s5-2",
+      "tag": "div",
+      "text": "Figure 5.2 · コントローラーレベル管理とデバイスレベル管理"
+    },
+    {
+      "section": "s5-2",
+      "tag": "div",
+      "text": "学習のポイント： 「規模が大きくなるほどコントローラーレベルの価値が高まる」「デバイス固有の細かい機能を使いたい場合はデバイスレベルが必要になる場合がある」というトレードオフの理解が重要です。"
+    },
+    {
+      "section": "s5-3",
+      "tag": "div",
+      "text": "Describe the use and roles of network simulation and test tools (Cisco Modeling Labs, pyATS)"
+    },
+    {
+      "section": "s5-3",
+      "tag": "div",
+      "text": "Figure 5.3 · CML + pyATS を使った検証ワークフロー"
+    },
+    {
+      "section": "s5-3",
+      "tag": "div",
+      "text": "学習のポイント： CMLは「作る前に試す（設計・検証用の仮想環境）」、pyATSは「作った後に確かめる（自動テスト・検証フレームワーク）」という役割分担で覚えると整理しやすいです。"
+    },
+    {
+      "section": "s5-4",
+      "tag": "div",
+      "text": "Describe the components and benefits of CI/CD pipeline in infrastructure automation"
+    },
+    {
+      "section": "s5-4",
+      "tag": "div",
+      "text": "Figure 5.4 · インフラ自動化のCI/CDパイプライン"
+    },
+    {
+      "section": "s5-5",
+      "tag": "div",
+      "text": "Describe the principles of infrastructure as code"
+    },
+    {
+      "section": "s5-5",
+      "tag": "div",
+      "text": "Figure 5.5 · IaCによる状態の収束ループ"
+    },
+    {
+      "section": "s5-5",
+      "tag": "div",
+      "text": "学習のポイント： 「宣言的」と「冪等性」の2語は頻出です。「同じPlaybook/Terraformコードを2回実行しても2回目は何も変わらない」という感覚がまさに冪等性であり、IaCの信頼性の根幹です。"
+    },
+    {
+      "section": "s5-6",
+      "tag": "div",
+      "text": "Describe the capabilities of automation tools such as Ansible, Terraform, and Cisco NSO"
+    },
+    {
+      "section": "s5-6",
+      "tag": "div",
+      "text": "Figure 5.6 · ツールの役割分担"
+    },
+    {
+      "section": "s5-6",
+      "tag": "div",
+      "text": "学習のポイント： 3つは競合というより補完関係にあることが多いです。Terraformで土台となるインフラを用意し、Ansibleでその上のOS/サービスを構成し、NSOで複数ベンダーのネットワークサービスを一元的にオーケストレーションする、という組み合わせがよく使われます。"
+    },
+    {
+      "section": "s5-7",
+      "tag": "div",
+      "text": "Identify the workflow being automated by a Python script that uses Cisco APIs (ACI, Meraki, Catalyst Center, RESTCONF)"
+    },
+    {
+      "section": "s5-7",
+      "tag": "div",
+      "text": "Figure 5.7 · Cisco APIを呼び出すPythonスクリプトの流れ"
+    },
+    {
+      "section": "s5-7",
+      "tag": "div",
+      "text": "devices.py"
+    },
+    {
+      "section": "s5-8",
+      "tag": "div",
+      "text": "Interpret the workflow being automated by an Ansible playbook"
+    },
+    {
+      "section": "s5-8",
+      "tag": "div",
+      "text": "Figure 5.8 · Ansible Playbookの実行フロー"
+    },
+    {
+      "section": "s5-8",
+      "tag": "div",
+      "text": "webserver_setup.yml"
+    },
+    {
+      "section": "s5-9",
+      "tag": "div",
+      "text": "Interpret the workflow being automated by a bash script"
+    },
+    {
+      "section": "s5-9",
+      "tag": "div",
+      "text": "Figure 5.9 · Bashスクリプトの処理フロー"
+    },
+    {
+      "section": "s5-9",
+      "tag": "div",
+      "text": "setup.sh"
+    },
+    {
+      "section": "s5-10",
+      "tag": "div",
+      "text": "Interpret the results of a RESTCONF or NETCONF query"
+    },
+    {
+      "section": "s5-10",
+      "tag": "div",
+      "text": "Figure 5.10 · RESTCONF/NETCONFのクエリ応答シーケンス"
+    },
+    {
+      "section": "s5-10",
+      "tag": "div",
+      "text": "restconf-response.json"
+    },
+    {
+      "section": "s5-10",
+      "tag": "div",
+      "text": "netconf-response.xml"
+    },
+    {
+      "section": "s5-11",
+      "tag": "div",
+      "text": "Interpret basic YANG models"
+    },
+    {
+      "section": "s5-11",
+      "tag": "div",
+      "text": "example-interfaces.yang"
+    },
+    {
+      "section": "s5-11",
+      "tag": "div",
+      "text": "Figure 5.11 · YANGモデルのツリー構造"
+    },
+    {
+      "section": "s5-11",
+      "tag": "div",
+      "text": "学習のポイント： 出題では複雑なYANGモデル定義そのものを暗記する必要はなく、「 list はキーを持つ複数エントリ、 leaf は単一の値、 container は単なるグループ化」という構造上の役割の違いを読み取れれば十分対応できます。"
+    },
+    {
+      "section": "s5-12",
+      "tag": "div",
+      "text": "Interpret a unified diff"
+    },
+    {
+      "section": "s5-12",
+      "tag": "div",
+      "text": "Figure 5.12 · diffが生まれるまでのワークフロー"
+    },
+    {
+      "section": "s5-12",
+      "tag": "div",
+      "text": "playbook.yml.diff"
+    },
+    {
+      "section": "s5-12",
+      "tag": "div",
+      "text": "読み解きのポイント： 上記の例では、 nginx パッケージのバージョン指定なしのインストールを、 nginx=1.18.0-6ubuntu14 という特定バージョン固定のインストールに変更していることが読み取れます。「何が削除され、何が追加されたか」を - と + の行から素早く特定する練習をしておきましょう。"
+    },
+    {
+      "section": "s5-13",
+      "tag": "div",
+      "text": "Describe the principles and benefits of a code review process"
+    },
+    {
+      "section": "s5-13",
+      "tag": "div",
+      "text": "Figure 5.13 · コードレビューのワークフロー"
+    },
+    {
+      "section": "s5-14",
+      "tag": "div",
+      "text": "Interpret a sequence diagram that includes API calls"
+    },
+    {
+      "section": "s5-14",
+      "tag": "div",
+      "text": "Figure 5.14 · API連携のシーケンス図の例"
+    }
+  ],
+  "codeBlocks": [
+    [
+      "import requests",
+      "",
+      "BASE_URL = \"https://api.meraki.com/api/v1\"",
+      "headers = {",
+      "    \"Authorization\": \"Bearer <API_KEY>\",",
+      "    \"Content-Type\": \"application/json\",",
+      "}",
+      "",
+      "network_id = \"N_123456789\"",
+      "response = requests.get(",
+      "    f\"{BASE_URL}/networks/{network_id}/devices\",",
+      "    headers=headers,",
+      ")",
+      "",
+      "if response.status_code == 200:",
+      "    devices = response.json()",
+      "    for device in devices:",
+      "        print(device[\"name\"], device[\"model\"], device[\"serial\"])",
+      "else:",
+      "    print(f\"エラー: {response.status_code}\")"
+    ],
+    [
+      "---",
+      "- name: Webサーバーの基本セットアップ",
+      "  hosts: web_servers",
+      "  become: true",
+      "",
+      "  tasks:",
+      "    - name: nginxパッケージをインストール",
+      "      apt:",
+      "        name: nginx",
+      "        state: present",
+      "",
+      "    - name: webadminユーザーを作成",
+      "      user:",
+      "        name: webadmin",
+      "        groups: www-data",
+      "        shell: /bin/bash",
+      "",
+      "    - name: nginx設定ファイルを配置",
+      "      template:",
+      "        src: nginx.conf.j2",
+      "        dest: /etc/nginx/nginx.conf",
+      "      notify: nginxを再起動",
+      "",
+      "    - name: nginxサービスを起動し自動起動を有効化",
+      "      service:",
+      "        name: nginx",
+      "        state: started",
+      "        enabled: true",
+      "",
+      "  handlers:",
+      "    - name: nginxを再起動",
+      "      service:",
+      "        name: nginx",
+      "        state: restarted"
+    ],
+    [
+      "#!/bin/bash",
+      "set -e",
+      "",
+      "APP_DIR=\"/opt/myapp\"",
+      "LOG_FILE=\"/var/log/myapp_setup.log\"",
+      "",
+      "cd \"$APP_DIR\" || exit 1",
+      "",
+      "if [ ! -f \"$APP_DIR/config.yaml\" ]; then",
+      "    echo \"config.yamlが見つかりません。新規作成します。\" >> \"$LOG_FILE\"",
+      "    cp \"$APP_DIR/config.yaml.default\" \"$APP_DIR/config.yaml\"",
+      "fi",
+      "",
+      "apt-get update && apt-get install -y python3-pip",
+      "",
+      "if ! id \"appuser\" &>/dev/null; then",
+      "    useradd -m -s /bin/bash appuser",
+      "fi",
+      "",
+      "chown -R appuser:appuser \"$APP_DIR\"",
+      "chmod 750 \"$APP_DIR\"",
+      "",
+      "echo \"セットアップ完了: $(date)\" >> \"$LOG_FILE\""
+    ],
+    [
+      "{",
+      "  \"ietf-interfaces:interface\": [",
+      "    {",
+      "      \"name\": \"GigabitEthernet0/1\",",
+      "      \"type\": \"iana-if-type:ethernetCsmacd\",",
+      "      \"enabled\": true,",
+      "      \"ietf-ip:ipv4\": {",
+      "        \"address\": [",
+      "          { \"ip\": \"192.0.2.1\", \"netmask\": \"255.255.255.0\" }",
+      "        ]",
+      "      }",
+      "    }",
+      "  ]",
+      "}"
+    ],
+    [
+      "<rpc-reply message-id=\"101\" xmlns=\"urn:ietf:params:xml:ns:netconf:base:1.0\">",
+      "  <data>",
+      "    <interfaces xmlns=\"urn:ietf:params:xml:ns:yang:ietf-interfaces\">",
+      "      <interface>",
+      "        <name>GigabitEthernet0/1</name>",
+      "        <enabled>true</enabled>",
+      "      </interface>",
+      "    </interfaces>",
+      "  </data>",
+      "</rpc-reply>"
+    ],
+    [
+      "module example-interfaces {",
+      "  namespace \"urn:example:interfaces\";",
+      "  prefix \"if\";",
+      "",
+      "  container interfaces {",
+      "    list interface {",
+      "      key \"name\";",
+      "",
+      "      leaf name {",
+      "        type string;",
+      "      }",
+      "      leaf enabled {",
+      "        type boolean;",
+      "      }",
+      "      leaf mtu {",
+      "        type uint16;",
+      "      }",
+      "      leaf-list address {",
+      "        type string;",
+      "      }",
+      "    }",
+      "  }",
+      "}"
+    ],
+    [
+      "--- a/playbook.yml",
+      "+++ b/playbook.yml",
+      "@@ -5,7 +5,7 @@",
+      "   tasks:",
+      "     - name: nginxパッケージをインストール",
+      "       apt:",
+      "-        name: nginx",
+      "+        name: nginx=1.18.0-6ubuntu14",
+      "         state: present",
+      "",
+      "     - name: webadminユーザーを作成",
+      "       user:"
+    ]
+  ],
+  "syntaxTokens": {
+    "hl-kw": [
+      "import",
+      "if",
+      "for",
+      "in",
+      "else",
+      "true",
+      "true",
+      "if",
+      "then",
+      "fi",
+      "if",
+      "then",
+      "fi",
+      "true"
+    ],
+    "hl-str": [
+      "\"https://api.meraki.com/api/v1\"",
+      "\"Authorization\"",
+      "\"Bearer <API_KEY>\"",
+      "\"Content-Type\"",
+      "\"application/json\"",
+      "\"N_123456789\"",
+      "f\"{BASE_URL}/networks/{network_id}/devices\"",
+      "\"name\"",
+      "\"model\"",
+      "\"serial\"",
+      "f\"エラー: {response.status_code}\"",
+      "Webサーバーの基本セットアップ",
+      "web_servers",
+      "nginxパッケージをインストール",
+      "nginx",
+      "present",
+      "webadminユーザーを作成",
+      "webadmin",
+      "www-data",
+      "/bin/bash",
+      "nginx設定ファイルを配置",
+      "nginx.conf.j2",
+      "/etc/nginx/nginx.conf",
+      "nginxを再起動",
+      "nginxサービスを起動し自動起動を有効化",
+      "nginx",
+      "started",
+      "nginxを再起動",
+      "nginx",
+      "restarted",
+      "\"/opt/myapp\"",
+      "\"/var/log/myapp_setup.log\"",
+      "\"$APP_DIR\"",
+      "\"$APP_DIR/config.yaml\"",
+      "\"config.yamlが見つかりません。新規作成します。\"",
+      "\"$LOG_FILE\"",
+      "\"$APP_DIR/config.yaml.default\"",
+      "\"$APP_DIR/config.yaml\"",
+      "\"appuser\"",
+      "\"$APP_DIR\"",
+      "\"$APP_DIR\"",
+      "\"セットアップ完了: $(date)\"",
+      "\"$LOG_FILE\"",
+      "\"GigabitEthernet0/1\"",
+      "\"iana-if-type:ethernetCsmacd\"",
+      "\"192.0.2.1\"",
+      "\"255.255.255.0\"",
+      "\"101\"",
+      "\"urn:ietf:params:xml:ns:netconf:base:1.0\"",
+      "\"urn:ietf:params:xml:ns:yang:ietf-interfaces\""
+    ],
+    "hl-num": [
+      "200"
+    ],
+    "hl-fn": [
+      "print",
+      "print",
+      "set",
+      "cd",
+      "exit",
+      "echo",
+      "echo",
+      "rpc-reply",
+      "data",
+      "interfaces",
+      "interface",
+      "name",
+      "name",
+      "enabled",
+      "enabled",
+      "interface",
+      "interfaces",
+      "data",
+      "rpc-reply"
+    ],
+    "hl-cm": [
+      "--- a/playbook.yml",
+      "+++ b/playbook.yml"
+    ],
+    "hl-add": [
+      "+ name: nginx=1.18.0-6ubuntu14"
+    ],
+    "hl-del": [
+      "- name: nginx"
+    ]
+  },
+  "styledClasses": [
+    "hero",
+    "eyebrow",
+    "lead",
+    "meta-chips",
+    "chip",
+    "highlight",
+    "k",
+    "v",
+    "section",
+    "prose",
+    "subhead",
+    "table-wrapper",
+    "diagram-wrapper",
+    "diagram-label",
+    "section-head",
+    "domain-chip",
+    "weight-tag",
+    "inline",
+    "callout",
+    "code-wrapper",
+    "code-label",
+    "hljs",
+    "hljs-keyword",
+    "hljs-string",
+    "hljs-subst",
+    "hljs-number",
+    "hljs-built_in",
+    "hljs-meta",
+    "hljs-bullet",
+    "hljs-attr",
+    "hljs-literal",
+    "hljs-variable",
+    "hljs-tag",
+    "hljs-name",
+    "hljs-comment",
+    "hljs-deletion",
+    "hljs-addition",
+    "summary-table",
+    "footer",
+    "source-list",
+    "src-name",
+    "disclaimer"
+  ],
+  "placements": [
+    {
+      "section": "overview",
+      "kind": "table"
+    },
+    {
+      "section": "overview",
+      "kind": "diagram"
+    },
+    {
+      "section": "overview",
+      "kind": "table"
+    },
+    {
+      "section": "s5-1",
+      "kind": "diagram"
+    },
+    {
+      "section": "s5-1",
+      "kind": "table"
+    },
+    {
+      "section": "s5-1",
+      "kind": "supplemental"
+    },
+    {
+      "section": "s5-2",
+      "kind": "diagram"
+    },
+    {
+      "section": "s5-2",
+      "kind": "table"
+    },
+    {
+      "section": "s5-2",
+      "kind": "supplemental"
+    },
+    {
+      "section": "s5-3",
+      "kind": "diagram"
+    },
+    {
+      "section": "s5-3",
+      "kind": "table"
+    },
+    {
+      "section": "s5-3",
+      "kind": "supplemental"
+    },
+    {
+      "section": "s5-4",
+      "kind": "diagram"
+    },
+    {
+      "section": "s5-4",
+      "kind": "table"
+    },
+    {
+      "section": "s5-4",
+      "kind": "table"
+    },
+    {
+      "section": "s5-5",
+      "kind": "diagram"
+    },
+    {
+      "section": "s5-5",
+      "kind": "supplemental"
+    },
+    {
+      "section": "s5-6",
+      "kind": "table"
+    },
+    {
+      "section": "s5-6",
+      "kind": "diagram"
+    },
+    {
+      "section": "s5-6",
+      "kind": "supplemental"
+    },
+    {
+      "section": "s5-7",
+      "kind": "diagram"
+    },
+    {
+      "section": "s5-7",
+      "kind": "code"
+    },
+    {
+      "section": "s5-7",
+      "kind": "table"
+    },
+    {
+      "section": "s5-7",
+      "kind": "table"
+    },
+    {
+      "section": "s5-8",
+      "kind": "diagram"
+    },
+    {
+      "section": "s5-8",
+      "kind": "code"
+    },
+    {
+      "section": "s5-8",
+      "kind": "table"
+    },
+    {
+      "section": "s5-9",
+      "kind": "diagram"
+    },
+    {
+      "section": "s5-9",
+      "kind": "code"
+    },
+    {
+      "section": "s5-9",
+      "kind": "table"
+    },
+    {
+      "section": "s5-10",
+      "kind": "table"
+    },
+    {
+      "section": "s5-10",
+      "kind": "diagram"
+    },
+    {
+      "section": "s5-10",
+      "kind": "code"
+    },
+    {
+      "section": "s5-10",
+      "kind": "code"
+    },
+    {
+      "section": "s5-11",
+      "kind": "table"
+    },
+    {
+      "section": "s5-11",
+      "kind": "code"
+    },
+    {
+      "section": "s5-11",
+      "kind": "diagram"
+    },
+    {
+      "section": "s5-11",
+      "kind": "supplemental"
+    },
+    {
+      "section": "s5-12",
+      "kind": "diagram"
+    },
+    {
+      "section": "s5-12",
+      "kind": "code"
+    },
+    {
+      "section": "s5-12",
+      "kind": "table"
+    },
+    {
+      "section": "s5-12",
+      "kind": "supplemental"
+    },
+    {
+      "section": "s5-13",
+      "kind": "diagram"
+    },
+    {
+      "section": "s5-13",
+      "kind": "table"
+    },
+    {
+      "section": "s5-13",
+      "kind": "table"
+    },
+    {
+      "section": "s5-14",
+      "kind": "table"
+    },
+    {
+      "section": "s5-14",
+      "kind": "diagram"
+    },
+    {
+      "section": "summary",
+      "kind": "table"
+    }
+  ]
+}

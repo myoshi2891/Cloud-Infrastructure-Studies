@@ -1,0 +1,2281 @@
+{
+  "slug": "ccna-network-access-guide",
+  "source": "archive/Cisco/html/ccna/Ccna-network-access-guide.html",
+  "sourceCommit": "a5b4085a8cc9e85013ba37fbc547b1e5d7e438be",
+  "texts": [
+    "CCNA 200-301「Network Access」セクション徹底解説",
+    "初学者向けステップバイステップガイド — VLANからトランク、EtherChannel、スパニングツリー、無線LANアーキテクチャまで、アクセス層の技術を基礎から積み上げて理解します。",
+    "1. このセクションの全体像",
+    "CCNA 200-301試験は6つのドメインで構成されており、その中で「Network Access」はスイッチング技術（レイヤー2）とワイヤレスの基礎を扱うドメインです。VLAN、トランク、EtherChannel、スパニングツリー、そして無線LANの仕組みまで、企業ネットワークの「入り口」となるアクセス層の技術が範囲になります。",
+    "図1：CCNA 200-301の6ドメインと配点（v1.1ブループリント）",
+    "Network Accessドメインは、以下の9つの試験トピック（2.1〜2.9）で構成されています。",
+    "番号",
+    "トピック",
+    "ひとことで言うと",
+    "2.1",
+    "VLANの設定と検証",
+    "1台のスイッチをどう論理的に分割するか",
+    "2.2",
+    "スイッチ間接続（トランク）",
+    "複数のVLANを1本のリンクでどう運ぶか",
+    "2.3",
+    "CDP・LLDP",
+    "隣接機器をどう自動的に発見するか",
+    "2.4",
+    "EtherChannel（LACP）",
+    "複数の物理リンクを1本にまとめる方法",
+    "2.5",
+    "Rapid PVST+",
+    "ループをどう防ぐか",
+    "2.6",
+    "ワイヤレスアーキテクチャ・APモード",
+    "無線APの動作方式の違い",
+    "2.7",
+    "WLANコンポーネントの物理接続",
+    "AP・WLC・LAGがどう配線されるか",
+    "2.8",
+    "デバイス管理アクセス",
+    "管理者はどうやって機器にログインするか",
+    "2.9",
+    "ワイヤレスLAN GUI設定",
+    "WLCのGUIでどうSSIDを作るか",
+    "Ciscoは2026年5月20日に、200-301 CCNAの大規模改訂版「v2.0」を発表しました。v2.0は2027年2月3日から実施され、それまでは現行のv1.1が引き続き有効です。v2.0ではNetwork Accessドメインは「Switching and Network Access」に改称され配点が20%→25%に増加し、\"troubleshoot（トラブルシュートせよ）\"という動詞を使った出題が大幅に増える予定です。本ガイドは現行v1.1の内容に基づいて解説しています。受験予定日がv2.0切り替え後になる方は、Cisco Learning Networkで最新のブループリントを必ず確認してください。",
+    "2. 前提知識の確認：スイッチングの基礎",
+    "VLANやトランクを理解する前に、スイッチが行っている最も基本的な動作を押さえておきましょう。これは1.0 Network Fundamentalsドメインの範囲ですが、Network Accessを理解する土台になります。",
+    "MACアドレステーブル：スイッチは受信したフレームの送信元MACアドレスと、それが届いたポート番号を対応づけて記憶します。",
+    "フレームの転送（フォワーディング）：宛先MACアドレスがテーブルにあれば、該当ポートだけにフレームを送ります（ユニキャスト転送）。",
+    "フラッディング：宛先MACアドレスがテーブルにない場合、受信したポート以外の全ポートにフレームをコピーして送信します。",
+    "図2：スイッチのフレーム転送判断フロー",
+    "この「1つのスイッチは1つのブロードキャストドメイン」という前提を、VLANによってどう分割するかが次章のテーマです。",
+    "3. 2.1 VLANの設定と検証",
+    "3.1 VLANとは何か、なぜ必要か",
+    "VLAN（Virtual LAN）は、1台の物理スイッチを複数の論理的なブロードキャストドメインに分割する技術です。物理的な配線を変えずに、部署やフロアごとにネットワークを分離できます。",
+    "理由",
+    "説明",
+    "セキュリティ",
+    "部署間の通信を論理的に分離できる",
+    "ブロードキャスト制御",
+    "ブロードキャストの届く範囲を小さくし、無駄なトラフィックを減らす",
+    "柔軟性",
+    "物理的な配置に関係なく、同じ部署のユーザーを同じVLANに所属させられる",
+    "管理のしやすさ",
+    "論理グループごとにポリシーやIPサブネットを適用しやすい",
+    "図3：1台の物理スイッチをVLANで論理分割",
+    "同じVLAN内のポート同士はレイヤー2で自由に通信できますが、VLANをまたぐ通信（InterVLAN Routing）にはレイヤー3のルーティング機能が必要です。これは次のドメイン（3.0 IP Connectivity）で扱う範囲ですが、試験トピック2.1では「異なるVLAN間は直接通信できない」という概念の理解までが範囲になります。",
+    "3.2 アクセスポート（データVLANとボイスVLAN）",
+    "アクセスポートは、単一のVLANにのみ所属するスイッチポートです。PCやプリンタなどのエンドデバイスを接続するのが基本用途です。",
+    "CiscoのIP電話を接続する場合は、1つの物理ポートにデータVLANとボイスVLANの2つを割り当てることができます。IP電話にPCを直列接続（デイジーチェーン）する構成が典型例です。",
+    "図4：IP電話 + PCのデイジーチェーン構成とデータ／ボイスVLAN",
+    "3.3 デフォルトVLAN",
+    "Cisco Catalystスイッチは、工場出荷時点でVLAN 1が存在し、すべてのポートがデフォルトでVLAN 1に所属しています。",
+    "特性",
+    "VLAN 1について",
+    "削除できるか",
+    "できない（作成・削除不可の特殊VLAN）",
+    "デフォルトの用途",
+    "全ポートの初期所属VLAN",
+    "運用上の推奨",
+    "ユーザーデータ用には使わず、管理VLANやユーザーVLANを別途明示的に作成する",
+    "CDP／VTP／STPなどの制御プロトコル",
+    "デフォルトでVLAN 1上を流れる",
+    "セキュリティのベストプラクティスとして、VLAN 1をそのまま使い続けず、未使用ポートは別のVLAN（いわゆる「ブラックホールVLAN」）に割り当てておくという考え方も、実務およびCCNAの理解として押さえておくとよいでしょう。",
+    "3.4 検証コマンドのまとめ",
+    "コマンド",
+    "確認できる内容",
+    "show vlan brief",
+    "VLAN ID・名前・所属ポート一覧",
+    "show interfaces status",
+    "各ポートのVLAN所属とリンク状態",
+    "show mac address-table",
+    "MACアドレスとVLAN・ポートの対応",
+    "4. 2.2 スイッチ間接続（トランク）の設定と検証",
+    "4.1 トランクポートとは",
+    "VLANが複数のスイッチにまたがる場合、スイッチ同士を結ぶリンクで複数のVLANのトラフィックを1本の物理リンクで運ぶ必要があります。このためのポートモードがトランクポートです。",
+    "図5：トランクリンクによる複数VLANの伝送",
+    "4.2 IEEE 802.1Q タギング",
+    "トランクリンクを通過するフレームには、802.1Qという規格に基づき4バイトのVLANタグが挿入され、どのVLANに属するフレームかを識別できるようにします。",
+    "図6：802.1Qタギングの流れ",
+    "4.3 ネイティブVLAN",
+    "802.1Qでは、1つだけタグを付けずに送るVLANを指定でき、これをネイティブVLANと呼びます（デフォルトはVLAN 1）。",
+    "試験で頻出なのが「ネイティブVLANミスマッチ」です。トランクの両端でネイティブVLANの設定が食い違っていると、CDPが警告ログを出し、そのVLANのトラフィックが意図しないVLANに漏れる、あるいはループの原因になることがあります。",
+    "状態",
+    "結果",
+    "両端のネイティブVLANが一致",
+    "正常に動作",
+    "両端のネイティブVLANが不一致",
+    "ログにネイティブVLANミスマッチの警告が出力される／セキュリティ・到達性の問題が発生し得る",
+    "図7：ネイティブVLANミスマッチの検出",
+    "5. 2.3 レイヤー2ディスカバリプロトコル（CDP・LLDP）",
+    "隣接するネットワーク機器を自動的に発見し、ネットワーク構成図（トポロジー）の正確性を検証するための仕組みです。",
+    "項目",
+    "CDP（Cisco Discovery Protocol）",
+    "LLDP（Link Layer Discovery Protocol）",
+    "標準化",
+    "Cisco独自プロトコル",
+    "IEEE 802.1AB（ベンダー中立の業界標準）",
+    "対応機器",
+    "主にCisco機器",
+    "Cisco機器・他ベンダー機器の両方",
+    "デフォルト状態",
+    "多くのCisco機器で有効",
+    "機種により無効の場合あり（有効化が必要なことがある）",
+    "取得できる情報の例",
+    "機器種別、OSバージョン、隣接ポート、IPアドレスなど",
+    "同様の隣接情報（TLV形式）",
+    "図8：CDPとLLDPの適用範囲の違い",
+    "異なるベンダーの機器が混在する環境では、CDPは使えないためLLDPが必須になります。「ベンダーが違う環境で隣接情報を取得したい」という問題文が出たら、LLDPが正解になる可能性が高いです。",
+    "6. 2.4 EtherChannel（LACP）",
+    "6.1 EtherChannelの目的",
+    "複数の物理リンクを論理的に束ねて1本の高帯域なリンクとして扱う技術です。帯域幅の増加に加え、リンク冗長性（1本が切れても通信が継続する）というメリットもあります。",
+    "図9：2本の物理リンクをEtherChannelとして束ねる",
+    "6.2 EtherChannelのネゴシエーションプロトコル",
+    "EtherChannelを自動的にネゴシエートするプロトコルには2種類あり、CCNAで問われるのは主にLACPです。",
+    "プロトコル",
+    "標準化",
+    "モードの組み合わせ例",
+    "LACP（Link Aggregation Control Protocol）",
+    "IEEE 802.3ad（業界標準）",
+    "active + active／active + passive",
+    "PAgP（Port Aggregation Protocol）",
+    "Cisco独自",
+    "desirable + desirable／desirable + auto",
+    "モード",
+    "動作",
+    "active",
+    "積極的にLACPネゴシエーションを開始する",
+    "passive",
+    "相手からのネゴシエーション要求を待つ（自分からは開始しない）",
+    "on",
+    "ネゴシエーションを行わず強制的にチャネルを形成する（プロトコルを使わないモード）",
+    "passive同士の組み合わせではネゴシエーションが成立せず、EtherChannelは形成されません。必ずどちらか一方がactiveである必要があります。",
+    "7. 2.5 Rapid PVST+ スパニングツリープロトコル",
+    "7.1 なぜスパニングツリーが必要か",
+    "冗長化のためにスイッチ同士を複数のリンクで接続すると、レイヤー2ではループが発生し、ブロードキャストストームやMACアドレステーブルの不安定化を引き起こします。スパニングツリープロトコル（STP）は、冗長リンクの一部を論理的にブロックすることでループを防ぎます。",
+    "図10：ルートブリッジと1リンクのブロックによるループ防止",
+    "7.2 ルートブリッジの選出",
+    "STPはまず、トポロジー内から基準となるルートブリッジを1台選出します。",
+    "選出基準（優先順）",
+    "内容",
+    "1. ブリッジプライオリティが最小",
+    "デフォルトは32768。値が小さいほど優先される",
+    "2. MACアドレスが最小",
+    "プライオリティが同値の場合のタイブレーク",
+    "運用では、意図的にルートブリッジにしたいスイッチのプライオリティを下げて固定することが一般的です。",
+    "7.3 ポートの役割（ロール）",
+    "役割",
+    "説明",
+    "ルートポート（Root Port）",
+    "非ルートブリッジ上で、ルートブリッジへの最短コストを持つ1ポート",
+    "指定ポート（Designated Port）",
+    "各セグメントで転送を担当する1ポート",
+    "非指定ポート（Non-Designated / Blocking）",
+    "ループ防止のため転送をブロックされるポート",
+    "7.4 ポートの状態（Rapid PVST+ = RSTPベース）",
+    "従来の802.1D STPでは4つの状態（Blocking→Listening→Learning→Forwarding）でしたが、Rapid PVST+の基盤であるRSTP（802.1w）ではこれが集約され、収束が大幅に高速化されています。",
+    "図11：Rapid PVST+のポート状態遷移",
+    "従来のSTP（802.1D）",
+    "Rapid PVST+ / RSTP（802.1w）",
+    "Blocking",
+    "Discarding",
+    "Listening",
+    "Discarding",
+    "Learning",
+    "Learning",
+    "Forwarding",
+    "Forwarding",
+    "収束に数十秒",
+    "収束は数秒以内",
+    "7.5 PortFastとガード機能",
+    "機能",
+    "目的",
+    "PortFast",
+    "エンドデバイス（PCなど）を接続するアクセスポートで、STPの各段階を待たず即座にForwarding状態にする",
+    "BPDU Guard",
+    "PortFastが有効なポートでBPDUを受信した場合、ポートを即座にerr-disable状態にする（不正なスイッチ接続を防止）",
+    "BPDU Filter",
+    "該当ポートでBPDUの送受信自体を行わないようにする",
+    "Root Guard",
+    "指定したポートで、より優れたBPDU（＝ルートブリッジになろうとする機器）を受信した場合にそのポートをブロックし、意図しないルートブリッジの変更を防止する",
+    "Loop Guard",
+    "本来BPDUを受信し続けるはずのポートでBPDUが届かなくなった場合に、誤って転送状態へ遷移することを防ぐ",
+    "図12：BPDU Guardの判断フロー",
+    "PortFastは「PCなど末端デバイス用」、BPDU GuardやRoot Guardは「不正な機器やトポロジー変更を防ぐための保護機能」という役割の違いを混同しないようにしましょう。",
+    "8. 2.6 Ciscoワイヤレスアーキテクチャ と APモード",
+    "アーキテクチャ",
+    "概要",
+    "制御プレーンの場所",
+    "自律型（Autonomous）AP",
+    "AP単体で無線制御（RF管理・認証など）を完結させる",
+    "AP自身",
+    "分離MAC（Split-MAC）／集中型（コントローラベース）",
+    "AP（Lightweight AP）はデータ転送に専念し、無線制御はWLC（Wireless LAN Controller）に集約する",
+    "WLC（コントローラ）",
+    "クラウド管理型",
+    "APの管理・可視化をクラウド上のダッシュボードで行う（例：Cisco Meraki）",
+    "クラウド上のコントローラ",
+    "図13：3種類のワイヤレスアーキテクチャの比較",
+    "コントローラベースのアーキテクチャでは、APとWLCの間の通信はCAPWAP（Control And Provisioning of Wireless Access Points）というトンネルプロトコルでカプセル化されます。多数のAPを一元管理できることが最大のメリットです。",
+    "9. 2.7 WLANコンポーネントの物理接続",
+    "コントローラベースのワイヤレス環境における、実際の配線と論理構成を確認します。",
+    "図14：AP・スイッチ・WLCの物理接続",
+    "コンポーネント",
+    "接続タイプ",
+    "補足",
+    "AP → アクセススイッチ",
+    "アクセスポート（多くは管理用VLAN）",
+    "PoEで給電されることが多い",
+    "アクセススイッチ → 上位スイッチ",
+    "トランクポート",
+    "複数のクライアントVLANを一括で伝送",
+    "上位スイッチ → WLC",
+    "LAG（Link Aggregation）",
+    "WLCに集中する多数のAPトラフィックを高帯域・冗長構成で受け止める",
+    "10. 2.8 ネットワークデバイスの管理アクセス",
+    "ネットワーク機器へ管理者としてログインする方法は複数あり、セキュリティ特性が異なります。",
+    "方式",
+    "暗号化",
+    "主な用途",
+    "コンソール",
+    "なし（物理接続のため通常は暗号化不要）",
+    "初期設定・障害時のアウトオブバンド接続",
+    "Telnet",
+    "暗号化なし（平文）",
+    "現在は非推奨。試験では「安全でない」選択肢として登場しやすい",
+    "SSH",
+    "暗号化あり",
+    "リモート管理の標準的な方式",
+    "HTTP",
+    "暗号化なし",
+    "Web GUI管理（非推奨）",
+    "HTTPS",
+    "暗号化あり",
+    "Web GUI管理（推奨）",
+    "TACACS+ / RADIUS",
+    "認証通信は暗号化（TACACS+はペイロード全体を暗号化）",
+    "集中管理されたAAA（認証・認可・アカウンティング）サーバーとの連携",
+    "クラウド管理",
+    "クラウドサービス側の暗号化通信に依存",
+    "Meraki等のクラウドダッシュボード経由での管理",
+    "図15：管理アクセス方式の選択フロー",
+    "「安全な管理アクセス方法はどれか」と問われたら、Telnet／HTTPではなくSSH／HTTPSを選ぶのが基本です。",
+    "11. 2.9 ワイヤレスLAN GUI設定の解釈",
+    "このトピックは、WLCのGUI画面上で行うWLAN作成の流れを「読み解ける」ことが求められます（CLIでのフルコンフィグではなく、GUI操作の理解が中心です）。",
+    "図16：WLC GUIでのWLAN作成フロー",
+    "設定項目",
+    "GUI上で確認・設定する内容",
+    "WLAN作成",
+    "SSID名、WLAN ID、有効/無効の切り替え",
+    "セキュリティ設定",
+    "WPA2-Personal（PSK）／WPA2-Enterprise／WPA3などの選択、事前共有キーの設定",
+    "QoSプロファイル",
+    "Platinum（音声）／Gold（映像）／Silver（ベストエフォート）／Bronze（バックグラウンド）といった優先度クラス",
+    "詳細設定",
+    "クライアントVLANのマッピング、ブロードキャストSSIDの有無、セッションタイムアウトなど",
+    "12. 試験対策：頻出の引っかけポイント",
+    "引っかけやすいポイント",
+    "正しい理解",
+    "VLANとIPサブネットを同一視してしまう",
+    "VLANはレイヤー2のブロードキャストドメイン、サブネットはレイヤー3の概念。多くの設計では1対1で対応させるが、概念としては別物",
+    "ネイティブVLANはタグが付くと誤解する",
+    "ネイティブVLANのフレームだけはタグなしで送信される",
+    "LACP passive同士で組んでしまう",
+    "passive同士ではネゴシエーションが成立しないため、必ず片方はactiveにする",
+    "PortFastとBPDU Guardを混同する",
+    "PortFastは「早く転送状態にする」機能、BPDU Guardは「不正なBPDU受信時にポートを止める」保護機能",
+    "STPのポート状態を旧バージョンの4状態で覚えてしまう",
+    "Rapid PVST+（RSTP）ではDiscarding／Learning／Forwardingの3状態に整理されている",
+    "CDPを他ベンダー機器でも使えると誤解する",
+    "CDPはCisco専用。ベンダー混在環境ではLLDPを使う",
+    "Telnet・HTTPを安全な管理方式として選んでしまう",
+    "暗号化されないため非推奨。SSH・HTTPSが基本",
+    "13. ハンズオン学習の進め方",
+    "読むだけでなく、実際に手を動かすことがこのドメインの理解を大きく左右します。Cisco Packet Tracerなどのシミュレータで、以下のような構成を組んで検証すると効果的です。",
+    "図17：3台スイッチによる演習トポロジー",
+    "おすすめの演習ステップ",
+    "3台のスイッチで上図のようなループのあるトポロジーを作り、2つ以上のVLANを作成する",
+    "各スイッチ間のリンクをトランクとして設定し、show interfaces trunk で許可VLANとネイティブVLANを確認する",
+    "show spanning-tree vlan 10 を実行し、どのスイッチがルートブリッジになっているか、どのポートがブロックされているかを確認する",
+    "spanning-tree vlan 10 priority 4096 で意図的にルートブリッジを変更し、収束後のポート役割の変化を観察する",
+    "2本のリンクでEtherChannelを構成し、channel-group 1 mode active で束ね、show etherchannel summary で状態を確認する",
+    "1本のリンクをあえて切断し、EtherChannelとSTPそれぞれの挙動（フェイルオーバーの速さ）を比較する",
+    "14. セクション全体のまとめ表",
+    "試験トピック",
+    "キーワード",
+    "主要コマンド例",
+    "2.1 VLAN",
+    "アクセスポート、データ/ボイスVLAN、デフォルトVLAN",
+    "switchport access vlan, show vlan brief",
+    "2.2 トランク",
+    "802.1Q、ネイティブVLAN",
+    "switchport mode trunk, show interfaces trunk",
+    "2.3 CDP/LLDP",
+    "隣接機器の自動検出",
+    "show cdp neighbors, show lldp neighbors",
+    "2.4 EtherChannel",
+    "LACP active/passive",
+    "channel-group mode active, show etherchannel summary",
+    "2.5 Rapid PVST+",
+    "ルートブリッジ、ポート役割・状態、PortFast、各種ガード",
+    "spanning-tree vlan root primary, show spanning-tree",
+    "2.6 無線アーキテクチャ",
+    "自律型／分離MAC／クラウド管理型",
+    "（GUI・概念理解が中心）",
+    "2.7 WLAN物理接続",
+    "AP・WLC・LAGの配線",
+    "（物理構成の理解が中心）",
+    "2.8 管理アクセス",
+    "Telnet/SSH/HTTP/HTTPS/TACACS+/RADIUS",
+    "（安全性の比較理解が中心）",
+    "2.9 WLAN GUI設定",
+    "SSID作成、セキュリティ、QoSプロファイル",
+    "（WLC GUI操作の理解が中心）",
+    "15. 参考資料・出典",
+    "本ガイドの試験範囲・配点・トピック構成は、以下のCisco公式情報および関連情報に基づいています。",
+    "Cisco公式 CCNA認定ページ（日本語）：https://www.cisco.com/c/ja_jp/training-events/training-certifications/certifications/associate/ccna.html",
+    "https://www.cisco.com/c/ja_jp/training-events/training-certifications/certifications/associate/ccna.html",
+    "Cisco公式 200-301 CCNA試験トピックス v1.1（英語PDF、現行ブループリント）：https://learningcontent.cisco.com/documents/marketing/exam-topics/200-301-CCNA-v1.1.pdf",
+    "https://learningcontent.cisco.com/documents/marketing/exam-topics/200-301-CCNA-v1.1.pdf",
+    "Cisco公式 200-301 CCNA試験トピックス（日本語PDF）：https://www.cisco.com/c/dam/global/ja_jp/training-events/training-certifications/exam-topics/200-301-CCNA.pdf",
+    "https://www.cisco.com/c/dam/global/ja_jp/training-events/training-certifications/exam-topics/200-301-CCNA.pdf",
+    "Cisco公式 200-301 CCNA v2.0試験トピックス（2027年2月3日開始予定の次期ブループリント）：https://learningcontent.cisco.com/documents/marketing/exam-topics/200-301_CCNA_v2.0_Exam_Topics_PDF.pdf",
+    "https://learningcontent.cisco.com/documents/marketing/exam-topics/200-301_CCNA_v2.0_Exam_Topics_PDF.pdf",
+    "CCNA v1.1からv2.0への移行スケジュールに関する解説記事：https://trainingcamp.com/articles/ccna-is-changing-in-2027-take-the-current-exam-or-wait-for-v2-0/",
+    "https://trainingcamp.com/articles/ccna-is-changing-in-2027-take-the-current-exam-or-wait-for-v2-0/",
+    "試験トピックスはCiscoの都合により予告なく変更される場合があります。受験前には必ずCisco Learning Networkで最新のブループリントをご確認ください。",
+    "Cisco Learning Network"
+  ],
+  "tables": [
+    [
+      [
+        {
+          "tag": "th",
+          "text": "番号",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "th",
+          "text": "トピック",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "th",
+          "text": "ひとことで言うと",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "2.1",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "VLANの設定と検証",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "1台のスイッチをどう論理的に分割するか",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "2.2",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "スイッチ間接続（トランク）",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "複数のVLANを1本のリンクでどう運ぶか",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "2.3",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "CDP・LLDP",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "隣接機器をどう自動的に発見するか",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "2.4",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "EtherChannel（LACP）",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "複数の物理リンクを1本にまとめる方法",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "2.5",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "Rapid PVST+",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "ループをどう防ぐか",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "2.6",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "ワイヤレスアーキテクチャ・APモード",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "無線APの動作方式の違い",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "2.7",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "WLANコンポーネントの物理接続",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "AP・WLC・LAGがどう配線されるか",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "2.8",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "デバイス管理アクセス",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "管理者はどうやって機器にログインするか",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "2.9",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "ワイヤレスLAN GUI設定",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "WLCのGUIでどうSSIDを作るか",
+          "colspan": null,
+          "rowspan": null
+        }
+      ]
+    ],
+    [
+      [
+        {
+          "tag": "th",
+          "text": "理由",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "th",
+          "text": "説明",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "セキュリティ",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "部署間の通信を論理的に分離できる",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "ブロードキャスト制御",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "ブロードキャストの届く範囲を小さくし、無駄なトラフィックを減らす",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "柔軟性",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "物理的な配置に関係なく、同じ部署のユーザーを同じVLANに所属させられる",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "管理のしやすさ",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "論理グループごとにポリシーやIPサブネットを適用しやすい",
+          "colspan": null,
+          "rowspan": null
+        }
+      ]
+    ],
+    [
+      [
+        {
+          "tag": "th",
+          "text": "特性",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "th",
+          "text": "VLAN 1について",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "削除できるか",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "できない（作成・削除不可の特殊VLAN）",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "デフォルトの用途",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "全ポートの初期所属VLAN",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "運用上の推奨",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "ユーザーデータ用には使わず、管理VLANやユーザーVLANを別途明示的に作成する",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "CDP／VTP／STPなどの制御プロトコル",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "デフォルトでVLAN 1上を流れる",
+          "colspan": null,
+          "rowspan": null
+        }
+      ]
+    ],
+    [
+      [
+        {
+          "tag": "th",
+          "text": "コマンド",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "th",
+          "text": "確認できる内容",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "show vlan brief",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "VLAN ID・名前・所属ポート一覧",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "show interfaces status",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "各ポートのVLAN所属とリンク状態",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "show mac address-table",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "MACアドレスとVLAN・ポートの対応",
+          "colspan": null,
+          "rowspan": null
+        }
+      ]
+    ],
+    [
+      [
+        {
+          "tag": "th",
+          "text": "状態",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "th",
+          "text": "結果",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "両端のネイティブVLANが一致",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "正常に動作",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "両端のネイティブVLANが不一致",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "ログにネイティブVLANミスマッチの警告が出力される／セキュリティ・到達性の問題が発生し得る",
+          "colspan": null,
+          "rowspan": null
+        }
+      ]
+    ],
+    [
+      [
+        {
+          "tag": "th",
+          "text": "項目",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "th",
+          "text": "CDP（Cisco Discovery Protocol）",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "th",
+          "text": "LLDP（Link Layer Discovery Protocol）",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "標準化",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "Cisco独自プロトコル",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "IEEE 802.1AB（ベンダー中立の業界標準）",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "対応機器",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "主にCisco機器",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "Cisco機器・他ベンダー機器の両方",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "デフォルト状態",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "多くのCisco機器で有効",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "機種により無効の場合あり（有効化が必要なことがある）",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "取得できる情報の例",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "機器種別、OSバージョン、隣接ポート、IPアドレスなど",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "同様の隣接情報（TLV形式）",
+          "colspan": null,
+          "rowspan": null
+        }
+      ]
+    ],
+    [
+      [
+        {
+          "tag": "th",
+          "text": "プロトコル",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "th",
+          "text": "標準化",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "th",
+          "text": "モードの組み合わせ例",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "LACP（Link Aggregation Control Protocol）",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "IEEE 802.3ad（業界標準）",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "active + active／active + passive",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "PAgP（Port Aggregation Protocol）",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "Cisco独自",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "desirable + desirable／desirable + auto",
+          "colspan": null,
+          "rowspan": null
+        }
+      ]
+    ],
+    [
+      [
+        {
+          "tag": "th",
+          "text": "モード",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "th",
+          "text": "動作",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "active",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "積極的にLACPネゴシエーションを開始する",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "passive",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "相手からのネゴシエーション要求を待つ（自分からは開始しない）",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "on",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "ネゴシエーションを行わず強制的にチャネルを形成する（プロトコルを使わないモード）",
+          "colspan": null,
+          "rowspan": null
+        }
+      ]
+    ],
+    [
+      [
+        {
+          "tag": "th",
+          "text": "選出基準（優先順）",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "th",
+          "text": "内容",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "1. ブリッジプライオリティが最小",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "デフォルトは32768。値が小さいほど優先される",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "2. MACアドレスが最小",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "プライオリティが同値の場合のタイブレーク",
+          "colspan": null,
+          "rowspan": null
+        }
+      ]
+    ],
+    [
+      [
+        {
+          "tag": "th",
+          "text": "役割",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "th",
+          "text": "説明",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "ルートポート（Root Port）",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "非ルートブリッジ上で、ルートブリッジへの最短コストを持つ1ポート",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "指定ポート（Designated Port）",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "各セグメントで転送を担当する1ポート",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "非指定ポート（Non-Designated / Blocking）",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "ループ防止のため転送をブロックされるポート",
+          "colspan": null,
+          "rowspan": null
+        }
+      ]
+    ],
+    [
+      [
+        {
+          "tag": "th",
+          "text": "従来のSTP（802.1D）",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "th",
+          "text": "Rapid PVST+ / RSTP（802.1w）",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "Blocking",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "Discarding",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "Listening",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "Discarding",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "Learning",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "Learning",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "Forwarding",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "Forwarding",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "収束に数十秒",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "収束は数秒以内",
+          "colspan": null,
+          "rowspan": null
+        }
+      ]
+    ],
+    [
+      [
+        {
+          "tag": "th",
+          "text": "機能",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "th",
+          "text": "目的",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "PortFast",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "エンドデバイス（PCなど）を接続するアクセスポートで、STPの各段階を待たず即座にForwarding状態にする",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "BPDU Guard",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "PortFastが有効なポートでBPDUを受信した場合、ポートを即座にerr-disable状態にする（不正なスイッチ接続を防止）",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "BPDU Filter",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "該当ポートでBPDUの送受信自体を行わないようにする",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "Root Guard",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "指定したポートで、より優れたBPDU（＝ルートブリッジになろうとする機器）を受信した場合にそのポートをブロックし、意図しないルートブリッジの変更を防止する",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "Loop Guard",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "本来BPDUを受信し続けるはずのポートでBPDUが届かなくなった場合に、誤って転送状態へ遷移することを防ぐ",
+          "colspan": null,
+          "rowspan": null
+        }
+      ]
+    ],
+    [
+      [
+        {
+          "tag": "th",
+          "text": "アーキテクチャ",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "th",
+          "text": "概要",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "th",
+          "text": "制御プレーンの場所",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "自律型（Autonomous）AP",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "AP単体で無線制御（RF管理・認証など）を完結させる",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "AP自身",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "分離MAC（Split-MAC）／集中型（コントローラベース）",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "AP（Lightweight AP）はデータ転送に専念し、無線制御はWLC（Wireless LAN Controller）に集約する",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "WLC（コントローラ）",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "クラウド管理型",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "APの管理・可視化をクラウド上のダッシュボードで行う（例：Cisco Meraki）",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "クラウド上のコントローラ",
+          "colspan": null,
+          "rowspan": null
+        }
+      ]
+    ],
+    [
+      [
+        {
+          "tag": "th",
+          "text": "コンポーネント",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "th",
+          "text": "接続タイプ",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "th",
+          "text": "補足",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "AP → アクセススイッチ",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "アクセスポート（多くは管理用VLAN）",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "PoEで給電されることが多い",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "アクセススイッチ → 上位スイッチ",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "トランクポート",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "複数のクライアントVLANを一括で伝送",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "上位スイッチ → WLC",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "LAG（Link Aggregation）",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "WLCに集中する多数のAPトラフィックを高帯域・冗長構成で受け止める",
+          "colspan": null,
+          "rowspan": null
+        }
+      ]
+    ],
+    [
+      [
+        {
+          "tag": "th",
+          "text": "方式",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "th",
+          "text": "暗号化",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "th",
+          "text": "主な用途",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "コンソール",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "なし（物理接続のため通常は暗号化不要）",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "初期設定・障害時のアウトオブバンド接続",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "Telnet",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "暗号化なし（平文）",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "現在は非推奨。試験では「安全でない」選択肢として登場しやすい",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "SSH",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "暗号化あり",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "リモート管理の標準的な方式",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "HTTP",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "暗号化なし",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "Web GUI管理（非推奨）",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "HTTPS",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "暗号化あり",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "Web GUI管理（推奨）",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "TACACS+ / RADIUS",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "認証通信は暗号化（TACACS+はペイロード全体を暗号化）",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "集中管理されたAAA（認証・認可・アカウンティング）サーバーとの連携",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "クラウド管理",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "クラウドサービス側の暗号化通信に依存",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "Meraki等のクラウドダッシュボード経由での管理",
+          "colspan": null,
+          "rowspan": null
+        }
+      ]
+    ],
+    [
+      [
+        {
+          "tag": "th",
+          "text": "設定項目",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "th",
+          "text": "GUI上で確認・設定する内容",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "WLAN作成",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "SSID名、WLAN ID、有効/無効の切り替え",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "セキュリティ設定",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "WPA2-Personal（PSK）／WPA2-Enterprise／WPA3などの選択、事前共有キーの設定",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "QoSプロファイル",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "Platinum（音声）／Gold（映像）／Silver（ベストエフォート）／Bronze（バックグラウンド）といった優先度クラス",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "詳細設定",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "クライアントVLANのマッピング、ブロードキャストSSIDの有無、セッションタイムアウトなど",
+          "colspan": null,
+          "rowspan": null
+        }
+      ]
+    ],
+    [
+      [
+        {
+          "tag": "th",
+          "text": "引っかけやすいポイント",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "th",
+          "text": "正しい理解",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "VLANとIPサブネットを同一視してしまう",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "VLANはレイヤー2のブロードキャストドメイン、サブネットはレイヤー3の概念。多くの設計では1対1で対応させるが、概念としては別物",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "ネイティブVLANはタグが付くと誤解する",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "ネイティブVLANのフレームだけはタグなしで送信される",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "LACP passive同士で組んでしまう",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "passive同士ではネゴシエーションが成立しないため、必ず片方はactiveにする",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "PortFastとBPDU Guardを混同する",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "PortFastは「早く転送状態にする」機能、BPDU Guardは「不正なBPDU受信時にポートを止める」保護機能",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "STPのポート状態を旧バージョンの4状態で覚えてしまう",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "Rapid PVST+（RSTP）ではDiscarding／Learning／Forwardingの3状態に整理されている",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "CDPを他ベンダー機器でも使えると誤解する",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "CDPはCisco専用。ベンダー混在環境ではLLDPを使う",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "Telnet・HTTPを安全な管理方式として選んでしまう",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "暗号化されないため非推奨。SSH・HTTPSが基本",
+          "colspan": null,
+          "rowspan": null
+        }
+      ]
+    ],
+    [
+      [
+        {
+          "tag": "th",
+          "text": "試験トピック",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "th",
+          "text": "キーワード",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "th",
+          "text": "主要コマンド例",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "2.1 VLAN",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "アクセスポート、データ/ボイスVLAN、デフォルトVLAN",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "switchport access vlan, show vlan brief",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "2.2 トランク",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "802.1Q、ネイティブVLAN",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "switchport mode trunk, show interfaces trunk",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "2.3 CDP/LLDP",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "隣接機器の自動検出",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "show cdp neighbors, show lldp neighbors",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "2.4 EtherChannel",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "LACP active/passive",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "channel-group mode active, show etherchannel summary",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "2.5 Rapid PVST+",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "ルートブリッジ、ポート役割・状態、PortFast、各種ガード",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "spanning-tree vlan root primary, show spanning-tree",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "2.6 無線アーキテクチャ",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "自律型／分離MAC／クラウド管理型",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "（GUI・概念理解が中心）",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "2.7 WLAN物理接続",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "AP・WLC・LAGの配線",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "（物理構成の理解が中心）",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "2.8 管理アクセス",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "Telnet/SSH/HTTP/HTTPS/TACACS+/RADIUS",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "（安全性の比較理解が中心）",
+          "colspan": null,
+          "rowspan": null
+        }
+      ],
+      [
+        {
+          "tag": "td",
+          "text": "2.9 WLAN GUI設定",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "SSID作成、セキュリティ、QoSプロファイル",
+          "colspan": null,
+          "rowspan": null
+        },
+        {
+          "tag": "td",
+          "text": "（WLC GUI操作の理解が中心）",
+          "colspan": null,
+          "rowspan": null
+        }
+      ]
+    ]
+  ],
+  "supplemental": [
+    {
+      "section": "overview",
+      "tag": "p",
+      "text": "図1：CCNA 200-301の6ドメインと配点（v1.1ブループリント）"
+    },
+    {
+      "section": "overview",
+      "tag": "div",
+      "text": "⚠️ 2026年7月時点の重要な注意事項 Ciscoは2026年5月20日に、200-301 CCNAの大規模改訂版「v2.0」を発表しました。v2.0は 2027年2月3日 から実施され、それまでは現行の v1.1が引き続き有効 です。v2.0ではNetwork Accessドメインは「Switching and Network Access」に改称され配点が20%→25%に増加し、\"troubleshoot（トラブルシュートせよ）\"という動詞を使った出題が大幅に増える予定です。本ガイドは 現行v1.1 の内容に基づいて解説しています。受験予定日がv2.0切り替え後になる方は、Cisco Learning Networkで最新のブループリントを必ず確認してください。"
+    },
+    {
+      "section": "prerequisites",
+      "tag": "p",
+      "text": "図2：スイッチのフレーム転送判断フロー"
+    },
+    {
+      "section": "vlan",
+      "tag": "p",
+      "text": "図3：1台の物理スイッチをVLANで論理分割"
+    },
+    {
+      "section": "vlan",
+      "tag": "p",
+      "text": "図4：IP電話 + PCのデイジーチェーン構成とデータ／ボイスVLAN"
+    },
+    {
+      "section": "trunk",
+      "tag": "p",
+      "text": "図5：トランクリンクによる複数VLANの伝送"
+    },
+    {
+      "section": "trunk",
+      "tag": "p",
+      "text": "図6：802.1Qタギングの流れ"
+    },
+    {
+      "section": "trunk",
+      "tag": "p",
+      "text": "図7：ネイティブVLANミスマッチの検出"
+    },
+    {
+      "section": "discovery",
+      "tag": "p",
+      "text": "図8：CDPとLLDPの適用範囲の違い"
+    },
+    {
+      "section": "discovery",
+      "tag": "div",
+      "text": "💡 試験のポイント 異なるベンダーの機器が混在する環境では、CDPは使えないためLLDPが必須になります。「ベンダーが違う環境で隣接情報を取得したい」という問題文が出たら、LLDPが正解になる可能性が高いです。"
+    },
+    {
+      "section": "etherchannel",
+      "tag": "p",
+      "text": "図9：2本の物理リンクをEtherChannelとして束ねる"
+    },
+    {
+      "section": "etherchannel",
+      "tag": "div",
+      "text": "⚠️ 重要 passive 同士の組み合わせではネゴシエーションが成立せず、EtherChannelは形成されません。必ずどちらか一方が active である必要があります。"
+    },
+    {
+      "section": "stp",
+      "tag": "p",
+      "text": "図10：ルートブリッジと1リンクのブロックによるループ防止"
+    },
+    {
+      "section": "stp",
+      "tag": "p",
+      "text": "図11：Rapid PVST+のポート状態遷移"
+    },
+    {
+      "section": "stp",
+      "tag": "p",
+      "text": "図12：BPDU Guardの判断フロー"
+    },
+    {
+      "section": "stp",
+      "tag": "div",
+      "text": "💡 試験のポイント PortFastは「PCなど末端デバイス用」、BPDU GuardやRoot Guardは「不正な機器やトポロジー変更を防ぐための保護機能」という役割の違いを混同しないようにしましょう。"
+    },
+    {
+      "section": "wireless-arch",
+      "tag": "p",
+      "text": "図13：3種類のワイヤレスアーキテクチャの比較"
+    },
+    {
+      "section": "wlan-physical",
+      "tag": "p",
+      "text": "図14：AP・スイッチ・WLCの物理接続"
+    },
+    {
+      "section": "mgmt-access",
+      "tag": "p",
+      "text": "図15：管理アクセス方式の選択フロー"
+    },
+    {
+      "section": "mgmt-access",
+      "tag": "div",
+      "text": "💡 試験のポイント 「安全な管理アクセス方法はどれか」と問われたら、Telnet／HTTPではなくSSH／HTTPSを選ぶのが基本です。"
+    },
+    {
+      "section": "wlan-gui",
+      "tag": "p",
+      "text": "図16：WLC GUIでのWLAN作成フロー"
+    },
+    {
+      "section": "hands-on",
+      "tag": "p",
+      "text": "図17：3台スイッチによる演習トポロジー"
+    }
+  ],
+  "placements": [
+    {
+      "section": "overview",
+      "kind": "diagram"
+    },
+    {
+      "section": "overview",
+      "kind": "table"
+    },
+    {
+      "section": "overview",
+      "kind": "supplemental"
+    },
+    {
+      "section": "prerequisites",
+      "kind": "diagram"
+    },
+    {
+      "section": "vlan",
+      "kind": "table"
+    },
+    {
+      "section": "vlan",
+      "kind": "diagram"
+    },
+    {
+      "section": "vlan",
+      "kind": "diagram"
+    },
+    {
+      "section": "vlan",
+      "kind": "table"
+    },
+    {
+      "section": "vlan",
+      "kind": "table"
+    },
+    {
+      "section": "trunk",
+      "kind": "diagram"
+    },
+    {
+      "section": "trunk",
+      "kind": "diagram"
+    },
+    {
+      "section": "trunk",
+      "kind": "table"
+    },
+    {
+      "section": "trunk",
+      "kind": "diagram"
+    },
+    {
+      "section": "discovery",
+      "kind": "table"
+    },
+    {
+      "section": "discovery",
+      "kind": "diagram"
+    },
+    {
+      "section": "discovery",
+      "kind": "supplemental"
+    },
+    {
+      "section": "etherchannel",
+      "kind": "diagram"
+    },
+    {
+      "section": "etherchannel",
+      "kind": "table"
+    },
+    {
+      "section": "etherchannel",
+      "kind": "table"
+    },
+    {
+      "section": "etherchannel",
+      "kind": "supplemental"
+    },
+    {
+      "section": "stp",
+      "kind": "diagram"
+    },
+    {
+      "section": "stp",
+      "kind": "table"
+    },
+    {
+      "section": "stp",
+      "kind": "table"
+    },
+    {
+      "section": "stp",
+      "kind": "diagram"
+    },
+    {
+      "section": "stp",
+      "kind": "table"
+    },
+    {
+      "section": "stp",
+      "kind": "table"
+    },
+    {
+      "section": "stp",
+      "kind": "diagram"
+    },
+    {
+      "section": "stp",
+      "kind": "supplemental"
+    },
+    {
+      "section": "wireless-arch",
+      "kind": "table"
+    },
+    {
+      "section": "wireless-arch",
+      "kind": "diagram"
+    },
+    {
+      "section": "wlan-physical",
+      "kind": "diagram"
+    },
+    {
+      "section": "wlan-physical",
+      "kind": "table"
+    },
+    {
+      "section": "mgmt-access",
+      "kind": "table"
+    },
+    {
+      "section": "mgmt-access",
+      "kind": "diagram"
+    },
+    {
+      "section": "mgmt-access",
+      "kind": "supplemental"
+    },
+    {
+      "section": "wlan-gui",
+      "kind": "diagram"
+    },
+    {
+      "section": "wlan-gui",
+      "kind": "table"
+    },
+    {
+      "section": "exam-tips",
+      "kind": "table"
+    },
+    {
+      "section": "hands-on",
+      "kind": "diagram"
+    },
+    {
+      "section": "summary",
+      "kind": "table"
+    }
+  ]
+}

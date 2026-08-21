@@ -1,0 +1,3507 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Google Cloud Professional Cloud Developer（PCD）認定試験 学習ガイド</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            :root {
+                --bg: #07111e;
+                --bg-card: #0d1a2b;
+                --bg-card-2: #101f33;
+                --border: #1d3350;
+                --border-soft: #16283f;
+                --text: #dbe4f3;
+                --text-dim: #8fa2c0;
+                --text-faint: #6a7d9c;
+                --accent: #7c9eff;
+                --accent-soft: #3a4f80;
+                --accent-bg: #15233d;
+                --danger: #ff8fa3;
+                --danger-bg: #3a1420;
+                --warn: #ffbd6e;
+                --warn-bg: #3a2810;
+                --success: #7fe0a8;
+                --success-bg: #0f2c1e;
+                --sidebar-w: 300px;
+                --font-jp: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', sans-serif;
+            }
+            * {
+                box-sizing: border-box;
+            }
+            html,
+            body {
+                overflow-x: hidden;
+            }
+            body {
+                margin: 0;
+                background: var(--bg);
+                color: var(--text);
+                font-family: var(--font-jp);
+                font-size: 16px;
+                line-height: 1.85;
+                -webkit-font-smoothing: antialiased;
+            }
+            a {
+                color: var(--accent);
+                text-decoration: none;
+            }
+            a:hover {
+                text-decoration: underline;
+            }
+
+            /* ---------- layout ---------- */
+            .layout {
+                display: block;
+            }
+
+            /* Sidebar */
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                width: var(--sidebar-w);
+                background: #060d17;
+                border-right: 1px solid var(--border-soft);
+                overflow-y: auto;
+                padding: 28px 0 40px;
+                z-index: 50;
+            }
+            .sidebar-header {
+                padding: 0 24px 20px;
+                border-bottom: 1px solid var(--border-soft);
+                margin-bottom: 16px;
+            }
+            .sidebar-header .kicker {
+                font-size: 12px;
+                letter-spacing: 0.08em;
+                color: var(--accent);
+                font-weight: 700;
+                text-transform: uppercase;
+            }
+            .sidebar-header h2 {
+                font-size: 16px;
+                margin: 6px 0 0;
+                color: var(--text);
+                line-height: 1.5;
+                font-weight: 700;
+            }
+            .sidebar nav {
+                padding: 0 12px;
+            }
+            .sidebar nav a {
+                display: block;
+                padding: 9px 12px;
+                border-radius: 8px;
+                font-size: 13.5px;
+                color: var(--text-dim);
+                line-height: 1.5;
+                margin-bottom: 2px;
+                transition:
+                    background 0.15s,
+                    color 0.15s;
+            }
+            .sidebar nav a:hover {
+                background: var(--accent-bg);
+                color: var(--text);
+                text-decoration: none;
+            }
+            .sidebar nav a.active {
+                background: var(--accent-bg);
+                color: var(--accent);
+                font-weight: 700;
+            }
+            .sidebar nav a.lvl3 {
+                padding-left: 28px;
+                font-size: 12.5px;
+            }
+            .sidebar-toggle {
+                display: none;
+                position: fixed;
+                top: 14px;
+                left: 14px;
+                z-index: 60;
+                width: 42px;
+                height: 42px;
+                border-radius: 10px;
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                color: var(--text);
+                font-size: 18px;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+            }
+
+            /* Main content */
+            .main {
+                margin-left: var(--sidebar-w);
+                padding: 56px 64px 120px;
+            }
+            .hero {
+                margin-bottom: 8px;
+            }
+            .hero .kicker {
+                font-size: 13px;
+                font-weight: 700;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+                color: var(--accent);
+                margin-bottom: 14px;
+            }
+            .hero h1 {
+                font-size: clamp(28px, 3.6vw, 42px);
+                line-height: 1.35;
+                margin: 0 0 18px;
+                background: linear-gradient(135deg, #dbe4f3 0%, #7c9eff 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                font-weight: 800;
+            }
+            .hero .meta-row {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+                margin-bottom: 32px;
+            }
+            .pill {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                padding: 6px 14px;
+                border-radius: 999px;
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                font-size: 12.5px;
+                color: var(--text-dim);
+            }
+            .pill strong {
+                color: var(--text);
+            }
+
+            .main h2 {
+                font-size: 26px;
+                margin: 56px 0 20px;
+                padding-top: 8px;
+                border-top: 1px solid var(--border-soft);
+                color: var(--text);
+                font-weight: 800;
+                letter-spacing: -0.01em;
+                scroll-margin-top: 24px;
+            }
+            .main > h2:first-of-type {
+                border-top: none;
+                padding-top: 0;
+                margin-top: 8px;
+            }
+            .main h3 {
+                font-size: 20px;
+                margin: 38px 0 16px;
+                color: var(--text);
+                font-weight: 700;
+                scroll-margin-top: 24px;
+            }
+            .main h3::before {
+                content: '';
+                display: inline-block;
+                width: 5px;
+                height: 18px;
+                background: var(--accent);
+                border-radius: 3px;
+                margin-right: 10px;
+                vertical-align: -2px;
+            }
+            .main p {
+                margin: 0 0 18px;
+                color: var(--text);
+            }
+            .main ul,
+            .main ol {
+                margin: 0 0 18px;
+                padding-left: 1.4em;
+                color: var(--text);
+            }
+            .main li {
+                margin-bottom: 8px;
+            }
+            .main hr {
+                border: none;
+                border-top: 1px solid var(--border-soft);
+                margin: 44px 0;
+            }
+            .main strong {
+                color: #f0f4fc;
+                font-weight: 700;
+            }
+            .footnote-ref {
+                margin-left: 2px;
+            }
+            .footnote-ref sup {
+                font-size: 11px;
+                color: var(--accent);
+                font-weight: 700;
+            }
+            .main code:not(pre code) {
+                background: var(--bg-card-2);
+                border: 1px solid var(--border);
+                border-radius: 5px;
+                padding: 1px 6px;
+                font-size: 0.9em;
+                color: #ffd08a;
+                overflow-wrap: break-word;
+                word-break: break-word;
+            }
+
+            /* Tables */
+            .table-scroll {
+                overflow-x: auto;
+                margin: 0 0 26px;
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                background: var(--bg-card);
+            }
+            table {
+                border-collapse: collapse;
+                width: 100%;
+                font-size: 14.5px;
+            }
+            thead th {
+                background: var(--accent-bg);
+                color: var(--text);
+                text-align: left;
+                padding: 12px 16px;
+                font-weight: 700;
+                border-bottom: 1px solid var(--border);
+                white-space: nowrap;
+            }
+            tbody td {
+                padding: 12px 16px;
+                border-bottom: 1px solid var(--border-soft);
+                color: var(--text-dim);
+                vertical-align: top;
+            }
+            tbody tr:last-child td {
+                border-bottom: none;
+            }
+            tbody tr:hover td {
+                background: rgba(124, 158, 255, 0.04);
+            }
+
+            /* Mermaid */
+            pre.mermaid {
+                width: 100%;
+                display: flex;
+                justify-content: safe center;
+                overflow-x: auto;
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-radius: 14px;
+                padding: 28px 20px;
+                margin: 0 0 30px;
+            }
+            pre.mermaid svg {
+                flex-shrink: 0;
+            }
+            pre.mermaid p {
+                color: inherit;
+                margin: 0;
+            }
+
+            /* Callouts */
+            .callout-practice {
+                display: flex;
+                gap: 14px;
+                background: var(--success-bg);
+                border: 1px solid #1d5a3a;
+                border-left: 4px solid var(--success);
+                border-radius: 12px;
+                padding: 20px 22px;
+                margin: 0 0 26px;
+            }
+            .callout-practice .icon {
+                flex-shrink: 0;
+                width: 26px;
+                height: 26px;
+                border-radius: 7px;
+                background: var(--success);
+                color: #08150e;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 14px;
+                font-weight: 900;
+            }
+            .callout-practice .body {
+                color: var(--text);
+            }
+            .callout-practice .label {
+                font-size: 11.5px;
+                font-weight: 800;
+                letter-spacing: 0.06em;
+                color: var(--success);
+                text-transform: uppercase;
+                margin-bottom: 6px;
+            }
+            .callout-practice p {
+                margin: 0;
+                color: var(--text);
+            }
+
+            .practice-label {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 12px;
+                font-weight: 800;
+                letter-spacing: 0.06em;
+                color: var(--success);
+                text-transform: uppercase;
+                margin: 0 0 10px;
+            }
+            .practice-label::before {
+                content: '✓';
+                font-size: 13px;
+            }
+
+            /* Reference grid */
+            .ref-grid {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 12px;
+                margin: 0 0 30px;
+            }
+            .ref-card {
+                display: flex;
+                gap: 12px;
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                padding: 14px 16px;
+                min-width: 0;
+            }
+            .ref-card .num {
+                flex-shrink: 0;
+                width: 26px;
+                height: 26px;
+                border-radius: 7px;
+                background: var(--accent-bg);
+                color: var(--accent);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 12px;
+                font-weight: 800;
+            }
+            .ref-card .txt {
+                font-size: 13px;
+                color: var(--text-dim);
+                min-width: 0;
+                overflow-wrap: break-word;
+                word-break: break-word;
+            }
+            .ref-card .txt a {
+                color: var(--accent);
+                font-weight: 600;
+            }
+
+            /* Checklist */
+            .checklist-card {
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-radius: 14px;
+                padding: 8px 22px 12px;
+                margin: 0 0 30px;
+            }
+            .checklist-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 14px 0;
+                border-bottom: 1px solid var(--border-soft);
+                margin-bottom: 6px;
+            }
+            .checklist-header .title {
+                font-weight: 700;
+                color: var(--text);
+                font-size: 14.5px;
+            }
+            .checklist-header .count {
+                font-size: 13px;
+                color: var(--accent);
+                font-weight: 700;
+            }
+            .checklist-card ul {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+            .checklist-card li {
+                display: flex;
+                align-items: flex-start;
+                gap: 12px;
+                padding: 11px 4px;
+                border-radius: 8px;
+                margin: 0;
+                transition: background 0.15s;
+            }
+            .checklist-card li:hover {
+                background: rgba(124, 158, 255, 0.05);
+            }
+            .checklist-card input[type='checkbox'] {
+                appearance: none;
+                -webkit-appearance: none;
+                width: 19px;
+                height: 19px;
+                flex-shrink: 0;
+                margin-top: 2px;
+                border: 1.5px solid var(--border);
+                border-radius: 5px;
+                background: var(--bg-card-2);
+                cursor: pointer;
+                position: relative;
+            }
+            .checklist-card input[type='checkbox']:checked {
+                background: var(--accent);
+                border-color: var(--accent);
+            }
+            .checklist-card input[type='checkbox']:checked::after {
+                content: '';
+                position: absolute;
+                left: 5px;
+                top: 1px;
+                width: 5px;
+                height: 10px;
+                border: solid #08101f;
+                border-width: 0 2px 2px 0;
+                transform: rotate(40deg);
+            }
+            .checklist-card label {
+                color: var(--text);
+                font-size: 14.5px;
+                cursor: pointer;
+                line-height: 1.6;
+            }
+            .checklist-card li:has(input:checked) label {
+                text-decoration: line-through;
+                color: var(--text-faint);
+            }
+
+            /* Footnotes (pandoc) */
+            aside.footnotes {
+                display: none;
+            } /* replaced entirely by ref-grid */
+
+            /* Responsive */
+            @media (max-width: 980px) {
+                .sidebar {
+                    transform: translateX(-100%);
+                    transition: transform 0.25s ease;
+                    box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+                }
+                .sidebar.open {
+                    transform: translateX(0);
+                }
+                .main {
+                    margin-left: 0;
+                    padding: 80px 20px 100px;
+                }
+                .sidebar-toggle {
+                    display: flex;
+                }
+                .ref-grid {
+                    grid-template-columns: 1fr;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="layout">
+            <button
+                class="sidebar-toggle"
+                id="sidebarToggle"
+                type="button"
+                aria-label="メニュー"
+                aria-controls="sidebar"
+                aria-expanded="false"
+            >
+                ☰
+            </button>
+            <aside class="sidebar" id="sidebar">
+                <div class="sidebar-header">
+                    <div class="kicker">Google Cloud PCD</div>
+                    <h2>Professional Cloud Developer 学習ガイド</h2>
+                </div>
+                <nav id="sidebarNav">
+                    <a href="#0-試験の概要" class="">0. 試験の概要</a>
+                    <a href="#出題範囲4セクション" class="lvl3">出題範囲（4セクション）</a>
+                    <a href="#section1" class=""
+                        >1. セクション1:
+                        高可用性、セキュア、信頼性の高いクラウドネイティブアプリケーションの設計（約33%）</a
+                    >
+                    <a href="#11-高性能アプリケーションとapiの設計" class="lvl3"
+                        >1.1 高性能アプリケーションとAPIの設計</a
+                    >
+                    <a href="#12-セキュアなアプリケーションの設計" class="lvl3"
+                        >1.2 セキュアなアプリケーションの設計</a
+                    >
+                    <a href="#13-データの保存とアクセス" class="lvl3">1.3 データの保存とアクセス</a>
+                    <a href="#section2" class=""
+                        >2. セクション2: アプリケーションのビルドとテスト（約26%）</a
+                    >
+                    <a href="#21-開発環境のセットアップ" class="lvl3">2.1 開発環境のセットアップ</a>
+                    <a href="#22-ビルド" class="lvl3">2.2 ビルド</a>
+                    <a href="#23-テスト" class="lvl3">2.3 テスト</a>
+                    <a href="#section3" class=""
+                        >3. セクション3:
+                        デプロイのためのクラウドネイティブアプリケーション構成（約19%）</a
+                    >
+                    <a href="#31-cloud-runへのアプリケーションデプロイ" class="lvl3"
+                        >3.1 Cloud Runへのアプリケーションデプロイ</a
+                    >
+                    <a href="#32-gkeへのコンテナデプロイ" class="lvl3"
+                        >3.2 GKEへのコンテナデプロイ</a
+                    >
+                    <a href="#section4" class=""
+                        >4. セクション4: Google Cloudサービスとのアプリケーション統合（約22%）</a
+                    >
+                    <a href="#41-データストレージサービスとの統合" class="lvl3"
+                        >4.1 データ・ストレージサービスとの統合</a
+                    >
+                    <a href="#42-google-cloud-apiの利用" class="lvl3">4.2 Google Cloud APIの利用</a>
+                    <a href="#43-トラブルシューティングとオブザーバビリティ" class="lvl3"
+                        >4.3 トラブルシューティングとオブザーバビリティ</a
+                    >
+                    <a href="#checklist" class="">5. 学習チェックリスト</a>
+                    <a href="#references" class="">6. 参考文献</a>
+                    <a href="#公式試験情報" class="lvl3">公式試験情報</a>
+                    <a href="#コンピューティングプラットフォーム" class="lvl3"
+                        >コンピューティングプラットフォーム</a
+                    >
+                    <a href="#api設計api管理" class="lvl3">API設計・API管理</a>
+                    <a href="#イベント駆動オーケストレーション" class="lvl3"
+                        >イベント駆動・オーケストレーション</a
+                    >
+                    <a href="#セキュリティ" class="lvl3">セキュリティ</a>
+                    <a href="#ネットワーキング" class="lvl3">ネットワーキング</a>
+                    <a href="#データベースストレージ" class="lvl3">データベース・ストレージ</a>
+                    <a href="#開発環境ビルドテスト" class="lvl3">開発環境・ビルド・テスト</a>
+                    <a href="#デプロイgke" class="lvl3">デプロイ・GKE</a>
+                    <a href="#api呼び出しオブザーバビリティ" class="lvl3"
+                        >API呼び出し・オブザーバビリティ</a
+                    >
+                </nav>
+            </aside>
+            <main class="main">
+                <div class="hero">
+                    <div class="kicker">Professional Cloud Developer &middot; 学習ガイド</div>
+                    <h1>Google Cloud Professional Cloud Developer（PCD）認定試験 学習ガイド</h1>
+                    <div class="meta-row">
+                        <span class="pill"
+                            >配点 <strong>4セクション（33% / 26% / 19% / 22%）</strong></span
+                        >
+                        <span class="pill">対象 <strong>初学者〜中級者</strong></span>
+                        <span class="pill">図解 <strong>Mermaid 13点</strong></span>
+                        <span class="pill">参考文献 <strong>53件</strong></span>
+                    </div>
+                </div>
+
+                <p>
+                    初学者〜中級者向けに、Professional Cloud Developer
+                    認定試験の出題範囲を項目ごとに解説し、各サービス・機能のベストプラクティスと公式ソースをまとめたガイドです。
+                </p>
+
+                <p>
+                    <strong>対象読者</strong>: Google Cloud
+                    上でクラウドネイティブなアプリケーションを設計・構築・デプロイ・運用するソフトウェアエンジニア。
+                </p>
+
+                <p><strong>本ガイドの前提資料</strong>:</p>
+
+                <ul>
+                    <li>
+                        公式認定ページ:
+                        <a href="https://cloud.google.com/learn/certification/cloud-developer"
+                            >cloud.google.com/learn/certification/cloud-developer</a
+                        >
+                    </li>
+
+                    <li>
+                        公式 Exam Guide PDF:
+                        <a
+                            href="https://services.google.com/fh/files/misc/professional_cloud_developer_exam_guide_english.pdf"
+                            >services.google.com/fh/files/misc/professional_cloud_developer_exam_guide_english.pdf</a
+                        >
+                    </li>
+                </ul>
+
+                <hr />
+
+                <h2 id="0-試験の概要">0. 試験の概要</h2>
+
+                <p>
+                    Professional Cloud Developer は、Google
+                    推奨のツールとベストプラクティスを使ってスケーラブルかつセキュアなアプリケーションを構築・構成できる開発者を認定する試験です。設計からビルド・テスト、デプロイ、Google
+                    Cloud サービスとの統合まで、開発ライフサイクル全体をカバーします。
+                </p>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>項目</th>
+                                <th>内容</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>試験時間</td>
+                                <td>2時間</td>
+                            </tr>
+                            <tr class="even">
+                                <td>受験料</td>
+                                <td>$200（税別途）</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>出題言語</td>
+                                <td>英語・日本語</td>
+                            </tr>
+                            <tr class="even">
+                                <td>出題形式</td>
+                                <td>選択式・複数選択式 50〜60問</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>前提条件</td>
+                                <td>なし</td>
+                            </tr>
+                            <tr class="even">
+                                <td>推奨経験</td>
+                                <td>
+                                    業界経験3年以上（うちGoogle Cloudでの設計・運用経験1年以上）
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>受験方法</td>
+                                <td>オンライン監督付き、またはテストセンターでの受験</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 id="出題範囲4セクション">出題範囲（4セクション）</h3>
+
+                <pre class="mermaid">
+flowchart TD
+    A[Professional Cloud Developer 試験] --&gt; B["セクション1&lt;br/&gt;高可用性・セキュア・信頼性の高い&lt;br/&gt;クラウドネイティブアプリケーションの設計（約33%）"]
+    A --&gt; C["セクション2&lt;br/&gt;アプリケーションのビルドとテスト（約26%）"]
+    A --&gt; D["セクション3&lt;br/&gt;デプロイのための&lt;br/&gt;クラウドネイティブアプリケーション構成（約19%）"]
+    A --&gt; E["セクション4&lt;br/&gt;Google Cloudサービスとの&lt;br/&gt;アプリケーション統合（約22%）"]</pre
+                >
+
+                <p>
+                    <strong>出典</strong>:
+                    <a
+                        href="https://services.google.com/fh/files/misc/professional_cloud_developer_exam_guide_english.pdf"
+                        >Professional Cloud Developer Certification exam guide</a
+                    >、<a href="https://cloud.google.com/learn/certification/cloud-developer"
+                        >Professional Cloud Developer Certification | Google Cloud</a
+                    >
+                </p>
+
+                <h2 id="section1">
+                    1. セクション1:
+                    高可用性、セキュア、信頼性の高いクラウドネイティブアプリケーションの設計（約33%）
+                </h2>
+
+                <h3 id="11-高性能アプリケーションとapiの設計">
+                    1.1 高性能アプリケーションとAPIの設計
+                </h3>
+
+                <h4 id="コンピューティングプラットフォームの選択">
+                    コンピューティングプラットフォームの選択
+                </h4>
+
+                <p>
+                    Compute Engine・GKE・Cloud Run
+                    のどれを選ぶかは、必要な制御レベルとワークロードの性質で決まります。
+                </p>
+
+                <pre class="mermaid">
+flowchart TD
+    Start["ワークロードの&lt;br/&gt;要件を確認"] --&gt; Q1{"OSカーネル・ライセンス・&lt;br/&gt;特定ハードウェアへの&lt;br/&gt;直接アクセスが必要？"}
+    Q1 -- はい --&gt; CE["Compute Engine&lt;br/&gt;（VM、フルコントロール）"]
+    Q1 -- いいえ --&gt; Q2{"Kubernetes固有機能&lt;br/&gt;（StatefulSet・DaemonSet・&lt;br/&gt;CRD・サービスメッシュ）&lt;br/&gt;が必要？"}
+    Q2 -- はい --&gt; GKE["Google Kubernetes Engine&lt;br/&gt;（コンテナオーケストレーション）"]
+    Q2 -- いいえ --&gt; Q3{"HTTP/S・WebSocket・gRPCの&lt;br/&gt;ステートレスなコンテナ&lt;br/&gt;ワークロードか？"}
+    Q3 -- はい --&gt; CR["Cloud Run&lt;br/&gt;（フルマネージドサーバーレス）"]
+    Q3 -- いいえ --&gt; GKE
+
+    classDef highlightFill fill:#1a3a5c,stroke:#4a90d9,color:#ffffff;
+    class CE,GKE,CR highlightFill</pre
+                >
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>プラットフォーム</th>
+                                <th>運用負荷</th>
+                                <th>適したユースケース</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>Compute Engine</td>
+                                <td>高（OS・パッチ・スケーリングを自前管理）</td>
+                                <td>
+                                    レガシーアプリの移行、特定OS/カーネル/ライセンス要件、SAP
+                                    HANAなど
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>GKE</td>
+                                <td>中〜高（クラスタ管理は必要だがKubernetesが自動化）</td>
+                                <td>
+                                    マイクロサービス、複雑な組み合わせのステートフル/ステートレス混在ワークロード、マルチクラウド/ハイブリッド展開
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>Cloud Run</td>
+                                <td>低（フルマネージド、スケールtoゼロ）</td>
+                                <td>
+                                    ステートレスなHTTP/gRPCサービス、イベント駆動処理、可変トラフィックのAPI
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="callout-practice">
+                    <div class="icon">✓</div>
+
+                    <div class="body">
+                        <div class="label">ベストプラクティス</div>
+
+                        <p>
+                            新規のステートレスHTTPサービスは、まず Cloud Run
+                            をデフォルトの選択肢として検討する。Kubernetes固有の機能（カスタムコントローラ、サービスメッシュ、DaemonSetなど）が明確に必要になった時点で
+                            GKE への移行を検討する。
+                        </p>
+                    </div>
+                </div>
+
+                <p>
+                    <strong>出典</strong>:
+                    <a
+                        href="https://cloud.google.com/blog/topics/developers-practitioners/where-should-i-run-my-stuff-choosing-google-cloud-compute-option"
+                        >Where should I run my stuff? | Google Cloud Blog</a
+                    >
+                </p>
+
+                <p>
+                    コンテナのビルド・リファクタリングは Cloud Build（後述 2.2）で行い、<code
+                        >gcloud run deploy --source</code
+                    >
+                    によるソースからの直接デプロイ、または事前ビルド済みイメージのデプロイのいずれも可能です（詳細は
+                    3.1 で扱います）。
+                </p>
+
+                <h4 id="地理的分散とロードバランサ">地理的分散とロードバランサ</h4>
+
+                <p>
+                    Google Cloud のサービスにはグローバル（例: Cloud Load Balancing
+                    の一部）、リージョナル、ゾーナルの3種類のスコープがあります。リージョン間・ゾーン間のレイテンシとサービスの可用性要件を踏まえてアーキテクチャを設計する必要があります。
+                </p>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>ロードバランサの種類</th>
+                                <th>ユースケース</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>グローバル外部アプリケーション ロードバランサ</td>
+                                <td>複数リージョンにまたがるHTTP(S)トラフィックの分散、CDN連携</td>
+                            </tr>
+                            <tr class="even">
+                                <td>リージョン外部/内部アプリケーション ロードバランサ</td>
+                                <td>リージョン内で完結するHTTP(S)サービス</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>内部パススルー ネットワークロードバランサ</td>
+                                <td>内部TCP/UDPトラフィックの低レイテンシ分散</td>
+                            </tr>
+                            <tr class="even">
+                                <td>Cloud Run/GKEの組み込みロードバランシング</td>
+                                <td>
+                                    Cloud
+                                    Runはリージョナルサービス。マルチリージョン配信には複数リージョンへデプロイし、その前段にグローバル外部アプリケーション
+                                    ロードバランサを構成する。GKEはService/Ingressで制御
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p>
+                    <strong>セッションアフィニティ</strong>:
+                    同一クライアントのリクエストを同じバックエンドインスタンスにルーティングし続けたい場合（例:
+                    ステートフルなWebSocket接続）に有効化します。ただしCloud
+                    Runのセッションアフィニティは<strong>ベストエフォート</strong>であり、インスタンスが終了したときや処理能力を超えたときには別のインスタンスへリクエストが振り向けられます。セッション状態はMemorystoreなどの外部ストアで共有し、WebSocketなどのステートフルな接続は再接続を前提に実装してください。Cloud
+                    Runでトラフィック分割と併用する場合は、セッションアフィニティがトラフィック比率の実際の分配に影響する点にも注意が必要です。
+                </p>
+
+                <p>
+                    <strong>出典</strong>:
+                    <a
+                        href="https://docs.cloud.google.com/run/docs/rollouts-rollbacks-traffic-migration"
+                        >Rollbacks, gradual rollouts, and traffic migration | Cloud Run</a
+                    >
+                </p>
+
+                <h4 id="キャッシングmemorystore">キャッシング（Memorystore）</h4>
+
+                <p>
+                    Memorystore（Redis/Valkey/Memcached互換）を使い、頻繁に読み取られるデータをサブミリ秒でアクセスできるようキャッシュします。データベースへの負荷軽減とレイテンシ短縮が主目的です。なお<strong>Memorystore for Memcachedは非推奨（deprecated）</strong>であり、新規設計ではMemorystore for Valkeyを優先します。Memorystore
+                    への呼び出しでも、5xx・429エラーに対しては指数バックオフでのリトライが推奨されます。
+                </p>
+
+                <p>
+                    <strong>出典</strong>:
+                    <a
+                        href="https://docs.cloud.google.com/memorystore/docs/redis/exponential-backoff"
+                        >Exponential backoff | Memorystore for Redis</a
+                    >
+                </p>
+
+                <h4 id="apiの作成-rest-と-grpc">APIの作成: REST と gRPC</h4>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>観点</th>
+                                <th>REST（HTTP/JSON）</th>
+                                <th>gRPC</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>プロトコル</td>
+                                <td>HTTP/1.1が主流</td>
+                                <td>HTTP/2ベース</td>
+                            </tr>
+                            <tr class="even">
+                                <td>データ形式</td>
+                                <td>人間可読なJSON</td>
+                                <td>バイナリのProtocol Buffers</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>契約定義</td>
+                                <td>OpenAPI等（任意）</td>
+                                <td><code>.proto</code>ファイルで厳密に定義</td>
+                            </tr>
+                            <tr class="even">
+                                <td>ストリーミング</td>
+                                <td>限定的（SSE等）</td>
+                                <td>双方向ストリーミングをネイティブサポート</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>向いている用途</td>
+                                <td>公開API、ブラウザ直叩き、シンプルなCRUD</td>
+                                <td>
+                                    マイクロサービス間の高頻度通信、低レイテンシ要件、多言語間の型安全な契約
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p>
+                    Google自身もCloud
+                    APIの設計にはREST的な考え方を取り入れたRPC（gRPC）スタイルを推奨しており、Cloud
+                    Endpointsの多くもこの設計指針に従っています。
+                </p>
+
+                <div class="callout-practice">
+                    <div class="icon">✓</div>
+
+                    <div class="body">
+                        <div class="label">ベストプラクティス</div>
+
+                        <p>
+                            サービス間（内部）通信で低レイテンシ・強い型付けが必要ならgRPC、外部公開APIや幅広いクライアント互換性が必要ならRESTを選ぶ。両方が必要な場合はgRPCで定義しHTTP/JSONトランスコーディングを併用する設計も可能。
+                        </p>
+                    </div>
+                </div>
+
+                <p>
+                    <strong>出典</strong>:
+                    <a href="https://docs.cloud.google.com/apis/design"
+                        >API Design Guide | Google Cloud</a
+                    >、<a
+                        href="https://cloud.google.com/blog/products/api-management/understanding-grpc-openapi-and-rest-and-when-to-use-them"
+                        >gRPC vs REST | Google Cloud Blog</a
+                    >
+                </p>
+
+                <h4 id="レート制限認証オブザーバビリティ-api-gateway-と-apigee">
+                    レート制限・認証・オブザーバビリティ: API Gateway と Apigee
+                </h4>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>観点</th>
+                                <th>API Gateway</th>
+                                <th>Apigee</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>位置づけ</td>
+                                <td>軽量なゲートウェイ（ルーティング・認証・基本レート制限）</td>
+                                <td>フル機能のAPI管理プラットフォーム</td>
+                            </tr>
+                            <tr class="even">
+                                <td>認証</td>
+                                <td>APIキー、IAM、JWT</td>
+                                <td>OAuth2、SAML、APIキー等の高度な認証</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>開発者ポータル</td>
+                                <td>なし</td>
+                                <td>あり（外部開発者向け公開に有効）</td>
+                            </tr>
+                            <tr class="even">
+                                <td>マネタイズ・分析</td>
+                                <td>基本的なCloud Monitoring/Logging連携のみ</td>
+                                <td>詳細な分析、マネタイズ、トラフィック変換</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>適したケース</td>
+                                <td>
+                                    Google Cloudのサーバーレスサービス向けのシンプルなフロントドア
+                                </td>
+                                <td>
+                                    APIをビジネス資産として外部提供する場合、高度なトラフィック制御が必要な場合
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="callout-practice">
+                    <div class="icon">✓</div>
+
+                    <div class="body">
+                        <div class="label">ベストプラクティス</div>
+
+                        <p>
+                            内部マイクロサービスの認証・クォータ・監視だけで十分なら API
+                            Gateway（またはCloud
+                            Endpoints）を使う。外部開発者へのAPI公開、収益化、高度なセキュリティポリシーが必要になった時点でApigeeを検討する。過剰な機能を持つApigeeを最初から選ぶと運用コストが増える。
+                        </p>
+                    </div>
+                </div>
+
+                <p>
+                    <strong>出典</strong>:
+                    <a href="https://docs.cloud.google.com/api-gateway/docs/concepts"
+                        >About API Gateway | Google Cloud</a
+                    >
+                </p>
+
+                <h4 id="非同期イベント駆動統合とオーケストレーション">
+                    非同期・イベント駆動統合とオーケストレーション
+                </h4>
+
+                <pre class="mermaid">
+flowchart LR
+    Pub["Publisher&lt;br/&gt;（アプリ／Cloud Storage等）"] --&gt; Topic["Pub/Sub トピック"]
+    Topic --&gt; Eventarc["Eventarc&lt;br/&gt;（130以上のイベントソースを正規化）"]
+    Eventarc --&gt; Run["Cloud Run&lt;br/&gt;サービス／ジョブ"]
+    Eventarc --&gt; Func["Cloud Run functions"]
+    Eventarc --&gt; WF["Workflows"]
+
+    Sched["Cloud Scheduler&lt;br/&gt;（cron）"] --&gt; WF
+    WF --&gt; Tasks["Cloud Tasks&lt;br/&gt;（非同期タスクキュー）"]
+    Tasks --&gt; Run</pre
+                >
+
+                <ul>
+                    <li>
+                        <strong>Eventarc</strong>: Pub/Sub、Cloud Storage、Cloud Audit Logs
+                        など130以上のイベントソースを CloudEvents 形式に正規化し、Cloud
+                        Run・GKE・Workflows
+                        にルーティングする。Pub/Subトランスポート経由のため少なくとも1回配信が保証され、イベントハンドラは冪等に実装する必要がある。
+                    </li>
+                    <li>
+                        <strong>Pub/Sub</strong>:
+                        メッセージング基盤そのもの。Eventarcより細かい制御（サブスクリプションのフィルタ、デッドレタートピック等）が必要な場合は直接利用する。
+                    </li>
+                    <li>
+                        <strong>Workflows</strong>:
+                        複数サービス・APIの呼び出し順序を宣言的に定義するフルマネージドオーケストレーションサービス。HTTP呼び出し、Pub/Sub、Cloud
+                        Schedulerからトリガー可能。
+                    </li>
+                    <li>
+                        <strong>Cloud Tasks</strong>:
+                        配信タイミングの制御・レート制御・リトライ設定ができる非同期タスクキュー。配信は<strong>少なくとも1回</strong>であり、タスク名の指定は同名タスクの重複追加を抑止するものであって、実行時の重複配信を防ぐものではない。
+                    </li>
+                    <li>
+                        <strong>Cloud Scheduler</strong>:
+                        cron形式でWorkflows・Pub/Sub・HTTPエンドポイントを定期実行する。
+                    </li>
+                </ul>
+
+                <div class="callout-practice">
+                    <div class="icon">✓</div>
+
+                    <div class="body">
+                        <div class="label">ベストプラクティス</div>
+
+                        <p>
+                            Eventarcは「イベントが発生したら実行する」宣言的なルーティングに、Cloud
+                            Tasksは「特定のタイミング・レートで確実に実行したい」制御されたディスパッチに使い分ける。ただしCloud Tasksも少なくとも1回配信であり、1回だけ実行されることは保証されない。イベントハンドラとタスクハンドラは常に冪等に実装し、CloudEventのIDやタスク名で重複を検出する。
+                        </p>
+                    </div>
+                </div>
+
+                <p>
+                    <strong>出典</strong>:
+                    <a href="https://docs.cloud.google.com/run/docs/triggering/trigger-with-events"
+                        >Create triggers with Eventarc | Cloud Run</a
+                    >、<a href="https://docs.cloud.google.com/workflows/docs/overview"
+                        >Workflows overview</a
+                    >、<a href="https://docs.cloud.google.com/tasks/docs/dual-overview"
+                        >Understand Cloud Tasks</a
+                    >、<a href="https://docs.cloud.google.com/scheduler/docs"
+                        >Cloud Scheduler documentation</a
+                    >
+                </p>
+
+                <h4 id="トラフィック分割戦略段階的ロールアウトロールバックabテスト">
+                    トラフィック分割戦略（段階的ロールアウト・ロールバック・A/Bテスト）
+                </h4>
+
+                <pre class="mermaid">
+flowchart LR
+    subgraph Before["デプロイ前"]
+        R1a["リビジョンA（安定版）&lt;br/&gt;トラフィック 100%"]
+    end
+    subgraph Canary["カナリア段階"]
+        R1b["リビジョンA&lt;br/&gt;90%"]
+        R2b["リビジョンB（新版）&lt;br/&gt;10%"]
+    end
+    subgraph Full["段階的拡大後"]
+        R2c["リビジョンB&lt;br/&gt;100%"]
+    end
+    Before --&gt; Canary --&gt; Full</pre
+                >
+
+                <p>
+                    Cloud Runはリビジョン単位でトラフィックを分割でき、<code
+                        >gcloud run services update-traffic</code
+                    >
+                    でパーセンテージを指定するだけでカナリアデプロイ・Blue-Greenデプロイ・A/Bテストが実現できます。問題があれば旧リビジョンへ100%戻すことでロールバックできます。ただし切り替えは瞬時ではなく反映には時間がかかり、移行中の新規リクエストは新旧いずれかのリビジョンへ送られ、処理中のリクエストは割り当てられたリビジョンで完了します。
+                </p>
+
+                <div class="callout-practice">
+                    <div class="icon">✓</div>
+
+                    <div class="body">
+                        <div class="label">ベストプラクティス</div>
+
+                        <p>
+                            新リビジョンには最初トラフィック0%〜少量を割り当て、Cloud
+                            Monitoringでエラー率・レイテンシを確認しながら段階的に拡大する。両リビジョンが並行稼働する間はリソース課金も両方に発生するため、カナリア期間は必要以上に長引かせない。
+                        </p>
+                    </div>
+                </div>
+
+                <p>
+                    <strong>出典</strong>:
+                    <a
+                        href="https://docs.cloud.google.com/run/docs/rollouts-rollbacks-traffic-migration"
+                        >Rollbacks, gradual rollouts, and traffic migration | Cloud Run</a
+                    >、<a href="https://docs.cloud.google.com/run/docs/managing/revisions"
+                        >Manage revisions | Cloud Run</a
+                    >
+                </p>
+
+                <h4 id="リソース要件の定義とコスト最適化">リソース要件の定義とコスト最適化</h4>
+
+                <p>
+                    CPU・メモリのリクエストとリミットを実測に基づいて適切に設定し、過剰プロビジョニングを避けます。Cloud
+                    Runでは最小インスタンス数（コールドスタート回避）と最大インスタンス数（コスト上限）のバランスを取ります。GKEでは
+                    Vertical Pod Autoscaler（VPA）と Horizontal Pod
+                    Autoscaler（HPA）を組み合わせ、余剰リソースを削減します。
+                </p>
+
+                <h4 id="ゾーンリージョンフェイルオーバーのためのデータレプリケーション">
+                    ゾーン・リージョンフェイルオーバーのためのデータレプリケーション
+                </h4>
+
+                <p>
+                    AlloyDB・Cloud SQL・Spanner・Bigtable・Cloud Storage
+                    はそれぞれ異なるレプリケーション/可用性モデルを持ちます（詳細は
+                    1.3）。アプリケーション層では、リージョン障害時にどのデータストアがフェイルオーバーし、RPO/RTOがどうなるかを設計段階で明確にしておく必要があります。
+                </p>
+
+                <hr />
+
+                <h3 id="12-セキュアなアプリケーションの設計">
+                    1.2 セキュアなアプリケーションの設計
+                </h3>
+
+                <h4 id="データ保持組織化ポリシー">データ保持・組織化ポリシー</h4>
+
+                <p>
+                    Cloud Storage の
+                    <strong>Object Lifecycle Management</strong>
+                    は、オブジェクトの経過日数などの条件に応じてストレージクラスの変更や削除を自動化します。<strong
+                        >保持ポリシー（Retention Policy）</strong
+                    >
+                    はバケット内のオブジェクトが一定期間削除・上書きできないことを保証し、ロック（Retention
+                    Policy Lock）をかけると保持ポリシー自体も変更不可になります。
+                </p>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>機能</th>
+                                <th>目的</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>Object Lifecycle Management</td>
+                                <td>
+                                    経過日数・ストレージクラス等の条件でオブジェクトを自動的に削除／クラス変更
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>保持ポリシー（Retention Policy）</td>
+                                <td>指定期間内のオブジェクトの削除・上書きを禁止</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>保持ポリシーのロック</td>
+                                <td>
+                                    保持ポリシー自体を恒久的に変更不可にする（コンプライアンス要件向け）
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>オブジェクトホールド</td>
+                                <td>個別オブジェクトの削除を一時的に禁止</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="callout-practice">
+                    <div class="icon">✓</div>
+
+                    <div class="body">
+                        <div class="label">ベストプラクティス</div>
+
+                        <p>
+                            署名付きURLで一時アップロードを許可するバケットでは、Object Lifecycle
+                            Managementの削除期限と保持ポリシーの期間を一致させ、意図しない削除・保持の矛盾を避ける。
+                        </p>
+                    </div>
+                </div>
+
+                <p>
+                    <strong>出典</strong>:
+                    <a href="https://docs.cloud.google.com/storage/docs/lifecycle"
+                        >Object Lifecycle Management | Cloud Storage</a
+                    >
+                </p>
+
+                <h4 id="脆弱性の特定と保護">脆弱性の特定と保護</h4>
+
+                <ul>
+                    <li>
+                        <strong>Identity-Aware Proxy（IAP）</strong>:
+                        HTTPSでアクセスするアプリケーションに対し、ネットワークファイアウォールではなくアプリケーションレベルのアクセス制御（IAMベース）を提供する。VPNや公開IPを不要にし、コンテキストアウェアなアクセス（デバイスの状態、位置情報等）も可能。
+                    </li>
+                    <li>
+                        <strong>Web Security Scanner</strong>: App Engine・GKE・Compute
+                        Engine上のWebアプリに対してXSS、Flash
+                        Injection、混合コンテンツなどの一般的な脆弱性をスキャンする。
+                    </li>
+                </ul>
+
+                <p>
+                    <strong>出典</strong>:
+                    <a href="https://docs.cloud.google.com/iap/docs/concepts-overview"
+                        >Identity-Aware Proxy overview</a
+                    >
+                </p>
+
+                <h4 id="脆弱性への対応">脆弱性への対応</h4>
+
+                <ul>
+                    <li>
+                        <strong>Artifact Analysis</strong>: Artifact Registry / Container
+                        Registry内のコンテナイメージをスキャンし、既知の脆弱性（CVE）を検出する。Cloud
+                        Buildのビルド来歴（provenance）情報もここに保存される。
+                    </li>
+                    <li>
+                        <strong>Security Command Center（SCC）</strong>: Security Health
+                        AnalyticsやWeb Security
+                        Scannerが検出した脆弱性ファインディングを一元的に可視化するダッシュボード。組織全体のセキュリティ体制を横断的に把握できる。
+                    </li>
+                </ul>
+
+                <p>
+                    <strong>出典</strong>:
+                    <a
+                        href="https://docs.cloud.google.com/security-command-center/docs/concepts-vulnerabilities-findings"
+                        >Vulnerability findings | Security Command Center</a
+                    >
+                </p>
+
+                <h4 id="シークレット認証情報暗号鍵の保管とローテーション">
+                    シークレット・認証情報・暗号鍵の保管とローテーション
+                </h4>
+
+                <pre class="mermaid">
+flowchart TD
+    subgraph OnPrem["外部環境（他クラウド・オンプレミス）"]
+        IdP["既存のIDプロバイダ&lt;br/&gt;（AWS/Azure/OIDC等）"]
+    end
+    IdP -- "外部トークンを発行" --&gt; STS["Security Token Service&lt;br/&gt;（トークン交換）"]
+    STS -- "Google短命トークンに交換" --&gt; SA["サービスアカウントの&lt;br/&gt;権限を借用（Impersonate）"]
+    SA --&gt; GCPRes["Google Cloud リソース&lt;br/&gt;（Secret Manager等）"]</pre
+                >
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>サービス</th>
+                                <th>用途</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>Secret Manager</td>
+                                <td>
+                                    APIキー、パスワード、証明書などのシークレットを一元管理・バージョニング・IAMで保護
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>Cloud Key Management Service（KMS）</td>
+                                <td>暗号鍵の作成・ローテーション・利用（CMEK等）</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>Workload Identity Federation（WIF）</td>
+                                <td>
+                                    外部IDプロバイダのトークンをGoogle
+                                    Cloudの認証情報に交換し、サービスアカウントキーを不要にする
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="callout-practice">
+                    <div class="icon">✓</div>
+
+                    <div class="body">
+                        <div class="label">ベストプラクティス</div>
+
+                        <ul>
+                            <li>
+                                サービスアカウントキーのエクスポートは避け、GKEやCompute
+                                Engineでは組み込みのWorkload
+                                Identity、他クラウド/オンプレミスではWorkload Identity
+                                Federationを使う（管理すべきシークレットの数を減らせる）。
+                            </li>
+
+                            <li>
+                                Secret Managerではシークレットを
+                                <code>latest</code>
+                                エイリアスではなく特定のバージョン番号で参照し、既存のリリースプロセスでバージョンを更新する。
+                            </li>
+
+                            <li>
+                                シークレットをファイルシステムや環境変数経由でアプリに渡すのは避け、Secret
+                                Managerのクライアントライブラリで直接取得する。
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <p>
+                    <strong>出典</strong>:
+                    <a href="https://docs.cloud.google.com/secret-manager/docs/best-practices"
+                        >Secret Manager best practices</a
+                    >、<a
+                        href="https://docs.cloud.google.com/iam/docs/best-practices-for-using-workload-identity-federation"
+                        >Best practices for using Workload Identity Federation</a
+                    >
+                </p>
+
+                <h4 id="google-cloudサービスへの認証方法">Google Cloudサービスへの認証方法</h4>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>方式</th>
+                                <th>説明</th>
+                                <th>主な用途</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>Application Default Credentials（ADC）</td>
+                                <td>
+                                    環境（GKE/Cloud
+                                    Run/ローカル等）に応じて自動的に適切な認証情報を検出
+                                </td>
+                                <td>Google Cloud上で動くアプリのデフォルト認証</td>
+                            </tr>
+                            <tr class="even">
+                                <td>JSON Web Token（JWT）</td>
+                                <td>署名済みトークンでIDを主張</td>
+                                <td>サービス間認証、IAP経由のユーザー認証</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>OAuth 2.0</td>
+                                <td>認可フレームワーク</td>
+                                <td>ユーザーの代理でAPIを呼び出す場合</td>
+                            </tr>
+                            <tr class="even">
+                                <td>Cloud SQL Auth Proxy / AlloyDB Auth Proxy</td>
+                                <td>
+                                    IAM認証情報を使ってmTLSでデータベースに安全に接続するローカルプロキシ
+                                </td>
+                                <td>Cloud SQL / AlloyDB へのアプリ接続</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>Identity Platform</td>
+                                <td>顧客向けアプリの認証・ユーザー管理（CIAM）</td>
+                                <td>エンドユーザー向けログイン機能の実装</td>
+                            </tr>
+                            <tr class="even">
+                                <td>Workload Identity Federation</td>
+                                <td>外部IDをGoogle Cloudの短命トークンに交換</td>
+                                <td>他クラウド・オンプレミス・CI/CDからの認証</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p>
+                    <strong>出典</strong>:
+                    <a href="https://docs.cloud.google.com/sql/docs/mysql/sql-proxy"
+                        >About the Cloud SQL Auth Proxy | Cloud SQL for MySQL</a
+                    >、<a href="https://docs.cloud.google.com/alloydb/docs/auth-proxy/overview"
+                        >About the AlloyDB Auth Proxy</a
+                    >
+                </p>
+
+                <h4 id="サービスアカウントのiamロールによるリソース保護と最小権限">
+                    サービスアカウントのIAMロールによるリソース保護と最小権限
+                </h4>
+
+                <div class="callout-practice">
+                    <div class="icon">✓</div>
+
+                    <div class="body">
+                        <div class="label">ベストプラクティス</div>
+
+                        <ul>
+                            <li>
+                                サービスやユースケースごとに専用のサービスアカウントを作成し、必要なリソースへのアクセスのみを付与する（最小権限の原則）。
+                            </li>
+
+                            <li>
+                                Editor/Ownerなどの基本ロールは避け、事前定義ロールまたはカスタムロールを使う。
+                            </li>
+
+                            <li>
+                                サービスアカウントキーの管理より、IAM Credentials
+                                APIによる一時的な権限昇格やCredential Access
+                                Boundariesによるトークンのダウンスコープを優先する。
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <p>
+                    <strong>出典</strong>:
+                    <a href="https://docs.cloud.google.com/iam/docs/best-practices-service-accounts"
+                        >Best practices for using service accounts securely</a
+                    >、<a
+                        href="https://docs.cloud.google.com/iam/docs/best-practices-for-managing-service-account-keys"
+                        >Best practices for managing service account keys</a
+                    >
+                </p>
+
+                <h4 id="セキュアなサービス間通信">セキュアなサービス間通信</h4>
+
+                <pre class="mermaid">
+flowchart TD
+    App["アプリケーション&lt;br/&gt;（Cloud Run / GKE）"] --&gt; Q{"通信先は？"}
+    Q -- "同一VPC内のプライベートリソース" --&gt; DVE["Direct VPC egress&lt;br/&gt;（Cloud RunのIPをVPCサブネットに直接割当）"]
+    Q -- "別VPC/別組織のマネージドサービス" --&gt; PSC["Private Service Connect&lt;br/&gt;（内部IPでプロデューサーに接続）"]
+    Q -- "GKE内のPod間通信を制御" --&gt; NP["Kubernetes Network Policies"]
+    Q -- "サービスメッシュ全体の&lt;br/&gt;mTLS・トラフィック管理" --&gt; CSM["Cloud Service Mesh&lt;br/&gt;（Envoy/Istioベース）"]
+
+    classDef highlightFill fill:#1a3a5c,stroke:#4a90d9,color:#ffffff;
+    class DVE,PSC,NP,CSM highlightFill</pre
+                >
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>手段</th>
+                                <th>概要</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>Direct VPC egress</td>
+                                <td>
+                                    Serverless VPC Accessコネクタ不要でCloud
+                                    RunからVPCへ直接接続。インスタンスあたり最大1Gbpsのスループット
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>Kubernetes Network Policies</td>
+                                <td>GKE内のPod間通信をラベルベースで許可・拒否</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>Cloud Service Mesh</td>
+                                <td>
+                                    Envoy/Istioベースのフルマネージドサービスメッシュ。mTLS、トラフィック管理、可観測性を提供
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>Private Service Connect（PSC）</td>
+                                <td>
+                                    消費者VPCとプロデューサーVPC間を内部IPで接続し、IPアドレスの重複を気にせず疎結合に連携
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p>
+                    <strong>出典</strong>:
+                    <a href="https://docs.cloud.google.com/run/docs/configuring/vpc-direct-vpc"
+                        >Direct VPC egress with a VPC network | Cloud Run</a
+                    >、<a href="https://docs.cloud.google.com/run/docs/securing/private-networking"
+                        >Private networking and Cloud Run</a
+                    >、<a href="https://cloud.google.com/vpc/docs/private-service-connect"
+                        >Private Service Connect | VPC</a
+                    >、<a
+                        href="https://docs.cloud.google.com/service-mesh/docs/configure-cloud-service-mesh-for-cloud-run"
+                        >Configure Cloud Service Mesh for Cloud Run</a
+                    >
+                </p>
+
+                <h4 id="binary-authorizationによるアプリケーションアーティファクトの保護">
+                    Binary Authorizationによるアプリケーションアーティファクトの保護
+                </h4>
+
+                <pre class="mermaid">
+flowchart LR
+    Src["ソースコード"] --&gt; Build["Cloud Build"]
+    Build -- "ビルド来歴を生成" --&gt; Prov["SLSA Provenance"]
+    Build --&gt; Sign["署名者が検証・アテステーション作成"]
+    Sign --&gt; AR["Artifact Registry&lt;br/&gt;（イメージ + アテステーション）"]
+    AR --&gt; Deploy{"デプロイ時に&lt;br/&gt;Binary Authorization&lt;br/&gt;が検証"}
+    Deploy -- "アテステーションが&lt;br/&gt;ポリシーを満たす" --&gt; OK["GKE / Cloud Run に&lt;br/&gt;デプロイ許可"]
+    Deploy -- "満たさない" --&gt; Deny["デプロイ拒否"]
+
+    classDef successFill fill:#1a4a2a,stroke:#4ad97a,color:#ffffff;
+    classDef dangerFill fill:#5c1a1a,stroke:#d94a4a,color:#ffffff;
+    class OK successFill
+    class Deny dangerFill</pre
+                >
+
+                <p>
+                    Binary
+                    Authorizationはデプロイ時のセキュリティ制御で、信頼できるオーソリティ（アテスター）が事前に定義されたプロセス（脆弱性スキャン通過、承認レビュー等）を経たイメージにのみ署名（アテステーション）を許可し、その署名がない、あるいはポリシーを満たさないイメージのデプロイをGKE・Cloud
+                    Runで拒否します。
+                </p>
+
+                <div class="callout-practice">
+                    <div class="icon">✓</div>
+
+                    <div class="body">
+                        <div class="label">ベストプラクティス</div>
+
+                        <p>
+                            アテステーションは全てのチェック（脆弱性スキャン、テスト、必要なレビュー）が完了した後にCIパイプラインの最後で作成する。Cloud
+                            Buildで生成したイメージのみを許可する
+                            <code>built-by-cloud-build</code>
+                            アテスターを使うと、ビルドパイプラインを経由しないイメージのデプロイを一括で防げる。
+                        </p>
+                    </div>
+                </div>
+
+                <p>
+                    <strong>出典</strong>:
+                    <a href="https://docs.cloud.google.com/binary-authorization/docs/overview"
+                        >Binary Authorization overview</a
+                    >、<a
+                        href="https://docs.cloud.google.com/binary-authorization/docs/key-concepts"
+                        >Binary Authorization concepts</a
+                    >、<a
+                        href="https://docs.cloud.google.com/binary-authorization/docs/attestations"
+                        >Attestations overview</a
+                    >
+                </p>
+
+                <hr />
+
+                <h3 id="13-データの保存とアクセス">1.3 データの保存とアクセス</h3>
+
+                <h4 id="ストレージシステムの選定">ストレージシステムの選定</h4>
+
+                <pre class="mermaid">
+flowchart TD
+    Start2["データの性質は？"] --&gt; Q1{"リレーショナル&lt;br/&gt;（スキーマ・JOIN・トランザクション）？"}
+    Q1 -- はい --&gt; Q2{"グローバル分散・&lt;br/&gt;無制限の水平スケールが必要？"}
+    Q2 -- はい --&gt; Spanner["Spanner"]
+    Q2 -- いいえ --&gt; Q3{"高負荷なOLTP+分析を&lt;br/&gt;同一DBで行いたい？"}
+    Q3 -- はい --&gt; AlloyDB["AlloyDB for PostgreSQL"]
+    Q3 -- いいえ --&gt; CloudSQL["Cloud SQL&lt;br/&gt;（MySQL/PostgreSQL/SQL Server）"]
+
+    Q1 -- いいえ --&gt; Q4{"ドキュメント指向・&lt;br/&gt;リアルタイム同期が必要？"}
+    Q4 -- はい --&gt; Firestore["Firestore"]
+    Q4 -- いいえ --&gt; Q5{"膨大な書き込み・低レイテンシの&lt;br/&gt;ワイドカラム/時系列データ？"}
+    Q5 -- はい --&gt; Bigtable["Bigtable"]
+    Q5 -- いいえ --&gt; Q6{"大規模分析・レポーティング用？"}
+    Q6 -- はい --&gt; BQ["BigQuery"]
+    Q6 -- いいえ --&gt; Memstore["Memorystore&lt;br/&gt;（キャッシュ・セッション）"]
+
+    classDef highlightFill fill:#1a3a5c,stroke:#4a90d9,color:#ffffff;
+    class Spanner,AlloyDB,CloudSQL,Firestore,Bigtable,BQ,Memstore highlightFill</pre
+                >
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>データストア</th>
+                                <th>データモデル</th>
+                                <th>主な用途</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>AlloyDB for PostgreSQL</td>
+                                <td>リレーショナル（PostgreSQL互換）</td>
+                                <td>高性能なOLTP、HTAP（トランザクション+分析）</td>
+                            </tr>
+                            <tr class="even">
+                                <td>Spanner</td>
+                                <td>リレーショナル（グローバル分散）</td>
+                                <td>
+                                    金融台帳、グローバル在庫、99.999%可用性が必要なミッションクリティカルOLTP
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>Cloud SQL</td>
+                                <td>リレーショナル（MySQL/PostgreSQL/SQL Server）</td>
+                                <td>一般的な単一リージョンのOLTP、リフト&amp;シフト移行</td>
+                            </tr>
+                            <tr class="even">
+                                <td>Firestore</td>
+                                <td>ドキュメント（NoSQL）</td>
+                                <td>モバイル/Webアプリのバックエンド、リアルタイム同期</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>Bigtable</td>
+                                <td>ワイドカラム（NoSQL）</td>
+                                <td>IoTテレメトリ、時系列データ、大規模低レイテンシ処理</td>
+                            </tr>
+                            <tr class="even">
+                                <td>BigQuery</td>
+                                <td>列指向（analytics）</td>
+                                <td>データウェアハウス、SQLベースの大規模分析・機械学習</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>Memorystore</td>
+                                <td>インメモリ（Valkey/Redis。Memcachedは非推奨）</td>
+                                <td>キャッシュ、セッションストア</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p>
+                    <strong>出典</strong>:
+                    <a href="https://cloud.google.com/products/databases">Google Cloud databases</a
+                    >、<a
+                        href="https://cloud.google.com/blog/topics/developers-practitioners/databases-google-cloud-part-2-options-glance/"
+                        >Databases on Google Cloud part 2 | Google Cloud Blog</a
+                    >
+                </p>
+
+                <h4 id="構造化非構造化データベースのスキーマ設計">
+                    構造化・非構造化データベースのスキーマ設計
+                </h4>
+
+                <ul>
+                    <li>
+                        <strong>Spanner</strong>:
+                        単調増加するキー（タイムスタンプ等）を主キーの先頭に使うと、書き込みが単一サーバーに集中する「ホットスポット」が発生する。UUID（特にランダム性の高いv4）を主キーに使う、または関連行を同じ分割（split）に配置するインターリーブ設計を検討する。
+                    </li>
+                    <li>
+                        <strong>Bigtable</strong>:
+                        行キー設計がクエリパフォーマンスを決定づける。関連データをまとめて読み書きできるようキー設計を工夫し、ホットスポットを避けるためタイムスタンプを先頭に使わない。
+                    </li>
+                    <li>
+                        <strong>Firestore</strong>:
+                        スキーマレスだが、クエリしやすくするため同種のドキュメントでは同じフィールド構成に揃える。深いネストクエリは避け、必要に応じてデータを非正規化する。複合クエリには複合インデックスが必要。
+                    </li>
+                </ul>
+
+                <p>
+                    <strong>出典</strong>:
+                    <a href="https://docs.cloud.google.com/spanner/docs/schema-design"
+                        >Schema design best practices | Spanner</a
+                    >、<a href="https://firebase.google.com/docs/firestore/best-practices"
+                        >Best practices for Cloud Firestore</a
+                    >
+                </p>
+
+                <h4 id="結果整合性と強整合性">結果整合性と強整合性</h4>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>データストア</th>
+                                <th>整合性モデル</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>Spanner</td>
+                                <td>
+                                    外部整合性（External Consistency）—
+                                    TrueTimeによるグローバルな強整合性、業界最高水準
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>AlloyDB / Cloud SQL</td>
+                                <td>強整合性（単一プライマリ内）。リードレプリカは結果整合性</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>Bigtable</td>
+                                <td>
+                                    シングルクラスタは強整合性、マルチクラスタ（レプリケーション時）は結果整合性がデフォルト
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>Cloud Storage</td>
+                                <td>
+                                    オブジェクトの作成・上書き・削除に対して強い一貫性（strong
+                                    consistency）を提供
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="callout-practice">
+                    <div class="icon">✓</div>
+
+                    <div class="body">
+                        <div class="label">ベストプラクティス</div>
+
+                        <p>
+                            グローバルにレプリケーションされたシステムでリードレプリカを使う場合、読み取り直後の書き込み反映（read-your-writes）が必要な操作にはプライマリへの読み取りを強制する、あるいは強整合性を持つサービス（Spannerなど）へ設計を寄せる。
+                        </p>
+                    </div>
+                </div>
+
+                <h4 id="署名付きurlの作成">署名付きURLの作成</h4>
+
+                <p>
+                    Cloud Storageの署名付きURL（Signed
+                    URL）は、Googleアカウントを持たない第三者に対しても、有効期限付きで特定オブジェクトへのアクセス（GET/PUT等）を許可します。署名にはサービスアカウントの鍵を使いますが、<strong>秘密鍵をエクスポートする必要はありません</strong>。ADCで認証したうえでサービスアカウントの権限を借用（impersonate）し、IAMの <code>signBlob</code> で署名するキーレスな方法を優先します（前述のサービスアカウントキーを持たない方針と揃えます）。期限を過ぎるとURLは自動的に失効します。
+                </p>
+
+                <div class="callout-practice">
+                    <div class="icon">✓</div>
+
+                    <div class="body">
+                        <div class="label">ベストプラクティス</div>
+
+                        <p>
+                            有効期限はユースケースに対して可能な限り短く設定する。アップロード先バケットにはObject
+                            Lifecycle
+                            Managementを設定し、未完了・不要なアップロードを自動削除する。より細かいアップロード条件（サイズ、Content-Type等）を強制したい場合はSigned
+                            Policy Documentを使う。
+                        </p>
+                    </div>
+                </div>
+
+                <p>
+                    <strong>出典</strong>:
+                    <a href="https://docs.cloud.google.com/storage/docs/lifecycle"
+                        >Object Lifecycle Management | Cloud Storage</a
+                    >
+                </p>
+
+                <h4 id="bigqueryへのデータ書き込み分析aimlワークロード向け">
+                    BigQueryへのデータ書き込み（分析・AI/MLワークロード向け）
+                </h4>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>方式</th>
+                                <th>特徴</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>バッチロード</td>
+                                <td>低コスト、レイテンシは分〜時間単位</td>
+                            </tr>
+                            <tr class="even">
+                                <td>レガシーストリーミング（<code>tabledata.insertAll</code>）</td>
+                                <td>後方互換のため残存、新規プロジェクトには非推奨</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>Storage Write API（推奨）</td>
+                                <td>
+                                    gRPCベース、低レイテンシ、exactly-once配信をサポート、レガシーより低コスト
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="callout-practice">
+                    <div class="icon">✓</div>
+
+                    <div class="body">
+                        <div class="label">ベストプラクティス</div>
+
+                        <p>
+                            新規のストリーミング取り込みにはStorage Write
+                            APIを使う。exactly-onceが必要な場合はコミット型ストリームとオフセットを使う。単なる運用分析でデータの一部欠損が許容できるなら、リトライ数回で諦めて後続処理（Pub/Subへの退避等）に回す設計にする。
+                        </p>
+                    </div>
+                </div>
+
+                <p>
+                    <strong>出典</strong>:
+                    <a href="https://docs.cloud.google.com/bigquery/docs/write-api-streaming"
+                        >Stream data using the Storage Write API | BigQuery</a
+                    >、<a href="https://docs.cloud.google.com/bigquery/docs/write-api-grpc"
+                        >Introduction to the Storage Write API (gRPC)</a
+                    >
+                </p>
+
+                <hr />
+
+                <p>&lt;a id="section2"&gt;&lt;/a&gt;</p>
+
+                <h2 id="section2">2. セクション2: アプリケーションのビルドとテスト（約26%）</h2>
+
+                <h3 id="21-開発環境のセットアップ">2.1 開発環境のセットアップ</h3>
+
+                <h4 id="ローカル開発とエミュレーション">ローカル開発とエミュレーション</h4>
+
+                <p>
+                    <code>gcloud</code> CLIには多くのGoogle
+                    Cloudサービス（Pub/Sub、Firestore、Spanner、Bigtable等）のローカルエミュレータが同梱されており、実際のクラウドリソースを作成せずにローカルで単体テスト・統合テストが行えます。
+                </p>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>ツール</th>
+                                <th>役割</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>Google Cloud コンソール</td>
+                                <td>Webベースの管理・監視UI</td>
+                            </tr>
+                            <tr class="even">
+                                <td>
+                                    Cloud
+                                    SDK（<code>gcloud</code>/<code>gsutil</code>/<code>bq</code>）
+                                </td>
+                                <td>コマンドラインからのリソース管理、エミュレータ起動</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>Cloud Code</td>
+                                <td>
+                                    VS Code/JetBrains/Cloud Shell
+                                    Editor向けのIDE拡張機能。Kubernetes/Cloud
+                                    Runアプリのローカルデバッグ（Skaffold統合）
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>Gemini Cloud Assist / Gemini Code Assist</td>
+                                <td>
+                                    コード補完、チャットアシスタント、デプロイコマンドの提案などのAI支援
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>Cloud Shell</td>
+                                <td>ブラウザから使えるプリインストール済みのシェル環境</td>
+                            </tr>
+                            <tr class="even">
+                                <td>Cloud Workstations</td>
+                                <td>
+                                    VPC内で動くフルマネージドの開発環境。ソースコードをローカル端末に置かないポリシーの実現や、本番同等のセキュリティ制御（VPC
+                                    Service Controls等）を開発環境にも適用できる
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="callout-practice">
+                    <div class="icon">✓</div>
+
+                    <div class="body">
+                        <div class="label">ベストプラクティス</div>
+
+                        <p>
+                            IDEにはCloud
+                            SDK連携とAIコーディングアシスタント（MCPサーバー経由の拡張含む）を設定し、コンテキストスイッチを減らす。エミュレータでの単体テストを開発フローに組み込み、実クラウドリソースへの依存を最小化してからCloud
+                            Buildでの統合テストに進む。
+                        </p>
+                    </div>
+                </div>
+
+                <p>
+                    <strong>出典</strong>:
+                    <a href="https://docs.cloud.google.com/sdk/gcloud/reference"
+                        >gcloud | Google Cloud SDK</a
+                    >、<a href="https://cloud.google.com/workstations">Cloud Workstations</a>、<a
+                        href="https://cloud.google.com/code"
+                        >Cloud Code</a
+                    >、<a href="https://docs.cloud.google.com/gemini/docs/codeassist/overview"
+                        >Gemini Code Assist Standard and Enterprise overview</a
+                    >
+                </p>
+
+                <hr />
+
+                <h3 id="22-ビルド">2.2 ビルド</h3>
+
+                <pre class="mermaid">
+flowchart LR
+    Repo["ソースリポジトリ&lt;br/&gt;（GitHub/Cloud Source Repositories）"] -- "トリガー" --&gt; CB["Cloud Build"]
+    CB -- "コンテナイメージをビルド" --&gt; Img["コンテナイメージ"]
+    CB -- "SLSA Provenanceを生成" --&gt; Prov2["ビルド来歴（Provenance）"]
+    Img --&gt; AR2["Artifact Registry"]
+    Prov2 --&gt; AR2
+    AR2 -- "Binary Authorization用の&lt;br/&gt;アテステーション対象" --&gt; BA["Binary Authorization"]</pre
+                >
+
+                <p>
+                    <strong>Cloud Build と Artifact Registry</strong>:
+                    ソースコードからコンテナイメージをビルドし、Artifact
+                    Registryに格納する一連の流れをCI基盤として構成します。ビルドステップは
+                    <code>cloudbuild.yaml</code> で定義します。
+                </p>
+
+                <p>
+                    <strong>Cloud Buildでのprovenance（来歴）設定</strong>:
+                    <code>options.requestedVerifyOption: VERIFIED</code> を指定することで、Cloud
+                    BuildがSLSA準拠のビルド来歴メタデータを生成し、Artifact
+                    Registryのイメージに関連付けます。この来歴情報は「どのソースリポジトリの、どのコミットから、どのビルダーでビルドされたか」を検証可能にし、Binary
+                    AuthorizationのSLSAチェックで「Cloud
+                    Buildでビルドされたイメージのみデプロイを許可する」といったポリシーを強制する材料になります。
+                </p>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>SLSAレベル</th>
+                                <th>要件</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>レベル1</td>
+                                <td>ビルド来歴が利用可能であること</td>
+                            </tr>
+                            <tr class="even">
+                                <td>レベル2</td>
+                                <td>
+                                    来歴データがビルドサービスにより生成され、改ざん検知（署名）が可能であること
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>レベル3</td>
+                                <td>
+                                    ビルド定義のエントリポイントとユーザー制御下のパラメータも来歴に含まれること
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="callout-practice">
+                    <div class="icon">✓</div>
+
+                    <div class="body">
+                        <div class="label">ベストプラクティス</div>
+
+                        <p>
+                            <code>requestedVerifyOption: VERIFIED</code>
+                            を全てのビルドで有効化し、Binary
+                            AuthorizationのSLSAチェックと組み合わせて「Cloud
+                            Build以外からのイメージ」を機械的に排除する。
+                        </p>
+                    </div>
+                </div>
+
+                <p>
+                    <strong>出典</strong>:
+                    <a
+                        href="https://docs.cloud.google.com/build/docs/securing-builds/generate-validate-build-provenance"
+                        >Generate and validate build provenance | Cloud Build</a
+                    >、<a
+                        href="https://docs.cloud.google.com/software-supply-chain-security/docs/safeguard-builds"
+                        >Safeguard builds | Software supply chain security</a
+                    >、<a
+                        href="https://docs.cloud.google.com/binary-authorization/docs/cv-slsa-check"
+                        >Use the SLSA check | Binary Authorization</a
+                    >、<a href="https://docs.cloud.google.com/build/docs/overview"
+                        >Overview of Cloud Build</a
+                    >
+                </p>
+
+                <hr />
+
+                <h3 id="23-テスト">2.3 テスト</h3>
+
+                <h4 id="aiコーディングアシスタントによる単体テストの作成">
+                    AIコーディングアシスタントによる単体テストの作成
+                </h4>
+
+                <p>
+                    Gemini Code
+                    Assist等のAIコーディングアシスタントは、既存コードからテストケースを自動生成し、エッジケースの網羅性を高める補助として使えます。ただし生成されたテストの妥当性（アサーションが実際に意図した振る舞いを検証しているか）は人間のレビューが必要です。
+                </p>
+
+                <h4 id="cloud-buildでの自動化された統合テストの実行">
+                    Cloud Buildでの自動化された統合テストの実行
+                </h4>
+
+                <p>
+                    <code>cloudbuild.yaml</code>
+                    にテストステップを追加し、単体テスト・統合テストをビルドパイプラインの一部として自動実行します。ローカルエミュレータ（Pub/Sub、Firestore等）をCloud
+                    Buildのステップ内で起動し、実クラウド環境を作らずに統合テストを完結させる構成が一般的です。
+                </p>
+
+                <div class="callout-practice">
+                    <div class="icon">✓</div>
+
+                    <div class="body">
+                        <div class="label">ベストプラクティス</div>
+
+                        <p>
+                            ビルドが失敗条件（テスト失敗）を正しく伝播するよう、各テストステップの終了コードを確認する。統合テストで実クラウドリソースを使う場合は、テスト専用プロジェクト・専用サービスアカウントを用意し本番環境から隔離する。
+                        </p>
+                    </div>
+                </div>
+
+                <hr />
+
+                <p>&lt;a id="section3"&gt;&lt;/a&gt;</p>
+
+                <h2 id="section3">
+                    3. セクション3: デプロイのためのクラウドネイティブアプリケーション構成（約19%）
+                </h2>
+
+                <h3 id="31-cloud-runへのアプリケーションデプロイ">
+                    3.1 Cloud Runへのアプリケーションデプロイ
+                </h3>
+
+                <h4 id="ソースコードからのデプロイ">ソースコードからのデプロイ</h4>
+
+                <p>
+                    <code>gcloud run deploy --source .</code>
+                    を使うと、Dockerfileの有無に関わらずCloud Native
+                    Buildpacksでソースコードから直接コンテナイメージがビルド・デプロイされます。裏側ではCloud
+                    Buildが呼び出されます。
+                </p>
+
+                <h4 id="トリガーによるcloud-runサービスの起動">
+                    トリガーによるCloud Runサービスの起動
+                </h4>
+
+                <pre class="mermaid">
+sequenceDiagram
+    participant GCS as Cloud Storage
+    participant PS as Pub/Sub
+    participant EA as Eventarc
+    participant CR as Cloud Run サービス
+
+    GCS-&gt;&gt;PS: オブジェクト作成イベントを発行
+    PS-&gt;&gt;EA: メッセージをEventarcトリガーへ配信
+    EA-&gt;&gt;CR: CloudEvents形式のHTTPリクエストを送信
+    CR--&gt;&gt;EA: 2xxで受信確認
+    Note over CR: 受信IDでイベントを冪等に処理</pre
+                >
+
+                <p>
+                    Eventarc・Pub/Subトリガーにより、ストレージイベント、Pub/Subメッセージ、Cloud
+                    Audit Logsなど多様なイベントソースからCloud
+                    Runサービスを起動できます。トリガーには呼び出し権限を持つサービスアカウントを関連付ける必要があります（<code>roles/run.invoker</code>）。
+                </p>
+
+                <h4 id="イベントレシーバの構成">イベントレシーバの構成</h4>
+
+                <p>
+                    Cloud
+                    RunサービスはEventarcからのリクエストを通常のHTTPリクエストとして受け取ります。CloudEvents形式のヘッダー・ボディをパースし、イベントタイプに応じた処理を行うハンドラを実装します。
+                </p>
+
+                <h4 id="apiのバージョニング公開保護apigee">
+                    APIのバージョニング・公開・保護（Apigee）
+                </h4>
+
+                <p>
+                    Cloud
+                    Run上でホストするAPIを外部公開する場合、Apigeeをフロントに配置してバージョニング（URLパスやヘッダーによる）、OAuth2/APIキーによる保護、レート制限、トラフィック変換を一元管理できます。
+                </p>
+
+                <p>
+                    <strong>出典</strong>:
+                    <a
+                        href="https://docs.cloud.google.com/eventarc/standard/docs/run/route-trigger-cloud-pubsub"
+                        >Route Cloud Pub/Sub events to Cloud Run | Eventarc Standard</a
+                    >、<a
+                        href="https://docs.cloud.google.com/run/docs/triggering/trigger-with-events"
+                        >Create triggers with Eventarc | Cloud Run</a
+                    >
+                </p>
+
+                <hr />
+
+                <h3 id="32-gkeへのコンテナデプロイ">3.2 GKEへのコンテナデプロイ</h3>
+
+                <h4 id="コンテナ化アプリケーションのデプロイ">
+                    コンテナ化アプリケーションのデプロイ
+                </h4>
+
+                <p>
+                    Deployment・Service・Ingress（またはGateway API）のマニフェストを作成し、<code
+                        >kubectl apply</code
+                    >
+                    またはCloud
+                    Deployのようなマネージド継続的デリバリーサービスでGKEクラスタにデプロイします。
+                </p>
+
+                <h4 id="kubernetesヘルスチェックの実装">Kubernetesヘルスチェックの実装</h4>
+
+                <pre class="mermaid">
+flowchart TD
+    Start3["Pod起動"] --&gt; SP{"Startup Probe"}
+    SP -- "失敗が続く" --&gt; Restart1["コンテナを再起動"]
+    SP -- "成功" --&gt; Running["liveness/readinessの監視を開始"]
+    Running --&gt; LP{"Liveness Probe"}
+    Running --&gt; RP{"Readiness Probe"}
+    LP -- "失敗" --&gt; Restart2["コンテナを再起動&lt;br/&gt;（デッドロック等から回復）"]
+    LP -- "成功" --&gt; Running
+    RP -- "失敗" --&gt; Remove["Serviceのエンドポイントから除外&lt;br/&gt;（トラフィックを送らない）"]
+    RP -- "成功" --&gt; Serve["トラフィックを受信"]
+
+    classDef dangerFill fill:#5c1a1a,stroke:#d94a4a,color:#ffffff;
+    classDef warnFill fill:#5c3a1a,stroke:#d9904a,color:#ffffff;
+    classDef successFill fill:#1a4a2a,stroke:#4ad97a,color:#ffffff;
+    class Restart1,Restart2 dangerFill
+    class Remove warnFill
+    class Serve successFill</pre
+                >
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>プローブ</th>
+                                <th>目的</th>
+                                <th>失敗時の挙動</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>Startup Probe</td>
+                                <td>起動が遅いアプリの初期化完了を待つ</td>
+                                <td>
+                                    成功するまでliveness/readinessを開始しない。失敗が続くとコンテナ再起動
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>Liveness Probe</td>
+                                <td>プロセスが生きている（デッドロックしていない）ことを確認</td>
+                                <td>コンテナを再起動</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>Readiness Probe</td>
+                                <td>トラフィックを受け付けられる状態か確認</td>
+                                <td>
+                                    Serviceのロードバランシング対象から一時的に除外（再起動はしない）
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="callout-practice">
+                    <div class="icon">✓</div>
+
+                    <div class="body">
+                        <div class="label">ベストプラクティス</div>
+
+                        <p>
+                            Livenessプローブは「本当に回復不能な障害」だけを検知するよう慎重に設定する。誤検知（過度に厳しいタイムアウト等）はカスケード障害を招く。起動に時間がかかるアプリにはStartup
+                            Probeを設定し、Liveness/Readinessの初期猶予時間を長く取りすぎないようにする。
+                        </p>
+                    </div>
+                </div>
+
+                <p>
+                    <strong>出典</strong>:
+                    <a href="https://kubernetes.io/docs/concepts/workloads/pods/probes/"
+                        >Liveness, Readiness, and Startup Probes | Kubernetes</a
+                    >、<a
+                        href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/"
+                        >Configure Liveness, Readiness and Startup Probes | Kubernetes</a
+                    >
+                </p>
+
+                <h4 id="horizontal-pod-autoscalerhpa属性の組み込み">
+                    Horizontal Pod Autoscaler（HPA）属性の組み込み
+                </h4>
+
+                <p>
+                    HPAはCPU使用率・メモリ使用率・カスタムメトリクス（Cloud
+                    MonitoringやPub/Subのキュー長など）に基づいてPodのレプリカ数を自動的に増減します。
+                </p>
+
+                <div class="callout-practice">
+                    <div class="icon">✓</div>
+
+                    <div class="body">
+                        <div class="label">ベストプラクティス</div>
+
+                        <ul>
+                            <li>
+                                リソースリクエスト・リミットを正しく設定してからHPAのターゲット使用率を決める。
+                            </li>
+
+                            <li>
+                                スパイク時に対応できるようターゲット使用率にバッファを持たせる（ただしバッファを大きくしすぎるとコスト増）。
+                            </li>
+
+                            <li>
+                                アプリの起動を高速化し、Readiness/Livenessプローブを適切に設定してスケールアップ・ダウンが正しく完了するようにする。
+                            </li>
+
+                            <li>
+                                クライアント側にも一時的な過負荷に備えた指数リトライを実装するよう伝える。
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <p>
+                    <strong>出典</strong>:
+                    <a
+                        href="https://docs.cloud.google.com/architecture/best-practices-for-running-cost-effective-kubernetes-applications-on-gke"
+                        >Best practices for running cost-optimized Kubernetes applications on GKE</a
+                    >
+                </p>
+
+                <hr />
+
+                <p>&lt;a id="section4"&gt;&lt;/a&gt;</p>
+
+                <h2 id="section4">
+                    4. セクション4: Google Cloudサービスとのアプリケーション統合（約22%）
+                </h2>
+
+                <h3 id="41-データストレージサービスとの統合">
+                    4.1 データ・ストレージサービスとの統合
+                </h3>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>データストア</th>
+                                <th>主な接続方法</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>Cloud SQL</td>
+                                <td>
+                                    Cloud SQL Auth Proxy（IAM認証・mTLS）、またはCloud SQL
+                                    Connectorライブラリ
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>Firestore</td>
+                                <td>
+                                    クライアントライブラリ（gRPCベース）、Application Default
+                                    Credentialsで認証
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>Cloud Storage</td>
+                                <td>
+                                    クライアントライブラリまたはREST/XML
+                                    API、署名付きURLで一時アクセスも可能
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="callout-practice">
+                    <div class="icon">✓</div>
+
+                    <div class="body">
+                        <div class="label">ベストプラクティス</div>
+
+                        <p>
+                            本番環境ではCloud SQL Auth Proxy（またはそのGoライブラリ版であるCloud
+                            SQL
+                            Connector）を使い、パブリックIPの許可リスト管理やTLS証明書の手動更新を避ける。接続プーリングを適切に設定し、コネクション数の枯渇を防ぐ。
+                        </p>
+                    </div>
+                </div>
+
+                <p>
+                    <strong>出典</strong>:
+                    <a href="https://docs.cloud.google.com/sql/docs/mysql/sql-proxy"
+                        >About the Cloud SQL Auth Proxy | Cloud SQL for MySQL</a
+                    >
+                </p>
+
+                <p>
+                    <strong>メッセージングサービスを使ったpublish/consume</strong>:
+                    Pub/Subのクライアントライブラリでトピックへのpublishとサブスクリプションからのconsumeを実装します。少なくとも1回配信が基本のため、コンシューマ側は冪等な処理を前提に設計します。
+                </p>
+
+                <hr />
+
+                <h3 id="42-google-cloud-apiの利用">4.2 Google Cloud APIの利用</h3>
+
+                <h4 id="google-cloudサービスの有効化">Google Cloudサービスの有効化</h4>
+
+                <p>
+                    利用するAPIはプロジェクトで明示的に有効化する必要があります（<code
+                        >gcloud services enable</code
+                    >
+                    またはコンソール）。
+                </p>
+
+                <h4 id="サポートされるオプションでのapi呼び出し">
+                    サポートされるオプションでのAPI呼び出し
+                </h4>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>手段</th>
+                                <th>特徴</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>Cloud Client Libraries</td>
+                                <td>
+                                    各言語向けの高レベルライブラリ。リトライ・ページネーション等が組み込み済み（推奨）
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>REST API</td>
+                                <td>
+                                    HTTP/JSONで直接呼び出し。言語非依存だが自前でリトライ等を実装する必要がある場合がある
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>gRPC</td>
+                                <td>
+                                    低レイテンシ・ストリーミング対応。多くのクライアントライブラリの内部実装としても使われる
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>APIエクスプローラ</td>
+                                <td>ブラウザ上でAPIを試験的に呼び出せるツール</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p>以下は呼び出し時に考慮すべき点です。</p>
+
+                <pre class="mermaid">
+flowchart TD
+    Call["APIを呼び出す"] --&gt; Result{"レスポンス"}
+    Result -- "成功" --&gt; Done["完了"]
+    Result -- "429 / 5xx" --&gt; Backoff["指数バックオフ＋ジッターで待機"]
+    Backoff --&gt; Retry{"最大リトライ回数&lt;br/&gt;に達したか"}
+    Retry -- "いいえ" --&gt; Call
+    Retry -- "はい" --&gt; Fail["エラーとして記録・報告"]
+    Result -- "4xx（429以外）" --&gt; Fail
+
+    classDef successFill fill:#1a4a2a,stroke:#4ad97a,color:#ffffff;
+    classDef dangerFill fill:#5c1a1a,stroke:#d94a4a,color:#ffffff;
+    classDef warnFill fill:#5c3a1a,stroke:#d9904a,color:#ffffff;
+    class Done successFill
+    class Fail dangerFill
+    class Backoff warnFill</pre
+                >
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>考慮事項</th>
+                                <th>内容</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>バッチ処理</td>
+                                <td>
+                                    複数の操作を1回のリクエストにまとめ、APIコール数とレイテンシを削減する
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>返却データの制限</td>
+                                <td>
+                                    フィールドマスク等で必要なフィールドのみ返却させ、帯域とパース時間を節約する
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>ページネーション</td>
+                                <td>
+                                    <code>list</code>
+                                    系メソッドの結果は必ずページングし、一度に大量データを取得しない（ショートポーリングも避ける）
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>キャッシュ</td>
+                                <td>
+                                    変化が少ないデータはクライアント側でキャッシュし、APIコール自体を減らす
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>エラー処理（指数バックオフ）</td>
+                                <td>
+                                    429・5xx系のエラーには、待機時間を指数的に増やしジッターを加えたリトライを実装する
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="callout-practice">
+                    <div class="icon">✓</div>
+
+                    <div class="body">
+                        <div class="label">ベストプラクティス</div>
+
+                        <p>
+                            常にリトライループの中で指数バックオフを使い、短いポーリングではなく長時間操作（Operation）の完了待機（wait）メソッドを使う。クライアントライブラリの組み込みリトライ設定（初期遅延・最大遅延・最大試行回数）をワークロードに合わせて調整する。
+                        </p>
+                    </div>
+                </div>
+
+                <p>
+                    <strong>出典</strong>:
+                    <a href="https://docs.cloud.google.com/compute/docs/api/best-practices"
+                        >Best practices for the Compute Engine API</a
+                    >、<a href="https://docs.cloud.google.com/storage/docs/retry-strategy"
+                        >Retry strategy | Cloud Storage</a
+                    >、<a
+                        href="https://docs.cloud.google.com/memorystore/docs/redis/exponential-backoff"
+                        >Exponential backoff | Memorystore for Redis</a
+                    >
+                </p>
+
+                <h4 id="サービスアカウントを使ったcloud-api呼び出し">
+                    サービスアカウントを使ったCloud API呼び出し
+                </h4>
+
+                <p>
+                    アプリケーションからGoogle Cloud
+                    APIを呼び出す際は、専用のサービスアカウントに必要最小限のIAMロールを付与し、Application
+                    Default Credentialsで自動的に認証情報を解決させます（GKEならWorkload
+                    Identity、Cloud Runなら実行サービスアカウント）。
+                </p>
+
+                <hr />
+
+                <h3 id="43-トラブルシューティングとオブザーバビリティ">
+                    4.3 トラブルシューティングとオブザーバビリティ
+                </h3>
+
+                <pre class="mermaid">
+flowchart TD
+    App2["アプリケーション"] -- "構造化ログを出力" --&gt; Log["Cloud Logging"]
+    App2 -- "メトリクスを送出" --&gt; Mon["Cloud Monitoring"]
+    App2 -- "スパンを計装" --&gt; Trace["Cloud Trace"]
+    Log --&gt; ER["Error Reporting&lt;br/&gt;（ログからエラーを自動グルーピング）"]
+    Log -.-&gt; Trace
+    Mon --&gt; Alert["アラートポリシー"]
+    Trace -- "トレースIDでスパンを相関" --&gt; MultiSvc["複数サービスをまたぐ&lt;br/&gt;リクエストの追跡"]</pre
+                >
+
+                <h4 id="メトリクスログトレースによるコードのインストルメンテーション">
+                    メトリクス・ログ・トレースによるコードのインストルメンテーション
+                </h4>
+
+                <p>
+                    Googleは、ベンダー固有のクライアントライブラリではなく、オープンソースでベンダーニュートラルな
+                    <strong>OpenTelemetry</strong>
+                    を使ったインストルメンテーションを推奨しています。ログはJSON形式で標準出力に書き出すと、Cloud
+                    Loggingが構造化ログとして自動的に取り込みます。
+                </p>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>シグナル</th>
+                                <th>役割</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>メトリクス</td>
+                                <td>リクエストレート・エラーレートなどSLIに使える数値測定値</td>
+                            </tr>
+                            <tr class="even">
+                                <td>ログ</td>
+                                <td>障害・エラー・状態変化のタイムスタンプ付き記録</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>トレース</td>
+                                <td>単一リクエストが複数サービスを通過する経路の可視化</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h4 id="問題の特定と解決google-cloud-observability">
+                    問題の特定と解決（Google Cloud Observability）
+                </h4>
+
+                <p>
+                    Cloud
+                    Monitoringのダッシュボード・SLO監視・アラートポリシーを使い、事後対応だけでなく問題発生前の予兆検知を目指します。
+                </p>
+
+                <h4 id="error-reportingによるアプリケーション問題の管理">
+                    Error Reportingによるアプリケーション問題の管理
+                </h4>
+
+                <p>
+                    Error Reportingは Cloud Logging
+                    のログエントリを解析し、似たスタックトレースを持つエラーを自動的にグルーピングします。新規エラーの発生や既知エラーの再発をリアルタイムに検知できます。
+                </p>
+
+                <h4 id="トレースidを使ったスパンの相関">トレースIDを使ったスパンの相関</h4>
+
+                <p>
+                    マイクロサービス間をまたぐリクエストでは、共通のトレースIDをヘッダー（例:
+                    <code>traceparent</code>）で伝播させることで、Cloud
+                    Trace上で複数サービスにまたがる1つのリクエストの経路とレイテンシ内訳を可視化できます。
+                </p>
+
+                <h4 id="ai支援型オブザーバビリティ">AI支援型オブザーバビリティ</h4>
+
+                <p>
+                    Gemini Cloud
+                    Assistなどのアシスタント機能は、ログ・メトリクス・トレースの異常検知やインシデントの根本原因分析（RCA）候補の提示を支援します。人間のレビューを前提に、初動調査の時間短縮に活用します。
+                </p>
+
+                <p>
+                    <strong>出典</strong>:
+                    <a href="https://docs.cloud.google.com/stackdriver/docs"
+                        >Observability in Google Cloud</a
+                    >、<a
+                        href="https://docs.cloud.google.com/stackdriver/docs/instrumentation/overview"
+                        >Instrumentation and observability</a
+                    >、<a
+                        href="https://docs.cloud.google.com/architecture/framework/reliability/observability"
+                        >Detect potential failures by using observability | Cloud Architecture
+                        Center</a
+                    >
+                </p>
+
+                <hr />
+
+                <p>&lt;a id="checklist"&gt;&lt;/a&gt;</p>
+
+                <h2 id="checklist">5. 学習チェックリスト</h2>
+
+                <div class="checklist-card">
+                    <div class="checklist-header">
+                        <span class="title">学習チェックリスト</span
+                        ><span class="count">0 / 27 完了</span>
+                    </div>
+                    <ul>
+                        <li>
+                            <input id="chk1" type="checkbox" /><label for="chk1"
+                                >Compute Engine・GKE・Cloud
+                                Runの選定基準を、コンテナ/VM要件・運用負荷の観点で説明できる</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk2" type="checkbox" /><label for="chk2"
+                                >Cloud
+                                Runのトラフィック分割でカナリアデプロイ・Blue-Greenデプロイ・ロールバックを実装できる</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk3" type="checkbox" /><label for="chk3"
+                                >REST APIとgRPC APIの使い分け、API
+                                GatewayとApigeeの使い分けを説明できる</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk4" type="checkbox" /><label for="chk4"
+                                >Eventarc・Pub/Sub・Workflows・Cloud Tasks・Cloud
+                                Schedulerの役割の違いを理解している</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk5" type="checkbox" /><label for="chk5"
+                                >Object Lifecycle
+                                Managementと保持ポリシーの違い・組み合わせ方を説明できる</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk6" type="checkbox" /><label for="chk6"
+                                >IAP・Web Security Scanner・Artifact Analysis・Security Command
+                                Centerそれぞれの役割を説明できる</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk7" type="checkbox" /><label for="chk7"
+                                >Secret Manager・Cloud KMS・Workload Identity
+                                Federationを使ったシークレット管理のベストプラクティスを説明できる</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk8" type="checkbox" /><label for="chk8"
+                                >ADC・JWT・OAuth2.0・Cloud SQL/AlloyDB Auth Proxy・Identity
+                                Platform・WIFの使い分けができる</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk9" type="checkbox" /><label for="chk9"
+                                >サービスアカウントの最小権限運用（専用アカウント、キー管理のベストプラクティス）を説明できる</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk10" type="checkbox" /><label for="chk10"
+                                >Direct VPC egress・Kubernetes Network Policies・Cloud Service
+                                Mesh・Private Service Connectの違いを理解している</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk11" type="checkbox" /><label for="chk11"
+                                >Binary
+                                Authorizationのアテステーション・SLSA・provenanceの流れを説明できる</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk12" type="checkbox" /><label for="chk12"
+                                >AlloyDB・Spanner・Cloud
+                                SQL・Firestore・Bigtable・BigQuery・Memorystoreの使い分けができる</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk13" type="checkbox" /><label for="chk13"
+                                >Spanner/Bigtable/Firestoreそれぞれのスキーマ設計上の注意点（ホットスポット回避等）を理解している</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk14" type="checkbox" /><label for="chk14"
+                                >結果整合性と強整合性の違いを主要データストアごとに説明できる</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk15" type="checkbox" /><label for="chk15"
+                                >署名付きURLの作成方法と有効期限設計を理解している</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk16" type="checkbox" /><label for="chk16"
+                                >BigQueryへのストリーミング書き込み（Storage Write
+                                API）の使い方を理解している</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk17" type="checkbox" /><label for="chk17"
+                                >gcloudエミュレータ・Cloud Code・Cloud Workstations・Gemini Code
+                                Assistの役割を説明できる</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk18" type="checkbox" /><label for="chk18"
+                                >Cloud BuildとArtifact
+                                Registryを使ったビルドパイプラインを構成できる</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk19" type="checkbox" /><label for="chk19"
+                                >Cloud Buildでprovenance（SLSA）を生成し、Binary
+                                Authorizationと連携できる</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk20" type="checkbox" /><label for="chk20"
+                                >Cloud
+                                Buildで自動化された統合テストを実行するパイプラインを構成できる</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk21" type="checkbox" /><label for="chk21"
+                                >Cloud
+                                Runへのソースからのデプロイ、Eventarc/Pub/Subトリガーの設定ができる</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk22" type="checkbox" /><label for="chk22"
+                                >Kubernetesのliveness/readiness/startupプローブを適切に設定できる</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk23" type="checkbox" /><label for="chk23"
+                                >HPAのベストプラクティス（リソースリクエストの正しい設定、バッファの確保等）を理解している</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk24" type="checkbox" /><label for="chk24"
+                                >Cloud SQL Auth
+                                Proxy等を使ったデータストアへの安全な接続を実装できる</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk25" type="checkbox" /><label for="chk25"
+                                >APIコール時のバッチ処理・フィールド制限・ページネーション・キャッシュ・指数バックオフを実装できる</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk26" type="checkbox" /><label for="chk26"
+                                >メトリクス・ログ・トレースの違いとOpenTelemetryによるインストルメンテーションを理解している</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk27" type="checkbox" /><label for="chk27"
+                                >Error
+                                Reportingとトレースの相関を使ったトラブルシューティングの流れを説明できる</label
+                            >
+                        </li>
+                    </ul>
+                </div>
+
+                <hr />
+
+                <p>&lt;a id="references"&gt;&lt;/a&gt;</p>
+
+                <h2 id="references">6. 参考文献</h2>
+
+                <h3 id="公式試験情報">公式試験情報</h3>
+
+                <div class="ref-grid">
+                    <div class="ref-card">
+                        <div class="num">1</div>
+                        <div class="txt">
+                            Professional Cloud Developer Certification exam guide (PDF).
+                            <a
+                                href="https://services.google.com/fh/files/misc/professional_cloud_developer_exam_guide_english.pdf"
+                                >https://services.google.com/fh/files/misc/professional_cloud_developer_exam_guide_english.pdf</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card">
+                        <div class="num">2</div>
+                        <div class="txt">
+                            Professional Cloud Developer Certification | Google Cloud.
+                            <a href="https://cloud.google.com/learn/certification/cloud-developer"
+                                >https://cloud.google.com/learn/certification/cloud-developer</a
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <h3 id="コンピューティングプラットフォーム">コンピューティングプラットフォーム</h3>
+
+                <div class="ref-grid">
+                    <div class="ref-card">
+                        <div class="num">3</div>
+                        <div class="txt">
+                            Where should I run my stuff? | Google Cloud Blog.
+                            <a
+                                href="https://cloud.google.com/blog/topics/developers-practitioners/where-should-i-run-my-stuff-choosing-google-cloud-compute-option"
+                                >https://cloud.google.com/blog/topics/developers-practitioners/where-should-i-run-my-stuff-choosing-google-cloud-compute-option</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card">
+                        <div class="num">4</div>
+                        <div class="txt">
+                            Rollbacks, gradual rollouts, and traffic migration | Cloud Run.
+                            <a
+                                href="https://docs.cloud.google.com/run/docs/rollouts-rollbacks-traffic-migration"
+                                >https://docs.cloud.google.com/run/docs/rollouts-rollbacks-traffic-migration</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card">
+                        <div class="num">5</div>
+                        <div class="txt">
+                            Manage revisions | Cloud Run.
+                            <a href="https://docs.cloud.google.com/run/docs/managing/revisions"
+                                >https://docs.cloud.google.com/run/docs/managing/revisions</a
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <h3 id="api設計api管理">API設計・API管理</h3>
+
+                <div class="ref-grid">
+                    <div class="ref-card">
+                        <div class="num">6</div>
+                        <div class="txt">
+                            API Design Guide | Google Cloud.
+                            <a href="https://docs.cloud.google.com/apis/design"
+                                >https://docs.cloud.google.com/apis/design</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card">
+                        <div class="num">7</div>
+                        <div class="txt">
+                            gRPC vs REST | Google Cloud Blog.
+                            <a
+                                href="https://cloud.google.com/blog/products/api-management/understanding-grpc-openapi-and-rest-and-when-to-use-them"
+                                >https://cloud.google.com/blog/products/api-management/understanding-grpc-openapi-and-rest-and-when-to-use-them</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card">
+                        <div class="num">8</div>
+                        <div class="txt">
+                            About API Gateway | Google Cloud.
+                            <a href="https://docs.cloud.google.com/api-gateway/docs/concepts"
+                                >https://docs.cloud.google.com/api-gateway/docs/concepts</a
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <h3 id="イベント駆動オーケストレーション">イベント駆動・オーケストレーション</h3>
+
+                <div class="ref-grid">
+                    <div class="ref-card">
+                        <div class="num">9</div>
+                        <div class="txt">
+                            Create triggers with Eventarc | Cloud Run.
+                            <a
+                                href="https://docs.cloud.google.com/run/docs/triggering/trigger-with-events"
+                                >https://docs.cloud.google.com/run/docs/triggering/trigger-with-events</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card">
+                        <div class="num">10</div>
+                        <div class="txt">
+                            Create triggers from Pub/Sub events | Cloud Run.
+                            <a
+                                href="https://docs.cloud.google.com/run/docs/triggering/pubsub-triggers"
+                                >https://docs.cloud.google.com/run/docs/triggering/pubsub-triggers</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card">
+                        <div class="num">11</div>
+                        <div class="txt">
+                            Route Cloud Pub/Sub events to Cloud Run | Eventarc Standard.
+                            <a
+                                href="https://docs.cloud.google.com/eventarc/standard/docs/run/route-trigger-cloud-pubsub"
+                                >https://docs.cloud.google.com/eventarc/standard/docs/run/route-trigger-cloud-pubsub</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card">
+                        <div class="num">12</div>
+                        <div class="txt">
+                            Workflows overview.
+                            <a href="https://docs.cloud.google.com/workflows/docs/overview"
+                                >https://docs.cloud.google.com/workflows/docs/overview</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card">
+                        <div class="num">13</div>
+                        <div class="txt">
+                            Understand Cloud Tasks.
+                            <a href="https://docs.cloud.google.com/tasks/docs/dual-overview"
+                                >https://docs.cloud.google.com/tasks/docs/dual-overview</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card">
+                        <div class="num">14</div>
+                        <div class="txt">
+                            Cloud Scheduler documentation.
+                            <a href="https://docs.cloud.google.com/scheduler/docs"
+                                >https://docs.cloud.google.com/scheduler/docs</a
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <h3 id="セキュリティ">セキュリティ</h3>
+
+                <div class="ref-grid">
+                    <div class="ref-card">
+                        <div class="num">15</div>
+                        <div class="txt">
+                            Object Lifecycle Management | Cloud Storage.
+                            <a href="https://docs.cloud.google.com/storage/docs/lifecycle"
+                                >https://docs.cloud.google.com/storage/docs/lifecycle</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card">
+                        <div class="num">16</div>
+                        <div class="txt">
+                            Identity-Aware Proxy overview.
+                            <a href="https://docs.cloud.google.com/iap/docs/concepts-overview"
+                                >https://docs.cloud.google.com/iap/docs/concepts-overview</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card">
+                        <div class="num">17</div>
+                        <div class="txt">
+                            Vulnerability findings | Security Command Center.
+                            <a
+                                href="https://docs.cloud.google.com/security-command-center/docs/concepts-vulnerabilities-findings"
+                                >https://docs.cloud.google.com/security-command-center/docs/concepts-vulnerabilities-findings</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card">
+                        <div class="num">18</div>
+                        <div class="txt">
+                            Secret Manager best practices.
+                            <a
+                                href="https://docs.cloud.google.com/secret-manager/docs/best-practices"
+                                >https://docs.cloud.google.com/secret-manager/docs/best-practices</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card">
+                        <div class="num">19</div>
+                        <div class="txt">
+                            Best practices for using Workload Identity Federation.
+                            <a
+                                href="https://docs.cloud.google.com/iam/docs/best-practices-for-using-workload-identity-federation"
+                                >https://docs.cloud.google.com/iam/docs/best-practices-for-using-workload-identity-federation</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card">
+                        <div class="num">20</div>
+                        <div class="txt">
+                            Best practices for using service accounts securely.
+                            <a
+                                href="https://docs.cloud.google.com/iam/docs/best-practices-service-accounts"
+                                >https://docs.cloud.google.com/iam/docs/best-practices-service-accounts</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card">
+                        <div class="num">21</div>
+                        <div class="txt">
+                            Best practices for managing service account keys.
+                            <a
+                                href="https://docs.cloud.google.com/iam/docs/best-practices-for-managing-service-account-keys"
+                                >https://docs.cloud.google.com/iam/docs/best-practices-for-managing-service-account-keys</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card">
+                        <div class="num">22</div>
+                        <div class="txt">
+                            Binary Authorization overview.
+                            <a
+                                href="https://docs.cloud.google.com/binary-authorization/docs/overview"
+                                >https://docs.cloud.google.com/binary-authorization/docs/overview</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card">
+                        <div class="num">23</div>
+                        <div class="txt">
+                            Binary Authorization concepts.
+                            <a
+                                href="https://docs.cloud.google.com/binary-authorization/docs/key-concepts"
+                                >https://docs.cloud.google.com/binary-authorization/docs/key-concepts</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card">
+                        <div class="num">24</div>
+                        <div class="txt">
+                            Attestations overview | Binary Authorization.
+                            <a
+                                href="https://docs.cloud.google.com/binary-authorization/docs/attestations"
+                                >https://docs.cloud.google.com/binary-authorization/docs/attestations</a
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <h3 id="ネットワーキング">ネットワーキング</h3>
+
+                <div class="ref-grid">
+                    <div class="ref-card">
+                        <div class="num">25</div>
+                        <div class="txt">
+                            Direct VPC egress with a VPC network | Cloud Run.
+                            <a
+                                href="https://docs.cloud.google.com/run/docs/configuring/vpc-direct-vpc"
+                                >https://docs.cloud.google.com/run/docs/configuring/vpc-direct-vpc</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card">
+                        <div class="num">26</div>
+                        <div class="txt">
+                            Private networking and Cloud Run.
+                            <a
+                                href="https://docs.cloud.google.com/run/docs/securing/private-networking"
+                                >https://docs.cloud.google.com/run/docs/securing/private-networking</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card">
+                        <div class="num">27</div>
+                        <div class="txt">
+                            Private Service Connect | VPC.
+                            <a href="https://cloud.google.com/vpc/docs/private-service-connect"
+                                >https://cloud.google.com/vpc/docs/private-service-connect</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card">
+                        <div class="num">28</div>
+                        <div class="txt">
+                            Configure Cloud Service Mesh for Cloud Run.
+                            <a
+                                href="https://docs.cloud.google.com/service-mesh/docs/configure-cloud-service-mesh-for-cloud-run"
+                                >https://docs.cloud.google.com/service-mesh/docs/configure-cloud-service-mesh-for-cloud-run</a
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <h3 id="データベースストレージ">データベース・ストレージ</h3>
+
+                <div class="ref-grid">
+                    <div class="ref-card">
+                        <div class="num">29</div>
+                        <div class="txt">
+                            Google Cloud databases.
+                            <a href="https://cloud.google.com/products/databases"
+                                >https://cloud.google.com/products/databases</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card">
+                        <div class="num">30</div>
+                        <div class="txt">
+                            Databases on Google Cloud part 2 | Google Cloud Blog.
+                            <a
+                                href="https://cloud.google.com/blog/topics/developers-practitioners/databases-google-cloud-part-2-options-glance/"
+                                >https://cloud.google.com/blog/topics/developers-practitioners/databases-google-cloud-part-2-options-glance/</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card">
+                        <div class="num">31</div>
+                        <div class="txt">
+                            Schema design best practices | Spanner.
+                            <a href="https://docs.cloud.google.com/spanner/docs/schema-design"
+                                >https://docs.cloud.google.com/spanner/docs/schema-design</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card">
+                        <div class="num">32</div>
+                        <div class="txt">
+                            Best practices for Cloud Firestore.
+                            <a href="https://firebase.google.com/docs/firestore/best-practices"
+                                >https://firebase.google.com/docs/firestore/best-practices</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card">
+                        <div class="num">33</div>
+                        <div class="txt">
+                            About the Cloud SQL Auth Proxy | Cloud SQL for MySQL.
+                            <a href="https://docs.cloud.google.com/sql/docs/mysql/sql-proxy"
+                                >https://docs.cloud.google.com/sql/docs/mysql/sql-proxy</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card">
+                        <div class="num">34</div>
+                        <div class="txt">
+                            About the AlloyDB Auth Proxy.
+                            <a href="https://docs.cloud.google.com/alloydb/docs/auth-proxy/overview"
+                                >https://docs.cloud.google.com/alloydb/docs/auth-proxy/overview</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card">
+                        <div class="num">35</div>
+                        <div class="txt">
+                            Stream data using the Storage Write API | BigQuery.
+                            <a
+                                href="https://docs.cloud.google.com/bigquery/docs/write-api-streaming"
+                                >https://docs.cloud.google.com/bigquery/docs/write-api-streaming</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card">
+                        <div class="num">36</div>
+                        <div class="txt">
+                            Introduction to the Storage Write API (gRPC) | BigQuery.
+                            <a href="https://docs.cloud.google.com/bigquery/docs/write-api-grpc"
+                                >https://docs.cloud.google.com/bigquery/docs/write-api-grpc</a
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <h3 id="開発環境ビルドテスト">開発環境・ビルド・テスト</h3>
+
+                <div class="ref-grid">
+                    <div class="ref-card">
+                        <div class="num">37</div>
+                        <div class="txt">
+                            gcloud | Google Cloud SDK.
+                            <a href="https://docs.cloud.google.com/sdk/gcloud/reference"
+                                >https://docs.cloud.google.com/sdk/gcloud/reference</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card">
+                        <div class="num">38</div>
+                        <div class="txt">
+                            Cloud Workstations.
+                            <a href="https://cloud.google.com/workstations"
+                                >https://cloud.google.com/workstations</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card">
+                        <div class="num">39</div>
+                        <div class="txt">
+                            Cloud Code.
+                            <a href="https://cloud.google.com/code"
+                                >https://cloud.google.com/code</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card">
+                        <div class="num">40</div>
+                        <div class="txt">
+                            Gemini Code Assist Standard and Enterprise overview.
+                            <a href="https://docs.cloud.google.com/gemini/docs/codeassist/overview"
+                                >https://docs.cloud.google.com/gemini/docs/codeassist/overview</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card">
+                        <div class="num">41</div>
+                        <div class="txt">
+                            Overview of Cloud Build.
+                            <a href="https://docs.cloud.google.com/build/docs/overview"
+                                >https://docs.cloud.google.com/build/docs/overview</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card">
+                        <div class="num">42</div>
+                        <div class="txt">
+                            Generate and validate build provenance | Cloud Build.
+                            <a
+                                href="https://docs.cloud.google.com/build/docs/securing-builds/generate-validate-build-provenance"
+                                >https://docs.cloud.google.com/build/docs/securing-builds/generate-validate-build-provenance</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card">
+                        <div class="num">43</div>
+                        <div class="txt">
+                            Safeguard builds | Software supply chain security.
+                            <a
+                                href="https://docs.cloud.google.com/software-supply-chain-security/docs/safeguard-builds"
+                                >https://docs.cloud.google.com/software-supply-chain-security/docs/safeguard-builds</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card">
+                        <div class="num">44</div>
+                        <div class="txt">
+                            Use the SLSA check | Binary Authorization.
+                            <a
+                                href="https://docs.cloud.google.com/binary-authorization/docs/cv-slsa-check"
+                                >https://docs.cloud.google.com/binary-authorization/docs/cv-slsa-check</a
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <h3 id="デプロイgke">デプロイ・GKE</h3>
+
+                <div class="ref-grid">
+                    <div class="ref-card">
+                        <div class="num">45</div>
+                        <div class="txt">
+                            Liveness, Readiness, and Startup Probes | Kubernetes.
+                            <a href="https://kubernetes.io/docs/concepts/workloads/pods/probes/"
+                                >https://kubernetes.io/docs/concepts/workloads/pods/probes/</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card">
+                        <div class="num">46</div>
+                        <div class="txt">
+                            Configure Liveness, Readiness and Startup Probes | Kubernetes.
+                            <a
+                                href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/"
+                                >https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card">
+                        <div class="num">47</div>
+                        <div class="txt">
+                            Best practices for running cost-optimized Kubernetes applications on
+                            GKE.
+                            <a
+                                href="https://docs.cloud.google.com/architecture/best-practices-for-running-cost-effective-kubernetes-applications-on-gke"
+                                >https://docs.cloud.google.com/architecture/best-practices-for-running-cost-effective-kubernetes-applications-on-gke</a
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <h3 id="api呼び出しオブザーバビリティ">API呼び出し・オブザーバビリティ</h3>
+
+                <div class="ref-grid">
+                    <div class="ref-card">
+                        <div class="num">48</div>
+                        <div class="txt">
+                            Best practices for the Compute Engine API.
+                            <a href="https://docs.cloud.google.com/compute/docs/api/best-practices"
+                                >https://docs.cloud.google.com/compute/docs/api/best-practices</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card">
+                        <div class="num">49</div>
+                        <div class="txt">
+                            Retry strategy | Cloud Storage.
+                            <a href="https://docs.cloud.google.com/storage/docs/retry-strategy"
+                                >https://docs.cloud.google.com/storage/docs/retry-strategy</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card">
+                        <div class="num">50</div>
+                        <div class="txt">
+                            Exponential backoff | Memorystore for Redis.
+                            <a
+                                href="https://docs.cloud.google.com/memorystore/docs/redis/exponential-backoff"
+                                >https://docs.cloud.google.com/memorystore/docs/redis/exponential-backoff</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card">
+                        <div class="num">51</div>
+                        <div class="txt">
+                            Observability in Google Cloud.
+                            <a href="https://docs.cloud.google.com/stackdriver/docs"
+                                >https://docs.cloud.google.com/stackdriver/docs</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card">
+                        <div class="num">52</div>
+                        <div class="txt">
+                            Instrumentation and observability.
+                            <a
+                                href="https://docs.cloud.google.com/stackdriver/docs/instrumentation/overview"
+                                >https://docs.cloud.google.com/stackdriver/docs/instrumentation/overview</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card">
+                        <div class="num">53</div>
+                        <div class="txt">
+                            Detect potential failures by using observability | Cloud Architecture
+                            Center.
+                            <a
+                                href="https://docs.cloud.google.com/architecture/framework/reliability/observability"
+                                >https://docs.cloud.google.com/architecture/framework/reliability/observability</a
+                            >
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+        <script
+            src="https://cdn.jsdelivr.net/npm/mermaid@11.13.0/dist/mermaid.min.js"
+            integrity="sha384-tI0sDqjGJcqrQ8e/XKiQGS+ee11v5knTNWx2goxMBxe4DO9U0uKlfxJtYB9ILZ4j"
+            crossorigin="anonymous"
+        ></script>
+        <script>
+            (function () {
+                'use strict';
+
+                // ---------- Mermaid init + render ----------
+                function initMermaid() {
+                    if (typeof mermaid === 'undefined') {
+                        console.warn('mermaid not loaded');
+                        return;
+                    }
+                    var fontFamily = getComputedStyle(document.body).fontFamily;
+                    mermaid.initialize({
+                        startOnLoad: false,
+                        theme: 'base',
+                        securityLevel: 'loose',
+                        fontFamily: fontFamily,
+                        themeVariables: {
+                            fontSize: '16px',
+                            background: '#0d1a2b',
+                            primaryColor: '#12233b',
+                            primaryTextColor: '#dbe4f3',
+                            primaryBorderColor: '#2c4770',
+                            lineColor: '#4a6390',
+                            secondaryColor: '#101f33',
+                            tertiaryColor: '#101f33',
+                            edgeLabelBackground: '#0d1a2b',
+                            clusterBkg: '#0d1a2b',
+                            clusterBorder: '#2c4770',
+                            nodeTextColor: '#dbe4f3',
+                        },
+                        flowchart: {
+                            useMaxWidth: false,
+                            htmlLabels: true,
+                            subGraphTitleMargin: { top: 12, bottom: 18 },
+                            nodeSpacing: 70,
+                            rankSpacing: 60,
+                            curve: 'basis',
+                        },
+                    });
+
+                    var fontSpecs = [
+                        ['700', '"Noto Sans JP"'],
+                        ['400', '"Noto Sans JP"'],
+                    ];
+                    var sample = '設計とアーキテクチャ0123ABC';
+                    var loadPromises = fontSpecs.map(function (spec) {
+                        try {
+                            return document.fonts.load(spec[0] + ' 16px ' + spec[1], sample);
+                        } catch (e) {
+                            return Promise.resolve();
+                        }
+                    });
+
+                    Promise.all(loadPromises)
+                        .then(function () {
+                            return document.fonts ? document.fonts.ready : Promise.resolve();
+                        })
+                        .catch(function () {})
+                        .then(function () {
+                            try {
+                                mermaid
+                                    .run({ querySelector: 'pre.mermaid' })
+                                    .then(function () {
+                                        healOverflowingLabels();
+                                        setTimeout(healOverflowingLabels, 600);
+                                    })
+                                    .catch(function (err) {
+                                        console.error('mermaid render error', err);
+                                    });
+                            } catch (e) {
+                                console.error('mermaid run failed', e);
+                            }
+                        });
+                }
+
+                function healOverflowingLabels() {
+                    document.querySelectorAll('pre.mermaid svg').forEach(function (svg) {
+                        svg.querySelectorAll('.node').forEach(function (node) {
+                            var rect = node.querySelector('rect.basic, rect');
+                            var fo = node.querySelector('foreignObject');
+                            if (!rect || !fo) return;
+                            var div = fo.querySelector('div');
+                            if (!div) return;
+                            var neededW = div.scrollWidth;
+                            var neededH = div.scrollHeight;
+                            var curW = parseFloat(fo.getAttribute('width')) || 0;
+                            var curH = parseFloat(fo.getAttribute('height')) || 0;
+                            if (neededW > curW - 2 || neededH > curH - 2) {
+                                var buffer = 6;
+                                var newW = Math.max(curW, neededW + buffer);
+                                var newH = Math.max(curH, neededH + buffer);
+                                var x = parseFloat(fo.getAttribute('x')) || 0;
+                                var y = parseFloat(fo.getAttribute('y')) || 0;
+                                var dx = (newW - curW) / 2;
+                                var dy = (newH - curH) / 2;
+                                fo.setAttribute('width', newW);
+                                fo.setAttribute('height', newH);
+                                fo.setAttribute('x', x - dx);
+                                fo.setAttribute('y', y - dy);
+                                var rx = parseFloat(rect.getAttribute('x'));
+                                var ry = parseFloat(rect.getAttribute('y'));
+                                var rw = parseFloat(rect.getAttribute('width'));
+                                var rh = parseFloat(rect.getAttribute('height'));
+                                if (!isNaN(rx) && !isNaN(rw)) {
+                                    rect.setAttribute('x', rx - dx);
+                                    rect.setAttribute('width', rw + newW - curW);
+                                }
+                                if (!isNaN(ry) && !isNaN(rh)) {
+                                    rect.setAttribute('y', ry - dy);
+                                    rect.setAttribute('height', rh + newH - curH);
+                                }
+                            }
+                        });
+                    });
+                }
+
+                try {
+                    initMermaid();
+                } catch (e) {
+                    console.error('mermaid init failed', e);
+                }
+
+                // ---------- Sidebar toggle (mobile) ----------
+                var sidebar = document.getElementById('sidebar');
+                var toggle = document.getElementById('sidebarToggle');
+                function syncToggleState() {
+                    if (!toggle || !sidebar) return;
+                    toggle.setAttribute(
+                        'aria-expanded',
+                        sidebar.classList.contains('open') ? 'true' : 'false',
+                    );
+                }
+                if (toggle) {
+                    toggle.addEventListener('click', function () {
+                        sidebar.classList.toggle('open');
+                        syncToggleState();
+                    });
+                }
+                document.querySelectorAll('#sidebarNav a').forEach(function (a) {
+                    a.addEventListener('click', function () {
+                        sidebar.classList.remove('open');
+                        syncToggleState();
+                    });
+                });
+                syncToggleState();
+
+                // ---------- Scroll-spy ----------
+                var navLinks = Array.from(document.querySelectorAll('#sidebarNav a'));
+                var linkMap = new Map();
+                navLinks.forEach(function (a) {
+                    var id = decodeURIComponent(a.getAttribute('href').slice(1));
+                    linkMap.set(id, a);
+                });
+
+                var headings = Array.from(linkMap.keys())
+                    .map(function (id) {
+                        return document.getElementById(id);
+                    })
+                    .filter(Boolean);
+
+                var spyObserver = new IntersectionObserver(
+                    function (entries) {
+                        entries.forEach(function (entry) {
+                            var link = linkMap.get(entry.target.id);
+                            if (!link) return;
+                            if (entry.isIntersecting) {
+                                navLinks.forEach(function (a) {
+                                    a.classList.remove('active');
+                                });
+                                link.classList.add('active');
+                            }
+                        });
+                    },
+                    { rootMargin: '-15% 0px -75% 0px', threshold: 0 },
+                );
+
+                headings.forEach(function (h) {
+                    spyObserver.observe(h);
+                });
+
+                // ---------- Checklist progress ----------
+                document.querySelectorAll('.checklist-card').forEach(function (card) {
+                    var boxes = card.querySelectorAll('input[type="checkbox"]');
+                    var counter = card.querySelector('.count');
+                    function update() {
+                        var checked = card.querySelectorAll(
+                            'input[type="checkbox"]:checked',
+                        ).length;
+                        if (counter) counter.textContent = checked + ' / ' + boxes.length + ' 完了';
+                    }
+                    boxes.forEach(function (b) {
+                        b.addEventListener('change', update);
+                    });
+                    update();
+                });
+            })();
+        </script>
+    </body>
+</html>

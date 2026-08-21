@@ -14,6 +14,7 @@
     "test:e2e": "playwright test --project=chromium",
     "test:perf": "playwright test --project=perf",
     "test:security": "node scripts/security-audit.mjs",
+    "test:md-to-html": "bun test ./.agents/skills/md-to-html/scripts/audit_content_parity.test.mjs ./.agents/skills/md-to-html/scripts/audit_design_parity.test.mjs",
     "perf:report": "lhci autorun",
     "dashboard": "node scripts/generate-coverage-dashboard.mjs"
   },

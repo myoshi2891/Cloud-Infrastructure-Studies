@@ -2,12 +2,12 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { JSDOM } from 'jsdom';
 import { describe, expect, it, vi } from 'vitest';
 import Page from '../../../../app/cisco/ccna/automation-infrastructure-and-automation/page';
 import CcnaInfraAutomationGuide from '../../../../app/cisco/ccna/automation-infrastructure-and-automation/CcnaInfraAutomationGuide';
 import { DIAGRAMS } from '../../../../app/cisco/ccna/automation-infrastructure-and-automation/constants';
 import NavBar from '../../../../app/cisco/ccna/automation-infrastructure-and-automation/NavBar';
+import fidelity from '@/docs/migration-inventory/ccna-automation-infrastructure-and-automation.fidelity.json';
 import {
     expectCodeFidelity,
     expectContentCssCoverage,
@@ -28,16 +28,6 @@ vi.mock('@/components/MermaidDiagram', () => ({
 }));
 
 describe('CCNA Automation Infrastructure and Automation Page', () => {
-    const sourceDocument = new JSDOM(
-        fs.readFileSync(
-            path.resolve(
-                process.cwd(),
-                'archive/Cisco/html/ccna/Ccna-automation-infrastructure-and-automation.html',
-            ),
-            'utf8',
-        ),
-    ).window.document;
-
     it('associates the menu toggle with its labelled sidebar navigation', () => {
         render(<NavBar />);
         const toggle = screen.getByRole('button', { name: '目次を開く' });
@@ -173,23 +163,15 @@ describe('CCNA Automation Infrastructure and Automation Page', () => {
             'utf8',
         );
 
-        expectTableFidelity(sourceDocument, container);
+        expectTableFidelity(fidelity.tables, container);
         expectSupplementalFidelity(
-            sourceDocument,
+            fidelity.supplemental,
             container,
             '.callout, .chip, .weight-tag, .diagram-label, .code-label',
         );
-        expectCodeFidelity(sourceDocument, container);
-        expectSyntaxHighlightFidelity(sourceDocument, container, {
-            'hl-kw': '.hljs-keyword, .hljs-literal',
-            'hl-str': '.hljs-string',
-            'hl-num': '.hljs-number',
-            'hl-fn': '.hljs-built_in, .hljs-name',
-            'hl-cm': '.hljs-comment',
-            'hl-add': '.hljs-addition',
-            'hl-del': '.hljs-deletion',
-        });
-        expectContentCssCoverage(sourceDocument, container, css, {
+        expectCodeFidelity(fidelity.codeBlocks, container);
+        expectSyntaxHighlightFidelity(fidelity.syntaxTokens, container);
+        expectContentCssCoverage(fidelity.styledClasses, container, css, {
             hljs: 'code-block',
             'hljs-comment': 'hl-cm',
             'hljs-keyword': 'hl-kw',
@@ -208,7 +190,7 @@ describe('CCNA Automation Infrastructure and Automation Page', () => {
             'hljs-deletion': 'hl-del',
         });
         expectElementPlacementFidelity(
-            sourceDocument,
+            fidelity.placements,
             container,
             '.table-wrapper > table, .diagram-wrapper, .callout, .code-block, pre',
         );

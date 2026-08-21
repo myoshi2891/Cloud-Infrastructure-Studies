@@ -1,0 +1,1691 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Google Cloud VPCネットワーク構築チャレンジラボ 完全攻略ガイド</title>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"
+        />
+        <style>
+            :root {
+                --bg: #07111e;
+                --bg-elevated: #0d1929;
+                --panel: #101d33;
+                --panel-2: #0c1830;
+                --border: #1c2c48;
+                --text: #e8edf7;
+                --text-dim: #a9b6d1;
+                --accent: #7c9eff;
+                --accent-2: #55e6c1;
+                --warning: #ffcb6b;
+                --danger: #ff8383;
+                --sidebar-width: 300px;
+                --radius: 12px;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            html {
+                scroll-behavior: smooth;
+            }
+
+            body {
+                margin: 0;
+                background: var(--bg);
+                color: var(--text);
+                font-family:
+                    'Hiragino Kaku Gothic ProN',
+                    'Noto Sans JP',
+                    'Segoe UI',
+                    system-ui,
+                    -apple-system,
+                    sans-serif;
+                line-height: 1.8;
+            }
+
+            .layout {
+                display: block;
+            }
+
+            /* ---------- Sidebar ---------- */
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: var(--sidebar-width);
+                height: 100vh;
+                overflow-y: auto;
+                background: var(--bg-elevated);
+                border-right: 1px solid var(--border);
+                padding: 2rem 1.5rem 3rem;
+                z-index: 10;
+            }
+
+            .sidebar-brand {
+                font-size: 1rem;
+                letter-spacing: 0.08em;
+                color: var(--accent);
+                text-transform: uppercase;
+                margin-bottom: 0.4rem;
+            }
+
+            .sidebar-title {
+                font-size: 1.05rem;
+                font-weight: 700;
+                color: var(--text);
+                margin: 0 0 1.8rem;
+                line-height: 1.5;
+            }
+
+            .sidebar nav ul {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+
+            .sidebar nav a {
+                display: block;
+                padding: 0.55rem 0.7rem;
+                margin-bottom: 0.15rem;
+                border-radius: 8px;
+                color: var(--text-dim);
+                text-decoration: none;
+                font-size: 1rem;
+                border-left: 2px solid transparent;
+                transition:
+                    background 0.15s ease,
+                    color 0.15s ease,
+                    border-color 0.15s ease;
+            }
+
+            .sidebar nav a:hover {
+                background: rgba(124, 158, 255, 0.08);
+                color: var(--text);
+            }
+
+            .sidebar nav a.active {
+                color: var(--accent);
+                background: rgba(124, 158, 255, 0.12);
+                border-left-color: var(--accent);
+                font-weight: 600;
+            }
+
+            .sidebar-lab-link {
+                display: block;
+                margin-top: 2rem;
+                padding-top: 1.5rem;
+                border-top: 1px solid var(--border);
+                font-size: 1rem;
+                color: var(--text-dim);
+            }
+
+            .sidebar-lab-link a {
+                color: var(--accent);
+                word-break: break-all;
+            }
+
+            /* ---------- Main ---------- */
+            .main {
+                margin-left: var(--sidebar-width);
+                padding: 3.5rem 4rem 6rem;
+                max-width: none;
+            }
+
+            .hero {
+                max-width: none;
+                margin-bottom: 3rem;
+            }
+
+            .hero-eyebrow {
+                color: var(--accent-2);
+                font-size: 1rem;
+                letter-spacing: 0.1em;
+                text-transform: uppercase;
+                margin-bottom: 0.8rem;
+            }
+
+            .hero h1 {
+                font-size: 2.2rem;
+                line-height: 1.4;
+                margin: 0 0 1.2rem;
+                background: linear-gradient(90deg, #a6c1ff 0%, #7c9eff 45%, #55e6c1 100%);
+                background-clip: text;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+
+            .hero-lead {
+                color: var(--text-dim);
+                font-size: 1.05rem;
+                max-width: none;
+            }
+
+            .lab-source {
+                margin-top: 1.2rem;
+                padding: 0.9rem 1.1rem;
+                background: var(--panel);
+                border: 1px solid var(--border);
+                border-radius: var(--radius);
+                font-size: 1rem;
+                color: var(--text-dim);
+                overflow-wrap: break-word;
+            }
+
+            .lab-source a {
+                color: var(--accent);
+            }
+
+            .section {
+                max-width: none;
+                margin-bottom: 3.5rem;
+                scroll-margin-top: 2rem;
+            }
+
+            .section h2 {
+                font-size: 1.55rem;
+                margin: 0 0 1.4rem;
+                padding-bottom: 0.8rem;
+                border-bottom: 1px solid var(--border);
+                color: var(--text);
+            }
+
+            .section h2 .num {
+                display: inline-block;
+                color: var(--accent);
+                margin-right: 0.5rem;
+            }
+
+            .section h3 {
+                font-size: 1.15rem;
+                color: var(--accent);
+                margin: 2rem 0 0.9rem;
+            }
+
+            .prose,
+            .prose p,
+            .prose li {
+                max-width: none;
+                overflow-wrap: break-word;
+            }
+
+            .prose p {
+                color: var(--text);
+                margin: 0 0 1rem;
+            }
+            .prose ul,
+            .prose ol {
+                color: var(--text);
+                padding-left: 1.4rem;
+            }
+            .prose li {
+                margin-bottom: 0.4rem;
+            }
+
+            code.inline {
+                background: rgba(124, 158, 255, 0.12);
+                color: var(--accent-2);
+                padding: 0.15em 0.4em;
+                border-radius: 5px;
+                font-size: 1em;
+                font-family: 'SFMono-Regular', Consolas, Menlo, monospace;
+            }
+
+            /* ---------- Callouts ---------- */
+            .callout {
+                border-radius: var(--radius);
+                border: 1px solid var(--border);
+                padding: 1.1rem 1.3rem;
+                margin: 1.2rem 0;
+                background: var(--panel);
+                overflow-wrap: break-word;
+            }
+
+            .callout-title {
+                font-weight: 700;
+                margin-bottom: 0.4rem;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            .callout-warning {
+                border-color: rgba(255, 203, 107, 0.4);
+            }
+            .callout-warning .callout-title {
+                color: var(--warning);
+            }
+
+            .callout-danger {
+                border-color: rgba(255, 131, 131, 0.4);
+            }
+            .callout-danger .callout-title {
+                color: var(--danger);
+            }
+
+            .callout-info {
+                border-color: rgba(124, 158, 255, 0.4);
+            }
+            .callout-info .callout-title {
+                color: var(--accent);
+            }
+
+            /* ---------- Tables ---------- */
+            .table-wrap {
+                overflow-x: auto;
+                margin: 1.2rem 0;
+                border-radius: var(--radius);
+                border: 1px solid var(--border);
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 1rem;
+                background: var(--panel-2);
+            }
+
+            thead th {
+                background: rgba(124, 158, 255, 0.1);
+                color: var(--accent);
+                text-align: left;
+                padding: 0.75rem 1rem;
+                white-space: nowrap;
+                border-bottom: 1px solid var(--border);
+            }
+
+            tbody td {
+                padding: 0.75rem 1rem;
+                border-bottom: 1px solid var(--border);
+                color: var(--text);
+                vertical-align: top;
+            }
+
+            tbody tr:last-child td {
+                border-bottom: none;
+            }
+            tbody tr:hover {
+                background: rgba(124, 158, 255, 0.05);
+            }
+
+            /* ---------- Code blocks ---------- */
+            .code-block {
+                margin: 1.2rem 0;
+                border-radius: var(--radius);
+                border: 1px solid var(--border);
+                overflow: hidden;
+                background: #0b1220;
+            }
+
+            .code-block-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0.5rem 1rem;
+                background: rgba(124, 158, 255, 0.08);
+                font-size: 1rem;
+                color: var(--text-dim);
+                letter-spacing: 0.05em;
+                text-transform: uppercase;
+            }
+
+            .code-block pre {
+                margin: 0;
+                padding: 1rem 1.2rem;
+                overflow-x: auto;
+                font-size: 1rem;
+            }
+
+            .code-block code {
+                font-family: 'SFMono-Regular', Consolas, Menlo, monospace;
+                white-space: pre;
+            }
+
+            /* ---------- Mermaid ---------- */
+            .mermaid-figure {
+                margin: 1.6rem 0;
+            }
+
+            .mermaid-wrapper {
+                overflow-x: auto;
+                border: 1px solid var(--border);
+                border-radius: var(--radius);
+                background: var(--panel-2);
+                padding: 1.2rem 0.5rem;
+            }
+
+            pre.mermaid {
+                width: 100%;
+                display: flex;
+                justify-content: safe center;
+                margin: 0;
+                background: transparent;
+                border: none;
+                padding: 0;
+            }
+
+            .mermaid-wrapper svg {
+                max-width: none;
+                height: auto;
+                flex-shrink: 0;
+            }
+
+            .mermaid-caption {
+                margin-top: 0.7rem;
+                font-size: 1rem;
+                color: var(--text-dim);
+                text-align: center;
+            }
+
+            /* ---------- Checklist ---------- */
+            ul.checklist {
+                list-style: none;
+                padding: 0;
+                margin: 1rem 0;
+            }
+            ul.checklist li {
+                padding: 0.5rem 0;
+                border-bottom: 1px dashed var(--border);
+                color: var(--text);
+            }
+            ul.checklist li label {
+                display: flex;
+                align-items: flex-start;
+                gap: 0.6rem;
+            }
+            ul.checklist li:last-child {
+                border-bottom: none;
+            }
+            ul.checklist input[type='checkbox'] {
+                margin-top: 0.3rem;
+                accent-color: var(--accent);
+                flex-shrink: 0;
+            }
+
+            /* ---------- References ---------- */
+            .ref-grid {
+                display: flex;
+                flex-direction: column;
+                gap: 0.6rem;
+            }
+
+            .ref-card {
+                display: block;
+                padding: 0.9rem 1.1rem;
+                border: 1px solid var(--border);
+                border-radius: var(--radius);
+                background: var(--panel);
+                color: var(--text);
+                text-decoration: none;
+                overflow-wrap: break-word;
+            }
+
+            .ref-card:hover {
+                border-color: var(--accent);
+                background: rgba(124, 158, 255, 0.06);
+            }
+
+            .ref-card .ref-title {
+                color: var(--accent);
+                font-weight: 600;
+                margin-bottom: 0.2rem;
+                display: block;
+            }
+            .ref-card .ref-url {
+                color: var(--text-dim);
+                font-size: 1rem;
+                word-break: break-all;
+            }
+
+            .footer {
+                max-width: none;
+                padding: 2rem 0 0;
+                color: var(--text-dim);
+                font-size: 1rem;
+                border-top: 1px solid var(--border);
+            }
+
+            /* ---------- Mobile ---------- */
+            @media (max-width: 900px) {
+                .sidebar {
+                    position: static;
+                    width: 100%;
+                    height: auto;
+                    border-right: none;
+                    border-bottom: 1px solid var(--border);
+                }
+                .main {
+                    margin-left: 0;
+                    padding: 2rem 1.25rem 4rem;
+                }
+                .hero h1 {
+                    font-size: 1.6rem;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="layout">
+            <aside class="sidebar">
+                <div class="sidebar-brand">Google Cloud &middot; Networking</div>
+                <div class="sidebar-title">VPCネットワーク構築<br />チャレンジラボ 攻略ガイド</div>
+                <nav>
+                    <ul>
+                        <li><a href="#overview">1. ラボの全体像</a></li>
+                        <li><a href="#prep">2. 事前準備：命名規則</a></li>
+                        <li><a href="#task1">3. Task1: VPC/サブネット</a></li>
+                        <li><a href="#task2">4. Task2: ファイアウォール</a></li>
+                        <li><a href="#task3">5. Task3: VM作成/疎通確認</a></li>
+                        <li><a href="#troubleshooting">6. トラブルシューティング</a></li>
+                        <li><a href="#best-practices">7. 本番向けベストプラクティス</a></li>
+                        <li><a href="#references">8. 参考資料</a></li>
+                    </ul>
+                </nav>
+                <div class="sidebar-lab-link">
+                    対象ラボ<br />
+                    <a
+                        href="https://www.skills.google/course_templates/641/labs/613012"
+                        target="_blank"
+                        rel="noopener"
+                        >Set up a Google Cloud Network: Challenge Lab</a
+                    >
+                </div>
+            </aside>
+
+            <main class="main">
+                <header class="hero">
+                    <div class="hero-eyebrow">初学者向け解説ガイド</div>
+                    <h1>Google Cloud VPCネットワーク構築<br />チャレンジラボ 完全攻略ガイド</h1>
+                    <p class="hero-lead">
+                        このガイドは、チャレンジラボの手順を「ただコピーする」のではなく、<strong>なぜそう設定するのか</strong>をインフラエンジニアの視点で理解しながら進められるように構成しています。
+                        各タスクには、ラボをクリアするための最短手順に加えて、実務で本番環境を構築する際のベストプラクティスとの違いも明記しています。
+                    </p>
+                    <div class="lab-source">
+                        対象ラボ:
+                        <a
+                            href="https://www.skills.google/course_templates/641/labs/613012"
+                            target="_blank"
+                            rel="noopener"
+                            >Set up a Google Cloud Network: Challenge Lab</a
+                        >（Google Cloud Skills Boost /
+                        サインインが必要なため、本ガイドは配布されたラボ手順書テキストと公式ドキュメントを基に作成しています）
+                    </div>
+                </header>
+
+                <!-- ============ 1. Overview ============ -->
+                <section class="section prose" id="overview">
+                    <h2><span class="num">1.</span>ラボの全体像</h2>
+                    <p>
+                        このチャレンジラボでは、以下の3つのタスクを通じて「異なるリージョンの2つのサブネットにあるVMが、正しく通信できるネットワーク」を構築します。
+                    </p>
+                    <ul>
+                        <li>
+                            <strong>Task 1</strong>:
+                            カスタムモードのVPCネットワークを1つ作成し、異なるリージョンに2つのサブネットを作成する
+                        </li>
+                        <li>
+                            <strong>Task 2</strong>:
+                            SSH・RDP・ICMPを許可するファイアウォールルールを3つ作成する
+                        </li>
+                        <li>
+                            <strong>Task 3</strong>: 各サブネットにVMを1台ずつ作成し、<code
+                                class="inline"
+                                >ping</code
+                            >コマンドで疎通確認する
+                        </li>
+                    </ul>
+                    <p>全体のアーキテクチャは次のようになります。</p>
+
+                    <figure class="mermaid-figure">
+                        <div class="mermaid-wrapper">
+                            <pre class="mermaid" id="mermaid-1"></pre>
+                        </div>
+                        <figcaption class="mermaid-caption">
+                            図1: VPCネットワーク・サブネット・ファイアウォールルールの関係
+                        </figcaption>
+                    </figure>
+                    <script type="text/plain" data-mermaid-target="mermaid-1">
+                        %%{init: {'flowchart': {'subGraphTitleMargin': {'top': 10, 'bottom': 28}}} }%%
+                        flowchart TB
+                            subgraph FW["適用するファイアウォールルール（Ingress / Allow）"]
+                                direction TB
+                                FW1["ルール1: TCP:22 (SSH)<br/>優先度 1000"]
+                                FW2["ルール2: TCP:3389 (RDP)<br/>優先度 65535"]
+                                FW3["ルール3: ICMP<br/>優先度 1000"]
+                                FW1 ~~~ FW2 ~~~ FW3
+                            end
+                            subgraph VPC["VPCネットワーク（カスタムモード / リージョナル ダイナミックルーティング）"]
+                                direction TB
+                                subgraph SubnetA["サブネットA（region-1）<br/>10.10.10.0/24"]
+                                    VM1["us-test-01<br/>e2-standard-2"]
+                                end
+                                subgraph SubnetB["サブネットB（region-2）<br/>10.10.20.0/24"]
+                                    VM2["us-test-02<br/>e2-standard-2"]
+                                end
+                                VM1 <-->|ICMP / SSH / RDP| VM2
+                            end
+                            FW -. 適用 .-> VPC
+                    </script>
+
+                    <p>
+                        進め方のロードマップは以下の通りです。各タスクは前のタスクの成果物に依存しているため、<strong>必ずTask1→2→3の順番</strong>で進めてください（ファイアウォールルールがない状態でVMを作っても<code
+                            class="inline"
+                            >ping</code
+                        >は失敗します）。
+                    </p>
+
+                    <figure class="mermaid-figure">
+                        <div class="mermaid-wrapper">
+                            <pre class="mermaid" id="mermaid-2"></pre>
+                        </div>
+                        <figcaption class="mermaid-caption">
+                            図2: 3タスクの進め方ロードマップ
+                        </figcaption>
+                    </figure>
+                    <script type="text/plain" data-mermaid-target="mermaid-2">
+                        flowchart TB
+                            A["Task1<br/>VPCネットワークと2つのサブネットを作成"] --> B["Task2<br/>ファイアウォールルールを3つ作成"]
+                            B --> C["Task3<br/>各サブネットにVMを1台ずつ作成"]
+                            C --> D["us-test-01にSSH接続"]
+                            D --> E["us-test-02の内部IPへ ping -c 3 を実行"]
+                            E --> F{"応答があるか？"}
+                            F -->|Yes| G["疎通確認 完了 / Check my progress 実行"]
+                            F -->|No| H["サブネットのリージョン・ファイアウォールの<br/>ターゲット/送信元範囲/ポートを再確認"]
+                            H --> B
+                    </script>
+                </section>
+
+                <!-- ============ 2. Prep ============ -->
+                <section class="section prose" id="prep">
+                    <h2><span class="num">2.</span>事前準備：命名規則を決める</h2>
+                    <p>
+                        ラボの手順書には <code class="inline">network name</code>、<code
+                            class="inline"
+                            >subnet a name</code
+                        >
+                        のようにプレースホルダーで名前が示されているだけで、実際の値は自分で決める必要があります。チャレンジラボは自動採点のため、<strong>大文字・アンダースコアは使えません</strong>（Google
+                        Cloudのリソース名は小文字英数字とハイフンのみ）。あらかじめ命名規則を決めておくと、後工程の設定ミスを防げます。
+                    </p>
+
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>プレースホルダー</th>
+                                    <th>推奨する命名例</th>
+                                    <th>補足</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code class="inline">network name</code></td>
+                                    <td><code class="inline">vpc-net-challenge</code></td>
+                                    <td>VPCネットワーク名。プロジェクト内で一意</td>
+                                </tr>
+                                <tr>
+                                    <td><code class="inline">subnet a name</code></td>
+                                    <td><code class="inline">subnet-a</code></td>
+                                    <td>サブネットA</td>
+                                </tr>
+                                <tr>
+                                    <td><code class="inline">subnet b name</code></td>
+                                    <td><code class="inline">subnet-b</code></td>
+                                    <td>サブネットB</td>
+                                </tr>
+                                <tr>
+                                    <td><code class="inline">network region 1</code></td>
+                                    <td>
+                                        <code class="inline">asia-northeast1</code
+                                        >（東京）など、ラボが指定するリージョン
+                                    </td>
+                                    <td>サブネットAのリージョン</td>
+                                </tr>
+                                <tr>
+                                    <td><code class="inline">network region 2</code></td>
+                                    <td>
+                                        <code class="inline">us-central1</code>
+                                        など、ラボが指定するリージョン
+                                    </td>
+                                    <td>サブネットBのリージョン</td>
+                                </tr>
+                                <tr>
+                                    <td><code class="inline">firewall rule 1</code></td>
+                                    <td><code class="inline">fw-allow-ssh</code></td>
+                                    <td>SSH許可ルール</td>
+                                </tr>
+                                <tr>
+                                    <td><code class="inline">firewall rule 2</code></td>
+                                    <td><code class="inline">fw-allow-rdp</code></td>
+                                    <td>RDP許可ルール</td>
+                                </tr>
+                                <tr>
+                                    <td><code class="inline">firewall rule 3</code></td>
+                                    <td><code class="inline">fw-allow-icmp</code></td>
+                                    <td>ICMP許可ルール</td>
+                                </tr>
+                                <tr>
+                                    <td><code class="inline">ZONE</code></td>
+                                    <td>各サブネットのリージョンに属するゾーン</td>
+                                    <td>詳細はTask 3の注意点を参照</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="callout callout-warning">
+                        <div class="callout-title">⚠ ラボ手順書の記述についての注意</div>
+                        <p style="margin: 0">
+                            元の手順書ではTask 3で2台のVMに対して同じプレースホルダー
+                            <code class="inline">ZONE</code> が使われていますが、Compute
+                            Engineのゾーンは特定のリージョンに属するため、<strong>us-test-01はサブネットAのリージョンに属するゾーン、us-test-02はサブネットBのリージョンに属するゾーン</strong>を、それぞれ別々に指定する必要があります。同一ゾーンを両方に指定すると、片方のVMがサブネットのリージョンと矛盾してエラーになります。
+                        </p>
+                    </div>
+                </section>
+
+                <!-- ============ 3. Task1 ============ -->
+                <section class="section prose" id="task1">
+                    <h2><span class="num">3.</span>Task 1: VPCネットワークとサブネットの作成</h2>
+
+                    <h3>3-1. 押さえておきたい概念</h3>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>用語</th>
+                                    <th>意味</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>カスタムモードVPC</td>
+                                    <td>
+                                        サブネットを自分で明示的に作成するモード。自動モード（auto
+                                        mode）は各リージョンに<code class="inline">/20</code
+                                        >のサブネットが自動作成されるが、本番設計では意図しないIP範囲の重複を避けるためカスタムモードが推奨される
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>ダイナミックルーティングモード</td>
+                                    <td>
+                                        Cloud
+                                        Routerが学習した経路（BGPルート）を、同一リージョン内だけに伝播させる（リージョナル）か、VPC内の全リージョンに伝播させる（グローバル）かを決める設定。デフォルトは<strong
+                                            >リージョナル</strong
+                                        >
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>IPスタックタイプ</td>
+                                    <td>
+                                        サブネットがIPv4のみ（シングルスタック）か、IPv4/IPv6デュアルスタックかを指定する設定
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>
+                        このタスクでは、ダイナミックルーティングモードはVPCネットワーク全体に対して設定するプロパティで、値はリージョナルまたはグローバルのいずれかを取ります。ラボでは「リージョナル」（デフォルト）を指定します。
+                    </p>
+
+                    <h3>3-2. サブネット設計のベストプラクティス</h3>
+                    <ul>
+                        <li>
+                            <strong>CIDR範囲は重複させない</strong>:
+                            同一VPC内は当然のこと、将来他のVPCとピアリングする可能性も考慮し、社内で使うCIDR帯を事前に台帳管理するのが望ましい
+                        </li>
+                        <li>
+                            <strong>将来の拡張余地を残す</strong>:
+                            <code class="inline">/24</code
+                            >（251〜252台分）で十分か、将来的にオートスケーリングでVM数が増える見込みがあるかを事前に検討する
+                        </li>
+                        <li>
+                            <strong>予約IPアドレスを忘れない</strong>:
+                            すべてのプライマリIPv4サブネット範囲には、使用できないIPアドレスが4つ存在します（ネットワークアドレス、デフォルトゲートウェイ、末尾から2番目のアドレス、ブロードキャストアドレス）。つまり<code
+                                class="inline"
+                                >/24</code
+                            >（256個）を割り当てても実際に使えるのは252個です
+                        </li>
+                    </ul>
+
+                    <h3>3-3. 設定内容まとめ</h3>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>項目</th>
+                                    <th>サブネットA（subnet-a）</th>
+                                    <th>サブネットB（subnet-b）</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>リージョン</td>
+                                    <td>network region 1</td>
+                                    <td>network region 2</td>
+                                </tr>
+                                <tr>
+                                    <td>IPスタックタイプ</td>
+                                    <td>IPv4（シングルスタック）</td>
+                                    <td>IPv4（シングルスタック）</td>
+                                </tr>
+                                <tr>
+                                    <td>IPv4範囲</td>
+                                    <td><code class="inline">10.10.10.0/24</code></td>
+                                    <td><code class="inline">10.10.20.0/24</code></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>3-4. Consoleでの手順</h3>
+                    <ol>
+                        <li>
+                            <strong>[VPC networks]</strong> →
+                            <strong>[Create VPC network]</strong> を開く
+                        </li>
+                        <li><strong>Name</strong> にVPCネットワーク名を入力</li>
+                        <li>
+                            <strong>Subnet creation mode</strong> で <strong>Custom</strong> を選択
+                        </li>
+                        <li>
+                            1つ目のサブネット行に
+                            <code class="inline">subnet-a</code>
+                            を入力し、<strong>Region</strong>を<code class="inline"
+                                >network region 1</code
+                            >、<strong>IP stack type</strong>を<code class="inline"
+                                >IPv4 (single-stack)</code
+                            >、<strong>IPv4 range</strong>を<code class="inline">10.10.10.0/24</code
+                            >に設定
+                        </li>
+                        <li>
+                            <strong>Add subnet</strong> をクリックし、2つ目のサブネット行に
+                            <code class="inline">subnet-b</code>、<code class="inline"
+                                >network region 2</code
+                            >、<code class="inline">10.10.20.0/24</code> を設定
+                        </li>
+                        <li>
+                            画面下部の <strong>Dynamic routing mode</strong> で
+                            <strong>Regional</strong> を選択（既定値のままでよい）
+                        </li>
+                        <li><strong>Create</strong> をクリック</li>
+                    </ol>
+
+                    <h3>3-5. gcloudコマンドでの手順（参考）</h3>
+                    <p>
+                        Consoleでの操作をコマンドで再現すると次のようになります。カスタムモードVPCネットワークを作成する場合は、まずネットワークを作成してから、必要なリージョン内にサブネットを作成します。
+                    </p>
+
+                    <div class="code-block">
+                        <div class="code-block-header"><span>bash</span></div>
+                        <pre><code class="language-bash" id="code-1"></code></pre>
+                    </div>
+                    <script type="text/plain" data-code-target="code-1">
+                        # カスタムモードのVPCネットワークを作成（リージョナル ダイナミックルーティング）
+                        gcloud compute networks create vpc-net-challenge \
+                          --subnet-mode=custom \
+                          --bgp-routing-mode=regional
+
+                        # サブネットA
+                        gcloud compute networks subnets create subnet-a \
+                          --network=vpc-net-challenge \
+                          --region=<network-region-1> \
+                          --range=10.10.10.0/24 \
+                          --stack-type=IPV4_ONLY
+
+                        # サブネットB
+                        gcloud compute networks subnets create subnet-b \
+                          --network=vpc-net-challenge \
+                          --region=<network-region-2> \
+                          --range=10.10.20.0/24 \
+                          --stack-type=IPV4_ONLY
+                    </script>
+
+                    <p>
+                        作成後は <strong>Check my progress</strong> を実行し、Task
+                        1が合格になっていることを確認してから次に進みます。
+                    </p>
+                </section>
+
+                <!-- ============ 4. Task2 ============ -->
+                <section class="section prose" id="task2">
+                    <h2><span class="num">4.</span>Task 2: ファイアウォールルールの追加</h2>
+
+                    <h3>4-1. ファイアウォールルールの構成要素</h3>
+                    <p>VPCのファイアウォールルールは、次の要素の組み合わせで動作します。</p>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>要素</th>
+                                    <th>説明</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>方向（Direction）</td>
+                                    <td>Ingress（内向き）/ Egress（外向き）</td>
+                                </tr>
+                                <tr>
+                                    <td>優先度（Priority）</td>
+                                    <td>
+                                        0〜65535の数値。<strong
+                                            >数値が小さいほど優先度が高い</strong
+                                        >
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>アクション</td>
+                                    <td>Allow / Deny</td>
+                                </tr>
+                                <tr>
+                                    <td>ターゲット</td>
+                                    <td>
+                                        ルールを適用するVM（全インスタンス／ネットワークタグ／サービスアカウント）
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>送信元/送信先範囲</td>
+                                    <td>ルールが適用されるIPv4/IPv6範囲</td>
+                                </tr>
+                                <tr>
+                                    <td>プロトコルとポート</td>
+                                    <td>対象となる通信の種類</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>4-2. 作成する3つのルール</h3>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ルール名</th>
+                                    <th>優先度</th>
+                                    <th>方向</th>
+                                    <th>アクション</th>
+                                    <th>ターゲット</th>
+                                    <th>送信元範囲</th>
+                                    <th>プロトコル/ポート</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code class="inline">fw-allow-ssh</code></td>
+                                    <td>1000</td>
+                                    <td>Ingress</td>
+                                    <td>Allow</td>
+                                    <td>すべてのインスタンス</td>
+                                    <td><code class="inline">0.0.0.0/0</code></td>
+                                    <td>TCP:22</td>
+                                </tr>
+                                <tr>
+                                    <td><code class="inline">fw-allow-rdp</code></td>
+                                    <td>65535</td>
+                                    <td>Ingress</td>
+                                    <td>Allow</td>
+                                    <td>すべてのインスタンス</td>
+                                    <td><code class="inline">0.0.0.0/0</code></td>
+                                    <td>TCP:3389</td>
+                                </tr>
+                                <tr>
+                                    <td><code class="inline">fw-allow-icmp</code></td>
+                                    <td>1000</td>
+                                    <td>Ingress</td>
+                                    <td>Allow</td>
+                                    <td>すべてのインスタンス</td>
+                                    <td>
+                                        <code class="inline">10.10.10.0/24</code>,
+                                        <code class="inline">10.10.20.0/24</code>
+                                    </td>
+                                    <td>ICMP</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="callout callout-danger">
+                        <div class="callout-title">⚠ 手順書の表記についての注意</div>
+                        <p style="margin: 0">
+                            配布された手順書ではルール2の送信元範囲が
+                            <code class="inline">0.0.0.0/24</code> と記載されていますが、これは
+                            <code class="inline">0.0.0.0</code>〜<code class="inline"
+                                >0.0.0.31</code
+                            >
+                            というごく一部のアドレスしか含まない範囲になってしまい、実質的に誰からもRDP接続できません。「あらゆる送信元」を意図しているのであれば、正しくは
+                            <code class="inline">0.0.0.0/0</code>
+                            です。本ガイドの表・コマンド例は意図通りに動作する
+                            <code class="inline">0.0.0.0/0</code> で統一しています。
+                        </p>
+                    </div>
+
+                    <h3>4-3. 評価の流れ（優先度とデフォルト拒否）</h3>
+                    <p>
+                        同じ優先度・同じアクションを持つルールが複数ある場合、どのルールがログに評価済みとして表示されるかは不定になるため、ログの評価順序を一貫させたい場合はルールごとに一意の優先度を割り当てることが推奨されます。今回のルール1とルール3は同じ優先度1000ですが、対象ポート/プロトコルが重ならないため実害はありません。
+                    </p>
+
+                    <figure class="mermaid-figure">
+                        <div class="mermaid-wrapper">
+                            <pre class="mermaid" id="mermaid-3"></pre>
+                        </div>
+                        <figcaption class="mermaid-caption">
+                            図3: ファイアウォールルールの評価順序と暗黙のDeny
+                        </figcaption>
+                    </figure>
+                    <script type="text/plain" data-mermaid-target="mermaid-3">
+                        flowchart TB
+                            Start(["パケットが対象VMへ到着"]) --> R1["優先度1000: fw-allow-ssh<br/>TCP:22 に一致？"]
+                            R1 -->|一致| Allow1(["許可"])
+                            R1 -->|不一致| R3["優先度1000: fw-allow-icmp<br/>ICMP に一致？"]
+                            R3 -->|一致| Allow2(["許可"])
+                            R3 -->|不一致| R2["優先度65535: fw-allow-rdp<br/>TCP:3389 に一致？"]
+                            R2 -->|一致| Allow3(["許可"])
+                            R2 -->|不一致| Implied["暗黙のルール（優先度65535）<br/>それ以外のIngressはすべて拒否"]
+                            Implied --> Deny(["拒否"])
+                    </script>
+
+                    <h3>4-4. Consoleでの手順（3ルール共通の流れ）</h3>
+                    <ol>
+                        <li>
+                            <strong>[VPC network]</strong> → <strong>[Firewall]</strong> →
+                            <strong>[Create firewall rule]</strong>
+                        </li>
+                        <li>
+                            <strong>Name</strong> にルール名、<strong>Network</strong>
+                            に作成したVPCネットワークを指定
+                        </li>
+                        <li><strong>Priority</strong> を表の値に設定</li>
+                        <li>
+                            <strong>Direction of traffic</strong> は
+                            <strong>Ingress</strong>、<strong>Action on match</strong> は
+                            <strong>Allow</strong>
+                        </li>
+                        <li>
+                            <strong>Targets</strong> は
+                            <strong>All instances in the network</strong>
+                        </li>
+                        <li>
+                            <strong>Source IPv4 ranges</strong>
+                            に表の値を入力（ルール3は2つのCIDRをカンマ区切りで両方入力）
+                        </li>
+                        <li>
+                            <strong>Protocols and ports</strong> で
+                            <strong>TCP</strong> を選び対象ポートを入力（ルール3のみ
+                            <strong>Other protocols</strong> で
+                            <code class="inline">icmp</code> を指定）
+                        </li>
+                        <li><strong>Create</strong> をクリックし、3ルール分繰り返す</li>
+                    </ol>
+
+                    <h3>4-5. gcloudコマンドでの手順（参考）</h3>
+                    <div class="code-block">
+                        <div class="code-block-header"><span>bash</span></div>
+                        <pre><code class="language-bash" id="code-2"></code></pre>
+                    </div>
+                    <script type="text/plain" data-code-target="code-2">
+                        gcloud compute firewall-rules create fw-allow-ssh \
+                          --network=vpc-net-challenge --direction=INGRESS --action=ALLOW \
+                          --rules=tcp:22 --source-ranges=0.0.0.0/0 --priority=1000
+
+                        gcloud compute firewall-rules create fw-allow-rdp \
+                          --network=vpc-net-challenge --direction=INGRESS --action=ALLOW \
+                          --rules=tcp:3389 --source-ranges=0.0.0.0/0 --priority=65535
+
+                        gcloud compute firewall-rules create fw-allow-icmp \
+                          --network=vpc-net-challenge --direction=INGRESS --action=ALLOW \
+                          --rules=icmp --source-ranges=10.10.10.0/24,10.10.20.0/24 --priority=1000
+                    </script>
+
+                    <h3>4-6. これは「ラボ用の簡易設定」であるという重要な注意</h3>
+                    <p>
+                        上記の3ルールは、あくまでチャレンジラボの採点条件を満たすための構成です。送信元範囲に<code
+                            class="inline"
+                            >0.0.0.0/0</code
+                        >を使用すると、Google
+                        Cloud外部を含むすべてのIPv4送信元からのトラフィックが許可されてしまいます。本番環境でこの設定をそのまま使うと、インターネット全体からSSH/RDPへの総当たり攻撃を受けられる状態になります。実務でのあるべき姿は「7.
+                        本番環境向けベストプラクティス総まとめ」で詳しく解説します。
+                    </p>
+
+                    <p>Check my progressを実行し、Task 2が合格になったことを確認します。</p>
+                </section>
+
+                <!-- ============ 5. Task3 ============ -->
+                <section class="section prose" id="task3">
+                    <h2><span class="num">5.</span>Task 3: VMインスタンスの作成と疎通確認</h2>
+
+                    <h3>5-1. インスタンス構成</h3>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>項目</th>
+                                    <th>us-test-01</th>
+                                    <th>us-test-02</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>サブネット</td>
+                                    <td><code class="inline">subnet-a</code></td>
+                                    <td><code class="inline">subnet-b</code></td>
+                                </tr>
+                                <tr>
+                                    <td>ゾーン</td>
+                                    <td>サブネットAのリージョンに属するゾーン</td>
+                                    <td>サブネットBのリージョンに属するゾーン</td>
+                                </tr>
+                                <tr>
+                                    <td>マシンタイプ</td>
+                                    <td><code class="inline">e2-standard-2</code></td>
+                                    <td><code class="inline">e2-standard-2</code></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>
+                        <code class="inline">e2-standard-2</code> は2 vCPU・8
+                        GBメモリの汎用マシンタイプで、コスト最適化されたE2シリーズはvCPUあたり0.5〜8GBのメモリ比率を持ち、IntelとAMD
+                        EPYC双方のプロセッサに対応します。疎通確認だけが目的の検証用インスタンスとしては十分なスペックです。
+                    </p>
+
+                    <h3>5-2. Consoleでの手順</h3>
+                    <ol>
+                        <li>
+                            <strong>[Compute Engine]</strong> → <strong>[VM instances]</strong> →
+                            <strong>[Create instance]</strong>
+                        </li>
+                        <li><strong>Name</strong>: <code class="inline">us-test-01</code></li>
+                        <li><strong>Region/Zone</strong>: サブネットAのリージョン・任意のゾーン</li>
+                        <li>
+                            <strong>Machine type</strong>: <code class="inline">e2-standard-2</code>
+                        </li>
+                        <li>
+                            <strong>Networking</strong>
+                            タブでNetworkに作成したVPC、Subnetworkに<code class="inline"
+                                >subnet-a</code
+                            >を指定
+                        </li>
+                        <li><strong>Create</strong> をクリック</li>
+                        <li>
+                            同様に
+                            <code class="inline">us-test-02</code> をサブネットBのリージョン・<code
+                                class="inline"
+                                >subnet-b</code
+                            >で作成
+                        </li>
+                    </ol>
+
+                    <h3>5-3. SSH接続とpingによる疎通確認</h3>
+                    <figure class="mermaid-figure">
+                        <div class="mermaid-wrapper">
+                            <pre class="mermaid" id="mermaid-4"></pre>
+                        </div>
+                        <figcaption class="mermaid-caption">
+                            図4: SSH接続からping疎通確認までのシーケンス
+                        </figcaption>
+                    </figure>
+                    <script type="text/plain" data-mermaid-target="mermaid-4">
+                        sequenceDiagram
+                            participant You as 操作者
+                            participant Console as Cloud Console
+                            participant VM1 as us-test-01（サブネットA）
+                            participant Firewall as VPCファイアウォール
+                            participant VM2 as us-test-02（サブネットB）
+
+                            You->>Console: us-test-01の SSH ボタンをクリック
+                            Console->>VM1: ブラウザ経由でSSHセッションを確立
+                            You->>VM1: ping -c 3 <us-test-02の内部IP>
+                            VM1->>Firewall: ICMPエコーリクエスト送信
+                            Firewall->>Firewall: fw-allow-icmp（優先度1000）を評価し許可
+                            Firewall->>VM2: ICMPエコーリクエストを転送
+                            VM2-->>Firewall: ICMPエコーリプライ
+                            Firewall-->>VM1: ICMPエコーリプライを転送
+                            VM1-->>You: 3 packets transmitted, 3 received, 0% packet loss
+                    </script>
+
+                    <ol>
+                        <li>
+                            Cloud Consoleの <strong>[Compute Engine]</strong> →
+                            <strong>[VM instances]</strong> で
+                            <code class="inline">us-test-01</code> の
+                            <strong>SSH</strong> ボタンをクリック
+                        </li>
+                        <li>
+                            開いたSSHウィンドウで
+                            <code class="inline">us-test-02</code>
+                            の内部IPアドレスに対してpingを実行
+                        </li>
+                    </ol>
+
+                    <div class="code-block">
+                        <div class="code-block-header"><span>bash</span></div>
+                        <pre><code class="language-bash" id="code-3"></code></pre>
+                    </div>
+                    <script type="text/plain" data-code-target="code-3">
+                        ping -c 3 <us-test-02-internal-ip-address>
+                    </script>
+
+                    <ol start="3">
+                        <li>
+                            内部DNS名を使ったレイテンシ測定も行います。ここで手順書は
+                            <code class="inline">ping -c 3 us-test-02.ZONE</code>
+                            という簡略表記を使っていますが、実際にGoogle
+                            Cloudの内部DNSが払い出す完全修飾ドメイン名（FQDN）は次の形式です。
+                        </li>
+                    </ol>
+
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>DNSの種類</th>
+                                    <th>完全修飾ドメイン名（FQDN）</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>ゾーンDNS（推奨・デフォルト）</td>
+                                    <td>
+                                        <code class="inline"
+                                            >VM_NAME.ZONE.c.PROJECT_ID.internal</code
+                                        >
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>グローバルDNS（プロジェクト全体で一意）</td>
+                                    <td>
+                                        <code class="inline">VM_NAME.c.PROJECT_ID.internal</code>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <p>
+                        Googleはゾーンごとに障害を切り分けられる高い信頼性が得られるため、ゾーンDNSの使用を強く推奨しています。したがって実際に実行するコマンドは以下のようになります。
+                    </p>
+
+                    <div class="code-block">
+                        <div class="code-block-header"><span>bash</span></div>
+                        <pre><code class="language-bash" id="code-4"></code></pre>
+                    </div>
+                    <script type="text/plain" data-code-target="code-4">
+                        ping -c 3 us-test-02.<ゾーン>.c.<プロジェクトID>.internal
+                    </script>
+
+                    <p>
+                        このpingが成功するのは、インスタンスへのICMPトラフィックの受信を許可するファイアウォールルールを作成済みである場合に限られます。これはまさにTask
+                        2で作成した <code class="inline">fw-allow-icmp</code> の役割です。
+                    </p>
+
+                    <p>4. Check my progressを実行し、Task 3が合格になったことを確認します。</p>
+                </section>
+
+                <!-- ============ 6. Troubleshooting ============ -->
+                <section class="section prose" id="troubleshooting">
+                    <h2><span class="num">6.</span>トラブルシューティング</h2>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>症状</th>
+                                    <th>よくある原因</th>
+                                    <th>対処</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>VM作成時に「サブネットが見つからない」エラー</td>
+                                    <td>
+                                        ゾーンとサブネットのリージョンが不一致（Task 1注意点を参照）
+                                    </td>
+                                    <td>
+                                        VMのゾーンが目的のサブネットのリージョンに属しているか確認
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><code class="inline">ping</code>がタイムアウトする</td>
+                                    <td>
+                                        ICMPを許可するファイアウォールルールが未作成、またはターゲット/送信元範囲の設定ミス
+                                    </td>
+                                    <td>
+                                        <code class="inline">fw-allow-icmp</code
+                                        >の送信元範囲に両方のサブネットCIDRが含まれているか確認
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>SSHボタンを押しても接続できない</td>
+                                    <td>
+                                        SSH許可ルールの優先度・ポート番号の誤り、または起動直後でVMの初期化が未完了
+                                    </td>
+                                    <td>
+                                        数十秒待って再試行。ファイアウォールルールのポートが22になっているか確認
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Check my progressが失敗する</td>
+                                    <td>リソース名やCIDR範囲がラボの要求値と完全一致していない</td>
+                                    <td>
+                                        Consoleでリソース名・IP範囲・優先度をラボ手順書の値と1文字単位で突き合わせる
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>内部DNS名でのpingが失敗する</td>
+                                    <td>FQDNの組み立てミス（ゾーン・プロジェクトIDの欠落）</td>
+                                    <td>
+                                        <code class="inline">us-test-02</code
+                                        >のメタデータサーバーから正しいホスト名を取得し確認する
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- ============ 7. Best practices ============ -->
+                <section class="section prose" id="best-practices">
+                    <h2><span class="num">7.</span>本番環境向けベストプラクティス総まとめ</h2>
+                    <p>
+                        チャレンジラボの構成はあくまで学習用の最短ルートです。実際にプロダクション環境を設計する際は、以下の観点で今回の構成を見直すことを推奨します。
+                    </p>
+
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>項目</th>
+                                    <th>ラボの構成</th>
+                                    <th>本番環境での推奨構成</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>SSH/RDPの送信元範囲</td>
+                                    <td><code class="inline">0.0.0.0/0</code>（全世界から許可）</td>
+                                    <td>
+                                        IAP TCP-forwardingの利用を前提に送信元範囲をIAPの範囲（<code
+                                            class="inline"
+                                            >35.235.240.0/20</code
+                                        >）へ限定し、<code class="inline">0.0.0.0/0</code
+                                        >からのポート22/3389へのIngressは拒否する
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>VMの外部IP</td>
+                                    <td>実質的に外部公開されうる状態</td>
+                                    <td>
+                                        IAPを使ってSSH/RDPアクセスを行うことで、VMからすべての外部IPアドレスを取り外し、総当たり攻撃の入口自体を塞ぐことができる
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>ファイアウォールのターゲット</td>
+                                    <td>すべてのインスタンス</td>
+                                    <td>
+                                        GCPのファイアウォールルールはVPCネットワーク全体に対して機能するため、最小権限の原則に基づき、本当に必要なトラフィックのみを許可するネットワークタグやサービスアカウント単位のターゲット指定に切り替える
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>デフォルトVPC</td>
+                                    <td>未使用（今回はカスタムVPCを新規作成）</td>
+                                    <td>
+                                        既定の「default」ネットワークには過度に許可的なルールが事前定義されているため、削除してカスタムVPCから設計を始める
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>可観測性</td>
+                                    <td>ログ未設定</td>
+                                    <td>
+                                        VPC Flow LogsとFirewall Rules
+                                        Loggingを有効化し、脅威検知や障害調査に必要な可視性を確保する。すべてのDenyイベントをログに残しつつ、重要度の低いAllowイベントはサンプリングしてコストを抑える運用が現実的
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>大規模組織でのルール管理</td>
+                                    <td>ルールを個別に作成</td>
+                                    <td>
+                                        組織またはリージョン単位でルールを一元管理できる階層型ファイアウォールポリシーやネットワークファイアウォールポリシーを活用する
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>事前チェックリスト（本番移行前）</h3>
+                    <ul class="checklist">
+                        <li>
+                            <label>
+                                <input type="checkbox" disabled /> SSH/RDPの送信元範囲を
+                                <code class="inline">0.0.0.0/0</code>
+                                からIAP範囲またはVPN/踏み台経由に変更したか
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <input type="checkbox" disabled />
+                                ファイアウォールのターゲットを「すべてのインスタンス」からネットワークタグ／サービスアカウント単位に変更したか
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <input type="checkbox" disabled />
+                                Egress（送信）方向のルールも最小権限で設計したか
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <input type="checkbox" disabled /> VPC Flow LogsとFirewall Rules
+                                Loggingを有効化したか
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <input type="checkbox" disabled />
+                                defaultネットワークを無効化・削除し、カスタムVPCへ統一したか
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <input type="checkbox" disabled />
+                                サブネットCIDRの拡張余地と、他VPC/オンプレミスとの重複有無を確認したか
+                            </label>
+                        </li>
+                    </ul>
+                </section>
+
+                <!-- ============ 8. References ============ -->
+                <section class="section prose" id="references">
+                    <h2><span class="num">8.</span>参考資料（出典）</h2>
+                    <div class="ref-grid">
+                        <a
+                            class="ref-card"
+                            href="https://www.skills.google/course_templates/641/labs/613012"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <span class="ref-title"
+                                >Set up a Google Cloud Network: Challenge
+                                Lab（本ガイドの対象ラボ）</span
+                            >
+                            <span class="ref-url"
+                                >https://www.skills.google/course_templates/641/labs/613012</span
+                            >
+                        </a>
+                        <a
+                            class="ref-card"
+                            href="https://docs.cloud.google.com/vpc/docs/create-modify-vpc-networks"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <span class="ref-title"
+                                >Quickstart: Create and manage VPC networks</span
+                            >
+                            <span class="ref-url"
+                                >https://docs.cloud.google.com/vpc/docs/create-modify-vpc-networks</span
+                            >
+                        </a>
+                        <a
+                            class="ref-card"
+                            href="https://cloud.google.com/vpc/docs/vpc"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <span class="ref-title">VPC networks overview</span>
+                            <span class="ref-url">https://cloud.google.com/vpc/docs/vpc</span>
+                        </a>
+                        <a
+                            class="ref-card"
+                            href="https://docs.cloud.google.com/vpc/docs/subnets"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <span class="ref-title">Subnets | Virtual Private Cloud</span>
+                            <span class="ref-url"
+                                >https://docs.cloud.google.com/vpc/docs/subnets</span
+                            >
+                        </a>
+                        <a
+                            class="ref-card"
+                            href="https://docs.cloud.google.com/network-connectivity/docs/router/how-to/create-network-set-modes"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <span class="ref-title"
+                                >Set routing and best path selection modes | Cloud Router</span
+                            >
+                            <span class="ref-url"
+                                >https://docs.cloud.google.com/network-connectivity/docs/router/how-to/create-network-set-modes</span
+                            >
+                        </a>
+                        <a
+                            class="ref-card"
+                            href="https://docs.cloud.google.com/firewall/docs/firewalls"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <span class="ref-title"
+                                >VPC firewall rules | Cloud Next Generation Firewall</span
+                            >
+                            <span class="ref-url"
+                                >https://docs.cloud.google.com/firewall/docs/firewalls</span
+                            >
+                        </a>
+                        <a
+                            class="ref-card"
+                            href="https://docs.cloud.google.com/firewall/docs/using-firewalls"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <span class="ref-title"
+                                >Use VPC firewall rules | Cloud Next Generation Firewall</span
+                            >
+                            <span class="ref-url"
+                                >https://docs.cloud.google.com/firewall/docs/using-firewalls</span
+                            >
+                        </a>
+                        <a
+                            class="ref-card"
+                            href="https://docs.cloud.google.com/compute/docs/connect/ssh-best-practices/network-access"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <span class="ref-title"
+                                >Best practices for controlling SSH network access | Compute
+                                Engine</span
+                            >
+                            <span class="ref-url"
+                                >https://docs.cloud.google.com/compute/docs/connect/ssh-best-practices/network-access</span
+                            >
+                        </a>
+                        <a
+                            class="ref-card"
+                            href="https://docs.cloud.google.com/compute/docs/networking/using-internal-dns"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <span class="ref-title"
+                                >Access VMs using internal DNS | Compute Engine</span
+                            >
+                            <span class="ref-url"
+                                >https://docs.cloud.google.com/compute/docs/networking/using-internal-dns</span
+                            >
+                        </a>
+                        <a
+                            class="ref-card"
+                            href="https://docs.cloud.google.com/compute/docs/internal-dns"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <span class="ref-title">Overview of internal DNS | Compute Engine</span>
+                            <span class="ref-url"
+                                >https://docs.cloud.google.com/compute/docs/internal-dns</span
+                            >
+                        </a>
+                        <a
+                            class="ref-card"
+                            href="https://docs.cloud.google.com/compute/docs/general-purpose-machines"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <span class="ref-title"
+                                >General-purpose machine family (E2) | Compute Engine</span
+                            >
+                            <span class="ref-url"
+                                >https://docs.cloud.google.com/compute/docs/general-purpose-machines</span
+                            >
+                        </a>
+                        <a
+                            class="ref-card"
+                            href="https://linuxcloudservers.com/gcp-vpc-firewall-rules-best-practices/"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <span class="ref-title"
+                                >GCP VPC Firewall Rules Best
+                                Practices（IAP・ログ運用の実務Tips）</span
+                            >
+                            <span class="ref-url"
+                                >https://linuxcloudservers.com/gcp-vpc-firewall-rules-best-practices/</span
+                            >
+                        </a>
+                        <a
+                            class="ref-card"
+                            href="https://oneuptime.com/blog/post/2026-02-17-how-to-set-up-vpc-firewall-rules-to-allow-ssh-access-only-from-specific-ip-ranges-in-gcp/view"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <span class="ref-title"
+                                >How to Set Up VPC Firewall Rules to Allow SSH Access Only from
+                                Specific IP Ranges</span
+                            >
+                            <span class="ref-url">https://oneuptime.com/blog/post/.../view</span>
+                        </a>
+                    </div>
+                </section>
+
+                <footer class="footer">
+                    本ガイドはGoogle Cloud Skills
+                    Boostのチャレンジラボ手順書と、上記の公式ドキュメント・参考資料を基に作成した非公式の学習補助資料です。
+                </footer>
+            </main>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.12.0/mermaid.min.js"></script>
+        <script>
+            function dedent(str) {
+                const lines = str
+                    .replace(/^\n/, '')
+                    .replace(/\n[ \t]*$/, '')
+                    .split('\n');
+                const indents = lines
+                    .filter(function (l) {
+                        return l.trim().length > 0;
+                    })
+                    .map(function (l) {
+                        return l.match(/^[ \t]*/)[0].length;
+                    });
+                const min = indents.length ? Math.min.apply(null, indents) : 0;
+                return lines
+                    .map(function (l) {
+                        return l.slice(min);
+                    })
+                    .join('\n');
+            }
+
+            document.addEventListener('DOMContentLoaded', function () {
+                // --- inject + dedent code blocks ---
+                document
+                    .querySelectorAll('script[type="text/plain"][data-code-target]')
+                    .forEach(function (src) {
+                        const target = document.getElementById(
+                            src.getAttribute('data-code-target'),
+                        );
+                        if (target) {
+                            target.textContent = dedent(src.textContent);
+                        }
+                    });
+
+                if (window.hljs) {
+                    document.querySelectorAll('.code-block code').forEach(function (el) {
+                        hljs.highlightElement(el);
+                    });
+                }
+
+                // --- inject + dedent mermaid sources ---
+                document
+                    .querySelectorAll('script[type="text/plain"][data-mermaid-target]')
+                    .forEach(function (src) {
+                        const target = document.getElementById(
+                            src.getAttribute('data-mermaid-target'),
+                        );
+                        if (target) {
+                            target.textContent = dedent(src.textContent);
+                        }
+                    });
+
+                if (window.mermaid) {
+                    mermaid.initialize({
+                        startOnLoad: false,
+                        theme: 'dark',
+                        themeVariables: {
+                            fontSize: '16px',
+                            primaryColor: '#122036',
+                            primaryTextColor: '#e8edf7',
+                            primaryBorderColor: '#7c9eff',
+                            lineColor: '#7c9eff',
+                            secondaryColor: '#0e1a2c',
+                            tertiaryColor: '#0e1a2c',
+                            background: '#07111e',
+                            mainBkg: '#122036',
+                            nodeTextColor: '#e8edf7',
+                            clusterBkg: '#0c1830',
+                            clusterBorder: '#2a3d63',
+                            edgeLabelBackground: '#07111e',
+                            actorBkg: '#122036',
+                            actorBorder: '#7c9eff',
+                            actorTextColor: '#e8edf7',
+                            signalColor: '#a9b6d1',
+                            signalTextColor: '#e8edf7',
+                        },
+                        flowchart: {
+                            useMaxWidth: false,
+                            subGraphTitleMargin: { top: 10, bottom: 28 },
+                        },
+                        sequence: { useMaxWidth: false },
+                    });
+                    mermaid.run({ querySelector: '.mermaid' });
+                }
+
+                // --- sidebar active link highlighting ---
+                const sections = document.querySelectorAll('main .section[id]');
+                const links = document.querySelectorAll(".sidebar nav a[href^='#']");
+                const map = new Map();
+                links.forEach(function (a) {
+                    map.set(a.getAttribute('href').slice(1), a);
+                });
+
+                const observer = new IntersectionObserver(
+                    function (entries) {
+                        entries.forEach(function (entry) {
+                            const link = map.get(entry.target.id);
+                            if (!link) return;
+                            if (entry.isIntersecting) {
+                                links.forEach(function (l) {
+                                    l.classList.remove('active');
+                                });
+                                link.classList.add('active');
+                            }
+                        });
+                    },
+                    { rootMargin: '-20% 0px -70% 0px' },
+                );
+
+                sections.forEach(function (s) {
+                    observer.observe(s);
+                });
+            });
+        </script>
+    </body>
+</html>

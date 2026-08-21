@@ -1,0 +1,12 @@
+{
+  "slug": "comptia-network-plus-guide",
+  "source": "archive/CompTIA/html/Comptia-network-plus-guide.html",
+  "sourceCommit": "7d5d3ad55f77c1b7721a74f07f6483ae43ec8d49",
+  "introduction": "初学者のためのステップバイステップ解説 ― 最新の公式試験情報（V9 / 試験コード N10-009）に基づいています",
+  "mermaidCharts": [
+    "%%{init: {'theme':'base','themeVariables':{\"pie1\":\"#4c1d95\",\"pie2\":\"#115e59\",\"pie3\":\"#9a3412\",\"pie4\":\"#831843\",\"pie5\":\"#92400e\",\"pieOuterStrokeColor\":\"#3a3f4a\",\"pieSectionTextColor\":\"#e8eaed\",\"pieOpacity\":1,\"pieTitleTextColor\":\"#e8eaed\",\"pieLegendTextColor\":\"#e8eaed\",\"pieLegendTextSize\":\"15px\",\"pieSectionTextSize\":\"15px\"}}}%%\npie showData\ntitle Network+ (N10-009) ドメイン別配点\n\"1. ネットワークの概念 (23%)\" : 23\n\"2. ネットワークの実装 (20%)\" : 20\n\"3. ネットワークの運用 (19%)\" : 19\n\"4. ネットワークセキュリティ (14%)\" : 14\n\"5. トラブルシューティング (24%)\" : 24",
+    "%%{init: {'theme':'base','themeVariables':{\"primaryColor\":\"#92400e\",\"primaryTextColor\":\"#fef3c7\",\"primaryBorderColor\":\"#fde68a\",\"lineColor\":\"#5a6270\",\"edgeLabelBackground\":\"#15181d\",\"mainBkg\":\"#92400e\",\"nodeBorder\":\"#fde68a\",\"textColor\":\"#e8eaed\",\"fontSize\":\"16px\"}}}%%\nflowchart TD\nA[\"1. 問題を特定する\"] --> B[\"2. 仮説を立てる\"]\nB --> C[\"3. 仮説を検証する\"]\nC -->|\"誤りだった\"| B\nC -->|\"正しいと確認\"| D[\"4. 対応計画を実行する\"]\nD --> E[\"5. 動作を検証する\"]\nE --> F[\"6. 対応内容を文書化する\"]",
+    "%%{init: {'theme':'base','themeVariables':{\"primaryColor\":\"#4c1d95\",\"primaryTextColor\":\"#ede9fe\",\"primaryBorderColor\":\"#ddd6fe\",\"lineColor\":\"#5a6270\",\"edgeLabelBackground\":\"#15181d\",\"mainBkg\":\"#4c1d95\",\"nodeBorder\":\"#ddd6fe\",\"textColor\":\"#e8eaed\",\"fontSize\":\"16px\"}}}%%\nflowchart TD\nA[\"ステップ1: 基礎知識を確認する\"] --> B[\"ステップ2: 学習教材を選ぶ\"]\nB --> C[\"ステップ3: ドメインごとに学習する\"]\nC --> D[\"ステップ4: 模擬試験で理解度を測定する\"]\nD --> E{\"合格ライン相当の得点か\"}\nE -->|\"未達\"| F[\"ステップ5: 弱点ドメインを復習する\"]\nF --> C\nE -->|\"到達\"| G[\"ステップ6: 試験を申し込む\"]\nG --> H[\"ステップ7: 試験当日を迎える\"]\nH --> I{\"720点以上か\"}\nI -->|\"合格\"| J[\"Network+認定を取得\"]\nI -->|\"不合格\"| K[\"スコアレポートで弱点を分析\"]\nK --> C",
+    "%%{init: {'theme':'base','themeVariables':{\"primaryColor\":\"#9a3412\",\"primaryTextColor\":\"#ffedd5\",\"primaryBorderColor\":\"#fed7aa\",\"lineColor\":\"#5a6270\",\"edgeLabelBackground\":\"#15181d\",\"mainBkg\":\"#9a3412\",\"nodeBorder\":\"#fed7aa\",\"textColor\":\"#e8eaed\",\"fontSize\":\"16px\"}}}%%\nflowchart LR\nA[\"会場到着 本人確認\"] --> B[\"受験規約への同意\"]\nB --> C[\"試験開始 90分 最大90問\"]\nC --> D[\"回答 見直し\"]\nD --> E[\"試験終了を確定\"]\nE --> F[\"スコアレポート受領\"]"
+  ]
+}

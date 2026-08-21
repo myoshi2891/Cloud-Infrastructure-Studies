@@ -2,8 +2,7 @@
 
 ## Section 2：クラウドソリューションインフラの管理とプロビジョニング（配点 約17.5%）
 
-> 本ガイドは、Google Cloud公式の [Professional Cloud Architect 認定ページ](https://cloud.google.com/learn/certification/cloud-architect) および [公式Exam Guide（PDF）](https://services.google.com/fh/files/misc/professional_cloud_architect_exam_guide_english.pdf) の **Section 2: Managing and provisioning a cloud solution infrastructure** を基に、初学者がゼロから体系的に理解できるよう再構成した学習用ドキュメントです。図解はすべてMermaid、表組みはすべてMarkdownテーブルで統一し、ASCIIアートは一切使用していません。
-
+> 本ガイドは、Google Cloud公式の [Professional Cloud Architect 認定ページ](https://cloud.google.com/learn/certification/cloud-architect) および [公式Exam Guide（PDF）](https://services.google.com/fh/files/misc/professional_cloud_architect_exam_guide_english.pdf) の **Section 2: Managing and provisioning a cloud solution infrastructure** を基に、初学者がゼロから体系的に理解できるよう再構成した学習用ドキュメントです。
 ---
 
 ## 目次

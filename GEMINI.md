@@ -22,6 +22,7 @@ Updated 2026-08-15
 - **単体テスト実行:** `bun run test` (Vitest)
 - **E2E テスト実行:** `bunx playwright install`（初回のみ）、その後 `bun run test:e2e` (Playwright `chromium` project)
 - **Performance テスト実行:** `bun run test:perf` (Playwright `perf` project: LCP / CLS / TBT を [e2e/perf-budgets.json](e2e/perf-budgets.json) と比較)
+- **md-to-html 監査の自己テスト:** `bun run test:md-to-html`（実体は `bun test` に 2 本のテストファイルのパスを明示指定。`bun test` は `./` で始まらない引数をファイル名フィルタとして解釈するため、パスは必ず `./` から書く）
 - **Security テスト実行:** `bun run test:security` (`bun audit --json` を [scripts/security-audit.mjs](scripts/security-audit.mjs) が集計し、high/critical 検出で exit 1)
 - **Performance 手動レポート:** `bun run build && bun run perf:report` (`@lhci/cli` autorun → `.lighthouseci/` に HTML/JSON 出力)
 - **Lint 実行:** `bun run lint`
@@ -54,10 +55,9 @@ Updated 2026-08-15
   - `/app/cisco/ccna/automation-programmability`: CCNA 200-301 6.0 自動化とプログラマビリティ 完全ガイド。
   - `/app/cisco/ccna/security-fundamentals`: CCNA 200-301 Security Fundamentals 完全ガイド。
   - `/app/cisco/ccna/network-fundamentals-guide`: CCNA 200-301 Network Fundamentals ネットワークの基礎 入門ガイド。
-  - `/app/comptia/network-plus`: CompTIA Network+ (N10-009 / V9) 完全ガイド。
+  - `/app/comptia/network-plus`: CompTIA Network+ (N10-009 / V9) 完全ガイド（`networking-concepts-guide`, `network-operations-guide` を含む）。
   - `/app/aws/solutions-architect-associate`: AWS Certified Solutions Architect – Associate (SAA-C03) 完全対策ガイド（`domain1` を含む）。
 - `/app/constants.ts`: 試験データ正本（EXAMS / STATS）。`provider: 'GCP' | 'AWS' | 'Cisco' | 'CompTIA'` で分類され、`toNavTree` が自動グルーピング。
-- `/app/navigation.ts`: `toNavTree(EXAMS)` adapter。Header.tsx が参照し、provider 別にナビを自動生成。`status: 'coming-soon'` の試験はナビに「準備中」として表示。
 - AWS: `app/aws/` 配下（`solutions-architect-associate/page.tsx` 完全対策ガイド、`solutions-architect-associate/domain1/page.tsx` ドメイン1ガイド、`solutions-architect-associate/domain2/page.tsx` ドメイン2ガイド、`solutions-architect-associate/domain3/page.tsx` ドメイン3ガイド、`solutions-architect-associate/domain4/page.tsx` ドメイン4ガイド）
 - Cisco: `app/cisco/` 配下（`ccna/beginner-guide/page.tsx` 完全ガイド、`ccna/automation-software-development-design/page.tsx`、`ccna/automation-application-deployment-security/page.tsx`、`ccna/automation-cisco-platforms-and-development/page.tsx`、`ccna/automation-infrastructure-and-automation/page.tsx`、`ccna/ip-connectivity-guide/page.tsx`、`ccna/ip-services-guide/page.tsx`、`ccna/automation-programmability/page.tsx` 含む）
 - `/components`: 共通コンポーネント（Header: ハンバーガー Drawer ナビ、Footer、DisclaimerBanner など）。
@@ -118,6 +118,7 @@ Updated 2026-08-15
 本プロジェクトにはAIエージェント（Gemini CLI 等）向けの専用スキルが用意されています。
 
 - **`infra-md-to-nextjs-migration`**: Markdownの学習資料からNext.js（App Router）の `page.tsx` および `constants.ts` への移行ワークフローを定義したスキルです（スキル名は `infra-md-to-nextjs-migration`、インストール用パッケージファイルは `infra-md-to-nextjs-migration.skill` です）。
+- **`infra-md-to-html`**: リポジトリ直下のガイド Markdown を、`Gcp-pca-section4-process-optimization.html` のデザイン（暗色テーマ / サイドバー + スクロールスパイ / `pre.mermaid` インライン / 脚注 + `.ref-grid`）で単一 HTML へ変換するスキルです。転写漏れとデザイン漏れを検出する 2 本の監査スクリプトを同梱し、両方 exit 0 がコミットの前提条件になります。正本は [.agents/skills/md-to-html/](.agents/skills/md-to-html/) で、`.claude/` / `.gemini/` 配下は読み取り用ミラーです。監査スクリプトは常に `.agents/skills/md-to-html/scripts/*` を実行し、ミラー側のコピーは実行しません。
 
 **インストール・利用手順 (Gemini CLI)**:
 

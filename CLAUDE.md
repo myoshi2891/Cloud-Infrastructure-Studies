@@ -25,6 +25,7 @@ bun run test:watch   # Vitest ウォッチモード（単一ファイル: vitest
 bun run test:e2e     # Playwright E2E（chromium project: smoke / nav / a11y / visual / 各ドメイン）
 bun run test:perf    # Playwright perf project: Core Web Vitals (LCP/CLS/TBT) を perf-budgets.json と比較
 bun run test:security # bun audit --json を集計し high/critical 検出時に exit 1 (scripts/security-audit.mjs)
+bun run test:md-to-html # md-to-html スキルの監査 2 本の自己テスト (bun test にパス明示)
 
 # カバレッジ可視化
 bun run dashboard    # 静的スキャンで docs/coverage-dashboard.html を再生成
@@ -127,7 +128,18 @@ app/
       NavBar.tsx                    # サイドバーナビ (IntersectionObserver)
       constants.ts                  # Mermaid 図定義（4図）
       page.css                      # ページ固有スタイル（サイドバー幅280px契約準拠）
-      architecture-guide/page.tsx   # アーキテクチャガイドページ
+      networking-concepts-guide/
+        page.tsx                    # Domain 1.0: Networking Concepts ガイド (Server)
+        ComptiaNetworkingConceptsGuide.tsx # 本文＋インタラクション (Client。8ステップ、Mermaid 19図)
+        NavBar.tsx                  # サイドバーナビ (ScrollSpy)
+        constants.ts                # Mermaid 図定義（19図）、ナビ項目
+        page.css                    # ページ固有スタイル（サイドバー幅280px契約準拠）
+      network-operations-guide/
+        page.tsx                    # Domain 3.0: Network Operations ガイド (Server)
+        ComptiaNetworkOperationsGuide.tsx # 本文＋インタラクション (Client。8トピック、Mermaid 10図)
+        NavBar.tsx                  # サイドバーナビ (ScrollSpy)
+        constants.ts                # Mermaid 図定義（10図）、ナビ項目
+        page.css                    # ページ固有スタイル（サイドバー幅280px契約準拠）
     hands-on/
       cloud-load-balancing-guide/
         page.tsx                    # Cloud Load Balancing 完全入門（Server。メタデータ定義）
@@ -450,6 +462,7 @@ archive/                            # 移行済み資料の正規アーカイブ
 
 - **Vitest:** `__tests__/**/*.test.{ts,tsx}` と `.agents/skills/fix-mermaid/scripts/restore_diagrams.test.ts`、jsdom環境、`@` エイリアスが `./` に解決される
 - **Playwright:** `e2e/` 配下、Chromiumのみ、`baseURL: http://localhost:3000`、CIでは`bun run dev`を自動起動
+- **移行忠実性テストは移行元アーカイブを読まない**: `/archive/` は `.gitignore` 済みのローカル専用資産で CI には存在しない。移行元との照合が必要なテストは、コミット済み fixture（`docs/migration-inventory/<slug>.json` と `<slug>.fidelity.json`）を `import` する。fidelity fixture の対象・セレクタは `scripts/archive-fidelity-config.mjs` が正本で、`bun scripts/gen-fidelity-fixture.mjs <slug>|--all` で生成する（抽出ロジックは生成側・検証側が `scripts/archive-fidelity-extraction.mjs` を共有）。詳細は `.agents/rules/tdd-commit-workflow.md` §1-3。
 
 **🚨 開発時の必須ルール（TDD & Step-by-step Commit） 🚨**
 全てのコード実装において、正準の `.agents/rules/tdd-commit-workflow.md` に定義されたルールを厳守すること。`.claude/rules/tdd-commit-workflow.md` と `.gemini/rules/tdd-commit-workflow.md` は同期ミラーである。
@@ -459,7 +472,9 @@ archive/                            # 移行済み資料の正規アーカイブ
 4. **Step 3 — Refactor:** リファクタリング/統合を行いコミットする。
 ※ LLMはタスク実行前に必ずこのルールをPlanに組み込み、まとめて実装・コミットすることを避けること。
 
-**HTML → Next.js 移行タスク時**: まず `.claude/skills/html-to-nextjs-migration/SKILL.md` の「正準リファレンス」を読むこと。GCPトークンマップ・サイドバー配置値・MermaidDiagram契約・ガイドページのファイル構成が前出しされており、参照 `page.tsx`/`NavBar.tsx`/`MermaidDiagram.tsx`/`page.css` や `globals.css` の再読込・再 grep が不要になる（ソースHTMLは100%読む — 要約・スキップ厳禁）。
+**ガイド Markdown → 単一 HTML 変換タスク時**: `.agents/skills/md-to-html/SKILL.md` を読むこと。デザインの正は `Gcp-pca-section4-process-optimization.html`（暗色テーマ / `<section>` を使わないフラット構造 / `pre.mermaid` インライン / 脚注 `.footnote-ref` + `.ref-grid`）。転写漏れとデザイン漏れを検出する 2 本の監査（`bun run test:md-to-html` で自己テスト）が Green の前提条件であり、**両方 exit 0 になるまでコミットしない**。生成した HTML を `app/` 配下へ移す作業は別スキル（`html-to-nextjs-migration`）の責務で、本スキルからは `app/` を編集しない。
+
+**HTML → Next.js 移行タスク時**: まず `.agents/skills/html-to-nextjs-migration/SKILL.md` の「正準リファレンス」を読むこと。GCPトークンマップ・サイドバー配置値・MermaidDiagram契約・ガイドページのファイル構成が前出しされており、参照 `page.tsx`/`NavBar.tsx`/`MermaidDiagram.tsx`/`page.css` や `globals.css` の再読込・再 grep が不要になる（ソースHTMLは100%読む — 要約・スキップ厳禁）。
 
 ## 制約事項
 

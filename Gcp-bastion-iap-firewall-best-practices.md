@@ -16,7 +16,7 @@
 - juice-shop への SSH は **bastion 経由のみ** 許可する
 - juice-shop への HTTP(80) のみ、全世界に公開する
 
-このガイドは、上記を実現するための VPC firewall rules（ファイアウォールルール）と network tags（ネットワークタグ）の設計を、初学者でも再現できるように手順化したものです。ASCIIアートは使わず、図解はすべて Mermaid、一覧比較は Markdown の表で示します。
+このガイドは、上記を実現するための VPC firewall rules（ファイアウォールルール）と network tags（ネットワークタグ）の設計を、初学者でも再現できるように手順化したものです。
 
 ---
 

@@ -1,0 +1,3905 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>
+            Google Cloud Professional Cloud Architect試験 Section 6:
+            ソリューションと運用の卓越性の確保
+        </title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            :root {
+                --bg: #07111e;
+                --bg-card: #0d1a2b;
+                --bg-card-2: #101f33;
+                --border: #1d3350;
+                --border-soft: #16283f;
+                --text: #dbe4f3;
+                --text-dim: #8fa2c0;
+                --text-faint: #6a7d9c;
+                --accent: #7c9eff;
+                --accent-soft: #3a4f80;
+                --accent-bg: #15233d;
+                --danger: #ff8fa3;
+                --danger-bg: #3a1420;
+                --warn: #ffbd6e;
+                --warn-bg: #3a2810;
+                --success: #7fe0a8;
+                --success-bg: #0f2c1e;
+                --sidebar-w: 300px;
+                --font-jp: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', sans-serif;
+            }
+            * {
+                box-sizing: border-box;
+            }
+            html,
+            body {
+                overflow-x: hidden;
+            }
+            body {
+                margin: 0;
+                background: var(--bg);
+                color: var(--text);
+                font-family: var(--font-jp);
+                font-size: 16px;
+                line-height: 1.85;
+                -webkit-font-smoothing: antialiased;
+            }
+            a {
+                color: var(--accent);
+                text-decoration: none;
+            }
+            a:hover {
+                text-decoration: underline;
+            }
+
+            /* ---------- layout ---------- */
+            .layout {
+                display: block;
+            }
+
+            /* Sidebar */
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                width: var(--sidebar-w);
+                background: #060d17;
+                border-right: 1px solid var(--border-soft);
+                overflow-y: auto;
+                padding: 28px 0 40px;
+                z-index: 50;
+            }
+            .sidebar-header {
+                padding: 0 24px 20px;
+                border-bottom: 1px solid var(--border-soft);
+                margin-bottom: 16px;
+            }
+            .sidebar-header .kicker {
+                font-size: 12px;
+                letter-spacing: 0.08em;
+                color: var(--accent);
+                font-weight: 700;
+                text-transform: uppercase;
+            }
+            .sidebar-header h2 {
+                font-size: 16px;
+                margin: 6px 0 0;
+                color: var(--text);
+                line-height: 1.5;
+                font-weight: 700;
+            }
+            .sidebar nav {
+                padding: 0 12px;
+            }
+            .sidebar nav a {
+                display: block;
+                padding: 9px 12px;
+                border-radius: 8px;
+                font-size: 13.5px;
+                color: var(--text-dim);
+                line-height: 1.5;
+                margin-bottom: 2px;
+                transition:
+                    background 0.15s,
+                    color 0.15s;
+            }
+            .sidebar nav a:hover {
+                background: var(--accent-bg);
+                color: var(--text);
+                text-decoration: none;
+            }
+            .sidebar nav a.active {
+                background: var(--accent-bg);
+                color: var(--accent);
+                font-weight: 700;
+            }
+            .sidebar nav a.lvl3 {
+                padding-left: 28px;
+                font-size: 12.5px;
+            }
+            .sidebar-toggle {
+                display: none;
+                position: fixed;
+                top: 14px;
+                left: 14px;
+                z-index: 60;
+                width: 42px;
+                height: 42px;
+                border-radius: 10px;
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                color: var(--text);
+                font-size: 18px;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+            }
+
+            /* Main content */
+            .main {
+                margin-left: var(--sidebar-w);
+                padding: 56px 64px 120px;
+            }
+            .hero {
+                margin-bottom: 8px;
+            }
+            .hero .kicker {
+                font-size: 13px;
+                font-weight: 700;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+                color: var(--accent);
+                margin-bottom: 14px;
+            }
+            .hero h1 {
+                font-size: clamp(28px, 3.6vw, 42px);
+                line-height: 1.35;
+                margin: 0 0 18px;
+                background: linear-gradient(135deg, #dbe4f3 0%, #7c9eff 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                font-weight: 800;
+            }
+            .hero .meta-row {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+                margin-bottom: 32px;
+            }
+            .pill {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                padding: 6px 14px;
+                border-radius: 999px;
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                font-size: 12.5px;
+                color: var(--text-dim);
+            }
+            .pill strong {
+                color: var(--text);
+            }
+
+            .main h2 {
+                font-size: 26px;
+                margin: 56px 0 20px;
+                padding-top: 8px;
+                border-top: 1px solid var(--border-soft);
+                color: var(--text);
+                font-weight: 800;
+                letter-spacing: -0.01em;
+                scroll-margin-top: 24px;
+            }
+            .main > h2:first-of-type {
+                border-top: none;
+                padding-top: 0;
+                margin-top: 8px;
+            }
+            .main h3 {
+                font-size: 20px;
+                margin: 38px 0 16px;
+                color: var(--text);
+                font-weight: 700;
+                scroll-margin-top: 24px;
+            }
+            .main h3::before {
+                content: '';
+                display: inline-block;
+                width: 5px;
+                height: 18px;
+                background: var(--accent);
+                border-radius: 3px;
+                margin-right: 10px;
+                vertical-align: -2px;
+            }
+            .main p {
+                margin: 0 0 18px;
+                color: var(--text);
+            }
+            .main ul,
+            .main ol {
+                margin: 0 0 18px;
+                padding-left: 1.4em;
+                color: var(--text);
+            }
+            .main li {
+                margin-bottom: 8px;
+            }
+            .main hr {
+                border: none;
+                border-top: 1px solid var(--border-soft);
+                margin: 44px 0;
+            }
+            .main strong {
+                color: #f0f4fc;
+                font-weight: 700;
+            }
+            .footnote-ref {
+                margin-left: 2px;
+            }
+            .footnote-ref sup {
+                font-size: 11px;
+                color: var(--accent);
+                font-weight: 700;
+            }
+            .main code:not(pre code) {
+                background: var(--bg-card-2);
+                border: 1px solid var(--border);
+                border-radius: 5px;
+                padding: 1px 6px;
+                font-size: 0.9em;
+                color: #ffd08a;
+                overflow-wrap: break-word;
+                word-break: break-word;
+            }
+
+            /* Tables */
+            .table-scroll {
+                overflow-x: auto;
+                margin: 0 0 26px;
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                background: var(--bg-card);
+            }
+            table {
+                border-collapse: collapse;
+                width: 100%;
+                font-size: 14.5px;
+            }
+            thead th {
+                background: var(--accent-bg);
+                color: var(--text);
+                text-align: left;
+                padding: 12px 16px;
+                font-weight: 700;
+                border-bottom: 1px solid var(--border);
+                white-space: nowrap;
+            }
+            tbody td {
+                padding: 12px 16px;
+                border-bottom: 1px solid var(--border-soft);
+                color: var(--text-dim);
+                vertical-align: top;
+            }
+            tbody tr:last-child td {
+                border-bottom: none;
+            }
+            tbody tr:hover td {
+                background: rgba(124, 158, 255, 0.04);
+            }
+
+            /* Mermaid */
+            pre.mermaid {
+                width: 100%;
+                display: flex;
+                justify-content: safe center;
+                overflow-x: auto;
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-radius: 14px;
+                padding: 28px 20px;
+                margin: 0 0 30px;
+            }
+            pre.mermaid svg {
+                flex-shrink: 0;
+            }
+            pre.mermaid p {
+                color: inherit;
+                margin: 0;
+            }
+
+            /* Callouts */
+            .callout-practice {
+                display: flex;
+                gap: 14px;
+                background: var(--success-bg);
+                border: 1px solid #1d5a3a;
+                border-left: 4px solid var(--success);
+                border-radius: 12px;
+                padding: 20px 22px;
+                margin: 0 0 26px;
+            }
+            .callout-practice .icon {
+                flex-shrink: 0;
+                width: 26px;
+                height: 26px;
+                border-radius: 7px;
+                background: var(--success);
+                color: #08150e;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 14px;
+                font-weight: 900;
+            }
+            .callout-practice .body {
+                color: var(--text);
+            }
+            .callout-practice .label {
+                font-size: 11.5px;
+                font-weight: 800;
+                letter-spacing: 0.06em;
+                color: var(--success);
+                text-transform: uppercase;
+                margin-bottom: 6px;
+            }
+            .callout-practice p {
+                margin: 0;
+                color: var(--text);
+            }
+
+            .practice-label {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 12px;
+                font-weight: 800;
+                letter-spacing: 0.06em;
+                color: var(--success);
+                text-transform: uppercase;
+                margin: 0 0 10px;
+            }
+            .practice-label::before {
+                content: '✓';
+                font-size: 13px;
+            }
+
+            /* Reference grid */
+            .ref-grid {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 12px;
+                margin: 0 0 30px;
+            }
+            .ref-card {
+                display: flex;
+                gap: 12px;
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                padding: 14px 16px;
+                min-width: 0;
+            }
+            .ref-card .num {
+                flex-shrink: 0;
+                width: 26px;
+                height: 26px;
+                border-radius: 7px;
+                background: var(--accent-bg);
+                color: var(--accent);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 12px;
+                font-weight: 800;
+            }
+            .ref-card .txt {
+                font-size: 13px;
+                color: var(--text-dim);
+                min-width: 0;
+                overflow-wrap: break-word;
+                word-break: break-word;
+            }
+            .ref-card .txt a {
+                color: var(--accent);
+                font-weight: 600;
+            }
+
+            /* Checklist */
+            .checklist-card {
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-radius: 14px;
+                padding: 8px 22px 12px;
+                margin: 0 0 30px;
+            }
+            .checklist-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 14px 0;
+                border-bottom: 1px solid var(--border-soft);
+                margin-bottom: 6px;
+            }
+            .checklist-header .title {
+                font-weight: 700;
+                color: var(--text);
+                font-size: 14.5px;
+            }
+            .checklist-header .count {
+                font-size: 13px;
+                color: var(--accent);
+                font-weight: 700;
+            }
+            .checklist-card ul {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+            .checklist-card li {
+                display: flex;
+                align-items: flex-start;
+                gap: 12px;
+                padding: 11px 4px;
+                border-radius: 8px;
+                margin: 0;
+                transition: background 0.15s;
+            }
+            .checklist-card li:hover {
+                background: rgba(124, 158, 255, 0.05);
+            }
+            .checklist-card input[type='checkbox'] {
+                appearance: none;
+                -webkit-appearance: none;
+                width: 19px;
+                height: 19px;
+                flex-shrink: 0;
+                margin-top: 2px;
+                border: 1.5px solid var(--border);
+                border-radius: 5px;
+                background: var(--bg-card-2);
+                cursor: pointer;
+                position: relative;
+            }
+            .checklist-card input[type='checkbox']:checked {
+                background: var(--accent);
+                border-color: var(--accent);
+            }
+            .checklist-card input[type='checkbox']:checked::after {
+                content: '';
+                position: absolute;
+                left: 5px;
+                top: 1px;
+                width: 5px;
+                height: 10px;
+                border: solid #08101f;
+                border-width: 0 2px 2px 0;
+                transform: rotate(40deg);
+            }
+            .checklist-card label {
+                color: var(--text);
+                font-size: 14.5px;
+                cursor: pointer;
+                line-height: 1.6;
+            }
+            .checklist-card li:has(input:checked) label {
+                text-decoration: line-through;
+                color: var(--text-faint);
+            }
+
+            /* Footnotes (pandoc) */
+            aside.footnotes {
+                display: none;
+            } /* replaced entirely by ref-grid */
+
+            /* Responsive */
+            @media (max-width: 980px) {
+                .sidebar {
+                    transform: translateX(-100%);
+                    transition: transform 0.25s ease;
+                    box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+                }
+                .sidebar.open {
+                    transform: translateX(0);
+                }
+                .main {
+                    margin-left: 0;
+                    padding: 80px 20px 100px;
+                }
+                .sidebar-toggle {
+                    display: flex;
+                }
+                .ref-grid {
+                    grid-template-columns: 1fr;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="layout">
+            <button class="sidebar-toggle" id="sidebarToggle" aria-label="メニュー">☰</button>
+            <aside class="sidebar" id="sidebar">
+                <div class="sidebar-header">
+                    <div class="kicker">Google Cloud PCA</div>
+                    <h2>Section 6: ソリューションと運用の卓越性の確保</h2>
+                </div>
+                <nav id="sidebarNav">
+                    <a href="#このセクションについて" class="">このセクションについて</a>
+                    <a href="#61-運用の卓越性の柱の原則と推奨事項" class=""
+                        >6.1 運用の卓越性の柱の原則と推奨事項</a
+                    >
+                    <a href="#well-architected-frameworkにおける位置づけ" class="lvl3"
+                        >Well-Architected Frameworkにおける位置づけ</a
+                    >
+                    <a href="#運用準備の4つのフォーカスエリア" class="lvl3"
+                        >運用準備の4つのフォーカスエリア</a
+                    >
+                    <a
+                        href="#核となる原則1-cloudopsによる運用準備とパフォーマンスの確保"
+                        class="lvl3"
+                        >核となる原則1: CloudOpsによる運用準備とパフォーマンスの確保</a
+                    >
+                    <a href="#核となる原則2-インシデントと問題の管理" class="lvl3"
+                        >核となる原則2: インシデントと問題の管理</a
+                    >
+                    <a href="#核となる原則3-クラウドリソースの管理と最適化" class="lvl3"
+                        >核となる原則3: クラウドリソースの管理と最適化</a
+                    >
+                    <a href="#核となる原則4-変更の自動化と管理" class="lvl3"
+                        >核となる原則4: 変更の自動化と管理</a
+                    >
+                    <a href="#核となる原則5-継続的な改善とイノベーション" class="lvl3"
+                        >核となる原則5: 継続的な改善とイノベーション</a
+                    >
+                    <a href="#62-google-cloud-observability" class=""
+                        >6.2 Google Cloud Observability</a
+                    >
+                    <a href="#オブザーバビリティの全体像" class="lvl3"
+                        >オブザーバビリティの全体像</a
+                    >
+                    <a href="#モニタリングとロギング" class="lvl3">モニタリングとロギング</a>
+                    <a href="#プロファイリングとベンチマーキング" class="lvl3"
+                        >プロファイリングとベンチマーキング</a
+                    >
+                    <a href="#アラート戦略" class="lvl3">アラート戦略</a>
+                    <a href="#63-デプロイとリリース管理" class="">6.3 デプロイとリリース管理</a>
+                    <a href="#cloud-deployの基本構造" class="lvl3">Cloud Deployの基本構造</a>
+                    <a href="#デプロイ戦略" class="lvl3">デプロイ戦略</a>
+                    <a href="#承認プロモーションロールバック" class="lvl3"
+                        >承認・プロモーション・ロールバック</a
+                    >
+                    <a href="#64-デプロイ済みソリューションのサポート支援" class=""
+                        >6.4 デプロイ済みソリューションのサポート支援</a
+                    >
+                    <a href="#google-cloudサポートティア" class="lvl3"
+                        >Google Cloudサポートティア</a
+                    >
+                    <a href="#active-assistとrecommender" class="lvl3"
+                        >Active AssistとRecommender</a
+                    >
+                    <a href="#personalized-service-health" class="lvl3"
+                        >Personalized Service Health</a
+                    >
+                    <a href="#65-品質管理の評価" class="">6.5 品質管理の評価</a>
+                    <a href="#cicdパイプラインにおける品質ゲート" class="lvl3"
+                        >CI/CDパイプラインにおける品質ゲート</a
+                    >
+                    <a href="#エラーバジェットによるリリースゲーティング" class="lvl3"
+                        >エラーバジェットによるリリースゲーティング</a
+                    >
+                    <a href="#ブレームレスポストモーテム文化" class="lvl3"
+                        >ブレームレスポストモーテム文化</a
+                    >
+                    <a href="#66-本番環境における信頼性の確保" class=""
+                        >6.6 本番環境における信頼性の確保</a
+                    >
+                    <a href="#カオスエンジニアリング" class="lvl3">カオスエンジニアリング</a>
+                    <a href="#ペネトレーションテスト" class="lvl3">ペネトレーションテスト</a>
+                    <a href="#負荷テスト" class="lvl3">負荷テスト</a>
+                    <a href="#ケーススタディへの適用の視点" class=""
+                        >ケーススタディへの適用の視点</a
+                    >
+                    <a href="#well-architected-framework対応表" class=""
+                        >Well-Architected Framework対応表</a
+                    >
+                    <a href="#学習チェックリスト" class="">学習チェックリスト</a>
+                    <a href="#参考文献" class="">参考文献</a>
+                </nav>
+            </aside>
+            <main class="main">
+                <div class="hero">
+                    <div class="kicker">Professional Cloud Architect &middot; Section 6</div>
+                    <h1>
+                        Google Cloud Professional Cloud Architect試験 Section 6:
+                        ソリューションと運用の卓越性の確保
+                    </h1>
+                    <div class="meta-row">
+                        <span class="pill">配点 <strong>約12.5%</strong></span>
+                        <span class="pill">対象 <strong>初学者〜中級者</strong></span>
+                        <span class="pill">図解 <strong>Mermaid 14点</strong></span>
+                        <span class="pill">参考文献 <strong>52件</strong></span>
+                    </div>
+                </div>
+
+                <p>
+                    本ガイドはGoogle Cloud公式の<a
+                        href="https://cloud.google.com/learn/certification/cloud-architect"
+                        >Professional Cloud Architect認定ページ</a
+                    ><a class="footnote-ref" href="#ref2" id="fnref1" role="doc-noteref"
+                        ><sup>2</sup></a
+                    >および<a
+                        href="https://services.google.com/fh/files/misc/professional_cloud_architect_exam_guide_english.pdf"
+                        >公式Exam Guide(PDF)</a
+                    ><a class="footnote-ref" href="#ref1" id="fnref2" role="doc-noteref"
+                        ><sup>1</sup></a
+                    >に基づき、試験の<strong
+                        >Section 6: Ensuring solution and operations
+                        excellence(ソリューションと運用の卓越性の確保、配点約12.5%)</strong
+                    >の出題内容を初学者向けに解説するものです。Section
+                    6は6.1〜6.6の6つのタスク領域で構成されており、Well-Architected
+                    Frameworkの「運用の卓越性の柱」を土台に、オブザーバビリティ、デプロイ管理、サポート、品質管理、本番信頼性という運用ライフサイクル全体をカバーします。
+                </p>
+
+                <h2 id="このセクションについて">このセクションについて</h2>
+
+                <p>
+                    公式Exam Guideは、Professional Cloud
+                    Architectについて「エンタープライズのクラウド戦略、ソリューション設計、ワークロードの移行方式、デプロイとオーケストレーション、最適化、アーキテクチャのベストプラクティスに精通していること」を求めており、その大前提として<strong
+                        >Google Cloud Well-Architected Frameworkへの習熟</strong
+                    >を明示的な要件として挙げています<a
+                        class="footnote-ref"
+                        href="#ref1"
+                        id="fnref3"
+                        role="doc-noteref"
+                        ><sup>1</sup></a
+                    >。Well-Architected
+                    Frameworkの6本の柱(運用の卓越性、セキュリティ・プライバシー・コンプライアンス、信頼性、コスト最適化、パフォーマンス最適化、サステナビリティ)は、試験全体の出題に暗黙的・明示的に織り込まれているとされています<a
+                        class="footnote-ref"
+                        href="#ref1"
+                        id="fnref4"
+                        role="doc-noteref"
+                        ><sup>1</sup></a
+                    >。
+                </p>
+
+                <p>
+                    Section
+                    6はこのうち「運用の卓越性の柱」に最も直接的に対応するセクションであり、以下の6つのタスクで構成されます<a
+                        class="footnote-ref"
+                        href="#ref1"
+                        id="fnref5"
+                        role="doc-noteref"
+                        ><sup>1</sup></a
+                    >。
+                </p>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>タスク</th>
+                                <th>内容</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>6.1</td>
+                                <td>
+                                    Well-Architected
+                                    Frameworkの運用の卓越性の柱の原則と推奨事項の理解
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>6.2</td>
+                                <td>
+                                    Google Cloud
+                                    Observabilityソリューションへの精通(モニタリングとロギング、プロファイリングとベンチマーキング、アラート戦略)
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>6.3</td>
+                                <td>デプロイとリリース管理</td>
+                            </tr>
+                            <tr class="even">
+                                <td>6.4</td>
+                                <td>デプロイ済みソリューションのサポート支援</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>6.5</td>
+                                <td>品質管理措置の評価</td>
+                            </tr>
+                            <tr class="even">
+                                <td>6.6</td>
+                                <td>
+                                    本番環境におけるソリューションの信頼性確保(カオスエンジニアリング、ペネトレーションテスト、負荷テストなど)
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p>
+                    出題では、Altostrat Media・Cymbal Retail・EHR Healthcare・KnightMotives
+                    Automotiveという4つの公式ケーススタディが参照されることがあります<a
+                        class="footnote-ref"
+                        href="#ref1"
+                        id="fnref6"
+                        role="doc-noteref"
+                        ><sup>1</sup></a
+                    >。各ケーススタディは業種やビジネス要件が異なるため、同じ技術要素(例:
+                    アラート戦略やデプロイ戦略)でも、どのような制約(規制対応、ダウンタイム許容度、コスト感度など)のもとで最適解が変わるかを意識して学習することが重要です。
+                </p>
+
+                <h2 id="61-運用の卓越性の柱の原則と推奨事項">
+                    6.1 運用の卓越性の柱の原則と推奨事項
+                </h2>
+
+                <h3 id="well-architected-frameworkにおける位置づけ">
+                    Well-Architected Frameworkにおける位置づけ
+                </h3>
+
+                <p>
+                    Well-Architected
+                    Frameworkは、アーキテクト・開発者・管理者などクラウド関係者が、安全で効率的、レジリエントで高性能、そしてコスト効率の良いクラウドトポロジーを設計・運用するための推奨事項を提供するものです<a
+                        class="footnote-ref"
+                        href="#ref3"
+                        id="fnref7"
+                        role="doc-noteref"
+                        ><sup>3</sup></a
+                    ><a class="footnote-ref" href="#ref4" id="fnref8" role="doc-noteref"
+                        ><sup>4</sup></a
+                    >。推奨事項は「柱(pillar)」と呼ばれる6つの非機能領域に整理されています<a
+                        class="footnote-ref"
+                        href="#ref3"
+                        id="fnref9"
+                        role="doc-noteref"
+                        ><sup>3</sup></a
+                    >。
+                </p>
+
+                <pre class="mermaid">
+graph TB
+    WAF[Google Cloud&lt;br/&gt;Well-Architected Framework]
+    WAF --&gt; OE[運用の卓越性&lt;br/&gt;Operational Excellence]
+    WAF --&gt; SEC[セキュリティ・プライバシー&lt;br/&gt;およびコンプライアンス]
+    WAF --&gt; REL[信頼性&lt;br/&gt;Reliability]
+    WAF --&gt; COST[コスト最適化&lt;br/&gt;Cost Optimization]
+    WAF --&gt; PERF[パフォーマンス最適化&lt;br/&gt;Performance Optimization]
+    WAF --&gt; SUS[サステナビリティ&lt;br/&gt;Sustainability]
+
+    classDef highlightFill fill:#1a3a5c,stroke:#4a90d9,color:#ffffff
+    class OE highlightFill</pre
+                >
+
+                <p>
+                    「運用の卓越性の柱」は、クラウドワークロードを効率的にデプロイ・運用・モニタリング・管理するための推奨事項を提供します<a
+                        class="footnote-ref"
+                        href="#ref5"
+                        id="fnref10"
+                        role="doc-noteref"
+                        ><sup>5</sup></a
+                    >。単なる技術的なオペレーション能力にとどまらず、継続的な学習と実験を奨励する文化的な変革も含むとされており、チームがアイデアを共有し、前提を疑い、改善を推進できる協働的な環境づくりが重要視されています<a
+                        class="footnote-ref"
+                        href="#ref5"
+                        id="fnref11"
+                        role="doc-noteref"
+                        ><sup>5</sup></a
+                    >。
+                </p>
+
+                <p>
+                    運用の卓越性の柱は、次の5つの読者層に向けて書かれています<a
+                        class="footnote-ref"
+                        href="#ref5"
+                        id="fnref12"
+                        role="doc-noteref"
+                        ><sup>5</sup></a
+                    >。
+                </p>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>対象読者</th>
+                                <th>この柱が提供するもの</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>マネージャー・リーダー</td>
+                                <td>
+                                    クラウド投資がビジネス目標を支援する価値を提供し続けるための、運用卓越性の確立・維持フレームワーク
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>クラウド運用チーム</td>
+                                <td>
+                                    インシデントと問題の管理、キャパシティプランニング、パフォーマンス最適化、変更管理に関するガイダンス
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>サイト信頼性エンジニア(SRE)</td>
+                                <td>
+                                    モニタリング、インシデント対応、自動化を含む高いサービス信頼性を達成するためのベストプラクティス
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>クラウドアーキテクト・エンジニア</td>
+                                <td>設計・実装フェーズにおける運用要件とベストプラクティス</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>DevOpsチーム</td>
+                                <td>自動化、CI/CDパイプライン、変更管理に関するガイダンス</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 id="運用準備の4つのフォーカスエリア">運用準備の4つのフォーカスエリア</h3>
+
+                <p>
+                    運用の卓越性の柱を理解するうえで鍵となるのが「運用準備(Operational
+                    Readiness)」という考え方です。これは、組織がGoogle
+                    Cloud上で複雑なワークロードを稼働させるために、Day-1(稼働開始)とDay-2(継続運用、通称CloudOps)の両方をどう準備するかを指します<a
+                        class="footnote-ref"
+                        href="#ref6"
+                        id="fnref13"
+                        role="doc-noteref"
+                        ><sup>6</sup></a
+                    >。運用準備は次の4つのフォーカスエリアに分解されます<a
+                        class="footnote-ref"
+                        href="#ref6"
+                        id="fnref14"
+                        role="doc-noteref"
+                        ><sup>6</sup></a
+                    >。
+                </p>
+
+                <pre class="mermaid">
+graph LR
+    OR[運用準備&lt;br/&gt;Operational Readiness]
+    OR --&gt; WF[ワークフォース&lt;br/&gt;Workforce]
+    OR --&gt; PR[プロセス&lt;br/&gt;Processes]
+    OR --&gt; TL[ツール&lt;br/&gt;Tooling]
+    OR --&gt; GV[ガバナンス&lt;br/&gt;Governance]</pre
+                >
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>フォーカスエリア</th>
+                                <th>主な活動・構成要素</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>ワークフォース</td>
+                                <td>
+                                    クラウドリソースを管理・運用するチームの役割と責任の明確化、必要スキルの確保、学習プログラムの整備、チーム構造の確立、人材採用
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>プロセス</td>
+                                <td>
+                                    オブザーバビリティ、サービス障害の管理、クラウドデリバリー、コアなクラウド運用
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>ツール</td>
+                                <td>CloudOpsプロセスを支えるために必要なツール群</td>
+                            </tr>
+                            <tr class="even">
+                                <td>ガバナンス</td>
+                                <td>
+                                    サービスレベルとレポーティング、クラウド財務、クラウド運用モデル、アーキテクチャレビュー/ガバナンスボード、クラウドアーキテクチャとコンプライアンス
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p>
+                    以降で紹介する5つの核となる原則は、いずれもこの4つのフォーカスエリアのいずれか(または複数)にマッピングされています<a
+                        class="footnote-ref"
+                        href="#ref6"
+                        id="fnref15"
+                        role="doc-noteref"
+                        ><sup>6</sup></a
+                    >。
+                </p>
+
+                <h3 id="核となる原則1-cloudopsによる運用準備とパフォーマンスの確保">
+                    核となる原則1: CloudOpsによる運用準備とパフォーマンスの確保
+                </h3>
+
+                <p>
+                    この原則は、サービスパフォーマンスに関する明確な期待値とコミットメントの設定、堅牢なモニタリングとアラート、パフォーマンステストの実施、キャパシティニーズの事前計画を重視します<a
+                        class="footnote-ref"
+                        href="#ref6"
+                        id="fnref16"
+                        role="doc-noteref"
+                        ><sup>6</sup></a
+                    >。
+                </p>
+
+                <p>
+                    <strong>SLOとSLAの定義</strong>:
+                    クラウド運用チームの中心的な責務の一つが、すべての重要なワークロードについてサービスレベル目標(SLO)とサービスレベル契約(SLA)を定義することです<a
+                        class="footnote-ref"
+                        href="#ref6"
+                        id="fnref17"
+                        role="doc-noteref"
+                        ><sup>6</sup></a
+                    >。SLOはSMART基準を満たす必要があるとされています<a
+                        class="footnote-ref"
+                        href="#ref6"
+                        id="fnref18"
+                        role="doc-noteref"
+                        ><sup>6</sup></a
+                    >。
+                </p>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>SMART基準</th>
+                                <th>説明</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>Specific(具体的)</td>
+                                <td>求めるサービスレベルとパフォーマンスを明確に記述する</td>
+                            </tr>
+                            <tr class="even">
+                                <td>Measurable(測定可能)</td>
+                                <td>定量化・追跡が可能である</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>Achievable(達成可能)</td>
+                                <td>組織の能力とリソースの範囲内で到達可能である</td>
+                            </tr>
+                            <tr class="even">
+                                <td>Relevant(関連性がある)</td>
+                                <td>ビジネス目標・優先事項と整合している</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>Time-bound(期限が明確)</td>
+                                <td>測定・評価の期間が定義されている</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p>
+                    例えば「可用性99.9%」「平均応答時間200ミリ秒未満」といったSLOが挙げられます<a
+                        class="footnote-ref"
+                        href="#ref6"
+                        id="fnref19"
+                        role="doc-noteref"
+                        ><sup>6</sup></a
+                    >。Cloud
+                    Monitoringとサービスレベル指標(SLI)は、SLO/SLAの定義・追跡を支援するツールです<a
+                        class="footnote-ref"
+                        href="#ref6"
+                        id="fnref20"
+                        role="doc-noteref"
+                        ><sup>6</sup></a
+                    >。SLAは顧客に対するコミットメントであり、提供サービスの詳細、期待されるサービスレベル、双方の責任、非準拠時のペナルティや救済策を含む契約上の合意として機能します<a
+                        class="footnote-ref"
+                        href="#ref6"
+                        id="fnref21"
+                        role="doc-noteref"
+                        ><sup>6</sup></a
+                    >。
+                </p>
+
+                <p>
+                    <strong>包括的なオブザーバビリティの実装</strong>:
+                    リアルタイムの可視性を得るために、Google Cloud
+                    Observabilityツールとサードパーティソリューションを組み合わせて使うことが推奨されています<a
+                        class="footnote-ref"
+                        href="#ref6"
+                        id="fnref22"
+                        role="doc-noteref"
+                        ><sup>6</sup></a
+                    >。CPU使用率、メモリ使用量、ネットワークトラフィック、ディスクI/O、アプリケーション応答時間といったシステムヘルス指標に加え、ビジネス固有の指標も監視対象とすべきです<a
+                        class="footnote-ref"
+                        href="#ref6"
+                        id="fnref23"
+                        role="doc-noteref"
+                        ><sup>6</sup></a
+                    >。詳細は<a href="#62-google-cloud-observability"
+                        >6.2 Google Cloud Observability</a
+                    >で扱います。
+                </p>
+
+                <p>
+                    <strong>パフォーマンステストと負荷テスト</strong>:
+                    クラウドベースのアプリケーションとインフラがピーク負荷に耐え、最適なパフォーマンスを維持できることを確認するために、定期的なパフォーマンステストが推奨されます<a
+                        class="footnote-ref"
+                        href="#ref6"
+                        id="fnref24"
+                        role="doc-noteref"
+                        ><sup>6</sup></a
+                    >。負荷テストは現実的なトラフィックパターンをシミュレートし、ストレステストはシステムを限界まで押し上げてボトルネックを特定します<a
+                        class="footnote-ref"
+                        href="#ref6"
+                        id="fnref25"
+                        role="doc-noteref"
+                        ><sup>6</sup></a
+                    >。Cloud Load
+                    Balancingや負荷テストサービスを用いて実際のトラフィックパターンをシミュレートできます<a
+                        class="footnote-ref"
+                        href="#ref6"
+                        id="fnref26"
+                        role="doc-noteref"
+                        ><sup>6</sup></a
+                    >。
+                </p>
+
+                <p>
+                    <strong>キャパシティの計画と管理</strong>:
+                    将来のキャパシティニーズを事前に計画することは、クラウドベースシステムのスムーズな運用とスケーラビリティを確保するために欠かせません<a
+                        class="footnote-ref"
+                        href="#ref6"
+                        id="fnref27"
+                        role="doc-noteref"
+                        ><sup>6</sup></a
+                    >。これにはコンピューティングインスタンス、ストレージ、APIリクエストなどのクォータの理解と管理が含まれます<a
+                        class="footnote-ref"
+                        href="#ref6"
+                        id="fnref28"
+                        role="doc-noteref"
+                        ><sup>6</sup></a
+                    >。過去の利用パターン、成長予測、ビジネス要件を分析し、Cloud
+                    MonitoringやBigQueryを用いて将来の需要を予測します<a
+                        class="footnote-ref"
+                        href="#ref6"
+                        id="fnref29"
+                        role="doc-noteref"
+                        ><sup>6</sup></a
+                    >。季節変動(ホリデーシーズンなど)や計画イベント(製品ローンチ、マーケティングキャンペーン)による一時的な需要急増も考慮し、災害対策(DR)システムが優雅なフェイルオーバーを行えるだけのキャパシティも計画しておく必要があります<a
+                        class="footnote-ref"
+                        href="#ref6"
+                        id="fnref30"
+                        role="doc-noteref"
+                        ><sup>6</sup></a
+                    >。オートスケーリングは、ワークロードの変動に応じてリソースを動的に調整するための重要な戦略です<a
+                        class="footnote-ref"
+                        href="#ref6"
+                        id="fnref31"
+                        role="doc-noteref"
+                        ><sup>6</sup></a
+                    >。
+                </p>
+
+                <p>
+                    <strong>継続的なモニタリングと最適化</strong>:
+                    パフォーマンス指標を継続的にモニタリング・分析するプロセスを確立することが求められます<a
+                        class="footnote-ref"
+                        href="#ref6"
+                        id="fnref32"
+                        role="doc-noteref"
+                        ><sup>6</sup></a
+                    >。ログとトレースの定期的なレビュー、キャッシング・データベース最適化・コードプロファイリングといったパフォーマンスチューニング技法の適用が挙げられています<a
+                        class="footnote-ref"
+                        href="#ref6"
+                        id="fnref33"
+                        role="doc-noteref"
+                        ><sup>6</sup></a
+                    >。
+                </p>
+
+                <h3 id="核となる原則2-インシデントと問題の管理">
+                    核となる原則2: インシデントと問題の管理
+                </h3>
+
+                <p>
+                    インシデント管理と問題管理は、機能する運用環境の重要な構成要素です<a
+                        class="footnote-ref"
+                        href="#ref7"
+                        id="fnref34"
+                        role="doc-noteref"
+                        ><sup>7</sup></a
+                    >。この原則が扱う内容の多くは信頼性の柱でも詳しく説明されており、補足資料としてGoogle
+                    SRE Bookが推奨されています<a
+                        class="footnote-ref"
+                        href="#ref7"
+                        id="fnref35"
+                        role="doc-noteref"
+                        ><sup>7</sup></a
+                    >。
+                </p>
+
+                <pre class="mermaid">
+flowchart LR
+    Detect[検知&lt;br/&gt;モニタリング/アラート] --&gt; Triage[トリアージ&lt;br/&gt;重大度判定]
+    Triage --&gt; Respond[対応&lt;br/&gt;インシデントコマンダー任命]
+    Respond --&gt; Mitigate[緩和&lt;br/&gt;ロールバック/フェイルオーバー]
+    Mitigate --&gt; Resolve[解決&lt;br/&gt;サービス復旧確認]
+    Resolve --&gt; PIR[ポストインシデントレビュー&lt;br/&gt;ブレームレスポストモーテム]
+    PIR --&gt; KB[ナレッジベース更新]
+    KB -.フィードバック.-&gt; Detect</pre
+                >
+
+                <p>
+                    主な推奨事項は次のとおりです<a
+                        class="footnote-ref"
+                        href="#ref7"
+                        id="fnref36"
+                        role="doc-noteref"
+                        ><sup>7</sup></a
+                    >。
+                </p>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>推奨事項</th>
+                                <th>概要</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>明確なインシデント対応手順の確立</td>
+                                <td>
+                                    インシデントコマンダー・調査担当・コミュニケーション担当・技術専門家など役割を定義し、エスカレーションパスを整備。ランブック/プレイブックとして文書化し定期的に見直す
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>インシデント管理の一元化</td>
+                                <td>
+                                    一元化されたインシデント管理システムにより可視性向上・部門間の協調強化・アカウンタビリティの明確化を実現
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>
+                                    徹底したポストインシデントレビュー(PIR/ポストモーテム)の実施
+                                </td>
+                                <td>
+                                    学際的なチームが根本原因分析を行い、ブレームレス文化のもとで報告書を作成・共有する
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>ナレッジベースの維持</td>
+                                <td>
+                                    既知の問題・解決策・トラブルシューティングガイドを蓄積し、エスカレーションの必要性を減らして効率を高める
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>インシデント対応の自動化</td>
+                                <td>
+                                    Cloud Run functionsやCloud
+                                    Runなどを用いて検知・診断情報収集・アラート・修復アクションを自動化し、検知/解決時間を短縮する
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 id="核となる原則3-クラウドリソースの管理と最適化">
+                    核となる原則3: クラウドリソースの管理と最適化
+                </h3>
+
+                <p>
+                    この原則は、実際の使用状況と需要に基づいたリソースの適正サイジング、動的なリソース割り当てのためのオートスケーリング活用、コスト最適化戦略の実装、リソース利用状況とコストの定期的なレビューを扱います<a
+                        class="footnote-ref"
+                        href="#ref8"
+                        id="fnref37"
+                        role="doc-noteref"
+                        ><sup>8</sup></a
+                    >。詳細はコスト最適化の柱でも扱われますが、運用の卓越性の観点では「効率性」「パフォーマンス」「スケーラビリティ」という3つの目標のバランスが重視されます<a
+                        class="footnote-ref"
+                        href="#ref8"
+                        id="fnref38"
+                        role="doc-noteref"
+                        ><sup>8</sup></a
+                    >。
+                </p>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>推奨事項</th>
+                                <th>主なツール・手法</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>適正サイジング(Right-sizing)</td>
+                                <td>
+                                    Cloud
+                                    Monitoringによるリアルタイムの使用率可視化、Recommenderによる最適化提案、カスタム指標に基づく自動アクション
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>オートスケーリング</td>
+                                <td>
+                                    Compute
+                                    Engineのマネージドインスタンスグループ(MIG)、GKEのCluster
+                                    Autoscaler/Horizontal Pod Autoscaler/Vertical Pod
+                                    Autoscaler/Node Auto-Provisioning、Cloud
+                                    Runの組み込みオートスケーリング
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>コスト最適化戦略</td>
+                                <td>確約利用割引(CUD)、継続利用割引、Spot VM</td>
+                            </tr>
+                            <tr class="even">
+                                <td>リソース使用状況とコストの追跡</td>
+                                <td>
+                                    タグ・ラベル付けによる分類、Cloud
+                                    Billingとコスト管理ツールによる可視化、カスタムダッシュボード
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>コスト配分と予算管理</td>
+                                <td>
+                                    チーム/プロジェクト単位のコスト配分・チャージバック、Cloud
+                                    Billingの予算とアラート機能
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 id="核となる原則4-変更の自動化と管理">核となる原則4: 変更の自動化と管理</h3>
+
+                <p>
+                    変更管理と自動化は、クラウド環境内でのスムーズかつ制御された移行を確保するうえで重要な役割を果たします<a
+                        class="footnote-ref"
+                        href="#ref9"
+                        id="fnref39"
+                        role="doc-noteref"
+                        ><sup>9</sup></a
+                    >。この原則は次の4つの基礎要素の上に成り立っています<a
+                        class="footnote-ref"
+                        href="#ref9"
+                        id="fnref40"
+                        role="doc-noteref"
+                        ><sup>9</sup></a
+                    >。
+                </p>
+
+                <pre class="mermaid">
+flowchart LR
+    Code[コード変更] --&gt; VCS[バージョン管理&lt;br/&gt;Git]
+    VCS --&gt; CI[継続的インテグレーション&lt;br/&gt;Cloud Build]
+    CI --&gt; Test[自動テスト&lt;br/&gt;単体/統合/E2E]
+    Test --&gt; Artifact[アーティファクト生成&lt;br/&gt;Artifact Registry]
+    Artifact --&gt; CD[継続的デリバリー&lt;br/&gt;Cloud Deploy]
+    CD --&gt; IaC[IaC適用&lt;br/&gt;Terraform]
+    IaC --&gt; Prod[本番環境]</pre
+                >
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>基礎要素</th>
+                                <th>内容</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>変更ガバナンス</td>
+                                <td>
+                                    承認プロセスやコミュニケーション計画を含む、変更管理のための明確なポリシーと手続きの確立
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>リスクアセスメント</td>
+                                <td>変更に伴う潜在的リスクの特定とリスク管理技法による低減</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>テストと検証</td>
+                                <td>
+                                    変更が機能要件・パフォーマンス要件を満たし、リグレッションを防止することの徹底検証
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>制御されたデプロイ</td>
+                                <td>
+                                    ロールバック機構を備えた、利用者へのシームレスな移行を伴う制御されたデプロイ
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p>
+                    具体的な推奨事項は次のとおりです<a
+                        class="footnote-ref"
+                        href="#ref9"
+                        id="fnref41"
+                        role="doc-noteref"
+                        ><sup>9</sup></a
+                    >。
+                </p>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>推奨事項</th>
+                                <th>概要</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>IaC(Infrastructure as Code)の採用</td>
+                                <td>
+                                    Terraformなどを用いてクラウドインフラを宣言的に定義・管理し、一貫性・再現性・変更管理の簡素化を実現
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>バージョン管理システムの導入</td>
+                                <td>
+                                    Gitなどにより変更履歴の可視化、コラボレーション促進、ロールバック容易性を確保
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>CI/CDパイプラインの構築</td>
+                                <td>
+                                    Cloud BuildとCloud
+                                    Deployを用いて、ビルド・テスト・デプロイの各段階を自動化し、より速く頻度の高いリリースと品質管理の向上を実現
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>構成管理ツールの活用</td>
+                                <td>
+                                    Puppet、Chef、Ansible、VM
+                                    Managerなどによりリソースの一貫性とコンプライアンスを確保し、手動エラーのリスクを低減
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>自動テストの統合</td>
+                                <td>
+                                    単体テスト・統合テスト・E2Eテストを組み合わせ、デプロイ前に変更を検証してエラーとリグレッションのリスクを低減
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 id="核となる原則5-継続的な改善とイノベーション">
+                    核となる原則5: 継続的な改善とイノベーション
+                </h3>
+
+                <p>
+                    クラウドにおいて継続的に改善・イノベーションを進めるには、継続的な学習、実験、適応への注力が必要です<a
+                        class="footnote-ref"
+                        href="#ref10"
+                        id="fnref42"
+                        role="doc-noteref"
+                        ><sup>10</sup></a
+                    >。これにより、新技術の探索や既存プロセスの最適化を通じて、組織が業界リーダーシップを維持できるような卓越性の文化が醸成されます<a
+                        class="footnote-ref"
+                        href="#ref10"
+                        id="fnref43"
+                        role="doc-noteref"
+                        ><sup>10</sup></a
+                    >。
+                </p>
+
+                <pre class="mermaid">
+graph TD
+    A[運用準備とパフォーマンスの確保] --&gt; B[インシデントと問題の管理]
+    B --&gt; C[クラウドリソースの管理と最適化]
+    C --&gt; D[変更の自動化と管理]
+    D --&gt; E[継続的な改善とイノベーション]
+    E --&gt;|学びをフィードバック| A</pre
+                >
+
+                <p>
+                    この原則を通じて達成できる主な目標は次のとおりです<a
+                        class="footnote-ref"
+                        href="#ref10"
+                        id="fnref44"
+                        role="doc-noteref"
+                        ><sup>10</sup></a
+                    >。
+                </p>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>目標</th>
+                                <th>内容</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>イノベーションの加速</td>
+                                <td>新しい技術・サービスを探索し、能力向上と差別化を推進する</td>
+                            </tr>
+                            <tr class="even">
+                                <td>コストの削減</td>
+                                <td>プロセス改善の取り組みを通じて非効率を特定・排除する</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>アジリティの向上</td>
+                                <td>変化する市場ニーズや顧客要求に迅速に適応する</td>
+                            </tr>
+                            <tr class="even">
+                                <td>意思決定の改善</td>
+                                <td>
+                                    データと分析からの洞察により、データドリブンな意思決定を行う
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p>
+                    主にワークフォースのフォーカスエリアにマッピングされる原則であり、学習の文化がチームに新しいツールや技術を実験する余地を与え、能力の拡張とコスト削減につながるとされています<a
+                        class="footnote-ref"
+                        href="#ref10"
+                        id="fnref45"
+                        role="doc-noteref"
+                        ><sup>10</sup></a
+                    >。具体的には、失敗を成長機会と捉えるブレームレス文化のもとでチームの実験と知識共有を奨励し、フォーマル/インフォーマルな学習セッションや社内カンファレンスを通じて組織全体の学習機会を創出することが推奨されています<a
+                        class="footnote-ref"
+                        href="#ref10"
+                        id="fnref46"
+                        role="doc-noteref"
+                        ><sup>10</sup></a
+                    >。
+                </p>
+
+                <h2 id="62-google-cloud-observability">6.2 Google Cloud Observability</h2>
+
+                <h3 id="オブザーバビリティの全体像">オブザーバビリティの全体像</h3>
+
+                <p>
+                    Google Cloud Observability(旧称Stackdriver)は、Google
+                    Cloud上のアプリケーションやシステム、さらにはオンプレミスや他クラウド上のワークロードに対しても、統合されたモニタリング・ロギング・トレースのマネージドサービス群を提供します<a
+                        class="footnote-ref"
+                        href="#ref11"
+                        id="fnref47"
+                        role="doc-noteref"
+                        ><sup>11</sup></a
+                    >。中核となるプロダクトは次のとおりです。
+                </p>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>プロダクト</th>
+                                <th>役割</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>Cloud Monitoring</td>
+                                <td>
+                                    メトリクス・イベント・メタデータを収集し、ダッシュボードとアラートで可視化する<a
+                                        class="footnote-ref"
+                                        href="#ref11"
+                                        id="fnref48"
+                                        role="doc-noteref"
+                                        ><sup>11</sup></a
+                                    ><a
+                                        class="footnote-ref"
+                                        href="#ref12"
+                                        id="fnref49"
+                                        role="doc-noteref"
+                                        ><sup>12</sup></a
+                                    >
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>Cloud Logging</td>
+                                <td>
+                                    監査ログ・プラットフォームログ・アプリケーションログを一元的に収集・保存・検索・分析する<a
+                                        class="footnote-ref"
+                                        href="#ref12"
+                                        id="fnref50"
+                                        role="doc-noteref"
+                                        ><sup>12</sup></a
+                                    >
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>Cloud Trace</td>
+                                <td>
+                                    分散システムにおけるリクエストのレイテンシデータを収集するトレーシングシステム<a
+                                        class="footnote-ref"
+                                        href="#ref12"
+                                        id="fnref51"
+                                        role="doc-noteref"
+                                        ><sup>12</sup></a
+                                    >
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>Cloud Profiler</td>
+                                <td>
+                                    本番アプリケーションのCPU使用率とメモリ割り当てを低オーバーヘッドで継続的に収集する統計的プロファイラ<a
+                                        class="footnote-ref"
+                                        href="#ref12"
+                                        id="fnref52"
+                                        role="doc-noteref"
+                                        ><sup>12</sup></a
+                                    >
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>Error Reporting</td>
+                                <td>アプリケーションで発生したエラーを集約・表示する</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <pre class="mermaid">
+flowchart TB
+    App[アプリケーション/インフラ] --&gt; Metrics[メトリクス&lt;br/&gt;Cloud Monitoring]
+    App --&gt; Logs[ログ&lt;br/&gt;Cloud Logging]
+    App --&gt; Traces[トレース&lt;br/&gt;Cloud Trace]
+    App --&gt; Profiles[プロファイル&lt;br/&gt;Cloud Profiler]
+    Metrics --&gt; Alert[アラートポリシー]
+    Logs --&gt; Alert
+    Alert --&gt; Incident[インシデント作成/通知]
+    Traces --&gt; Debug[レイテンシ原因の特定]
+    Profiles --&gt; Debug
+    Logs --&gt; Debug
+    Debug --&gt; Fix[コード/構成の修正]</pre
+                >
+
+                <p>
+                    一般的な障害解析のワークフローとしては、Cloud
+                    Monitoringで高レイテンシのアラートを検知し、Cloud
+                    Traceでどのサービスが遅いのかを特定し、Cloud
+                    Loggingで詳細なエラーメッセージとコンテキストを確認するという流れが典型的です。
+                </p>
+
+                <h3 id="モニタリングとロギング">モニタリングとロギング</h3>
+
+                <p>
+                    Cloud
+                    Monitoringはリソースの使用率、パフォーマンス特性、全体的なヘルス状態への洞察を提供し、Cloud
+                    Loggingはすべてのサービスからのログへの一元的なアクセスを提供します。両者を組み合わせることで、システムの内部状態を外部から観測可能にする「オブザーバビリティ」が実現されます。運用準備の原則(6.1)で述べたとおり、CPU使用率・メモリ使用量・ネットワークトラフィック・ディスクI/O・応答時間などのシステムヘルス指標に加え、ビジネス固有の指標もあわせて監視することが推奨されます<a
+                        class="footnote-ref"
+                        href="#ref6"
+                        id="fnref53"
+                        role="doc-noteref"
+                        ><sup>6</sup></a
+                    >。
+                </p>
+
+                <h3 id="プロファイリングとベンチマーキング">プロファイリングとベンチマーキング</h3>
+
+                <p>
+                    <strong>Cloud Profiler</strong
+                    >は、本番環境で稼働しているアプリケーションからCPU使用率とヒープ割り当て情報を継続的に収集する統計的な低オーバーヘッドプロファイラです<a
+                        class="footnote-ref"
+                        href="#ref18"
+                        id="fnref54"
+                        role="doc-noteref"
+                        ><sup>18</sup></a
+                    >。単一インスタンス・単一ゾーンに対して通常10秒間のプロファイリングを1分ごとに実施し、収集したデータをコンソールのProfilerインターフェースで確認できます<a
+                        class="footnote-ref"
+                        href="#ref18"
+                        id="fnref55"
+                        role="doc-noteref"
+                        ><sup>18</sup></a
+                    >。データ収集時のCPU・ヒープ割り当てプロファイリングのオーバーヘッドは5%未満であり、実行時間全体・複数レプリカに分散されるため、実際には0.5%未満に抑えられるとされています<a
+                        class="footnote-ref"
+                        href="#ref18"
+                        id="fnref56"
+                        role="doc-noteref"
+                        ><sup>18</sup></a
+                    >。プロファイルデータは30日間保持されます<a
+                        class="footnote-ref"
+                        href="#ref18"
+                        id="fnref57"
+                        role="doc-noteref"
+                        ><sup>18</sup></a
+                    >。
+                </p>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>プロファイルタイプ</th>
+                                <th>説明</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>CPU time</td>
+                                <td>スレッドのCPU時間サンプリング</td>
+                            </tr>
+                            <tr class="even">
+                                <td>Heap(使用中ヒープ)</td>
+                                <td>
+                                    プロファイル収集時点で生存しているアロケーションのスナップショット<a
+                                        class="footnote-ref"
+                                        href="#ref19"
+                                        id="fnref58"
+                                        role="doc-noteref"
+                                        ><sup>19</sup></a
+                                    >
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>Heap allocation(割り当てヒープ)</td>
+                                <td>
+                                    プロファイル収集期間中に行われたすべてのアロケーションの集計(収集終了までに解放されたものも含む)<a
+                                        class="footnote-ref"
+                                        href="#ref19"
+                                        id="fnref59"
+                                        role="doc-noteref"
+                                        ><sup>19</sup></a
+                                    >
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>Wall time</td>
+                                <td>壁時計時間のサンプリング</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>Contention</td>
+                                <td>同期の競合状況のプロファイル</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p>
+                    壁時計時間(wall
+                    time)がCPU時間より長い場合はコードが待機している時間が多いことを示し、両者が近い場合はコードがCPUに支配的であることを示します<a
+                        class="footnote-ref"
+                        href="#ref19"
+                        id="fnref60"
+                        role="doc-noteref"
+                        ><sup>19</sup></a
+                    >。長時間実行されるCPU集中的なコードブロックは最適化の候補になり得ます<a
+                        class="footnote-ref"
+                        href="#ref19"
+                        id="fnref61"
+                        role="doc-noteref"
+                        ><sup>19</sup></a
+                    >。
+                </p>
+
+                <p>
+                    <strong>ベンチマーキング</strong
+                    >の観点では、Googleが公開しているオープンソースツール<strong
+                        >PerfKit Benchmarker</strong
+                    >が、クラウド間の性能を比較するための一貫した測定方法を提供します<a
+                        class="footnote-ref"
+                        href="#ref20"
+                        id="fnref62"
+                        role="doc-noteref"
+                        ><sup>20</sup></a
+                    >。VM間のレイテンシ、スループット、プロビジョニングにかかるエンドツーエンドの時間など、100種類以上の業界標準ベンチマークツールをラップしており、Google
+                    Cloud・AWS・Azureなど複数のクラウドプロバイダに対して同一の条件でベンチマークを実行できます<a
+                        class="footnote-ref"
+                        href="#ref20"
+                        id="fnref63"
+                        role="doc-noteref"
+                        ><sup>20</sup></a
+                    ><a class="footnote-ref" href="#ref21" id="fnref64" role="doc-noteref"
+                        ><sup>21</sup></a
+                    >。
+                </p>
+
+                <p>
+                    負荷テストについては、Cloud
+                    Runのようなマネージドサービスに対する負荷テストのベストプラクティスとして、コンテナの同時実行数の計測やコールドスタートの検証を先に済ませたうえで小規模から段階的にスケールさせること、Pub/Subのようにレートを制御できないツールで負荷を生成しないことなどが推奨されています<a
+                        class="footnote-ref"
+                        href="#ref22"
+                        id="fnref65"
+                        role="doc-noteref"
+                        ><sup>22</sup></a
+                    >。Cloud Load
+                    Balancing配下のバックエンドサービスに対する負荷テストでは、単一のVMやGKE
+                    Podで小規模なテストケースを作成してサーバー自体の性能限界を計測し、クライアント側やネットワーク層のボトルネックと混同しないようにすることが推奨されています<a
+                        class="footnote-ref"
+                        href="#ref23"
+                        id="fnref66"
+                        role="doc-noteref"
+                        ><sup>23</sup></a
+                    >。
+                </p>
+
+                <h3 id="アラート戦略">アラート戦略</h3>
+
+                <p>
+                    Cloud Monitoringのアラートプロセスは、次の3つの要素で構成されます<a
+                        class="footnote-ref"
+                        href="#ref13"
+                        id="fnref67"
+                        role="doc-noteref"
+                        ><sup>13</sup></a
+                    >。
+                </p>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>要素</th>
+                                <th>説明</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>アラートポリシー</td>
+                                <td>
+                                    どのような状況でアラートを出すか、どう通知するかを記述する。Monitoringに保存された時系列データ、またはCloud
+                                    Loggingに保存されたログを監視できる<a
+                                        class="footnote-ref"
+                                        href="#ref13"
+                                        id="fnref68"
+                                        role="doc-noteref"
+                                        ><sup>13</sup></a
+                                    >
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>インシデント</td>
+                                <td>
+                                    アラートポリシーの条件が満たされたときに作成される、監視対象データの種類と条件が満たされた時刻の記録<a
+                                        class="footnote-ref"
+                                        href="#ref13"
+                                        id="fnref69"
+                                        role="doc-noteref"
+                                        ><sup>13</sup></a
+                                    >
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>通知チャネル</td>
+                                <td>
+                                    メール、Slack、PagerDuty、Pub/Subなど、インシデント発生時にどのように通知を受け取るかを定義する<a
+                                        class="footnote-ref"
+                                        href="#ref13"
+                                        id="fnref70"
+                                        role="doc-noteref"
+                                        ><sup>13</sup></a
+                                    >
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <pre class="mermaid">
+sequenceDiagram
+    participant TS as 時系列データ/ログ
+    participant MON as Cloud Monitoring
+    participant NC as 通知チャネル
+    participant ONC as オンコール担当者
+    TS-&gt;&gt;MON: メトリクス/ログエントリを収集
+    MON-&gt;&gt;MON: アライメント期間で正規化
+    MON-&gt;&gt;MON: 条件(しきい値)を評価
+    MON-&gt;&gt;MON: インシデントを作成
+    MON-&gt;&gt;NC: 通知を送信
+    NC-&gt;&gt;ONC: メール/Slack/PagerDuty等
+    ONC-&gt;&gt;MON: 確認・対応
+    MON-&gt;&gt;MON: 条件解消でインシデントを自動クローズ
+    MON-&gt;&gt;NC: クローズ通知</pre
+                >
+
+                <p>
+                    アラートポリシーの条件は、時系列データを「アライメント期間」で正規化(規則的な間隔にバケット化)したうえで評価されます<a
+                        class="footnote-ref"
+                        href="#ref14"
+                        id="fnref71"
+                        role="doc-noteref"
+                        ><sup>14</sup></a
+                    >。1つのアラートポリシーには最大6つの条件を設定でき、欠損データの扱いについても複数のオプションが用意されています<a
+                        class="footnote-ref"
+                        href="#ref14"
+                        id="fnref72"
+                        role="doc-noteref"
+                        ><sup>14</sup></a
+                    >。しきい値ベースの条件はコンソールのアラート作成UIから設定するほか、Monitoring
+                    Query Language(MQL)を使った条件や、Cloud Monitoring APIを用いた作成も可能です<a
+                        class="footnote-ref"
+                        href="#ref17"
+                        id="fnref73"
+                        role="doc-noteref"
+                        ><sup>17</sup></a
+                    >。ポリシーを変更すると、インシデント判定に使う事前計算済みデータが破棄され、インシデントの履歴情報が失われる点に注意が必要です<a
+                        class="footnote-ref"
+                        href="#ref16"
+                        id="fnref74"
+                        role="doc-noteref"
+                        ><sup>16</sup></a
+                    >。
+                </p>
+
+                <p>
+                    <strong>コスト管理の観点</strong
+                    >では、Monitoringはディメンション型のメトリクスシステムを採用しており、メトリクスの総カーディナリティは「監視対象リソース数
+                    ×
+                    ラベルの組み合わせ数」で決まります。例えば100台のVMが10ラベル×10値のメトリクスを送信する場合、カーディナリティは100×10×10=10,000となり、生データに対して直接アラートを設定するとコストが非常に高くなる可能性があります<a
+                        class="footnote-ref"
+                        href="#ref15"
+                        id="fnref75"
+                        role="doc-noteref"
+                        ><sup>15</sup></a
+                    >。そのため、可能な限り1つのアラートポリシーで複数のリソースを監視し(リソースごとに個別のポリシーを作らない)、目的に応じた適切な粒度(例:
+                    CPU使用率ならVM+CPUレベル、レイテンシならサービスレベル)にデータを集約することが推奨されます<a
+                        class="footnote-ref"
+                        href="#ref15"
+                        id="fnref76"
+                        role="doc-noteref"
+                        ><sup>15</sup></a
+                    >。
+                </p>
+
+                <p>
+                    運用の卓越性の観点では、単純なしきい値アラートに加えて、SLOの「エラーバジェット」の消費速度(バーンレート)に基づくアラート戦略も重要です。これは<a
+                        href="#65-品質管理の評価"
+                        >6.5 品質管理の評価</a
+                    >で詳しく扱います。
+                </p>
+
+                <h2 id="63-デプロイとリリース管理">6.3 デプロイとリリース管理</h2>
+
+                <h3 id="cloud-deployの基本構造">Cloud Deployの基本構造</h3>
+
+                <p>
+                    <strong>Cloud Deploy</strong
+                    >は、定義済みのプロモーションシーケンスに沿って一連のターゲット環境へアプリケーションを配信するマネージドサービスです<a
+                        class="footnote-ref"
+                        href="#ref24"
+                        id="fnref77"
+                        role="doc-noteref"
+                        ><sup>24</sup></a
+                    >。アプリケーションを更新してデプロイしたいとき、「リリース」を作成し、そのライフサイクルは「デリバリーパイプライン」によって管理されます<a
+                        class="footnote-ref"
+                        href="#ref24"
+                        id="fnref78"
+                        role="doc-noteref"
+                        ><sup>24</sup></a
+                    >。
+                </p>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>用語</th>
+                                <th>説明</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>デリバリーパイプライン</td>
+                                <td>
+                                    名前・説明、デプロイ先ターゲットへのプロモーションシーケンス(順序)を定義する設定<a
+                                        class="footnote-ref"
+                                        href="#ref24"
+                                        id="fnref79"
+                                        role="doc-noteref"
+                                        ><sup>24</sup></a
+                                    >
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>ターゲット</td>
+                                <td>
+                                    dev/staging/productionなど、アプリケーションのデプロイ先となる個別の実行環境<a
+                                        class="footnote-ref"
+                                        href="#ref24"
+                                        id="fnref80"
+                                        role="doc-noteref"
+                                        ><sup>24</sup></a
+                                    >
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>リリース</td>
+                                <td>
+                                    各ターゲット向けにレンダリングされたマニフェストを表すリソース。CI側が生成したコンテナイメージへの参照を含む<a
+                                        class="footnote-ref"
+                                        href="#ref24"
+                                        id="fnref81"
+                                        role="doc-noteref"
+                                        ><sup>24</sup></a
+                                    >
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>ロールアウト</td>
+                                <td>
+                                    リリースを特定のターゲット環境に関連付けるリソース。最初のリリース作成時に自動生成される<a
+                                        class="footnote-ref"
+                                        href="#ref24"
+                                        id="fnref82"
+                                        role="doc-noteref"
+                                        ><sup>24</sup></a
+                                    >
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <pre class="mermaid">
+flowchart LR
+    CI[CIプロセス&lt;br/&gt;コンテナイメージ生成] --&gt; Release[リリース作成&lt;br/&gt;gcloud deploy releases create]
+    Release --&gt; T1[ターゲット: dev]
+    T1 --&gt;|プロモーション| T2[ターゲット: staging]
+    T2 --&gt;|承認 必要な場合| T3[ターゲット: production]
+    T3 --&gt; Rollout[ロールアウト完了]</pre
+                >
+
+                <p>
+                    CI側の処理はコンテナイメージを1つ以上出力するものであれば任意のツールを利用できます<a
+                        class="footnote-ref"
+                        href="#ref24"
+                        id="fnref83"
+                        role="doc-noteref"
+                        ><sup>24</sup></a
+                    >。リリース作成とデリバリーパイプラインの呼び出しは、必ずしもCIツールから行う必要はありません<a
+                        class="footnote-ref"
+                        href="#ref24"
+                        id="fnref84"
+                        role="doc-noteref"
+                        ><sup>24</sup></a
+                    >。
+                </p>
+
+                <h3 id="デプロイ戦略">デプロイ戦略</h3>
+
+                <p>
+                    Cloud Deployは複数のデプロイ戦略をサポートしています<a
+                        class="footnote-ref"
+                        href="#ref25"
+                        id="fnref85"
+                        role="doc-noteref"
+                        ><sup>25</sup></a
+                    ><a class="footnote-ref" href="#ref26" id="fnref86" role="doc-noteref"
+                        ><sup>26</sup></a
+                    >。
+                </p>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>戦略</th>
+                                <th>概要</th>
+                                <th>主な用途</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>標準デプロイ</td>
+                                <td>
+                                    進行的なロールアウトやトラフィック分割を行わずに、1つ以上のターゲットランタイムへ一括デプロイする。ロールバック・検証・複数ターゲットへの同時デプロイが可能<a
+                                        class="footnote-ref"
+                                        href="#ref25"
+                                        id="fnref87"
+                                        role="doc-noteref"
+                                        ><sup>25</sup></a
+                                    >
+                                </td>
+                                <td>シンプルなデプロイ、迅速なリリースサイクル</td>
+                            </tr>
+                            <tr class="even">
+                                <td>自動カナリア</td>
+                                <td>
+                                    Cloud
+                                    Deployが指定したパーセンテージのシーケンスに従い、新旧バージョン間のトラフィック配分を自動で操作する<a
+                                        class="footnote-ref"
+                                        href="#ref26"
+                                        id="fnref88"
+                                        role="doc-noteref"
+                                        ><sup>26</sup></a
+                                    >
+                                </td>
+                                <td>
+                                    Cloud Run、サービスネットワーキング、Gateway APIへのデプロイ
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>カスタム自動カナリア</td>
+                                <td>
+                                    トラフィック配分はCloud
+                                    Deployに任せつつ、フェーズ名・目標割合・Skaffoldプロファイル・検証ジョブの有無などを個別に指定する<a
+                                        class="footnote-ref"
+                                        href="#ref26"
+                                        id="fnref89"
+                                        role="doc-noteref"
+                                        ><sup>26</sup></a
+                                    >
+                                </td>
+                                <td>より柔軟なフェーズ制御が必要な場合</td>
+                            </tr>
+                            <tr class="even">
+                                <td>フルカスタムカナリア</td>
+                                <td>
+                                    フェーズ設定に加え、トラフィックバランシングの構成まですべて自前で提供する<a
+                                        class="footnote-ref"
+                                        href="#ref26"
+                                        id="fnref90"
+                                        role="doc-noteref"
+                                        ><sup>26</sup></a
+                                    >
+                                </td>
+                                <td>
+                                    すべてのターゲットタイプに対応、高度なカスタマイズが必要な場合
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p>
+                    カナリアデプロイは、アプリケーションの新バージョンを最初にインフラの一部だけに展開し、そこでテストしてから段階的に展開範囲を広げていく進行的なデプロイ手法です<a
+                        class="footnote-ref"
+                        href="#ref26"
+                        id="fnref91"
+                        role="doc-noteref"
+                        ><sup>26</sup></a
+                    >。例えばCloud
+                    Runへの50%カナリアデプロイでは、トラフィックの半分が新リビジョンへ、残り半分が旧リビジョンへ送られ、安定性を確認したうえで100%まで昇格させます<a
+                        class="footnote-ref"
+                        href="#ref26"
+                        id="fnref92"
+                        role="doc-noteref"
+                        ><sup>26</sup></a
+                    >。
+                </p>
+
+                <pre class="mermaid">
+flowchart TB
+    Start[リリース開始] --&gt; P1[フェーズ1: 新バージョンへ10%]
+    P1 --&gt; V1{検証ジョブ&lt;br/&gt;成功?}
+    V1 --&gt;|Yes| P2[フェーズ2: 新バージョンへ50%]
+    V1 --&gt;|No| RB[自動ロールバック]
+    P2 --&gt; V2{検証ジョブ&lt;br/&gt;成功?}
+    V2 --&gt;|Yes| P3[フェーズ3: 新バージョンへ100%&lt;br/&gt;安定版]
+    V2 --&gt;|No| RB</pre
+                >
+
+                <p>
+                    各フェーズに検証(verify)ジョブを組み込むことができ、<code>advanceRolloutRule</code>のような自動化と組み合わせることで、検証結果に応じてロールアウトを自動的に次のフェーズへ進めることも可能です<a
+                        class="footnote-ref"
+                        href="#ref26"
+                        id="fnref93"
+                        role="doc-noteref"
+                        ><sup>26</sup></a
+                    >。
+                </p>
+
+                <h3 id="承認プロモーションロールバック">承認・プロモーション・ロールバック</h3>
+
+                <p>
+                    リリースが特定のターゲットへデプロイされると、パイプラインの可視化画面でその状態を確認できます<a
+                        class="footnote-ref"
+                        href="#ref27"
+                        id="fnref94"
+                        role="doc-noteref"
+                        ><sup>27</sup></a
+                    >。ターゲットごとに承認を必須に設定でき、<code>roles/clouddeploy.approver</code>ロール(または同等の権限)を持つユーザーがマニフェストの差分(Manifest
+                    diff)を確認したうえでロールアウトを承認・却下できます<a
+                        class="footnote-ref"
+                        href="#ref27"
+                        id="fnref95"
+                        role="doc-noteref"
+                        ><sup>27</sup></a
+                    >。
+                </p>
+
+                <p>
+                    <code
+                        >gcloud deploy releases promote --release=RELEASE_NAME \<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;--delivery-pipeline=PIPELINE_NAME \<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;--region=REGION</code
+                    >
+                </p>
+
+                <p>
+                    上記のように既存のリリースを次のターゲットへ手動でプロモートすることも、特定のターゲットへ直接デプロイすることも可能です<a
+                        class="footnote-ref"
+                        href="#ref27"
+                        id="fnref96"
+                        role="doc-noteref"
+                        ><sup>27</sup></a
+                    ><a class="footnote-ref" href="#ref28" id="fnref97" role="doc-noteref"
+                        ><sup>28</sup></a
+                    >。通常運用ではプロモーションシーケンスに沿って順番にデプロイされますが、任意の定義済みターゲットへ手動でデプロイすることもできます<a
+                        class="footnote-ref"
+                        href="#ref28"
+                        id="fnref98"
+                        role="doc-noteref"
+                        ><sup>28</sup></a
+                    >。ロールアウトに問題が見つかった場合は、リリースを以前のターゲットへ戻す、あるいはコンソールのデリバリーパイプライン可視化画面からロールバックを実行することで、旧バージョンへ迅速に戻すことができます。
+                </p>
+
+                <p>デプロイとリリース管理におけるベストプラクティスは次のとおりです。</p>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>ベストプラクティス</th>
+                                <th>理由</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>本番ターゲットには承認ゲートを設定する</td>
+                                <td>
+                                    意図しない変更の本番反映を防ぎ、変更管理ガバナンス(6.1)を実現する
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>カナリアや検証ジョブを組み込む</td>
+                                <td>
+                                    障害の影響範囲(ブラストラディウス)を限定し、早期に問題を検知する
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>ロールバック手順を定期的にリハーサルする</td>
+                                <td>本番障害時に確実かつ迅速に切り戻せることを事前に確認する</td>
+                            </tr>
+                            <tr class="even">
+                                <td>リリースの変更をIaC・バージョン管理と連携させる</td>
+                                <td>
+                                    デプロイの再現性とトレーサビリティを確保する(6.1の変更管理原則と整合)
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h2 id="64-デプロイ済みソリューションのサポート支援">
+                    6.4 デプロイ済みソリューションのサポート支援
+                </h2>
+
+                <h3 id="google-cloudサポートティア">Google Cloudサポートティア</h3>
+
+                <p>
+                    すべてのGoogle Cloud顧客にはBasic
+                    Supportが含まれており、ドキュメント・コミュニティサポート・Cloud
+                    Billingサポート・Active Assistの推奨事項へのアクセスが提供されます<a
+                        class="footnote-ref"
+                        href="#ref29"
+                        id="fnref99"
+                        role="doc-noteref"
+                        ><sup>29</sup></a
+                    ><a class="footnote-ref" href="#ref33" id="fnref100" role="doc-noteref"
+                        ><sup>33</sup></a
+                    >。それより上位のサポートは、組織の規模やワークロードの重要度に応じて選択します<a
+                        class="footnote-ref"
+                        href="#ref29"
+                        id="fnref101"
+                        role="doc-noteref"
+                        ><sup>29</sup></a
+                    >。Standard
+                    Supportは、開発中のワークロードを持つ組織が最初にサポート契約を検討する際の入口として位置づけられています<a
+                        class="footnote-ref"
+                        href="#ref30"
+                        id="fnref102"
+                        role="doc-noteref"
+                        ><sup>30</sup></a
+                    >。
+                </p>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>サポートティア</th>
+                                <th>対象</th>
+                                <th>主な特徴</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>Basic Support</td>
+                                <td>全顧客に標準で付帯</td>
+                                <td>
+                                    ドキュメント、コミュニティサポート、Cloud
+                                    Billingサポート、Active Assist推奨事項<a
+                                        class="footnote-ref"
+                                        href="#ref29"
+                                        id="fnref103"
+                                        role="doc-noteref"
+                                        ><sup>29</sup></a
+                                    >
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>Standard Support</td>
+                                <td>開発中のワークロードを持つ中小規模組織</td>
+                                <td>
+                                    1:1技術サポート、Cloud Support API、Active
+                                    Assist推奨事項、P2(優先度2)ケースへの4時間以内の応答<a
+                                        class="footnote-ref"
+                                        href="#ref29"
+                                        id="fnref104"
+                                        role="doc-noteref"
+                                        ><sup>29</sup></a
+                                    >
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>Enhanced Support</td>
+                                <td>本番稼働する中〜大規模組織</td>
+                                <td>
+                                    より高速な応答、Cloud Support
+                                    API、サードパーティ技術サポート、Recommenderなどのインテリジェントサービス<a
+                                        class="footnote-ref"
+                                        href="#ref29"
+                                        id="fnref105"
+                                        role="doc-noteref"
+                                        ><sup>29</sup></a
+                                    >
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>Premium Support</td>
+                                <td>優先度の高いワークロードを持つエンタープライズ</td>
+                                <td>
+                                    高速応答、プラットフォーム安定性、Customer Aware
+                                    Support、専任のテクニカルアカウントマネージャー(TAM)<a
+                                        class="footnote-ref"
+                                        href="#ref29"
+                                        id="fnref106"
+                                        role="doc-noteref"
+                                        ><sup>29</sup></a
+                                    >
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <pre class="mermaid">
+flowchart LR
+    Issue[問題発生] --&gt; Basic[Basic Support&lt;br/&gt;ドキュメント/コミュニティ]
+    Issue --&gt; Case[サポートケース起票]
+    Case --&gt; Std[Standard Support&lt;br/&gt;P2: 4時間以内に応答]
+    Case --&gt; Enh[Enhanced Support&lt;br/&gt;高速応答+Recommender]
+    Case --&gt; Prem[Premium Support&lt;br/&gt;TAM+Customer Aware Support]</pre
+                >
+
+                <p>
+                    Premium SupportとEnhanced Supportでは、規制対応が必要な環境向けにAssured
+                    Supportというオプションも提供されており、米国・EU・カナダ・イスラエル・オーストラリアの地理的所在地・人的要件に基づくコンプライアンス層として機能します<a
+                        class="footnote-ref"
+                        href="#ref31"
+                        id="fnref107"
+                        role="doc-noteref"
+                        ><sup>31</sup></a
+                    ><a class="footnote-ref" href="#ref32" id="fnref108" role="doc-noteref"
+                        ><sup>32</sup></a
+                    >。
+                </p>
+
+                <h3 id="active-assistとrecommender">Active AssistとRecommender</h3>
+
+                <p>
+                    <strong>Active Assist</strong>は、Google
+                    Cloudプロジェクトを最適化するための推奨事項とインサイトを生成する一連のツール群の総称です<a
+                        class="footnote-ref"
+                        href="#ref34"
+                        id="fnref109"
+                        role="doc-noteref"
+                        ><sup>34</sup></a
+                    >。推奨事項は、コスト・セキュリティ・パフォーマンス・信頼性・マネジャビリティ・サステナビリティという6つの価値ピラーに分類されます<a
+                        class="footnote-ref"
+                        href="#ref35"
+                        id="fnref110"
+                        role="doc-noteref"
+                        ><sup>35</sup></a
+                    >。
+                </p>
+
+                <pre class="mermaid">
+flowchart LR
+    Data[利用状況データ収集] --&gt; ML[機械学習による分析]
+    ML --&gt; Rec[推奨事項の生成&lt;br/&gt;コスト/セキュリティ/性能等]
+    Rec --&gt; Review[担当者によるレビュー]
+    Review --&gt;|適用| Apply[推奨事項を適用]
+    Review --&gt;|却下| Dismiss[却下・記録]
+    Apply --&gt; Monitor[効果をモニタリング]</pre
+                >
+
+                <p>
+                    推奨事項を適用する前には、組織内でその影響を正しく評価できる担当者によるレビューを行うことが推奨されています。評価なしに推奨事項を適用すると、パフォーマンス低下、信頼性の悪化、必要な権限の喪失といった予期しない変更が生じる可能性があるためです<a
+                        class="footnote-ref"
+                        href="#ref36"
+                        id="fnref111"
+                        role="doc-noteref"
+                        ><sup>36</sup></a
+                    >。人によるレビューを介さずに適用する運用を選ぶ場合は、事前にロールバック手順を用意しておく必要があります<a
+                        class="footnote-ref"
+                        href="#ref36"
+                        id="fnref112"
+                        role="doc-noteref"
+                        ><sup>36</sup></a
+                    >。エンタープライズがActive
+                    Assistをスケールさせる際は、まずコンソールでのレビュー、次にBigQueryへのエクスポート、Recommender
+                    APIの利用、DevOpsパイプラインへの統合という段階的なアプローチが推奨されています<a
+                        class="footnote-ref"
+                        href="#ref37"
+                        id="fnref113"
+                        role="doc-noteref"
+                        ><sup>37</sup></a
+                    >。
+                </p>
+
+                <h3 id="personalized-service-health">Personalized Service Health</h3>
+
+                <p>
+                    <strong>Personalized Service Health</strong
+                    >は、自分のプロジェクトに関連するGoogle
+                    Cloudのサービスヘルスイベント(障害・性能劣化など)を一元的に把握するための機能です<a
+                        class="footnote-ref"
+                        href="#ref38"
+                        id="fnref114"
+                        role="doc-noteref"
+                        ><sup>38</sup></a
+                    >。全体に影響する障害情報だけでなく、自分のプロジェクトやリソースに実際に関連するイベントだけをフィルタリングして表示します<a
+                        class="footnote-ref"
+                        href="#ref38"
+                        id="fnref115"
+                        role="doc-noteref"
+                        ><sup>38</sup></a
+                    >。
+                </p>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>アクセス方法</th>
+                                <th>内容</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>Service Healthダッシュボード</td>
+                                <td>
+                                    Google
+                                    Cloudコンソール上で、プロジェクトに関連するアクティブ/過去のインシデントを追跡<a
+                                        class="footnote-ref"
+                                        href="#ref38"
+                                        id="fnref116"
+                                        role="doc-noteref"
+                                        ><sup>38</sup></a
+                                    ><a
+                                        class="footnote-ref"
+                                        href="#ref39"
+                                        id="fnref117"
+                                        role="doc-noteref"
+                                        ><sup>39</sup></a
+                                    >
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>Service Health API</td>
+                                <td>
+                                    プロジェクト単位・組織単位でサービスヘルスイベントをプログラムから取得<a
+                                        class="footnote-ref"
+                                        href="#ref38"
+                                        id="fnref118"
+                                        role="doc-noteref"
+                                        ><sup>38</sup></a
+                                    >
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>アラート</td>
+                                <td>
+                                    Cloud Loggingのログに基づき、Cloud
+                                    Monitoringの通知チャネル(メール、Pub/Sub、Webhook、Slack、PagerDutyなど)を通じて通知<a
+                                        class="footnote-ref"
+                                        href="#ref38"
+                                        id="fnref119"
+                                        role="doc-noteref"
+                                        ><sup>38</sup></a
+                                    >
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p>
+                    Personalized Service
+                    Healthは、問題が自プロジェクト側の設定に起因するのか、Google
+                    Cloud側の障害に起因するのかを切り分けるのに役立ち、適切なインシデント対応を実施するための一次情報源として位置づけられています<a
+                        class="footnote-ref"
+                        href="#ref38"
+                        id="fnref120"
+                        role="doc-noteref"
+                        ><sup>38</sup></a
+                    >。これは6.1で述べた「インシデント管理の一元化」や「明確なインシデント対応手順の確立」を支える具体的な仕組みの一つです。
+                </p>
+
+                <h2 id="65-品質管理の評価">6.5 品質管理の評価</h2>
+
+                <p>
+                    品質管理措置の評価は、6.1で扱った「変更の自動化と管理」の実践(CI/CD、自動テスト)と、SREのエラーバジェットに基づく運用ガバナンスを組み合わせて理解すると整理しやすくなります。
+                </p>
+
+                <h3 id="cicdパイプラインにおける品質ゲート">CI/CDパイプラインにおける品質ゲート</h3>
+
+                <p>
+                    6.1で述べたとおり、CI/CDパイプラインへの自動テストの統合は、デプロイ前に変更を検証してエラーとリグレッションのリスクを低減する効果があります<a
+                        class="footnote-ref"
+                        href="#ref9"
+                        id="fnref121"
+                        role="doc-noteref"
+                        ><sup>9</sup></a
+                    >。
+                </p>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>テスト種別</th>
+                                <th>目的</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>単体テスト</td>
+                                <td>
+                                    関数やメソッドなど、個々のコード単位が期待どおりに動作することを確認する<a
+                                        class="footnote-ref"
+                                        href="#ref9"
+                                        id="fnref122"
+                                        role="doc-noteref"
+                                        ><sup>9</sup></a
+                                    >
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>統合テスト</td>
+                                <td>
+                                    アプリケーションの異なるコンポーネント/モジュール間の連携が正しく機能することを検証する<a
+                                        class="footnote-ref"
+                                        href="#ref9"
+                                        id="fnref123"
+                                        role="doc-noteref"
+                                        ><sup>9</sup></a
+                                    >
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>E2E(エンドツーエンド)テスト</td>
+                                <td>
+                                    実際のシナリオをシミュレートし、アプリケーション全体がエンドユーザーの要件を満たすことを確認する<a
+                                        class="footnote-ref"
+                                        href="#ref9"
+                                        id="fnref124"
+                                        role="doc-noteref"
+                                        ><sup>9</sup></a
+                                    >
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p>
+                    自動テストを組み込む主な効果は、開発プロセスの早い段階でバグや欠陥を検出できること、そして一定の基準やベストプラクティスに沿った高品質なコードを維持できることです<a
+                        class="footnote-ref"
+                        href="#ref9"
+                        id="fnref125"
+                        role="doc-noteref"
+                        ><sup>9</sup></a
+                    >。効果的に統合するには、適切なテストツール・フレームワークの選定に加え、テスト種別・実施頻度・合否基準を含む明確なテスト戦略の策定が必要です<a
+                        class="footnote-ref"
+                        href="#ref9"
+                        id="fnref126"
+                        role="doc-noteref"
+                        ><sup>9</sup></a
+                    >。
+                </p>
+
+                <h3 id="エラーバジェットによるリリースゲーティング">
+                    エラーバジェットによるリリースゲーティング
+                </h3>
+
+                <p>
+                    SREの実践では、SLOの裏返しとして「エラーバジェット」という考え方が用いられます。SLOが99.9%の可用性であれば、エラーバジェットはその残り0.1%、つまり「使ってよい失敗の割合」です<a
+                        class="footnote-ref"
+                        href="#ref40"
+                        id="fnref127"
+                        role="doc-noteref"
+                        ><sup>40</sup></a
+                    >。四半期のSLOが99.999%であれば、エラーバジェットはその四半期における失敗率0.001%となり、ある問題が期待クエリの0.0002%を失敗させた場合、その問題は四半期のエラーバジェットの20%を消費したことになります<a
+                        class="footnote-ref"
+                        href="#ref40"
+                        id="fnref128"
+                        role="doc-noteref"
+                        ><sup>40</sup></a
+                    >。
+                </p>
+
+                <pre class="mermaid">
+flowchart TD
+    SLO[SLO定義&lt;br/&gt;例: 可用性99.9%] --&gt; Budget[エラーバジェット算出&lt;br/&gt;0.1%]
+    Budget --&gt; Check{エラーバジェット&lt;br/&gt;残量は?}
+    Check --&gt;|健全| Ship[通常どおりリリース]
+    Check --&gt;|逼迫| Slow[リリース速度を落とす/承認必須]
+    Check --&gt;|枯渇| Freeze[機能リリース凍結&lt;br/&gt;信頼性作業へ集中]</pre
+                >
+
+                <p>
+                    エラーバジェットが残っている限り新しいリリースを継続でき、逆にバジェットが尽きた場合はリリース頻度を落とす、あるいはロールバックするといった、より繊細なコントロールが可能になります<a
+                        class="footnote-ref"
+                        href="#ref40"
+                        id="fnref129"
+                        role="doc-noteref"
+                        ><sup>40</sup></a
+                    >。エラーバジェットの本質的な利点は、プロダクト開発チームとSREチームの双方にとって、イノベーションと信頼性のバランスを取るための客観的で共通のインセンティブを提供する点にあります<a
+                        class="footnote-ref"
+                        href="#ref40"
+                        id="fnref130"
+                        role="doc-noteref"
+                        ><sup>40</sup></a
+                    >。
+                </p>
+
+                <p>
+                    多くのエラーバジェットポリシーでは、直近4週間のウィンドウでエラーバジェットを使い切った場合、P0(最優先)課題やセキュリティ修正を除くすべての変更・リリースを一時停止するという運用が採用されています<a
+                        class="footnote-ref"
+                        href="#ref41"
+                        id="fnref131"
+                        role="doc-noteref"
+                        ><sup>41</sup></a
+                    >。この停止措置は懲罰的な意味を持つものではなく、データが「信頼性を他の機能よりも優先すべき」と示しているときにチームがそこへ集中する許可を与えるものと位置づけられています<a
+                        class="footnote-ref"
+                        href="#ref41"
+                        id="fnref132"
+                        role="doc-noteref"
+                        ><sup>41</sup></a
+                    >。1件のインシデントで4週間のエラーバジェットの20%以上を消費した場合はポストモーテムの実施が、四半期で20%以上を消費するような障害クラスがあった場合は四半期計画にその是正のためのP0項目を含めることが、典型的なポリシーの一例として挙げられています<a
+                        class="footnote-ref"
+                        href="#ref41"
+                        id="fnref133"
+                        role="doc-noteref"
+                        ><sup>41</sup></a
+                    >。
+                </p>
+
+                <p>
+                    エラーバジェットポリシーの承認プロセス自体が、SLOが本当に適切な水準に設定されているかを検証する良いテストになります。SRE側がSLOを「過度なトイルなしには防御できない」と感じればSLOの緩和を主張でき、逆に開発チーム・プロダクトマネージャーが信頼性強化のためにリソースを割くとリリース速度が許容水準を下回ると感じれば、同様に緩和を主張できます<a
+                        class="footnote-ref"
+                        href="#ref42"
+                        id="fnref134"
+                        role="doc-noteref"
+                        ><sup>42</sup></a
+                    >。
+                </p>
+
+                <h3 id="ブレームレスポストモーテム文化">ブレームレスポストモーテム文化</h3>
+
+                <p>
+                    品質管理の評価には、インシデントやリグレッションが発生した際の学習プロセスも含まれます。Googleでは、重大なインシデントの後に包括的なポストモーテムを作成することが文化的な規範として定着しており、継続的な投資によってダウンタイムの減少とユーザー体験の改善につながっているとされています<a
+                        class="footnote-ref"
+                        href="#ref43"
+                        id="fnref135"
+                        role="doc-noteref"
+                        ><sup>43</sup></a
+                    >。
+                </p>
+
+                <pre class="mermaid">
+flowchart LR
+    Incident[インシデント収束] --&gt; Draft[ドラフト作成&lt;br/&gt;タイムライン記録]
+    Draft --&gt; RCA[根本原因分析]
+    RCA --&gt; Action[是正措置の洗い出し]
+    Action --&gt; Review[チームレビュー&lt;br/&gt;ブレームレス原則]
+    Review --&gt; Share[組織内で共有]
+    Share --&gt; Track[アクションアイテムの追跡]</pre
+                >
+
+                <p>
+                    ポストモーテムが真にブレームレスであるためには、個人やチームの不適切な行動を非難することなく、インシデントの寄与要因を特定することに焦点を当てなければならないとされています<a
+                        class="footnote-ref"
+                        href="#ref44"
+                        id="fnref136"
+                        role="doc-noteref"
+                        ><sup>44</sup></a
+                    >。ポストモーテムの標準的な構成要素には、サマリー、タイムライン、根本原因分析、影響範囲の評価、担当者と期限付きの是正アクション項目が含まれます。個々のインシデント対応(トリアージ・調整・コミュニケーション)については、緊急対応組織のベストプラクティスを参考にした手法が多くのテック企業で採用されています<a
+                        class="footnote-ref"
+                        href="#ref45"
+                        id="fnref137"
+                        role="doc-noteref"
+                        ><sup>45</sup></a
+                    ><a class="footnote-ref" href="#ref46" id="fnref138" role="doc-noteref"
+                        ><sup>46</sup></a
+                    >。
+                </p>
+
+                <p>品質管理の評価に関するベストプラクティスをまとめると、次のようになります。</p>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>チェック項目</th>
+                                <th>目的</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>CI/CDパイプラインに単体/統合/E2Eテストを組み込む</td>
+                                <td>
+                                    デプロイ前にリグレッションを検出する<a
+                                        class="footnote-ref"
+                                        href="#ref9"
+                                        id="fnref139"
+                                        role="doc-noteref"
+                                        ><sup>9</sup></a
+                                    >
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>エラーバジェットに基づくリリースゲートを設ける</td>
+                                <td>
+                                    信頼性が損なわれている時期に機能リリースの速度を自動的に抑制する<a
+                                        class="footnote-ref"
+                                        href="#ref40"
+                                        id="fnref140"
+                                        role="doc-noteref"
+                                        ><sup>40</sup></a
+                                    ><a
+                                        class="footnote-ref"
+                                        href="#ref41"
+                                        id="fnref141"
+                                        role="doc-noteref"
+                                        ><sup>41</sup></a
+                                    >
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>ポストモーテムをブレームレスな文化のもとで作成・共有する</td>
+                                <td>
+                                    同種のインシデントの再発を防ぎ、組織的な学習につなげる<a
+                                        class="footnote-ref"
+                                        href="#ref43"
+                                        id="fnref142"
+                                        role="doc-noteref"
+                                        ><sup>43</sup></a
+                                    ><a
+                                        class="footnote-ref"
+                                        href="#ref44"
+                                        id="fnref143"
+                                        role="doc-noteref"
+                                        ><sup>44</sup></a
+                                    >
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>ナレッジベースと連携させる</td>
+                                <td>
+                                    ポストモーテムから得られた知見を将来のインシデント対応に活かす<a
+                                        class="footnote-ref"
+                                        href="#ref7"
+                                        id="fnref144"
+                                        role="doc-noteref"
+                                        ><sup>7</sup></a
+                                    >
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h2 id="66-本番環境における信頼性の確保">6.6 本番環境における信頼性の確保</h2>
+
+                <p>
+                    Exam
+                    Guideは6.6の具体例として、カオスエンジニアリング、ペネトレーションテスト、負荷テストの3つを挙げています<a
+                        class="footnote-ref"
+                        href="#ref1"
+                        id="fnref145"
+                        role="doc-noteref"
+                        ><sup>1</sup></a
+                    >。これらはいずれも「本番相当の環境やトラフィックに対して意図的に負荷や障害を発生させ、システムが実際にどう振る舞うかを検証する」というアプローチを共有しています。
+                </p>
+
+                <h3 id="カオスエンジニアリング">カオスエンジニアリング</h3>
+
+                <p>
+                    カオスエンジニアリングは、システムが本番環境で乱気流のような不安定な状況に耐えられるという確信を築くために、システムに対して実験を行う手法です<a
+                        class="footnote-ref"
+                        href="#ref47"
+                        id="fnref146"
+                        role="doc-noteref"
+                        ><sup>47</sup></a
+                    >。Netflixが2010年に開発した「Chaos
+                    Monkey」がこの分野の先駆けとして知られていますが、Google社内でも同時期に「DiRT(Disaster
+                    Resilience
+                    Testing)」という、事業・システム・データの災害対応力を継続的かつ自動的にテストする取り組みが導入されていました<a
+                        class="footnote-ref"
+                        href="#ref47"
+                        id="fnref147"
+                        role="doc-noteref"
+                        ><sup>47</sup></a
+                    >。
+                </p>
+
+                <p>
+                    カオスエンジニアリングの基本的な流れは次のとおりです<a
+                        class="footnote-ref"
+                        href="#ref48"
+                        id="fnref148"
+                        role="doc-noteref"
+                        ><sup>48</sup></a
+                    >。
+                </p>
+
+                <pre class="mermaid">
+flowchart LR
+    Steady[定常状態を定義] --&gt; Hypo[仮説を立てる]
+    Hypo --&gt; Inject[障害を注入&lt;br/&gt;例: ゾーン障害/レイテンシ増加]
+    Inject --&gt; Observe[定常状態への影響を観測]
+    Observe --&gt; Learn{仮説どおり?}
+    Learn --&gt;|Yes| Confidence[信頼性への確信を強化]
+    Learn --&gt;|No| Fix[脆弱性を修正]
+    Fix --&gt; Steady</pre
+                >
+
+                <p>
+                    まずシステムの「定常状態(steady
+                    state)」、つまり正常で測定可能かつ健全な出力状態を理解することから始めます<a
+                        class="footnote-ref"
+                        href="#ref48"
+                        id="fnref149"
+                        role="doc-noteref"
+                        ><sup>48</sup></a
+                    >。次に、特定の乱気流条件(障害)が発生してもこの定常状態が持続するという仮説を立て、CPUリソースの枯渇、ネットワークレイテンシの追加、VMの強制終了といった特定の障害を意図的に注入する「制御されたアクション」を実行します<a
+                        class="footnote-ref"
+                        href="#ref48"
+                        id="fnref150"
+                        role="doc-noteref"
+                        ><sup>48</sup></a
+                    >。これにより、DR(災害復旧)計画のような仮説を実際のデータで裏付けられた手法へと転換できます<a
+                        class="footnote-ref"
+                        href="#ref48"
+                        id="fnref151"
+                        role="doc-noteref"
+                        ><sup>48</sup></a
+                    >。
+                </p>
+
+                <p>
+                    Google内部でも、Spannerのようなミッションクリティカルなデータベースに対して、意図的に障害を注入するカオステストを毎週1,000件以上実行しており、これによりハッピーパスのテストだけでは見つからないバグを継続的に発見しています<a
+                        class="footnote-ref"
+                        href="#ref49"
+                        id="fnref152"
+                        role="doc-noteref"
+                        ><sup>49</sup></a
+                    >。GKEやCompute Engine、Pub/Subなどを対象にGoogle
+                    CloudのPSO(プロフェッショナルサービス)チームが公開しているChaos
+                    Toolkit拡張機能を使うと、GCP環境向けのカオス実験を実施できます<a
+                        class="footnote-ref"
+                        href="#ref50"
+                        id="fnref153"
+                        role="doc-noteref"
+                        ><sup>50</sup></a
+                    >。
+                </p>
+
+                <h3 id="ペネトレーションテスト">ペネトレーションテスト</h3>
+
+                <p>
+                    ペネトレーションテストは、実際の攻撃者と同じ手法でシステムの脆弱性を悪用しようと試み、不正アクセス・権限昇格・機密データへのアクセスが実際に可能かどうかを確認する検証です。自動化された脆弱性スキャンとは異なり、人手による深掘りや複数の脆弱性を連鎖させた攻撃シナリオの検証を伴う点が特徴です。
+                </p>
+
+                <p>
+                    Google
+                    CloudはAWSと異なり、顧客が自社のGCP環境に対してペネトレーションテストを実施する際に事前の許可申請を必須とはしていません<a
+                        class="footnote-ref"
+                        href="#ref51"
+                        id="fnref154"
+                        role="doc-noteref"
+                        ><sup>51</sup></a
+                    ><a class="footnote-ref" href="#ref52" id="fnref155" role="doc-noteref"
+                        ><sup>52</sup></a
+                    >。ただし、次の条件を満たす必要があります。
+                </p>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>条件</th>
+                                <th>内容</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>対象範囲</td>
+                                <td>
+                                    自分自身のGoogle Cloudプロジェクト・リソースのみを対象とする
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>他顧客への影響</td>
+                                <td>
+                                    他のGoogle
+                                    Cloud顧客のアプリケーションやリソースに影響を与えないこと
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>準拠すべきポリシー</td>
+                                <td>
+                                    Google Cloud Platform Acceptable Use
+                                    Policy(利用規約)に従うこと<a
+                                        class="footnote-ref"
+                                        href="#ref51"
+                                        id="fnref156"
+                                        role="doc-noteref"
+                                        ><sup>51</sup></a
+                                    >
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>脆弱性の報告</td>
+                                <td>
+                                    発見した脆弱性はVulnerability Reward Program経由で報告する<a
+                                        class="footnote-ref"
+                                        href="#ref52"
+                                        id="fnref157"
+                                        role="doc-noteref"
+                                        ><sup>52</sup></a
+                                    >
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p>
+                    Acceptable Use
+                    Policyでは、他の顧客・リセラー・利用者によるサービス利用を妨害・中断させる目的での不正アクセスや、サービス提供に使われる機器を無効化・妨害・回避する行為を明示的に禁止しています<a
+                        class="footnote-ref"
+                        href="#ref51"
+                        id="fnref158"
+                        role="doc-noteref"
+                        ><sup>51</sup></a
+                    >。ペネトレーションテストは自組織の管理下にあるプロジェクトの範囲内で、この利用規約の枠内で実施する必要があります。
+                </p>
+
+                <h3 id="負荷テスト">負荷テスト</h3>
+
+                <p>
+                    負荷テストは、実運用を想定したトラフィックパターンをシステムに与え、期待どおりにスケールできるか、ボトルネックがどこにあるかを検証する手法です。6.2で紹介したとおり、Cloud
+                    Runサービスに対する負荷テストでは、まず開発環境や小規模テスト環境で同時実行数の問題を洗い出し、コンテナの同時実行数を計測してから、手動スケーリングに近い小刻みなインクリメンタルテストを行うことが推奨されています<a
+                        class="footnote-ref"
+                        href="#ref22"
+                        id="fnref159"
+                        role="doc-noteref"
+                        ><sup>22</sup></a
+                    >。Cloud
+                    Runの最大インスタンス数のデフォルトは100であり、これを超える規模の負荷テストを行う場合はアカウントチームとの事前調整やクォータ引き上げ申請が必要です<a
+                        class="footnote-ref"
+                        href="#ref22"
+                        id="fnref160"
+                        role="doc-noteref"
+                        ><sup>22</sup></a
+                    >。
+                </p>
+
+                <p>
+                    Cloud Load Balancing配下のバックエンドサービスについては、単一のVMやGKE
+                    Podで小規模なテストケースを作成し、サーバー自体の性能限界を計測することが推奨されています<a
+                        class="footnote-ref"
+                        href="#ref23"
+                        id="fnref161"
+                        role="doc-noteref"
+                        ><sup>23</sup></a
+                    >。過剰なサーバーキャパシティのもとでテストを行うと、サービス自体の限界ではなく、クライアントホストやネットワーク層のボトルネックを検出してしまうリスクがあるためです<a
+                        class="footnote-ref"
+                        href="#ref23"
+                        id="fnref162"
+                        role="doc-noteref"
+                        ><sup>23</sup></a
+                    >。
+                </p>
+
+                <p>本番環境の信頼性確保に関するベストプラクティスをまとめると、次のとおりです。</p>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>手法</th>
+                                <th>主な確認事項</th>
+                                <th>実施上の注意</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>カオスエンジニアリング</td>
+                                <td>障害注入時にも定常状態(SLO)を維持できるか</td>
+                                <td>
+                                    小規模かつ影響範囲を限定した実験から始め、仮説と成功基準を明確にする<a
+                                        class="footnote-ref"
+                                        href="#ref48"
+                                        id="fnref163"
+                                        role="doc-noteref"
+                                        ><sup>48</sup></a
+                                    >
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>ペネトレーションテスト</td>
+                                <td>実際の攻撃シナリオでのIAM/データ/アプリケーションの脆弱性</td>
+                                <td>
+                                    自プロジェクトの範囲内でAUPを遵守し、発見した脆弱性はVulnerability
+                                    Reward Programへ報告する<a
+                                        class="footnote-ref"
+                                        href="#ref51"
+                                        id="fnref164"
+                                        role="doc-noteref"
+                                        ><sup>51</sup></a
+                                    ><a
+                                        class="footnote-ref"
+                                        href="#ref52"
+                                        id="fnref165"
+                                        role="doc-noteref"
+                                        ><sup>52</sup></a
+                                    >
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>負荷テスト</td>
+                                <td>ピーク時のスループット・レイテンシ・自動スケーリングの挙動</td>
+                                <td>
+                                    小規模テストでサーバー側の限界を先に特定し、大規模テストは事前にクォータ・アカウントチームと調整する<a
+                                        class="footnote-ref"
+                                        href="#ref22"
+                                        id="fnref166"
+                                        role="doc-noteref"
+                                        ><sup>22</sup></a
+                                    ><a
+                                        class="footnote-ref"
+                                        href="#ref23"
+                                        id="fnref167"
+                                        role="doc-noteref"
+                                        ><sup>23</sup></a
+                                    >
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h2 id="ケーススタディへの適用の視点">ケーススタディへの適用の視点</h2>
+
+                <p>
+                    公式ケーススタディはSection
+                    6の出題でも参照される可能性があります。運用の卓越性というテーマは特定の技術選定というより「どの水準のSLO/SLA・アラート戦略・デプロイ戦略・サポート体制が、そのビジネスの制約に適合するか」という判断を問う形で出題されやすい領域です。学習の際は、各ケーススタディが持つビジネス要件・技術要件を、本ガイドで扱った各トピックと結びつけて確認すると理解が深まります。
+                </p>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>観点</th>
+                                <th>確認するとよいポイント</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>SLO/SLAの水準</td>
+                                <td>
+                                    業種(医療、小売、自動車、メディアなど)によって許容されるダウンタイムやレイテンシの基準はどう変わるか
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>デプロイ戦略の選択</td>
+                                <td>
+                                    リスク許容度の低いワークロードにはカナリアや承認ゲート付きのパイプラインが適するか
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>サポートティアの選定</td>
+                                <td>
+                                    24時間稼働が必須の基幹システムにはEnhanced/Premium
+                                    Supportが適切か
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>インシデント対応体制</td>
+                                <td>
+                                    規制業種(医療・金融など)では監査ログやポストモーテムの共有範囲にどのような制約があるか
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>信頼性検証の頻度</td>
+                                <td>
+                                    ミッションクリティカルなシステムほど、カオスエンジニアリングやペネトレーションテストの実施頻度・範囲をどう設計すべきか
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h2 id="well-architected-framework対応表">Well-Architected Framework対応表</h2>
+
+                <p>
+                    Section
+                    6の各タスクは、運用の卓越性の柱の核となる原則と次のように対応しています。
+                </p>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>Section 6のタスク</th>
+                                <th>主に対応する核となる原則</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>6.1 運用の卓越性の柱の原則</td>
+                                <td>5つの核となる原則すべての土台</td>
+                            </tr>
+                            <tr class="even">
+                                <td>6.2 Observability</td>
+                                <td>
+                                    CloudOpsによる運用準備とパフォーマンスの確保/インシデントと問題の管理
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>6.3 デプロイとリリース管理</td>
+                                <td>変更の自動化と管理</td>
+                            </tr>
+                            <tr class="even">
+                                <td>6.4 サポート支援</td>
+                                <td>インシデントと問題の管理/クラウドリソースの管理と最適化</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>6.5 品質管理の評価</td>
+                                <td>変更の自動化と管理/継続的な改善とイノベーション</td>
+                            </tr>
+                            <tr class="even">
+                                <td>6.6 本番環境の信頼性確保</td>
+                                <td>
+                                    インシデントと問題の管理/継続的な改善とイノベーション(信頼性の柱とも密接に関連)
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h2 id="学習チェックリスト">学習チェックリスト</h2>
+
+                <div class="checklist-card">
+                    <div class="checklist-header">
+                        <span class="title">学習チェックリスト</span
+                        ><span class="count">0 / 18 完了</span>
+                    </div>
+                    <ul>
+                        <li>
+                            <input id="chk1" type="checkbox" /><label for="chk1"
+                                >Well-Architected
+                                Frameworkの6本の柱と、運用の卓越性の柱が対象とする5つの読者層を説明できる</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk2" type="checkbox" /><label for="chk2"
+                                >運用準備(Operational
+                                Readiness)の4つのフォーカスエリア(ワークフォース/プロセス/ツール/ガバナンス)を挙げられる</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk3" type="checkbox" /><label for="chk3"
+                                >SLO策定におけるSMART基準を説明できる</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk4" type="checkbox" /><label for="chk4"
+                                >インシデント管理のライフサイクル(検知→トリアージ→対応→緩和→解決→PIR)を説明できる</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk5" type="checkbox" /><label for="chk5"
+                                >Cloud Monitoring・Cloud Logging・Cloud Trace・Cloud
+                                Profilerの役割の違いを説明できる</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk6" type="checkbox" /><label for="chk6"
+                                >Cloud Profilerのプロファイルタイプ(CPU time/Heap/Heap
+                                allocation/Wall time)の違いを説明できる</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk7" type="checkbox" /><label for="chk7"
+                                >アラートポリシー・インシデント・通知チャネルの3要素を説明できる</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk8" type="checkbox" /><label for="chk8"
+                                >アラートのコスト管理(カーディナリティ、集約粒度)の考え方を説明できる</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk9" type="checkbox" /><label for="chk9"
+                                >Cloud
+                                Deployのデリバリーパイプライン・ターゲット・リリース・ロールアウトの関係を説明できる</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk10" type="checkbox" /><label for="chk10"
+                                >標準デプロイとカナリアデプロイ(自動/カスタム自動/フルカスタム)の違いを説明できる</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk11" type="checkbox" /><label for="chk11"
+                                >Google CloudのサポートティアをBasic〜Premiumまで比較できる</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk12" type="checkbox" /><label for="chk12"
+                                >Active
+                                Assistの6つの価値ピラーとレビュープロセスの重要性を説明できる</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk13" type="checkbox" /><label for="chk13"
+                                >Personalized Service
+                                Healthが提供する3つのアクセス方法を挙げられる</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk14" type="checkbox" /><label for="chk14"
+                                >エラーバジェットの考え方とリリースゲーティングへの応用を説明できる</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk15" type="checkbox" /><label for="chk15"
+                                >ブレームレスポストモーテムの目的と標準的な構成要素を説明できる</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk16" type="checkbox" /><label for="chk16"
+                                >カオスエンジニアリングの基本サイクル(定常状態→仮説→障害注入→観測)を説明できる</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk17" type="checkbox" /><label for="chk17"
+                                >Google
+                                Cloud上でペネトレーションテストを行う際に遵守すべき条件を説明できる</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk18" type="checkbox" /><label for="chk18"
+                                >負荷テストを実施する際に、サーバー側のボトルネックとクライアント/ネットワーク側のボトルネックを混同しないための注意点を説明できる</label
+                            >
+                        </li>
+                    </ul>
+                </div>
+
+                <h2 id="参考文献">参考文献</h2>
+
+                <div class="ref-grid" id="referenceGrid">
+                    <div class="ref-card" id="ref1">
+                        <div class="num">1</div>
+                        <div class="txt">
+                            Professional Cloud Architect Certification exam guide (PDF) — Google
+                            Cloud.
+                            <a
+                                href="https://services.google.com/fh/files/misc/professional_cloud_architect_exam_guide_english.pdf"
+                                >https://services.google.com/fh/files/misc/professional_cloud_architect_exam_guide_english.pdf</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref2">
+                        <div class="num">2</div>
+                        <div class="txt">
+                            Professional Cloud Architect Certification — Google Cloud.
+                            <a href="https://cloud.google.com/learn/certification/cloud-architect"
+                                >https://cloud.google.com/learn/certification/cloud-architect</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref3">
+                        <div class="num">3</div>
+                        <div class="txt">
+                            About the Well-Architected Framework — Google Cloud Documentation.
+                            <a
+                                href="https://docs.cloud.google.com/docs/get-started/well-architected-framework"
+                                >https://docs.cloud.google.com/docs/get-started/well-architected-framework</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref4">
+                        <div class="num">4</div>
+                        <div class="txt">
+                            Google Cloud Well-Architected Framework — Cloud Architecture Center.
+                            <a href="https://docs.cloud.google.com/architecture/framework"
+                                >https://docs.cloud.google.com/architecture/framework</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref5">
+                        <div class="num">5</div>
+                        <div class="txt">
+                            Well-Architected Framework: Operational excellence pillar — Cloud
+                            Architecture Center.
+                            <a
+                                href="https://docs.cloud.google.com/architecture/framework/operational-excellence"
+                                >https://docs.cloud.google.com/architecture/framework/operational-excellence</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref6">
+                        <div class="num">6</div>
+                        <div class="txt">
+                            Ensure operational readiness and performance using CloudOps — Cloud
+                            Architecture Center.
+                            <a
+                                href="https://docs.cloud.google.com/architecture/framework/operational-excellence/operational-readiness-and-performance-using-cloudops"
+                                >https://docs.cloud.google.com/architecture/framework/operational-excellence/operational-readiness-and-performance-using-cloudops</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref7">
+                        <div class="num">7</div>
+                        <div class="txt">
+                            Manage incidents and problems — Cloud Architecture Center.
+                            <a
+                                href="https://docs.cloud.google.com/architecture/framework/operational-excellence/manage-incidents-and-problems"
+                                >https://docs.cloud.google.com/architecture/framework/operational-excellence/manage-incidents-and-problems</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref8">
+                        <div class="num">8</div>
+                        <div class="txt">
+                            Manage and optimize cloud resources — Cloud Architecture Center.
+                            <a
+                                href="https://docs.cloud.google.com/architecture/framework/operational-excellence/manage-and-optimize-cloud-resources"
+                                >https://docs.cloud.google.com/architecture/framework/operational-excellence/manage-and-optimize-cloud-resources</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref9">
+                        <div class="num">9</div>
+                        <div class="txt">
+                            Automate and manage change — Cloud Architecture Center.
+                            <a
+                                href="https://docs.cloud.google.com/architecture/framework/operational-excellence/automate-and-manage-change"
+                                >https://docs.cloud.google.com/architecture/framework/operational-excellence/automate-and-manage-change</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref10">
+                        <div class="num">10</div>
+                        <div class="txt">
+                            Continuously improve and innovate — Cloud Architecture Center.
+                            <a
+                                href="https://docs.cloud.google.com/architecture/framework/operational-excellence/continuously-improve-and-innovate"
+                                >https://docs.cloud.google.com/architecture/framework/operational-excellence/continuously-improve-and-innovate</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref11">
+                        <div class="num">11</div>
+                        <div class="txt">
+                            Observability and monitoring — Google Cloud Documentation.
+                            <a href="https://docs.cloud.google.com/docs/observability"
+                                >https://docs.cloud.google.com/docs/observability</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref12">
+                        <div class="num">12</div>
+                        <div class="txt">
+                            Google Cloud Observability — Google Cloud.
+                            <a href="https://cloud.google.com/products/observability"
+                                >https://cloud.google.com/products/observability</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref13">
+                        <div class="num">13</div>
+                        <div class="txt">
+                            Alerting overview — Cloud Monitoring Documentation.
+                            <a href="https://docs.cloud.google.com/monitoring/alerts"
+                                >https://docs.cloud.google.com/monitoring/alerts</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref14">
+                        <div class="num">14</div>
+                        <div class="txt">
+                            Behavior of metric-based alerting policies — Cloud Monitoring
+                            Documentation.
+                            <a
+                                href="https://docs.cloud.google.com/monitoring/alerts/concepts-indepth"
+                                >https://docs.cloud.google.com/monitoring/alerts/concepts-indepth</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref15">
+                        <div class="num">15</div>
+                        <div class="txt">
+                            Manage alerting costs — Cloud Monitoring Documentation.
+                            <a href="https://docs.cloud.google.com/monitoring/alerts/cost-control"
+                                >https://docs.cloud.google.com/monitoring/alerts/cost-control</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref16">
+                        <div class="num">16</div>
+                        <div class="txt">
+                            Manage alerting policies — Cloud Monitoring Documentation.
+                            <a href="https://docs.cloud.google.com/monitoring/alerts/manage-alerts"
+                                >https://docs.cloud.google.com/monitoring/alerts/manage-alerts</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref17">
+                        <div class="num">17</div>
+                        <div class="txt">
+                            Create metric-threshold alerting policies — Cloud Monitoring
+                            Documentation.
+                            <a
+                                href="https://docs.cloud.google.com/monitoring/alerts/using-alerting-ui"
+                                >https://docs.cloud.google.com/monitoring/alerts/using-alerting-ui</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref18">
+                        <div class="num">18</div>
+                        <div class="txt">
+                            Cloud Profiler overview — Cloud Profiler Documentation.
+                            <a href="https://docs.cloud.google.com/profiler/docs/about-profiler"
+                                >https://docs.cloud.google.com/profiler/docs/about-profiler</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref19">
+                        <div class="num">19</div>
+                        <div class="txt">
+                            Profiling concepts — Cloud Profiler Documentation.
+                            <a href="https://docs.cloud.google.com/profiler/docs/concepts-profiling"
+                                >https://docs.cloud.google.com/profiler/docs/concepts-profiling</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref20">
+                        <div class="num">20</div>
+                        <div class="txt">
+                            PerfKit Benchmarker for evaluating cloud network performance — Google
+                            Cloud Blog.
+                            <a
+                                href="https://cloud.google.com/blog/products/networking/perfkit-benchmarker-for-evaluating-cloud-network-performance"
+                                >https://cloud.google.com/blog/products/networking/perfkit-benchmarker-for-evaluating-cloud-network-performance</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref21">
+                        <div class="num">21</div>
+                        <div class="txt">
+                            PerfKitBenchmarker (GitHub) — GoogleCloudPlatform.
+                            <a href="https://github.com/GoogleCloudPlatform/PerfKitBenchmarker"
+                                >https://github.com/GoogleCloudPlatform/PerfKitBenchmarker</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref22">
+                        <div class="num">22</div>
+                        <div class="txt">
+                            Load testing best practices — Cloud Run Documentation.
+                            <a href="https://docs.cloud.google.com/run/docs/about-load-testing"
+                                >https://docs.cloud.google.com/run/docs/about-load-testing</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref23">
+                        <div class="num">23</div>
+                        <div class="txt">
+                            Guidelines for load testing backend services with Application Load
+                            Balancers — Cloud Load Balancing Documentation.
+                            <a
+                                href="https://docs.cloud.google.com/load-balancing/docs/backend-service-load-testing"
+                                >https://docs.cloud.google.com/load-balancing/docs/backend-service-load-testing</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref24">
+                        <div class="num">24</div>
+                        <div class="txt">
+                            Overview of Cloud Deploy — Cloud Deploy Documentation.
+                            <a href="https://docs.cloud.google.com/deploy/docs/overview"
+                                >https://docs.cloud.google.com/deploy/docs/overview</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref25">
+                        <div class="num">25</div>
+                        <div class="txt">
+                            Use a deployment strategy — Cloud Deploy Documentation.
+                            <a
+                                href="https://docs.cloud.google.com/deploy/docs/deployment-strategies"
+                                >https://docs.cloud.google.com/deploy/docs/deployment-strategies</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref26">
+                        <div class="num">26</div>
+                        <div class="txt">
+                            Use a canary deployment strategy — Cloud Deploy Documentation.
+                            <a
+                                href="https://docs.cloud.google.com/deploy/docs/deployment-strategies/canary"
+                                >https://docs.cloud.google.com/deploy/docs/deployment-strategies/canary</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref27">
+                        <div class="num">27</div>
+                        <div class="txt">
+                            Promote your release and manage approvals — Cloud Deploy Documentation.
+                            <a href="https://docs.cloud.google.com/deploy/docs/promote-release"
+                                >https://docs.cloud.google.com/deploy/docs/promote-release</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref28">
+                        <div class="num">28</div>
+                        <div class="txt">
+                            Deploy manually — Cloud Deploy Documentation.
+                            <a href="https://docs.cloud.google.com/deploy/docs/deploy-manually"
+                                >https://docs.cloud.google.com/deploy/docs/deploy-manually</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref29">
+                        <div class="num">29</div>
+                        <div class="txt">
+                            Get support with Cloud Customer Care — Google Cloud Documentation.
+                            <a href="https://docs.cloud.google.com/support/docs/overview"
+                                >https://docs.cloud.google.com/support/docs/overview</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref30">
+                        <div class="num">30</div>
+                        <div class="txt">
+                            Standard Support — Google Cloud.
+                            <a href="https://cloud.google.com/support/standard"
+                                >https://cloud.google.com/support/standard</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref31">
+                        <div class="num">31</div>
+                        <div class="txt">
+                            Enhanced Support overview — Cloud Customer Care Documentation.
+                            <a href="https://docs.cloud.google.com/support/docs/enhanced"
+                                >https://docs.cloud.google.com/support/docs/enhanced</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref32">
+                        <div class="num">32</div>
+                        <div class="txt">
+                            Premium Support overview — Cloud Customer Care Documentation.
+                            <a href="https://docs.cloud.google.com/support/docs/premium"
+                                >https://docs.cloud.google.com/support/docs/premium</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref33">
+                        <div class="num">33</div>
+                        <div class="txt">
+                            Getting support — Google Cloud Documentation.
+                            <a href="https://docs.cloud.google.com/docs/get-started/getting-support"
+                                >https://docs.cloud.google.com/docs/get-started/getting-support</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref34">
+                        <div class="num">34</div>
+                        <div class="txt">
+                            What is Active Assist — Recommender Documentation.
+                            <a
+                                href="https://docs.cloud.google.com/recommender/docs/whatis-activeassist"
+                                >https://docs.cloud.google.com/recommender/docs/whatis-activeassist</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref35">
+                        <div class="num">35</div>
+                        <div class="txt">
+                            Active Assist dashboard overview — Recommender Documentation.
+                            <a
+                                href="https://docs.cloud.google.com/recommender/docs/active-assist/dashboard-overview"
+                                >https://docs.cloud.google.com/recommender/docs/active-assist/dashboard-overview</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref36">
+                        <div class="num">36</div>
+                        <div class="txt">
+                            Find recommendations with Active Assist — Recommender Documentation.
+                            <a
+                                href="https://docs.cloud.google.com/recommender/docs/quickstart-active-assist"
+                                >https://docs.cloud.google.com/recommender/docs/quickstart-active-assist</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref37">
+                        <div class="num">37</div>
+                        <div class="txt">
+                            Patterns for using Active Assist at scale — Recommender Documentation.
+                            <a
+                                href="https://docs.cloud.google.com/recommender/docs/patterns-for-using-active-assist-at-scale"
+                                >https://docs.cloud.google.com/recommender/docs/patterns-for-using-active-assist-at-scale</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref38">
+                        <div class="num">38</div>
+                        <div class="txt">
+                            Personalized Service Health overview — Google Cloud Documentation.
+                            <a href="https://docs.cloud.google.com/service-health/docs/overview"
+                                >https://docs.cloud.google.com/service-health/docs/overview</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref39">
+                        <div class="num">39</div>
+                        <div class="txt">
+                            Personalized Service Health concepts — Google Cloud Documentation.
+                            <a href="https://docs.cloud.google.com/service-health/docs/concepts"
+                                >https://docs.cloud.google.com/service-health/docs/concepts</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref40">
+                        <div class="num">40</div>
+                        <div class="txt">
+                            Site Reliability Engineering — Embracing Risk — Google SRE Book.
+                            <a href="https://sre.google/sre-book/embracing-risk/"
+                                >https://sre.google/sre-book/embracing-risk/</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref41">
+                        <div class="num">41</div>
+                        <div class="txt">
+                            SRE Workbook — Error Budget Policy — Google SRE Workbook.
+                            <a href="https://sre.google/workbook/error-budget-policy/"
+                                >https://sre.google/workbook/error-budget-policy/</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref42">
+                        <div class="num">42</div>
+                        <div class="txt">
+                            SRE Workbook — Implementing SLOs — Google SRE Workbook.
+                            <a href="https://sre.google/workbook/implementing-slos/"
+                                >https://sre.google/workbook/implementing-slos/</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref43">
+                        <div class="num">43</div>
+                        <div class="txt">
+                            Site Reliability Engineering — Postmortem Culture — Google SRE Book.
+                            <a href="https://sre.google/sre-book/postmortem-culture/"
+                                >https://sre.google/sre-book/postmortem-culture/</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref44">
+                        <div class="num">44</div>
+                        <div class="txt">
+                            SRE Workbook — Postmortem Culture: Learning from Failure — Google SRE
+                            Workbook.
+                            <a href="https://sre.google/workbook/postmortem-culture/"
+                                >https://sre.google/workbook/postmortem-culture/</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref45">
+                        <div class="num">45</div>
+                        <div class="txt">
+                            SRE Workbook — Incident Response — Google SRE Workbook.
+                            <a href="https://sre.google/workbook/incident-response/"
+                                >https://sre.google/workbook/incident-response/</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref46">
+                        <div class="num">46</div>
+                        <div class="txt">
+                            SRE incident management guide — Google SRE.
+                            <a
+                                href="https://sre.google/resources/practices-and-processes/incident-management-guide/"
+                                >https://sre.google/resources/practices-and-processes/incident-management-guide/</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref47">
+                        <div class="num">47</div>
+                        <div class="txt">
+                            Getting started with chaos engineering — Google Cloud Blog.
+                            <a
+                                href="https://cloud.google.com/blog/products/devops-sre/getting-started-with-chaos-engineering"
+                                >https://cloud.google.com/blog/products/devops-sre/getting-started-with-chaos-engineering</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref48">
+                        <div class="num">48</div>
+                        <div class="txt">
+                            Using chaos engineering to test DR plans — Google Cloud Blog.
+                            <a
+                                href="https://cloud.google.com/blog/products/devops-sre/using-chaos-engineering-to-test-dr-plans"
+                                >https://cloud.google.com/blog/products/devops-sre/using-chaos-engineering-to-test-dr-plans</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref49">
+                        <div class="num">49</div>
+                        <div class="txt">
+                            Chaos testing Spanner improves reliability — Google Cloud Blog.
+                            <a
+                                href="https://cloud.google.com/blog/products/databases/chaos-testing-spanner-improves-reiliability"
+                                >https://cloud.google.com/blog/products/databases/chaos-testing-spanner-improves-reiliability</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref50">
+                        <div class="num">50</div>
+                        <div class="txt">
+                            chaos-engineering (GitHub) — GoogleCloudPlatform.
+                            <a href="https://github.com/GoogleCloudPlatform/chaos-engineering"
+                                >https://github.com/GoogleCloudPlatform/chaos-engineering</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref51">
+                        <div class="num">51</div>
+                        <div class="txt">
+                            Google Cloud Platform Acceptable Use Policy — Google Cloud.
+                            <a href="https://cloud.google.com/terms/aup"
+                                >https://cloud.google.com/terms/aup</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref52">
+                        <div class="num">52</div>
+                        <div class="txt">
+                            Cloud Security FAQ — Google Cloud Platform Console Help.
+                            <a href="https://support.google.com/cloud/answer/6262505"
+                                >https://support.google.com/cloud/answer/6262505</a
+                            >
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.13.0/mermaid.min.js"
+            integrity="sha384-UZRf8u9nzwwWPazTEEkOBkR1l9kMagS+O+Tjb5UqKRpQMAbHnygNDmiP0NM6UTvO"
+            crossorigin="anonymous"
+        ></script>
+        <script>
+            (function () {
+                'use strict';
+
+                // ---------- Mermaid init + render ----------
+                function initMermaid() {
+                    if (typeof mermaid === 'undefined') {
+                        console.warn('mermaid not loaded');
+                        return;
+                    }
+                    var fontFamily = getComputedStyle(document.body).fontFamily;
+                    mermaid.initialize({
+                        startOnLoad: false,
+                        theme: 'base',
+                        securityLevel: 'loose',
+                        fontFamily: fontFamily,
+                        themeVariables: {
+                            fontSize: '16px',
+                            background: '#0d1a2b',
+                            primaryColor: '#12233b',
+                            primaryTextColor: '#dbe4f3',
+                            primaryBorderColor: '#2c4770',
+                            lineColor: '#4a6390',
+                            secondaryColor: '#101f33',
+                            tertiaryColor: '#101f33',
+                            edgeLabelBackground: '#0d1a2b',
+                            clusterBkg: '#0d1a2b',
+                            clusterBorder: '#2c4770',
+                            nodeTextColor: '#dbe4f3',
+                        },
+                        flowchart: {
+                            useMaxWidth: false,
+                            htmlLabels: true,
+                            subGraphTitleMargin: { top: 12, bottom: 18 },
+                            nodeSpacing: 70,
+                            rankSpacing: 60,
+                            curve: 'basis',
+                        },
+                    });
+
+                    var fontSpecs = [
+                        ['700', '"Noto Sans JP"'],
+                        ['400', '"Noto Sans JP"'],
+                    ];
+                    var sample = '設計とアーキテクチャ0123ABC';
+                    var loadPromises = fontSpecs.map(function (spec) {
+                        try {
+                            return document.fonts.load(spec[0] + ' 16px ' + spec[1], sample);
+                        } catch (e) {
+                            return Promise.resolve();
+                        }
+                    });
+
+                    Promise.all(loadPromises)
+                        .then(function () {
+                            return document.fonts ? document.fonts.ready : Promise.resolve();
+                        })
+                        .catch(function () {})
+                        .then(function () {
+                            try {
+                                mermaid
+                                    .run({ querySelector: 'pre.mermaid' })
+                                    .then(function () {
+                                        healOverflowingLabels();
+                                        setTimeout(healOverflowingLabels, 600);
+                                    })
+                                    .catch(function (err) {
+                                        console.error('mermaid render error', err);
+                                    });
+                            } catch (e) {
+                                console.error('mermaid run failed', e);
+                            }
+                        });
+                }
+
+                function healOverflowingLabels() {
+                    document.querySelectorAll('pre.mermaid svg').forEach(function (svg) {
+                        svg.querySelectorAll('.node').forEach(function (node) {
+                            var rect = node.querySelector('rect.basic, rect');
+                            var fo = node.querySelector('foreignObject');
+                            if (!rect || !fo) return;
+                            var div = fo.querySelector('div');
+                            if (!div) return;
+                            var neededW = div.scrollWidth;
+                            var neededH = div.scrollHeight;
+                            var curW = parseFloat(fo.getAttribute('width')) || 0;
+                            var curH = parseFloat(fo.getAttribute('height')) || 0;
+                            if (neededW > curW - 2 || neededH > curH - 2) {
+                                var buffer = 6;
+                                var newW = Math.max(curW, neededW + buffer);
+                                var newH = Math.max(curH, neededH + buffer);
+                                var x = parseFloat(fo.getAttribute('x')) || 0;
+                                var y = parseFloat(fo.getAttribute('y')) || 0;
+                                var dx = (newW - curW) / 2;
+                                var dy = (newH - curH) / 2;
+                                fo.setAttribute('width', newW);
+                                fo.setAttribute('height', newH);
+                                fo.setAttribute('x', x - dx);
+                                fo.setAttribute('y', y - dy);
+                                var rx = parseFloat(rect.getAttribute('x'));
+                                var ry = parseFloat(rect.getAttribute('y'));
+                                var rw = parseFloat(rect.getAttribute('width'));
+                                var rh = parseFloat(rect.getAttribute('height'));
+                                if (!isNaN(rx) && !isNaN(rw)) {
+                                    rect.setAttribute('x', rx - dx);
+                                    rect.setAttribute('width', rw + newW - curW);
+                                }
+                                if (!isNaN(ry) && !isNaN(rh)) {
+                                    rect.setAttribute('y', ry - dy);
+                                    rect.setAttribute('height', rh + newH - curH);
+                                }
+                            }
+                        });
+                    });
+                }
+
+                try {
+                    initMermaid();
+                } catch (e) {
+                    console.error('mermaid init failed', e);
+                }
+
+                // ---------- Sidebar toggle (mobile) ----------
+                var sidebar = document.getElementById('sidebar');
+                var toggle = document.getElementById('sidebarToggle');
+                if (toggle) {
+                    toggle.addEventListener('click', function () {
+                        sidebar.classList.toggle('open');
+                    });
+                }
+                document.querySelectorAll('#sidebarNav a').forEach(function (a) {
+                    a.addEventListener('click', function () {
+                        sidebar.classList.remove('open');
+                    });
+                });
+
+                // ---------- Scroll-spy ----------
+                var navLinks = Array.from(document.querySelectorAll('#sidebarNav a'));
+                var linkMap = new Map();
+                navLinks.forEach(function (a) {
+                    var id = decodeURIComponent(a.getAttribute('href').slice(1));
+                    linkMap.set(id, a);
+                });
+
+                var headings = Array.from(linkMap.keys())
+                    .map(function (id) {
+                        return document.getElementById(id);
+                    })
+                    .filter(Boolean);
+
+                var spyObserver = new IntersectionObserver(
+                    function (entries) {
+                        entries.forEach(function (entry) {
+                            var link = linkMap.get(entry.target.id);
+                            if (!link) return;
+                            if (entry.isIntersecting) {
+                                navLinks.forEach(function (a) {
+                                    a.classList.remove('active');
+                                });
+                                link.classList.add('active');
+                            }
+                        });
+                    },
+                    { rootMargin: '-15% 0px -75% 0px', threshold: 0 },
+                );
+
+                headings.forEach(function (h) {
+                    spyObserver.observe(h);
+                });
+
+                // ---------- Checklist progress ----------
+                document.querySelectorAll('.checklist-card').forEach(function (card) {
+                    var boxes = card.querySelectorAll('input[type="checkbox"]');
+                    var counter = card.querySelector('.count');
+                    function update() {
+                        var checked = card.querySelectorAll(
+                            'input[type="checkbox"]:checked',
+                        ).length;
+                        if (counter) counter.textContent = checked + ' / ' + boxes.length + ' 完了';
+                    }
+                    boxes.forEach(function (b) {
+                        b.addEventListener('change', update);
+                    });
+                    update();
+                });
+            })();
+        </script>
+    </body>
+</html>

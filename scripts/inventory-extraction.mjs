@@ -17,6 +17,23 @@ export const codeText = (block) => codeLines(block).join('\n');
 
 export const codeLineCount = (block) => codeLines(block).length;
 
+/**
+ * 表の列見出し（th）の数を数える。
+ *
+ * 移行元 HTML は `<thead>` を持たず `<tr><th>…` だけで見出し行を表すことがある。
+ * `thead th` だけで数えると、そうした表は常に 0 件となり列見出しの検証が空振りする。
+ * thead があればその th を、無ければ最初の行の th を列見出しとして数える。
+ *
+ * @param {Element} table - The table element.
+ * @returns {number} The number of column header cells.
+ */
+export const columnHeaderCount = (table) => {
+    const head = table.querySelector('thead');
+    if (head !== null) return head.querySelectorAll('th').length;
+    const firstRow = table.querySelector('tr');
+    return firstRow === null ? 0 : firstRow.querySelectorAll('th').length;
+};
+
 export const bodySelector =
     `p, aside, .annotation, [class*="callout"], img[alt], ${codeBlockSelector}`;
 

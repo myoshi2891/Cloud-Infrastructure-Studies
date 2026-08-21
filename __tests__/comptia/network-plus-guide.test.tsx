@@ -1,16 +1,11 @@
 // __tests__/comptia/network-plus-guide.test.tsx
 // @vitest-environment jsdom
 import { render } from '@testing-library/react';
-import { readFileSync } from 'node:fs';
-import { join } from 'node:path';
 import { describe, expect, it, vi } from 'vitest';
 import inventory from '@/docs/migration-inventory/comptia-network-plus-guide.json';
 import Page from '@/app/comptia/network-plus/page';
+import fidelity from '@/docs/migration-inventory/comptia-network-plus-guide.fidelity.json';
 
-const sourceHtml = readFileSync(
-    join(process.cwd(), 'archive/CompTIA/html/Comptia-network-plus-guide.html'),
-    'utf8',
-);
 
 // MermaidDiagram は名前付きエクスポート。default でモックすると落ちる
 vi.mock('@/components/MermaidDiagram', () => ({
@@ -121,18 +116,14 @@ describe('CompTIA Network+ Guide — 移行元コンテンツの全量移行', (
         expect(extractBodyContent(container)).toEqual(inventory.bodyContent);
     });
 
-    it('導入文と Mermaid 定義の全文が移行元 HTML と一致する', () => {
-        const sourceDocument = new DOMParser().parseFromString(sourceHtml, 'text/html');
-        const sourceIntroduction = sourceDocument.querySelector('.doc-header .subtitle')?.textContent ?? '';
-        const sourceMermaid = [...sourceDocument.querySelectorAll('script[type="text/mermaid"]')]
-            .map((script) => normalizeMermaid(script.textContent ?? ''));
+    it('導入文と Mermaid 定義の全文が移行元と一致する', () => {
         const container = renderPage();
         const renderedIntroduction = container.querySelector('.doc-header .subtitle')?.textContent ?? '';
         const renderedMermaid = [...container.querySelectorAll('[data-testid="mermaid-diagram"]')]
             .map((diagram) => normalizeMermaid(diagram.getAttribute('data-chart') ?? ''));
 
-        expect(normalize(renderedIntroduction)).toBe(normalize(sourceIntroduction));
-        expect(renderedMermaid).toEqual(sourceMermaid);
+        expect(normalize(renderedIntroduction)).toBe(fidelity.introduction);
+        expect(renderedMermaid).toEqual(fidelity.mermaidCharts);
     });
 
     it('全形式の図が件数どおり存在し、説明または装飾指定を持つ', () => {

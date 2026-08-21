@@ -182,6 +182,43 @@ Markdown ソースの場合は `marked`（導入済み）で HTML 化してか�
 - インベントリは**移行元の状態**を表す。実装に合わせてインベントリを書き換えることは**改竄であり禁止**。移行元に誤りがある場合のみ、理由をコミットメッセージに明記して修正する。
 - コミット: `chore(migration): add content inventory for <page-slug>`
 
+### 1-3. 移行元アーカイブを消す前に fixture を作る（テストから移行元への依存を残さない）
+
+`/archive/` は `.gitignore` 済みの**ローカル専用資産**である。CI とクリーンな clone には存在しない。
+したがって **テスト実行時に `archive/...` を読むテストを書いてはならない**。移行元を読むテストは、
+アーカイブを整理した瞬間に `ENOENT` で落ち、移行漏れ検出の役目ごと失われる。
+
+移行元の内容に依存する検証は、期待値を**コミット済みの fixture** に落としてから書く。
+
+| 検証したいもの | 期待値の置き場所 | 生成コマンド |
+|---|---|---|
+| 見出し・表セル・リスト・リンク・本文全文・件数 | `docs/migration-inventory/<page-slug>.json` | `bun scripts/gen-inventory.mjs <移行元>` |
+| 表の結合属性・コード行・ハイライトトークン・CSS クラス・要素の配置順・全文照合 | `docs/migration-inventory/<page-slug>.fidelity.json` | `bun scripts/gen-fidelity-fixture.mjs <slug>` |
+
+抽出ロジックは生成側とテスト側で**必ず共有**する（`scripts/inventory-extraction.mjs` /
+`scripts/archive-fidelity-extraction.mjs`）。テストファイル内へ抽出処理を複製すると、
+片側だけの変更で検証が静かに無効化される。
+
+fidelity fixture の対象ページと抽出セレクタは `scripts/archive-fidelity-config.mjs` が唯一の正本。
+新しいページを追加するときはここに 1 エントリ足してから生成する。
+
+**アーカイブを削除したあとに fixture を作り直す手順**（移行元は履歴から取り出せる）:
+
+```bash
+# 1. fixture を生成する。生成器は設定の sourceCommit が指すリビジョンから
+#    `git show <sha>:<source>` で移行元を直接読むため、作業ツリーへの一時復元は不要。
+bun scripts/gen-fidelity-fixture.mjs <slug>
+# 2. 移行元が無い状態でテストが通ることを確認する
+bun run test
+```
+
+移行元を作業ツリーへ復元してはならない。復元物を読ませると fixture の中身と
+`sourceCommit` が別のリビジョンを指しうる（復元し忘れによる残留物・別リビジョンからの
+復元・手元での編集）。git から直接読むことで、この 2 つは常に同じ固定リビジョンに対応する。
+
+「移行元を消した状態で緑になること」の確認は必須である。ここを飛ばすと、
+ローカルにだけ残った移行元にテストが依存したままであることに気づけない。
+
 ---
 
 ## 2. テスト強度の合格基準（Test Strength Gate）
@@ -519,7 +556,7 @@ describe('<page-slug> — 移行元コンテンツの全量移行', () => {
 # .agents/ を編集したあと、両ミラーへ反映する
 rsync -a --delete .agents/rules/ .claude/rules/
 rsync -a --delete .agents/rules/ .gemini/rules/
-for skill in fix-mermaid html-to-nextjs-migration md-to-nextjs-migration markdown-formatter spec-sync; do
+for skill in fix-mermaid html-to-nextjs-migration md-to-html md-to-nextjs-migration markdown-formatter spec-sync; do
   rsync -a --delete ".agents/skills/$skill/" ".claude/skills/$skill/" || exit 1
   rsync -a --delete ".agents/skills/$skill/" ".gemini/skills/$skill/" || exit 1
 done
