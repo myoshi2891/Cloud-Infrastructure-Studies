@@ -75,6 +75,12 @@
 .mermaidTarget :global(.node[style*="e8f0fe" i] .nodeLabel *),
 .mermaidTarget :global(.node[style*="f1f3f4" i] .nodeLabel),
 .mermaidTarget :global(.node[style*="f1f3f4" i] .nodeLabel *),
+.mermaidTarget :global(.node[style*="fef7e0" i] .nodeLabel),
+.mermaidTarget :global(.node[style*="fef7e0" i] .nodeLabel *),
+.mermaidTarget :global(.node[style*="f3e8fd" i] .nodeLabel),
+.mermaidTarget :global(.node[style*="f3e8fd" i] .nodeLabel *),
+.mermaidTarget :global(.node[style*="e0f7fa" i] .nodeLabel),
+.mermaidTarget :global(.node[style*="e0f7fa" i] .nodeLabel *),
 .mermaidTarget :global(.yellowFill),
 .mermaidTarget :global(.yellowFill .nodeLabel),
 .mermaidTarget :global(.yellowFill .nodeLabel *),
@@ -108,6 +114,12 @@
 .mermaidTarget :global(.node:has([style*="e8f0fe" i]) .nodeLabel *),
 .mermaidTarget :global(.node:has([style*="f1f3f4" i]) .nodeLabel),
 .mermaidTarget :global(.node:has([style*="f1f3f4" i]) .nodeLabel *),
+.mermaidTarget :global(.node:has([style*="fef7e0" i]) .nodeLabel),
+.mermaidTarget :global(.node:has([style*="fef7e0" i]) .nodeLabel *),
+.mermaidTarget :global(.node:has([style*="f3e8fd" i]) .nodeLabel),
+.mermaidTarget :global(.node:has([style*="f3e8fd" i]) .nodeLabel *),
+.mermaidTarget :global(.node:has([style*="e0f7fa" i]) .nodeLabel),
+.mermaidTarget :global(.node:has([style*="e0f7fa" i]) .nodeLabel *),
 .mermaidTarget :global(.node:has([fill*="fbbc04" i]) .nodeLabel),
 .mermaidTarget :global(.node:has([fill*="fbbc04" i]) .nodeLabel *),
 .mermaidTarget :global(.node:has([fill*="ffe08a" i]) .nodeLabel),
@@ -125,7 +137,13 @@
 .mermaidTarget :global(.node:has([fill*="e8f0fe" i]) .nodeLabel),
 .mermaidTarget :global(.node:has([fill*="e8f0fe" i]) .nodeLabel *),
 .mermaidTarget :global(.node:has([fill*="f1f3f4" i]) .nodeLabel),
-.mermaidTarget :global(.node:has([fill*="f1f3f4" i]) .nodeLabel *) {
+.mermaidTarget :global(.node:has([fill*="f1f3f4" i]) .nodeLabel *),
+.mermaidTarget :global(.node:has([fill*="fef7e0" i]) .nodeLabel),
+.mermaidTarget :global(.node:has([fill*="fef7e0" i]) .nodeLabel *),
+.mermaidTarget :global(.node:has([fill*="f3e8fd" i]) .nodeLabel),
+.mermaidTarget :global(.node:has([fill*="f3e8fd" i]) .nodeLabel *),
+.mermaidTarget :global(.node:has([fill*="e0f7fa" i]) .nodeLabel),
+.mermaidTarget :global(.node:has([fill*="e0f7fa" i]) .nodeLabel *) {
     color: #000000 !important;
     fill: #000000 !important;
 }

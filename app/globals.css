@@ -49,6 +49,25 @@
     --color-theme-pca-bg: hsl(215 65% 55% / 0.25);
     --color-theme-pca-fg: hsl(215 100% 75%);
 
+    /* PCA Section 1 guide */
+    --color-pca-s1-background: #07111e;
+    --color-pca-s1-surface-1: #0d1a2b;
+    --color-pca-s1-surface-2: #0f1d30;
+    --color-pca-s1-border: #1c2c42;
+    --color-pca-s1-border-strong: #28405e;
+    --color-pca-s1-foreground: #dbe4f3;
+    --color-pca-s1-foreground-dim: #8fa2bd;
+    --color-pca-s1-foreground-dimmer: #4f6178;
+    --color-pca-s1-accent: #7c9eff;
+    --color-pca-s1-accent-strong: #a5c0ff;
+    --color-pca-s1-accent-soft: rgba(124, 158, 255, 0.12);
+    --color-pca-s1-hero-grad-a: #7c9eff;
+    --color-pca-s1-hero-grad-b: #a78bfa;
+    --color-pca-s1-amber: #f9ab00;
+    --color-pca-s1-red: #f28b82;
+    --color-pca-s1-green: #81c995;
+
+
     /* Shared dark-guide surfaces */
     --color-guide-background: #07111e;
     --color-guide-surface-1: #0b1729;

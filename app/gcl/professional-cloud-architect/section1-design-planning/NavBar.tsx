@@ -16,11 +16,10 @@ export function NavBar({ isOpen, onToggle, onClose }: NavBarProps) {
     const [activeId, setActiveId] = useState<string>(NAV_ITEMS[0]?.id ?? '');
 
     useEffect(() => {
-        if (typeof IntersectionObserver === 'undefined') return;
-
-        const targetElements = NAV_ITEMS.map((item) => document.getElementById(item.id)).filter(
-            (el): el is HTMLElement => el !== null,
-        );
+        const navLevel2Items = NAV_ITEMS.filter((item) => item.level === 2);
+        const targetElements = navLevel2Items
+            .map((item) => document.getElementById(item.id))
+            .filter((el): el is HTMLElement => el !== null);
 
         if (targetElements.length === 0) return;
 
@@ -40,10 +39,31 @@ export function NavBar({ isOpen, onToggle, onClose }: NavBarProps) {
 
         targetElements.forEach((el) => observer.observe(el));
 
+        const handleScroll = () => {
+            const scrollY = window.scrollY || window.pageYOffset;
+            const windowHeight = window.innerHeight;
+            const docHeight = document.documentElement.scrollHeight;
+            if (scrollY + windowHeight >= docHeight - 40) {
+                const lastItem = navLevel2Items[navLevel2Items.length - 1];
+                if (lastItem) setActiveId(lastItem.id);
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll, { passive: true });
+
         return () => {
             observer.disconnect();
+            window.removeEventListener('scroll', handleScroll);
         };
     }, []);
+
+    useEffect(() => {
+        if (!activeId) return;
+        const activeLink = document.querySelector(`.sidebar nav a[href="#${activeId}"]`);
+        if (activeLink && typeof activeLink.scrollIntoView === 'function') {
+            activeLink.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        }
+    }, [activeId]);
 
     const handleNavClick = useCallback(
         (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
@@ -80,7 +100,7 @@ export function NavBar({ isOpen, onToggle, onClose }: NavBarProps) {
                     <span>PCA セクション1ガイド</span>
                 </div>
                 {' '}
-                <nav id="sideNav">
+                <nav id="sideNav" aria-label="セクション目次">
                     <ul>
                         {NAV_ITEMS.filter((item) => item.level === 2).map((item: NavItem) => (
                             <li key={item.id}>
