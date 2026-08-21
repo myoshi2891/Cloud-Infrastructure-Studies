@@ -14,11 +14,14 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import CcnaNetworkFundamentalsGuide from '@/app/cisco/ccna/automation-network-fundamentals/CcnaNetworkFundamentalsGuide';
 import NavBar from '@/app/cisco/ccna/automation-network-fundamentals/NavBar';
 import Page, { metadata } from '@/app/cisco/ccna/automation-network-fundamentals/page';
+import fidelity from '@/docs/migration-inventory/ccna-automation-network-fundamentals.fidelity.json';
 import {
     expectContentCssCoverage,
     expectElementPlacementFidelity,
+    expectInlineCodeFidelity,
     expectSupplementalFidelity,
     expectTableFidelity,
+    expectTextFidelity,
 } from '../archive-fidelity';
 
 const { mermaidRenderMock } = vi.hoisted(() => ({ mermaidRenderMock: vi.fn() }));
@@ -50,32 +53,10 @@ describe('CCNA Automation Network Fundamentals Guide - Automated 100% Text & Str
         expect(pageElement).toBeTruthy();
     });
 
-    it('verifies 100% text fidelity against source HTML file automatically', () => {
-        const htmlPath = path.resolve(process.cwd(), 'archive/Cisco/html/ccna/Ccna-automation-network-fundamentals.html');
-        const htmlRaw = fs.readFileSync(htmlPath, 'utf8');
-        const domHtml = new JSDOM(htmlRaw);
-        const docHtml = domHtml.window.document;
-
+    it('verifies 100% text fidelity against the committed source fixture', () => {
         const { container } = render(<CcnaNetworkFundamentalsGuide />);
-        // Strip all whitespace for 100% characters match regardless of JSX newlines
-        const jsxTextNormalized = (container.textContent || '').replace(/\s+/g, '');
 
-        const sourceElements = Array.from(docHtml.querySelectorAll('main h1, main h2, main h3, main p, main li, main th, main td, main a.ref-url, main span.ref-name'));
-        const missingTexts: string[] = [];
-
-        sourceElements.forEach((el) => {
-            const textNormalized = (el.textContent || '').replace(/\s+/g, '');
-            if (textNormalized && !jsxTextNormalized.includes(textNormalized)) {
-                missingTexts.push(el.textContent?.replace(/\s+/g, ' ').trim() || '');
-            }
-        });
-
-        if (missingTexts.length > 0) {
-            console.error(`\n❌ [AUTOMATED CHECK FAILED] Found ${missingTexts.length} missing elements from source HTML:\n`);
-            missingTexts.forEach((t, i) => console.error(`  ${i + 1}. "${t}"`));
-        }
-
-        expect(missingTexts).toEqual([]);
+        expectTextFidelity(fidelity.texts, container);
     });
 
     it('renders NavBar with active section highlight capability (ScrollSpy)', () => {
@@ -143,40 +124,22 @@ describe('CCNA Automation Network Fundamentals Guide - Automated 100% Text & Str
         }
     });
 
-    it('preserves reference link text, count, and href values from the source HTML', () => {
-        const htmlPath = path.resolve(
-            process.cwd(),
-            'archive/Cisco/html/ccna/Ccna-automation-network-fundamentals.html',
-        );
-        const sourceDocument = new JSDOM(fs.readFileSync(htmlPath, 'utf8')).window.document;
-        const sourceLinks = Array.from(
-            sourceDocument.querySelectorAll<HTMLElement>('.ref-url'),
-        );
+    it('preserves reference link text, count, and href values from the source fixture', () => {
         const { container } = render(<CcnaNetworkFundamentalsGuide />);
         const migratedLinks = Array.from(
             container.querySelectorAll<HTMLAnchorElement>('a.ref-url'),
         );
 
-        expect(migratedLinks).toHaveLength(sourceLinks.length);
+        expect(migratedLinks).toHaveLength(fidelity.refUrls.length);
         expect(
             migratedLinks.map((link) => ({
                 text: link.textContent?.trim(),
                 href: link.getAttribute('href'),
             })),
-        ).toEqual(
-            sourceLinks.map((link) => ({
-                text: link.textContent?.trim(),
-                href: link.textContent?.trim(),
-            })),
-        );
+        ).toEqual(fidelity.refUrls.map((url) => ({ text: url, href: url })));
     });
 
     it('preserves every table cell, supplemental item, inline-code token, CSS class, and element placement', () => {
-        const htmlPath = path.resolve(
-            process.cwd(),
-            'archive/Cisco/html/ccna/Ccna-automation-network-fundamentals.html',
-        );
-        const sourceDocument = new JSDOM(fs.readFileSync(htmlPath, 'utf8')).window.document;
         const { container } = render(<CcnaNetworkFundamentalsGuide />);
         const css = fs.readFileSync(
             path.resolve(
@@ -185,25 +148,21 @@ describe('CCNA Automation Network Fundamentals Guide - Automated 100% Text & Str
             ),
             'utf8',
         );
-        const inlineCode = (root: ParentNode) =>
-            Array.from(root.querySelectorAll('main code:not(pre code), code:not(pre code)'), (code) =>
-                code.textContent?.replace(/\s+/g, ' ').trim(),
-            );
 
-        expectTableFidelity(sourceDocument, container);
+        expectTableFidelity(fidelity.tables, container);
         expectSupplementalFidelity(
-            sourceDocument,
+            fidelity.supplemental,
             container,
             '.callout, .meta-card, .diagram-caption',
         );
-        expect(inlineCode(container)).toEqual(inlineCode(sourceDocument));
-        expectContentCssCoverage(sourceDocument, container, css, {
+        expectInlineCodeFidelity(fidelity.inlineCode, container);
+        expectContentCssCoverage(fidelity.styledClasses, container, css, {
             prose: 'ccna-network-fundamentals-page',
             'domain-highlight': 'this-domain',
             mermaid: 'diagram-wrapper',
         });
         expectElementPlacementFidelity(
-            sourceDocument,
+            fidelity.placements,
             container,
             '.table-wrapper > table, .diagram-block, .callout',
         );

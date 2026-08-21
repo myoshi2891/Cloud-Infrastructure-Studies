@@ -1,6 +1,4 @@
 import { JSDOM } from 'jsdom';
-import fs from 'node:fs';
-import path from 'node:path';
 
 const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>', { url: 'http://localhost' });
 (globalThis as any).window = dom.window;
@@ -15,6 +13,8 @@ import Page, { generateMetadata } from '@/app/cisco/ccna/network-access-guide/pa
 import CcnaNetworkAccessGuide from '@/app/cisco/ccna/network-access-guide/CcnaNetworkAccessGuide';
 import NavBar from '@/app/cisco/ccna/network-access-guide/NavBar';
 import { DIAGRAMS } from '@/app/cisco/ccna/network-access-guide/constants';
+import fidelity from '@/docs/migration-inventory/ccna-network-access-guide.fidelity.json';
+import { expectTextFidelity } from '../archive-fidelity';
 
 // Mock MermaidDiagram
 vi.mock('@/components/MermaidDiagram', () => ({
@@ -79,33 +79,10 @@ describe('CCNA Network Access Guide Page - Automated 100% Fidelity & Structural 
         expect(diagrams).toHaveLength(17);
     });
 
-    it('verifies 100% text fidelity against source HTML file automatically', () => {
-        const htmlPath = path.resolve(process.cwd(), 'archive/Cisco/html/ccna/Ccna-network-access-guide.html');
-        const htmlRaw = fs.readFileSync(htmlPath, 'utf8');
-        const domHtml = new JSDOM(htmlRaw);
-        const docHtml = domHtml.window.document;
-
+    it('verifies 100% text fidelity against the committed source fixture', () => {
         const { container } = render(<CcnaNetworkAccessGuide />);
-        const jsxTextNormalized = (container.textContent || '').replace(/\s+/g, '');
 
-        const sourceElements = Array.from(
-            docHtml.querySelectorAll('main h1, main h2, main h3, main p, main li, main th, main td, main a')
-        );
-        const missingTexts: string[] = [];
-
-        sourceElements.forEach((el) => {
-            const textNormalized = (el.textContent || '').replace(/\s+/g, '');
-            if (textNormalized && !jsxTextNormalized.includes(textNormalized)) {
-                missingTexts.push(el.textContent?.replace(/\s+/g, ' ').trim() || '');
-            }
-        });
-
-        if (missingTexts.length > 0) {
-            console.error(`\n❌ [AUTOMATED CHECK FAILED] Found ${missingTexts.length} missing elements from source HTML:\n`);
-            missingTexts.forEach((t, i) => console.error(`  ${i + 1}. "${t}"`));
-        }
-
-        expect(missingTexts).toEqual([]);
+        expectTextFidelity(fidelity.texts, container);
     });
 
     it('renders NavBar component with TOC links', () => {

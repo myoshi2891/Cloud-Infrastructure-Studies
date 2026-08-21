@@ -1,8 +1,9 @@
 import { render, screen } from '@testing-library/react';
-import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
 import DevNetAssociateGuide from '../app/cisco/devnet-associate/DevNetAssociateGuide';
 import { DIAGRAMS } from '../app/cisco/devnet-associate/constants';
+import fidelity from '@/docs/migration-inventory/cisco-devnet-associate-guide.fidelity.json';
+import { snapshotHeaderBodyTables } from '@/scripts/archive-fidelity-extraction.mjs';
 
 // MermaidDiagramのモック化
 vi.mock('@/components/MermaidDiagram', () => ({
@@ -68,23 +69,10 @@ describe('Cisco DevNet Associate Guide Migration Verification', () => {
 
     it('11個のテーブルの全ヘッダー、全データセル、列構造が移行元と一致すること', () => {
         const { container } = render(<DevNetAssociateGuide />);
-        const source = readFileSync(
-            'archive/Cisco/html/devnet/Cisco-devnet-associate-guide.html',
-            'utf8'
-        );
-        const sourceDocument = new DOMParser().parseFromString(source, 'text/html');
-        const normalize = (value: string | null) => value?.replace(/\s+/g, ' ').trim() ?? '';
-        const tableSnapshot = (table: Element) => ({
-            headers: Array.from(table.querySelectorAll('thead th'), (cell) => normalize(cell.textContent)),
-            rows: Array.from(table.querySelectorAll('tbody tr'), (row) =>
-                Array.from(row.querySelectorAll('td'), (cell) => normalize(cell.textContent))
-            ),
-        });
-        const expectedTables = Array.from(sourceDocument.querySelectorAll('main table'), tableSnapshot);
-        const renderedTables = Array.from(container.querySelectorAll('main table'), tableSnapshot);
+        const renderedTables = snapshotHeaderBodyTables(container, 'main table');
 
-        expect(expectedTables).toHaveLength(11);
-        expect(renderedTables).toEqual(expectedTables);
+        expect(fidelity.headerBodyTables).toHaveLength(11);
+        expect(renderedTables).toEqual(fidelity.headerBodyTables);
     });
 
     it('4つのMermaid図解のアクセシビリティラベルとDSLが正しく定義されていること', () => {
