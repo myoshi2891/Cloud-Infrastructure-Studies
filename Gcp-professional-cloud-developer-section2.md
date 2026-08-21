@@ -286,7 +286,9 @@ sequenceDiagram
 
 > **ベストプラクティス**
 > - ローカル開発では`gcloud auth login`と`gcloud auth application-default login`の両方を意識して使い分ける。前者はgcloudコマンド自体の認証、後者はアプリケーションコードが使うクライアントライブラリの認証であり、片方だけでは不十分な場面がある。
-> - ユーザー認証情報のADCでクライアントライブラリベースのAPIを呼び出す場合は、割り当て（quota）プロジェクトの設定が必要で、ADCのプリンシパルにはそのプロジェクトに対する`serviceusage.services.use`権限が必要になる。権限は常にリソースを所有するプロジェクトに課金されるよう構成し、付与時はEditorやOwnerのような広範なロールではなく、最小権限の`roles/serviceusage.serviceUsageConsumer`を選ぶ。
+> - ユーザー認証情報のADCでクライアントライブラリを使う場合、どのプロジェクトのAPI割り当て（quota）を消費するかは**割り当てプロジェクト**で決まる。`gcloud auth application-default set-quota-project`などで割り当てプロジェクトを明示的に設定した場合、ADCのプリンシパルにはそのプロジェクトに対する`serviceusage.services.use`権限が必要になる。付与時はEditorやOwnerのような広範なロールではなく、最小権限の`roles/serviceusage.serviceUsageConsumer`を選ぶ。
+> - APIの種類によって割り当てプロジェクトの決まり方が異なる点に注意する。Compute EngineのようなリソースベースのAPIは、操作対象リソースが属するプロジェクトがそのまま割り当てプロジェクトとして使われるため、明示設定がなくても動作する。一方、Cloud Translationのようなクライアントベースの（操作対象リソースを持たない）APIは、割り当てプロジェクトが明示的に構成されていないと呼び出しが失敗する。
+> - 割り当てプロジェクトと課金先は別概念であり、「常にリソースを所有するプロジェクトへ課金される」とは限らない。課金先はAPIごとのルールに従う。例えばPub/Subでは、publish（発行）はトピックが属するプロジェクトへ、subscribe（受信）はサブスクリプションが属するプロジェクトへ課金されるため、トピックとサブスクリプションが別プロジェクトにある構成では課金先も分かれる。
 > - AIコーディングアシスタントにMCPサーバーを接続する際は、通常のユーザーIDではなく専用のエージェント用IDを用意し、アクセス範囲を監視・制御できるようにする。
 > - エージェントモードでMCPサーバーやツール呼び出しを許可する際は、エージェントがファイルシステムやターミナル操作にアクセスできる点を踏まえ、すべてのアクションを自動承認する設定は慎重に扱う。
 > - IDE・AIツール・MCPサーバーの提供形態は変化が速い領域のため、製品選定時は必ず公式リリースノートで現在の提供状況を確認する。
@@ -368,7 +370,7 @@ images:
 
 `$SHORT_SHA`の扱いには注意が必要です。`$SHORT_SHA`はビルドトリガー経由の実行では自動的に設定されますが、手元から`gcloud builds submit`を直接実行した場合は自動設定されず、未指定のままだと空文字列になります。手動実行時は`$BUILD_ID`やユーザー定義の`$_IMAGE_TAG`を使うか、`--substitutions=SHORT_SHA=...`で明示的に値を渡します。
 
-Artifact Registryへイメージを保存するもう一つの代表的な方法として、Cloud Buildを介さずに`gcloud builds submit`を直接呼び出すシンプルな方法もあります。Cloud Buildを使ってコンテナをビルドし、自動的にArtifact Registryへpushするには`gcloud builds submit . -t LOCATION-docker.pkg.dev/PROJECT_ID/REPO/IMAGE:TAG`のようなコマンドを実行します。 自動スキャンには前提条件があります。Container Scanning APIを有効化している場合、標準（standard）またはリモート（remote）のDockerリポジトリにpushされたイメージが自動スキャンの対象になります。それ以外の対応リポジトリ形式では、リポジトリ単位でスキャンを有効化する必要があります。Container Analysisをその他の情報と統合することで、そのメタデータに基づいた意思決定が可能になります。例えば、信頼できるレジストリからの準拠したイメージのみをデプロイ対象として許可するデプロイポリシーを、Binary Authorizationで作成できます。
+Artifact Registryへイメージを保存するもう一つの代表的な方法として、`cloudbuild.yaml`のようなビルド構成ファイルを用意せずに`gcloud builds submit`を直接呼び出すシンプルな方法もあります。この場合もビルドはローカルで実行されるのではなくCloud Buildへ送信されます。`-t`（`--tag`）を指定すると、カレントディレクトリのソースに含まれる`Dockerfile`からイメージをビルドするビルド構成がCloud Build側で暗黙に生成され、ビルドされたイメージが自動的にArtifact Registryへpushされます。実際のコマンドは`gcloud builds submit . -t LOCATION-docker.pkg.dev/PROJECT_ID/REPO/IMAGE:TAG`のようになります。 自動スキャンには前提条件があります。Container Scanning APIを有効化している場合、標準（standard）またはリモート（remote）のDockerリポジトリにpushされたイメージが自動スキャンの対象になります。それ以外の対応リポジトリ形式では、リポジトリ単位でスキャンを有効化する必要があります。Container Analysisをその他の情報と統合することで、そのメタデータに基づいた意思決定が可能になります。例えば、信頼できるレジストリからの準拠したイメージのみをデプロイ対象として許可するデプロイポリシーを、Binary Authorizationで作成できます。
 
 > **ベストプラクティス**
 > - イメージのタグに`latest`を使わず、Gitのコミットハッシュ（`$SHORT_SHA`）やセマンティックバージョンなど、一意で追跡可能な値を使う。ロールバックや監査の際に、どのソースからビルドされたイメージかを一意に特定できるようにするため。
