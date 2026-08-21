@@ -161,7 +161,7 @@
     margin: 14px 0;
 }
 
-.pca-page .main ul {
+.pca-page .main ul:not(.checklist-list) {
     list-style-type: disc !important;
     color: var(--color-guide-foreground);
     padding-left: 26px;
@@ -371,8 +371,9 @@
 }
 
 .pca-page ul.checklist-list {
-    list-style: none;
-    padding-left: 0;
+    list-style: none !important;
+    list-style-type: none !important;
+    padding-left: 0 !important;
     margin: 0;
 }
 
@@ -459,8 +460,9 @@
 }
 
 .pca-page .ref-card ul {
-    list-style: none;
-    padding-left: 0;
+    list-style: none !important;
+    list-style-type: none !important;
+    padding-left: 0 !important;
     margin: 0;
 }
 
