@@ -5,9 +5,9 @@
  *   bun scripts/gen-fidelity-fixture.mjs <slug>   # 1 ページ
  *   bun scripts/gen-fidelity-fixture.mjs --all    # 設定済みの全ページ
  *
- * 移行元 HTML は `/archive/` 配下（.gitignore 済み）にあり、既に削除済みのものは
- * 設定の `sourceCommit` から一時復元してから実行する。
- *   git show <sourceCommit>:<source> > <source>
+ * 移行元 HTML は `/archive/` 配下（.gitignore 済み）にあるが、作業ツリーではなく設定の
+ * `sourceCommit` が指す git リビジョンから直接読み出す。そのため事前の一時復元は不要で、
+ * fixture の中身と `sourceCommit` は常に同じリビジョンに対応する。
  */
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
@@ -53,24 +53,42 @@ function resolveCommit(revision) {
 }
 
 /**
+ * 固定した commit から移行元 HTML を読み出す。
+ *
+ * 作業ツリーの復元物を読むと、fixture の中身と `sourceCommit` が別のリビジョンを指しうる
+ * （復元し忘れによる残留物・別リビジョンからの復元・手元での編集）。git のオブジェクトから
+ * 直接読むことで、fixture の中身と `sourceCommit` が常に同じ固定リビジョンに対応する。
+ *
+ * @param {string} commit - 解決済みの 40 桁 commit SHA。
+ * @param {string} source - 移行元 HTML のリポジトリ相対パス。
+ * @returns {string} その commit 時点の HTML 全文。
+ */
+function readSourceAtCommit(commit, source) {
+    try {
+        return execFileSync('git', ['show', `${commit}:${source}`], {
+            cwd: repositoryRoot,
+            encoding: 'utf8',
+            maxBuffer: 64 * 1024 * 1024,
+        });
+    } catch (error) {
+        const detail = error instanceof Error ? error.message : String(error);
+        throw new Error(`移行元を ${commit} から読み出せません: ${source}\n  ${detail}`);
+    }
+}
+
+/**
  * 1 ページ分の fixture を組み立てる。
  * @param {string} slug - ページの slug。
  * @param {import('./archive-fidelity-config.mjs').FidelityPageConfig} config - 抽出設定。
  * @returns {Record<string, unknown>} fixture の中身。
  */
 function buildFixture(slug, config) {
-    const absoluteSource = path.resolve(repositoryRoot, config.source);
-    if (!fs.existsSync(absoluteSource)) {
-        throw new Error(
-            `移行元が見つかりません: ${config.source}\n`
-                + `  git show ${config.sourceCommit}:${config.source} > ${config.source}\n`
-                + '  で一時復元してから再実行してください。',
-        );
-    }
-    const doc = new JSDOM(fs.readFileSync(absoluteSource, 'utf8')).window.document;
+    // 先に SHA を解決し、その 1 つの値で「中身の読み出し」と「fixture への記録」の両方を行う。
+    const sourceCommit = resolveCommit(config.sourceCommit);
+    const doc = new JSDOM(readSourceAtCommit(sourceCommit, config.source)).window.document;
 
     /** @type {Record<string, unknown>} */
-    const fixture = { slug, source: config.source, sourceCommit: resolveCommit(config.sourceCommit) };
+    const fixture = { slug, source: config.source, sourceCommit };
 
     if (config.textSelector) fixture.texts = snapshotTexts(doc, config.textSelector);
     if (config.tables) fixture.tables = snapshotTables(doc);

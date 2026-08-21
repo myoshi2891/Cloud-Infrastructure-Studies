@@ -5,8 +5,8 @@
  * 移行元 HTML から抽出したスナップショットを `docs/migration-inventory/<slug>.fidelity.json` に
  * コミットしておく。ここはその抽出対象を宣言する唯一の場所であり、生成側とテスト側が共有する。
  *
- * `sourceCommit` は移行元 HTML を含む最後のコミット（削除コミットの親）。fixture を作り直すときは
- * `git show <sourceCommit>:<source> > <source>` で一時復元してから生成し、生成後に復元物を削除する。
+ * `sourceCommit` は移行元 HTML を含む最後のコミット（削除コミットの親）。生成器はこのリビジョンから
+ * `git show <sourceCommit>:<source>` で移行元を直接読むため、作業ツリーへの一時復元は不要。
  */
 
 /**
