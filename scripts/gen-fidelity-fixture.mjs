@@ -9,6 +9,7 @@
  * 設定の `sourceCommit` から一時復元してから実行する。
  *   git show <sourceCommit>:<source> > <source>
  */
+import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 import { JSDOM } from 'jsdom';
@@ -32,6 +33,26 @@ const repositoryRoot = process.cwd();
 const outputDirectory = path.join(repositoryRoot, 'docs', 'migration-inventory');
 
 /**
+ * 設定の `sourceCommit`（`<sha>^` のような相対リビジョンを含む）を 40 桁の絶対 SHA へ解決する。
+ *
+ * 相対リビジョンのまま fixture へ書くと、履歴の見え方が変わったときに指し先がずれる。
+ * fixture には解決済みの SHA を残し、`git show <sha>:<source>` がいつでも同じ内容を返すようにする。
+ *
+ * @param {string} revision - 設定に書かれた git リビジョン。
+ * @returns {string} 解決した 40 桁の commit SHA。
+ */
+function resolveCommit(revision) {
+    const resolved = execFileSync('git', ['rev-parse', `${revision}^{commit}`], {
+        cwd: repositoryRoot,
+        encoding: 'utf8',
+    }).trim();
+    if (!/^[0-9a-f]{40}$/.test(resolved)) {
+        throw new Error(`sourceCommit を解決できません: ${revision} -> ${resolved}`);
+    }
+    return resolved;
+}
+
+/**
  * 1 ページ分の fixture を組み立てる。
  * @param {string} slug - ページの slug。
  * @param {import('./archive-fidelity-config.mjs').FidelityPageConfig} config - 抽出設定。
@@ -49,7 +70,7 @@ function buildFixture(slug, config) {
     const doc = new JSDOM(fs.readFileSync(absoluteSource, 'utf8')).window.document;
 
     /** @type {Record<string, unknown>} */
-    const fixture = { slug, source: config.source, sourceCommit: config.sourceCommit };
+    const fixture = { slug, source: config.source, sourceCommit: resolveCommit(config.sourceCommit) };
 
     if (config.textSelector) fixture.texts = snapshotTexts(doc, config.textSelector);
     if (config.tables) fixture.tables = snapshotTables(doc);

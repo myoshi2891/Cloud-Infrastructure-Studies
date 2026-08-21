@@ -1,7 +1,7 @@
 {
   "slug": "ccna-network-access-guide",
   "source": "archive/Cisco/html/ccna/Ccna-network-access-guide.html",
-  "sourceCommit": "7d5d3ad^",
+  "sourceCommit": "a5b4085a8cc9e85013ba37fbc547b1e5d7e438be",
   "texts": [
     "CCNA 200-301「Network Access」セクション徹底解説",
     "初学者向けステップバイステップガイド — VLANからトランク、EtherChannel、スパニングツリー、無線LANアーキテクチャまで、アクセス層の技術を基礎から積み上げて理解します。",

@@ -61,14 +61,17 @@ export const snapshotTexts = (root, selector) =>
  */
 export const snapshotTables = (root) =>
     Array.from(root.querySelectorAll('main table, table'), (table) =>
-        Array.from(table.querySelectorAll('tr'), (row) =>
-            Array.from(row.querySelectorAll(':scope > th, :scope > td'), (cell) => ({
-                tag: cell.tagName.toLowerCase(),
-                text: normalizeText(cell.textContent),
-                colspan: cell.getAttribute('colspan'),
-                rowspan: cell.getAttribute('rowspan'),
-            })),
-        ),
+        // 入れ子の表の行は内側の表として別途スナップショットされるため、外側の表からは除外する
+        Array.from(table.querySelectorAll('tr'))
+            .filter((row) => row.closest('table') === table)
+            .map((row) =>
+                Array.from(row.querySelectorAll(':scope > th, :scope > td'), (cell) => ({
+                    tag: cell.tagName.toLowerCase(),
+                    text: normalizeText(cell.textContent),
+                    colspan: cell.getAttribute('colspan'),
+                    rowspan: cell.getAttribute('rowspan'),
+                })),
+            ),
     );
 
 /**

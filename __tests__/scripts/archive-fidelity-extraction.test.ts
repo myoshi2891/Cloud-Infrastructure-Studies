@@ -41,11 +41,14 @@ describe('archive-fidelity-extraction', () => {
         ]);
     });
 
-    it('入れ子の表のセルを外側の表の行として二重に数えない', () => {
+    it('入れ子の表の行を外側の表の行として二重に数えず、内側の表を独立して取り出す', () => {
         const container = mount('<table><tr><td><table><tr><td>内側</td></tr></table></td></tr></table>');
-        const [outer] = snapshotTables(container);
+        const [outer, nested] = snapshotTables(container);
 
-        expect(outer?.[0]).toEqual([{ tag: 'td', text: '内側', colspan: null, rowspan: null }]);
+        // 外側の表は自分の行だけを持ち、内側の行を取り込まない
+        expect(outer).toEqual([[{ tag: 'td', text: '内側', colspan: null, rowspan: null }]]);
+        // 内側の表は独立したスナップショットとして現れる
+        expect(nested).toEqual([[{ tag: 'td', text: '内側', colspan: null, rowspan: null }]]);
     });
 
     it('補足要素を所属セクションつきで取り出し、セクション外は hero とする', () => {
