@@ -1,6 +1,34 @@
 # 移行作業進捗管理ドキュメント (Migration Progress)
 
-(最終更新日: 2026-08-19)
+(最終更新日: 2026-08-22)
+
+---
+
+## 2026-08-22: Google Cloud Professional Cloud Architect (PCA) 認定試験 完全対策ガイド 100%全量移行 (完了)
+
+### 目的
+
+`Google-cloud-pca-guide.html` および `Google-cloud-pca-guide.md` を、Next.js App Router 5ファイル構成 (`page.tsx`, `PcaGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/gcl/professional-cloud-architect` ルートへ移行。見出し(h1:1, h2:9, h3:33, h4:0)、全25個のテーブル、17個のMermaid図解、全リスト、全外部リンク・全本文・コールアウト注記を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for professional-cloud-architect` (`93de503`)
+- [x] **Step 1 (Red)**: `test(gcl): add failing tests for professional-cloud-architect` (`9c5b68c`)
+- [x] **Step 2 (Green)**: `feat(gcl): implement professional-cloud-architect to pass tests` (`2fb8d3b`)
+- [x] **Step 3 (Refactor)**: `refactor(gcl): integrate professional-cloud-architect into routing and update docs`
+- [x] **Step 4 (Archive & Sync)**: `chore(docs): update MIGRATION_PROGRESS.md — professional cloud architect complete`
+
+### 関連ファイル
+
+- [app/gcl/professional-cloud-architect/page.tsx](app/gcl/professional-cloud-architect/page.tsx)
+- [app/gcl/professional-cloud-architect/PcaGuide.tsx](app/gcl/professional-cloud-architect/PcaGuide.tsx)
+- [app/gcl/professional-cloud-architect/NavBar.tsx](app/gcl/professional-cloud-architect/NavBar.tsx)
+- [app/gcl/professional-cloud-architect/constants.ts](app/gcl/professional-cloud-architect/constants.ts)
+- [app/gcl/professional-cloud-architect/page.css](app/gcl/professional-cloud-architect/page.css)
+- [`__tests__/gcl/professional-cloud-architect/page.test.tsx`](__tests__/gcl/professional-cloud-architect/page.test.tsx)
+- [docs/migration-inventory/professional-cloud-architect.json](docs/migration-inventory/professional-cloud-architect.json)
+- [archive/Gcl/Professional-Cloud-Architect/Google-cloud-pca-guide.html](archive/Gcl/Professional-Cloud-Architect/Google-cloud-pca-guide.html)
+- [archive/Gcl/Professional-Cloud-Architect/Google-cloud-pca-guide.md](archive/Gcl/Professional-Cloud-Architect/Google-cloud-pca-guide.md)
 
 ---
 
