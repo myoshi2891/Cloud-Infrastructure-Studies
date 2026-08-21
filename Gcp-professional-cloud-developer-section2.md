@@ -136,7 +136,7 @@ CI環境でエミュレータの起動・停止をテストコードに組み込
 > - エミュレータはあくまで**開発・単体テスト用**であり、本番同等の性能・整合性・IAM挙動を完全に再現するものではない。結合テストや性能検証の最終段階では、実際のGoogle Cloudサービス（可能であれば専用のステージング環境）で検証する。
 > - CI/CDパイプライン（Cloud Buildなど）でもローカルと同じエミュレータ起動コマンドを再利用し、「ローカルで通ったテストがCIでも同じ結果になる」状態を保つ。
 > - Testcontainersのような仕組みを使うと、テストの前後でエミュレータコンテナを自動起動・終了でき、テスト間のデータ汚染を防ぎやすい。
-
+>
 > **出典**：[gcloud CLI（cloud.google.com/cli）](https://cloud.google.com/cli)、[gcloud beta emulators リファレンス](https://docs.cloud.google.com/sdk/gcloud/reference/beta/emulators)、[Pub/Subエミュレータでのローカルテスト](https://docs.cloud.google.com/pubsub/docs/emulator)、[Testcontainers Google Cloud Module](https://testcontainers.com/modules/google-cloud/)
 
 ---
@@ -217,7 +217,7 @@ flowchart TD
 > - 個人の一時的な検証にはCloud Shellを、組織全体でセキュリティ・コンプライアンスを統制したい継続的な開発にはCloud Workstationsを使い分ける。
 > - ローカルでのセットアップは、環境構築だけで数日から数週間かかることがあり、その多くの時間が環境構築に費やされ、いわゆる「私の環境では動く」という設定ドリフト問題を招きやすい。Cloud Workstationsのようなマネージド環境は、この問題を構成テンプレートの一元管理によって解消する。
 > - Cloud CodeはIDEを問わず（VS Code／JetBrains／Cloud Shell Editor）同じ体験を提供するため、チームメンバーが異なるIDEを使っていても、GKE/Cloud Run向けのワークフローを統一できる。
-
+>
 > **出典**：[gcloud CLI概要](https://cloud.google.com/cli)、[Cloud Code for VS Code 概要](https://docs.cloud.google.com/code/docs/vscode/overview)、[Gemini Cloud Assist 概要](https://docs.cloud.google.com/cloud-assist/overview)、[Gemini Cloud Assistの利用（チャットパネル）](https://docs.cloud.google.com/cloud-assist/chat-panel)、[Cloud Shellドキュメント](https://docs.cloud.google.com/shell/docs)、[Cloud Shellの使い方](https://docs.cloud.google.com/shell/docs/using-cloud-shell)、[Cloud Workstations概要](https://docs.cloud.google.com/workstations/docs/overview)、[Cloud Workstations GA発表ブログ](https://cloud.google.com/blog/products/application-development/cloud-workstations-managed-development-environment-is-now-ga)
 
 ---
@@ -286,11 +286,11 @@ sequenceDiagram
 
 > **ベストプラクティス**
 > - ローカル開発では`gcloud auth login`と`gcloud auth application-default login`の両方を意識して使い分ける。前者はgcloudコマンド自体の認証、後者はアプリケーションコードが使うクライアントライブラリの認証であり、片方だけでは不十分な場面がある。
-> - ADCにプロジェクトのeditorやownerロール、あるいはserviceusage.services.use権限を含むロールを付与してはいけない。常にリソースを所有するプロジェクトに課金されるようにするため。
+> - ユーザー認証情報のADCでクライアントライブラリベースのAPIを呼び出す場合は、割り当て（quota）プロジェクトの設定が必要で、ADCのプリンシパルにはそのプロジェクトに対する`serviceusage.services.use`権限が必要になる。権限は常にリソースを所有するプロジェクトに課金されるよう構成し、付与時はEditorやOwnerのような広範なロールではなく、最小権限の`roles/serviceusage.serviceUsageConsumer`を選ぶ。
 > - AIコーディングアシスタントにMCPサーバーを接続する際は、通常のユーザーIDではなく専用のエージェント用IDを用意し、アクセス範囲を監視・制御できるようにする。
 > - エージェントモードでMCPサーバーやツール呼び出しを許可する際は、エージェントがファイルシステムやターミナル操作にアクセスできる点を踏まえ、すべてのアクションを自動承認する設定は慎重に扱う。
 > - IDE・AIツール・MCPサーバーの提供形態は変化が速い領域のため、製品選定時は必ず公式リリースノートで現在の提供状況を確認する。
-
+>
 > **出典**：[ADCの仕組み](https://docs.cloud.google.com/docs/authentication/application-default-credentials)、[ADCの資格情報の提供方法](https://docs.cloud.google.com/docs/authentication/provide-credentials-adc)、[ローカル開発環境向けADCの設定](https://docs.cloud.google.com/docs/authentication/set-up-adc-local-dev-environment)、[gcloud auth application-default リファレンス](https://docs.cloud.google.com/sdk/gcloud/reference/auth/application-default)、[Cloud Code for VS Code 概要](https://docs.cloud.google.com/code/docs/vscode/overview)、[Gemini Code AssistでのコーディングSmart Actions](https://docs.cloud.google.com/gemini/docs/codeassist/write-code-gemini)、[Gemini Code Assist エージェントモードの利用](https://developers.google.com/gemini-code-assist/docs/use-agentic-chat-pair-programmer)、[Gemini Code Assist リリースノート](https://docs.cloud.google.com/gemini/docs/codeassist/release-notes)、[Gemini Cloud AssistのリモートMCPサーバー](https://docs.cloud.google.com/cloud-assist/use-gemini-cloud-assist-mcp)
 
 ---
@@ -330,7 +330,7 @@ flowchart LR
     Step2 --> Step3["ステップ3<br/>コンテナイメージビルド<br/>(Docker / Kaniko / Buildpacks)"]
     Step3 --> Step4["ステップ4<br/>Artifact Registryへpush"]
     Step4 --> AR[("Artifact Registry<br/>コンテナ/パッケージ<br/>リポジトリ")]
-    AR --> Scan["Artifact Analysisによる<br/>自動脆弱性スキャン"]
+    AR --> Scan["Artifact Analysisによる<br/>脆弱性スキャン<br/>（Container Scanning API有効時）"]
 
     classDef stage fill:#123a5e,stroke:#7c9eff,color:#eaf1ff,stroke-width:2px
     classDef store fill:#0d3b66,stroke:#7c9eff,color:#eaf1ff,stroke-width:2px
@@ -366,7 +366,9 @@ images:
 | `images` | ビルド成功時にArtifact Registry／Container Registryへpushするイメージの一覧 |
 | `substitutions` | `$PROJECT_ID`や`$SHORT_SHA`など、ビルド時に置換される変数 |
 
-Artifact Registryへイメージを保存するもう一つの代表的な方法として、Cloud Buildを介さずに`gcloud builds submit`を直接呼び出すシンプルな方法もあります。Cloud Buildを使ってコンテナをビルドし、自動的にArtifact Registryへpushするには`gcloud builds submit . -t LOCATION-docker.pkg.dev/PROJECT_ID/REPO/IMAGE:TAG`のようなコマンドを実行します。 ビルドされたイメージは自動的に脆弱性スキャンの対象になります。Container Analysisをその他の情報と統合することで、そのメタデータに基づいた意思決定が可能になります。例えば、信頼できるレジストリからの準拠したイメージのみをデプロイ対象として許可するデプロイポリシーを、Binary Authorizationで作成できます。
+`$SHORT_SHA`の扱いには注意が必要です。`$SHORT_SHA`はビルドトリガー経由の実行では自動的に設定されますが、手元から`gcloud builds submit`を直接実行した場合は自動設定されず、未指定のままだと空文字列になります。手動実行時は`$BUILD_ID`やユーザー定義の`$_IMAGE_TAG`を使うか、`--substitutions=SHORT_SHA=...`で明示的に値を渡します。
+
+Artifact Registryへイメージを保存するもう一つの代表的な方法として、Cloud Buildを介さずに`gcloud builds submit`を直接呼び出すシンプルな方法もあります。Cloud Buildを使ってコンテナをビルドし、自動的にArtifact Registryへpushするには`gcloud builds submit . -t LOCATION-docker.pkg.dev/PROJECT_ID/REPO/IMAGE:TAG`のようなコマンドを実行します。 自動スキャンには前提条件があります。Container Scanning APIを有効化している場合、標準（standard）またはリモート（remote）のDockerリポジトリにpushされたイメージが自動スキャンの対象になります。それ以外の対応リポジトリ形式では、リポジトリ単位でスキャンを有効化する必要があります。Container Analysisをその他の情報と統合することで、そのメタデータに基づいた意思決定が可能になります。例えば、信頼できるレジストリからの準拠したイメージのみをデプロイ対象として許可するデプロイポリシーを、Binary Authorizationで作成できます。
 
 > **ベストプラクティス**
 > - イメージのタグに`latest`を使わず、Gitのコミットハッシュ（`$SHORT_SHA`）やセマンティックバージョンなど、一意で追跡可能な値を使う。ロールバックや監査の際に、どのソースからビルドされたイメージかを一意に特定できるようにするため。
@@ -374,7 +376,7 @@ Artifact Registryへイメージを保存するもう一つの代表的な方法
 > - Artifact Registryのスキャン機能（コンテナ脆弱性スキャンやオンデマンドスキャン）を有効化し、脆弱性が検出された場合にパイプラインを止めるスキャンゲートを設けることで、本番デプロイ前の段階で問題を検知する。
 > - 依存関係のダウンロードやDockerレイヤーのキャッシュを活用し、ビルド時間を短縮する。
 > - ステージング用と本番用でArtifact Registryのリポジトリを分離し、IAMでアクセスを制御する。
-
+>
 > **出典**：[Cloud Buildの概要](https://docs.cloud.google.com/build/docs/overview)、[Artifact Registryの概要](https://docs.cloud.google.com/artifact-registry/docs/overview)、[Artifact Registryへのビルド成果物の格納](https://docs.cloud.google.com/artifact-registry/docs/build)、[Cloud BuildとArtifact RegistryによるセキュアなビルドとGKEへのデプロイ（Codelab）](https://codelabs.developers.google.com/secure-build-deploy-cloud-build-ar-gke)
 
 ---
@@ -385,7 +387,16 @@ Artifact Registryへイメージを保存するもう一つの代表的な方法
 
 「provenance」とは、ソフトウェア成果物（コンテナイメージなど）が**いつ・何から・どのようなプロセスでビルドされたか**を証明する、検証可能なメタデータのことです。Cloud Buildは、SLSA（Supply-chain Levels for Software Artifacts）バージョン0.1および1.0の仕様に基づいたレベル3相当のビルドprovenance生成をサポートしています。SLSA v1.0仕様のサポートの一部として、Cloud BuildはビルドprovenanceにbuildType詳細を含めており、ビルドプロセスに使われたパラメータ化テンプレートや、Cloud Buildが記録する値・その値の出所を理解するために利用できます。
 
-適用範囲には注意が必要です。Cloud Buildは、Artifact Registryに保存されたアーティファクトについてのみビルドprovenanceを生成します。
+適用範囲には注意が必要です。Cloud Buildは、Artifact Registryに保存されたアーティファクトについてのみビルドprovenanceを生成します。前掲の`cloudbuild.yaml`のように`images`フィールドでpush先を指定するのは正しい書き方ですが、ビルドステップ内で明示的に`docker push`を実行した場合はprovenanceが生成されないことがあります。
+
+さらに、provenanceを生成できなかったビルドを「成功」として扱わないために、`options.requestedVerifyOption`に`VERIFIED`を指定します。
+
+```yaml
+options:
+  requestedVerifyOption: VERIFIED
+```
+
+この設定により、provenanceの生成に失敗したビルドはビルド自体が失敗として扱われ、検証されていないイメージが後続のデプロイへ流れることを防げます。
 
 Cloud BuildをBinary Authorizationと統合すると、ビルドのアテステーション（証明）を確認し、Cloud Buildによって生成されていないイメージのデプロイをブロックできます。このプロセスにより、認可されていないソフトウェアがデプロイされるリスクを低減できます。
 
@@ -436,7 +447,7 @@ Binary Authorization側でSLSAの継続的な検証を行う仕組みもあり�
 > - 本番環境へのデプロイパイプラインでは、Cloud Build以外の経路でビルドされたイメージ（開発者のローカル環境で手動push されたイメージなど）を拒否するポリシーを設定し、CI/CDパイプラインを唯一の信頼できるビルド経路にする。
 > - SLSA検証ツール（`slsa-verifier`など）を使い、provenanceがビルド元のソースリポジトリ・ビルダーIDと一致していることを定期的に確認する。
 > - 署名鍵はCloud KMSで一元管理し、鍵のローテーション・アクセス権限をIAMで統制する。
-
+>
 > **出典**：[ビルドprovenanceの生成と検証](https://docs.cloud.google.com/build/docs/securing-builds/generate-validate-build-provenance)、[Binary AuthorizationのSLSAチェック](https://docs.cloud.google.com/binary-authorization/docs/cv-slsa-check)、[GoogleによるSLSAフレームワークの紹介](https://cloud.google.com/blog/products/application-development/google-introduces-slsa-framework)、[Cloud Buildの概要](https://docs.cloud.google.com/build/docs/overview)
 
 ---
@@ -493,7 +504,7 @@ Google Cloud認定試験の観点では、製品名やティアの変遷その�
 > - 生成されたテストは、期待値のロジックが本当に正しいか（テストがバグを覆い隠していないか）を人間がレビューしてからコミットする。テストが「常に成功する」だけの無意味なテストになっていないかを確認する。
 > - AI支援で作成した単体テストであっても、最終的にはCloud Buildパイプラインの一部として自動実行し、レビュー時点だけでなく継続的に品質を担保する。
 > - コード生成・テスト生成AIツールのティア・提供形態は変化が速いため、組織として採用する製品は定期的にリリースノートを確認し、移行が必要な変更がないかを把握する。
-
+>
 > **出典**：[Gemini Code Assist Standard／Enterprise 概要](https://docs.cloud.google.com/gemini/docs/codeassist/overview)、[Gemini Code AssistでのコーディングSmart Actions](https://docs.cloud.google.com/gemini/docs/codeassist/write-code-gemini)、[Gemini Code Assist リリースノート](https://docs.cloud.google.com/gemini/docs/codeassist/release-notes)
 
 ---
@@ -523,7 +534,7 @@ docker-composeパターンでは、Cloud Build特有のネットワーク構成�
 
 ステップ間の依存関係を制御する`waitFor`も重要な要素です。`waitFor`キーを使うと、あるステップが特定の先行ステップの完了だけを待つよう指定でき、これにより一部のジョブを並列実行できます。 典型的なパターンとしては、静的解析（lint）、Dockerイメージのビルド、Cloud Runサービスとしてのデプロイという一連の流れを各サービスごとに用意し、そこにテストスイートを組み込む形が挙げられます。
 
-GKEを使う統合テストパターンでは、事前にクラスタとIAM権限を準備します。既存のKubernetesクラスタにデプロイする場合はCloud Buildのサービスアカウントにroles/container.developerロールを、テストごとに新しいクラスタを作成する場合はroles/container.adminロールを付与します。
+GKEを使う統合テストパターンでは、事前にクラスタとIAM権限を準備します。既存のKubernetesクラスタにデプロイする場合はCloud Buildのサービスアカウントに`roles/container.developer`ロールを、テストごとに新しいクラスタを作成・削除・更新する場合は`roles/container.admin`ではなく、その用途に絞られた`roles/container.clusterAdmin`を付与します。カスタムのノードサービスアカウントを使う構成では、Cloud Buildのサービスアカウントにそのノードサービスアカウントへの`iam.serviceAccounts.actAs`権限（`roles/iam.serviceAccountUser`）も必要です。クラスタ内のKubernetesオブジェクト操作についてはIAMロールを広げるのではなく、必要な操作だけを許可するKubernetes RBAC（Role / RoleBinding）で設定します。
 
 #### 統合テストの失敗時の挙動
 
@@ -568,7 +579,7 @@ flowchart TB
 > - 統合テストが失敗した場合はパイプラインをそこで止め、provenance生成やデプロイに進まないようにする（あるステップの失敗で後続ステップの実行を止めるというCloud Buildの既定動作を積極的に活用する）。
 > - GKEを使った統合テストでは、テストごとに使い捨てクラスタを作る方式（分離性が高いがコスト・起動時間がかかる）と、既存の共有クラスタを使う方式（速いが名前空間分離などの設計が必要）を、テストの目的とコストのバランスで選択する。
 > - 統合テストの成功をBinary Authorizationのアテステーション要件の1つとして組み込み、「統合テストを通過したイメージだけがデプロイ可能」という状態を、人手のチェックではなくポリシーとして強制する。
-
+>
 > **出典**：[Cloud Buildの概要](https://docs.cloud.google.com/build/docs/overview)、[cloudbuild-integration-testing（GoogleCloudPlatform公式サンプル）](https://github.com/GoogleCloudPlatform/cloudbuild-integration-testing)
 
 ---
