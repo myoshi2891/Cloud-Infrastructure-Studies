@@ -182,6 +182,41 @@ Markdown ソースの場合は `marked`（導入済み）で HTML 化してか�
 - インベントリは**移行元の状態**を表す。実装に合わせてインベントリを書き換えることは**改竄であり禁止**。移行元に誤りがある場合のみ、理由をコミットメッセージに明記して修正する。
 - コミット: `chore(migration): add content inventory for <page-slug>`
 
+### 1-3. 移行元アーカイブを消す前に fixture を作る（テストから移行元への依存を残さない）
+
+`/archive/` は `.gitignore` 済みの**ローカル専用資産**である。CI とクリーンな clone には存在しない。
+したがって **テスト実行時に `archive/...` を読むテストを書いてはならない**。移行元を読むテストは、
+アーカイブを整理した瞬間に `ENOENT` で落ち、移行漏れ検出の役目ごと失われる。
+
+移行元の内容に依存する検証は、期待値を**コミット済みの fixture** に落としてから書く。
+
+| 検証したいもの | 期待値の置き場所 | 生成コマンド |
+|---|---|---|
+| 見出し・表セル・リスト・リンク・本文全文・件数 | `docs/migration-inventory/<page-slug>.json` | `bun scripts/gen-inventory.mjs <移行元>` |
+| 表の結合属性・コード行・ハイライトトークン・CSS クラス・要素の配置順・全文照合 | `docs/migration-inventory/<page-slug>.fidelity.json` | `bun scripts/gen-fidelity-fixture.mjs <slug>` |
+
+抽出ロジックは生成側とテスト側で**必ず共有**する（`scripts/inventory-extraction.mjs` /
+`scripts/archive-fidelity-extraction.mjs`）。テストファイル内へ抽出処理を複製すると、
+片側だけの変更で検証が静かに無効化される。
+
+fidelity fixture の対象ページと抽出セレクタは `scripts/archive-fidelity-config.mjs` が唯一の正本。
+新しいページを追加するときはここに 1 エントリ足してから生成する。
+
+**アーカイブを削除したあとに fixture を作り直す手順**（移行元は履歴から取り出せる）:
+
+```bash
+# 1. 設定の sourceCommit から一時復元（/archive/ は .gitignore 済みなのでコミット対象にならない）
+git show <sourceCommit>:<source> > <source>
+# 2. fixture を生成
+bun scripts/gen-fidelity-fixture.mjs <slug>
+# 3. 復元した移行元を削除し、移行元が無い状態でテストが通ることを確認する
+rm <source>
+bun run test
+```
+
+最後の「移行元を消した状態で緑になること」の確認は必須である。ここを飛ばすと、
+ローカルにだけ残った移行元にテストが依存したままであることに気づけない。
+
 ---
 
 ## 2. テスト強度の合格基準（Test Strength Gate）

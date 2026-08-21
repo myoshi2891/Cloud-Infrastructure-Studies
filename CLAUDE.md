@@ -462,6 +462,7 @@ archive/                            # 移行済み資料の正規アーカイブ
 
 - **Vitest:** `__tests__/**/*.test.{ts,tsx}` と `.agents/skills/fix-mermaid/scripts/restore_diagrams.test.ts`、jsdom環境、`@` エイリアスが `./` に解決される
 - **Playwright:** `e2e/` 配下、Chromiumのみ、`baseURL: http://localhost:3000`、CIでは`bun run dev`を自動起動
+- **移行忠実性テストは移行元アーカイブを読まない**: `/archive/` は `.gitignore` 済みのローカル専用資産で CI には存在しない。移行元との照合が必要なテストは、コミット済み fixture（`docs/migration-inventory/<slug>.json` と `<slug>.fidelity.json`）を `import` する。fidelity fixture の対象・セレクタは `scripts/archive-fidelity-config.mjs` が正本で、`bun scripts/gen-fidelity-fixture.mjs <slug>|--all` で生成する（抽出ロジックは生成側・検証側が `scripts/archive-fidelity-extraction.mjs` を共有）。詳細は `.agents/rules/tdd-commit-workflow.md` §1-3。
 
 **🚨 開発時の必須ルール（TDD & Step-by-step Commit） 🚨**
 全てのコード実装において、正準の `.agents/rules/tdd-commit-workflow.md` に定義されたルールを厳守すること。`.claude/rules/tdd-commit-workflow.md` と `.gemini/rules/tdd-commit-workflow.md` は同期ミラーである。
