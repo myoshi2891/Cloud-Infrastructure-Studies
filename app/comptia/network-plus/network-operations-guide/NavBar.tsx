@@ -3,18 +3,17 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { NAV_ITEMS, type NavItem } from './constants';
 
-/**
- * サイドバーナビゲーションコンポーネント (Client Component)
- *
- * IntersectionObserver による ScrollSpy と、キーボード操作に対応したハッシュ・フォーカス更新を提供します。
- */
 const SECTION_IDS: readonly string[] = NAV_ITEMS.map((item) => item.id);
 const DEFAULT_ACTIVE_ID = NAV_ITEMS[0]?.id ?? 'overview';
 
 /**
  * URL のハッシュが目次のセクションを指していれば、その id を返します。
  *
- * @returns 目次に存在するセクション id。該当しない場合は null。
+ * SSR では `window` が存在しないため必ず null を返し、サーバーとクライアントの初回描画を一致させます
+ * （active の初期値は state 初期化子ではなく effect で反映する）。不正なパーセントエスケープは
+ * 「該当なし」に倒し、例外をマウント処理へ漏らしません。
+ *
+ * @returns 目次に存在するセクション id。該当しない場合（SSR・不正ハッシュ・未知の id）は null。
  */
 function readHashSectionId(): string | null {
     if (typeof window === 'undefined') return null;
@@ -31,6 +30,16 @@ function readHashSectionId(): string | null {
     return SECTION_IDS.includes(id) ? id : null;
 }
 
+/**
+ * Domain 3.0 ガイドのサイドバーナビゲーション（Client Component）。
+ *
+ * 次の 3 つを担います。
+ * - IntersectionObserver による ScrollSpy で、表示中セクションへ active を追随させる
+ * - `hashchange` / `popstate` を購読し、直リンクやブラウザの戻る/進むに追随する
+ * - リンク操作時に URL ハッシュ・フォーカス・モバイル開閉状態を更新する
+ *
+ * 監視対象のセクション id は `NAV_ITEMS` から導出し、二重管理しません。
+ */
 export function NavBar() {
     const [activeId, setActiveId] = useState<string>(DEFAULT_ACTIVE_ID);
     const [mobileOpen, setMobileOpen] = useState<boolean>(false);

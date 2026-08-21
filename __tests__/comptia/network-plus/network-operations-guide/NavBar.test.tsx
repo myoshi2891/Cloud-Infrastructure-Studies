@@ -12,11 +12,16 @@ type ObserverCallback = (entries: IntersectionObserverEntry[]) => void;
 let observerCallback: ObserverCallback | null = null;
 
 /**
- * 交差エントリのスタブを作る。
+ * 交差エントリの部分スタブを作る。
+ *
+ * NavBar が参照するのは `target` / `isIntersecting` / `boundingClientRect.top` の 3 つだけなので、
+ * それ以外のプロパティ（`intersectionRatio` 等）は用意せず `IntersectionObserverEntry` へキャストする。
+ * NavBar が別のプロパティを読み始めた場合、このスタブは undefined を返す点に注意。
+ *
  * @param id - 対象セクションの id。
  * @param top - ビューポート上端からの距離。
  * @param isIntersecting - 交差しているかどうか。
- * @returns テスト用の IntersectionObserverEntry。
+ * @returns テスト用の部分 IntersectionObserverEntry。
  */
 const entry = (id: string, top: number, isIntersecting = true): IntersectionObserverEntry => {
     const target = document.getElementById(id) as HTMLElement;
@@ -40,9 +45,13 @@ const mountSections = () => {
 };
 
 /**
- * 指定 id のナビリンクを返す。
+ * 指定 id のナビリンクを `nav` 配下に限定して探す。
+ *
+ * 本文中にも同じハッシュを指すリンクが出るため、探索範囲を `nav` へ絞る。
+ * 一致が複数ある場合（デスクトップ・モバイルの重複描画）は先頭を返す。
+ *
  * @param id - セクション id。
- * @returns アンカー要素。
+ * @returns 該当するアンカー要素（存在しない場合のガードは呼び出し側の責務）。
  */
 const linkFor = (id: string): HTMLAnchorElement =>
     document.querySelector(`nav a[href="#${id}"]`) as HTMLAnchorElement;
