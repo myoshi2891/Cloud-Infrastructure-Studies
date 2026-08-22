@@ -79,7 +79,8 @@ export function NavBar({ isOpen, onToggle, onClose }: NavBarProps) {
             if (target) {
                 target.scrollIntoView({ behavior: 'smooth' });
                 window.history.pushState(null, '', `#${id}`);
-                target.focus();
+                // smooth スクロールを focus のデフォルトスクロールで中断させない
+                target.focus({ preventScroll: true });
                 setActiveId(id);
                 onClose();
             }

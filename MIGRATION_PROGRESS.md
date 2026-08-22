@@ -36,7 +36,7 @@
 
 ### 目的
 
-`Google-cloud-pca-guide.html` および `Google-cloud-pca-guide.md` を、Next.js App Router 5ファイル構成 (`page.tsx`, `PcaGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/gcl/professional-cloud-architect` ルートへ移行。見出し(h1:1, h2:9, h3:33, h4:0)、全25個のテーブル、17個のMermaid図解、全リスト、全外部リンク・全本文・コールアウト注記を一切の省略・要約なしで100%全量移植。
+`Google-cloud-pca-guide.html` および `Google-cloud-pca-guide.md` を、Next.js App Router 5ファイル構成 (`page.tsx`, `PcaGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/gcl/professional-cloud-architect` ルートへ移行。見出し(h1:1, h2:10, h3:32, h4:0)、全25個のテーブル、17個のMermaid図解、全リスト、全外部リンク・全本文・コールアウト注記を一切の省略・要約なしで100%全量移植。
 
 ### 完了済みステップ
 

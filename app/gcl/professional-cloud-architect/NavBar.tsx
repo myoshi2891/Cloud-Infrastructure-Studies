@@ -23,11 +23,18 @@ export function NavBar({ isOpen, onToggle, onClose }: NavBarProps) {
 
         const observer = new IntersectionObserver(
             (entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        setActiveId(entry.target.id);
-                    }
-                });
+                // 同一バッチ内で複数の見出しが交差する場合、ビューポート最上部に
+                // 最も近い（boundingClientRect.top が最小の）見出しだけを採用する
+                const topMost = entries
+                    .filter((entry) => entry.isIntersecting)
+                    .reduce<IntersectionObserverEntry | null>(
+                        (best, entry) =>
+                            best === null || entry.boundingClientRect.top < best.boundingClientRect.top
+                                ? entry
+                                : best,
+                        null,
+                    );
+                if (topMost) setActiveId(topMost.target.id);
             },
             {
                 rootMargin: '-15% 0px -75% 0px',
@@ -49,7 +56,8 @@ export function NavBar({ isOpen, onToggle, onClose }: NavBarProps) {
             if (target) {
                 target.scrollIntoView({ behavior: 'smooth' });
                 window.history.pushState(null, '', `#${id}`);
-                target.focus();
+                // smooth スクロールを focus のデフォルトスクロールで中断させない
+                target.focus({ preventScroll: true });
                 setActiveId(id);
                 onClose();
             }

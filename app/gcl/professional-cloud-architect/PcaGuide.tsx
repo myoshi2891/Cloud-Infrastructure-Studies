@@ -663,7 +663,7 @@ export function PcaGuide() {
                                 </tr>
                                 <tr>
                                     <td>VPCピアリング</td>
-                                    <td>2つのVPC間をGoogleのバックボーンnet経由で直接接続（推移的接続不可）</td>
+                                    <td>2つのVPC間をGoogleのバックボーンネットワーク経由で直接接続（推移的接続不可）</td>
                                 </tr>
                                 <tr>
                                     <td>Shared VPC（共有VPC）</td>

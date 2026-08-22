@@ -213,7 +213,7 @@
     "VPC（Virtual Private Cloud）",
     "プロジェクトを跨いで利用できるグローバルな仮想ネットワーク",
     "VPCピアリング",
-    "2つのVPC間をGoogleのバックボーンnet経由で直接接続（推移的接続不可）",
+    "2つのVPC間をGoogleのバックボーンネットワーク経由で直接接続（推移的接続不可）",
     "Shared VPC（共有VPC）",
     "ホストプロジェクトのVPCを複数のサービスプロジェクトから共有利用",
     "Private Service Connect（PSC）",
