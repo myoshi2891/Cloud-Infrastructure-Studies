@@ -111,7 +111,7 @@ flowchart LR
 
 Cloud Runサービスは、HTTPリクエストで直接呼び出すだけでなく、**Eventarc**を経由してGoogle Cloud上のさまざまなイベント（Pub/Subメッセージの発行、Cloud Storageへのファイルアップロードなど）をトリガーとして自動的に呼び出すことができます。これはイベント駆動型アーキテクチャの中核をなす仕組みで、Pub/Subはその中でも最も代表的なイベントソースです。
 
-Eventarcは受け取ったイベントを**CloudEvents形式**に標準化し、HTTPリクエストとしてCloud Runサービスに配信します。これにより、イベントソースの種類が変わってもCloud Run側の受信処理をほぼ共通化できるという利点があります。
+Eventarcは受け取ったイベントを**CloudEvents形式**に標準化し、HTTPリクエストとしてCloud Runサービスに配信します。これにより、イベントソースの種類が変わってもCloud Run側の受信処理をほぼ共通化できるという利点があります。以下のシーケンス図は、Cloud Runサービスが未認証呼び出しを許可しておらず、EventarcがIAM認証付きでリクエストを送信する構成（既定かつ推奨される構成）を示しています。
 
 ```mermaid
 sequenceDiagram
@@ -133,7 +133,7 @@ sequenceDiagram
 
 #### ステップバイステップの流れ
 
-1. **トリガーに使うサービスアカウントを用意する**：Eventarcトリガーは、Cloud Runサービスを呼び出すためのアイデンティティとしてサービスアカウントに紐づけられます。デフォルトではCompute Engineのデフォルトサービスアカウントが使われますが、独自のサービスアカウントを作成し、呼び出し先Cloud Runサービスに対する`roles/run.invoker`ロールを付与するのがベストプラクティスです。必要なIAMロールはイベントの種類によって異なります。Pub/Subを直接のイベントソースとするトリガーでは`roles/run.invoker`のみで足りますが、Cloud StorageやFirestoreなど、Pub/Sub以外のGoogle Cloudソースを使うトリガーでは、このサービスアカウントに`roles/eventarc.eventReceiver`ロールも追加で付与する必要があります。
+1. **トリガーに使うサービスアカウントを用意する**：Eventarcトリガーは、Cloud Runサービスを呼び出すためのアイデンティティとしてサービスアカウントに紐づけられます。デフォルトではCompute Engineのデフォルトサービスアカウントが使われますが、独自のサービスアカウントを作成し、呼び出し先Cloud Runサービスに対する`roles/run.invoker`ロールを付与するのがベストプラクティスです。必要なIAMロールはイベントの種類によって異なります。Pub/Subを直接のイベントソースとするトリガーでは`roles/run.invoker`のみで足りますが、Cloud StorageやFirestoreなど、Pub/Sub以外のGoogle Cloudソースを使うトリガーでは、このサービスアカウントに`roles/eventarc.eventReceiver`ロールも追加で付与する必要があります。また、Cloud Storageの直接イベント（Cloud Storage自体がイベントプロバイダとなる構成）では、Eventarcが内部的に作成するPub/SubトピックへCloud Storageサービスエージェント（`service-PROJECT_NUMBER@gs-project-accounts.iam.gserviceaccount.com`）が発行できるよう、そのサービスエージェントに`roles/pubsub.publisher`ロールを付与しておく必要があります。加えて、プロジェクトの作成時期などの条件によっては、認証済みPub/Subプッシュを行うためにPub/Subサービスエージェントへ`roles/iam.serviceAccountTokenCreator`ロールの付与が別途必要になる場合があります（比較的新しいプロジェクトでは既定で付与済みです）。
 2. **Pub/Subトリガーを作成する**：Cloud Runサービスをデプロイした後、独立して`gcloud eventarc triggers create`コマンドを実行し、対象のPub/Subトピックと呼び出し先のCloud Runサービスを結びつけます。既存のPub/Subトピックを使う場合は`--transport-topic`でそのトピックを指定します（省略した場合はEventarcが新しいトピックを作成します）。
 3. **イベントフィルタを指定する**：`--event-filters="type=google.cloud.pubsub.topic.v1.messagePublished"`のように、どの種類のイベントに反応するかを指定します。
 4. **配信先のパスを必要に応じて指定する**：Cloud Runサービス内の特定のルート（例: `/route`）にイベントを送りたい場合、「Service URLパス」を指定できます。
@@ -333,7 +333,7 @@ Cloud BuildにはGKEへのデプロイを自動化する`gke-deploy`というビ
 
 | gke-deployが自動的に行うこと | 効果 |
 | --- | --- |
-| Kubernetesリソースファイルのイメージ参照をタグからダイジェストに書き換え | デプロイ時点のイメージが確実に固定され、タグの上書きによる予期しない変更を防ぐ |
+| `--image`（`-i`）フラグで指定したイメージ参照のみをタグからダイジェストに書き換え | デプロイ時点のイメージが確実に固定され、タグの上書きによる予期しない変更を防ぐ（サイドカーなど`--image`で指定していない追加のイメージは自動では書き換えられないため、固定したい場合は個別にダイジェストで指定する） |
 | 推奨ラベルをリソースファイルに追加 | リソースの管理・検索・監査がしやすくなる |
 | デプロイ先GKEクラスタの認証情報を自動取得 | 手動でのクラスタ認証設定が不要になる |
 | 適用したリソースがReady状態になるまで待機 | デプロイの成否をCI/CDパイプライン内で確実に検知できる |
@@ -503,7 +503,7 @@ flowchart TB
 - **CPU使用率の目標値は70%前後を基準に検討する**：50%のような低い目標値を設定すると、常に大きな余剰キャパシティを確保することになりコストが増大する一方、パフォーマンスへの影響は限定的であるという知見があります。ワークロードの特性に応じて、コストとレイテンシのバランスが取れる目標値を検証しながら決定します。
 - **HPAとVPAをCPU/メモリで同時に使わない**：両者が競合するため、CPU/メモリのスケーリングはHPAに任せ、VPAはCPU/メモリ以外のリソース調整、またはHPAと組み合わせない単独運用にとどめます。
 - **スケールアップは素早く、スケールダウンは慎重に設定する**：トラフィックの急増には迅速に追従しつつ、一時的な低下ですぐにスケールダウンしてしまうと、直後の再スパイクで再度スケールアップが必要になり非効率です。`scaleUp`は短い安定化ウィンドウ（またはウィンドウなし）、`scaleDown`は数分単位の安定化ウィンドウを設定するのが典型的なパターンです。
-- **最大レプリカ数を必ず設定し、コストの上限を意識する**：`maxReplicas`を適切に設定しないと、異常なトラフィック増加やバグによって際限なくPodが増加し、クラスタ全体のコストとノードリソースを圧迫するリスクがあります。
+- **最大レプリカ数を必ず設定し、コストの上限を意識する**：`autoscaling/v2`のHPAではレプリカ数は`maxReplicas`を上限として増加するため無制限に増え続けることはありませんが、異常なトラフィック増加やバグの際に`maxReplicas`を高く設定しすぎていると、その上限までPodが増加し、クラスタ全体のコストとノードリソースを圧迫するリスクがあります。
 - **CPU以外の指標が適切なワークロードにはカスタムメトリクスを検討する**：ネットワークI/Oやキューの深さがボトルネックになるワークロードでは、CPU使用率よりもPodsメトリクスやExternalメトリクスの方がスケーリングの精度が高くなる場合があります。
 
 **出典**：
@@ -511,7 +511,7 @@ flowchart TB
 - [Horizontal Pod autoscaling | Google Kubernetes Engine (GKE)](https://docs.cloud.google.com/kubernetes-engine/docs/concepts/horizontalpodautoscaler)
 - [Best practices for running cost-optimized Kubernetes applications on GKE | Cloud Architecture Center](https://docs.cloud.google.com/architecture/best-practices-for-running-cost-effective-kubernetes-applications-on-gke)
 - [Tuning the Kubernetes HPA in GKE | Google Cloud Blog](https://cloud.google.com/blog/products/containers-kubernetes/tuning-the-kubernetes-hpa-in-gke)
-- [Horizontal Pod Autoscaling | Kubernetes 公式ドキュメント](https://v1-32.docs.kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/)
+- [Horizontal Pod Autoscaling | Kubernetes 公式ドキュメント](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/)
 - [Vertical Pod autoscaling | Google Kubernetes Engine (GKE)](https://docs.cloud.google.com/kubernetes-engine/docs/concepts/verticalpodautoscaler)
 
 ---
@@ -578,7 +578,7 @@ flowchart TB
 19. [Vertical Pod autoscaling | Google Kubernetes Engine (GKE)](https://docs.cloud.google.com/kubernetes-engine/docs/concepts/verticalpodautoscaler) — Google Cloud
 20. [Best practices for running cost-optimized Kubernetes applications on GKE | Cloud Architecture Center](https://docs.cloud.google.com/architecture/best-practices-for-running-cost-effective-kubernetes-applications-on-gke) — Google Cloud
 21. [Tuning the Kubernetes HPA in GKE | Google Cloud Blog](https://cloud.google.com/blog/products/containers-kubernetes/tuning-the-kubernetes-hpa-in-gke) — Google Cloud
-22. [Horizontal Pod Autoscaling | Kubernetes 公式ドキュメント](https://v1-32.docs.kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/) — The Kubernetes Authors
+22. [Horizontal Pod Autoscaling | Kubernetes 公式ドキュメント](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/) — The Kubernetes Authors
 
 ### 認定試験情報
 
