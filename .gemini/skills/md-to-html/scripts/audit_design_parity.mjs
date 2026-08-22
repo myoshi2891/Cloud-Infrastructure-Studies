@@ -233,13 +233,14 @@ function collectThemeVariables(src) {
 // --------------------------------------------------------------------------
 
 /**
- * Extracts the content range of the document.
+ * Returns the full HTML source with the contents of `script` and `style` elements
+ * replaced by spaces (the tags themselves are kept, so offsets are preserved).
  *
  * 描画 JS や CSS は `card.querySelectorAll('input[type="checkbox"]')` のように
  * セレクタ文字列として本文と同じ字面を含む。本文だけを数える走査は必ずここを通す。
  *
  * @param {string} src - The complete HTML source.
- * @returns {string} The source with `script` and `style` elements removed.
+ * @returns {string} The full source with `script`/`style` element contents blanked out.
  */
 function extractBody(src) {
   return src.replace(/<(script|style)\b[\s\S]*?<\/\1>/gi, " ");
