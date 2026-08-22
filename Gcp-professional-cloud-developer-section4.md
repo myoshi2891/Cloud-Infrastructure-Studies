@@ -260,6 +260,7 @@ sequenceDiagram
     participant Pub as パブリッシャー<br/>アプリケーション
     participant Client as Pub/Subクライアント<br/>（フロー制御あり）
     participant Topic as Pub/Subトピック
+    participant Subsc as Pub/Subサブスクリプション
     participant Sub as サブスクライバー<br/>アプリケーション
 
     Pub->>Client: publish(message) を連続実行
@@ -271,13 +272,14 @@ sequenceDiagram
         Client--xPub: 発行をブロック/エラーで待機
         Note over Client: 未完了のpublishリクエストが<br/>完了して空きができるのを待つ
     end
-    Topic->>Sub: ストリーミングpullでメッセージ配信
+    Topic->>Subsc: アタッチされた各サブスクリプションへ<br/>メッセージを複製
+    Subsc->>Sub: ストリーミングpullでメッセージ配信
     Sub->>Sub: ビジネスロジックを実行
     alt 処理成功
-        Sub->>Topic: ack（確認応答）
+        Sub->>Subsc: ack（確認応答）
     else 処理失敗
-        Sub->>Topic: nack（否定応答）または無応答
-        Topic->>Sub: ackDeadline経過後に再配信
+        Sub->>Subsc: nack（否定応答）または無応答
+        Subsc->>Sub: ackDeadline経過後に再配信
     end
 ```
 
@@ -303,7 +305,7 @@ sequenceDiagram
 - **フロー制御を適切に設定する**: パブリッシャー・サブスクライバーの両方で、未確認メッセージ数/バイト数の上限を設定し、突発的な負荷でリソースが枯渇するのを防ぎます。
 - **ackDeadlineを処理時間に合わせて設定する**: 処理が長時間かかる場合はackDeadlineを延長するか、処理開始時に自動延長（lease management）を有効にします。
 - **クライアントライブラリの言語選定にも注意する**: Java・C++・Goはスループット効率が高く、大量メッセージ処理が必要な基盤にはこれらの言語のクライアントライブラリが有利です。
-- **最新バージョンのクライアントライブラリを使う**: Pub/Subのクライアントライブラリは継続的に機能追加・不具合修正が行われるため、常に最新版を利用します。
+- **本番では検証済みバージョンを固定し、更新を定期的に取り込む**: Pub/Subのクライアントライブラリは継続的に機能追加・不具合修正が行われるため更新の追随には価値がありますが、本番環境で常に最新版を自動採用すると、未検証の変更がそのまま入り込みます。本番では動作検証を済ませたバージョンを固定（ピン留め）し、定期的に新しいバージョンを検証したうえで計画的に更新を取り込みます。
 
 #### 出典
 
@@ -429,7 +431,9 @@ GET https://www.googleapis.com/example/v1/items?fields=items(id,name)
 
 **④ 結果のキャッシュ（Caching results）**
 
-同じリソースへの問い合わせを繰り返す場合、HTTPの条件付きリクエストの仕組みである**ETag**を活用します。クライアントは前回取得時のETagを保存しておき、次回のリクエストで`If-None-Match`ヘッダーに指定します。リソースが変更されていなければサーバーは`304 Not Modified`を返し、レスポンスボディの転送を省略できます。多くのGoogle API Client Librariesは、このETagキャッシュをHTTPレイヤーで自動的に扱うオプションを持っています。
+同じリソースへの問い合わせを繰り返す場合、**対象のAPIがETagと条件付き取得をサポートしているときに限り**、HTTPの条件付きリクエストの仕組みである**ETag**を活用できます。この場合、クライアントは前回取得時のETagを保存しておき、次回のリクエストで`If-None-Match`ヘッダーに指定します。リソースが変更されていなければサーバーは`304 Not Modified`を返し、レスポンスボディの転送を省略できます。
+
+ETagのサポート有無と、`If-None-Match`をどう指定するかはAPIごと・クライアントごとに異なります。Google API Client Librariesが一般にETagキャッシュを自動処理してくれると考えるのではなく、**呼び出し対象APIのリファレンスでETagの対応状況を確認し、利用するクライアントライブラリのドキュメントで条件付きリクエストの具体的な指定方法を確認**したうえで実装します。
 
 **⑤ エラー処理（Handling errors: 指数バックオフ）**
 
@@ -459,7 +463,7 @@ flowchart TD
 | バッチ処理 | リクエスト往復回数の削減 | バッチAPI、`batchCreate`系メソッド |
 | 返却データの制限 | レスポンスサイズの削減 | `fields`パラメータによる部分レスポンス |
 | ページネーション | 大量結果の分割取得 | `pageSize` / `pageToken` / `nextPageToken` |
-| キャッシュ | 不要な再取得の回避 | ETagと`If-None-Match`による条件付きリクエスト |
+| キャッシュ | 不要な再取得の回避 | ETagと`If-None-Match`による条件付きリクエスト（**対象APIがETag/条件付き取得に対応している場合のみ**。指定方法はクライアントごとに要確認） |
 | エラー処理 | 一時的障害からの回復 | ジッター付き指数バックオフ |
 
 #### ベストプラクティス
@@ -808,6 +812,9 @@ Investigationsが利用可能な環境では、GKEのアラート付きワーク
 - [Gemini Cloud Assist: AI-assisted cloud operations and management](https://cloud.google.com/products/gemini/cloud-assist)
 - [Deep dive on new AI-powered database agents | Google Cloud Blog](https://cloud.google.com/blog/products/databases/deep-dive-on-new-ai-powered-database-agents)
 - [Gemini for Google Cloud overview | Gemini Cloud Assist](https://docs.cloud.google.com/cloud-assist/overview)
+- [Feature deprecations | Gemini Cloud Assist](https://docs.cloud.google.com/cloud-assist/deprecations/features)
+- [Gemini Cloud Assist release notes](https://docs.cloud.google.com/cloud-assist/release-notes)
+- [Agent Identity overview | IAM](https://docs.cloud.google.com/iam/docs/agent-identity-overview)
 
 ---
 

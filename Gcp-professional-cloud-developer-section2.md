@@ -87,7 +87,7 @@ gcloud CLIには、いくつかのGoogle Cloudサービスの**ローカルエ�
 
 #### 提供されているエミュレータの一覧
 
-gcloudのemulatorsコマンドグループでは、Bigtable、Datastore、Firestore、Pub/Sub、Spannerのローカルエミュレータを管理できます。 日本語の技術記事による整理では、GAとして提供されているのはFirestoreとSpannerの2つのみで、Bigtable・Datastore・Pub/Subの3つはgcloud betaコマンドとして提供されている状態です（提供状況は変更される可能性があるため、利用時は必ず最新のドキュメントを確認してください）。
+gcloudのemulatorsコマンドグループでは、Bigtable、Datastore、Firestore、Pub/Sub、Spannerのローカルエミュレータを管理できます。 コマンドの提供面で整理すると、FirestoreとSpannerは`gcloud emulators`コマンドグループから、Bigtable・Datastore・Pub/Subは`gcloud beta emulators`コマンドグループから起動します（コマンドグループの構成は変更される可能性があるため、利用時は必ず各公式コマンドリファレンスで最新の状態を確認してください）。
 
 | エミュレータ | 提供コマンド | 主な用途 | 補足 |
 |---|---|---|---|
@@ -137,7 +137,7 @@ CI環境でエミュレータの起動・停止をテストコードに組み込
 > - CI/CDパイプライン（Cloud Buildなど）でもローカルと同じエミュレータ起動コマンドを再利用し、「ローカルで通ったテストがCIでも同じ結果になる」状態を保つ。
 > - Testcontainersのような仕組みを使うと、テストの前後でエミュレータコンテナを自動起動・終了でき、テスト間のデータ汚染を防ぎやすい。
 >
-> **出典**：[gcloud CLI（cloud.google.com/cli）](https://cloud.google.com/cli)、[gcloud beta emulators リファレンス](https://docs.cloud.google.com/sdk/gcloud/reference/beta/emulators)、[Pub/Subエミュレータでのローカルテスト](https://docs.cloud.google.com/pubsub/docs/emulator)、[Testcontainers Google Cloud Module](https://testcontainers.com/modules/google-cloud/)
+> **出典**：[gcloud CLI（cloud.google.com/cli）](https://cloud.google.com/cli)、[gcloud emulators リファレンス](https://docs.cloud.google.com/sdk/gcloud/reference/emulators)、[gcloud beta emulators リファレンス](https://docs.cloud.google.com/sdk/gcloud/reference/beta/emulators)、[Pub/Subエミュレータでのローカルテスト](https://docs.cloud.google.com/pubsub/docs/emulator)、[Testcontainers Google Cloud Module](https://testcontainers.com/modules/google-cloud/)
 
 ---
 
@@ -240,6 +240,13 @@ IDEからGoogle Cloud APIを呼び出すアプリケーションコードを実�
 | `gcloud auth application-default login` | ADCを設定し、クライアントライブラリに資格情報を提供する | アプリケーションコード内のGoogle Cloudクライアントライブラリ呼び出し |
 
 サービスアカウントの権限をローカルで再現したい場合は、なりすまし（impersonation）を使う方法もあります。サービスアカウントのなりすましを使ってローカルのADCファイルを設定するには、`gcloud auth application-default login --impersonate-service-account SERVICE_ACCT_EMAIL`を実行し、対象のサービスアカウントに対してService Account Token Creator（roles/iam.serviceAccountTokenCreator）のIAMロールを持っている必要があります。
+
+ただし、なりすましによって生成されるADCファイルは、**すべての認証ライブラリでサポートされるとは限りません**。この方式を採用する前に、次の手順で対応状況を確認してください。
+
+1. アプリケーションで使用するクライアントライブラリ（言語・バージョン）が、なりすまし形式のADC（`impersonated_service_account`タイプの資格情報）の読み取りに対応しているかを、該当ライブラリの認証ドキュメントで確認する。
+2. 対応が確認できない場合、または動作しない場合は、代替として次のいずれかを使う。
+   - **ユーザーADC**：`gcloud auth application-default login`（なりすましなし）でユーザー資格情報のADCを設定し、必要な権限は自分のユーザーアカウントに付与する。
+   - **実行環境にアタッチしたサービスアカウント**：Cloud Shell、Cloud Workstations、Compute Engine、Cloud Runなど、サービスアカウントをアタッチできる環境上でコードを実行し、そのアタッチされたサービスアカウントの資格情報をADCとして自動取得させる。
 
 #### Cloud Code拡張機能のインストールとAI支援
 
@@ -542,6 +549,10 @@ GKEを使う統合テストパターンでは、事前にクラスタとIAM権�
 
 Cloud Buildのステップは基本的に直列実行され、失敗すると後続を止めます。あるステップが失敗すると、ビルドは停止し、残りのステップは実行されません。 これはCI全体の設計として重要な性質で、統合テストが失敗した場合に不完全な状態のままイメージをArtifact Registryへpushしたり、Binary Authorizationのprovenance生成に進んだりしないようにできます。
 
+ただし、この「失敗したら止まる」挙動には**明示的な例外**があります。ステップに`allowFailure: true`を設定した場合、またはそのステップの終了コードが`allowExitCodes`に列挙されている場合、そのステップの失敗は例外として扱われ、**後続のステップがそのまま実行され、ビルド全体も失敗になりません**（ビルドのステータスは成功のまま記録されます）。
+
+したがって、統合テストを**品質ゲートとして機能させたい場合は、統合テストのステップに`allowFailure`と`allowExitCodes`を設定してはいけません**。これらを使ってよいのは、失敗してもデプロイ可否の判断に影響しない補助的なステップ（任意のレポート送信、ベストエフォートのキャッシュ更新、通知など）に限られます。
+
 #### Cloud Buildパイプライン全体像（ビルド〜テスト〜デプロイ）
 
 セクション2で扱った内容を、実際のCI/CDパイプラインの1本の流れとしてまとめると、次のようになります。
@@ -578,7 +589,7 @@ flowchart TB
 > - 統合テストで使う依存サービス（データベース、メッセージングなど）は、可能な限り2.1.1で紹介したエミュレータやコンテナ化されたテスト用インスタンスを使い、テストごとに独立したクリーンな状態から開始する。
 > - Cloud Buildの`cloudbuild`共有ネットワークを前提としたdocker-compose構成にしておくことで、追加の設定なしにCIステップ間で通信できるようにする。
 > - 並列実行できるステップ（lintと単体テストなど、互いに依存しない処理）は`waitFor`を活用して並列化し、パイプライン全体の実行時間を短縮する。
-> - 統合テストが失敗した場合はパイプラインをそこで止め、provenance生成やデプロイに進まないようにする（あるステップの失敗で後続ステップの実行を止めるというCloud Buildの既定動作を積極的に活用する）。
+> - 統合テストが失敗した場合はパイプラインをそこで止め、provenance生成やデプロイに進まないようにする（あるステップの失敗で後続ステップの実行を止めるというCloud Buildの既定動作を積極的に活用する）。このとき、統合テストのステップには`allowFailure: true`や`allowExitCodes`を設定しないこと。設定するとステップの失敗が例外扱いとなり、後続ステップが実行されてビルド全体も失敗にならないため、品質ゲートとして機能しなくなる。
 > - GKEを使った統合テストでは、テストごとに使い捨てクラスタを作る方式（分離性が高いがコスト・起動時間がかかる）と、既存の共有クラスタを使う方式（速いが名前空間分離などの設計が必要）を、テストの目的とコストのバランスで選択する。
 > - 統合テストの成功をBinary Authorizationのアテステーション要件の1つとして組み込み、「統合テストを通過したイメージだけがデプロイ可能」という状態を、人手のチェックではなくポリシーとして強制する。
 >
