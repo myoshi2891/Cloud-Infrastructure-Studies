@@ -374,12 +374,14 @@ images:
 | `steps[].name` | ステップを実行するビルダーコンテナイメージ |
 | `steps[].args` | ビルダーコンテナに渡す引数 |
 | `steps[].waitFor` | このステップが待機する先行ステップのID（並列実行の制御に使用） |
-| `images` | ビルド成功時にArtifact Registry／Container Registryへpushするイメージの一覧 |
+| `images` | ビルド成功時にArtifact Registryへpushするイメージの一覧 |
 | `substitutions` | `$PROJECT_ID`や`$SHORT_SHA`など、ビルド時に置換される変数 |
 
 `$SHORT_SHA`の扱いには注意が必要です。`$SHORT_SHA`はビルドトリガー経由の実行では自動的に設定されますが、手元から`gcloud builds submit`を直接実行した場合は自動設定されず、未指定のままだと空文字列になります。手動実行時は`$BUILD_ID`やユーザー定義の`$_IMAGE_TAG`を使うか、`--substitutions=SHORT_SHA=...`で明示的に値を渡します。
 
-Artifact Registryへイメージを保存するもう一つの代表的な方法として、`cloudbuild.yaml`のようなビルド構成ファイルを用意せずに`gcloud builds submit`を直接呼び出すシンプルな方法もあります。この場合もビルドはローカルで実行されるのではなくCloud Buildへ送信されます。`-t`（`--tag`）を指定すると、カレントディレクトリのソースに含まれる`Dockerfile`からイメージをビルドするビルド構成がCloud Build側で暗黙に生成され、ビルドされたイメージが自動的にArtifact Registryへpushされます。実際のコマンドは`gcloud builds submit . -t LOCATION-docker.pkg.dev/PROJECT_ID/REPO/IMAGE:TAG`のようになります。この`-t`指定によるシンプルな経路は、あくまでビルドとpushだけを目的とした手順であり、Binary Authorizationによるデプロイ時の検証を前提とした経路ではありません。Binary Authorizationで保護するリリース経路を構築する場合は、後述の[2.2.2](#222-cloud-buildにおけるprovenanceの構成binary-authorization)のとおり`cloudbuild.yaml`を使い、`images`フィールドと`options.requestedVerifyOption: VERIFIED`を明示的に指定する必要があります。 自動スキャンには前提条件があります。Container Scanning APIを有効化している場合、標準（standard）またはリモート（remote）のDockerリポジトリにpushされたイメージが自動スキャンの対象になります。それ以外の対応リポジトリ形式では、リポジトリ単位でスキャンを有効化する必要があります。Container Analysisをその他の情報と統合することで、そのメタデータに基づいた意思決定が可能になります。例えば、信頼できるレジストリからの準拠したイメージのみをデプロイ対象として許可するデプロイポリシーを、Binary Authorizationで作成できます。
+Artifact Registryへイメージを保存するもう一つの代表的な方法として、`cloudbuild.yaml`のようなビルド構成ファイルを用意せずに`gcloud builds submit`を直接呼び出すシンプルな方法もあります。この場合もビルドはローカルで実行されるのではなくCloud Buildへ送信されます。`-t`（`--tag`）を指定すると、カレントディレクトリのソースに含まれる`Dockerfile`からイメージをビルドするビルド構成がCloud Build側で暗黙に生成され、ビルドされたイメージが自動的にArtifact Registryへpushされます。実際のコマンドは`gcloud builds submit . -t LOCATION-docker.pkg.dev/PROJECT_ID/REPO/IMAGE:TAG`のようになります。この`-t`指定によるシンプルな経路は、あくまでビルドとpushだけを目的とした手順であり、Binary Authorizationによるデプロイ時の検証を前提とした経路ではありません。Binary Authorizationで保護するリリース経路を構築する場合は、後述の[2.2.2](#222-cloud-buildにおけるprovenanceの構成binary-authorization)のとおり`cloudbuild.yaml`を使い、`images`フィールドと`options.requestedVerifyOption: VERIFIED`を明示的に指定する必要があります。
+
+自動スキャンには前提条件があります。Container Scanning APIを有効化している場合、標準（standard）リポジトリへpushされたイメージと、リモート（remote）リポジトリにキャッシュされたイメージが自動スキャンの対象になります。リモートリポジトリは外部レジストリへのプルスルーキャッシュであり、`push`という操作自体を受け付けない点に注意してください（自動スキャンの対象になるのは、プルを経てリモートリポジトリにキャッシュされたイメージです）。複数のリポジトリを束ねるバーチャル（virtual）リポジトリはイメージそのものを保持しないため、自動スキャンの対象外です。それ以外の対応リポジトリ形式では、リポジトリ単位でスキャンを有効化する必要があります。Container Analysisをその他の情報と統合することで、そのメタデータに基づいた意思決定が可能になります。例えば、信頼できるレジストリからの準拠したイメージのみをデプロイ対象として許可するデプロイポリシーを、Binary Authorizationで作成できます。
 
 > **ベストプラクティス**
 > - イメージのタグに`latest`を使わず、Gitのコミットハッシュ（`$SHORT_SHA`）やセマンティックバージョンなど、一意で追跡可能な値を使う。ロールバックや監査の際に、どのソースからビルドされたイメージかを一意に特定できるようにするため。
@@ -409,7 +411,7 @@ options:
 
 この設定により、provenanceの生成に失敗したビルドはビルド自体が失敗として扱われ、検証されていないイメージが後続のデプロイへ流れることを防げます。
 
-Cloud BuildをBinary Authorizationと統合すると、ビルドのアテステーション（証明）を確認し、Cloud Buildによって生成されていないイメージのデプロイをブロックできます。このプロセスにより、認可されていないソフトウェアがデプロイされるリスクを低減できます。
+`requestedVerifyOption: VERIFIED`はCloud Buildそのものの成否を左右する設定であり、デプロイの許可・拒否を決めるものではない点に注意してください。デプロイ時に未検証イメージを拒否するにはBinary Authorization側の設定が別途必要です。具体的には、Cloud Buildはプロジェクトに`built-by-cloud-build`という名前のアテスターを自動作成し、ビルドしたイメージへ自動的にアテステーションを付与します。Binary Authorizationのポリシーで`evaluationMode: REQUIRE_ATTESTATION`を指定し、`requireAttestationsBy`にこの`built-by-cloud-build`アテスター（例: `projects/PROJECT_ID/attestors/built-by-cloud-build`）を列挙しておくことで、Cloud Buildによって生成されていないイメージのデプロイをブロックできます。このプロセスにより、認可されていないソフトウェアがデプロイされるリスクを低減できます。
 
 #### SLSAレベルとGoogle Cloudでの実現手段
 
@@ -448,7 +450,7 @@ flowchart TB
     class Deny deny
 ```
 
-生成されたprovenanceは、コマンドラインから直接確認・検証することもできます。provenanceの取得、`slsa-verifier`による検証、そしてデプロイという一連の処理では、タグではなく同一の不変なイメージダイジェスト（`IMAGE=LOCATION-docker.pkg.dev/PROJECT_ID/REPO/IMAGE_NAME@sha256:<HASH>`）を`IMAGE`として固定し、すべての処理で同じダイジェストを参照する必要があります。タグは後から別のイメージを指すよう変更され得るため、タグ基準では「検証したイメージ」と「デプロイされるイメージ」が一致する保証がありません。イメージのprovenanceを取得してJSONとして保存するには、`gcloud artifacts docker images describe $IMAGE --format json --show-provenance > provenance.json`のようなコマンドを実行し、`slsa-verifier verify-image $IMAGE --source-uri=...`のように同じ`$IMAGE`（ダイジェスト形式）に対して検証を行った上で、そのダイジェストのままデプロイコマンドに渡します。
+生成されたprovenanceは、コマンドラインから直接確認・検証することもできます。provenanceの取得、`slsa-verifier`による検証、そしてデプロイという一連の処理では、タグではなく同一の不変なイメージダイジェスト（`IMAGE=LOCATION-docker.pkg.dev/PROJECT_ID/REPO/IMAGE_NAME@sha256:<HASH>`）を`IMAGE`として固定し、すべての処理で同じダイジェストを参照する必要があります。タグは後から別のイメージを指すよう変更され得るため、タグ基準では「検証したイメージ」と「デプロイされるイメージ」が一致する保証がありません。イメージのprovenanceを取得してJSONとして保存するには、`gcloud artifacts docker images describe $IMAGE --format json --show-provenance > provenance.json`のようなコマンドを実行し、`slsa-verifier verify-image $IMAGE --provenance-path provenance.json --source-uri=github.com/OWNER/REPO --builder-id=https://cloudbuild.googleapis.com/GoogleHostedWorker`のように、保存した`provenance.json`と期待するビルダーID（Cloud Buildの場合`https://cloudbuild.googleapis.com/GoogleHostedWorker`）を指定して同じ`$IMAGE`（ダイジェスト形式）に対する検証を行った上で、そのダイジェストのままデプロイコマンドに渡します。
 
 Binary Authorization側でSLSAの継続的な検証を行う仕組みもあります。Binary Authorizationの継続的検証（CV）のSLSAチェックを利用するには、Cloud BuildでSLSA準拠のprovenanceを生成しつつイメージをビルドする必要があります。このチェックがサポートする唯一の信頼済みビルダーはCloud Buildです。
 
@@ -549,7 +551,9 @@ GKEを使う統合テストパターンでは、事前にクラスタとIAM権�
 
 #### 統合テストの失敗時の挙動
 
-Cloud Buildのステップは基本的に直列実行され、失敗すると後続を止めます。あるステップが失敗すると、ビルドは停止し、残りのステップは実行されません。 これはCI全体の設計として重要な性質で、統合テストが失敗した場合に不完全な状態のままイメージをArtifact Registryへpushしたり、Binary Authorizationのprovenance生成に進んだりしないようにできます。
+Cloud Buildのステップは`waitFor`が示す依存関係に基づいて実行されます。`waitFor`を省略した場合は直前のステップの完了を暗黙に待つため、本ガイドで扱うような一直線のパイプラインでは事実上直列実行になります。あるステップが失敗すると、そのステップに`waitFor`で依存している後続ステップは起動されず、ビルド全体のステータスも失敗（`FAILURE`）になります。 これはCI全体の設計として重要な性質で、統合テストが失敗した場合に不完全な状態のままイメージをArtifact Registryへpushしたり、Binary Authorizationのprovenance生成に進んだりしないようにできます（一方で、失敗したステップに依存しない別系統の並列ステップは、`waitFor`の依存関係が無い限り影響を受けません）。
+
+ビルド失敗の「通知」は、後続のビルドステップとして実行されるわけではない点に注意してください。ステップの失敗はビルドリソースのステータスを`FAILURE`へ遷移させるだけであり、Slack通知やチケット起票のような能動的な通知を行いたい場合は、Cloud Buildの通知機能（Pub/Subトピックへのビルドイベント発行とNotifierの購読）のような、ビルドステップの外側にある仕組みを別途構成する必要があります。
 
 ただし、この「失敗したら止まる」挙動には**明示的な例外**があります。ステップに`allowFailure: true`を設定した場合、またはそのステップの終了コードが`allowExitCodes`に列挙されている場合、そのステップの失敗は例外として扱われ、**後続のステップがそのまま実行され、ビルド全体も失敗になりません**（ビルドのステータスは成功のまま記録されます）。
 
@@ -568,7 +572,7 @@ flowchart TB
     BuildImg --> Env["テスト環境を起動<br/>(エミュレータ / docker-compose /<br/>一時GKEクラスタ)"]
     Env --> Integ["自動統合テストを実行"]
     Integ -->|"成功"| Prov["Provenance生成 +<br/>Artifact Registryへpush"]
-    Integ -->|"失敗"| Fail["ビルド失敗を通知"]
+    Integ -->|"失敗"| Fail["ビルド失敗（FAILURE）<br/>後続ステップとしてではなく<br/>Pub/Sub等の外部経路で通知"]
     Prov --> Gate["Binary Authorization<br/>ゲート"]
     Gate --> Deploy["Cloud Run / GKEへデプロイ"]
 
