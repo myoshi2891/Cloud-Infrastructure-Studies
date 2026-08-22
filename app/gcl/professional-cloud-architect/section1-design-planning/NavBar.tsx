@@ -19,6 +19,7 @@ export function NavBar({ isOpen, onToggle, onClose }: NavBarProps) {
             .filter((el): el is HTMLElement => el !== null);
 
         if (targetElements.length === 0) return;
+        if (typeof IntersectionObserver === 'undefined') return;
 
         const observer = new IntersectionObserver(
             (entries) => {
