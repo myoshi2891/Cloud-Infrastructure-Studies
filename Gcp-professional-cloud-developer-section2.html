@@ -1,0 +1,2407 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>
+            Google Cloud Professional Cloud Developer 認定試験ガイド ｜ セクション2:
+            アプリケーションのビルドとテスト
+        </title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            :root {
+                --bg: #07111e;
+                --bg-card: #0d1a2b;
+                --bg-card-2: #101f33;
+                --border: #1d3350;
+                --border-soft: #16283f;
+                --text: #dbe4f3;
+                --text-dim: #8fa2c0;
+                --text-faint: #6a7d9c;
+                --accent: #7c9eff;
+                --accent-soft: #3a4f80;
+                --accent-bg: #15233d;
+                --danger: #ff8fa3;
+                --danger-bg: #3a1420;
+                --warn: #ffbd6e;
+                --warn-bg: #3a2810;
+                --success: #7fe0a8;
+                --success-bg: #0f2c1e;
+                --sidebar-w: 300px;
+                --font-jp: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', sans-serif;
+            }
+            * {
+                box-sizing: border-box;
+            }
+            html,
+            body {
+                overflow-x: hidden;
+            }
+            body {
+                margin: 0;
+                background: var(--bg);
+                color: var(--text);
+                font-family: var(--font-jp);
+                font-size: 16px;
+                line-height: 1.85;
+                -webkit-font-smoothing: antialiased;
+            }
+            a {
+                color: var(--accent);
+                text-decoration: none;
+            }
+            a:hover {
+                text-decoration: underline;
+            }
+
+            /* ---------- layout ---------- */
+            .layout {
+                display: block;
+            }
+
+            /* Sidebar */
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                width: var(--sidebar-w);
+                background: #060d17;
+                border-right: 1px solid var(--border-soft);
+                overflow-y: auto;
+                padding: 28px 0 40px;
+                z-index: 50;
+            }
+            .sidebar-header {
+                padding: 0 24px 20px;
+                border-bottom: 1px solid var(--border-soft);
+                margin-bottom: 16px;
+            }
+            .sidebar-header .kicker {
+                font-size: 12px;
+                letter-spacing: 0.08em;
+                color: var(--accent);
+                font-weight: 700;
+                text-transform: uppercase;
+            }
+            .sidebar-header h2 {
+                font-size: 16px;
+                margin: 6px 0 0;
+                color: var(--text);
+                line-height: 1.5;
+                font-weight: 700;
+            }
+            .sidebar nav {
+                padding: 0 12px;
+            }
+            .sidebar nav a {
+                display: block;
+                padding: 9px 12px;
+                border-radius: 8px;
+                font-size: 13.5px;
+                color: var(--text-dim);
+                line-height: 1.5;
+                margin-bottom: 2px;
+                transition:
+                    background 0.15s,
+                    color 0.15s;
+            }
+            .sidebar nav a:hover {
+                background: var(--accent-bg);
+                color: var(--text);
+                text-decoration: none;
+            }
+            .sidebar nav a.active {
+                background: var(--accent-bg);
+                color: var(--accent);
+                font-weight: 700;
+            }
+            .sidebar nav a.lvl3 {
+                padding-left: 28px;
+                font-size: 12.5px;
+            }
+            .sidebar-toggle {
+                display: none;
+                position: fixed;
+                top: 14px;
+                left: 14px;
+                z-index: 60;
+                width: 42px;
+                height: 42px;
+                border-radius: 10px;
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                color: var(--text);
+                font-size: 18px;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+            }
+
+            /* Main content */
+            .main {
+                margin-left: var(--sidebar-w);
+                padding: 56px 64px 120px;
+            }
+            .hero {
+                margin-bottom: 8px;
+            }
+            .hero .kicker {
+                font-size: 13px;
+                font-weight: 700;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+                color: var(--accent);
+                margin-bottom: 14px;
+            }
+            .hero h1 {
+                font-size: clamp(28px, 3.6vw, 42px);
+                line-height: 1.35;
+                margin: 0 0 18px;
+                background: linear-gradient(135deg, #dbe4f3 0%, #7c9eff 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                font-weight: 800;
+            }
+            .hero .meta-row {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+                margin-bottom: 32px;
+            }
+            .pill {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                padding: 6px 14px;
+                border-radius: 999px;
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                font-size: 12.5px;
+                color: var(--text-dim);
+            }
+            .pill strong {
+                color: var(--text);
+            }
+
+            .main h2 {
+                font-size: 26px;
+                margin: 56px 0 20px;
+                padding-top: 8px;
+                border-top: 1px solid var(--border-soft);
+                color: var(--text);
+                font-weight: 800;
+                letter-spacing: -0.01em;
+                scroll-margin-top: 24px;
+            }
+            .main > h2:first-of-type {
+                border-top: none;
+                padding-top: 0;
+                margin-top: 8px;
+            }
+            .main h3 {
+                font-size: 20px;
+                margin: 38px 0 16px;
+                color: var(--text);
+                font-weight: 700;
+                scroll-margin-top: 24px;
+            }
+            .main h3::before {
+                content: '';
+                display: inline-block;
+                width: 5px;
+                height: 18px;
+                background: var(--accent);
+                border-radius: 3px;
+                margin-right: 10px;
+                vertical-align: -2px;
+            }
+            .main p {
+                margin: 0 0 18px;
+                color: var(--text);
+            }
+            .main ul,
+            .main ol {
+                margin: 0 0 18px;
+                padding-left: 1.4em;
+                color: var(--text);
+            }
+            .main li {
+                margin-bottom: 8px;
+            }
+            .main hr {
+                border: none;
+                border-top: 1px solid var(--border-soft);
+                margin: 44px 0;
+            }
+            .main strong {
+                color: #f0f4fc;
+                font-weight: 700;
+            }
+            .footnote-ref {
+                margin-left: 2px;
+            }
+            .footnote-ref sup {
+                font-size: 11px;
+                color: var(--accent);
+                font-weight: 700;
+            }
+            .main code:not(pre code) {
+                background: var(--bg-card-2);
+                border: 1px solid var(--border);
+                border-radius: 5px;
+                padding: 1px 6px;
+                font-size: 0.9em;
+                color: #ffd08a;
+                overflow-wrap: break-word;
+                word-break: break-word;
+            }
+
+            /* Tables */
+            .table-scroll {
+                overflow-x: auto;
+                margin: 0 0 26px;
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                background: var(--bg-card);
+            }
+            table {
+                border-collapse: collapse;
+                width: 100%;
+                font-size: 14.5px;
+            }
+            thead th {
+                background: var(--accent-bg);
+                color: var(--text);
+                text-align: left;
+                padding: 12px 16px;
+                font-weight: 700;
+                border-bottom: 1px solid var(--border);
+                white-space: nowrap;
+            }
+            tbody td {
+                padding: 12px 16px;
+                border-bottom: 1px solid var(--border-soft);
+                color: var(--text-dim);
+                vertical-align: top;
+            }
+            tbody tr:last-child td {
+                border-bottom: none;
+            }
+            tbody tr:hover td {
+                background: rgba(124, 158, 255, 0.04);
+            }
+
+            /* Mermaid */
+            pre.mermaid {
+                width: 100%;
+                display: flex;
+                justify-content: safe center;
+                overflow-x: auto;
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-radius: 14px;
+                padding: 28px 20px;
+                margin: 0 0 30px;
+            }
+            pre.mermaid svg {
+                flex-shrink: 0;
+            }
+            pre.mermaid p {
+                color: inherit;
+                margin: 0;
+            }
+
+            /* Callouts */
+            .callout-practice {
+                display: flex;
+                gap: 14px;
+                background: var(--success-bg);
+                border: 1px solid #1d5a3a;
+                border-left: 4px solid var(--success);
+                border-radius: 12px;
+                padding: 20px 22px;
+                margin: 0 0 26px;
+            }
+            .callout-practice .icon {
+                flex-shrink: 0;
+                width: 26px;
+                height: 26px;
+                border-radius: 7px;
+                background: var(--success);
+                color: #08150e;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 14px;
+                font-weight: 900;
+            }
+            .callout-practice .body {
+                color: var(--text);
+            }
+            .callout-practice .label {
+                font-size: 11.5px;
+                font-weight: 800;
+                letter-spacing: 0.06em;
+                color: var(--success);
+                text-transform: uppercase;
+                margin-bottom: 6px;
+            }
+            .callout-practice p {
+                margin: 0;
+                color: var(--text);
+            }
+
+            .practice-label {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 12px;
+                font-weight: 800;
+                letter-spacing: 0.06em;
+                color: var(--success);
+                text-transform: uppercase;
+                margin: 0 0 10px;
+            }
+            .practice-label::before {
+                content: '✓';
+                font-size: 13px;
+            }
+
+            /* Reference grid */
+            .ref-grid {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 12px;
+                margin: 0 0 30px;
+            }
+            .ref-card {
+                display: flex;
+                gap: 12px;
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                padding: 14px 16px;
+                min-width: 0;
+            }
+            .ref-card .num {
+                flex-shrink: 0;
+                width: 26px;
+                height: 26px;
+                border-radius: 7px;
+                background: var(--accent-bg);
+                color: var(--accent);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 12px;
+                font-weight: 800;
+            }
+            .ref-card .txt {
+                font-size: 13px;
+                color: var(--text-dim);
+                min-width: 0;
+                overflow-wrap: break-word;
+                word-break: break-word;
+            }
+            .ref-card .txt a {
+                color: var(--accent);
+                font-weight: 600;
+            }
+
+            /* Checklist */
+            .checklist-card {
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-radius: 14px;
+                padding: 8px 22px 12px;
+                margin: 0 0 30px;
+            }
+            .checklist-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 14px 0;
+                border-bottom: 1px solid var(--border-soft);
+                margin-bottom: 6px;
+            }
+            .checklist-header .title {
+                font-weight: 700;
+                color: var(--text);
+                font-size: 14.5px;
+            }
+            .checklist-header .count {
+                font-size: 13px;
+                color: var(--accent);
+                font-weight: 700;
+            }
+            .checklist-card ul {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+            .checklist-card li {
+                display: flex;
+                align-items: flex-start;
+                gap: 12px;
+                padding: 11px 4px;
+                border-radius: 8px;
+                margin: 0;
+                transition: background 0.15s;
+            }
+            .checklist-card li:hover {
+                background: rgba(124, 158, 255, 0.05);
+            }
+            .checklist-card input[type='checkbox'] {
+                appearance: none;
+                -webkit-appearance: none;
+                width: 19px;
+                height: 19px;
+                flex-shrink: 0;
+                margin-top: 2px;
+                border: 1.5px solid var(--border);
+                border-radius: 5px;
+                background: var(--bg-card-2);
+                cursor: pointer;
+                position: relative;
+            }
+            .checklist-card input[type='checkbox']:checked {
+                background: var(--accent);
+                border-color: var(--accent);
+            }
+            .checklist-card input[type='checkbox']:checked::after {
+                content: '';
+                position: absolute;
+                left: 5px;
+                top: 1px;
+                width: 5px;
+                height: 10px;
+                border: solid #08101f;
+                border-width: 0 2px 2px 0;
+                transform: rotate(40deg);
+            }
+            .checklist-card label {
+                color: var(--text);
+                font-size: 14.5px;
+                cursor: pointer;
+                line-height: 1.6;
+            }
+            .checklist-card li:has(input:checked) label {
+                text-decoration: line-through;
+                color: var(--text-faint);
+            }
+
+            /* Footnotes (pandoc) */
+            aside.footnotes {
+                display: none;
+            } /* replaced entirely by ref-grid */
+
+            /* Responsive */
+            @media (max-width: 980px) {
+                .sidebar {
+                    transform: translateX(-100%);
+                    transition: transform 0.25s ease;
+                    box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+                }
+                .sidebar.open {
+                    transform: translateX(0);
+                }
+                .main {
+                    margin-left: 0;
+                    padding: 80px 20px 100px;
+                }
+                .sidebar-toggle {
+                    display: flex;
+                }
+                .ref-grid {
+                    grid-template-columns: 1fr;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="layout">
+            <button
+                class="sidebar-toggle"
+                id="sidebarToggle"
+                type="button"
+                aria-label="メニュー"
+                aria-controls="sidebar"
+                aria-expanded="false"
+            >
+                ☰
+            </button>
+            <aside class="sidebar" id="sidebar">
+                <div class="sidebar-header">
+                    <div class="kicker">Google Cloud PCD</div>
+                    <h2>Section 2: アプリケーションのビルドとテスト</h2>
+                </div>
+                <nav id="sidebarNav">
+                    <a href="#セクション2の全体像" class="">セクション2の全体像</a>
+                    <a href="#21-開発環境のセットアップ" class="">2.1 開発環境のセットアップ</a>
+                    <a
+                        href="#211-gcloud-cliによるgoogle-cloudサービスのローカルエミュレーション"
+                        class="lvl3"
+                        >2.1.1 gcloud CLIによるGoogle Cloudサービスのローカルエミュレーション</a
+                    >
+                    <a
+                        href="#212-google-cloud-consolecloud-sdkcloud-codegemini-cloud-assistcloud-shellcloud-workstations"
+                        class="lvl3"
+                        >2.1.2 Google Cloud Console・Cloud SDK・Cloud Code・Gemini Cloud
+                        Assist・Cloud Shell・Cloud Workstations</a
+                    >
+                    <a href="#213-ideの構成cloud-sdkaiツールmcpサーバー" class="lvl3"
+                        >2.1.3 IDEの構成（Cloud SDK・AIツール・MCPサーバー）</a
+                    >
+                    <a href="#22-ビルド" class="">2.2 ビルド</a>
+                    <a
+                        href="#221-cloud-buildとartifact-registryによるコンテナのビルドと保存"
+                        class="lvl3"
+                        >2.2.1 Cloud BuildとArtifact Registryによるコンテナのビルドと保存</a
+                    >
+                    <a
+                        href="#222-cloud-buildにおけるprovenanceの構成binary-authorization"
+                        class="lvl3"
+                        >2.2.2 Cloud Buildにおけるprovenanceの構成（Binary Authorization）</a
+                    >
+                    <a href="#23-テスト" class="">2.3 テスト</a>
+                    <a href="#231-aiコーディングアシスタントを活用した単体テストの作成" class="lvl3"
+                        >2.3.1 AIコーディングアシスタントを活用した単体テストの作成</a
+                    >
+                    <a href="#232-cloud-buildでの自動統合テストの実行" class="lvl3"
+                        >2.3.2 Cloud Buildでの自動統合テストの実行</a
+                    >
+                    <a href="#まとめセクション2の全体マップ" class=""
+                        >まとめ：セクション2の全体マップ</a
+                    >
+                    <a href="#参考文献" class="">参考文献</a>
+                </nav>
+            </aside>
+            <main class="main">
+                <div class="hero">
+                    <div class="kicker">Professional Cloud Developer &middot; Section 2</div>
+                    <h1>
+                        Google Cloud Professional Cloud Developer 認定試験ガイド
+                        セクション2「アプリケーションのビルドとテスト」
+                    </h1>
+                    <div class="meta-row">
+                        <span class="pill">配点 <strong>約23%</strong></span>
+                        <span class="pill">対象 <strong>初学者向け</strong></span>
+                        <span class="pill">図解 <strong>Mermaid 8点</strong></span>
+                        <span class="pill">参考文献 <strong>4件</strong></span>
+                    </div>
+                </div>
+
+                <p>
+                    本ガイドは、Google Cloud公式の<a
+                        href="https://cloud.google.com/learn/certification/cloud-developer"
+                        >Professional Cloud Developer認定ページ</a
+                    >および公式<a
+                        href="https://services.google.com/fh/files/misc/professional_cloud_developer_exam_guide_english.pdf"
+                        >Exam Guide PDF</a
+                    >に基づき、試験の<strong
+                        >セクション2「Building and testing
+                        applications（アプリケーションのビルドとテスト）」</strong
+                    >（配点 約23%）を初学者向けにステップバイステップで解説するものです。
+                </p>
+
+                <p>
+                    Exam
+                    Guideでは、セクション2は次の3つの小項目（considerations）で構成されています。
+                </p>
+
+                <ul>
+                    <li>
+                        <strong
+                            >2.1 開発環境のセットアップ（Setting up your development
+                            environment）</strong
+                        >
+                    </li>
+                    <li><strong>2.2 ビルド（Building）</strong></li>
+                    <li><strong>2.3 テスト（Testing）</strong></li>
+                </ul>
+
+                <p>
+                    各項目について、「何を扱うサービス・機能か」「なぜ必要か」「どう使うか」「ベストプラクティスは何か」の順に解説し、根拠となる一次情報（Google
+                    Cloud公式ドキュメント）のURLを付記します。
+                </p>
+
+                <div class="callout-practice">
+                    <div class="icon">✓</div>
+                    <div class="body">
+                        <div class="label">ベストプラクティス</div>
+                        <p>
+                            本ガイド全体を通して、太字見出しの「ベストプラクティス」ブロックは公式ドキュメントおよび実践的なCI/CDパターンに基づく推奨事項をまとめたものです。実際の設計・実装の際は、必ず参照元の公式ドキュメントで最新の仕様を確認してください。
+                        </p>
+                    </div>
+                </div>
+
+                <hr />
+
+                <h2 id="セクション2の全体像">セクション2の全体像</h2>
+
+                <p>
+                    セクション2は、「ローカル開発環境を整える」→「コードをビルドしてコンテナ化する」→「テストで品質と信頼性を担保する」という、ソフトウェア開発のインナーループ（内側の開発サイクル）を扱います。以下の図は、3つの小項目とその代表的なトピックの関係を示しています。
+                </p>
+
+                <pre class="mermaid">
+flowchart TB
+    A["セクション2&lt;br/&gt;アプリケーションのビルドとテスト&lt;br/&gt;（配点 約23%）"] --&gt; B["2.1 開発環境のセットアップ"]
+    A --&gt; C["2.2 ビルド"]
+    A --&gt; D["2.3 テスト"]
+    B --&gt; B1["ローカルエミュレーション"]
+    B --&gt; B2["Console / SDK / Code /&lt;br/&gt;Gemini Cloud Assist / Shell / Workstations"]
+    B --&gt; B3["IDE統合設定&lt;br/&gt;(Cloud SDK・AIツール・MCP)"]
+    C --&gt; C1["Cloud Build + Artifact Registry&lt;br/&gt;によるコンテナビルド"]
+    C --&gt; C2["ビルドprovenance構成&lt;br/&gt;(Binary Authorization)"]
+    D --&gt; D1["AI支援による単体テスト作成"]
+    D --&gt; D2["Cloud Buildでの自動統合テスト"]
+
+    classDef highlightFill fill:#1a3a5c,stroke:#4a90d9,color:#ffffff;
+    class A highlightFill</pre
+                >
+
+                <p>
+                    この3つの小項目は、実際のCI/CDパイプラインの中では独立した工程ではなく、「コミット
+                    → ビルド → テスト →
+                    デプロイ」という一連の流れの中でシームレスに連携します。本ガイドの最後（<a
+                        href="#まとめセクション2の全体マップ"
+                        >まとめ</a
+                    >）で、この一連の流れを1枚の図にまとめます。
+                </p>
+
+                <hr />
+
+                <h2 id="21-開発環境のセットアップ">2.1 開発環境のセットアップ</h2>
+
+                <p>Exam Guideは2.1として次の3点を挙げています。</p>
+
+                <ul>
+                    <li>
+                        Google Cloud CLI（gcloud CLI）を使ったGoogle
+                        Cloudサービスのエミュレーションによる、ローカルでのアプリケーション開発・単体テスト
+                    </li>
+                    <li>
+                        Google Cloud Console、Cloud SDK、Cloud Code、Gemini Cloud Assist、Cloud
+                        Shell、Cloud Workstationsの利用
+                    </li>
+                    <li>
+                        適切な統合機能（Cloud
+                        SDK、AIツール［コーディングアシスタント、MCPサーバー］など）によるIDEの構成
+                    </li>
+                </ul>
+
+                <h3 id="211-gcloud-cliによるgoogle-cloudサービスのローカルエミュレーション">
+                    2.1.1 gcloud CLIによるGoogle Cloudサービスのローカルエミュレーション
+                </h3>
+
+                <h4>これは何か</h4>
+
+                <p>
+                    gcloud CLIには、いくつかのGoogle
+                    Cloudサービスの<strong>ローカルエミュレータ</strong>が同梱されています。エミュレータは実際のバックエンドサービスの動作をローカルマシン上で模倣するもので、クライアントライブラリから見ると本番サービスとほぼ同じAPIを呼び出せます。gcloud
+                    CLIは、ローカルでの開発・テスト・検証のために、Bigtable、Cloud
+                    Datastore、Firestore、Spanner、Pub/Subのデータエミュレータを提供しています。
+                </p>
+
+                <h4>なぜ必要か</h4>
+
+                <ul>
+                    <li>
+                        本番のGoogle
+                        Cloudリソースを作成せずに、コストゼロでクライアントコードを書ける
+                    </li>
+                    <li>ネットワークが不安定・オフラインの環境でも開発を継続できる</li>
+                    <li>単体テストを高速かつ決定論的（何度実行しても同じ結果になる）に保てる</li>
+                    <li>
+                        CI/CDパイプライン内でも同じ仕組みをそのまま使い、テストの再現性を担保できる
+                    </li>
+                </ul>
+
+                <h4>提供されているエミュレータの一覧</h4>
+
+                <p>
+                    gcloudのemulatorsコマンドグループでは、Bigtable、Datastore、Firestore、Pub/Sub、Spannerのローカルエミュレータを管理できます。
+                    日本語の技術記事による整理では、GAとして提供されているのはFirestoreとSpannerの2つのみで、Bigtable・Datastore・Pub/Subの3つはgcloud
+                    betaコマンドとして提供されている状態です（提供状況は変更される可能性があるため、利用時は必ず最新のドキュメントを確認してください）。
+                </p>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>エミュレータ</th>
+                                <th>提供コマンド</th>
+                                <th>主な用途</th>
+                                <th>補足</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>Firestore</td>
+                                <td><code>gcloud emulators firestore start</code></td>
+                                <td>ドキュメント指向DBのローカル開発・単体テスト</td>
+                                <td>Native modeとDatastore modeの両方に対応</td>
+                            </tr>
+                            <tr class="even">
+                                <td>Spanner</td>
+                                <td><code>gcloud emulators spanner start</code></td>
+                                <td>分散リレーショナルDBのローカル開発</td>
+                                <td>本番同様のAPI形状をローカルで再現</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>Pub/Sub</td>
+                                <td><code>gcloud beta emulators pubsub start</code></td>
+                                <td>非同期メッセージングの単体テスト</td>
+                                <td>Push/Pullサブスクリプションの検証に利用</td>
+                            </tr>
+                            <tr class="even">
+                                <td>Bigtable</td>
+                                <td><code>gcloud beta emulators bigtable start</code></td>
+                                <td>大規模NoSQLワークロードのローカル検証</td>
+                                <td>インメモリで動作</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>Datastore</td>
+                                <td><code>gcloud beta emulators datastore start</code></td>
+                                <td>旧来のDatastore APIのローカルテスト</td>
+                                <td>Firestore in Datastore modeへの移行を検討</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h4>基本的な使い方（Pub/Subエミュレータの例）</h4>
+
+                <p>エミュレータを使ったローカル開発の典型的な流れを、シーケンス図で示します。</p>
+
+                <pre class="mermaid">
+sequenceDiagram
+    participant Dev as 開発者
+    participant CLI as gcloud CLI
+    participant Emu as ローカルエミュレータ&lt;br/&gt;(Pub/Sub 等)
+    participant App as アプリケーションコード
+    participant Test as 単体テスト
+
+    Dev-&gt;&gt;CLI: gcloud emulators pubsub start
+    CLI-&gt;&gt;Emu: エミュレータプロセスを起動
+    Emu--&gt;&gt;Dev: ホスト:ポートを出力
+    Dev-&gt;&gt;CLI: env-init で接続情報を取得
+    CLI--&gt;&gt;Dev: PUBSUB_EMULATOR_HOST を返す
+    Dev-&gt;&gt;App: 環境変数をエクスポートして起動
+    App-&gt;&gt;Emu: クライアントライブラリ経由でAPI呼び出し
+    Emu--&gt;&gt;App: ローカルでレスポンスを返す
+    Test-&gt;&gt;App: 単体テストを実行
+    App-&gt;&gt;Emu: テストデータの読み書き
+    Emu--&gt;&gt;Test: 実行結果を返す
+    Test--&gt;&gt;Dev: テスト結果を報告</pre
+                >
+
+                <p>
+                    Pub/Subエミュレータのコマンドライン引数の詳細はgcloud beta emulators
+                    pubsubのリファレンスを参照します。
+                    エミュレータをコンテナとして動かす場合は、gCloud
+                    Dockerイメージをダウンロード・インストールし、コマンドプロンプトからpubsub
+                    startを呼び出すことでエミュレータをコンテナとして起動できます。
+                </p>
+
+                <p>
+                    なお、Pub/Subエミュレータには本番との差異もあります。UpdateTopicやUpdateSnapshotのRPCは未サポートであり、IAM操作も未サポートです。またメッセージ保持期間の設定はサポートされておらず、すべてのメッセージは無期限に保持されます。
+                </p>
+
+                <h4>実行環境の分離パターン（Testcontainersとの併用）</h4>
+
+                <p>
+                    CI環境でエミュレータの起動・停止をテストコードに組み込みたい場合、OSS の
+                    Testcontainers
+                    ライブラリを使う方法も広く使われています。TestcontainersのGCloudモジュールは、Bigtable、Datastore、Firestore、Spanner、Pub/Subのエミュレータをサポートしており、Java、Go、.NET、Node.js、Pythonに対応しています。
+                </p>
+
+                <div class="callout-practice">
+                    <div class="icon">✓</div>
+                    <div class="body">
+                        <div class="label">ベストプラクティス</div>
+                        <ul>
+                            <li>
+                                ホスト名・ポートはハードコードせず、<code
+                                    >FIRESTORE_EMULATOR_HOST</code
+                                >
+                                や
+                                <code>PUBSUB_EMULATOR_HOST</code>
+                                のような環境変数経由でクライアントライブラリに渡す（本番切り替え時にコード変更が不要になる）。
+                            </li>
+                            <li>
+                                エミュレータはあくまで<strong>開発・単体テスト用</strong>であり、本番同等の性能・整合性・IAM挙動を完全に再現するものではない。結合テストや性能検証の最終段階では、実際のGoogle
+                                Cloudサービス（可能であれば専用のステージング環境）で検証する。
+                            </li>
+                            <li>
+                                CI/CDパイプライン（Cloud
+                                Buildなど）でもローカルと同じエミュレータ起動コマンドを再利用し、「ローカルで通ったテストがCIでも同じ結果になる」状態を保つ。
+                            </li>
+                            <li>
+                                Testcontainersのような仕組みを使うと、テストの前後でエミュレータコンテナを自動起動・終了でき、テスト間のデータ汚染を防ぎやすい。
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <p>
+                    <strong>出典</strong>：<a href="https://cloud.google.com/cli"
+                        >gcloud CLI（cloud.google.com/cli）</a
+                    >、<a href="https://docs.cloud.google.com/sdk/gcloud/reference/beta/emulators"
+                        >gcloud beta emulators リファレンス</a
+                    >、<a href="https://docs.cloud.google.com/pubsub/docs/emulator"
+                        >Pub/Subエミュレータでのローカルテスト</a
+                    >、<a href="https://testcontainers.com/modules/google-cloud/"
+                        >Testcontainers Google Cloud Module</a
+                    >
+                </p>
+
+                <hr />
+
+                <h3
+                    id="212-google-cloud-consolecloud-sdkcloud-codegemini-cloud-assistcloud-shellcloud-workstations"
+                >
+                    2.1.2 Google Cloud Console・Cloud SDK・Cloud Code・Gemini Cloud Assist・Cloud
+                    Shell・Cloud Workstations
+                </h3>
+
+                <p>
+                    Exam Guideのこの項目は、「開発者が日常的に触れる各種のGoogle
+                    Cloud開発ツール」を横断的に理解しているかを問うものです。それぞれの役割と使い分けを整理します。
+                </p>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>ツール</th>
+                                <th>形態</th>
+                                <th>主な役割</th>
+                                <th>典型的な利用シーン</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>Google Cloud Console</td>
+                                <td>ブラウザGUI</td>
+                                <td>リソースの作成・確認・設定変更</td>
+                                <td>初期セットアップ、ダッシュボード確認、権限設定</td>
+                            </tr>
+                            <tr class="even">
+                                <td>Cloud SDK（gcloud CLI）</td>
+                                <td>
+                                    ローカル/Cloud Shellにインストールするコマンドラインツール群
+                                </td>
+                                <td>スクリプト化・自動化可能なリソース操作</td>
+                                <td>CI/CDスクリプト、繰り返し作業の自動化</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>Cloud Code</td>
+                                <td>IDE拡張機能（VS Code／JetBrains／Cloud Shell Editor）</td>
+                                <td>GKE・Cloud Runアプリのローカル開発・デバッグ・デプロイ</td>
+                                <td>コンテナアプリのインナーループ開発</td>
+                            </tr>
+                            <tr class="even">
+                                <td>Gemini Cloud Assist</td>
+                                <td>Cloud Consoleに統合されたAIアシスタントパネル</td>
+                                <td>自然言語での説明・提案・ガイド付きワークフロー</td>
+                                <td>
+                                    トラブルシューティング、コスト最適化、アーキテクチャ設計支援
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>Cloud Shell</td>
+                                <td>ブラウザベースの一時的なLinux VM＋ターミナル</td>
+                                <td>インストール不要な即時アクセス</td>
+                                <td>一時的な検証、クイックスタート、ローカル環境がない状況</td>
+                            </tr>
+                            <tr class="even">
+                                <td>Cloud Workstations</td>
+                                <td>
+                                    管理者が定義したテンプレートに基づく永続的なマネージド開発環境
+                                </td>
+                                <td>チーム標準化されたセキュアな開発環境の提供</td>
+                                <td>
+                                    エンタープライズでの開発環境統制、ソフトウェアサプライチェーンのセキュリティ強化
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h4>Google Cloud Console と Cloud SDK</h4>
+
+                <p>
+                    Cloud ConsoleはWeb GUIで、視覚的にリソースを確認・操作できます。一方、Cloud
+                    SDK（gcloud CLI）は、同じGoogle
+                    Cloudサービスをターミナルからスクリプト・自動化しながら操作できるコマンドラインの手段を提供し、8,000を超えるコマンドで、ほぼすべてのGoogle
+                    Cloudサービス・製品を細かく管理・制御できます。
+                </p>
+
+                <h4>Cloud Code</h4>
+
+                <p>
+                    Cloud Codeは、Google Kubernetes EngineやCloud RunなどのGoogle
+                    Cloudサービスを直接IDEに統合する拡張機能で、コンテキストスイッチをせずにアプリケーションを開発できるようにします。
+                    VS Code、IntelliJをはじめとするJetBrains系IDEにインストールでき、Cloud Shell
+                    Editorにはデフォルトで組み込まれています。
+                </p>
+
+                <p>
+                    Cloud Codeは、Google
+                    CloudのIDE拡張機能として、クラウドネイティブアプリケーションの開発ライフサイクルを高速化するために設計されたAI支援型のIDEプラグイン群です。
+                    対応IDEにはVS
+                    Code、JetBrains系IDE（IntelliJ、PyCharm、GoLand、WebStormなど）、Cloud
+                    Workstations、ブラウザベースのCloud Shell Editorが含まれます。
+                </p>
+
+                <h4>Gemini Cloud Assist</h4>
+
+                <p>
+                    Gemini Cloud Assistは、Cloud
+                    Console上で自然言語による支援を受けられる機能です。Gemini Cloud
+                    Assistパネルでは、自然言語のプロンプトを入力することで、詳細な説明や推奨アクション、ガイド付きワークフローを得られ、クラウドの専門家でなくてもタスクを効率的に完了できるようになります。
+                </p>
+
+                <p>
+                    Gemini Cloud
+                    Assistは応答の精度を高めるため、いくつかのコンテキスト情報を利用します。具体的には、Google
+                    CloudプロジェクトID・組織ID、現在閲覧しているコンソールページのURLや表示内容（ページ文脈認識）、そしてセッション履歴を保持する記憶（メモリ）機能を活用し、複数ターンにわたる複雑なタスクでも文脈を維持します。
+                </p>
+
+                <p>
+                    ここで注意したいのは、<strong>Gemini Cloud Assist</strong>（Cloud
+                    Console内のAIアシスタントパネル）と、後述する<strong>Gemini Code Assist</strong
+                    >（IDE向けのコーディング支援）は別の製品であるという点です。試験対策上もこの2つを混同しないことが重要です。
+                </p>
+
+                <div class="callout-practice">
+                    <div class="icon">✓</div>
+                    <div class="body">
+                        <div class="label">ベストプラクティス</div>
+                        <ul>
+                            <li>
+                                Gemini Cloud
+                                Assistはプレビュー期間中は無料で利用できますが、チャットパネルでの会話はどこのGoogle
+                                Cloudデータセンターにも保存され得るため、データレジデンシーや管轄区域のコンプライアンス要件の対象となる情報は入力しないようにする。
+                            </li>
+                            <li>
+                                Gemini Cloud
+                                Assistの応答は早期段階の技術であり、もっともらしく見えても事実と異なる出力を生成することがあるため、利用前に必ず検証する。
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h4>Cloud Shell</h4>
+
+                <p>
+                    Cloud Shellは、ブラウザからGoogle
+                    Cloudを学習・実験し、プロジェクトやリソースを管理できるインタラクティブなシェル環境です。
+                    Google Cloud
+                    CLIやその他必要なユーティリティがあらかじめインストール・認証済みで、常に最新の状態で利用できます。
+                    統合されたCloud
+                    Codeを備えたコードエディタも組み込まれており、クラウドから一切離れずにアプリのビルド・デバッグ・デプロイができます。
+                </p>
+
+                <p>
+                    ストレージ面では、デフォルトで5GBの無料永続ディスクストレージが一時的に割り当てられた仮想マシンにプロビジョニングされ、これがホームディレクトリとなります。
+                </p>
+
+                <h4>Cloud Workstations</h4>
+
+                <p>
+                    Cloud
+                    Workstationsは、組み込みのセキュリティと、事前設定済みながらカスタマイズ可能な開発環境を備えた、Google
+                    Cloud上のマネージド開発環境を提供します。
+                    開発者にソフトウェアのインストールやセットアップスクリプトの実行を求める代わりに、環境を再現可能な形で定義するワークステーション構成を作成できます。
+                </p>
+
+                <p>
+                    ワークステーション構成は、ワークステーションの仮想マシンインスタンスタイプ、永続ストレージ、環境を定義するコンテナイメージ、使用するIDE／コードエディタなどの詳細を定義するテンプレートとして機能します。
+                    管理者やプラットフォームチームは、IAMルールを使ってチームや個々の開発者にアクセス権を付与することもできます。
+                </p>
+
+                <p>
+                    セキュリティの観点でも、Cloud
+                    Workstationsはソフトウェアサプライチェーンの保護に重要な役割を果たします。Cloud
+                    Workstationsは、開発ワークフローやツール、ソフトウェア依存関係、ソフトウェアをビルド・デプロイするCI/CDシステム、GKEやCloud
+                    Runのようなランタイム環境のセキュリティ体制を改善するために、他のGoogle
+                    Cloud製品・機能と組み合わせて利用できるソフトウェアサプライチェーンセキュリティのコンポーネントの1つです。
+                </p>
+
+                <h4>どのツールを選ぶか（意思決定の目安）</h4>
+
+                <pre class="mermaid">
+flowchart TD
+    Start{"開発タスクの性質は？"} --&gt;|"数分で終わる一時的な&lt;br/&gt;操作・検証"| Shell["Cloud Shell&lt;br/&gt;(ブラウザベース、5GB永続ホーム)"]
+    Start --&gt;|"チーム標準化された&lt;br/&gt;セキュアな継続的開発"| WS["Cloud Workstations&lt;br/&gt;(管理者定義のテンプレートに基づく&lt;br/&gt;永続的な開発環境)"]
+    Start --&gt;|"使い慣れたローカルIDEを&lt;br/&gt;維持したい"| Local["ローカルIDE +&lt;br/&gt;Cloud SDK + Cloud Code拡張機能"]
+    Start --&gt;|"リソース調査・&lt;br/&gt;自然言語での操作支援"| Console["Google Cloud Console +&lt;br/&gt;Gemini Cloud Assistパネル"]
+
+    Shell --&gt; Note1["組み込みCloud Shell Editorで&lt;br/&gt;Cloud Codeも利用可能"]
+    WS --&gt; Note2["VS Code / JetBrainsから&lt;br/&gt;ブラウザまたはSSHで接続"]
+    Local --&gt; Note3["Cloud Code拡張機能で&lt;br/&gt;GKE / Cloud Runを統合"]
+    Console --&gt; Note4["ページ文脈を理解した&lt;br/&gt;ガイド付きワークフローを提示"]
+
+    classDef highlightFill fill:#1a3a5c,stroke:#4a90d9,color:#ffffff;
+    class Start highlightFill</pre
+                >
+
+                <div class="callout-practice">
+                    <div class="icon">✓</div>
+                    <div class="body">
+                        <div class="label">ベストプラクティス</div>
+                        <ul>
+                            <li>
+                                個人の一時的な検証にはCloud
+                                Shellを、組織全体でセキュリティ・コンプライアンスを統制したい継続的な開発にはCloud
+                                Workstationsを使い分ける。
+                            </li>
+                            <li>
+                                ローカルでのセットアップは、環境構築だけで数日から数週間かかることがあり、その多くの時間が環境構築に費やされ、いわゆる「私の環境では動く」という設定ドリフト問題を招きやすい。Cloud
+                                Workstationsのようなマネージド環境は、この問題を構成テンプレートの一元管理によって解消する。
+                            </li>
+                            <li>
+                                Cloud CodeはIDEを問わず（VS Code／JetBrains／Cloud Shell
+                                Editor）同じ体験を提供するため、チームメンバーが異なるIDEを使っていても、GKE/Cloud
+                                Run向けのワークフローを統一できる。
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <p>
+                    <strong>出典</strong>：<a href="https://cloud.google.com/cli">gcloud CLI概要</a
+                    >、<a href="https://docs.cloud.google.com/code/docs/vscode/overview"
+                        >Cloud Code for VS Code 概要</a
+                    >、<a href="https://docs.cloud.google.com/cloud-assist/overview"
+                        >Gemini Cloud Assist 概要</a
+                    >、<a href="https://docs.cloud.google.com/cloud-assist/chat-panel"
+                        >Gemini Cloud Assistの利用（チャットパネル）</a
+                    >、<a href="https://docs.cloud.google.com/shell/docs">Cloud Shellドキュメント</a
+                    >、<a href="https://docs.cloud.google.com/shell/docs/using-cloud-shell"
+                        >Cloud Shellの使い方</a
+                    >、<a href="https://docs.cloud.google.com/workstations/docs/overview"
+                        >Cloud Workstations概要</a
+                    >、<a
+                        href="https://cloud.google.com/blog/products/application-development/cloud-workstations-managed-development-environment-is-now-ga"
+                        >Cloud Workstations GA発表ブログ</a
+                    >
+                </p>
+
+                <hr />
+
+                <h3 id="213-ideの構成cloud-sdkaiツールmcpサーバー">
+                    2.1.3 IDEの構成（Cloud SDK・AIツール・MCPサーバー）
+                </h3>
+
+                <p>
+                    Exam Guideのこの項目では、「Cloud
+                    SDKやAIツール（コーディングアシスタント、MCPサーバー）などの適切な統合機能でIDEを構成すること」が問われます。
+                </p>
+
+                <h4>Cloud SDKとADC（Application Default Credentials）の設定</h4>
+
+                <p>
+                    IDEからGoogle Cloud
+                    APIを呼び出すアプリケーションコードを実行するには、まずローカル環境の認証を設定する必要があります。ここで中心となるのがADC（Application
+                    Default
+                    Credentials）です。ADCは、アプリケーションの実行環境に基づいて認証ライブラリが自動的に資格情報を見つけるための戦略であり、Cloud
+                    Client LibrariesやGoogle API Client
+                    Librariesがこの資格情報を利用できるようにします。
+                </p>
+
+                <p>
+                    <code>gcloud auth application-default</code
+                    >コマンドグループは、ローカルのアプリケーション開発で使用される、マシン上のアクティブな資格情報を管理するためのものであり、この資格情報はあくまで自分のアプリケーション内のGoogleクライアントライブラリからのみ使用されます。
+                </p>
+
+                <p>
+                    重要な注意点として、gcloud CLI自体はGoogle
+                    Cloudリソースへのアクセスに際してADCを使用しないため、<code
+                        >gcloud auth login</code
+                    >（gcloud CLI自体の認証）と<code>gcloud auth application-default login</code
+                    >（ADCの設定）は目的の異なる別々のコマンドです。
+                </p>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>コマンド</th>
+                                <th>目的</th>
+                                <th>影響範囲</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td><code>gcloud auth login</code></td>
+                                <td>gcloud CLIコマンド自体を認証する</td>
+                                <td>ターミナルからの<code>gcloud</code>コマンド実行</td>
+                            </tr>
+                            <tr class="even">
+                                <td><code>gcloud auth application-default login</code></td>
+                                <td>ADCを設定し、クライアントライブラリに資格情報を提供する</td>
+                                <td>
+                                    アプリケーションコード内のGoogle
+                                    Cloudクライアントライブラリ呼び出し
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p>
+                    サービスアカウントの権限をローカルで再現したい場合は、なりすまし（impersonation）を使う方法もあります。サービスアカウントのなりすましを使ってローカルのADCファイルを設定するには、<code
+                        >gcloud auth application-default login --impersonate-service-account
+                        SERVICE_ACCT_EMAIL</code
+                    >を実行し、対象のサービスアカウントに対してService Account Token
+                    Creator（roles/iam.serviceAccountTokenCreator）のIAMロールを持っている必要があります。
+                </p>
+
+                <h4>Cloud Code拡張機能のインストールとAI支援</h4>
+
+                <p>
+                    IDEにCloud
+                    Code拡張機能をインストールすると、Kubernetes向けのコマンドラインツール群とも連携します。Cloud
+                    CodeはSkaffold、minikube、kubectlといったGoogleのコンテナ関連コマンドラインツールと連携し、アプリのビルド・編集・実行・デプロイに応じてローカルで継続的なフィードバックを提供します。
+                </p>
+
+                <p>
+                    AI支援については、Gemini Code
+                    Assistと連携し、コード補完・生成・チャットによるアシスタンスを提供することで、開発者がより速く効率的にコードを書けるようにします。
+                </p>
+
+                <p>
+                    ⚠️ <strong>重要な最新情報（2026年6月時点）</strong>：2026年6月18日より、Gemini
+                    Code Assist IDE拡張機能とGemini CLIは、個人向け（Gemini Code Assist for
+                    individuals）・Google AI Pro・Google AI
+                    Ultra各ティアのリクエスト処理を終了しました。該当ユーザーはAntigravityおよびAntigravity
+                    CLIへの移行が必要です。 なお、Gemini Code Assist
+                    Standard／Enterpriseの契約は今回の変更の影響を受けません。
+                    試験対策としては、IDE統合の<strong>考え方</strong>（コード補完、コード生成、単体テスト生成、チャットによる支援）自体は変わらないため、この点を理解しておけば十分ですが、実際に製品を選定する際は必ず<a
+                        href="https://docs.cloud.google.com/gemini/docs/codeassist/release-notes"
+                        >Gemini Code Assistのリリースノート</a
+                    >で最新の提供状況を確認してください。
+                </p>
+
+                <p>
+                    Gemini Code
+                    Assist（Standard／Enterprise）を使ったIDE内での操作は、次のような形で行います。コードエディタ内でコード補完を受け取ったり、コードを直接生成したりできるほか、IDE内でGeminiのアイコンをクリックすると対話型アシスタントが表示され、コードを選択した状態で「Write
+                    unit tests for my code.」「Help me debug my
+                    code.」のようなプロンプトを入力できます。
+                </p>
+
+                <h4>MCP（Model Context Protocol）サーバーによる拡張</h4>
+
+                <p>
+                    Exam
+                    Guideが挙げるもう一つの統合対象が<strong>MCPサーバー</strong>です。MCPは、AIアシスタントを外部システムに接続するための標準プロトコルです。Model
+                    Context
+                    Protocol（MCP）は、大規模言語モデル（LLM）やAIアプリケーション・エージェントが外部のデータソースに接続する方法を標準化するものです。
+                </p>
+
+                <p>
+                    IDE内のエージェントモードからMCPサーバーを設定することで、AIアシスタントの能力を拡張できます。エージェントモードでは、コードに関する質問をしたり、コンテキストや組み込みツールを使って生成内容を改善したり、MCPサーバーを設定してエージェントの能力を拡張したり、複数ステップにわたる複雑なタスクの解決策を得たりできます。
+                    利用可能なツールの例には、grepやファイルの読み書きといった組み込みツール、ローカルまたはリモートのMCPサーバーとその実行可能な関数、独自のサービス実装などがあります。
+                </p>
+
+                <p>
+                    Google Cloud自体も、公式のMCPサーバーを提供し始めています。例えばCloud
+                    Run向けには、Cloud
+                    RunのMCPサーバーを使って、Webアプリケーションのビルド・コンテナ化・push・設定・公開URLの返却までを行うカスタムコマンドが用意されています。
+                    また、Gemini Cloud Assist自体もリモートMCPサーバーとして公開されており、Gemini
+                    CLIやChatGPT、Claude、独自に開発したアプリケーションなど各種AIアプリケーションと接続できます。
+                </p>
+
+                <p>
+                    MCPサーバーとの認証には、通常のAPIキーではなくIAMベースの仕組みが使われる点も押さえておきましょう。Gemini
+                    Cloud AssistのリモートMCPサーバーはOAuth
+                    2.0とIAMを組み合わせて認証・認可を行い、APIキーによる認証はサポートしていません。エージェントがMCPツールを使う際には、アクセス制御と監視ができるよう専用のIDを作成することが推奨されています。
+                </p>
+
+                <h4>IDE統合の全体フロー</h4>
+
+                <pre class="mermaid">
+sequenceDiagram
+    participant Dev as 開発者
+    participant IDE as IDE (VS Code / JetBrains)
+    participant CC as Cloud Code拡張機能
+    participant AI as AIコーディング&lt;br/&gt;アシスタント
+    participant MCP as MCPサーバー&lt;br/&gt;(例: Cloud Run MCPサーバー)
+    participant GC as Google Cloud API
+
+    Dev-&gt;&gt;IDE: gcloud auth application-default login&lt;br/&gt;でADCを設定
+    IDE-&gt;&gt;CC: Cloud Code拡張機能をインストール・設定
+    CC-&gt;&gt;GC: プロジェクト/リソース一覧を取得
+    Dev-&gt;&gt;AI: 自然言語でタスクを依頼
+    AI-&gt;&gt;MCP: 必要なツール呼び出しを実行
+    MCP-&gt;&gt;GC: 認可済みAPI操作を実行
+    GC--&gt;&gt;MCP: 実行結果を返す
+    MCP--&gt;&gt;AI: ツール結果を返す
+    AI--&gt;&gt;Dev: コード変更・提案を提示
+    Dev-&gt;&gt;IDE: 提案をレビューし適用</pre
+                >
+
+                <div class="callout-practice">
+                    <div class="icon">✓</div>
+                    <div class="body">
+                        <div class="label">ベストプラクティス</div>
+                        <ul>
+                            <li>
+                                ローカル開発では<code>gcloud auth login</code>と<code
+                                    >gcloud auth application-default login</code
+                                >の両方を意識して使い分ける。前者はgcloudコマンド自体の認証、後者はアプリケーションコードが使うクライアントライブラリの認証であり、片方だけでは不十分な場面がある。
+                            </li>
+                            <li>
+                                ユーザー認証情報のADCでクライアントライブラリを使う場合、どのプロジェクトのAPI割り当て（quota）を消費するかは<strong>割り当てプロジェクト</strong>で決まる。<code
+                                    >gcloud auth application-default set-quota-project</code
+                                >などで割り当てプロジェクトを明示的に設定した場合、ADCのプリンシパルにはそのプロジェクトに対する<code>serviceusage.services.use</code>権限が必要になる。付与時はEditorやOwnerのような広範なロールではなく、最小権限の<code>roles/serviceusage.serviceUsageConsumer</code>を選ぶ。
+                            </li>
+                            <li>
+                                APIの種類によって割り当てプロジェクトの決まり方が異なる点に注意する。Compute
+                                EngineのようなリソースベースのAPIは、操作対象リソースが属するプロジェクトがそのまま割り当てプロジェクトとして使われるため、明示設定がなくても動作する。一方、Cloud
+                                Translationのようなクライアントベースの（操作対象リソースを持たない）APIは、割り当てプロジェクトが明示的に構成されていないと呼び出しが失敗する。
+                            </li>
+                            <li>
+                                割り当てプロジェクトと課金先は別概念であり、「常にリソースを所有するプロジェクトへ課金される」とは限らない。課金先はAPIごとのルールに従う。例えばPub/Subでは、publish（発行）はトピックが属するプロジェクトへ、subscribe（受信）はサブスクリプションが属するプロジェクトへ課金されるため、トピックとサブスクリプションが別プロジェクトにある構成では課金先も分かれる。
+                            </li>
+                            <li>
+                                AIコーディングアシスタントにMCPサーバーを接続する際は、通常のユーザーIDではなく専用のエージェント用IDを用意し、アクセス範囲を監視・制御できるようにする。
+                            </li>
+                            <li>
+                                エージェントモードでMCPサーバーやツール呼び出しを許可する際は、エージェントがファイルシステムやターミナル操作にアクセスできる点を踏まえ、すべてのアクションを自動承認する設定は慎重に扱う。
+                            </li>
+                            <li>
+                                IDE・AIツール・MCPサーバーの提供形態は変化が速い領域のため、製品選定時は必ず公式リリースノートで現在の提供状況を確認する。
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <p>
+                    <strong>出典</strong>：<a
+                        href="https://docs.cloud.google.com/docs/authentication/application-default-credentials"
+                        >ADCの仕組み</a
+                    >、<a
+                        href="https://docs.cloud.google.com/docs/authentication/provide-credentials-adc"
+                        >ADCの資格情報の提供方法</a
+                    >、<a
+                        href="https://docs.cloud.google.com/docs/authentication/set-up-adc-local-dev-environment"
+                        >ローカル開発環境向けADCの設定</a
+                    >、<a
+                        href="https://docs.cloud.google.com/sdk/gcloud/reference/auth/application-default"
+                        >gcloud auth application-default リファレンス</a
+                    >、<a href="https://docs.cloud.google.com/code/docs/vscode/overview"
+                        >Cloud Code for VS Code 概要</a
+                    >、<a
+                        href="https://docs.cloud.google.com/gemini/docs/codeassist/write-code-gemini"
+                        >Gemini Code AssistでのコーディングSmart Actions</a
+                    >、<a
+                        href="https://developers.google.com/gemini-code-assist/docs/use-agentic-chat-pair-programmer"
+                        >Gemini Code Assist エージェントモードの利用</a
+                    >、<a href="https://docs.cloud.google.com/gemini/docs/codeassist/release-notes"
+                        >Gemini Code Assist リリースノート</a
+                    >、<a
+                        href="https://docs.cloud.google.com/cloud-assist/use-gemini-cloud-assist-mcp"
+                        >Gemini Cloud AssistのリモートMCPサーバー</a
+                    >
+                </p>
+
+                <hr />
+
+                <h2 id="22-ビルド">2.2 ビルド</h2>
+
+                <p>Exam Guideは2.2として次の2点を挙げています。</p>
+
+                <ul>
+                    <li>
+                        Cloud BuildとArtifact
+                        Registryを使って、ソースコードからコンテナをビルド・保存する
+                    </li>
+                    <li>Cloud Buildでprovenance（Binary Authorizationなど）を構成する</li>
+                </ul>
+
+                <h3 id="221-cloud-buildとartifact-registryによるコンテナのビルドと保存">
+                    2.2.1 Cloud BuildとArtifact Registryによるコンテナのビルドと保存
+                </h3>
+
+                <h4>Cloud Buildとは何か</h4>
+
+                <p>
+                    Cloud
+                    Buildを使うと、依存関係の取得、単体テストの実行、静的解析、統合テストの実行、そしてdocker・gradle・maven・bazel・gulpといったビルドツールでのアーティファクト作成までを含むビルドを構成できます。
+                    Cloud
+                    Buildはビルドを一連のビルドステップとして実行し、各ステップはDockerコンテナ内で実行されます。これはスクリプト内でコマンドを実行するのと似ています。
+                </p>
+
+                <p>
+                    ビルドステップの提供元には複数の選択肢があります。Cloud
+                    Buildおよびそのコミュニティが公開しているオープンソースのビルドステップ、コミュニティが提供するビルドステップ、そして自分で作成するカスタムビルドステップです。
+                    各ビルドステップは、cloudbuildという名前のローカルDockerネットワークに接続された状態で、それぞれのコンテナ上で実行されます。
+                </p>
+
+                <p>
+                    セキュリティ面でも標準で配慮されています。Cloud
+                    BuildはデフォルトでCMEK（顧客管理の暗号鍵）準拠を提供しており、ユーザー側で特に何かを設定する必要はありません。ビルド実行時の永続ディスクは、ビルドごとに生成される一時的な鍵で暗号化され、ビルド完了と同時にその鍵はメモリから消去・破棄されます。
+                </p>
+
+                <h4>Artifact Registryとは何か</h4>
+
+                <p>
+                    Artifact Registryは、統合されたGoogle
+                    Cloud体験の一部として、アーティファクトとビルドの依存関係を一元的に保存できるようにするもので、パッケージとDockerコンテナイメージを保存・管理するための単一の場所を提供します。
+                </p>
+
+                <p>
+                    Artifact Registryでできる主なことは次の通りです。Google
+                    CloudのCI/CDサービスや既存のCI/CDツールとの統合、Cloud
+                    Buildからのアーティファクト保存、GKE・Cloud Run・Compute Engine・App
+                    Engineフレキシブル環境を含むGoogle
+                    Cloudランタイムへのアーティファクトのデプロイ、IAMによる一貫した資格情報とアクセス制御の提供、ソフトウェアサプライチェーンの保護などです。
+                </p>
+
+                <p>
+                    Cloud BuildとArtifact Registryの連携は密接です。Artifact Registryは、Cloud
+                    Buildをはじめとする継続的デリバリー・継続的インテグレーションシステムと統合し、ビルド成果物のパッケージを保存できます。ビルドやデプロイに使う信頼済みの依存関係も保存できます。
+                </p>
+
+                <h4>典型的なビルド〜保存パイプライン</h4>
+
+                <pre class="mermaid">
+flowchart LR
+    Src["ソースコード&lt;br/&gt;(Cloud Source Repositories /&lt;br/&gt;GitHub / GitLab)"] --&gt;|"push / PR"| Trig["Cloud Build&lt;br/&gt;トリガー"]
+    Trig --&gt; Step1["ステップ1&lt;br/&gt;依存関係取得 / Lint"]
+    Step1 --&gt; Step2["ステップ2&lt;br/&gt;単体テスト実行"]
+    Step2 --&gt; Step3["ステップ3&lt;br/&gt;コンテナイメージビルド&lt;br/&gt;(Docker / Kaniko / Buildpacks)"]
+    Step3 --&gt; Step4["ステップ4&lt;br/&gt;Artifact Registryへpush"]
+    Step4 --&gt; AR[("Artifact Registry&lt;br/&gt;コンテナ/パッケージ&lt;br/&gt;リポジトリ")]
+    AR --&gt; Scan["Artifact Analysisによる&lt;br/&gt;脆弱性スキャン&lt;br/&gt;（Container Scanning API有効時）"]
+
+    classDef highlightFill fill:#1a3a5c,stroke:#4a90d9,color:#ffffff;
+    classDef warnFill fill:#5c3a1a,stroke:#d9904a,color:#ffffff;
+    class AR highlightFill
+    class Scan warnFill</pre
+                >
+
+                <p>
+                    イメージのpush先を指定してビルドを実行する場合、<code>cloudbuild.yaml</code>は次のような形になります（構文の概念を示す簡略例です）。
+                </p>
+
+                <p>
+                    <code
+                        >steps:<br />
+                        &nbsp;&nbsp;- name: 'gcr.io/cloud-builders/docker'<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;args:<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- 'build'<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- '-t'<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-
+                        'us-central1-docker.pkg.dev/$PROJECT_ID/my-repo/my-app:$SHORT_SHA'<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- '.'<br />
+                        images:<br />
+                        &nbsp;&nbsp;-
+                        'us-central1-docker.pkg.dev/$PROJECT_ID/my-repo/my-app:$SHORT_SHA'</code
+                    >
+                </p>
+
+                <p><code>cloudbuild.yaml</code>の主要フィールドは次の通りです。</p>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>フィールド</th>
+                                <th>説明</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td><code>steps</code></td>
+                                <td>
+                                    順番に（または<code>waitFor</code>指定で並列に）実行されるビルドステップの配列
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td><code>steps[].name</code></td>
+                                <td>ステップを実行するビルダーコンテナイメージ</td>
+                            </tr>
+                            <tr class="odd">
+                                <td><code>steps[].args</code></td>
+                                <td>ビルダーコンテナに渡す引数</td>
+                            </tr>
+                            <tr class="even">
+                                <td><code>steps[].waitFor</code></td>
+                                <td>
+                                    このステップが待機する先行ステップのID（並列実行の制御に使用）
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td><code>images</code></td>
+                                <td>
+                                    ビルド成功時にArtifact Registry／Container
+                                    Registryへpushするイメージの一覧
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td><code>substitutions</code></td>
+                                <td>
+                                    <code>$PROJECT_ID</code
+                                    >や<code>$SHORT_SHA</code>など、ビルド時に置換される変数
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p>
+                    <code>$SHORT_SHA</code
+                    >の扱いには注意が必要です。<code>$SHORT_SHA</code>はビルドトリガー経由の実行では自動的に設定されますが、手元から<code
+                        >gcloud builds submit</code
+                    >を直接実行した場合は自動設定されず、未指定のままだと空文字列になります。手動実行時は<code>$BUILD_ID</code>やユーザー定義の<code>$_IMAGE_TAG</code>を使うか、<code>--substitutions=SHORT_SHA=...</code>で明示的に値を渡します。
+                </p>
+
+                <p>
+                    Artifact
+                    Registryへイメージを保存するもう一つの代表的な方法として、<code>cloudbuild.yaml</code>のようなビルド構成ファイルを用意せずに<code
+                        >gcloud builds submit</code
+                    >を直接呼び出すシンプルな方法もあります。この場合もビルドはローカルで実行されるのではなくCloud
+                    Buildへ送信されます。<code>-t</code>（<code>--tag</code>）を指定すると、カレントディレクトリのソースに含まれる<code>Dockerfile</code>からイメージをビルドするビルド構成がCloud
+                    Build側で暗黙に生成され、ビルドされたイメージが自動的にArtifact
+                    Registryへpushされます。実際のコマンドは<code
+                        >gcloud builds submit . -t
+                        LOCATION-docker.pkg.dev/PROJECT_ID/REPO/IMAGE:TAG</code
+                    >のようになります。 自動スキャンには前提条件があります。Container Scanning
+                    APIを有効化している場合、標準（standard）またはリモート（remote）のDockerリポジトリにpushされたイメージが自動スキャンの対象になります。それ以外の対応リポジトリ形式では、リポジトリ単位でスキャンを有効化する必要があります。Container
+                    Analysisをその他の情報と統合することで、そのメタデータに基づいた意思決定が可能になります。例えば、信頼できるレジストリからの準拠したイメージのみをデプロイ対象として許可するデプロイポリシーを、Binary
+                    Authorizationで作成できます。
+                </p>
+
+                <div class="callout-practice">
+                    <div class="icon">✓</div>
+                    <div class="body">
+                        <div class="label">ベストプラクティス</div>
+                        <ul>
+                            <li>
+                                イメージのタグに<code>latest</code>を使わず、Gitのコミットハッシュ（<code>$SHORT_SHA</code>）やセマンティックバージョンなど、一意で追跡可能な値を使う。ロールバックや監査の際に、どのソースからビルドされたイメージかを一意に特定できるようにするため。
+                            </li>
+                            <li>
+                                Cloud BuildのサービスアカウントにはArtifact
+                                Registryへの書き込みなど、そのパイプラインに必要最小限のIAMロールのみを付与する（最小権限の原則）。
+                            </li>
+                            <li>
+                                Artifact
+                                Registryのスキャン機能（コンテナ脆弱性スキャンやオンデマンドスキャン）を有効化し、脆弱性が検出された場合にパイプラインを止めるスキャンゲートを設けることで、本番デプロイ前の段階で問題を検知する。
+                            </li>
+                            <li>
+                                依存関係のダウンロードやDockerレイヤーのキャッシュを活用し、ビルド時間を短縮する。
+                            </li>
+                            <li>
+                                ステージング用と本番用でArtifact
+                                Registryのリポジトリを分離し、IAMでアクセスを制御する。
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <p>
+                    <strong>出典</strong>：<a
+                        href="https://docs.cloud.google.com/build/docs/overview"
+                        >Cloud Buildの概要</a
+                    >、<a href="https://docs.cloud.google.com/artifact-registry/docs/overview"
+                        >Artifact Registryの概要</a
+                    >、<a href="https://docs.cloud.google.com/artifact-registry/docs/build"
+                        >Artifact Registryへのビルド成果物の格納</a
+                    >、<a
+                        href="https://codelabs.developers.google.com/secure-build-deploy-cloud-build-ar-gke"
+                        >Cloud BuildとArtifact
+                        RegistryによるセキュアなビルドとGKEへのデプロイ（Codelab）</a
+                    >
+                </p>
+
+                <hr />
+
+                <h3 id="222-cloud-buildにおけるprovenanceの構成binary-authorization">
+                    2.2.2 Cloud Buildにおけるprovenanceの構成（Binary Authorization）
+                </h3>
+
+                <h4>provenance（来歴情報）とは何か</h4>
+
+                <p>
+                    「provenance」とは、ソフトウェア成果物（コンテナイメージなど）が<strong>いつ・何から・どのようなプロセスでビルドされたか</strong>を証明する、検証可能なメタデータのことです。Cloud
+                    Buildは、SLSA（Supply-chain Levels for Software
+                    Artifacts）バージョン0.1および1.0の仕様に基づいたレベル3相当のビルドprovenance生成をサポートしています。SLSA
+                    v1.0仕様のサポートの一部として、Cloud
+                    BuildはビルドprovenanceにbuildType詳細を含めており、ビルドプロセスに使われたパラメータ化テンプレートや、Cloud
+                    Buildが記録する値・その値の出所を理解するために利用できます。
+                </p>
+
+                <p>
+                    適用範囲には注意が必要です。Cloud Buildは、Artifact
+                    Registryに保存されたアーティファクトについてのみビルドprovenanceを生成します。前掲の<code>cloudbuild.yaml</code>のように<code>images</code>フィールドでpush先を指定するのは正しい書き方ですが、ビルドステップ内で明示的に<code
+                        >docker push</code
+                    >を実行した場合はprovenanceが生成されないことがあります。
+                </p>
+
+                <p>
+                    さらに、provenanceを生成できなかったビルドを「成功」として扱わないために、<code>options.requestedVerifyOption</code>に<code>VERIFIED</code>を指定します。
+                </p>
+
+                <p>
+                    <code
+                        >options:<br />
+                        &nbsp;&nbsp;requestedVerifyOption: VERIFIED</code
+                    >
+                </p>
+
+                <p>
+                    この設定により、provenanceの生成に失敗したビルドはビルド自体が失敗として扱われ、検証されていないイメージが後続のデプロイへ流れることを防げます。
+                </p>
+
+                <p>
+                    Cloud BuildをBinary
+                    Authorizationと統合すると、ビルドのアテステーション（証明）を確認し、Cloud
+                    Buildによって生成されていないイメージのデプロイをブロックできます。このプロセスにより、認可されていないソフトウェアがデプロイされるリスクを低減できます。
+                </p>
+
+                <h4>SLSAレベルとGoogle Cloudでの実現手段</h4>
+
+                <p>
+                    Cloud Buildは、検証可能なソースコード管理、自動検証済みのprovenance、Binary
+                    Authorizationのようなツールといった技術を使って、より高いSLSAレベルに到達するためのホスト型ソフトウェアビルドシステムの基盤を提供します。ビルドプロセスを完全に自動化し、本番ワークフローではビルドシステムの利用を必須とし、Cloud
+                    Buildでソフトウェアパイプラインを構築することで、最初からSLSA
+                    1相当のサプライチェーンを実現できます。
+                </p>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>観点</th>
+                                <th>説明</th>
+                                <th>Cloud Build / Google Cloudでの対応</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>ビルドの自動化</td>
+                                <td>手作業を排除し、再現可能なビルドプロセスを持つ</td>
+                                <td>
+                                    Cloud
+                                    Buildの<code>cloudbuild.yaml</code>による宣言的パイプライン
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>provenance生成</td>
+                                <td>ビルド成果物の出所を検証可能な形で記録する</td>
+                                <td>Cloud BuildがSLSA準拠のprovenanceを自動生成・署名</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>デプロイ時の検証</td>
+                                <td>検証済みのアーティファクトのみをデプロイ許可する</td>
+                                <td>Binary Authorizationによるポリシーベースの許可制御</td>
+                            </tr>
+                            <tr class="even">
+                                <td>署名鍵の管理</td>
+                                <td>ビルド・アテステーションの署名鍵を安全に管理する</td>
+                                <td>Cloud KMSによる鍵管理</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p>
+                    provenanceの生成（SLSA 1）とセキュアなビルド（SLSA
+                    2）を実現していても、それだけでは未検証のイメージが本番にデプロイされることを防げません。Binary
+                    Authorizationは、署名（アテステーション）された信頼できるイメージのみをデプロイ可能にすることで、そのギャップを埋めます。
+                </p>
+
+                <p>
+                    Binary Authorizationには役割分担の考え方があります。ポリシー作成者（Policy
+                    Creator）は、イメージがデプロイ可能と見なされるために満たすべきルールや、どのアテスターが承認する必要があるか、そして強制モード（厳格ブロック、監査のみ、無効化など）を定義するBinary
+                    Authorizationのポリシーを作成・維持します。アテスター（Attestor）は、統合テストや回帰テストの合格、既知の脆弱性のスキャン、ビジネス上の承認や変更管理要件の充足といった、特定のコンプライアンス要件についてイメージをレビューします。
+                </p>
+
+                <h4>provenance生成からデプロイ許可までの流れ</h4>
+
+                <pre class="mermaid">
+flowchart TB
+    Build["Cloud Buildが&lt;br/&gt;コンテナイメージをビルド"] --&gt; Prov["SLSA準拠のビルドprovenanceを&lt;br/&gt;自動生成・署名"]
+    Prov --&gt; Push["Artifact Registryへpush&lt;br/&gt;(provenanceも保存)"]
+    Push --&gt; Deploy{"Cloud Run / GKEへ&lt;br/&gt;デプロイ要求"}
+    Deploy --&gt; BinAuthz["Binary Authorizationが&lt;br/&gt;ポリシーを評価"]
+    BinAuthz --&gt;|"Cloud Build生成のprovenance/&lt;br/&gt;Attestationが要件を満たす"| Allow["デプロイ許可"]
+    BinAuthz --&gt;|"provenance欠如 または&lt;br/&gt;Attestor未承認"| Deny["デプロイ拒否"]
+
+    classDef highlightFill fill:#1a3a5c,stroke:#4a90d9,color:#ffffff;
+    classDef successFill fill:#1a4a2a,stroke:#4ad97a,color:#ffffff;
+    classDef dangerFill fill:#5c1a1a,stroke:#d94a4a,color:#ffffff;
+    class Deploy,BinAuthz highlightFill
+    class Allow successFill
+    class Deny dangerFill</pre
+                >
+
+                <p>
+                    生成されたprovenanceは、コマンドラインから直接確認・検証することもできます。イメージのprovenanceを取得してJSONとして保存するには、<code
+                        >gcloud artifacts docker images describe $IMAGE --format json
+                        --show-provenance &gt; provenance.json</code
+                    >のようなコマンドを実行します。
+                </p>
+
+                <p>
+                    Binary Authorization側でSLSAの継続的な検証を行う仕組みもあります。Binary
+                    Authorizationの継続的検証（CV）のSLSAチェックを利用するには、Cloud
+                    BuildでSLSA準拠のprovenanceを生成しつつイメージをビルドする必要があります。このチェックがサポートする唯一の信頼済みビルダーはCloud
+                    Buildです。
+                </p>
+
+                <div class="callout-practice">
+                    <div class="icon">✓</div>
+                    <div class="body">
+                        <div class="label">ベストプラクティス</div>
+                        <ul>
+                            <li>
+                                Binary
+                                Authorizationのポリシーは「デフォルト拒否（default-deny）」を基本とし、Cloud
+                                Buildで生成されたprovenance／アテステーションを持つイメージのみを明示的に許可する構成にする。
+                            </li>
+                            <li>
+                                provenanceを持たないイメージを許可リストで一時的に例外扱いする場合でも、その例外を最小限にとどめ、違反をログに記録する運用と組み合わせる。
+                            </li>
+                            <li>
+                                本番環境へのデプロイパイプラインでは、Cloud
+                                Build以外の経路でビルドされたイメージ（開発者のローカル環境で手動push
+                                されたイメージなど）を拒否するポリシーを設定し、CI/CDパイプラインを唯一の信頼できるビルド経路にする。
+                            </li>
+                            <li>
+                                SLSA検証ツール（<code>slsa-verifier</code>など）を使い、provenanceがビルド元のソースリポジトリ・ビルダーIDと一致していることを定期的に確認する。
+                            </li>
+                            <li>
+                                署名鍵はCloud
+                                KMSで一元管理し、鍵のローテーション・アクセス権限をIAMで統制する。
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <p>
+                    <strong>出典</strong>：<a
+                        href="https://docs.cloud.google.com/build/docs/securing-builds/generate-validate-build-provenance"
+                        >ビルドprovenanceの生成と検証</a
+                    >、<a
+                        href="https://docs.cloud.google.com/binary-authorization/docs/cv-slsa-check"
+                        >Binary AuthorizationのSLSAチェック</a
+                    >、<a
+                        href="https://cloud.google.com/blog/products/application-development/google-introduces-slsa-framework"
+                        >GoogleによるSLSAフレームワークの紹介</a
+                    >、<a href="https://docs.cloud.google.com/build/docs/overview"
+                        >Cloud Buildの概要</a
+                    >
+                </p>
+
+                <hr />
+
+                <h2 id="23-テスト">2.3 テスト</h2>
+
+                <p>Exam Guideは2.3として次の2点を挙げています。</p>
+
+                <ul>
+                    <li>AIコーディングアシスタントの支援を受けて単体テストを書く</li>
+                    <li>Cloud Buildで自動統合テストを実行する</li>
+                </ul>
+
+                <h3 id="231-aiコーディングアシスタントを活用した単体テストの作成">
+                    2.3.1 AIコーディングアシスタントを活用した単体テストの作成
+                </h3>
+
+                <h4>AIによる単体テスト生成の仕組み</h4>
+
+                <p>
+                    Gemini Code
+                    Assist（Standard／Enterprise）は、IDE上でコードを選択し、スマートアクションから単体テストを生成できます。選択したコードを右クリックし、「Generate
+                    unit tests」のようなスマートアクションを選ぶと、Gemini Code
+                    Assistツールウィンドウにそのプロンプトに対する応答が自動的に生成されます。
+                </p>
+
+                <p>
+                    チャットベースでも同様の依頼が可能です。コードエディタ内でコード補完を受けたり、コメントから関数やコードブロック全体を生成したり、単体テストを生成したり、デバッグ・コード理解・ドキュメント作成の支援を受けたりできます。
+                </p>
+
+                <p>
+                    より具体的なプロンプトの書き方としては、対象コードを明示し、期待するテストフレームワークやモックのパターンを指定することが推奨されています。チャットでは「Write
+                    unit tests for UserService.create using Jest. Match existing mock
+                    patterns.」のように具体的に指示し、コードを選択してから質問するとより良い結果が得られます。
+                </p>
+
+                <h4>AI生成コードのレビューという原則</h4>
+
+                <p>
+                    AIが生成したコード（テストコードを含む）は、そのまま無条件に信頼してよいものではありません。Finish
+                    Changesや概要（Outlines）といった新しいエージェント型の機能を使う場合も、他のAIエージェントの成果物と同じ厳格さで差分をレビューする必要があります。
+                </p>
+
+                <h4>AI支援による単体テスト作成のワークフロー</h4>
+
+                <pre class="mermaid">
+flowchart LR
+    Code["対象コードを選択"] --&gt; Prompt["AIコーディングアシスタントに依頼&lt;br/&gt;(例:「Generate unit tests」)"]
+    Prompt --&gt; Gen["テストコードを生成&lt;br/&gt;(境界値・異常系を含む)"]
+    Gen --&gt; Review["開発者がレビュー&lt;br/&gt;(正当性・網羅性を確認)"]
+    Review --&gt;|"要修正"| Prompt
+    Review --&gt;|"承認"| Commit["リポジトリへコミット"]
+    Commit --&gt; CB["Cloud Buildパイプラインで&lt;br/&gt;自動実行"]
+
+    classDef warnFill fill:#5c3a1a,stroke:#d9904a,color:#ffffff;
+    class Prompt,Gen warnFill</pre
+                >
+
+                <h4>現在の提供状況について</h4>
+
+                <p>
+                    前述の通り、2026年6月18日より、Gemini Code AssistのIDE拡張機能とGemini
+                    CLIは個人向け・Google AI Pro・Google AI
+                    Ultra各ティアでのリクエスト処理を終了し、該当ユーザーはAntigravityおよびAntigravity
+                    CLIへの移行が案内されています。
+                    Antigravityは、より自律的なエージェント型のIDEとして位置づけられています。Antigravityでは、AIが自律的なジュニア開発者のように振る舞い、計画を立て、テストを実行し、Web上を自律的に操作できます。開発者は「Manager」ビューを開いて高レベルの指示を与え、AIがバックグラウンドでコードを書き、内蔵ブラウザでUIを確認し、問題を自律的に修正し、最終的に動作確認済みの「Artifact」として成果物を提示します。
+                </p>
+
+                <p>
+                    Google
+                    Cloud認定試験の観点では、製品名やティアの変遷そのものよりも、「<strong>AIコーディングアシスタントを使って単体テストを生成し、必ず人間がレビューしてからCI/CDパイプラインに組み込む</strong>」という一連の考え方を理解しておくことが重要です。
+                </p>
+
+                <div class="callout-practice">
+                    <div class="icon">✓</div>
+                    <div class="body">
+                        <div class="label">ベストプラクティス</div>
+                        <ul>
+                            <li>
+                                AIに単体テストの生成を依頼する際は、対象のコードを明示的に選択し、使用するテストフレームワーク・既存のモックパターン・カバレッジ観点（正常系・境界値・異常系）を具体的に指示する。
+                            </li>
+                            <li>
+                                生成されたテストは、期待値のロジックが本当に正しいか（テストがバグを覆い隠していないか）を人間がレビューしてからコミットする。テストが「常に成功する」だけの無意味なテストになっていないかを確認する。
+                            </li>
+                            <li>
+                                AI支援で作成した単体テストであっても、最終的にはCloud
+                                Buildパイプラインの一部として自動実行し、レビュー時点だけでなく継続的に品質を担保する。
+                            </li>
+                            <li>
+                                コード生成・テスト生成AIツールのティア・提供形態は変化が速いため、組織として採用する製品は定期的にリリースノートを確認し、移行が必要な変更がないかを把握する。
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <p>
+                    <strong>出典</strong>：<a
+                        href="https://docs.cloud.google.com/gemini/docs/codeassist/overview"
+                        >Gemini Code Assist Standard／Enterprise 概要</a
+                    >、<a
+                        href="https://docs.cloud.google.com/gemini/docs/codeassist/write-code-gemini"
+                        >Gemini Code AssistでのコーディングSmart Actions</a
+                    >、<a href="https://docs.cloud.google.com/gemini/docs/codeassist/release-notes"
+                        >Gemini Code Assist リリースノート</a
+                    >
+                </p>
+
+                <hr />
+
+                <h3 id="232-cloud-buildでの自動統合テストの実行">
+                    2.3.2 Cloud Buildでの自動統合テストの実行
+                </h3>
+
+                <h4>単体テストと統合テストの違い</h4>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>観点</th>
+                                <th>単体テスト</th>
+                                <th>統合テスト</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>目的</td>
+                                <td>個々の関数・クラスのロジックを検証する</td>
+                                <td>複数のコンポーネント・サービス間の連携を検証する</td>
+                            </tr>
+                            <tr class="even">
+                                <td>実行速度</td>
+                                <td>高速</td>
+                                <td>相対的に低速（依存サービスの起動が必要）</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>依存関係</td>
+                                <td>モック・スタブで外部依存を排除することが多い</td>
+                                <td>
+                                    データベース、メッセージング、他サービスなど実際に近い依存関係を使う
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>典型的な実行場所</td>
+                                <td>ローカル環境・Cloud Buildの早い段階</td>
+                                <td>
+                                    ローカルエミュレータ・docker-compose・一時的なGKEクラスタ・Cloud
+                                    Build後半
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>AIコーディングアシスタントの活用点</td>
+                                <td>テストコード自体の生成</td>
+                                <td>テストシナリオの洗い出し、モックデータ生成の補助</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h4>Cloud Buildで統合テストを実行する代表的なパターン</h4>
+
+                <p>
+                    Cloud
+                    Build上で複数コンテナにまたがる統合テストを実行する手法として、大きく次の2つのパターンがよく使われます。
+                </p>
+
+                <ol>
+                    <li>
+                        <strong>docker-composeパターン</strong
+                        >：複数サービスをdocker-composeで起動し、Cloud
+                        Buildの共有ネットワーク上でテストを実行する
+                    </li>
+                    <li>
+                        <strong>一時的なGKEクラスタパターン</strong
+                        >：テストのたびに使い捨てのGKEクラスタ（または既存クラスタ）にサービス群をデプロイし、実クラスタに近い環境で統合テストを行う
+                    </li>
+                </ol>
+
+                <p>
+                    Google
+                    Cloud公式のサンプルリポジトリ（cloudbuild-integration-testing）では、マイクロサービスアプリケーションの統合テストにCloud
+                    Buildを使うテクニックが示されています。
+                </p>
+
+                <p>
+                    docker-composeパターンでは、Cloud
+                    Build特有のネットワーク構成を理解しておく必要があります。Cloud
+                    Build上のすべてのコンテナはcloudbuildという名前のネットワーク内で動作するため、docker-compose用の設定ファイルにもこのネットワークをデフォルトとして追加することで、CIステップからdocker-composeサービスへ接続できるようになります。
+                </p>
+
+                <p>
+                    ステップ間の依存関係を制御する<code>waitFor</code>も重要な要素です。<code>waitFor</code>キーを使うと、あるステップが特定の先行ステップの完了だけを待つよう指定でき、これにより一部のジョブを並列実行できます。
+                    典型的なパターンとしては、静的解析（lint）、Dockerイメージのビルド、Cloud
+                    Runサービスとしてのデプロイという一連の流れを各サービスごとに用意し、そこにテストスイートを組み込む形が挙げられます。
+                </p>
+
+                <p>
+                    GKEを使う統合テストパターンでは、事前にクラスタとIAM権限を準備します。既存のKubernetesクラスタにデプロイする場合はCloud
+                    Buildのサービスアカウントに<code>roles/container.developer</code>ロールを、テストごとに新しいクラスタを作成・削除・更新する場合は<code>roles/container.admin</code>ではなく、その用途に絞られた<code>roles/container.clusterAdmin</code>を付与します。カスタムのノードサービスアカウントを使う構成では、Cloud
+                    Buildのサービスアカウントにそのノードサービスアカウントへの<code>iam.serviceAccounts.actAs</code>権限（<code>roles/iam.serviceAccountUser</code>）も必要です。クラスタ内のKubernetesオブジェクト操作についてはIAMロールを広げるのではなく、必要な操作だけを許可するKubernetes
+                    RBAC（Role / RoleBinding）で設定します。
+                </p>
+
+                <h4>統合テストの失敗時の挙動</h4>
+
+                <p>
+                    Cloud
+                    Buildのステップは基本的に直列実行され、失敗すると後続を止めます。あるステップが失敗すると、ビルドは停止し、残りのステップは実行されません。
+                    これはCI全体の設計として重要な性質で、統合テストが失敗した場合に不完全な状態のままイメージをArtifact
+                    Registryへpushしたり、Binary
+                    Authorizationのprovenance生成に進んだりしないようにできます。
+                </p>
+
+                <h4>Cloud Buildパイプライン全体像（ビルド〜テスト〜デプロイ）</h4>
+
+                <p>
+                    セクション2で扱った内容を、実際のCI/CDパイプラインの1本の流れとしてまとめると、次のようになります。
+                </p>
+
+                <pre class="mermaid">
+flowchart TB
+    Commit["コミット / プルリクエスト"] --&gt; Trigger["Cloud Build トリガー起動"]
+    Trigger --&gt; Lint["Lint / 静的解析"]
+    Lint --&gt; Unit["単体テスト実行&lt;br/&gt;(AI支援で作成したテスト)"]
+    Unit --&gt; BuildImg["コンテナイメージビルド"]
+    BuildImg --&gt; Env["テスト環境を起動&lt;br/&gt;(エミュレータ / docker-compose /&lt;br/&gt;一時GKEクラスタ)"]
+    Env --&gt; Integ["自動統合テストを実行"]
+    Integ --&gt;|"成功"| Prov["Provenance生成 +&lt;br/&gt;Artifact Registryへpush"]
+    Integ --&gt;|"失敗"| Fail["ビルド失敗を通知"]
+    Prov --&gt; Gate["Binary Authorization&lt;br/&gt;ゲート"]
+    Gate --&gt; Deploy["Cloud Run / GKEへデプロイ"]
+
+    classDef highlightFill fill:#1a3a5c,stroke:#4a90d9,color:#ffffff;
+    classDef dangerFill fill:#5c1a1a,stroke:#d94a4a,color:#ffffff;
+    classDef successFill fill:#1a4a2a,stroke:#4ad97a,color:#ffffff;
+    class Prov,Gate highlightFill
+    class Fail dangerFill
+    class Deploy successFill</pre
+                >
+
+                <p>
+                    この図は、本ガイドで解説してきた2.1（開発環境）、2.2（ビルド）、2.3（テスト）の各要素が、実際のパイプラインの中でどのように直列に組み合わさるかを示しています。ローカルのエミュレータ（2.1.1）で検証した内容と同じ構成をCloud
+                    Build内のテスト環境（2.3.2）でも再利用することで、「ローカルで通ったものはCIでも通る」という一貫性を保てます。
+                </p>
+
+                <div class="callout-practice">
+                    <div class="icon">✓</div>
+                    <div class="body">
+                        <div class="label">ベストプラクティス</div>
+                        <ul>
+                            <li>
+                                統合テストで使う依存サービス（データベース、メッセージングなど）は、可能な限り2.1.1で紹介したエミュレータやコンテナ化されたテスト用インスタンスを使い、テストごとに独立したクリーンな状態から開始する。
+                            </li>
+                            <li>
+                                Cloud
+                                Buildの<code>cloudbuild</code>共有ネットワークを前提としたdocker-compose構成にしておくことで、追加の設定なしにCIステップ間で通信できるようにする。
+                            </li>
+                            <li>
+                                並列実行できるステップ（lintと単体テストなど、互いに依存しない処理）は<code>waitFor</code>を活用して並列化し、パイプライン全体の実行時間を短縮する。
+                            </li>
+                            <li>
+                                統合テストが失敗した場合はパイプラインをそこで止め、provenance生成やデプロイに進まないようにする（あるステップの失敗で後続ステップの実行を止めるというCloud
+                                Buildの既定動作を積極的に活用する）。
+                            </li>
+                            <li>
+                                GKEを使った統合テストでは、テストごとに使い捨てクラスタを作る方式（分離性が高いがコスト・起動時間がかかる）と、既存の共有クラスタを使う方式（速いが名前空間分離などの設計が必要）を、テストの目的とコストのバランスで選択する。
+                            </li>
+                            <li>
+                                統合テストの成功をBinary
+                                Authorizationのアテステーション要件の1つとして組み込み、「統合テストを通過したイメージだけがデプロイ可能」という状態を、人手のチェックではなくポリシーとして強制する。
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <p>
+                    <strong>出典</strong>：<a
+                        href="https://docs.cloud.google.com/build/docs/overview"
+                        >Cloud Buildの概要</a
+                    >、<a
+                        href="https://github.com/GoogleCloudPlatform/cloudbuild-integration-testing"
+                        >cloudbuild-integration-testing（GoogleCloudPlatform公式サンプル）</a
+                    >
+                </p>
+
+                <hr />
+
+                <h2 id="まとめセクション2の全体マップ">まとめ：セクション2の全体マップ</h2>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>小項目</th>
+                                <th>中心となるサービス・機能</th>
+                                <th>押さえるべきキーワード</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>2.1 開発環境のセットアップ</td>
+                                <td>
+                                    gcloud CLIエミュレータ、Cloud Code、Gemini Cloud Assist、Cloud
+                                    Shell、Cloud Workstations、ADC、MCPサーバー
+                                </td>
+                                <td>
+                                    ローカルエミュレーション、マネージド開発環境、IDE統合、AIコーディングアシスタント
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>2.2 ビルド</td>
+                                <td>Cloud Build、Artifact Registry、Binary Authorization</td>
+                                <td>
+                                    <code>cloudbuild.yaml</code
+                                    >、コンテナビルド、SLSA、provenance、アテステーション
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>2.3 テスト</td>
+                                <td>
+                                    Gemini Code Assist（単体テスト生成）、Cloud Build（統合テスト）
+                                </td>
+                                <td>
+                                    AI支援テスト生成、docker-compose、一時GKEクラスタ、<code
+                                        >waitFor</code
+                                    >
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p>
+                    セクション2全体を通じて一貫しているのは、「<strong>ローカルでの高速なフィードバックループ</strong>（エミュレータ・IDE統合）」と「<strong>CI/CDパイプラインでの再現可能かつ検証可能なビルド・テスト</strong>（Cloud
+                    Build・Artifact Registry・Binary
+                    Authorization）」という2つの軸です。試験対策としては、それぞれのサービスが「どの工程で」「何を目的に」使われるのかを、単なる用語の暗記ではなく一連のパイプラインの流れとして理解しておくことが重要です。
+                </p>
+
+                <hr />
+
+                <h2 id="参考文献">参考文献</h2>
+
+                <div class="ref-grid" id="referenceGrid">
+                    <div class="ref-card" id="ref1">
+                        <div class="num">1</div>
+                        <div class="txt">
+                            <strong>開発環境（2.1関連）</strong><br />
+                            <a href="https://cloud.google.com/cli"
+                                >gcloud CLI（コマンドラインインターフェース）概要</a
+                            ><br />
+                            <a
+                                href="https://docs.cloud.google.com/sdk/gcloud/reference/beta/emulators"
+                                >gcloud beta emulators コマンドリファレンス</a
+                            ><br />
+                            <a href="https://docs.cloud.google.com/pubsub/docs/emulator"
+                                >Pub/Subエミュレータを使ったローカルテスト</a
+                            ><br />
+                            <a href="https://testcontainers.com/modules/google-cloud/"
+                                >Testcontainers Google Cloud Module</a
+                            ><br />
+                            <a href="https://docs.cloud.google.com/code/docs/vscode/overview"
+                                >Cloud Code for VS Code 概要</a
+                            ><br />
+                            <a href="https://docs.cloud.google.com/code/docs/intellij/overview"
+                                >Cloud Code for IntelliJ 概要</a
+                            ><br />
+                            <a href="https://docs.cloud.google.com/cloud-assist/overview"
+                                >Gemini Cloud Assist 概要</a
+                            ><br />
+                            <a href="https://docs.cloud.google.com/cloud-assist/chat-panel"
+                                >Gemini Cloud Assistの利用（Cloud Consoleのチャットパネル）</a
+                            ><br />
+                            <a href="https://cloud.google.com/products/gemini/cloud-assist"
+                                >Gemini Cloud Assist（製品ページ）</a
+                            ><br />
+                            <a
+                                href="https://docs.cloud.google.com/gemini/docs/cloud-assist/set-up-gemini"
+                                >Gemini Cloud Assistのセットアップ</a
+                            ><br />
+                            <a href="https://docs.cloud.google.com/shell/docs"
+                                >Cloud Shellドキュメント</a
+                            ><br />
+                            <a href="https://docs.cloud.google.com/shell/docs/using-cloud-shell"
+                                >Cloud Shellの使い方</a
+                            ><br />
+                            <a href="https://docs.cloud.google.com/workstations/docs/overview"
+                                >Cloud Workstations概要</a
+                            ><br />
+                            <a
+                                href="https://cloud.google.com/blog/products/application-development/cloud-workstations-managed-development-environment-is-now-ga"
+                                >Cloud Workstationsマネージド開発環境のGA発表（Google
+                                Cloudブログ）</a
+                            ><br />
+                            <a
+                                href="https://docs.cloud.google.com/docs/authentication/application-default-credentials"
+                                >ADC（Application Default Credentials）の仕組み</a
+                            ><br />
+                            <a
+                                href="https://docs.cloud.google.com/docs/authentication/provide-credentials-adc"
+                                >ADCの資格情報を提供する方法</a
+                            ><br />
+                            <a
+                                href="https://docs.cloud.google.com/docs/authentication/set-up-adc-local-dev-environment"
+                                >ローカル開発環境向けADCの設定</a
+                            ><br />
+                            <a
+                                href="https://docs.cloud.google.com/sdk/gcloud/reference/auth/application-default"
+                                >gcloud auth application-default コマンドリファレンス</a
+                            ><br />
+                            <a href="https://docs.cloud.google.com/gemini/docs/codeassist/overview"
+                                >Gemini Code Assist Standard／Enterprise 概要</a
+                            ><br />
+                            <a
+                                href="https://docs.cloud.google.com/gemini/docs/codeassist/write-code-gemini"
+                                >Gemini Code AssistでのコーディングSmart Actions</a
+                            ><br />
+                            <a
+                                href="https://developers.google.com/gemini-code-assist/docs/use-agentic-chat-pair-programmer"
+                                >Gemini Code Assist
+                                エージェントモードの利用（MCPサーバー設定を含む）</a
+                            ><br />
+                            <a
+                                href="https://docs.cloud.google.com/gemini/docs/codeassist/release-notes"
+                                >Gemini Code Assist リリースノート</a
+                            ><br />
+                            <a
+                                href="https://docs.cloud.google.com/cloud-assist/use-gemini-cloud-assist-mcp"
+                                >Gemini Cloud AssistのリモートMCPサーバーの利用</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref2">
+                        <div class="num">2</div>
+                        <div class="txt">
+                            <strong>ビルド（2.2関連）</strong><br />
+                            <a href="https://docs.cloud.google.com/build/docs/overview"
+                                >Cloud Buildの概要</a
+                            ><br />
+                            <a href="https://docs.cloud.google.com/artifact-registry/docs/overview"
+                                >Artifact Registryの概要</a
+                            ><br />
+                            <a href="https://docs.cloud.google.com/artifact-registry/docs/build"
+                                >Artifact Registryへのビルド成果物の格納</a
+                            ><br />
+                            <a
+                                href="https://codelabs.developers.google.com/secure-build-deploy-cloud-build-ar-gke"
+                                >Cloud BuildとArtifact
+                                RegistryによるセキュアなビルドとGKEへのデプロイ（Codelab）</a
+                            ><br />
+                            <a
+                                href="https://docs.cloud.google.com/build/docs/securing-builds/generate-validate-build-provenance"
+                                >ビルドprovenanceの生成と検証</a
+                            ><br />
+                            <a
+                                href="https://docs.cloud.google.com/binary-authorization/docs/cv-slsa-check"
+                                >Binary AuthorizationのSLSAチェック（継続的検証）</a
+                            ><br />
+                            <a
+                                href="https://cloud.google.com/blog/products/application-development/google-introduces-slsa-framework"
+                                >GoogleによるSLSAフレームワークの紹介（Google Cloudブログ）</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref3">
+                        <div class="num">3</div>
+                        <div class="txt">
+                            <strong>テスト（2.3関連）</strong><br />
+                            <a href="https://docs.cloud.google.com/gemini/docs/codeassist/overview"
+                                >Gemini Code Assist Standard／Enterprise 概要</a
+                            ><br />
+                            <a
+                                href="https://docs.cloud.google.com/gemini/docs/codeassist/write-code-gemini"
+                                >Gemini Code AssistでのコーディングSmart
+                                Actions（単体テスト生成を含む）</a
+                            ><br />
+                            <a
+                                href="https://docs.cloud.google.com/gemini/docs/codeassist/release-notes"
+                                >Gemini Code Assist リリースノート</a
+                            ><br />
+                            <a href="https://docs.cloud.google.com/build/docs/overview"
+                                >Cloud Buildの概要（ビルドステップとしてのテスト実行）</a
+                            ><br />
+                            <a
+                                href="https://github.com/GoogleCloudPlatform/cloudbuild-integration-testing"
+                                >cloudbuild-integration-testing（GoogleCloudPlatform公式サンプルリポジトリ）</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref4">
+                        <div class="num">4</div>
+                        <div class="txt">
+                            <strong>試験ガイド本体</strong><br />
+                            <a href="https://cloud.google.com/learn/certification/cloud-developer"
+                                >Professional Cloud Developer 認定ページ（Google Cloud）</a
+                            ><br />
+                            <a
+                                href="https://services.google.com/fh/files/misc/professional_cloud_developer_exam_guide_english.pdf"
+                                >Professional Cloud Developer Exam Guide（公式PDF）</a
+                            >
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+        <script
+            src="https://cdn.jsdelivr.net/npm/mermaid@11.13.0/dist/mermaid.min.js"
+            integrity="sha384-tI0sDqjGJcqrQ8e/XKiQGS+ee11v5knTNWx2goxMBxe4DO9U0uKlfxJtYB9ILZ4j"
+            crossorigin="anonymous"
+        ></script>
+        <script>
+            (function () {
+                'use strict';
+
+                // ---------- Mermaid init + render ----------
+                function initMermaid() {
+                    if (typeof mermaid === 'undefined') {
+                        console.warn('mermaid not loaded');
+                        return;
+                    }
+                    var fontFamily = getComputedStyle(document.body).fontFamily;
+                    mermaid.initialize({
+                        startOnLoad: false,
+                        theme: 'base',
+                        securityLevel: 'loose',
+                        fontFamily: fontFamily,
+                        themeVariables: {
+                            fontSize: '16px',
+                            background: '#0d1a2b',
+                            primaryColor: '#12233b',
+                            primaryTextColor: '#dbe4f3',
+                            primaryBorderColor: '#2c4770',
+                            lineColor: '#4a6390',
+                            secondaryColor: '#101f33',
+                            tertiaryColor: '#101f33',
+                            edgeLabelBackground: '#0d1a2b',
+                            clusterBkg: '#0d1a2b',
+                            clusterBorder: '#2c4770',
+                            nodeTextColor: '#dbe4f3',
+                        },
+                        flowchart: {
+                            useMaxWidth: false,
+                            htmlLabels: true,
+                            subGraphTitleMargin: { top: 12, bottom: 18 },
+                            nodeSpacing: 70,
+                            rankSpacing: 60,
+                            curve: 'basis',
+                        },
+                    });
+
+                    var fontSpecs = [
+                        ['700', '"Noto Sans JP"'],
+                        ['400', '"Noto Sans JP"'],
+                    ];
+                    var sample = '設計とアーキテクチャ0123ABC';
+                    var loadPromises = fontSpecs.map(function (spec) {
+                        try {
+                            return document.fonts.load(spec[0] + ' 16px ' + spec[1], sample);
+                        } catch (e) {
+                            return Promise.resolve();
+                        }
+                    });
+
+                    Promise.all(loadPromises)
+                        .then(function () {
+                            return document.fonts ? document.fonts.ready : Promise.resolve();
+                        })
+                        .catch(function () {})
+                        .then(function () {
+                            try {
+                                mermaid
+                                    .run({ querySelector: 'pre.mermaid' })
+                                    .then(function () {
+                                        healOverflowingLabels();
+                                        setTimeout(healOverflowingLabels, 600);
+                                    })
+                                    .catch(function (err) {
+                                        console.error('mermaid render error', err);
+                                    });
+                            } catch (e) {
+                                console.error('mermaid run failed', e);
+                            }
+                        });
+                }
+
+                function healOverflowingLabels() {
+                    document.querySelectorAll('pre.mermaid svg').forEach(function (svg) {
+                        svg.querySelectorAll('.node').forEach(function (node) {
+                            var rect = node.querySelector('rect.basic, rect');
+                            var fo = node.querySelector('foreignObject');
+                            if (!rect || !fo) return;
+                            var div = fo.querySelector('div');
+                            if (!div) return;
+                            var neededW = div.scrollWidth;
+                            var neededH = div.scrollHeight;
+                            var curW = parseFloat(fo.getAttribute('width')) || 0;
+                            var curH = parseFloat(fo.getAttribute('height')) || 0;
+                            if (neededW > curW - 2 || neededH > curH - 2) {
+                                var buffer = 6;
+                                var newW = Math.max(curW, neededW + buffer);
+                                var newH = Math.max(curH, neededH + buffer);
+                                var x = parseFloat(fo.getAttribute('x')) || 0;
+                                var y = parseFloat(fo.getAttribute('y')) || 0;
+                                var dx = (newW - curW) / 2;
+                                var dy = (newH - curH) / 2;
+                                fo.setAttribute('width', newW);
+                                fo.setAttribute('height', newH);
+                                fo.setAttribute('x', x - dx);
+                                fo.setAttribute('y', y - dy);
+                                var rx = parseFloat(rect.getAttribute('x'));
+                                var ry = parseFloat(rect.getAttribute('y'));
+                                var rw = parseFloat(rect.getAttribute('width'));
+                                var rh = parseFloat(rect.getAttribute('height'));
+                                if (!isNaN(rx) && !isNaN(rw)) {
+                                    rect.setAttribute('x', rx - dx);
+                                    rect.setAttribute('width', rw + newW - curW);
+                                }
+                                if (!isNaN(ry) && !isNaN(rh)) {
+                                    rect.setAttribute('y', ry - dy);
+                                    rect.setAttribute('height', rh + newH - curH);
+                                }
+                            }
+                        });
+                    });
+                }
+
+                try {
+                    initMermaid();
+                } catch (e) {
+                    console.error('mermaid init failed', e);
+                }
+
+                // ---------- Sidebar toggle (mobile) ----------
+                var sidebar = document.getElementById('sidebar');
+                var toggle = document.getElementById('sidebarToggle');
+                function syncToggleState() {
+                    if (!toggle || !sidebar) return;
+                    toggle.setAttribute(
+                        'aria-expanded',
+                        sidebar.classList.contains('open') ? 'true' : 'false',
+                    );
+                }
+                if (toggle) {
+                    toggle.addEventListener('click', function () {
+                        sidebar.classList.toggle('open');
+                        syncToggleState();
+                    });
+                }
+                document.querySelectorAll('#sidebarNav a').forEach(function (a) {
+                    a.addEventListener('click', function () {
+                        sidebar.classList.remove('open');
+                        syncToggleState();
+                    });
+                });
+                syncToggleState();
+
+                // ---------- Scroll-spy ----------
+                var navLinks = Array.from(document.querySelectorAll('#sidebarNav a'));
+                var linkMap = new Map();
+                navLinks.forEach(function (a) {
+                    var id = decodeURIComponent(a.getAttribute('href').slice(1));
+                    linkMap.set(id, a);
+                });
+
+                var headings = Array.from(linkMap.keys())
+                    .map(function (id) {
+                        return document.getElementById(id);
+                    })
+                    .filter(Boolean);
+
+                var spyObserver = new IntersectionObserver(
+                    function (entries) {
+                        entries.forEach(function (entry) {
+                            var link = linkMap.get(entry.target.id);
+                            if (!link) return;
+                            if (entry.isIntersecting) {
+                                navLinks.forEach(function (a) {
+                                    a.classList.remove('active');
+                                });
+                                link.classList.add('active');
+                            }
+                        });
+                    },
+                    { rootMargin: '-15% 0px -75% 0px', threshold: 0 },
+                );
+
+                headings.forEach(function (h) {
+                    spyObserver.observe(h);
+                });
+
+                // ---------- Checklist progress ----------
+                document.querySelectorAll('.checklist-card').forEach(function (card) {
+                    var boxes = card.querySelectorAll('input[type="checkbox"]');
+                    var counter = card.querySelector('.count');
+                    function update() {
+                        var checked = card.querySelectorAll(
+                            'input[type="checkbox"]:checked',
+                        ).length;
+                        if (counter) counter.textContent = checked + ' / ' + boxes.length + ' 完了';
+                    }
+                    boxes.forEach(function (b) {
+                        b.addEventListener('change', update);
+                    });
+                    update();
+                });
+            })();
+        </script>
+    </body>
+</html>
