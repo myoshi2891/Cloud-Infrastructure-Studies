@@ -248,7 +248,7 @@ IDEからGoogle Cloud APIを呼び出すアプリケーションコードを実�
 1. アプリケーションで使用するクライアントライブラリ（言語・バージョン）が、なりすまし形式のADC（`impersonated_service_account`タイプの資格情報）の読み取りに対応しているかを、該当ライブラリの認証ドキュメントで確認する。
 2. 対応が確認できない場合、または動作しない場合は、代替として次のいずれかを使う。
    - **ユーザーADC**：`gcloud auth application-default login`（なりすましなし）でユーザー資格情報のADCを設定し、必要な権限は自分のユーザーアカウントに付与する。
-   - **実行環境にアタッチしたサービスアカウント**：Cloud Shell、Cloud Workstations、Compute Engine、Cloud Runなど、サービスアカウントをアタッチできる環境上でコードを実行し、そのアタッチされたサービスアカウントの資格情報をADCとして自動取得させる。
+   - **実行環境にアタッチしたサービスアカウント**：Cloud Workstations、Compute Engine、Cloud Runなど、サービスアカウントをアタッチできる環境上でコードを実行し、そのアタッチされたサービスアカウントの資格情報をADCとして自動取得させる。
 
 #### Cloud Code拡張機能のインストールとAI支援
 
@@ -266,7 +266,7 @@ Exam Guideが挙げるもう一つの統合対象が**MCPサーバー**です。
 
 IDE内のエージェントモードからMCPサーバーを設定することで、AIアシスタントの能力を拡張できます。エージェントモードでは、コードに関する質問をしたり、コンテキストや組み込みツールを使って生成内容を改善したり、MCPサーバーを設定してエージェントの能力を拡張したり、複数ステップにわたる複雑なタスクの解決策を得たりできます。 利用可能なツールの例には、grepやファイルの読み書きといった組み込みツール、ローカルまたはリモートのMCPサーバーとその実行可能な関数、独自のサービス実装などがあります。
 
-Google Cloud自体も、公式のMCPサーバーを提供し始めています。例えばCloud Run向けには、Cloud RunのMCPサーバーを使って、Webアプリケーションのビルド・コンテナ化・push・設定・公開URLの返却までを行うカスタムコマンドが用意されています。 また、Gemini Cloud Assist自体もリモートMCPサーバーとして公開されており、Gemini CLIやChatGPT、Claude、独自に開発したアプリケーションなど各種AIアプリケーションと接続できます。
+Google Cloud自体も、公式のMCPサーバーを提供し始めています。例えばCloud Run向けのMCPサーバーは、Cloud Runサービスの作成・デプロイ、プロジェクト内のサービス一覧の表示、サービスの状態やURIの取得といったツールを提供します。デプロイ元はビルド済みのコンテナイメージでも、ソースコードのアーカイブでもよく、ビルド・コンテナ化・pushが常に実行されるわけではありません（既存イメージを指定した場合はこれらの工程は発生しません）。また、デプロイしたサービスのURIを取得することと、そのサービスへの未認証アクセス（公開アクセス）を許可することは別の操作であり、公開が必要な場合はIAMの設定を別途行う必要があります。 また、Gemini Cloud Assist自体もリモートMCPサーバーとして公開されており、Gemini CLIやChatGPT、Claude、独自に開発したアプリケーションなど各種AIアプリケーションと接続できます。
 
 MCPサーバーとの認証には、通常のAPIキーではなくIAMベースの仕組みが使われる点も押さえておきましょう。Gemini Cloud AssistのリモートMCPサーバーはOAuth 2.0とIAMを組み合わせて認証・認可を行い、APIキーによる認証はサポートしていません。エージェントがMCPツールを使う際には、アクセス制御と監視ができるよう専用のIDを作成することが推奨されています。
 
@@ -450,7 +450,7 @@ flowchart TB
     class Deny deny
 ```
 
-生成されたprovenanceは、コマンドラインから直接確認・検証することもできます。provenanceの取得、`slsa-verifier`による検証、そしてデプロイという一連の処理では、タグではなく同一の不変なイメージダイジェスト（`IMAGE=LOCATION-docker.pkg.dev/PROJECT_ID/REPO/IMAGE_NAME@sha256:<HASH>`）を`IMAGE`として固定し、すべての処理で同じダイジェストを参照する必要があります。タグは後から別のイメージを指すよう変更され得るため、タグ基準では「検証したイメージ」と「デプロイされるイメージ」が一致する保証がありません。イメージのprovenanceを取得してJSONとして保存するには、`gcloud artifacts docker images describe $IMAGE --format json --show-provenance > provenance.json`のようなコマンドを実行し、`slsa-verifier verify-image $IMAGE --provenance-path provenance.json --source-uri=github.com/OWNER/REPO --builder-id=https://cloudbuild.googleapis.com/GoogleHostedWorker`のように、保存した`provenance.json`と期待するビルダーID（Cloud Buildの場合`https://cloudbuild.googleapis.com/GoogleHostedWorker`）を指定して同じ`$IMAGE`（ダイジェスト形式）に対する検証を行った上で、そのダイジェストのままデプロイコマンドに渡します。
+生成されたprovenanceは、コマンドラインから直接確認・検証することもできます。provenanceの取得、`slsa-verifier`による検証、そしてデプロイという一連の処理では、タグではなく同一の不変なイメージダイジェスト（`IMAGE=LOCATION-docker.pkg.dev/PROJECT_ID/REPO/IMAGE_NAME@sha256:<HASH>`）を`IMAGE`として固定し、すべての処理で同じダイジェストを参照する必要があります。タグは後から別のイメージを指すよう変更され得るため、タグ基準では「検証したイメージ」と「デプロイされるイメージ」が一致する保証がありません。なお、`slsa-verifier`は検証対象イメージをレジストリから取得するため、非公開のArtifact Registryを使う場合は事前に`gcloud auth configure-docker LOCATION-docker.pkg.dev`（`LOCATION`はリポジトリのリージョン）を実行し、Dockerクライアントの認証ヘルパーを設定しておきます。イメージのprovenanceを取得してJSONとして保存するには、`gcloud artifacts docker images describe $IMAGE --format json --show-provenance > provenance.json`のようなコマンドを実行し、`slsa-verifier verify-image $IMAGE --provenance-path provenance.json --source-uri=github.com/OWNER/REPO --builder-id=https://cloudbuild.googleapis.com/GoogleHostedWorker`のように、保存した`provenance.json`と期待するビルダーID（Cloud Buildの場合`https://cloudbuild.googleapis.com/GoogleHostedWorker`）を指定して同じ`$IMAGE`（ダイジェスト形式）に対する検証を行った上で、そのダイジェストのままデプロイコマンドに渡します。
 
 Binary Authorization側でSLSAの継続的な検証を行う仕組みもあります。Binary Authorizationの継続的検証（CV）のSLSAチェックを利用するには、Cloud BuildでSLSA準拠のprovenanceを生成しつつイメージをビルドする必要があります。このチェックがサポートする唯一の信頼済みビルダーはCloud Buildです。
 

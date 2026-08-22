@@ -96,13 +96,19 @@ flowchart TD
     Q2 -->|"Yes"| FS["Firestore<br/>（Native mode）"]
     Q2 -->|"No"| Q3{"バイナリファイル・画像・動画・<br/>バックアップなどの非構造化データか？"}
     Q3 -->|"Yes"| GCS["Cloud Storage<br/>（オブジェクトストレージ）"]
-    Q3 -->|"No（超大規模の時系列/ワイドカラム、<br/>グローバル分散トランザクションなど）"| Other["Bigtable / Spanner / AlloyDB<br/>（詳細はSection 1.3を参照）"]
+    Q3 -->|"No"| Q4{"超大規模の時系列/<br/>ワイドカラムデータか？"}
+    Q4 -->|"Yes"| BT["Bigtable<br/>（詳細はSection 1.3を参照）"]
+    Q4 -->|"No"| Q5{"グローバルに分散した<br/>強整合トランザクションが必要か？"}
+    Q5 -->|"Yes"| SP["Spanner<br/>（詳細はSection 1.3を参照）"]
+    Q5 -->|"No（PostgreSQL互換で、Cloud SQLを<br/>超える性能・可用性が必要）"| AL["AlloyDB for PostgreSQL<br/>（詳細はSection 1.3を参照）"]
 
     style Start fill:#1a3a5c,stroke:#0d1f33,color:#ffffff
     style SQL fill:#2d5f8a,stroke:#1a3a5c,color:#ffffff
     style FS fill:#2d5f8a,stroke:#1a3a5c,color:#ffffff
     style GCS fill:#2d5f8a,stroke:#1a3a5c,color:#ffffff
-    style Other fill:#3d3d3d,stroke:#1a1a1a,color:#ffffff
+    style BT fill:#3d3d3d,stroke:#1a1a1a,color:#ffffff
+    style SP fill:#3d3d3d,stroke:#1a1a1a,color:#ffffff
+    style AL fill:#3d3d3d,stroke:#1a1a1a,color:#ffffff
 ```
 
 データストアを選定したら、次は「どうやって安全かつ効率的に接続するか」を決めます。3つのデータストアはそれぞれ接続モデルが異なります。
@@ -255,6 +261,8 @@ flowchart TD
 
 パブリッシャークライアントは使い回すことが基本原則です。メッセージを送るたびに新しいクライアントを生成すると、接続確立のオーバーヘッドが積み重なります。また、大量のメッセージを短時間に発行する場合は、パブリッシャー側の**フロー制御**（未確認応答のまま送信できるメッセージ数・バイト数の上限）を設定し、クライアント側のメモリ・CPU・スレッドが枯渇して`DEADLINE_EXCEEDED`エラーが多発する事態を防ぎます。
 
+以下は **Pullサブスクリプション（StreamingPull）** の例です。サブスクライバーが受信したメッセージを`ackDeadline`（確認応答の期限）内に確認応答（ack）することで、そのメッセージは確認済みとして扱われます。
+
 ```mermaid
 sequenceDiagram
     participant Pub as パブリッシャー<br/>アプリケーション
@@ -277,11 +285,16 @@ sequenceDiagram
     Sub->>Sub: ビジネスロジックを実行
     alt 処理成功
         Sub->>Subsc: ack（確認応答）
-    else 処理失敗
-        Sub->>Subsc: nack（否定応答）または無応答
+    else 処理失敗（明示的にnack）
+        Sub->>Subsc: nack（否定応答）
+        Subsc->>Sub: ackDeadlineの経過を待たず速やかに再配信
+    else 処理失敗（無応答のままackDeadlineが失効）
+        Note over Sub,Subsc: 確認応答も否定応答も返さない
         Subsc->>Sub: ackDeadline経過後に再配信
     end
 ```
+
+PushサブスクリプションではPub/SubがHTTPSエンドポイントへPOSTし、エンドポイントが成功ステータスコードを返した時点でメッセージが確認済みになります（ackの明示的な送信は不要）。BigQueryサブスクリプションのようなエクスポート型では、宛先への書き込みが成功した時点でPub/Sub側が確認済みとして扱うため、いずれも上図のack/nackのやり取りとは仕組みが異なります。
 
 **消費（Subscribe）側のチューニング**
 
@@ -301,7 +314,7 @@ sequenceDiagram
 
 - **パブリッシャー/サブスクライバークライアントを使い回す**: リクエストごとに生成せず、アプリケーションのライフサイクル全体で単一のクライアントインスタンスを共有します。
 - **消費処理は冪等に設計する**: Pub/Subのat-least-once配信により同一メッセージが重複配信され得るため、何度処理されても結果が変わらない実装にします。同一メッセージの再配信は`messageId`で弾けますが、パブリッシャー側が再試行した場合は内容が同じでも`messageId`が変わるため、注文IDのような**業務上の冪等性キー**を使った永続的な重複排除を併用します。重複排除の記録先ごとに実装方法が異なる点に注意が必要です。Firestore（Native mode）のStandard editionには一意制約（UNIQUE制約）に相当する機能がないため、**業務キーそのものをドキュメントIDにした処理済み記録**を作り、`create`（既存なら失敗）やトランザクション内の存在チェックで重複を弾きます。Cloud SQLを使う場合は、処理済みテーブルの業務キー列に**UNIQUE制約**を張り、重複挿入がエラーになるようにします。
-- **重複排除の記録と副作用は同じ整合性境界に収める**: 重複排除の記録と実際の副作用（DB更新など）は**同一データストアの単一トランザクションでコミット**し、「副作用だけ適用されて記録が残らない」中途半端な状態が生じないようにします。副作用がCloud SQL側にあるのに重複排除の記録をFirestoreに置くような**データストアをまたぐ構成では、Firestoreのトランザクションは両者の原子性を保証できません**。この場合は、重複排除の記録も副作用と同じCloud SQLのトランザクション内で書き込むか、outboxパターンのような結果整合性を担保する仕組みを挟んで、2つのデータストア間の整合性をアプリケーション側で明示的に管理します。
+- **重複排除の記録と副作用は同じ整合性境界に収める**: 重複排除の記録と実際の副作用（DB更新など）は**同一データストアの単一トランザクションでコミット**し、「副作用だけ適用されて記録が残らない」中途半端な状態が生じないようにします。副作用がCloud SQL側にあるのに重複排除の記録をFirestoreに置くような**データストアをまたぐ構成では、Firestoreのトランザクションは両者の原子性を保証できません**。この場合は、重複排除の記録も副作用と同じCloud SQLのトランザクション内で書き込むか、outboxパターンのような結果整合性を担保する仕組みを挟んで、2つのデータストア間の整合性をアプリケーション側で明示的に管理します。**ackはこのトランザクションのコミットが成功した後に送信します**。コミット前にackしてしまうと、直後にプロセスが停止した場合にメッセージが失われます。逆に、ack送信前にプロセスが停止してメッセージが再配信されても、すでにコミット済みの重複排除記録（業務上の冪等性キー）によって2回目の処理は安全にスキップできます。
 - **フロー制御を適切に設定する**: パブリッシャー・サブスクライバーの両方で、未確認メッセージ数/バイト数の上限を設定し、突発的な負荷でリソースが枯渇するのを防ぎます。
 - **ackDeadlineを処理時間に合わせて設定する**: 処理が長時間かかる場合はackDeadlineを延長するか、処理開始時に自動延長（lease management）を有効にします。
 - **クライアントライブラリの言語選定にも注意する**: Java・C++・Goはスループット効率が高く、大量メッセージ処理が必要な基盤にはこれらの言語のクライアントライブラリが有利です。
@@ -620,8 +633,9 @@ flowchart TB
     App["インスツルメント済み<br/>アプリケーション<br/>（OpenTelemetry経由）"] --> Suite
     App -->|"言語別のprofiling agent"| Profiler
 
-    Suite --> ErrorRep["Error Reporting<br/>（エラーの自動集約）"]
-    Suite --> Gemini["Gemini Cloud Assist<br/>Investigations"]
+    Logging --> ErrorRep["Error Reporting<br/>（エラーログの自動集約）"]
+    App -->|"Error Reporting APIへ直接送信"| ErrorRep
+    Suite -->|"選択したテレメトリ"| Gemini["Gemini Cloud Assist<br/>Investigations"]
 
     style App fill:#1a3a5c,stroke:#0d1f33,color:#ffffff
     style Suite fill:#12283e,stroke:#0d1f33,color:#ffffff
@@ -690,7 +704,7 @@ Error Reportingは類似したスタックトレースを持つエラーを自�
 - **標準的な例外フォーマットで出力する**: 各言語向けにドキュメント化された例外情報のフォーマット（スタックトレースを含む）に従ってログへ書き込むことで、Error Reportingによる自動検出の精度が上がります。
 - **新規エラーグループの通知を運用フローに組み込む**: 新しい種類のエラーが発生した際に、担当チームへ確実に通知が届くよう設定し、検知から対応までのリードタイムを短縮します。
 - **サービスエラー（Service Errors）も併せて確認する**: アプリケーションコード起因のエラーだけでなく、利用しているGoogle Cloudサービス自体が記録するエラーもError Reportingで一元的に確認します。
-- **APIキーではなくサービスアカウントで認証する**: Error Reporting APIを直接呼び出す場合、APIキーは認証メカニズムとして使わず、サービスアカウントを使用します。
+- **API呼び出しの認証方式を用途に応じて選ぶ**: エラーイベントを直接送信する`projects.events.report`は、**APIキーとOAuth 2.0トークンのどちらでも呼び出せます**。サーバー間の処理では、IAMによる権限の絞り込みと監査ログでの追跡が可能なサービスアカウント（OAuthトークン）の利用が推奨されます。APIキーは、OAuthフローを実装できないクライアント（モバイルアプリやブラウザなど）からエラーを報告する限定的なケースで使い、キーの制限（参照元・アプリケーション制限）を必ず設定します。なお、`projects.events.report`以外のError Reporting APIメソッドはAPIキーでは呼び出せません。
 - **CMEK（顧客管理暗号鍵）とError Reportingの制約を理解する**: CMEKを有効化したログバケットに保存されたログエントリはError Reportingで解析できないため、要件に応じて設計時に考慮します。
 
 #### 出典
