@@ -76,7 +76,7 @@ Exam Guideは2.1として次の3点を挙げています。
 
 #### これは何か
 
-gcloud CLIには、いくつかのGoogle Cloudサービスの**ローカルエミュレータ**が同梱されています。エミュレータは実際のバックエンドサービスの動作をローカルマシン上で模倣するもので、クライアントライブラリから見ると本番サービスとほぼ同じAPIを呼び出せます。gcloud CLIは、ローカルでの開発・テスト・検証のために、Bigtable、Cloud Datastore、Firestore、Spanner、Pub/Subのデータエミュレータを提供しています。
+gcloud CLIは、いくつかのGoogle Cloudサービスの**ローカルエミュレータ**をコンポーネントとして提供しています。エミュレータは実際のバックエンドサービスの動作をローカルマシン上で模倣するもので、クライアントライブラリから見ると本番サービスとほぼ同じAPIを呼び出せます。ただし、これらはgcloud CLI本体のインストールだけで使えるわけではなく、追加コンポーネントとしてのインストールが必要です。たとえばPub/Subエミュレータは`gcloud components install pubsub-emulator`で追加インストールします。gcloud CLIは、ローカルでの開発・テスト・検証のために、Bigtable、Cloud Datastore、Firestore、Spanner、Pub/Subのデータエミュレータを提供しています。
 
 #### なぜ必要か
 
@@ -109,10 +109,10 @@ sequenceDiagram
     participant App as アプリケーションコード
     participant Test as 単体テスト
 
-    Dev->>CLI: gcloud emulators pubsub start
+    Dev->>CLI: gcloud beta emulators pubsub start
     CLI->>Emu: エミュレータプロセスを起動
     Emu-->>Dev: ホスト:ポートを出力
-    Dev->>CLI: env-init で接続情報を取得
+    Dev->>CLI: gcloud beta emulators pubsub env-init
     CLI-->>Dev: PUBSUB_EMULATOR_HOST を返す
     Dev->>App: 環境変数をエクスポートして起動
     App->>Emu: クライアントライブラリ経由でAPI呼び出し
@@ -173,7 +173,9 @@ Gemini Cloud Assistは応答の精度を高めるため、いくつかのコン�
 ここで注意したいのは、**Gemini Cloud Assist**（Cloud Console内のAIアシスタントパネル）と、後述する**Gemini Code Assist**（IDE向けのコーディング支援）は別の製品であるという点です。試験対策上もこの2つを混同しないことが重要です。
 
 > **ベストプラクティス**
-> - Gemini Cloud Assistはプレビュー期間中は無料で利用できますが、チャットパネルでの会話はどこのGoogle Cloudデータセンターにも保存され得るため、データレジデンシーや管轄区域のコンプライアンス要件の対象となる情報は入力しないようにする。
+> - Gemini Cloud Assistはプレビュー期間中は無料で利用できますが、チャットパネルでの会話はGoogle Cloudデータセンターに保存され、180日経過後に自動削除されます。保存期間中はデータレジデンシーや管轄区域のコンプライアンス要件の対象となり得るため、そうした情報は入力しないようにする。
+> - 同一プロジェクト内で`cloudaicompanion.topics.get`権限を持つユーザーは、Cloud ConsoleのUI上には表示されなくてもAPI経由で他ユーザーの会話履歴にアクセスできる。共有プロジェクトでは、この権限の付与範囲を最小限に絞る。
+> - ページコンテキスト共有（閲覧中のコンソールページのURLや表示内容をGeminiに渡す機能）はデフォルトで有効になっている。機微な情報が表示された画面でGemini Cloud Assistを使う場合は、パネルの「その他の操作」→「ページコンテキスト共有」から無効化できる。
 > - Gemini Cloud Assistの応答は早期段階の技術であり、もっともらしく見えても事実と異なる出力を生成することがあるため、利用前に必ず検証する。
 
 #### Cloud Shell
@@ -377,7 +379,7 @@ images:
 
 `$SHORT_SHA`の扱いには注意が必要です。`$SHORT_SHA`はビルドトリガー経由の実行では自動的に設定されますが、手元から`gcloud builds submit`を直接実行した場合は自動設定されず、未指定のままだと空文字列になります。手動実行時は`$BUILD_ID`やユーザー定義の`$_IMAGE_TAG`を使うか、`--substitutions=SHORT_SHA=...`で明示的に値を渡します。
 
-Artifact Registryへイメージを保存するもう一つの代表的な方法として、`cloudbuild.yaml`のようなビルド構成ファイルを用意せずに`gcloud builds submit`を直接呼び出すシンプルな方法もあります。この場合もビルドはローカルで実行されるのではなくCloud Buildへ送信されます。`-t`（`--tag`）を指定すると、カレントディレクトリのソースに含まれる`Dockerfile`からイメージをビルドするビルド構成がCloud Build側で暗黙に生成され、ビルドされたイメージが自動的にArtifact Registryへpushされます。実際のコマンドは`gcloud builds submit . -t LOCATION-docker.pkg.dev/PROJECT_ID/REPO/IMAGE:TAG`のようになります。 自動スキャンには前提条件があります。Container Scanning APIを有効化している場合、標準（standard）またはリモート（remote）のDockerリポジトリにpushされたイメージが自動スキャンの対象になります。それ以外の対応リポジトリ形式では、リポジトリ単位でスキャンを有効化する必要があります。Container Analysisをその他の情報と統合することで、そのメタデータに基づいた意思決定が可能になります。例えば、信頼できるレジストリからの準拠したイメージのみをデプロイ対象として許可するデプロイポリシーを、Binary Authorizationで作成できます。
+Artifact Registryへイメージを保存するもう一つの代表的な方法として、`cloudbuild.yaml`のようなビルド構成ファイルを用意せずに`gcloud builds submit`を直接呼び出すシンプルな方法もあります。この場合もビルドはローカルで実行されるのではなくCloud Buildへ送信されます。`-t`（`--tag`）を指定すると、カレントディレクトリのソースに含まれる`Dockerfile`からイメージをビルドするビルド構成がCloud Build側で暗黙に生成され、ビルドされたイメージが自動的にArtifact Registryへpushされます。実際のコマンドは`gcloud builds submit . -t LOCATION-docker.pkg.dev/PROJECT_ID/REPO/IMAGE:TAG`のようになります。この`-t`指定によるシンプルな経路は、あくまでビルドとpushだけを目的とした手順であり、Binary Authorizationによるデプロイ時の検証を前提とした経路ではありません。Binary Authorizationで保護するリリース経路を構築する場合は、後述の[2.2.2](#222-cloud-buildにおけるprovenanceの構成binary-authorization)のとおり`cloudbuild.yaml`を使い、`images`フィールドと`options.requestedVerifyOption: VERIFIED`を明示的に指定する必要があります。 自動スキャンには前提条件があります。Container Scanning APIを有効化している場合、標準（standard）またはリモート（remote）のDockerリポジトリにpushされたイメージが自動スキャンの対象になります。それ以外の対応リポジトリ形式では、リポジトリ単位でスキャンを有効化する必要があります。Container Analysisをその他の情報と統合することで、そのメタデータに基づいた意思決定が可能になります。例えば、信頼できるレジストリからの準拠したイメージのみをデプロイ対象として許可するデプロイポリシーを、Binary Authorizationで作成できます。
 
 > **ベストプラクティス**
 > - イメージのタグに`latest`を使わず、Gitのコミットハッシュ（`$SHORT_SHA`）やセマンティックバージョンなど、一意で追跡可能な値を使う。ロールバックや監査の際に、どのソースからビルドされたイメージかを一意に特定できるようにするため。
@@ -422,7 +424,7 @@ Cloud Buildは、検証可能なソースコード管理、自動検証済みの
 
 provenanceの生成（SLSA 1）とセキュアなビルド（SLSA 2）を実現していても、それだけでは未検証のイメージが本番にデプロイされることを防げません。Binary Authorizationは、署名（アテステーション）された信頼できるイメージのみをデプロイ可能にすることで、そのギャップを埋めます。
 
-Binary Authorizationには役割分担の考え方があります。ポリシー作成者（Policy Creator）は、イメージがデプロイ可能と見なされるために満たすべきルールや、どのアテスターが承認する必要があるか、そして強制モード（厳格ブロック、監査のみ、無効化など）を定義するBinary Authorizationのポリシーを作成・維持します。アテスター（Attestor）は、統合テストや回帰テストの合格、既知の脆弱性のスキャン、ビジネス上の承認や変更管理要件の充足といった、特定のコンプライアンス要件についてイメージをレビューします。
+Binary Authorizationには役割分担の考え方があります。ポリシー作成者（Policy Creator）は、イメージがデプロイ可能と見なされるために満たすべきルールや、どのアテスターが承認する必要があるか、そして強制モード（厳格ブロック、監査のみ、無効化など）を定義するBinary Authorizationのポリシーを作成・維持します。アテスター（Attestor）は、検証用の公開鍵を保持し、デプロイ時にそのイメージダイジェストに対する署名済みアテステーションを検証するBinary Authorizationのリソースです。イメージ自体のレビューを行うのは、統合テストや回帰テストの合格、既知の脆弱性のスキャン、ビジネス上の承認や変更管理要件の充足といった特定のコンプライアンス要件を確認する**署名者**（例: CI/CDパイプライン）であり、署名者はその確認結果としてイメージダイジェストに対するアテステーションを作成・署名します。
 
 #### provenance生成からデプロイ許可までの流れ
 
@@ -446,7 +448,7 @@ flowchart TB
     class Deny deny
 ```
 
-生成されたprovenanceは、コマンドラインから直接確認・検証することもできます。イメージのprovenanceを取得してJSONとして保存するには、`gcloud artifacts docker images describe $IMAGE --format json --show-provenance > provenance.json`のようなコマンドを実行します。
+生成されたprovenanceは、コマンドラインから直接確認・検証することもできます。provenanceの取得、`slsa-verifier`による検証、そしてデプロイという一連の処理では、タグではなく同一の不変なイメージダイジェスト（`IMAGE=LOCATION-docker.pkg.dev/PROJECT_ID/REPO/IMAGE_NAME@sha256:<HASH>`）を`IMAGE`として固定し、すべての処理で同じダイジェストを参照する必要があります。タグは後から別のイメージを指すよう変更され得るため、タグ基準では「検証したイメージ」と「デプロイされるイメージ」が一致する保証がありません。イメージのprovenanceを取得してJSONとして保存するには、`gcloud artifacts docker images describe $IMAGE --format json --show-provenance > provenance.json`のようなコマンドを実行し、`slsa-verifier verify-image $IMAGE --source-uri=...`のように同じ`$IMAGE`（ダイジェスト形式）に対して検証を行った上で、そのダイジェストのままデプロイコマンドに渡します。
 
 Binary Authorization側でSLSAの継続的な検証を行う仕組みもあります。Binary Authorizationの継続的検証（CV）のSLSAチェックを利用するには、Cloud BuildでSLSA準拠のprovenanceを生成しつつイメージをビルドする必要があります。このチェックがサポートする唯一の信頼済みビルダーはCloud Buildです。
 
