@@ -90,6 +90,7 @@
 .pca-page .main {
     margin-left: 280px;
     width: calc(100% - 280px);
+    max-width: none;
     padding: 56px 64px 100px 64px;
     box-sizing: border-box;
 }

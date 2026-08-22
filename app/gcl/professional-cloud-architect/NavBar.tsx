@@ -9,9 +9,6 @@ interface NavBarProps {
     onClose: () => void;
 }
 
-/**
- * Professional Cloud Architect ガイド用のサイドバーナビゲーションコンポーネント
- */
 export function NavBar({ isOpen, onToggle, onClose }: NavBarProps) {
     const [activeId, setActiveId] = useState<string>(NAV_ITEMS[0]?.id ?? '');
 

@@ -187,7 +187,7 @@ export function PcaGuide() {
                                 </tr>
                                 <tr className="odd">
                                     <td>ケーススタディ</td>
-                                    <td>2つ（出題全体の20〜30%を占める）</td>
+                                    <td>4つ（出題全体の20〜30%を占める）</td>
                                 </tr>
                                 <tr className="even">
                                     <td>有効期間</td>

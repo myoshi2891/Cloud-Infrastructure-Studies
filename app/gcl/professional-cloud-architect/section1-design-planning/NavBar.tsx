@@ -9,9 +9,6 @@ interface NavBarProps {
     onClose: () => void;
 }
 
-/**
- * PCA Section 1 ガイド用のサイドバーナビゲーションコンポーネント
- */
 export function NavBar({ isOpen, onToggle, onClose }: NavBarProps) {
     const [activeId, setActiveId] = useState<string>(NAV_ITEMS[0]?.id ?? '');
 

@@ -73,10 +73,21 @@ export type DiagramId =
     | 'diag-16'
     | 'diag-17';
 
+/** 全 Mermaid 図で共有する classDef 定義（図ごとの重複を避けるため 1 箇所に集約） */
+const CLASS_DEFS = `classDef gcls1 fill:#1a73e8,color:#ffffff,stroke:#174ea6,stroke-width:1.5px
+classDef gcls2 fill:#e8f0fe,color:#0b1220,stroke:#1a73e8,stroke-width:1.5px
+classDef gcls3 fill:#fef7e0,color:#0b1220,stroke:#f9ab00,stroke-width:1.5px
+classDef gcls4 fill:#fce8e6,color:#0b1220,stroke:#d93025,stroke-width:1.5px
+classDef gcls5 fill:#e6f4ea,color:#0b1220,stroke:#188038,stroke-width:1.5px
+classDef gcls6 fill:#f3e8fd,color:#0b1220,stroke:#a142f4,stroke-width:1.5px
+classDef gcls7 fill:#e0f7fa,color:#0b1220,stroke:#00838f,stroke-width:1.5px
+classDef gcls8 fill:#f1f3f4,color:#0b1220,stroke:#5f6368,stroke-width:1.5px
+classDef gclust1 fill:#0d1a2b,color:#dbe4f3,stroke:#f9ab00,stroke-width:2px
+classDef gclust2 fill:#0d1a2b,color:#dbe4f3,stroke:#1a73e8,stroke-width:2px`;
+
 export const DIAGRAMS: Record<DiagramId, string> = {
     'diag-1': `flowchart TD
-classDef gcls1 fill:#1a73e8,color:#ffffff,stroke:#174ea6,stroke-width:1.5px
-classDef gcls2 fill:#e8f0fe,color:#0b1220,stroke:#1a73e8,stroke-width:1.5px
+${CLASS_DEFS}
 S1["セクション1<br/>クラウドソリューションアーキテクチャの<br/>設計と計画（約25%）"]
 S1 --> T11["1.1 ビジネス要件を満たす<br/>インフラの設計"]
 S1 --> T12["1.2 技術要件を満たす<br/>インフラの設計"]
@@ -87,13 +98,7 @@ class S1 gcls1
 class T11,T12,T13,T14,T15 gcls2`,
 
     'diag-2': `flowchart LR
-classDef gcls1 fill:#1a73e8,color:#ffffff,stroke:#174ea6,stroke-width:1.5px
-classDef gcls3 fill:#fef7e0,color:#0b1220,stroke:#f9ab00,stroke-width:1.5px
-classDef gcls4 fill:#fce8e6,color:#0b1220,stroke:#d93025,stroke-width:1.5px
-classDef gcls5 fill:#e6f4ea,color:#0b1220,stroke:#188038,stroke-width:1.5px
-classDef gcls2 fill:#e8f0fe,color:#0b1220,stroke:#1a73e8,stroke-width:1.5px
-classDef gcls6 fill:#f3e8fd,color:#0b1220,stroke:#a142f4,stroke-width:1.5px
-classDef gcls7 fill:#e0f7fa,color:#0b1220,stroke:#00838f,stroke-width:1.5px
+${CLASS_DEFS}
 WAF["Google Cloud<br/>Well-Architected Framework"]
 WAF --> P1["運用の卓越性<br/>Operational Excellence"]
 WAF --> P2["セキュリティ・プライバシー・<br/>コンプライアンス"]
@@ -110,8 +115,7 @@ class P5 gcls6
 class P6 gcls7`,
 
     'diag-3': `flowchart LR
-classDef gcls1 fill:#1a73e8,color:#ffffff,stroke:#174ea6,stroke-width:1.5px
-classDef gcls2 fill:#e8f0fe,color:#0b1220,stroke:#1a73e8,stroke-width:1.5px
+${CLASS_DEFS}
 Root(("1.1<br/>ビジネス要件"))
 Root --> A1["ビジネスユースケースと<br/>製品戦略"]
 Root --> A2["機能要件・非機能要件の<br/>特定"]
@@ -129,7 +133,7 @@ class Root gcls1
 class A1,A2,A3,A4,A5,A6,A7,A8,A9,A10,A11,A12 gcls2`,
 
     'diag-4': `flowchart LR
-classDef gclust1 fill:#0d1a2b,color:#dbe4f3,stroke:#f9ab00,stroke-width:2px
+${CLASS_DEFS}
 subgraph BCP["事業継続計画 (BCP)"]
 direction LR
 A["リスク評価"] --> B["業務影響分析<br/>(BIA)"]
@@ -142,9 +146,7 @@ end
 class BCP gclust1`,
 
     'diag-5': `flowchart TD
-classDef gcls8 fill:#f1f3f4,color:#0b1220,stroke:#5f6368,stroke-width:1.5px
-classDef gcls2 fill:#e8f0fe,color:#0b1220,stroke:#1a73e8,stroke-width:1.5px
-classDef gcls5 fill:#e6f4ea,color:#0b1220,stroke:#188038,stroke-width:1.5px
+${CLASS_DEFS}
 Ext["外部システム / 他マイクロサービス"]
 Ext -->|"同期呼び出し<br/>(REST/gRPC)"| API["API Gateway /<br/>Apigee"]
 API --> Svc["Cloud Run / GKE 上の<br/>バックエンドサービス"]
@@ -158,11 +160,7 @@ class API gcls2
 class PS,EA gcls5`,
 
     'diag-6': `flowchart LR
-classDef gcls6 fill:#f3e8fd,color:#0b1220,stroke:#a142f4,stroke-width:1.5px
-classDef gcls5 fill:#e6f4ea,color:#0b1220,stroke:#188038,stroke-width:1.5px
-classDef gcls4 fill:#fce8e6,color:#0b1220,stroke:#d93025,stroke-width:1.5px
-classDef gcls2 fill:#e8f0fe,color:#0b1220,stroke:#1a73e8,stroke-width:1.5px
-classDef gcls3 fill:#fef7e0,color:#0b1220,stroke:#f9ab00,stroke-width:1.5px
+${CLASS_DEFS}
 Cost["コスト"] <--> Reliability["信頼性/可用性"]
 Reliability <--> Complexity["運用の複雑さ"]
 Complexity <--> Speed["開発速度"]
@@ -175,8 +173,7 @@ class Speed gcls2
 class Control gcls3`,
 
     'diag-7': `flowchart TB
-classDef gcls1 fill:#1a73e8,color:#ffffff,stroke:#174ea6,stroke-width:1.5px
-classDef gclust2 fill:#0d1a2b,color:#dbe4f3,stroke:#1a73e8,stroke-width:2px
+${CLASS_DEFS}
 subgraph Region["リージョン (例: asia-northeast1)"]
 direction LR
 subgraph ZoneA["ゾーン A"]
@@ -198,10 +195,7 @@ class LB gcls1
 class Region gclust2`,
 
     'diag-8': `flowchart LR
-classDef gcls2 fill:#e8f0fe,color:#0b1220,stroke:#1a73e8,stroke-width:1.5px
-classDef gcls3 fill:#fef7e0,color:#0b1220,stroke:#f9ab00,stroke-width:1.5px
-classDef gcls5 fill:#e6f4ea,color:#0b1220,stroke:#188038,stroke-width:1.5px
-classDef gcls4 fill:#fce8e6,color:#0b1220,stroke:#d93025,stroke-width:1.5px
+${CLASS_DEFS}
 Metric["メトリクス収集<br/>(CPU使用率/リクエスト数/<br/>カスタム指標)"] --> Policy["オートスケーリング<br/>ポリシー評価"]
 Policy -->|"負荷増"| ScaleOut["スケールアウト<br/>(インスタンス追加)"]
 Policy -->|"負荷減"| ScaleIn["スケールイン<br/>(インスタンス削減)"]
@@ -213,8 +207,7 @@ class ScaleOut gcls5
 class ScaleIn gcls4`,
 
     'diag-9': `flowchart LR
-classDef gcls8 fill:#f1f3f4,color:#0b1220,stroke:#5f6368,stroke-width:1.5px
-classDef gcls2 fill:#e8f0fe,color:#0b1220,stroke:#1a73e8,stroke-width:1.5px
+${CLASS_DEFS}
 OnPrem["オンプレミス<br/>データセンター"]
 OnPrem -->|"専用線<br/>(高帯域/低レイテンシ)"| DI["Dedicated<br/>Interconnect"]
 OnPrem -->|"パートナー経由"| PI["Partner<br/>Interconnect"]
@@ -229,11 +222,7 @@ class OnPrem,OtherCloud gcls8
 class VPC gcls2`,
 
     'diag-10': `flowchart TD
-classDef gcls1 fill:#1a73e8,color:#ffffff,stroke:#174ea6,stroke-width:1.5px
-classDef gcls2 fill:#e8f0fe,color:#0b1220,stroke:#1a73e8,stroke-width:1.5px
-classDef gcls5 fill:#e6f4ea,color:#0b1220,stroke:#188038,stroke-width:1.5px
-classDef gcls3 fill:#fef7e0,color:#0b1220,stroke:#f9ab00,stroke-width:1.5px
-classDef gcls6 fill:#f3e8fd,color:#0b1220,stroke:#a142f4,stroke-width:1.5px
+${CLASS_DEFS}
 Platform["Gemini Enterprise<br/>Agent Platform"]
 Platform --> MG["Model Garden<br/>(200以上のモデル:<br/>Gemini/Claude/Llama等)"]
 Platform --> AB["Agent Development Kit /<br/>Agent Studio<br/>(エージェント構築)"]
@@ -246,9 +235,7 @@ class AH gcls3
 class RAG gcls6`,
 
     'diag-11': `flowchart TD
-classDef gcls8 fill:#f1f3f4,color:#0b1220,stroke:#5f6368,stroke-width:1.5px
-classDef gcls1 fill:#1a73e8,color:#ffffff,stroke:#174ea6,stroke-width:1.5px
-classDef gcls2 fill:#e8f0fe,color:#0b1220,stroke:#1a73e8,stroke-width:1.5px
+${CLASS_DEFS}
 Org["組織"]
 Org --> HostProj["ホストプロジェクト<br/>(Shared VPC)"]
 HostProj --> VPCNet["VPCネットワーク"]
@@ -263,9 +250,7 @@ class HostProj gcls1
 class VPCNet gcls2`,
 
     'diag-12': `flowchart TD
-classDef gcls8 fill:#f1f3f4,color:#0b1220,stroke:#5f6368,stroke-width:1.5px
-classDef gcls2 fill:#e8f0fe,color:#0b1220,stroke:#1a73e8,stroke-width:1.5px
-classDef gcls5 fill:#e6f4ea,color:#0b1220,stroke:#188038,stroke-width:1.5px
+${CLASS_DEFS}
 Data["データ処理ニーズ"]
 Data -->|"バッチ処理<br/>大規模ETL"| DF["Dataflow"]
 Data -->|"リアルタイム<br/>ストリーム分析"| DFStream["Dataflow<br/>(ストリーミングモード)"]
@@ -277,11 +262,7 @@ class DF gcls2
 class BQ gcls5`,
 
     'diag-13': `flowchart TD
-classDef gcls1 fill:#1a73e8,color:#ffffff,stroke:#174ea6,stroke-width:1.5px
-classDef gcls2 fill:#e8f0fe,color:#0b1220,stroke:#1a73e8,stroke-width:1.5px
-classDef gcls5 fill:#e6f4ea,color:#0b1220,stroke:#188038,stroke-width:1.5px
-classDef gcls3 fill:#fef7e0,color:#0b1220,stroke:#f9ab00,stroke-width:1.5px
-classDef gcls6 fill:#f3e8fd,color:#0b1220,stroke:#a142f4,stroke-width:1.5px
+${CLASS_DEFS}
 Start(("データの種類・<br/>アクセスパターンは？"))
 Start -->|"非構造化データ<br/>(画像/動画/バックアップ)"| Obj["オブジェクトストレージ<br/>Cloud Storage"]
 Start -->|"VM/DBが必要とする<br/>低レイテンシブロックデバイス"| Blk["ブロックストレージ<br/>Persistent Disk / Hyperdisk /<br/>Local SSD"]
@@ -298,11 +279,7 @@ class File gcls3
 class DB gcls6`,
 
     'diag-14': `flowchart TD
-classDef gcls1 fill:#1a73e8,color:#ffffff,stroke:#174ea6,stroke-width:1.5px
-classDef gcls4 fill:#fce8e6,color:#0b1220,stroke:#d93025,stroke-width:1.5px
-classDef gcls5 fill:#e6f4ea,color:#0b1220,stroke:#188038,stroke-width:1.5px
-classDef gcls2 fill:#e8f0fe,color:#0b1220,stroke:#1a73e8,stroke-width:1.5px
-classDef gcls3 fill:#fef7e0,color:#0b1220,stroke:#f9ab00,stroke-width:1.5px
+${CLASS_DEFS}
 Q1(("ワークロードは<br/>コンテナ化されているか？"))
 Q1 -->|"いいえ<br/>(OS/カーネルへの<br/>低レベルアクセスが必要)"| CE["Compute Engine<br/>(VM)"]
 Q1 -->|"はい"| Q2(("Kubernetesの高度な<br/>機能が必要か？<br/>(カスタムスケジューリング/<br/>複雑なネットワークポリシー等)"))
@@ -316,11 +293,7 @@ class CR gcls2
 class CRF gcls3`,
 
     'diag-15': `flowchart LR
-classDef gcls2 fill:#e8f0fe,color:#0b1220,stroke:#1a73e8,stroke-width:1.5px
-classDef gcls3 fill:#fef7e0,color:#0b1220,stroke:#f9ab00,stroke-width:1.5px
-classDef gcls6 fill:#f3e8fd,color:#0b1220,stroke:#a142f4,stroke-width:1.5px
-classDef gcls5 fill:#e6f4ea,color:#0b1220,stroke:#188038,stroke-width:1.5px
-classDef gcls4 fill:#fce8e6,color:#0b1220,stroke:#d93025,stroke-width:1.5px
+${CLASS_DEFS}
 Discover["1. 検出<br/>(Discovery Client等で<br/>資産をスキャン)"]
 Discover --> Assess["2. アセスメント<br/>(TCOレポート/<br/>技術適合性の評価)"]
 Assess --> Plan["3. 計画<br/>(移行ウェーブの<br/>グルーピング)"]
@@ -333,12 +306,7 @@ class Migrate gcls5
 class Optimize gcls4`,
 
     'diag-16': `flowchart LR
-classDef gcls2 fill:#e8f0fe,color:#0b1220,stroke:#1a73e8,stroke-width:1.5px
-classDef gcls5 fill:#e6f4ea,color:#0b1220,stroke:#188038,stroke-width:1.5px
-classDef gcls3 fill:#fef7e0,color:#0b1220,stroke:#f9ab00,stroke-width:1.5px
-classDef gcls6 fill:#f3e8fd,color:#0b1220,stroke:#a142f4,stroke-width:1.5px
-classDef gcls4 fill:#fce8e6,color:#0b1220,stroke:#d93025,stroke-width:1.5px
-classDef gcls8 fill:#f1f3f4,color:#0b1220,stroke:#5f6368,stroke-width:1.5px
+${CLASS_DEFS}
 R1["Rehost<br/>(リホスト)<br/>リフト&シフト"]
 R2["Replatform<br/>(リプラットフォーム)<br/>軽微な最適化を伴う移行"]
 R3["Refactor / Re-architect<br/>(リファクター/再設計)<br/>クラウドネイティブへ再構築"]
@@ -353,9 +321,7 @@ class R5 gcls4
 class R6 gcls8`,
 
     'diag-17': `flowchart LR
-classDef gcls1 fill:#1a73e8,color:#ffffff,stroke:#174ea6,stroke-width:1.5px
-classDef gcls2 fill:#e8f0fe,color:#0b1220,stroke:#1a73e8,stroke-width:1.5px
-classDef gcls5 fill:#e6f4ea,color:#0b1220,stroke:#188038,stroke-width:1.5px
+${CLASS_DEFS}
 Now["現在のアーキテクチャ"] --> Loop{"継続的改善サイクル"}
 Loop --> Tech["クラウド/技術の<br/>進化を評価"]
 Loop --> Biz["ビジネスニーズの<br/>変化を評価"]
