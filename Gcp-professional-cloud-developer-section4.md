@@ -91,7 +91,9 @@ flowchart TD
 ```mermaid
 flowchart TD
     Start(["どのようなデータを扱うか？"]) --> Q1{"強い整合性を持つ<br/>トランザクション処理か？"}
-    Q1 -->|"Yes（在庫・決済・会員情報など）"| Q1b{"PostgreSQL互換で<br/>Cloud SQLを超える<br/>性能・可用性が必要か？"}
+    Q1 -->|"Yes（在庫・決済・会員情報など）"| Q5{"グローバルに分散した<br/>強整合トランザクションが必要か？"}
+    Q5 -->|"Yes"| SP["Spanner<br/>（詳細はSection 1.3を参照）"]
+    Q5 -->|"No（単一リージョンで足りる）"| Q1b{"PostgreSQL互換で<br/>Cloud SQLを超える<br/>性能・可用性が必要か？"}
     Q1b -->|"Yes"| AL["AlloyDB for PostgreSQL<br/>（詳細はSection 1.3を参照）"]
     Q1b -->|"No"| SQL["Cloud SQL<br/>（MySQL/PostgreSQL/SQL Server）"]
     Q1 -->|"No"| Q2{"柔軟なスキーマの<br/>ドキュメント/コレクション構造で、<br/>モバイル/Webとのリアルタイム同期が必要か？"}
@@ -100,9 +102,7 @@ flowchart TD
     Q3 -->|"Yes"| GCS["Cloud Storage<br/>（オブジェクトストレージ）"]
     Q3 -->|"No"| Q4{"超大規模の時系列/<br/>ワイドカラムデータか？"}
     Q4 -->|"Yes"| BT["Bigtable<br/>（詳細はSection 1.3を参照）"]
-    Q4 -->|"No"| Q5{"グローバルに分散した<br/>強整合トランザクションが必要か？"}
-    Q5 -->|"Yes"| SP["Spanner<br/>（詳細はSection 1.3を参照）"]
-    Q5 -->|"No（上記のいずれにも当てはまらない）"| SQL
+    Q4 -->|"No（上記のいずれにも当てはまらない）"| SQL
 
     style Start fill:#1a3a5c,stroke:#0d1f33,color:#ffffff
     style SQL fill:#2d5f8a,stroke:#1a3a5c,color:#ffffff
