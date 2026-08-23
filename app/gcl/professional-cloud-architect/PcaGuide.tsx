@@ -931,17 +931,17 @@ export function PcaGuide() {
                             <tbody>
                                 <tr>
                                     <td>Cloud VPN（HA VPN）</td>
-                                    <td>〜3Gbps程度</td>
+                                    <td>トンネルあたり最大3Gbps</td>
                                     <td>インターネット経由のIPsec暗号化トンネル、迅速に構築可能</td>
                                 </tr>
                                 <tr>
                                     <td>Dedicated Interconnect</td>
-                                    <td>10Gbps/100Gbps単位</td>
+                                    <td>10Gbps/100Gbps/400Gbps回線（最大400Gbps）</td>
                                     <td>Googleとの物理専用線、大容量・低レイテンシ</td>
                                 </tr>
                                 <tr>
                                     <td>Partner Interconnect</td>
-                                    <td>50Mbps〜10Gbps</td>
+                                    <td>50Mbps〜50Gbps（20Gbps/50Gbps容量にも対応）</td>
                                     <td>パートナー経由でGoogleに接続、Google拠点に直接アクセスできない場合に利用</td>
                                 </tr>
                                 <tr>
