@@ -91,7 +91,9 @@ flowchart TD
 ```mermaid
 flowchart TD
     Start(["どのようなデータを扱うか？"]) --> Q1{"強い整合性を持つ<br/>トランザクション処理か？"}
-    Q1 -->|"Yes（在庫・決済・会員情報など）"| SQL["Cloud SQL<br/>（MySQL/PostgreSQL/SQL Server）"]
+    Q1 -->|"Yes（在庫・決済・会員情報など）"| Q1b{"PostgreSQL互換で<br/>Cloud SQLを超える<br/>性能・可用性が必要か？"}
+    Q1b -->|"Yes"| AL["AlloyDB for PostgreSQL<br/>（詳細はSection 1.3を参照）"]
+    Q1b -->|"No"| SQL["Cloud SQL<br/>（MySQL/PostgreSQL/SQL Server）"]
     Q1 -->|"No"| Q2{"柔軟なスキーマの<br/>ドキュメント/コレクション構造で、<br/>モバイル/Webとのリアルタイム同期が必要か？"}
     Q2 -->|"Yes"| FS["Firestore<br/>（Native mode）"]
     Q2 -->|"No"| Q3{"バイナリファイル・画像・動画・<br/>バックアップなどの非構造化データか？"}
@@ -100,7 +102,7 @@ flowchart TD
     Q4 -->|"Yes"| BT["Bigtable<br/>（詳細はSection 1.3を参照）"]
     Q4 -->|"No"| Q5{"グローバルに分散した<br/>強整合トランザクションが必要か？"}
     Q5 -->|"Yes"| SP["Spanner<br/>（詳細はSection 1.3を参照）"]
-    Q5 -->|"No（PostgreSQL互換で、Cloud SQLを<br/>超える性能・可用性が必要）"| AL["AlloyDB for PostgreSQL<br/>（詳細はSection 1.3を参照）"]
+    Q5 -->|"No（上記のいずれにも当てはまらない）"| SQL
 
     style Start fill:#1a3a5c,stroke:#0d1f33,color:#ffffff
     style SQL fill:#2d5f8a,stroke:#1a3a5c,color:#ffffff
@@ -287,10 +289,10 @@ sequenceDiagram
         Sub->>Subsc: ack（確認応答）
     else 処理失敗（明示的にnack）
         Sub->>Subsc: nack（否定応答）
-        Subsc->>Sub: ackDeadlineの経過を待たず速やかに再配信
+        Subsc->>Sub: サブスクリプションのretry policyに従い再配信<br/>（デフォルト: 即時 / exponential backoff設定時: 遅延）
     else 処理失敗（無応答のままackDeadlineが失効）
         Note over Sub,Subsc: 確認応答も否定応答も返さない
-        Subsc->>Sub: ackDeadline経過後に再配信
+        Subsc->>Sub: ackDeadline失効後、retry policyに従い再配信<br/>（デフォルト: 即時 / exponential backoff設定時: 遅延）
     end
 ```
 
