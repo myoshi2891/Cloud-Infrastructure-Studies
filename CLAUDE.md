@@ -298,6 +298,18 @@ app/
     professional-cloud-network-engineer-step-by-step/
       page.tsx                      # PCNE ステップバイステップ実践ガイド
       components/                   # セクションコンポーネント（Section1-6）
+    professional-cloud-architect/
+      page.tsx                      # Professional Cloud Architect（PCA）認定試験 完全対策ガイド (Server)
+      PcaGuide.tsx                  # 本文＋インタラクション (Client。全6セクション、17 Mermaid図、25テーブル等)
+      NavBar.tsx                    # サイドバーナビ (IntersectionObserver)
+      constants.ts                  # Mermaid 図定義 (17図)
+      page.css                      # ページ固有スタイル
+      section1-design-planning/
+        page.tsx                    # PCA Section 1: 設計と計画 完全ガイド (Server)
+        PcaSection1Guide.tsx        # 本文＋インタラクション (Client。全10セクション、17 Mermaid図、14テーブル等)
+        NavBar.tsx                  # サイドバーナビ (IntersectionObserver)
+        constants.ts                # Mermaid 図定義 (17図)
+        page.css                    # ページ固有スタイル
   cisco/
     devnet-professional/
       page.tsx                      # Cisco Certified DevNet Professional 認定 徹底解説ガイド（Server）

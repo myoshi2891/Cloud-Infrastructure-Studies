@@ -1,0 +1,637 @@
+/* Google Cloud Professional Cloud Architect (PCA) Section 1 スタイル */
+
+.pca-s1-page {
+    background-color: var(--color-pca-s1-background);
+    color: var(--color-pca-s1-foreground);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.85;
+    min-height: 100vh;
+}
+
+.pca-s1-page .layout {
+    display: block;
+}
+
+/* ---------- Sidebar ---------- */
+.pca-s1-page .sidebar {
+    position: fixed;
+    top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px));
+    left: 0;
+    bottom: 0;
+    width: 280px;
+    height: auto;
+    background: var(--color-pca-s1-surface-1);
+    border-right: 1px solid var(--color-pca-s1-border);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-pca-s1-border-strong) transparent;
+    padding: 24px 18px 40px;
+    z-index: 40;
+    transition: transform 0.2s ease;
+}
+
+.pca-s1-page .sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--color-pca-s1-foreground);
+    margin-bottom: 22px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--color-pca-s1-border);
+}
+
+.pca-s1-page .sidebar-brand .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--color-pca-s1-hero-grad-a), var(--color-pca-s1-hero-grad-b));
+    flex: 0 0 auto;
+}
+
+.pca-s1-page .sidebar nav ul {
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.pca-s1-page .sidebar nav li {
+    margin: 0 !important;
+    list-style: none !important;
+}
+
+.pca-s1-page .sidebar nav a {
+    display: block;
+    padding: 9px 12px;
+    border-radius: var(--radius-md, 8px);
+    font-size: 0.87rem;
+    color: var(--color-pca-s1-foreground-dim);
+    border-left: 2px solid transparent;
+    margin-bottom: 2px;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+    text-decoration: none;
+}
+
+.pca-s1-page .sidebar nav a:hover {
+    background: var(--color-pca-s1-accent-soft);
+    color: var(--color-pca-s1-foreground);
+    text-decoration: none;
+}
+
+.pca-s1-page .sidebar nav a.active {
+    background: var(--color-pca-s1-accent-soft);
+    color: var(--color-pca-s1-accent-strong);
+    border-left-color: var(--color-pca-s1-accent);
+    font-weight: 600;
+}
+
+/* ---------- Mobile Toggle ---------- */
+.pca-s1-page .sidebar-toggle {
+    display: none;
+    position: fixed;
+    top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 14px);
+    left: 14px;
+    z-index: 60;
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    background: var(--color-pca-s1-surface-1);
+    border: 1px solid var(--color-pca-s1-border-strong);
+    color: var(--color-pca-s1-foreground);
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    cursor: pointer;
+}
+
+/* ---------- Main Layout ---------- */
+.pca-s1-page .main {
+    margin-left: 280px;
+    width: calc(100% - 280px);
+    max-width: none;
+    padding: 56px 56px 100px;
+    box-sizing: border-box;
+}
+
+.pca-s1-page .section-block {
+    scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 24px);
+}
+
+/* ---------- Hero ---------- */
+.pca-s1-page .hero {
+    padding-bottom: 28px;
+    margin-bottom: 36px;
+    border-bottom: 1px solid var(--color-pca-s1-border);
+}
+
+.pca-s1-page .hero h1 {
+    font-size: 2.1rem;
+    line-height: 1.35;
+    margin: 0 0 10px;
+    background: linear-gradient(135deg, var(--color-pca-s1-hero-grad-a), var(--color-pca-s1-hero-grad-b));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 800;
+}
+
+.pca-s1-page .hero .hero-sub {
+    font-size: 1.15rem;
+    color: var(--color-pca-s1-foreground-dim);
+    font-weight: 600;
+    margin: 0;
+}
+
+.pca-s1-page .hero .hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 18px;
+}
+
+.pca-s1-page .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: 999px;
+    background: var(--color-pca-s1-surface-2);
+    border: 1px solid var(--color-pca-s1-border-strong);
+    font-size: 0.78rem;
+    color: var(--color-pca-s1-foreground-dim);
+}
+
+/* ---------- Typography & Prose ---------- */
+.pca-s1-page .main h2 {
+    font-size: 1.55rem;
+    margin: 52px 0 18px;
+    padding-top: 8px;
+    color: var(--color-pca-s1-foreground);
+    font-weight: 700;
+    scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 24px);
+}
+
+.pca-s1-page .main h3 {
+    font-size: 1.22rem;
+    margin: 34px 0 14px;
+    color: var(--color-pca-s1-accent-strong);
+    font-weight: 700;
+    scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 24px);
+}
+
+.pca-s1-page .main h4 {
+    font-size: 1.02rem;
+    margin: 0 0 10px;
+    color: var(--color-pca-s1-accent-strong);
+    font-weight: 700;
+}
+
+.pca-s1-page .main p {
+    color: var(--color-pca-s1-foreground);
+    margin: 0 0 16px;
+}
+
+.pca-s1-page .main ul {
+    list-style-type: disc !important;
+    margin: 0 0 16px;
+    padding-left: 1.5em;
+    color: var(--color-pca-s1-foreground);
+}
+
+.pca-s1-page .main ol {
+    list-style-type: decimal !important;
+    margin: 0 0 16px;
+    padding-left: 1.5em;
+    color: var(--color-pca-s1-foreground);
+}
+
+.pca-s1-page .main li {
+    margin-bottom: 6px;
+}
+
+.pca-s1-page .main hr {
+    border: none;
+    border-top: 1px solid var(--color-pca-s1-border);
+    margin: 40px 0;
+}
+
+.pca-s1-page .main strong {
+    color: var(--color-pca-s1-accent-strong);
+    font-weight: 700;
+}
+
+.pca-s1-page .main a {
+    color: var(--color-pca-s1-accent);
+    text-decoration: none;
+}
+
+.pca-s1-page .main a:hover {
+    color: var(--color-pca-s1-accent-strong);
+    text-decoration: underline;
+}
+
+.pca-s1-page code:not(pre code) {
+    background: var(--color-pca-s1-surface-2);
+    border: 1px solid var(--color-pca-s1-border);
+    border-radius: 5px;
+    padding: 0.15em 0.4em;
+    font-size: 0.88em;
+    color: var(--color-pca-s1-accent-strong);
+    font-family: var(--font-mono, monospace);
+    overflow-wrap: anywhere;
+}
+
+/* ---------- Blockquote ---------- */
+.pca-s1-page blockquote {
+    margin: 20px 0;
+    padding: 16px 20px;
+    border-radius: var(--radius-lg, 12px);
+    background: var(--color-pca-s1-surface-2);
+    border-left: 3px solid var(--color-pca-s1-border-strong);
+}
+
+.pca-s1-page blockquote p {
+    margin: 0 0 8px;
+    color: var(--color-pca-s1-foreground-dim);
+    font-size: 0.95rem;
+}
+
+.pca-s1-page blockquote p:last-child {
+    margin-bottom: 0;
+}
+
+.pca-s1-page blockquote strong {
+    color: var(--color-pca-s1-foreground);
+}
+
+/* ---------- Callouts ---------- */
+.pca-s1-page .callout {
+    margin: 20px 0;
+    padding: 16px 20px;
+    border-radius: var(--radius-lg, 12px);
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+.pca-s1-page .callout .callout-icon {
+    flex: 0 0 auto;
+    font-size: 1.05rem;
+    line-height: 1.6;
+}
+
+.pca-s1-page .callout-source {
+    background: var(--color-pca-s1-green-tint);
+    border: 1px solid var(--color-pca-s1-green-outline);
+}
+
+.pca-s1-page .callout-source .pill {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    padding: 2px 9px;
+    border-radius: 999px;
+    background: var(--color-pca-s1-green-tint-strong);
+    color: var(--color-pca-s1-green);
+    margin-bottom: 8px;
+}
+
+.pca-s1-page .callout-practice {
+    background: var(--color-pca-s1-accent-tint);
+    border: 1px solid var(--color-pca-s1-accent-outline);
+}
+
+.pca-s1-page .callout-practice .pill {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    padding: 2px 9px;
+    border-radius: 999px;
+    background: var(--color-pca-s1-accent-tint-strong);
+    color: var(--color-pca-s1-accent-strong);
+    margin-bottom: 8px;
+}
+
+.pca-s1-page .callout-body p {
+    margin: 0 0 6px;
+    color: var(--color-pca-s1-foreground);
+    font-size: 0.94rem;
+}
+
+.pca-s1-page .callout-body p:last-child {
+    margin-bottom: 0;
+}
+
+.pca-s1-page .callout-body ul,
+.pca-s1-page .callout-body ol {
+    margin: 0;
+    padding-left: 1.5em;
+}
+
+.pca-s1-page .callout-body li {
+    margin-bottom: 4px;
+    font-size: 0.94rem;
+    color: var(--color-pca-s1-foreground);
+}
+
+.pca-s1-page .callout-body a {
+    overflow-wrap: anywhere;
+}
+
+/* ---------- Tables ---------- */
+.pca-s1-page .table-scroll {
+    overflow-x: auto;
+    margin: 20px 0;
+    border-radius: var(--radius-lg, 12px);
+    border: 1px solid var(--color-pca-s1-border);
+}
+
+.pca-s1-page table {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 560px;
+    font-size: 0.92rem;
+}
+
+.pca-s1-page thead th {
+    background: var(--color-pca-s1-surface-1);
+    color: var(--color-pca-s1-accent-strong);
+    text-align: left;
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--color-pca-s1-border-strong);
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.pca-s1-page tbody td {
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--color-pca-s1-border);
+    color: var(--color-pca-s1-foreground);
+    overflow-wrap: anywhere;
+    vertical-align: top;
+}
+
+.pca-s1-page tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.pca-s1-page tbody tr:hover {
+    background: var(--color-pca-s1-row-hover);
+}
+
+/* ---------- Mermaid ---------- */
+.pca-s1-page .mermaid-wrap {
+    width: 100%;
+    display: flex;
+    justify-content: safe center;
+    overflow-x: auto;
+    margin: 26px 0;
+    padding: 18px;
+    background: var(--color-pca-s1-surface-2);
+    border: 1px solid var(--color-pca-s1-border);
+    border-radius: var(--radius-lg, 12px);
+    box-sizing: border-box;
+}
+
+.pca-s1-page .mermaid-wrap p {
+    color: inherit;
+    margin: 0;
+}
+
+/* ---------- Footnotes ---------- */
+.pca-s1-page .footnote-ref {
+    scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 24px);
+}
+
+.pca-s1-page .footnote-ref sup {
+    color: var(--color-pca-s1-accent);
+    font-weight: 700;
+}
+
+.pca-s1-page aside#footnotes {
+    margin-top: 52px;
+    padding-top: 28px;
+    border-top: 1px solid var(--color-pca-s1-border);
+}
+
+.pca-s1-page aside#footnotes hr {
+    display: none;
+}
+
+.pca-s1-page aside#footnotes ol {
+    list-style-type: decimal !important;
+    padding-left: 1.6em !important;
+    font-size: 0.86rem;
+    color: var(--color-pca-s1-foreground-dim);
+    columns: 1;
+}
+
+.pca-s1-page aside#footnotes li {
+    list-style-type: decimal !important;
+    margin-bottom: 10px;
+    color: var(--color-pca-s1-foreground-dim);
+    scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 24px);
+}
+
+.pca-s1-page aside#footnotes li p {
+    margin: 0;
+    display: inline;
+    color: var(--color-pca-s1-foreground-dim);
+}
+
+.pca-s1-page aside#footnotes a {
+    overflow-wrap: anywhere;
+    color: var(--color-pca-s1-accent);
+}
+
+.pca-s1-page aside#footnotes a:hover {
+    color: var(--color-pca-s1-accent-strong);
+    text-decoration: underline;
+}
+
+.pca-s1-page .footnote-back {
+    margin-left: 6px;
+    font-size: 0.8em;
+    color: var(--color-pca-s1-accent);
+    text-decoration: none;
+}
+
+.pca-s1-page .footnote-back:hover {
+    color: var(--color-pca-s1-accent-strong);
+}
+
+/* ---------- Checklist card ---------- */
+.pca-s1-page .checklist-card {
+    background: var(--color-pca-s1-surface-2);
+    border: 1px solid var(--color-pca-s1-border);
+    border-radius: var(--radius-lg, 12px);
+    padding: 22px 24px;
+    margin: 20px 0;
+}
+
+.pca-s1-page .checklist-header {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 14px;
+}
+
+.pca-s1-page .checklist-progress {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--color-pca-s1-accent-strong);
+    background: var(--color-pca-s1-accent-soft);
+    padding: 5px 12px;
+    border-radius: 999px;
+}
+
+.pca-s1-page ul.checklist-list {
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.pca-s1-page ul.checklist-list li {
+    margin: 0 !important;
+    border-radius: 8px;
+    transition: background 0.12s;
+    list-style: none !important;
+}
+
+.pca-s1-page ul.checklist-list li:hover {
+    background: var(--color-pca-s1-item-hover);
+}
+
+.pca-s1-page ul.checklist-list label {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 9px 10px;
+    cursor: pointer;
+    color: var(--color-pca-s1-foreground);
+    font-size: 0.94rem;
+}
+
+.pca-s1-page ul.checklist-list input[type='checkbox'] {
+    appearance: none;
+    -webkit-appearance: none;
+    flex: 0 0 auto;
+    width: 19px;
+    height: 19px;
+    margin-top: 2px;
+    border-radius: 5px;
+    border: 1.5px solid var(--color-pca-s1-border-strong);
+    background: var(--color-pca-s1-surface-1);
+    position: relative;
+    cursor: pointer;
+}
+
+.pca-s1-page ul.checklist-list input[type='checkbox']:checked {
+    background: var(--color-pca-s1-accent);
+    border-color: var(--color-pca-s1-accent);
+}
+
+.pca-s1-page ul.checklist-list input[type='checkbox']:checked::after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 1px;
+    width: 5px;
+    height: 10px;
+    border: solid var(--color-pca-on-accent);
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.pca-s1-page ul.checklist-list li:has(input:checked) label {
+    color: var(--color-pca-s1-foreground-dimmer);
+    text-decoration: line-through;
+}
+
+/* ---------- Reference grid ---------- */
+.pca-s1-page .ref-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin: 20px 0;
+}
+
+.pca-s1-page .ref-card {
+    background: var(--color-pca-s1-surface-2);
+    border: 1px solid var(--color-pca-s1-border);
+    border-radius: var(--radius-lg, 12px);
+    padding: 18px 20px;
+    min-width: 0;
+}
+
+.pca-s1-page .ref-card h4 {
+    font-size: 1.02rem;
+    margin: 0 0 10px;
+    color: var(--color-pca-s1-accent-strong);
+    font-weight: 700;
+}
+
+.pca-s1-page .ref-card ul {
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.pca-s1-page .ref-card li {
+    margin: 0 0 4px !important;
+    list-style: none !important;
+}
+
+.pca-s1-page a.ref-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 6px 4px;
+    border-radius: 6px;
+    font-size: 0.88rem;
+    color: var(--color-pca-s1-foreground-dim);
+    overflow-wrap: anywhere;
+    min-width: 0;
+}
+
+.pca-s1-page a.ref-item:hover {
+    background: var(--color-pca-s1-accent-tint);
+    color: var(--color-pca-s1-accent-strong);
+    text-decoration: none;
+}
+
+.pca-s1-page .ref-icon {
+    flex: 0 0 auto;
+    color: var(--color-pca-s1-accent);
+    font-size: 0.82em;
+    margin-top: 0.15em;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 900px) {
+    .pca-s1-page .sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.2s ease;
+        box-shadow: 0 0 40px var(--color-pca-s1-sidebar-shadow);
+    }
+    .pca-s1-page .sidebar.open {
+        transform: translateX(0);
+    }
+    .pca-s1-page .sidebar-toggle {
+        display: flex;
+    }
+    .pca-s1-page .main {
+        margin-left: 0;
+        width: 100%;
+        padding: 80px 20px 70px;
+    }
+    .pca-s1-page .hero h1 {
+        font-size: 1.6rem;
+    }
+    .pca-s1-page .ref-grid {
+        grid-template-columns: 1fr;
+    }
+}

@@ -872,7 +872,9 @@ flowchart TD
                 <h4 id="キャッシングmemorystore">キャッシング（Memorystore）</h4>
 
                 <p>
-                    Memorystore（Redis/Valkey/Memcached互換）を使い、頻繁に読み取られるデータをサブミリ秒でアクセスできるようキャッシュします。データベースへの負荷軽減とレイテンシ短縮が主目的です。なお<strong>Memorystore for Memcachedは非推奨（deprecated）</strong>であり、新規設計ではMemorystore for Valkeyを優先します。Memorystore
+                    Memorystore（Redis/Valkey/Memcached互換）を使い、頻繁に読み取られるデータをサブミリ秒でアクセスできるようキャッシュします。データベースへの負荷軽減とレイテンシ短縮が主目的です。なお<strong
+                        >Memorystore for Memcachedは非推奨（deprecated）</strong
+                    >であり、新規設計ではMemorystore for Valkeyを優先します。Memorystore
                     への呼び出しでも、5xx・429エラーに対しては指数バックオフでのリトライが推奨されます。
                 </p>
 
@@ -1074,7 +1076,8 @@ flowchart LR
 
                         <p>
                             Eventarcは「イベントが発生したら実行する」宣言的なルーティングに、Cloud
-                            Tasksは「特定のタイミング・レートで確実に実行したい」制御されたディスパッチに使い分ける。ただしCloud Tasksも少なくとも1回配信であり、1回だけ実行されることは保証されない。イベントハンドラとタスクハンドラは常に冪等に実装し、CloudEventのIDやタスク名で重複を検出する。
+                            Tasksは「特定のタイミング・レートで確実に実行したい」制御されたディスパッチに使い分ける。ただしCloud
+                            Tasksも少なくとも1回配信であり、1回だけ実行されることは保証されない。イベントハンドラとタスクハンドラは常に冪等に実装し、CloudEventのIDやタスク名で重複を検出する。
                         </p>
                     </div>
                 </div>
@@ -1743,7 +1746,9 @@ flowchart TD
 
                 <p>
                     Cloud Storageの署名付きURL（Signed
-                    URL）は、Googleアカウントを持たない第三者に対しても、有効期限付きで特定オブジェクトへのアクセス（GET/PUT等）を許可します。署名にはサービスアカウントの鍵を使いますが、<strong>秘密鍵をエクスポートする必要はありません</strong>。ADCで認証したうえでサービスアカウントの権限を借用（impersonate）し、IAMの <code>signBlob</code> で署名するキーレスな方法を優先します（前述のサービスアカウントキーを持たない方針と揃えます）。期限を過ぎるとURLは自動的に失効します。
+                    URL）は、Googleアカウントを持たない第三者に対しても、有効期限付きで特定オブジェクトへのアクセス（GET/PUT等）を許可します。署名にはサービスアカウントの鍵を使いますが、<strong>秘密鍵をエクスポートする必要はありません</strong>。ADCで認証したうえでサービスアカウントの権限を借用（impersonate）し、IAMの
+                    <code>signBlob</code>
+                    で署名するキーレスな方法を優先します（前述のサービスアカウントキーを持たない方針と揃えます）。期限を過ぎるとURLは自動的に失効します。
                 </p>
 
                 <div class="callout-practice">
@@ -1822,8 +1827,6 @@ flowchart TD
                 </p>
 
                 <hr />
-
-                <p>&lt;a id="section2"&gt;&lt;/a&gt;</p>
 
                 <h2 id="section2">2. セクション2: アプリケーションのビルドとテスト（約26%）</h2>
 
@@ -2038,8 +2041,6 @@ flowchart LR
 
                 <hr />
 
-                <p>&lt;a id="section3"&gt;&lt;/a&gt;</p>
-
                 <h2 id="section3">
                     3. セクション3: デプロイのためのクラウドネイティブアプリケーション構成（約19%）
                 </h2>
@@ -2246,8 +2247,6 @@ flowchart TD
                 </p>
 
                 <hr />
-
-                <p>&lt;a id="section4"&gt;&lt;/a&gt;</p>
 
                 <h2 id="section4">
                     4. セクション4: Google Cloudサービスとのアプリケーション統合（約22%）
@@ -2568,10 +2567,6 @@ flowchart TD
                     >
                 </p>
 
-                <hr />
-
-                <p>&lt;a id="checklist"&gt;&lt;/a&gt;</p>
-
                 <h2 id="checklist">5. 学習チェックリスト</h2>
 
                 <div class="checklist-card">
@@ -2736,10 +2731,6 @@ flowchart TD
                         </li>
                     </ul>
                 </div>
-
-                <hr />
-
-                <p>&lt;a id="references"&gt;&lt;/a&gt;</p>
 
                 <h2 id="references">6. 参考文献</h2>
 

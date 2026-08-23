@@ -16,6 +16,7 @@ export type ColorKey =
     | 'card-cdl'
     | 'card-agwa'
     | 'card-pcne'
+    | 'card-pca'
     | 'card-aws-saa'
     | 'card-ccna'
     | 'card-comptia';
@@ -45,6 +46,7 @@ export const cardColorMap: Record<ColorKey, string> = {
     'card-cdl': 'card-cdl',
     'card-agwa': 'card-agwa',
     'card-pcne': 'card-pcne',
+    'card-pca': 'card-pca',
     'card-ccna': 'card-ccna',
     'card-aws-saa': 'card-aws-saa',
     'card-comptia': 'card-comptia',
@@ -241,6 +243,57 @@ const ALL_EXAMS: Exam[] = [
         ],
         badge: 'ネットワーク特化',
         icon: '🖧',
+        provider: 'GCP',
+    },
+    {
+        id: 'pca',
+        label: 'Professional Cloud Architect',
+        abbr: 'PCA',
+        level: 'Professional',
+        score: '~50-60問 / 120分',
+        color: 'card-pca',
+        href: '/gcl/professional-cloud-architect',
+        description:
+            'Google Cloud の最上位アーキテクト資格。ビジネス要件・技術要件を満たすスケーラブルでセキュア、可用性の高いソリューションの設計・実装・管理能力を認定。',
+        domains: [
+            {
+                label: '完全対策ガイド',
+                href: '/gcl/professional-cloud-architect',
+                pct: '完全解説',
+            },
+            {
+                label: 'Section 1: 設計と計画',
+                href: '/gcl/professional-cloud-architect/section1-design-planning',
+                pct: '~25%',
+            },
+            {
+                label: 'Section 2: 管理とプロビジョニング',
+                href: '/gcl/professional-cloud-architect#section-2-クラウドソリューションインフラの管理とプロビジョニング約175',
+                pct: '~17.5%',
+            },
+            {
+                label: 'Section 3: セキュリティとコンプライアンス',
+                href: '/gcl/professional-cloud-architect#section-3-セキュリティとコンプライアンスの設計約175',
+                pct: '~17.5%',
+            },
+            {
+                label: 'Section 4: プロセス分析と最適化',
+                href: '/gcl/professional-cloud-architect#section-4-技術ビジネスプロセスの分析と最適化約15',
+                pct: '~15%',
+            },
+            {
+                label: 'Section 5: 実装の管理',
+                href: '/gcl/professional-cloud-architect#section-5-実装の管理約125',
+                pct: '~12.5%',
+            },
+            {
+                label: 'Section 6: 運用の卓越性',
+                href: '/gcl/professional-cloud-architect#section-6-ソリューションと運用の卓越性の確保約125',
+                pct: '~12.5%',
+            },
+        ],
+        badge: '最上位アーキテクト',
+        icon: '🏛️',
         provider: 'GCP',
     },
     {

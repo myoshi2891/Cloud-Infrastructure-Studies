@@ -112,7 +112,11 @@ function collectRootVariables(css) {
 }
 
 /**
- * Collects stylesheet selectors and at-rule preludes, preserving the at-rule context for nested rules.
+ * Collects every style rule with its at-rule context.
+ *
+ * ブレースを数えながら走査する。`@media` 内のネストしたルールも、外側の prelude を
+ * 文脈として保持したまま平坦化して取り出す。
+ *
  * @param {string} css - The stylesheet text.
  * @returns {{rules: Set<string>, atRules: Set<string>}} The context-qualified selectors and at-rule preludes.
  */
@@ -170,9 +174,9 @@ function collectRules(css) {
 /**
  * Extracts the contents of an object literal assigned to a property.
  *
- * @param {string} src - The source text containing the object literal.
- * @param {string} key - The property name assigned to the object literal.
- * @return {string|null} The object contents, or `null` if the object is missing or incomplete.
+ * @param {string} src - The source containing the object literal.
+ * @param {string} key - The property name to locate.
+ * @return {string|null} The object contents, or `null` if the object is absent or incomplete.
  */
 function extractObjectBody(src, key) {
   const declaration = new RegExp(`${key}\\s*:\\s*\\{`).exec(src);
@@ -209,9 +213,9 @@ function extractObjectBody(src, key) {
 }
 
 /**
- * Extracts the `themeVariables` declaration of the Mermaid initialisation call.
+ * Extracts Mermaid theme variables from the HTML source.
  * @param {string} src - The complete HTML source.
- * @returns {Map<string, string>|null} The theme variables, or null when the block is absent or incomplete.
+ * @return {Map<string, string>|null} The theme variables, or null when no theme variables block is found.
  */
 function collectThemeVariables(src) {
   const body = extractObjectBody(src, "themeVariables");
@@ -229,18 +233,23 @@ function collectThemeVariables(src) {
 // --------------------------------------------------------------------------
 
 /**
- * Extracts document content while excluding scripts and styles.
+ * Returns the full HTML source with the contents of `script` and `style` elements
+ * replaced by spaces (the tags themselves are kept, so offsets are preserved).
+ *
+ * 描画 JS や CSS は `card.querySelectorAll('input[type="checkbox"]')` のように
+ * セレクタ文字列として本文と同じ字面を含む。本文だけを数える走査は必ずここを通す。
+ *
  * @param {string} src - The complete HTML source.
- * @returns {string} The source with `script` and `style` elements and their contents removed.
+ * @returns {string} The full source with `script`/`style` element contents blanked out.
  */
 function extractBody(src) {
   return src.replace(/<(script|style)\b[\s\S]*?<\/\1>/gi, " ");
 }
 
 /**
- * Collects the sidebar navigation targets.
- * @param {string} src - The document body (`extractBody` の戻り値)。
- * @returns {string[]} The anchor targets in document order.
+ * Collects the sidebar navigation targets in document order.
+ * @param {string} src - The document body to inspect.
+ * @returns {string[]} Decoded fragment identifiers from sidebar navigation links.
  */
 function collectNavTargets(src) {
   const nav = /<nav\b[^>]*id="sidebarNav"[^>]*>([\s\S]*?)<\/nav>/.exec(src);
@@ -251,9 +260,9 @@ function collectNavTargets(src) {
 }
 
 /**
- * Collects the identifiers of the content headings.
- * @param {string} src - The document body (`extractBody` の戻り値)。
- * @returns {string[]} The heading ids in document order.
+ * Collects the decoded IDs of `h2` and `h3` headings in document order.
+ * @param {string} src - The document body to inspect.
+ * @return {string[]} The heading IDs.
  */
 function collectHeadingIds(src) {
   return [...src.matchAll(/<h[23]\s[^>]*id="([^"]+)"/g)].map((match) =>
@@ -262,9 +271,9 @@ function collectHeadingIds(src) {
 }
 
 /**
- * Collects the reference card identifiers.
- * @param {string} src - The document body (`extractBody` の戻り値)。
- * @returns {string[]} The `ref-card` ids in document order.
+ * Collects identifiers from reference cards in document order.
+ * @param {string} src - The document body to inspect.
+ * @return {string[]} The identifiers of elements with the `ref-card` class.
  */
 function collectReferenceCardIds(src) {
   const ids = [];
@@ -278,9 +287,9 @@ function collectReferenceCardIds(src) {
 }
 
 /**
- * Collect checklist cards with their displayed count, parsed count, and checkbox count.
- * @param {string} src - The document body to inspect.
- * @returns {Array<{advertised: string|null, declared: number|null, actual: number}>} Checklist count details for each card.
+ * Collects the checklist cards with their advertised and actual item counts.
+ * @param {string} src - The document body (`extractBody` の戻り値)。
+ * @returns {Array<{advertised: string|null, declared: number|null, actual: number}>} The checklist cards.
  */
 function collectChecklists(src) {
   const cards = [];
@@ -302,13 +311,10 @@ function collectChecklists(src) {
 }
 
 /**
- * Reads the advertised count from a hero pill.
- *
- * Distinguishes between a missing pill and a pill whose text does not contain a number.
- *
+ * Reads the advertised count from a labeled hero pill.
  * @param {string} src - The document body to inspect.
- * @param {string} label - The label preceding the pill's `strong` element.
- * @returns {{present: boolean, count: number|null, text: string|null}} The pill's presence, text, and parsed count.
+ * @param {string} label - The pill label preceding its advertised count.
+ * @returns {{present: boolean, count: number|null, text: string|null}} The pill's presence, parsed count, and displayed text.
  */
 function readPillCount(src, label) {
   const pill = new RegExp(`<span class="pill">\\s*${label}[^<]*<strong>([\\s\\S]*?)<\\/strong>`).exec(
@@ -321,11 +327,11 @@ function readPillCount(src, label) {
 }
 
 /**
- * Audits a page for design, asset, JavaScript, Mermaid, and structural parity with a reference document.
+ * Audits a page against a reference HTML document for design, asset, rendering, and structural parity.
  * @param {string} page - The page HTML source.
  * @param {string} reference - The reference HTML source.
- * @param {boolean} isTemplate - Whether the page is a skeleton template rather than a finished page.
- * @returns {{findings: Array<{category: string, detail: string}>, blocking: boolean}} The categorized findings and whether any findings block acceptance.
+ * @param {boolean} isTemplate - Whether the page is a skeleton template whose content markers and structure are exempt from validation.
+ * @returns {{findings: Array<{category: string, detail: string}>, blocking: boolean}} Findings grouped by category and whether any findings block parity.
  */
 function audit(page, reference, isTemplate) {
   const findings = [];
@@ -603,8 +609,8 @@ function audit(page, reference, isTemplate) {
 // --------------------------------------------------------------------------
 
 /**
- * Executes the design parity audit from command-line arguments.
- * @returns {number} `0` if the audit passes, `1` if blocking findings exist, or `2` for invalid arguments or file-read failures.
+ * Runs the audit as a command-line program.
+ * @returns {number} The process exit code.
  */
 function main() {
   const args = process.argv.slice(2);

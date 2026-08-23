@@ -46,6 +46,40 @@
     --color-theme-ace-bg-page: #050a14;
     --color-theme-ace-accent: #00c8ff;
 
+    --color-theme-pca-bg: hsl(215 65% 55% / 0.25);
+    --color-theme-pca-fg: hsl(215 100% 75%);
+    /* アクセント面に乗せる文字・記号の色（親ページと Section 1 で共有） */
+    --color-pca-on-accent: #0b1220;
+    --color-pca-hero-grad-end: #9db8ff;
+
+    /* PCA Section 1 guide */
+    --color-pca-s1-background: #07111e;
+    --color-pca-s1-surface-1: #0d1a2b;
+    --color-pca-s1-surface-2: #0f1d30;
+    --color-pca-s1-border: #1c2c42;
+    --color-pca-s1-border-strong: #28405e;
+    --color-pca-s1-foreground: #dbe4f3;
+    --color-pca-s1-foreground-dim: #8fa2bd;
+    --color-pca-s1-foreground-dimmer: #4f6178;
+    --color-pca-s1-accent: #7c9eff;
+    --color-pca-s1-accent-strong: #a5c0ff;
+    --color-pca-s1-accent-soft: rgba(124, 158, 255, 0.12);
+    --color-pca-s1-hero-grad-a: #7c9eff;
+    --color-pca-s1-hero-grad-b: #a78bfa;
+    --color-pca-s1-amber: #f9ab00;
+    --color-pca-s1-red: #f28b82;
+    --color-pca-s1-green: #81c995;
+    --color-pca-s1-accent-tint: rgba(124, 158, 255, 0.08);
+    --color-pca-s1-accent-tint-strong: rgba(124, 158, 255, 0.18);
+    --color-pca-s1-accent-outline: rgba(124, 158, 255, 0.28);
+    --color-pca-s1-row-hover: rgba(124, 158, 255, 0.05);
+    --color-pca-s1-item-hover: rgba(124, 158, 255, 0.06);
+    --color-pca-s1-green-tint: rgba(129, 201, 149, 0.08);
+    --color-pca-s1-green-tint-strong: rgba(129, 201, 149, 0.18);
+    --color-pca-s1-green-outline: rgba(129, 201, 149, 0.28);
+    --color-pca-s1-sidebar-shadow: rgba(0, 0, 0, 0.5);
+
+
     /* Shared dark-guide surfaces */
     --color-guide-background: #07111e;
     --color-guide-surface-1: #0b1729;
@@ -463,6 +497,7 @@ body {
 .card-cdl { --card-accent: var(--color-theme-cdl-fg); }
 .card-agwa { --card-accent: var(--color-theme-agwa-fg); }
 .card-pcne { --card-accent: var(--color-theme-pcne-fg); }
+.card-pca { --card-accent: var(--color-theme-pca-fg); }
 .card-ccna { --card-accent: var(--color-theme-cisco-fg); }
 .card-aws-saa { --card-accent: var(--color-theme-aws-fg); }
 
@@ -481,6 +516,11 @@ body {
 @utility icon-theme-ace {
     background: var(--color-theme-ace-bg);
     color: var(--color-theme-ace-fg);
+}
+
+@utility icon-theme-pca {
+    background: var(--color-theme-pca-bg);
+    color: var(--color-theme-pca-fg);
 }
 
 @utility icon-theme-cdl {

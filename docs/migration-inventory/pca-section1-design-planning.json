@@ -1,0 +1,1190 @@
+{
+  "source": "Gcp-pca-section1-design-planning.html",
+  "h1": [
+    "Google Cloud Professional Cloud Architect 試験対策ガイド"
+  ],
+  "h2": [
+    "1. このセクションの全体像",
+    "2. 前提知識：Google Cloud Well-Architected Framework",
+    "3. 1.1 ビジネス要件を満たすクラウドソリューションインフラの設計",
+    "4. 1.2 技術要件を満たすクラウドソリューションインフラの設計",
+    "5. 1.3 ネットワーク・ストレージ・コンピュートリソースの設計",
+    "6. 1.4 移行計画（マイグレーションプラン）の作成",
+    "7. 1.5 将来のソリューション改善の構想",
+    "8. 公式ケーススタディとセクション1の関係",
+    "9. 学習チェックリスト",
+    "10. 参考文献一覧"
+  ],
+  "h3": [
+    "3.1 ビジネスユースケースと製品戦略",
+    "3.2 機能要件と非機能要件の特定",
+    "3.3 事業継続計画（Business Continuity Plan）",
+    "3.4 コスト最適化",
+    "3.5 アプリケーション設計のサポート",
+    "3.6 外部システムとの統合パターン",
+    "3.7 データの移動",
+    "3.8 設計判断のトレードオフ",
+    "3.9 ワークロード対応戦略（Build / Buy / Modify / Deprecate）",
+    "3.10 成功指標（KPI・ROI・メトリクス）",
+    "3.11 セキュリティとコンプライアンス",
+    "3.12 オブザーバビリティ",
+    "4.1 Google Cloud Well-Architected Framework への習熟",
+    "4.2 高可用性とフェイルオーバー設計",
+    "4.3 クラウドリソースの柔軟性",
+    "4.4 成長要件を満たすスケーラビリティ",
+    "4.5 パフォーマンスとレイテンシ",
+    "4.6 Gemini Cloud Assist",
+    "4.7 バックアップとリカバリ",
+    "5.1 オンプレミス／マルチクラウド環境との統合",
+    "5.2 Google Cloud AI/機械学習ソリューション",
+    "5.3 クラウドネイティブネットワーキング（VPC設計）",
+    "5.4 データ処理ソリューションの選択",
+    "5.5 適切なストレージタイプの選択",
+    "5.6 コンピュートニーズのプラットフォーム製品へのマッピング",
+    "5.7 コンピュートリソースの選択（Spot VM・カスタムマシンタイプ等）",
+    "6.1 既存システムとの統合",
+    "6.2 システム・データの評価と移行（Migration Center）",
+    "6.3 移行手法、ワークロードテスト、ネットワーク計画、依存関係計画",
+    "6.4 ソフトウェアライセンスと財務影響の判断",
+    "7.1 クラウドと技術の改善",
+    "7.2 ビジネスニーズの進化",
+    "7.3 クラウドファーストの設計アプローチ"
+  ],
+  "h4": [
+    "公式試験情報",
+    "Well-Architected Framework",
+    "事業継続・災害復旧",
+    "ネットワーク",
+    "ストレージ",
+    "コンピュート",
+    "AI / 生成AI",
+    "移行",
+    "ケーススタディ"
+  ],
+  "th": [
+    "ピラー",
+    "目的",
+    "中核となる原則（例）",
+    "種別",
+    "定義",
+    "具体例",
+    "指標",
+    "定義",
+    "設計上の意味",
+    "ユースケース",
+    "推奨サービス",
+    "戦略",
+    "内容",
+    "適用場面",
+    "指標カテゴリ",
+    "例",
+    "対象ワークロード",
+    "推奨手段",
+    "コンポーネント",
+    "役割",
+    "要素",
+    "目的",
+    "ストレージ種別",
+    "主なサービス",
+    "典型的なユースケース",
+    "プラットフォーム",
+    "管理レベル",
+    "適したワークロード",
+    "オプション",
+    "特徴",
+    "適したユースケース",
+    "移行パス",
+    "特徴",
+    "移行速度",
+    "クラウド最適化度",
+    "ケーススタディ",
+    "業種",
+    "既存技術環境の概要",
+    "セクション1との関連ポイント"
+  ],
+  "td": [
+    "運用の卓越性",
+    "ワークロードを効率的にデプロイ・運用・監視・管理する",
+    "SLO 定義に基づく CloudOps、継続的改善の文化 3",
+    "セキュリティ・プライバシー・コンプライアンス",
+    "要件を満たしつつ安全にワークロードを設計・デプロイ・運用する",
+    "セキュリティ・バイ・デザイン、ゼロトラスト、シフトレフト・セキュリティ 4",
+    "信頼性",
+    "定義された条件下で意図した機能を継続的に発揮させる",
+    "冗長化、フォールトトレラント設計、自動復旧 5",
+    "パフォーマンス最適化",
+    "需要変化に対応してリソースを効率的に利用する",
+    "オートスケーリングによる予測可能な性能確保 6",
+    "コスト最適化",
+    "ビジネス価値に見合った支出でクラウドを運用する",
+    "ビジネス価値との整合、コスト意識の文化、継続的最適化 7",
+    "持続可能性",
+    "エネルギー効率と環境負荷を考慮した設計を行う",
+    "サーバーレスによるスケールゼロ、リソースのライトサイジング 8",
+    "機能要件（Functional Requirement）",
+    "システムが「何をするか」を定義する要件",
+    "ユーザー認証、注文処理、レコメンデーション生成",
+    "非機能要件（Non-Functional Requirement）",
+    "システムが「どのように動作するか」の品質特性",
+    "可用性99.99%、レイテンシ100ms以内、GDPR準拠",
+    "RTO（Recovery Time Objective）",
+    "障害発生からサービス復旧までに許容される時間",
+    "RTOが短いほど、ホットスタンバイなど高コストな構成が必要",
+    "RPO（Recovery Point Objective）",
+    "障害発生時に許容されるデータ損失量（時間換算）",
+    "RPOが短いほど、同期レプリケーションなど高頻度なバックアップが必要",
+    "オンライン/オンプレミスからCloud Storageへの継続的転送",
+    "Storage Transfer Service",
+    "20TB〜1PB規模の大容量データを短期間で転送（オフライン）",
+    "Transfer Appliance",
+    "データベースの変更データキャプチャ（CDC）とレプリケーション",
+    "Datastream",
+    "リアルタイムのイベントストリーム取り込み",
+    "Pub/Sub + Dataflow",
+    "Build（構築）",
+    "独自に開発する",
+    "差別化要因となるコア機能、既製品で要件を満たせない場合",
+    "Buy（購入）",
+    "SaaS/マーケットプレイス製品を利用する",
+    "汎用的な機能（CRM、決済等）で独自性が不要な場合",
+    "Modify（変更）",
+    "既存システムを改修・拡張する",
+    "レガシー資産に一定の価値が残っている場合",
+    "Deprecate（廃止）",
+    "使われなくなった機能・システムを廃止する",
+    "運用コストに見合う価値を生んでいない場合",
+    "KPI（重要業績評価指標）",
+    "可用性(%)、平均復旧時間(MTTR)、デプロイ頻度、顧客満足度",
+    "ROI（投資収益率）",
+    "クラウド移行による運用コスト削減額、新機能による売上増加",
+    "その他メトリクス",
+    "レイテンシp99、エラーレート、スループット",
+    "Compute Engine VM",
+    "Backup and DR Service によるバックアップボールト、または Persistent Disk スナップショット",
+    "Cloud SQL / AlloyDB",
+    "Backup and DR Service の自動バックアッププラン",
+    "Cloud Storage オブジェクト",
+    "オブジェクトバージョニング、マルチリージョンバケット",
+    "VMware Engine VM",
+    "Backup and DR Service（vSphere Storage APIsベース）",
+    "Model Garden",
+    "Gemini・Gemma・Claude・Llama など200以上のモデルを一箇所から発見・テスト・デプロイ 21",
+    "Agent Builder（ADK/Agent Studio）",
+    "コードファースト（ADK）またはローコード（Agent Studio）でAIエージェントを構築 22",
+    "AI Hypercomputer",
+    "GPU/TPUを統合した大規模モデル学習・推論向けインフラ",
+    "RAG Engine / Vector Search",
+    "独自データを安全にLLMへ接続し、回答精度向上とハルシネーション低減を実現 20",
+    "VPC ピアリング",
+    "プロジェクト間・組織間でプライベート接続する（推移的接続はできない点に注意）",
+    "ファイアウォールルール",
+    "ネットワークタグ／サービスアカウント単位でトラフィックを制御する",
+    "Cloud Load Balancing",
+    "グローバル／リージョナルなトラフィック分散",
+    "Private Service Connect（PSC）",
+    "VPCとサービス間をプライベートかつ一方向に安全に接続する",
+    "オブジェクトストレージ",
+    "Cloud Storage",
+    "静的サイトのアセット、データレイク、バックアップ、動画配信 24",
+    "ブロックストレージ",
+    "Persistent Disk、Hyperdisk、Local SSD",
+    "VMのブートディスク、データベースのローカルストレージ、低レイテンシキャッシュ 25",
+    "ファイルストレージ",
+    "Filestore",
+    "複数VM/コンテナからの同時読み書き、レガシーアプリのPOSIX互換要件 26",
+    "リレーショナルDB",
+    "Cloud SQL、AlloyDB、Spanner",
+    "トランザクション処理、グローバル規模の強整合性が必要な場合はSpanner",
+    "NoSQL DB",
+    "Firestore、Bigtable",
+    "モバイル/Webアプリのドキュメント指向データはFirestore、IoT/分析向け大規模低レイテンシはBigtable",
+    "Compute Engine",
+    "ユーザーがOS〜アプリまで管理",
+    "カスタムカーネル/低レベルアクセスが必要なアプリ、リフト＆シフト移行 27",
+    "GKE",
+    "Googleがコントロールプレーンを管理",
+    "複雑なマイクロサービス、既存のKubernetesワークロード、きめ細かい制御が必要な場合 28",
+    "Cloud Run",
+    "フルマネージド（サーバーレス）",
+    "ステートレスでリクエスト駆動のコンテナサービス、スケールゼロが有効なワークロード 27",
+    "Cloud Run functions",
+    "フルマネージド（サーバーレス）",
+    "イベントドリブンな単機能処理（画像処理、Webhook等） 27",
+    "Spot VM",
+    "標準VMより大幅に安価だが、Googleにより随時回収され得る",
+    "バッチ処理、フォールトトレラントな分散処理、CI/CD",
+    "カスタムマシンタイプ",
+    "vCPU・メモリを個別に指定できる",
+    "定義済みマシンタイプがワークロードに最適化されていない場合",
+    "専用ワークロード向けマシン（GPU/TPU）",
+    "AI/ML学習・推論、HPC向け",
+    "大規模モデル学習、科学技術計算",
+    "Rehost",
+    "Migrate to Virtual Machines等でそのまま移設",
+    "速い",
+    "低い",
+    "Replatform",
+    "OSやミドルウェアなど一部をクラウド向けに調整して移設",
+    "中程度",
+    "中程度",
+    "Refactor / Re-architect",
+    "コンテナ化・マネージドサービス化など抜本的に再設計",
+    "遅い",
+    "高い",
+    "Replace",
+    "既存機能をSaaSや Google Cloud のマネージド製品に置換",
+    "ケースによる",
+    "高い",
+    "Retire",
+    "使われていないシステムを廃止する",
+    "-",
+    "-",
+    "Retain",
+    "規制等の理由で当面オンプレミスに残す",
+    "-",
+    "-",
+    "Altostrat Media",
+    "メディア",
+    "GKEでコンテンツ配信基盤を運用、Cloud Storageに映像/音声ライブラリ、BigQueryを分析基盤に利用、Cloud Run functionsでイベント駆動処理（トランスコード等） 36",
+    "1.3のコンピュート選択（GKE/Cloud Run functions）、1.1のデータ移動、AI/ML活用（レコメンデーション）",
+    "Cymbal Retail",
+    "小売",
+    "急成長中のオンライン小売業者。会話型コマース、パーソナライズ、カタログ管理の刷新を計画 37",
+    "1.1のビジネスユースケース、1.3のAI/MLソリューション（Discovery AI等）",
+    "EHR Healthcare",
+    "ヘルスケア",
+    "コロケーション環境からGoogle Cloudへ移行中のSaaS事業者。スケーラブルな基盤・DR・コンテナ化されたEHRソフトウェアの迅速なデプロイが課題 38",
+    "1.4の移行計画、1.1の事業継続計画・コンプライアンス（医療情報保護）",
+    "KnightMotives Automotive",
+    "自動車",
+    "コネクテッドカーサービス。車両からのテレメトリデータをバッチでオンプレミスに集約中で、リアルタイム性・スケーラビリティに課題 39",
+    "1.3のデータ処理ソリューション（Pub/Sub, Dataflow）、1.1のデータの移動"
+  ],
+  "listItems": [
+    "1. このセクションの全体像",
+    "2. 前提知識：Google Cloud Well-Architected Framework",
+    "3. 1.1 ビジネス要件を満たすクラウドソリューションインフラの設計",
+    "4. 1.2 技術要件を満たすクラウドソリューションインフラの設計",
+    "5. 1.3 ネットワーク・ストレージ・コンピュートリソースの設計",
+    "6. 1.4 移行計画（マイグレーションプラン）の作成",
+    "7. 1.5 将来のソリューション改善の構想",
+    "8. 公式ケーススタディとセクション1の関係",
+    "9. 学習チェックリスト",
+    "10. 参考文献一覧",
+    "Google Cloud Well-Architected Framework",
+    "運用の卓越性ピラー",
+    "セキュリティ・プライバシー・コンプライアンスピラー",
+    "信頼性ピラー",
+    "パフォーマンス最適化ピラー",
+    "コスト最適化ピラー",
+    "持続可能性ピラー",
+    "要件定義の最初のステップとして、ステークホルダー（アプリケーションオーナー、セキュリティアーキテクト、運用管理者など）を特定し、要求を集約する。9",
+    "ビジネス上の成功指標（後述のKPI/ROI）と技術選定を紐づけて説明できるようにする。",
+    "DR計画のタスクは「シェルを開いて /home/example/restore.sh を実行する」のように、曖昧さのない具体的な手順に落とし込む。10",
+    "バックアップの保管場所と復旧権限者を明確にし、監査可能な形にする。10",
+    "Compute Engine・Cloud SQL・AlloyDB・VMware Engine 等のワークロードには Backup and DR Service を用い、ポリシーベースのバックアップと、変更・削除不可（Immutable/Indelible）なバックアップボールトを利用する。11",
+    "Disaster recovery planning guide",
+    "Architecting disaster recovery for cloud infrastructure outages",
+    "Backup and DR Service overview",
+    "クラウド支出をビジネス価値に整合させる（TCOで評価し、運用コストも含めて比較する）12",
+    "組織全体にコスト意識の文化を醸成する",
+    "リソース使用量を最適化する（必要な分だけプロビジョニングする）",
+    "継続的に最適化する（利用状況とコストを継続的に監視し是正する）",
+    "Compute Engine のVMは一見安価に見えても、パッチ適用・スケーリングなどの運用オーバーヘッドを含めたTCOで比較する。12",
+    "Recommender（Active Assist）による自動リソース最適化提案、予算とアラートなどの Cost Management ツール群を活用する。",
+    "APIの外部公開・管理には Apigee を用い、APIライフサイクル全体（設計・セキュリティ・監視・収益化）を一元管理する。",
+    "疎結合なイベント駆動統合には Pub/Sub（メッセージング）と Eventarc（イベントルーティング）を組み合わせる。",
+    "複数サービスをまたぐオーケストレーションには Workflows を利用し、個々のサービスの実装詳細から統合ロジックを分離する。",
+    "リージョンマネージドインスタンスグループ（Regional MIG）を用いて複数ゾーンにVMを分散させ、単一ゾーン障害に耐える構成にする。13",
+    "グローバルなユーザー基盤には、複数リージョンにまたがるアクティブ-アクティブ構成とグローバル外部ロードバランサを組み合わせる。",
+    "ステートレスなアプリケーション層とステートフルなデータ層を分離し、ステートレス層は容易に水平スケール・フェイルオーバーできるようにする。14",
+    "自然言語の「意図」から、Application Design Center と連携してアーキテクチャ図や本番運用可能な Terraform／gcloud／kubectl のブルー プリントを生成する。16",
+    "ログ・メトリクス・トレース・構成情報を横断的に相関分析し、パフォーマンス／コスト異常のプロアクティブな調査を支援する（プレビュー機能を含む）。16",
+    "コンソール上の現在のページコンテキストを理解し、ハルシネーションを抑制したコンテキストに即した回答を提供する。17",
+    "帯域・パフォーマンス・セキュリティ・コスト・信頼性の要件に応じてハイブリッド／マルチクラウド接続方式を選定する。18",
+    "ハブアンドスポーク型の接続VPCを使い、複数VPCにまたがるシナリオをスケールさせる。19",
+    "Shared VPC を活用し、各サービスプロジェクトが個別に同じ接続ソリューションを複製する必要をなくす。19",
+    "ハイブリッドDNSのベストプラクティスに従い、オンプレミスとGoogle Cloud間で名前解決を統一する。18",
+    "VPCネットワーク設計は早い段階から検討し、ステークホルダー・タイムライン・前提作業を明確にする。",
+    "「Keep it simple」の原則：単一のVPCで開始し、必要になった段階でShared VPCへ拡張する。",
+    "明確な命名規則を使用する。",
+    "単一プロジェクトのデフォルトクォータを超える成長が見込まれる場合、プロジェクトごとに単一のVPCネットワークを作成し、クォータをプロジェクト単位にマッピングする。",
+    "自律的なチームごとにVPCネットワークを分け、共通サービスは別のVPCネットワークに集約する。",
+    "センシティブなデータは専用のVPCネットワークに分離する。",
+    "ハイブリッド接続には動的ルーティング（Cloud Router）を可能な限り使用する。",
+    "Persistent Diskは永続性が必要な用途に、Local SSDは揮発性を許容できる高速スクラッチ領域に使い分ける。25",
+    "Cloud Storageの Autoclass を使うとアクセス頻度に応じてストレージクラスが自動的に切り替わり、アクセスパターンが予測しにくいワークロードに適している。25",
+    "「本番環境でDBエンジンをVM上のブロックストレージで自前運用するか、マネージドDBを使うか」は運用オーバーヘッドの観点で比較する。",
+    "コスト見積もり：オンプレミス資産の規模・構成に基づき、将来のGoogle Cloudコストを迅速に見積もる（プレビュー含む）。30",
+    "資産検出（Discovery）：エージェントレスのディスカバリークライアントで物理サーバー/VMを自動検出し、必要なメトリクスを収集する。31",
+    "TCOレポートと依存関係分析：総保有コスト（TCO）レポートを生成し、アプリケーション／ネットワークの依存関係を特定して「一緒に移行すべきコンポーネント」を可視化する。30",
+    "技術適合性アセスメント：データドリブンな推奨により、各資産をどのGoogle Cloud製品に移行すべきかを提案する。30",
+    "Migrate to Virtual Machines：オンプレミス／他クラウドのVMをCompute Engineへ移行",
+    "Migrate to Containers：VMワークロードをGKE上のコンテナへモダナイズしながら移行",
+    "Storage Transfer Service / Transfer Appliance：データ移行（前述5.7参照）",
+    "Cloud Build / Artifact Registry：CI/CDパイプラインの構築、コンテナイメージ管理",
+    "既存のオンプレミスソフトウェアライセンス（Oracle、Microsoft SQL Server等）がクラウド環境でどう適用されるか（BYOL: Bring Your Own License、または従量課金ライセンス）を事前に確認する。",
+    "移行によるTCO変化（ハードウェア減価償却の終了、運用人件費の変化、クラウド従量課金への移行）を財務部門と共有できる形で提示する。",
+    "Well-Architected Framework の6ピラー（運用の卓越性・セキュリティ・信頼性・パフォーマンス・コスト・持続可能性）の目的をそれぞれ一言で説明できる",
+    "機能要件と非機能要件の違いを説明でき、シナリオ文から両者を切り分けて抽出できる",
+    "RTO / RPO の定義と、それぞれが設計判断（レプリケーション頻度・スタンバイ構成）に与える影響を説明できる",
+    "Build / Buy / Modify / Deprecate の4戦略を使い分ける判断基準を説明できる",
+    "Pub/Sub・Eventarc・Workflows・Apigee の役割の違いを説明できる",
+    "Compute Engine / GKE / Cloud Run / Cloud Run functions の選択基準を説明できる",
+    "オブジェクト／ブロック／ファイル／データベースストレージの使い分けを説明できる",
+    "Shared VPC・VPCピアリング・Private Service Connectの違いを説明できる",
+    "Migration Center の主要機能（コスト見積もり・資産検出・依存関係分析）を説明できる",
+    "6R（Rehost/Replatform/Refactor/Replace/Retire/Retain）の移行戦略を説明できる",
+    "Gemini Cloud Assist と Gemini Enterprise Agent Platform（Model Garden含む）の違いを説明できる",
+    "4つの公式ケーススタディの業種と主要な技術課題を要約できる",
+    "↗Professional Cloud Architect Certification | Google Cloud",
+    "↗Professional Cloud Architect Exam Guide (v6.1, PDF)",
+    "↗Professional Cloud Architect Exam Guide (PDF, 提供リンク)",
+    "↗Google Cloud Well-Architected Framework",
+    "↗運用の卓越性ピラー",
+    "↗セキュリティ・プライバシー・コンプライアンスピラー",
+    "↗信頼性ピラー",
+    "↗パフォーマンス最適化ピラー",
+    "↗コスト最適化ピラー",
+    "↗持続可能性ピラー",
+    "↗Align cloud spending with business value",
+    "↗Manage and optimize cloud resources",
+    "↗Disaster recovery planning guide",
+    "↗Architecting disaster recovery for cloud infrastructure outages",
+    "↗Backup and DR Service overview",
+    "↗Best practices and reference architectures for VPC design",
+    "↗Decide the network design for your Google Cloud landing zone",
+    "↗VPC networks",
+    "↗Object storage vs block storage vs file storage",
+    "↗How Object vs Block vs File Storage differ",
+    "↗Compute overview",
+    "↗Compute Engine overview",
+    "↗Choose a Compute Engine deployment strategy",
+    "↗Gemini Cloud Assist documentation",
+    "↗Gemini for Google Cloud overview",
+    "↗Agent Platform overview",
+    "↗Overview of Model Garden",
+    "↗Migration Center overview",
+    "↗About migration planning",
+    "↗Migration tools",
+    "↗RaMP overview",
+    "↗v6.1 Professional Cloud Architect Exam Guide（ケーススタディ一覧掲載）",
+    "Professional Cloud Architect Exam Guide (v6.1, PDF) — セクション1の出題項目一覧（原文）↩︎ ↩︎ ↩︎ ↩︎ ↩︎ ↩︎",
+    "v6.1 Exam Guide — 「Familiarity with the Google Cloud Well-Architected Framework is a key requirement」の記載↩︎",
+    "運用の卓越性ピラー↩︎",
+    "セキュリティ・プライバシー・コンプライアンスピラー↩︎",
+    "信頼性ピラー↩︎",
+    "パフォーマンス最適化ピラー↩︎ ↩︎ ↩︎",
+    "コスト最適化ピラー↩︎ ↩︎",
+    "持続可能性ピラー↩︎",
+    "Best practices and reference architectures for VPC design — ステークホルダー特定に関する一般原則↩︎",
+    "Disaster recovery planning guide↩︎ ↩︎",
+    "Backup and DR Service overview↩︎ ↩︎",
+    "Align cloud spending with business value↩︎ ↩︎",
+    "Choose a Compute Engine deployment strategy↩︎",
+    "Well-Architected Framework — ステートフル/ステートレスアプリケーションに関する記載↩︎",
+    "Gemini Cloud Assist documentation↩︎",
+    "Gemini Cloud Assist: AI-assisted cloud operations and management↩︎ ↩︎",
+    "Gemini for Google Cloud overview↩︎",
+    "General best practices for hybrid/multicloud networking↩︎ ↩︎",
+    "Best practices and reference architectures for VPC design↩︎ ↩︎",
+    "Agent Platform overview↩︎ ↩︎",
+    "Overview of Model Garden↩︎",
+    "Overview of models on Agent Platform↩︎",
+    "Object storage vs block storage vs file storage↩︎",
+    "How Object vs Block vs File Storage differ↩︎",
+    "Compute Engine overview — ブロックストレージオプションに関する記載↩︎ ↩︎ ↩︎",
+    "Pick the right storage option on Google Cloud↩︎",
+    "Compute overview↩︎ ↩︎ ↩︎",
+    "Best practices for GKE networking↩︎",
+    "一般的なGoogle Cloudコンピュート選択のベストプラクティス（段階的アプローチ）— Compute overview の管理オーバーヘッドの記載に基づく整理↩︎",
+    "Migration Center overview↩︎ ↩︎ ↩︎ ↩︎",
+    "Migration Center discovery client overview↩︎",
+    "About migration planning↩︎ ↩︎",
+    "Migration tools↩︎",
+    "Manage and optimize cloud resources↩︎",
+    "v6.1 Professional Cloud Architect Exam Guide — ケーススタディ一覧↩︎",
+    "Altostrat Media Case Study (PDF)↩︎",
+    "Cymbal Retail Case Study (PDF)↩︎",
+    "EHR Healthcare Case Study — 公式試験ガイドのケーススタディ一覧に基づく要約（v6.1 Exam Guide参照）↩︎",
+    "KnightMotives Automotive Case Study — 公式試験ガイドのケーススタディ一覧に基づく要約（v6.1 Exam Guide参照）↩︎",
+    "Professional Cloud Architect Certification — 「You can view the case studies on a split screen during the exam」の記載↩︎"
+  ],
+  "links": [
+    {
+      "text": "Professional Cloud Architect Certification exam guide (v6.1)",
+      "href": "https://services.google.com/fh/files/misc/professional_cloud_architect_exam_guide_english.pdf"
+    },
+    {
+      "text": "認定ページ",
+      "href": "https://cloud.google.com/learn/certification/cloud-architect?hl=en"
+    },
+    {
+      "text": "Professional Cloud Architect Certification | Google Cloud",
+      "href": "https://cloud.google.com/learn/certification/cloud-architect?hl=en"
+    },
+    {
+      "text": "Google Cloud Well-Architected Framework",
+      "href": "https://docs.cloud.google.com/architecture/framework"
+    },
+    {
+      "text": "運用の卓越性ピラー",
+      "href": "https://docs.cloud.google.com/architecture/framework/operational-excellence"
+    },
+    {
+      "text": "セキュリティ・プライバシー・コンプライアンスピラー",
+      "href": "https://docs.cloud.google.com/architecture/framework/security"
+    },
+    {
+      "text": "信頼性ピラー",
+      "href": "https://docs.cloud.google.com/architecture/framework/reliability"
+    },
+    {
+      "text": "パフォーマンス最適化ピラー",
+      "href": "https://docs.cloud.google.com/architecture/framework/performance-optimization"
+    },
+    {
+      "text": "コスト最適化ピラー",
+      "href": "https://docs.cloud.google.com/architecture/framework/cost-optimization"
+    },
+    {
+      "text": "持続可能性ピラー",
+      "href": "https://docs.cloud.google.com/architecture/framework/sustainability"
+    },
+    {
+      "text": "Disaster recovery planning guide",
+      "href": "https://docs.cloud.google.com/architecture/dr-scenarios-planning-guide"
+    },
+    {
+      "text": "Architecting disaster recovery for cloud infrastructure outages",
+      "href": "https://docs.cloud.google.com/architecture/disaster-recovery"
+    },
+    {
+      "text": "Backup and DR Service overview",
+      "href": "https://docs.cloud.google.com/backup-disaster-recovery/docs/concepts/backup-dr"
+    },
+    {
+      "text": "Cost optimization pillar",
+      "href": "https://docs.cloud.google.com/architecture/framework/cost-optimization"
+    },
+    {
+      "text": "Align cloud spending with business value",
+      "href": "https://docs.cloud.google.com/architecture/framework/cost-optimization/align-cloud-spending-business-value"
+    },
+    {
+      "text": "Storage Transfer Service",
+      "href": "https://cloud.google.com/storage-transfer-service"
+    },
+    {
+      "text": "Transfer Appliance",
+      "href": "https://cloud.google.com/transfer-appliance/docs/4.0/overview"
+    },
+    {
+      "text": "Datastream",
+      "href": "https://cloud.google.com/datastream"
+    },
+    {
+      "text": "Gemini Cloud Assist documentation",
+      "href": "https://docs.cloud.google.com/cloud-assist"
+    },
+    {
+      "text": "Gemini for Google Cloud overview",
+      "href": "https://docs.cloud.google.com/cloud-assist/overview"
+    },
+    {
+      "text": "Backup and DR Service overview",
+      "href": "https://docs.cloud.google.com/backup-disaster-recovery/docs/concepts/backup-dr"
+    },
+    {
+      "text": "Decide the network design for your Google Cloud landing zone",
+      "href": "https://docs.cloud.google.com/architecture/landing-zones/decide-network-design"
+    },
+    {
+      "text": "Best practices for VPC design",
+      "href": "https://docs.cloud.google.com/architecture/best-practices-vpc-design"
+    },
+    {
+      "text": "Agent Platform overview",
+      "href": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/overview"
+    },
+    {
+      "text": "Overview of Model Garden",
+      "href": "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/model-garden/explore-models"
+    },
+    {
+      "text": "VPC設計のベストプラクティスとリファレンスアーキテクチャ",
+      "href": "https://docs.cloud.google.com/architecture/best-practices-vpc-design"
+    },
+    {
+      "text": "Best practices and reference architectures for VPC design",
+      "href": "https://docs.cloud.google.com/architecture/best-practices-vpc-design"
+    },
+    {
+      "text": "VPC networks",
+      "href": "https://docs.cloud.google.com/vpc/docs/vpc"
+    },
+    {
+      "text": "Object storage vs block storage vs file storage",
+      "href": "https://cloud.google.com/blog/topics/developers-practitioners/map-storage-options-google-cloud"
+    },
+    {
+      "text": "How Object vs Block vs File Storage differ",
+      "href": "https://cloud.google.com/discover/object-vs-block-vs-file-storage"
+    },
+    {
+      "text": "Compute overview",
+      "href": "https://docs.cloud.google.com/docs/compute-area/overview"
+    },
+    {
+      "text": "Compute Engine overview",
+      "href": "https://docs.cloud.google.com/compute/docs/overview"
+    },
+    {
+      "text": "Migration Center overview",
+      "href": "https://docs.cloud.google.com/migration-center/docs/migration-center-overview"
+    },
+    {
+      "text": "About migration planning",
+      "href": "https://docs.cloud.google.com/migration-center/docs/migration-planning-overview"
+    },
+    {
+      "text": "Migration tools",
+      "href": "https://docs.cloud.google.com/migration-center/docs/migration-modernization-tools"
+    },
+    {
+      "text": "RaMP overview",
+      "href": "https://docs.cloud.google.com/migration-center/docs/ramp-overview"
+    },
+    {
+      "text": "Manage and optimize cloud resources",
+      "href": "https://docs.cloud.google.com/architecture/framework/operational-excellence/manage-and-optimize-cloud-resources"
+    },
+    {
+      "text": "v6.1 Professional Cloud Architect Exam Guide",
+      "href": "https://services.google.com/fh/files/misc/v6.1_pca_professional_cloud_architect_exam_guide_english.pdf"
+    },
+    {
+      "text": "↗Professional Cloud Architect Certification | Google Cloud",
+      "href": "https://cloud.google.com/learn/certification/cloud-architect?hl=en"
+    },
+    {
+      "text": "↗Professional Cloud Architect Exam Guide (v6.1, PDF)",
+      "href": "https://services.google.com/fh/files/misc/v6.1_pca_professional_cloud_architect_exam_guide_english.pdf"
+    },
+    {
+      "text": "↗Professional Cloud Architect Exam Guide (PDF, 提供リンク)",
+      "href": "https://services.google.com/fh/files/misc/professional_cloud_architect_exam_guide_english.pdf"
+    },
+    {
+      "text": "↗Google Cloud Well-Architected Framework",
+      "href": "https://docs.cloud.google.com/architecture/framework"
+    },
+    {
+      "text": "↗運用の卓越性ピラー",
+      "href": "https://docs.cloud.google.com/architecture/framework/operational-excellence"
+    },
+    {
+      "text": "↗セキュリティ・プライバシー・コンプライアンスピラー",
+      "href": "https://docs.cloud.google.com/architecture/framework/security"
+    },
+    {
+      "text": "↗信頼性ピラー",
+      "href": "https://docs.cloud.google.com/architecture/framework/reliability"
+    },
+    {
+      "text": "↗パフォーマンス最適化ピラー",
+      "href": "https://docs.cloud.google.com/architecture/framework/performance-optimization"
+    },
+    {
+      "text": "↗コスト最適化ピラー",
+      "href": "https://docs.cloud.google.com/architecture/framework/cost-optimization"
+    },
+    {
+      "text": "↗持続可能性ピラー",
+      "href": "https://docs.cloud.google.com/architecture/framework/sustainability"
+    },
+    {
+      "text": "↗Align cloud spending with business value",
+      "href": "https://docs.cloud.google.com/architecture/framework/cost-optimization/align-cloud-spending-business-value"
+    },
+    {
+      "text": "↗Manage and optimize cloud resources",
+      "href": "https://docs.cloud.google.com/architecture/framework/operational-excellence/manage-and-optimize-cloud-resources"
+    },
+    {
+      "text": "↗Disaster recovery planning guide",
+      "href": "https://docs.cloud.google.com/architecture/dr-scenarios-planning-guide"
+    },
+    {
+      "text": "↗Architecting disaster recovery for cloud infrastructure outages",
+      "href": "https://docs.cloud.google.com/architecture/disaster-recovery"
+    },
+    {
+      "text": "↗Backup and DR Service overview",
+      "href": "https://docs.cloud.google.com/backup-disaster-recovery/docs/concepts/backup-dr"
+    },
+    {
+      "text": "↗Best practices and reference architectures for VPC design",
+      "href": "https://docs.cloud.google.com/architecture/best-practices-vpc-design"
+    },
+    {
+      "text": "↗Decide the network design for your Google Cloud landing zone",
+      "href": "https://docs.cloud.google.com/architecture/landing-zones/decide-network-design"
+    },
+    {
+      "text": "↗VPC networks",
+      "href": "https://docs.cloud.google.com/vpc/docs/vpc"
+    },
+    {
+      "text": "↗Object storage vs block storage vs file storage",
+      "href": "https://cloud.google.com/blog/topics/developers-practitioners/map-storage-options-google-cloud"
+    },
+    {
+      "text": "↗How Object vs Block vs File Storage differ",
+      "href": "https://cloud.google.com/discover/object-vs-block-vs-file-storage"
+    },
+    {
+      "text": "↗Compute overview",
+      "href": "https://docs.cloud.google.com/docs/compute-area/overview"
+    },
+    {
+      "text": "↗Compute Engine overview",
+      "href": "https://docs.cloud.google.com/compute/docs/overview"
+    },
+    {
+      "text": "↗Choose a Compute Engine deployment strategy",
+      "href": "https://docs.cloud.google.com/compute/docs/choose-compute-deployment-option"
+    },
+    {
+      "text": "↗Gemini Cloud Assist documentation",
+      "href": "https://docs.cloud.google.com/cloud-assist"
+    },
+    {
+      "text": "↗Gemini for Google Cloud overview",
+      "href": "https://docs.cloud.google.com/cloud-assist/overview"
+    },
+    {
+      "text": "↗Agent Platform overview",
+      "href": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/overview"
+    },
+    {
+      "text": "↗Overview of Model Garden",
+      "href": "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/model-garden/explore-models"
+    },
+    {
+      "text": "↗Migration Center overview",
+      "href": "https://docs.cloud.google.com/migration-center/docs/migration-center-overview"
+    },
+    {
+      "text": "↗About migration planning",
+      "href": "https://docs.cloud.google.com/migration-center/docs/migration-planning-overview"
+    },
+    {
+      "text": "↗Migration tools",
+      "href": "https://docs.cloud.google.com/migration-center/docs/migration-modernization-tools"
+    },
+    {
+      "text": "↗RaMP overview",
+      "href": "https://docs.cloud.google.com/migration-center/docs/ramp-overview"
+    },
+    {
+      "text": "↗v6.1 Professional Cloud Architect Exam Guide（ケーススタディ一覧掲載）",
+      "href": "https://services.google.com/fh/files/misc/v6.1_pca_professional_cloud_architect_exam_guide_english.pdf"
+    },
+    {
+      "text": "Professional Cloud Architect Exam Guide (v6.1, PDF)",
+      "href": "https://services.google.com/fh/files/misc/v6.1_pca_professional_cloud_architect_exam_guide_english.pdf"
+    },
+    {
+      "text": "v6.1 Exam Guide",
+      "href": "https://services.google.com/fh/files/misc/v6.1_pca_professional_cloud_architect_exam_guide_english.pdf"
+    },
+    {
+      "text": "運用の卓越性ピラー",
+      "href": "https://docs.cloud.google.com/architecture/framework/operational-excellence"
+    },
+    {
+      "text": "セキュリティ・プライバシー・コンプライアンスピラー",
+      "href": "https://docs.cloud.google.com/architecture/framework/security"
+    },
+    {
+      "text": "信頼性ピラー",
+      "href": "https://docs.cloud.google.com/architecture/framework/reliability"
+    },
+    {
+      "text": "パフォーマンス最適化ピラー",
+      "href": "https://docs.cloud.google.com/architecture/framework/performance-optimization"
+    },
+    {
+      "text": "コスト最適化ピラー",
+      "href": "https://docs.cloud.google.com/architecture/framework/cost-optimization"
+    },
+    {
+      "text": "持続可能性ピラー",
+      "href": "https://docs.cloud.google.com/architecture/framework/sustainability"
+    },
+    {
+      "text": "Best practices and reference architectures for VPC design",
+      "href": "https://docs.cloud.google.com/architecture/best-practices-vpc-design"
+    },
+    {
+      "text": "Disaster recovery planning guide",
+      "href": "https://docs.cloud.google.com/architecture/dr-scenarios-planning-guide"
+    },
+    {
+      "text": "Backup and DR Service overview",
+      "href": "https://docs.cloud.google.com/backup-disaster-recovery/docs/concepts/backup-dr"
+    },
+    {
+      "text": "Align cloud spending with business value",
+      "href": "https://docs.cloud.google.com/architecture/framework/cost-optimization/align-cloud-spending-business-value"
+    },
+    {
+      "text": "Choose a Compute Engine deployment strategy",
+      "href": "https://docs.cloud.google.com/compute/docs/choose-compute-deployment-option"
+    },
+    {
+      "text": "Well-Architected Framework",
+      "href": "https://docs.cloud.google.com/architecture/framework"
+    },
+    {
+      "text": "Gemini Cloud Assist documentation",
+      "href": "https://docs.cloud.google.com/cloud-assist"
+    },
+    {
+      "text": "Gemini Cloud Assist: AI-assisted cloud operations and management",
+      "href": "https://cloud.google.com/products/gemini/cloud-assist"
+    },
+    {
+      "text": "Gemini for Google Cloud overview",
+      "href": "https://docs.cloud.google.com/cloud-assist/overview"
+    },
+    {
+      "text": "General best practices for hybrid/multicloud networking",
+      "href": "https://docs.cloud.google.com/architecture/hybrid-multicloud-secure-networking-patterns/general-best-practices"
+    },
+    {
+      "text": "Best practices and reference architectures for VPC design",
+      "href": "https://docs.cloud.google.com/architecture/best-practices-vpc-design"
+    },
+    {
+      "text": "Agent Platform overview",
+      "href": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/overview"
+    },
+    {
+      "text": "Overview of Model Garden",
+      "href": "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/model-garden/explore-models"
+    },
+    {
+      "text": "Overview of models on Agent Platform",
+      "href": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models"
+    },
+    {
+      "text": "Object storage vs block storage vs file storage",
+      "href": "https://cloud.google.com/blog/topics/developers-practitioners/map-storage-options-google-cloud"
+    },
+    {
+      "text": "How Object vs Block vs File Storage differ",
+      "href": "https://cloud.google.com/discover/object-vs-block-vs-file-storage"
+    },
+    {
+      "text": "Compute Engine overview",
+      "href": "https://docs.cloud.google.com/compute/docs/overview"
+    },
+    {
+      "text": "Pick the right storage option on Google Cloud",
+      "href": "https://cloud.google.com/blog/products/storage-data-transfer/pick-the-right-storage-option-on-google-cloud"
+    },
+    {
+      "text": "Compute overview",
+      "href": "https://docs.cloud.google.com/docs/compute-area/overview"
+    },
+    {
+      "text": "Best practices for GKE networking",
+      "href": "https://docs.cloud.google.com/kubernetes-engine/docs/best-practices/networking"
+    },
+    {
+      "text": "Compute overview",
+      "href": "https://docs.cloud.google.com/docs/compute-area/overview"
+    },
+    {
+      "text": "Migration Center overview",
+      "href": "https://docs.cloud.google.com/migration-center/docs/migration-center-overview"
+    },
+    {
+      "text": "Migration Center discovery client overview",
+      "href": "https://docs.cloud.google.com/migration-center/docs/discovery-client-overview"
+    },
+    {
+      "text": "About migration planning",
+      "href": "https://docs.cloud.google.com/migration-center/docs/migration-planning-overview"
+    },
+    {
+      "text": "Migration tools",
+      "href": "https://docs.cloud.google.com/migration-center/docs/migration-modernization-tools"
+    },
+    {
+      "text": "Manage and optimize cloud resources",
+      "href": "https://docs.cloud.google.com/architecture/framework/operational-excellence/manage-and-optimize-cloud-resources"
+    },
+    {
+      "text": "v6.1 Professional Cloud Architect Exam Guide",
+      "href": "https://services.google.com/fh/files/misc/v6.1_pca_professional_cloud_architect_exam_guide_english.pdf"
+    },
+    {
+      "text": "Altostrat Media Case Study (PDF)",
+      "href": "https://services.google.com/fh/files/misc/altostrat_media_case_study_english.pdf"
+    },
+    {
+      "text": "Cymbal Retail Case Study (PDF)",
+      "href": "https://services.google.com/fh/files/misc/cymbal_retail_case_study_english.pdf"
+    },
+    {
+      "text": "v6.1 Exam Guide",
+      "href": "https://services.google.com/fh/files/misc/v6.1_pca_professional_cloud_architect_exam_guide_english.pdf"
+    },
+    {
+      "text": "v6.1 Exam Guide",
+      "href": "https://services.google.com/fh/files/misc/v6.1_pca_professional_cloud_architect_exam_guide_english.pdf"
+    },
+    {
+      "text": "Professional Cloud Architect Certification",
+      "href": "https://cloud.google.com/learn/certification/cloud-architect?hl=en"
+    }
+  ],
+  "bodyContent": [
+    {
+      "kind": "annotation",
+      "text": "PCA セクション1ガイド 1. このセクションの全体像 2. 前提知識：Google Cloud Well-Architected Framework 3. 1.1 ビジネス要件を満たすクラウドソリューションインフラの設計 4. 1.2 技術要件を満たすクラウドソリューションインフラの設計 5. 1.3 ネットワーク・ストレージ・コンピュートリソースの設計 6. 1.4 移行計画（マイグレーションプラン）の作成 7. 1.5 将来のソリューション改善の構想 8. 公式ケーススタディとセクション1の関係 9. 学習チェックリスト 10. 参考文献一覧"
+    },
+    {
+      "kind": "paragraph",
+      "text": "セクション1：クラウドソリューションアーキテクチャの設計と計画（配点 約25%）"
+    },
+    {
+      "kind": "paragraph",
+      "text": "本ガイドは、Google Cloud 公式の Professional Cloud Architect Certification exam guide (v6.1) および 認定ページ に基づき、試験6セクション中もっとも配点比率が高い「セクション1：クラウドソリューションアーキテクチャの設計と計画」を初学者向けに解説したものです。各項目には、根拠となる Google Cloud 公式ドキュメントの URL を脚注として付記しています。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "Professional Cloud Architect（PCA）試験は6つのセクションで構成されており、そのうち「セクション1：クラウドソリューションアーキテクチャの設計と計画」は約25%と最大の配点を占めます。試験ガイドでは、このセクションは以下の5つのサブトピックに分かれています。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "試験全体は50〜60問の多肢選択・複数選択問題で構成され、そのうち20〜30%は4つの公式ケーススタディ（Altostrat Media、Cymbal Retail、EHR Healthcare、KnightMotives Automotive）に基づく設問です。試験時間は2時間、受験料は200米ドル（税別）、対応言語は英語と日本語です。1"
+    },
+    {
+      "kind": "annotation",
+      "text": "📚 SOURCE Professional Cloud Architect Certification | Google Cloud"
+    },
+    {
+      "kind": "paragraph",
+      "text": "2025年10月30日改訂版（v6.1）の試験ガイドから、Google Cloud Well-Architected Framework（WAF）への習熟が明示的な出題範囲として追加されました。WAF はセクション1だけでなく試験全体を貫く設計思想であるため、まず全体像を押さえておく必要があります。2"
+    },
+    {
+      "kind": "paragraph",
+      "text": "WAF は「非機能要件（Non-Functional Requirement）」を扱うための6本の柱（ピラー）で構成されます。"
+    },
+    {
+      "kind": "annotation",
+      "text": "✅ BEST PRACTICE PCA試験の設問は「技術的に正しい選択肢が複数ある」ケースが多く、最終的な正解はWAFの6ピラーのバランス（特にコストと信頼性のトレードオフ）で決まることが多い。設問を読む際は「どのピラーが最優先されているか」を意識すると選択肢を絞りやすい。"
+    },
+    {
+      "kind": "annotation",
+      "text": "📚 SOURCE Google Cloud Well-Architected Framework 運用の卓越性ピラー セキュリティ・プライバシー・コンプライアンスピラー 信頼性ピラー パフォーマンス最適化ピラー コスト最適化ピラー 持続可能性ピラー"
+    },
+    {
+      "kind": "paragraph",
+      "text": "このタスクでは、「技術」よりも先に「ビジネス」の観点からインフラ設計を評価する能力が問われます。試験ガイド原文では以下の11項目が列挙されています。1"
+    },
+    {
+      "kind": "paragraph",
+      "text": "クラウドアーキテクトは技術者である前に、ビジネスの「なぜ」を理解する必要があります。試験では「顧客の事業目標」が明示されたシナリオに対し、それを達成する最も適したアーキテクチャを選ぶ設問が頻出します。"
+    },
+    {
+      "kind": "annotation",
+      "text": "✅ BEST PRACTICE 要件定義の最初のステップとして、ステークホルダー（アプリケーションオーナー、セキュリティアーキテクト、運用管理者など）を特定し、要求を集約する。9 ビジネス上の成功指標（後述のKPI/ROI）と技術選定を紐づけて説明できるようにする。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "非機能要件は WAF の6ピラー（信頼性・パフォーマンス・セキュリティ・コスト・運用・持続可能性）にほぼ対応します。試験では、シナリオ文中に埋め込まれた数値（RTO/RPO、SLA、応答時間など）を見逃さずに拾い、それを満たす製品を選ぶ設問が多く出題されます。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "事業継続計画は、災害や障害発生時にもビジネスを継続させるための包括的な計画で、技術的な災害復旧（DR）計画はその一部です。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "DR計画を策定する際の核となる指標は次の2つです。"
+    },
+    {
+      "kind": "annotation",
+      "text": "✅ BEST PRACTICE DR計画のタスクは「シェルを開いて /home/example/restore.sh を実行する」のように、曖昧さのない具体的な手順に落とし込む。10 バックアップの保管場所と復旧権限者を明確にし、監査可能な形にする。10 Compute Engine・Cloud SQL・AlloyDB・VMware Engine 等のワークロードには Backup and DR Service を用い、ポリシーベースのバックアップと、変更・削除不可（Immutable/Indelible）なバックアップボールトを利用する。11"
+    },
+    {
+      "kind": "annotation",
+      "text": "📚 SOURCE Disaster recovery planning guide Architecting disaster recovery for cloud infrastructure outages Backup and DR Service overview"
+    },
+    {
+      "kind": "paragraph",
+      "text": "コスト最適化は WAF の1ピラーであると同時に、1.1でも独立した評価項目です。オンプレミスの資本的支出（CapEx）中心のコストモデルに対し、クラウドはほとんどのリソースが従量課金の運用的支出（OpEx）である点が根本的な違いです。7"
+    },
+    {
+      "kind": "paragraph",
+      "text": "コスト最適化の中核原則"
+    },
+    {
+      "kind": "annotation",
+      "text": "✅ BEST PRACTICE Compute Engine のVMは一見安価に見えても、パッチ適用・スケーリングなどの運用オーバーヘッドを含めたTCOで比較する。12 Recommender（Active Assist）による自動リソース最適化提案、予算とアラートなどの Cost Management ツール群を活用する。"
+    },
+    {
+      "kind": "annotation",
+      "text": "📚 SOURCE Cost optimization pillar、Align cloud spending with business value"
+    },
+    {
+      "kind": "paragraph",
+      "text": "インフラはアプリケーションアーキテクチャ（モノリシック、マイクロサービス、イベント駆動など）を支える基盤として設計する必要があります。試験では、アプリケーションのステートフル／ステートレスの性質に応じたコンピュート選択（後述1.3）が問われます。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "外部システム（オンプレミス、SaaS、他クラウド、パートナーAPIなど）との統合方式は、同期・非同期の2大パターンに大別されます。"
+    },
+    {
+      "kind": "annotation",
+      "text": "✅ BEST PRACTICE APIの外部公開・管理には Apigee を用い、APIライフサイクル全体（設計・セキュリティ・監視・収益化）を一元管理する。 疎結合なイベント駆動統合には Pub/Sub（メッセージング）と Eventarc（イベントルーティング）を組み合わせる。 複数サービスをまたぐオーケストレーションには Workflows を利用し、個々のサービスの実装詳細から統合ロジックを分離する。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "システム間・オンプレミスとクラウド間のデータ移動には、データ量・頻度・レイテンシ要件に応じて適切なサービスを選択します。"
+    },
+    {
+      "kind": "annotation",
+      "text": "📚 SOURCE Storage Transfer Service、Transfer Appliance、Datastream"
+    },
+    {
+      "kind": "paragraph",
+      "text": "PCA試験の本質は「唯一の正解」を選ぶことではなく、制約の中で最も適切なトレードオフを選ぶことです。典型的なトレードオフの軸は以下の通りです。"
+    },
+    {
+      "kind": "annotation",
+      "text": "✅ BEST PRACTICE シナリオ内の「必須要件（must-have）」と「努力目標（nice-to-have）」を区別する。要件に明記のない可用性・DRレベルを過剰に高く見積もる（オーバーエンジニアリング）ことは、コスト最適化ピラーに反するため誤答になりやすい。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "新しい要件が生じたとき、常にゼロから構築（Build）するのではなく、既存の選択肢を評価する必要があります。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "技術選定の妥当性は、最終的にビジネス指標で説明できる必要があります。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "1.1では「ビジネス要件としてのセキュリティ・コンプライアンス」（規制、契約上の義務など）を扱います。技術的な実装の詳細はセクション3（設計と計画とは別枠）で扱われますが、試験ガイド上は1.1にも明記されているため、要件定義段階で規制要件（医療情報のプライバシー、PCI DSS等）を洗い出す視点が重要です。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "システムの内部状態を外部から把握できる能力（オブザーバビリティ）は、運用の卓越性ピラーの土台です。Google Cloud Observability（Cloud Logging、Cloud Monitoring、Cloud Trace、Cloud Profiler）の活用がベストプラクティスとして位置づけられます（詳細はセクション6で扱う運用の卓越性の項を参照）。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "1.1が「ビジネス」の視点だったのに対し、1.2は「技術」の視点から非機能要件を満たす設計を評価します。試験ガイド原文の項目は以下の7つです。1"
+    },
+    {
+      "kind": "paragraph",
+      "text": "前述の第2章を参照。1.2ではWAFの原則を具体的な設計判断に適用する能力が問われます。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "Google Cloud のリージョン・ゾーン構成を理解し、単一障害点（SPOF）を排除する設計が基本です。"
+    },
+    {
+      "kind": "annotation",
+      "text": "✅ BEST PRACTICE リージョンマネージドインスタンスグループ（Regional MIG）を用いて複数ゾーンにVMを分散させ、単一ゾーン障害に耐える構成にする。13 グローバルなユーザー基盤には、複数リージョンにまたがるアクティブ-アクティブ構成とグローバル外部ロードバランサを組み合わせる。 ステートレスなアプリケーション層とステートフルなデータ層を分離し、ステートレス層は容易に水平スケール・フェイルオーバーできるようにする。14"
+    },
+    {
+      "kind": "paragraph",
+      "text": "VM、コンテナ、サーバーレスなど複数の抽象化レベルを組み合わせ、ワークロードの性質に応じて柔軟にリソースを選択できる設計にする（詳細は1.3のコンピュート選択を参照）。"
+    },
+    {
+      "kind": "annotation",
+      "text": "✅ BEST PRACTICE オートスケーリングは性能とコストの両ピラーに効くレバーである。負荷増大時に予測可能な性能を提供しつつ、負荷減少時には未使用リソースを自動的に削減することで、パフォーマンス最適化とコスト最適化を同時に達成できる。6"
+    },
+    {
+      "kind": "paragraph",
+      "text": "ユーザーに近いリージョンへのデプロイ、CDN（Cloud CDN）によるコンテンツキャッシュ、データベースのリードレプリカ配置などが代表的な設計手段です。パフォーマンス最適化はコストとのトレードオフを伴うことが多い点に留意します。6"
+    },
+    {
+      "kind": "paragraph",
+      "text": "Gemini Cloud Assist は、Google Cloud のアプリケーションライフサイクル全体（設計・デプロイ・トラブルシューティング・最適化）を支援する生成AIアシスタントです。15"
+    },
+    {
+      "kind": "paragraph",
+      "text": "主な機能"
+    },
+    {
+      "kind": "annotation",
+      "text": "📚 SOURCE Gemini Cloud Assist documentation、Gemini for Google Cloud overview"
+    },
+    {
+      "kind": "paragraph",
+      "text": "3.3（事業継続計画）で述べたRTO/RPOを技術的に実現する手段です。"
+    },
+    {
+      "kind": "annotation",
+      "text": "✅ BEST PRACTICE バックアップボールトは「不変性（Immutability）」と「削除不可性（Indelibility）」を持つため、ランサムウェア対策としても有効。CMEK（顧客管理暗号鍵）による暗号化にも対応する。11"
+    },
+    {
+      "kind": "annotation",
+      "text": "📚 SOURCE Backup and DR Service overview"
+    },
+    {
+      "kind": "paragraph",
+      "text": "このタスクは最も製品知識が問われる領域です。試験ガイド原文の6項目を順に解説します。1"
+    },
+    {
+      "kind": "annotation",
+      "text": "✅ BEST PRACTICE 帯域・パフォーマンス・セキュリティ・コスト・信頼性の要件に応じてハイブリッド／マルチクラウド接続方式を選定する。18 ハブアンドスポーク型の接続VPCを使い、複数VPCにまたがるシナリオをスケールさせる。19 Shared VPC を活用し、各サービスプロジェクトが個別に同じ接続ソリューションを複製する必要をなくす。19 ハイブリッドDNSのベストプラクティスに従い、オンプレミスとGoogle Cloud間で名前解決を統一する。18"
+    },
+    {
+      "kind": "annotation",
+      "text": "📚 SOURCE Decide the network design for your Google Cloud landing zone、Best practices for VPC design"
+    },
+    {
+      "kind": "paragraph",
+      "text": "v6.1で新設された領域です。Gemini Enterprise Agent Platform（旧 Vertex AI）が中核となります。20"
+    },
+    {
+      "kind": "annotation",
+      "text": "📚 SOURCE Agent Platform overview、Overview of Model Garden"
+    },
+    {
+      "kind": "annotation",
+      "text": "✅ BEST PRACTICE （VPC設計のベストプラクティスとリファレンスアーキテクチャより）[^19] VPCネットワーク設計は早い段階から検討し、ステークホルダー・タイムライン・前提作業を明確にする。 「Keep it simple」の原則：単一のVPCで開始し、必要になった段階でShared VPCへ拡張する。 明確な命名規則を使用する。 単一プロジェクトのデフォルトクォータを超える成長が見込まれる場合、プロジェクトごとに単一のVPCネットワークを作成し、クォータをプロジェクト単位にマッピングする。 自律的なチームごとにVPCネットワークを分け、共通サービスは別のVPCネットワークに集約する。 センシティブなデータは専用のVPCネットワークに分離する。 ハイブリッド接続には動的ルーティング（Cloud Router）を可能な限り使用する。"
+    },
+    {
+      "kind": "annotation",
+      "text": "📚 SOURCE Best practices and reference architectures for VPC design、VPC networks"
+    },
+    {
+      "kind": "paragraph",
+      "text": "Google Cloud のストレージは、データの構造とアクセスパターンに応じて大きく「オブジェクト」「ブロック」「ファイル」「データベース」の4種類に分かれます。23"
+    },
+    {
+      "kind": "annotation",
+      "text": "✅ BEST PRACTICE Persistent Diskは永続性が必要な用途に、Local SSDは揮発性を許容できる高速スクラッチ領域に使い分ける。25 Cloud Storageの Autoclass を使うとアクセス頻度に応じてストレージクラスが自動的に切り替わり、アクセスパターンが予測しにくいワークロードに適している。25 「本番環境でDBエンジンをVM上のブロックストレージで自前運用するか、マネージドDBを使うか」は運用オーバーヘッドの観点で比較する。"
+    },
+    {
+      "kind": "annotation",
+      "text": "📚 SOURCE Object storage vs block storage vs file storage、How Object vs Block vs File Storage differ"
+    },
+    {
+      "kind": "annotation",
+      "text": "✅ BEST PRACTICE まず最もシンプルな Cloud Run から検討を始め、Kubernetes固有の機能が明確に必要になった時点で GKE へ、コンテナ化が困難またはOSレベルの制御が必須な場合のみ Compute Engine を選択する、という段階的アプローチが推奨される。29"
+    },
+    {
+      "kind": "annotation",
+      "text": "📚 SOURCE Compute overview、Compute Engine overview"
+    },
+    {
+      "kind": "paragraph",
+      "text": "試験ガイドでは「移行計画の作成（ドキュメントとアーキテクチャ図を含む）」として、以下の4項目が挙げられています。1"
+    },
+    {
+      "kind": "paragraph",
+      "text": "移行後のシステムが、移行が完了していない既存システム（オンプレミス側の残存システムなど）とどう連携し続けるかを設計段階で明確にする。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "Migration Center は、オンプレミスや他クラウドからGoogle Cloudへの移行を加速するための統合プラットフォームです。30"
+    },
+    {
+      "kind": "paragraph",
+      "text": "主な機能"
+    },
+    {
+      "kind": "annotation",
+      "text": "✅ BEST PRACTICE 移行計画は「発見」→「評価」→「計画」の順で進め、ワークロードをカタログ化し、インフラコンポーネントおよび依存関係とマッピングしたうえで、レホスト／リプラットフォーム／リファクター等の移行パスを高レベルで特定する。32"
+    },
+    {
+      "kind": "annotation",
+      "text": "📚 SOURCE Migration Center overview、About migration planning"
+    },
+    {
+      "kind": "paragraph",
+      "text": "移行戦略は、一般に「6R」と呼ばれる分類で整理されます。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "移行に関わるツール（実運用でGoogle Cloudのプロフェッショナルサービスチームが使用）33"
+    },
+    {
+      "kind": "annotation",
+      "text": "✅ BEST PRACTICE ネットワーク計画では、移行期間中に発生する一時的なハイブリッド接続（オンプレミス⇔クラウド間の帯域・レイテンシ）を考慮し、依存関係計画では「一緒に移行しないと動かないコンポーネント」を移行ウェーブの単位として扱う。32"
+    },
+    {
+      "kind": "annotation",
+      "text": "📚 SOURCE Migration tools、RaMP overview"
+    },
+    {
+      "kind": "paragraph",
+      "text": "試験ガイド原文の3項目です。1"
+    },
+    {
+      "kind": "paragraph",
+      "text": "Google Cloud は新サービス・新機能を継続的にリリースするため、アーキテクトは既存アーキテクチャが陳腐化していないかを定期的にレビューする責任があります。運用の卓越性ピラーでも「価格モデルや新機能を定期的に見直し、より良い選択肢を継続的に採用する」ことが推奨されています。34"
+    },
+    {
+      "kind": "paragraph",
+      "text": "初期設計時の前提（トラフィック量、規制要件、組織構造）は時間とともに変化します。将来の拡張性を見据えつつも、現時点で不要な複雑さを持ち込まない（YAGNI: You Aren't Gonna Need It）バランス感覚が試験でも問われます。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "新規ワークロードは「オンプレミスの制約に合わせてクラウドを使う」のではなく、「クラウドネイティブなサービス（マネージドDB、サーバーレスコンピュート、マネージドAI/ML）を前提に設計する」という考え方です。これはWAFの運用の卓越性・コスト最適化ピラーとも整合します。"
+    },
+    {
+      "kind": "annotation",
+      "text": "📚 SOURCE Manage and optimize cloud resources"
+    },
+    {
+      "kind": "paragraph",
+      "text": "2025年10月30日の試験改訂（v6.1）により、ケーススタディは以下の4種類に刷新されました。すべてに生成AI活用の要素が組み込まれています。35"
+    },
+    {
+      "kind": "annotation",
+      "text": "✅ BEST PRACTICE 試験本番ではケーススタディを画面分割で参照できます。すべての設問がケーススタディを必要とするわけではなく、多くの設問はケーススタディを読まずに一般原則だけで回答可能です。事前学習の際は、各ケーススタディの「現状の技術スタック」と「解決したい課題（ビジネス要件）」を1ページ程度に要約しておくと、試験本番で参照時間を節約できます。40"
+    },
+    {
+      "kind": "annotation",
+      "text": "📚 SOURCE v6.1 Professional Cloud Architect Exam Guide"
+    },
+    {
+      "kind": "annotation",
+      "text": "Professional Cloud Architect Exam Guide (v6.1, PDF) — セクション1の出題項目一覧（原文）↩︎ ↩︎ ↩︎ ↩︎ ↩︎ ↩︎ v6.1 Exam Guide — 「Familiarity with the Google Cloud Well-Architected Framework is a key requirement」の記載↩︎ 運用の卓越性ピラー↩︎ セキュリティ・プライバシー・コンプライアンスピラー↩︎ 信頼性ピラー↩︎ パフォーマンス最適化ピラー↩︎ ↩︎ ↩︎ コスト最適化ピラー↩︎ ↩︎ 持続可能性ピラー↩︎ Best practices and reference architectures for VPC design — ステークホルダー特定に関する一般原則↩︎ Disaster recovery planning guide↩︎ ↩︎ Backup and DR Service overview↩︎ ↩︎ Align cloud spending with business value↩︎ ↩︎ Choose a Compute Engine deployment strategy↩︎ Well-Architected Framework — ステートフル/ステートレスアプリケーションに関する記載↩︎ Gemini Cloud Assist documentation↩︎ Gemini Cloud Assist: AI-assisted cloud operations and management↩︎ ↩︎ Gemini for Google Cloud overview↩︎ General best practices for hybrid/multicloud networking↩︎ ↩︎ Best practices and reference architectures for VPC design↩︎ ↩︎ Agent Platform overview↩︎ ↩︎ Overview of Model Garden↩︎ Overview of models on Agent Platform↩︎ Object storage vs block storage vs file storage↩︎ How Object vs Block vs File Storage differ↩︎ Compute Engine overview — ブロックストレージオプションに関する記載↩︎ ↩︎ ↩︎ Pick the right storage option on Google Cloud↩︎ Compute overview↩︎ ↩︎ ↩︎ Best practices for GKE networking↩︎ 一般的なGoogle Cloudコンピュート選択のベストプラクティス（段階的アプローチ）— Compute overview の管理オーバーヘッドの記載に基づく整理↩︎ Migration Center overview↩︎ ↩︎ ↩︎ ↩︎ Migration Center discovery client overview↩︎ About migration planning↩︎ ↩︎ Migration tools↩︎ Manage and optimize cloud resources↩︎ v6.1 Professional Cloud Architect Exam Guide — ケーススタディ一覧↩︎ Altostrat Media Case Study (PDF)↩︎ Cymbal Retail Case Study (PDF)↩︎ EHR Healthcare Case Study — 公式試験ガイドのケーススタディ一覧に基づく要約（v6.1 Exam Guide参照）↩︎ KnightMotives Automotive Case Study — 公式試験ガイドのケーススタディ一覧に基づく要約（v6.1 Exam Guide参照）↩︎ Professional Cloud Architect Certification — 「You can view the case studies on a split screen during the exam」の記載↩︎"
+    }
+  ],
+  "counts": {
+    "table": 14,
+    "diagram": 17,
+    "codeBlock": 0,
+    "figure": 0
+  },
+  "structures": {
+    "tableColumnHeaders": [
+      3,
+      3,
+      3,
+      2,
+      3,
+      2,
+      2,
+      2,
+      2,
+      3,
+      3,
+      3,
+      4,
+      4
+    ],
+    "codeLines": []
+  }
+}
