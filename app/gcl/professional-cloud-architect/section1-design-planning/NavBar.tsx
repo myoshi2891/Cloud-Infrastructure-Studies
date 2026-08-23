@@ -1,16 +1,31 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { NAV_ITEMS, type NavItem } from './constants';
 
+/**
+ * {@link NavBar} のプロパティ。開閉状態は親ページが所有し、NavBar は表示と通知のみを担う。
+ *
+ * @property isOpen - サイドバーが開いているか。`true` のとき `.sidebar` に `open` クラスが付く。
+ * @property onToggle - トグルボタン押下時に呼ばれ、親側で `isOpen` を反転させる。
+ * @property onClose - 目次リンクへの遷移後に呼ばれ、親側でサイドバーを閉じる。
+ */
 interface NavBarProps {
     isOpen: boolean;
     onToggle: () => void;
     onClose: () => void;
 }
 
+/**
+ * PCA Section 1（設計と計画）ガイドのサイドバー目次。
+ *
+ * IntersectionObserver によるスクロールスパイで現在位置の見出しをハイライトし、
+ * 目次リンクのクリックでスムーススクロールと URL ハッシュ更新を行う。
+ */
 export function NavBar({ isOpen, onToggle, onClose }: NavBarProps) {
     const [activeId, setActiveId] = useState<string>(NAV_ITEMS[0]?.id ?? '');
+    // 交差中の見出し id。再レンダリングを挟まずコールバック間で状態を持ち越す
+    const intersectingRef = useRef<Set<string>>(new Set());
 
     useEffect(() => {
         const navLevel2Items = NAV_ITEMS.filter((item) => item.level === 2);
@@ -21,20 +36,23 @@ export function NavBar({ isOpen, onToggle, onClose }: NavBarProps) {
         if (targetElements.length === 0) return;
         if (typeof IntersectionObserver === 'undefined') return;
 
+        const intersecting = intersectingRef.current;
+
         const observer = new IntersectionObserver(
             (entries) => {
-                // 同一バッチ内で複数の見出しが交差する場合、ビューポート最上部に
-                // 最も近い（boundingClientRect.top が最小の）見出しだけを採用する
-                const topMost = entries
-                    .filter((entry) => entry.isIntersecting)
-                    .reduce<IntersectionObserverEntry | null>(
-                        (best, entry) =>
-                            best === null || entry.boundingClientRect.top < best.boundingClientRect.top
-                                ? entry
-                                : best,
-                        null,
-                    );
-                if (topMost) setActiveId(topMost.target.id);
+                // IntersectionObserver のコールバックには「交差状態が変化した」見出ししか
+                // 含まれない。交差中の見出しを ref 上の Set に保持し、そこから毎回
+                // ビューポート最上部（= 文書順で最初）の見出しを選び直す
+                for (const entry of entries) {
+                    if (entry.isIntersecting) {
+                        intersecting.add(entry.target.id);
+                    } else {
+                        intersecting.delete(entry.target.id);
+                    }
+                }
+
+                const topMost = navLevel2Items.find((item) => intersecting.has(item.id));
+                if (topMost) setActiveId(topMost.id);
             },
             {
                 rootMargin: '-15% 0px -75% 0px',
@@ -60,6 +78,7 @@ export function NavBar({ isOpen, onToggle, onClose }: NavBarProps) {
 
         return () => {
             observer.disconnect();
+            intersecting.clear();
             window.removeEventListener('scroll', handleScroll);
         };
     }, []);
