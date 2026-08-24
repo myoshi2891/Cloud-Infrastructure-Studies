@@ -268,7 +268,7 @@ const ALL_EXAMS: Exam[] = [
             },
             {
                 label: 'Section 2: 管理とプロビジョニング',
-                href: '/gcl/professional-cloud-architect#section-2-クラウドソリューションインフラの管理とプロビジョニング約175',
+                href: '/gcl/professional-cloud-architect/section2-managing-provisioning',
                 pct: '~17.5%',
             },
             {
