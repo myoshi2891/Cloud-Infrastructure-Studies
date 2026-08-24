@@ -4,6 +4,34 @@
 
 ---
 
+## 2026-08-25: Google Cloud Professional Cloud Architect (PCA) Section 6: ソリューションと運用の卓越性の確保 完全ガイド 100%全量移行 (完了)
+
+### 目的
+
+`Gcp-pca-section6-operational-excellence.html` を、Next.js App Router 5ファイル構成 (`page.tsx`, `PcaSection6Guide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/gcl/professional-cloud-architect/section6-operational-excellence` ルートへ移行。見出し(h1:1, h2:12, h3:23, h4:0)、全23個のテーブル、14個のMermaid図解、全リスト(18件)、全外部リンク(18件)・全本文・コールアウト注記・理解度チェックリスト(18件)・参考文献グリッド(52件)を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for pca-section6-operational-excellence` (`ac120b1`)
+- [x] **Step 1 (Red)**: `test(pca): add failing tests for section6-operational-excellence` (`b446463`)
+- [x] **Step 2 (Green)**: `feat(pca): implement section6-operational-excellence to pass tests` (`3ea13cc`)
+- [x] **Step 3 (Refactor)**: `refactor(pca): integrate section6-operational-excellence into routing and update docs` (`11eb370`)
+- [x] **Step 4 (Archive & Sync)**: `chore(docs): update MIGRATION_PROGRESS.md — migrate PCA Section 6 guide`
+
+### 関連ファイル
+
+- [app/gcl/professional-cloud-architect/section6-operational-excellence/page.tsx](app/gcl/professional-cloud-architect/section6-operational-excellence/page.tsx)
+- [app/gcl/professional-cloud-architect/section6-operational-excellence/PcaSection6Guide.tsx](app/gcl/professional-cloud-architect/section6-operational-excellence/PcaSection6Guide.tsx)
+- [app/gcl/professional-cloud-architect/section6-operational-excellence/NavBar.tsx](app/gcl/professional-cloud-architect/section6-operational-excellence/NavBar.tsx)
+- [app/gcl/professional-cloud-architect/section6-operational-excellence/constants.ts](app/gcl/professional-cloud-architect/section6-operational-excellence/constants.ts)
+- [app/gcl/professional-cloud-architect/section6-operational-excellence/page.css](app/gcl/professional-cloud-architect/section6-operational-excellence/page.css)
+- [`__tests__/gcl/professional-cloud-architect/section6-operational-excellence/page.test.tsx`](__tests__/gcl/professional-cloud-architect/section6-operational-excellence/page.test.tsx)
+- [docs/migration-inventory/pca-section6-operational-excellence.json](docs/migration-inventory/pca-section6-operational-excellence.json)
+- [archive/Gcl/Professional-Cloud-Architect/Gcp-pca-section6-operational-excellence.html](archive/Gcl/Professional-Cloud-Architect/Gcp-pca-section6-operational-excellence.html)
+- [archive/Gcl/Professional-Cloud-Architect/Gcp-pca-section6-operational-excellence.md](archive/Gcl/Professional-Cloud-Architect/Gcp-pca-section6-operational-excellence.md)
+
+---
+
 ## 2026-08-25: Google Cloud Professional Cloud Architect (PCA) Section 5: 実装の管理 完全ガイド 100%全量移行 (完了)
 
 ### 目的
