@@ -106,6 +106,27 @@
     --color-pca-s2-green-outline: rgba(129, 201, 149, 0.28);
     --color-pca-s2-sidebar-shadow: rgba(0, 0, 0, 0.5);
 
+    /* PCA Section 3 guide */
+    --color-pca-s3-background: #07111e;
+    --color-pca-s3-surface-1: #0d1a2c;
+    --color-pca-s3-surface-2: #0f2036;
+    --color-pca-s3-border: #1c2f47;
+    --color-pca-s3-border-soft: #16273c;
+    --color-pca-s3-border-strong: #2a456c;
+    --color-pca-s3-foreground: #dce6f2;
+    --color-pca-s3-foreground-dim: #8ea3bd;
+    --color-pca-s3-foreground-faint: #5f7692;
+    --color-pca-s3-accent: #7c9eff;
+    --color-pca-s3-accent-soft: #3a5789;
+    --color-pca-s3-accent-bg: rgba(124, 158, 255, 0.1);
+    --color-pca-s3-accent-hover: rgba(124, 158, 255, 0.06);
+    --color-pca-s3-accent2: #5ee6c8;
+    --color-pca-s3-accent2-soft: rgba(94, 230, 200, 0.1);
+    --color-pca-s3-warn: #ff8a7c;
+    --color-pca-s3-warn-soft: rgba(255, 138, 124, 0.1);
+    --color-pca-s3-code-bg: #0a1729;
+    --color-pca-s3-sidebar-shadow: rgba(0, 0, 0, 0.5);
+
 
     /* Shared dark-guide surfaces */
     --color-guide-background: #07111e;

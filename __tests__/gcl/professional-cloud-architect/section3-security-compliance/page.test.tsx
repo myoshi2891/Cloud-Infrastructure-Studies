@@ -21,14 +21,14 @@ describe('PCA Section 3: 視覚デザイン・UIコンポーネント構造の�
         return container;
     };
 
-    it('サイドバーナビが nav.sidebar ul li a 構造を持ち、目次項目を描画する', () => {
+    it('サイドバーナビが .sidebar .sidebar-nav a 構造を持ち、19件の目次項目を描画する', () => {
         const container = renderPage();
         const sidebar = container.querySelector('.sidebar');
         expect(sidebar).not.toBeNull();
         expect(sidebar?.querySelector('.sidebar-brand')).not.toBeNull();
 
-        const navLinks = container.querySelectorAll('.sidebar ul.nav-list a');
-        expect(navLinks.length).toBeGreaterThan(0);
+        const navLinks = container.querySelectorAll('.sidebar a.nav-link');
+        expect(navLinks).toHaveLength(19);
     });
 
     it('全てのテーブルが .table-scroll ラッパー内に配置されている', () => {
@@ -48,11 +48,11 @@ describe('PCA Section 3: 視覚デザイン・UIコンポーネント構造の�
         expect(hero?.querySelector('.hero-kicker')).not.toBeNull();
     });
 
-    it('参考文献が .ref-grid 構造と 74 件の .ref-card を持つ', () => {
+    it('参考文献が .ref-grid 構造と 71 件の .ref-card を持つ', () => {
         const container = renderPage();
         const refGrid = container.querySelector('.ref-grid');
         expect(refGrid).not.toBeNull();
         const refCards = container.querySelectorAll('.ref-card');
-        expect(refCards).toHaveLength(74);
+        expect(refCards).toHaveLength(71);
     });
 });
