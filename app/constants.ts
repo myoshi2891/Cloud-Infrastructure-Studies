@@ -283,7 +283,7 @@ const ALL_EXAMS: Exam[] = [
             },
             {
                 label: 'Section 5: 実装の管理',
-                href: '/gcl/professional-cloud-architect#section-5-実装の管理約125',
+                href: '/gcl/professional-cloud-architect/section5-managing-implementation',
                 pct: '~12.5%',
             },
             {
