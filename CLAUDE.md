@@ -334,6 +334,12 @@ app/
         NavBar.tsx                  # サイドバーナビ (IntersectionObserver)
         constants.ts                # Mermaid 図定義 (13図)
         page.css                    # ページ固有スタイル
+      section6-operational-excellence/
+        page.tsx                    # PCA Section 6: ソリューションと運用の卓越性の確保 完全ガイド (Server)
+        PcaSection6Guide.tsx        # 本文＋インタラクション (Client。全8セクション、14 Mermaid図、23テーブル等)
+        NavBar.tsx                  # サイドバーナビ (IntersectionObserver)
+        constants.ts                # Mermaid 図定義 (14図)
+        page.css                    # ページ固有スタイル
   cisco/
     devnet-professional/
       page.tsx                      # Cisco Certified DevNet Professional 認定 徹底解説ガイド（Server）

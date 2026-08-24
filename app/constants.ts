@@ -288,7 +288,7 @@ const ALL_EXAMS: Exam[] = [
             },
             {
                 label: 'Section 6: 運用の卓越性',
-                href: '/gcl/professional-cloud-architect#section-6-ソリューションと運用の卓越性の確保約125',
+                href: '/gcl/professional-cloud-architect/section6-operational-excellence',
                 pct: '~12.5%',
             },
         ],
