@@ -178,12 +178,9 @@ export const DIAGRAMS: Record<DiagramId, string> = {
     class RES highlightFill`,
 
     'diag-8': `flowchart LR
-    COLD["Cold<br/>バックアップと復元"] --> WARM["Warm<br/>縮小版スタンバイ"]
+    COLD["Cold<br/>バックアップと復元<br/>RTO/RPO 大・コスト 低"] --> WARM["Warm<br/>縮小版スタンバイ"]
     WARM --> HOT["Hot<br/>マルチサイト"]
-    HOT --> AA["Active-Active<br/>マルチリージョン"]
-
-    COLD -.->|RTO/RPO 大 コスト 低| COLD
-    AA -.->|RTO/RPO 最小 コスト 最高| AA
+    HOT --> AA["Active-Active<br/>マルチリージョン<br/>RTO/RPO 最小・コスト 最高"]
 
     classDef highlightFill fill:#1a3a5c,stroke:#4a90d9,color:#ffffff;
     class COLD highlightFill

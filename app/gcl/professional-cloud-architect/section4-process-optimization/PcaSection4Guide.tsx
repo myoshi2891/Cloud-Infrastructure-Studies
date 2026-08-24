@@ -68,7 +68,7 @@ export function PcaSection4Guide() {
                     </div>
                 </div>
 
-                <h2 id="このガイドについて">このガイドについて</h2>
+                <h2 id="このガイドについて" tabIndex={-1}>このガイドについて</h2>
                 <p>
                     本ガイドは、Google Cloud認定資格「Professional Cloud
                     Architect（PCA）」の出題範囲のうち、<strong>
@@ -125,8 +125,8 @@ export function PcaSection4Guide() {
                     </li>
                 </ul>
                 <hr />
-                <h2 id="1-section-4の全体像">1. Section 4の全体像</h2>
-                <h3 id="11-配点と出題範囲">1.1 配点と出題範囲</h3>
+                <h2 id="1-section-4の全体像" tabIndex={-1}>1. Section 4の全体像</h2>
+                <h3 id="11-配点と出題範囲" tabIndex={-1}>1.1 配点と出題範囲</h3>
                 <p>
                     公式試験ガイドによると、Section
                     4は次の2つのタスク領域（4.1と4.2）で構成されます<a
@@ -170,7 +170,7 @@ export function PcaSection4Guide() {
                     1〜6）における「プロセス」を扱う唯一のセクションであり、以下のようにアーキテクトのライフサイクル全体をつなぐ役割を持っています。
                 </p>
                 <Diagram id="diag-1" label="Section 4の全体像と他セクションとの連携" />
-                <h3 id="12-well-architected-frameworkとの関係">
+                <h3 id="12-well-architected-frameworkとの関係" tabIndex={-1}>
                     1.2 Well-Architected Frameworkとの関係
                 </h3>
                 <p>
@@ -256,8 +256,8 @@ export function PcaSection4Guide() {
                     4の技術的プロセスとビジネスプロセスの両方を理解するうえで役立ちます。
                 </p>
                 <hr />
-                <h2 id="2-41-技術的プロセスの分析と定義">2. 4.1 技術的プロセスの分析と定義</h2>
-                <h3 id="21-ソフトウェア開発ライフサイクルsdlc">
+                <h2 id="2-41-技術的プロセスの分析と定義" tabIndex={-1}>2. 4.1 技術的プロセスの分析と定義</h2>
+                <h3 id="21-ソフトウェア開発ライフサイクルsdlc" tabIndex={-1}>
                     2.1 ソフトウェア開発ライフサイクル（SDLC）
                 </h3>
                 <p>
@@ -377,7 +377,7 @@ export function PcaSection4Guide() {
                     </div>
                 </div>
 
-                <h3 id="22-継続的インテグレーション継続的デリバリーcicd">
+                <h3 id="22-継続的インテグレーション継続的デリバリーcicd" tabIndex={-1}>
                     2.2 継続的インテグレーション/継続的デリバリー（CI/CD）
                 </h3>
                 <p>
@@ -554,7 +554,7 @@ export function PcaSection4Guide() {
                     </div>
                 </div>
 
-                <h3 id="23-トラブルシューティングと根本原因分析rcaのベストプラクティス">
+                <h3 id="23-トラブルシューティングと根本原因分析rcaのベストプラクティス" tabIndex={-1}>
                     2.3 トラブルシューティングと根本原因分析（RCA）のベストプラクティス
                 </h3>
                 <p>
@@ -716,7 +716,7 @@ export function PcaSection4Guide() {
                     </div>
                 </div>
 
-                <h3 id="24-ソフトウェアとインフラのテストと検証">
+                <h3 id="24-ソフトウェアとインフラのテストと検証" tabIndex={-1}>
                     2.4 ソフトウェアとインフラのテストと検証
                 </h3>
                 <p>
@@ -846,7 +846,7 @@ export function PcaSection4Guide() {
                     </div>
                 </div>
 
-                <h3 id="25-サービスカタログとプロビジョニング">
+                <h3 id="25-サービスカタログとプロビジョニング" tabIndex={-1}>
                     2.5 サービスカタログとプロビジョニング
                 </h3>
                 <p>
@@ -962,7 +962,7 @@ export function PcaSection4Guide() {
                     </div>
                 </div>
 
-                <h3 id="26-ディザスタリカバリdr">2.6 ディザスタリカバリ（DR）</h3>
+                <h3 id="26-ディザスタリカバリdr" tabIndex={-1}>2.6 ディザスタリカバリ（DR）</h3>
                 <p>
                     <strong>ディザスタリカバリ（DR）</strong>{" "}
                     は、電源障害、サイバー攻撃、自然災害といったサービス中断を引き起こすイベントの後に、組織のITインフラへのアクセスと機能を復元するプロセスです。DRは<strong
@@ -1127,13 +1127,13 @@ export function PcaSection4Guide() {
                 </div>
 
                 <hr />
-                <h2 id="3-42-ビジネスプロセスの分析と定義">3. 4.2 ビジネスプロセスの分析と定義</h2>
+                <h2 id="3-42-ビジネスプロセスの分析と定義" tabIndex={-1}>3. 4.2 ビジネスプロセスの分析と定義</h2>
                 <p>
                     4.2は、アーキテクトが単なる技術者ではなく、組織全体を横断してクラウド導入を成功に導く「変革の推進者」であることを求める領域です。ここでは、Google
                     Cloud Adoption
                     Frameworkをはじめとする公式ガイダンスをベースに、7つの考慮事項を解説します。
                 </p>
-                <h3 id="31-ステークホルダー管理影響力とファシリテーション">
+                <h3 id="31-ステークホルダー管理影響力とファシリテーション" tabIndex={-1}>
                     3.1 ステークホルダー管理（影響力とファシリテーション）
                 </h3>
                 <p>
@@ -1205,7 +1205,7 @@ export function PcaSection4Guide() {
                         </tbody>
                     </table>
                 </div>
-                <h3 id="32-チェンジマネジメント">3.2 チェンジマネジメント</h3>
+                <h3 id="32-チェンジマネジメント" tabIndex={-1}>3.2 チェンジマネジメント</h3>
                 <p>チェンジマネジメント（変更管理）には、大きく分けて2つの側面があります。</p>
                 <ol type="1">
                     <li>
@@ -1304,7 +1304,7 @@ export function PcaSection4Guide() {
                     </div>
                 </div>
 
-                <h3 id="33-チームアセスメントとスキルレディネス">
+                <h3 id="33-チームアセスメントとスキルレディネス" tabIndex={-1}>
                     3.3 チームアセスメントとスキルレディネス
                 </h3>
                 <p>
@@ -1415,7 +1415,7 @@ export function PcaSection4Guide() {
                         </tbody>
                     </table>
                 </div>
-                <h3 id="34-意思決定プロセス">3.4 意思決定プロセス</h3>
+                <h3 id="34-意思決定プロセス" tabIndex={-1}>3.4 意思決定プロセス</h3>
                 <p>
                     アーキテクチャに関する意思決定は、多くの場合、複数の技術的トレードオフとビジネス上の制約が絡み合う複雑な作業です。効果的な意思決定プロセスを設計することで、決定の質とスピードの両方を高めることができます。
                 </p>
@@ -1493,7 +1493,7 @@ export function PcaSection4Guide() {
                         </tbody>
                     </table>
                 </div>
-                <h3 id="35-カスタマーサクセスマネジメント">3.5 カスタマーサクセスマネジメント</h3>
+                <h3 id="35-カスタマーサクセスマネジメント" tabIndex={-1}>3.5 カスタマーサクセスマネジメント</h3>
                 <p>
                     カスタマーサクセスマネジメントとは、顧客（社内の場合は他チーム、対外的な場合はエンドユーザー企業）がソリューションから継続的に価値を引き出せるよう支援するプロセスです。Google
                     Cloud自身も、専門サービス組織（Professional Services Organization,
@@ -1576,7 +1576,7 @@ export function PcaSection4Guide() {
                     </div>
                 </div>
 
-                <h3 id="36-コスト最適化リソース最適化capexopex">
+                <h3 id="36-コスト最適化リソース最適化capexopex" tabIndex={-1}>
                     3.6 コスト最適化・リソース最適化（CapEx／OpEx）
                 </h3>
                 <p>
@@ -1720,7 +1720,7 @@ export function PcaSection4Guide() {
                     </div>
                 </div>
 
-                <h3 id="37-事業継続性ビジネスコンティニュイティ">
+                <h3 id="37-事業継続性ビジネスコンティニュイティ" tabIndex={-1}>
                     3.7 事業継続性（ビジネスコンティニュイティ）
                 </h3>
                 <p>
@@ -1890,7 +1890,7 @@ export function PcaSection4Guide() {
                 </div>
 
                 <hr />
-                <h2 id="4-ケーススタディへの適用">4. ケーススタディへの適用</h2>
+                <h2 id="4-ケーススタディへの適用" tabIndex={-1}>4. ケーススタディへの適用</h2>
                 <p>
                     Professional Cloud
                     Architect試験では、いくつかの設問が架空の企業と課題を描いた「ケーススタディ」を参照する形で出題されます。これらのケーススタディはGoogle
@@ -1958,7 +1958,7 @@ export function PcaSection4Guide() {
                     ケーススタディを扱う設問では、多くの場合「最も技術的に高度な答え」ではなく、<strong>そのケーススタディに記載されたビジネス要件・制約・優先順位に最も整合する答え</strong>が正解になる点に注意してください。
                 </p>
                 <hr />
-                <h2 id="5-学習チェックリスト">5. 学習チェックリスト</h2>
+                <h2 id="5-学習チェックリスト" tabIndex={-1}>5. 学習チェックリスト</h2>
                 <p>以下のチェックリストを使って、Section 4の理解度をセルフチェックしてください。</p>
                 <div className="checklist-card">
                     <div className="checklist-header">
@@ -2073,7 +2073,7 @@ export function PcaSection4Guide() {
                     </ul>
                 </div>
                 <hr />
-                <h2 id="6-まとめ">6. まとめ</h2>
+                <h2 id="6-まとめ" tabIndex={-1}>6. まとめ</h2>
                 <p>
                     Section
                     4「プロセス分析と最適化」は、配点こそ約15%と他セクションより小さいものの、Professional
@@ -2088,7 +2088,7 @@ export function PcaSection4Guide() {
                     この2つの領域は独立しているのではなく、互いに補完し合う関係にあります。たとえば、技術的に優れたDR計画も、ステークホルダーの合意とチームのスキルレディネスがなければ実行できません。逆に、優れたチェンジマネジメントのプロセスがあっても、その土台となるCI/CDパイプラインやIaCの技術基盤がなければ、変更を安全かつ迅速に届けることはできません。試験対策としても、実務のアーキテクト業務としても、この技術とビジネスの両輪を意識した学習を進めてください。
                 </p>
                 <hr />
-                <h2 id="7-参考文献">7. 参考文献</h2>
+                <h2 id="7-参考文献" tabIndex={-1}>7. 参考文献</h2>
                 <div>
                     <div className="ref-grid" id="referenceGrid">
                         <div className="ref-card" id="ref1">

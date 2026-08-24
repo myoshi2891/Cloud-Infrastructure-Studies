@@ -150,7 +150,7 @@
     font-size: clamp(28px, 3.6vw, 42px);
     line-height: 1.35;
     margin: 0 0 18px;
-    background: linear-gradient(135deg, #dbe4f3 0%, #7c9eff 100%);
+    background: linear-gradient(135deg, var(--color-pca-s4-foreground) 0%, var(--color-pca-s4-accent) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -264,7 +264,6 @@
     font-size: 0.9em;
     color: #ffd08a;
     overflow-wrap: break-word;
-    word-break: break-word;
 }
 
 /* Tables */
@@ -428,7 +427,6 @@
     color: var(--color-pca-s4-foreground-dim);
     min-width: 0;
     overflow-wrap: break-word;
-    word-break: break-word;
 }
 
 .pca-s4-page .ref-card .txt a {
