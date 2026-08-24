@@ -79,6 +79,33 @@
     --color-pca-s1-green-outline: rgba(129, 201, 149, 0.28);
     --color-pca-s1-sidebar-shadow: rgba(0, 0, 0, 0.5);
 
+    /* PCA Section 2 guide */
+    --color-pca-s2-background: #07111e;
+    --color-pca-s2-surface-1: #0d1a2b;
+    --color-pca-s2-surface-2: #0f1d30;
+    --color-pca-s2-border: #1c2c42;
+    --color-pca-s2-border-strong: #28405e;
+    --color-pca-s2-foreground: #dbe4f3;
+    --color-pca-s2-foreground-dim: #8fa2bd;
+    --color-pca-s2-foreground-dimmer: #4f6178;
+    --color-pca-s2-accent: #7c9eff;
+    --color-pca-s2-accent-strong: #a5c0ff;
+    --color-pca-s2-accent-soft: rgba(124, 158, 255, 0.12);
+    --color-pca-s2-hero-grad-a: #7c9eff;
+    --color-pca-s2-hero-grad-b: #a78bfa;
+    --color-pca-s2-amber: #f9ab00;
+    --color-pca-s2-red: #f28b82;
+    --color-pca-s2-green: #81c995;
+    --color-pca-s2-accent-tint: rgba(124, 158, 255, 0.08);
+    --color-pca-s2-accent-tint-strong: rgba(124, 158, 255, 0.18);
+    --color-pca-s2-accent-outline: rgba(124, 158, 255, 0.28);
+    --color-pca-s2-row-hover: rgba(124, 158, 255, 0.05);
+    --color-pca-s2-item-hover: rgba(124, 158, 255, 0.06);
+    --color-pca-s2-green-tint: rgba(129, 201, 149, 0.08);
+    --color-pca-s2-green-tint-strong: rgba(129, 201, 149, 0.18);
+    --color-pca-s2-green-outline: rgba(129, 201, 149, 0.28);
+    --color-pca-s2-sidebar-shadow: rgba(0, 0, 0, 0.5);
+
 
     /* Shared dark-guide surfaces */
     --color-guide-background: #07111e;

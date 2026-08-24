@@ -21,14 +21,13 @@ describe('PCA Section 2: 視覚デザイン・UIコンポーネント構造の�
         return container;
     };
 
-    it('サイドバーナビが aside.sidebar nav a 構造を持ち、目次項目を描画する', () => {
+    it('サイドバーナビが nav.sidebar ul li a 構造を持ち、目次項目を描画する', () => {
         const container = renderPage();
-        const sidebar = container.querySelector('aside.sidebar');
+        const sidebar = container.querySelector('.sidebar');
         expect(sidebar).not.toBeNull();
         expect(sidebar?.querySelector('.sidebar-brand')).not.toBeNull();
-        expect(sidebar?.querySelector('.sidebar-brand .dot')).not.toBeNull();
 
-        const navLinks = container.querySelectorAll('.sidebar nav ul li a');
+        const navLinks = container.querySelectorAll('.sidebar ul.nav-list a');
         expect(navLinks.length).toBeGreaterThan(0);
     });
 
@@ -41,16 +40,19 @@ describe('PCA Section 2: 視覚デザイン・UIコンポーネント構造の�
         });
     });
 
-    it('Heroセクションが h1, hero-sub, および hero-kicker または hero-badges を持つ', () => {
+    it('Heroセクションが h1, subtitle, および hero-kicker を持つ', () => {
         const container = renderPage();
         const hero = container.querySelector('.hero');
         expect(hero).not.toBeNull();
         expect(hero?.querySelector('h1')).not.toBeNull();
+        expect(hero?.querySelector('.hero-kicker')).not.toBeNull();
     });
 
-    it('フットノートが aside#footnotes 構造を持つ', () => {
+    it('参考文献が .ref-grid 構造と 42 件の .ref-card を持つ', () => {
         const container = renderPage();
-        const footnotes = container.querySelector('aside#footnotes');
-        expect(footnotes).not.toBeNull();
+        const refGrid = container.querySelector('.ref-grid');
+        expect(refGrid).not.toBeNull();
+        const refCards = container.querySelectorAll('.ref-card');
+        expect(refCards).toHaveLength(42);
     });
 });
