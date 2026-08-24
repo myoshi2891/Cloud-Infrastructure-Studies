@@ -2096,15 +2096,15 @@ export function PcaSection3Guide() {
                                 </td>
                                 <td>
                                     <a href="#311-identity-and-access-managementiam">3.1.1</a>
-                                    IAM、<a href="#312-リソース階層組織フォルダプロジェクト">3.1.2</a>
-                                    リソース階層
+                                    {' '}IAM、<a href="#312-リソース階層組織フォルダプロジェクト">3.1.2</a>
+                                    {' '}リソース階層
                                 </td>
                             </tr>
                             <tr className="even">
                                 <td>ゼロトラストを実装する（「決して信頼せず、常に検証する」）</td>
                                 <td>
                                     <a href="#317-セキュアなリモートアクセス">3.1.7</a>
-                                    セキュアなリモートアクセス
+                                    {' '}セキュアなリモートアクセス
                                 </td>
                             </tr>
                             <tr className="odd">
@@ -2113,28 +2113,28 @@ export function PcaSection3Guide() {
                                 </td>
                                 <td>
                                     <a href="#318-ソフトウェアサプライチェーンのセキュリティ確保">3.1.8</a>
-                                    ソフトウェアサプライチェーン
+                                    {' '}ソフトウェアサプライチェーン
                                 </td>
                             </tr>
                             <tr className="even">
                                 <td>多層防御を実装する</td>
                                 <td>
                                     <a href="#315-セキュリティ制御監査vpc-service-controlsコンテキストアウェアアクセス組織ポリシー階層ファイアウォールポリシー">3.1.5</a>
-                                    セキュリティ制御群
+                                    {' '}セキュリティ制御群
                                 </td>
                             </tr>
                             <tr className="odd">
                                 <td>データを保護する（暗号化・分類・秘匿化）</td>
                                 <td>
                                     <a href="#313-データセキュリティ鍵管理暗号化シークレット管理">3.1.3</a>・<a href="#316-cloud-kmsによる顧客管理暗号鍵cmekの管理">3.1.6</a>
-                                    データセキュリティ・CMEK
+                                    {' '}データセキュリティ・CMEK
                                 </td>
                             </tr>
                             <tr className="even">
                                 <td>コンプライアンス・プライバシー要件と整合させる</td>
                                 <td>
                                     <a href="#32-コンプライアンスの設計">3.2</a>
-                                    コンプライアンスの設計全般
+                                    {' '}コンプライアンスの設計全般
                                 </td>
                             </tr>
                         </tbody>
