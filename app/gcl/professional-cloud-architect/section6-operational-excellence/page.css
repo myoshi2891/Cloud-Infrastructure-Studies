@@ -248,256 +248,145 @@
 
 .pca-s6-page .footnote-ref {
     margin-left: 2px;
+}
+
+.pca-s6-page .footnote-ref sup {
     font-size: 11px;
-    vertical-align: super;
     color: var(--color-pca-s6-accent);
-    text-decoration: none;
     font-weight: 700;
 }
 
-.pca-s6-page .footnote-ref:hover {
-    text-decoration: underline;
-}
-
-/* Callouts / Cards */
-.pca-s6-page .callout {
-    background: var(--color-pca-s6-surface-1);
+.pca-s6-page .main code:not(pre code) {
+    background: var(--color-pca-s6-surface-2);
     border: 1px solid var(--color-pca-s6-border);
-    border-left: 4px solid var(--color-pca-s6-accent);
-    border-radius: 10px;
-    padding: 20px 24px;
-    margin: 24px 0;
-}
-
-.pca-s6-page .callout.callout-warn {
-    border-left-color: var(--color-pca-s6-warn);
-    background: var(--color-pca-s6-warn-bg);
-}
-
-.pca-s6-page .callout.callout-danger {
-    border-left-color: var(--color-pca-s6-danger);
-    background: var(--color-pca-s6-danger-bg);
-}
-
-.pca-s6-page .callout.callout-success {
-    border-left-color: var(--color-pca-s6-success);
-    background: var(--color-pca-s6-success-bg);
-}
-
-.pca-s6-page .callout-title {
-    font-size: 15px;
-    font-weight: 700;
-    margin: 0 0 8px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: var(--color-pca-s6-foreground);
-}
-
-.pca-s6-page .callout p:last-child {
-    margin-bottom: 0;
-}
-
-.pca-s6-page .card {
-    background: var(--color-pca-s6-surface-1);
-    border: 1px solid var(--color-pca-s6-border);
-    border-radius: 12px;
-    padding: 24px 28px;
-    margin: 24px 0;
-}
-
-.pca-s6-page .card-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 18px;
-    margin: 24px 0;
-}
-
-.pca-s6-page .card-grid .card {
-    margin: 0;
-}
-
-.pca-s6-page .card h4 {
-    margin: 0 0 10px;
-    font-size: 17px;
-    color: var(--color-pca-s6-foreground);
-    font-weight: 700;
+    border-radius: 5px;
+    padding: 1px 6px;
+    font-size: 0.9em;
+    color: #ffd08a;
+    overflow-wrap: anywhere;
 }
 
 /* Tables */
 .pca-s6-page .table-scroll {
     overflow-x: auto;
-    margin: 24px 0 32px;
+    margin: 0 0 26px;
     border: 1px solid var(--color-pca-s6-border);
-    border-radius: 10px;
+    border-radius: 12px;
     background: var(--color-pca-s6-surface-1);
 }
 
 .pca-s6-page table {
-    width: 100%;
     border-collapse: collapse;
-    font-size: 14px;
+    width: 100%;
+    font-size: 14.5px;
     line-height: 1.65;
     text-align: left;
 }
 
-.pca-s6-page th {
-    background: var(--color-pca-s6-surface-2);
-    color: #ffffff;
+.pca-s6-page thead th {
+    background: var(--color-pca-s6-accent-bg);
+    color: var(--color-pca-s6-foreground);
+    text-align: left;
+    padding: 12px 16px;
     font-weight: 700;
-    padding: 14px 16px;
     border-bottom: 1px solid var(--color-pca-s6-border);
     white-space: nowrap;
 }
 
-.pca-s6-page td {
-    padding: 13px 16px;
+.pca-s6-page tbody td {
+    padding: 12px 16px;
     border-bottom: 1px solid var(--color-pca-s6-border-soft);
-    color: var(--color-pca-s6-foreground);
+    color: var(--color-pca-s6-foreground-dim);
     vertical-align: top;
 }
 
-.pca-s6-page tr:last-child td {
+.pca-s6-page tbody tr:last-child td {
     border-bottom: none;
 }
 
-.pca-s6-page tr:hover td {
-    background: var(--color-pca-s6-accent-hover);
+.pca-s6-page tbody tr:hover td {
+    background: rgba(124, 158, 255, 0.04);
 }
 
-/* Badge */
-.pca-s6-page .badge {
-    display: inline-block;
-    padding: 2px 8px;
-    font-size: 11.5px;
-    font-weight: 700;
-    border-radius: 999px;
-    line-height: 1.4;
-    white-space: nowrap;
-}
-
-.pca-s6-page .badge-blue {
-    background: var(--color-pca-s6-accent-bg);
-    color: var(--color-pca-s6-accent);
-    border: 1px solid var(--color-pca-s6-border);
-}
-
-.pca-s6-page .badge-green {
+/* Callouts */
+.pca-s6-page .callout-practice {
+    display: flex;
+    gap: 14px;
     background: var(--color-pca-s6-success-bg);
-    color: var(--color-pca-s6-success);
-    border: 1px solid rgba(127, 224, 168, 0.3);
-}
-
-.pca-s6-page .badge-warn {
-    background: var(--color-pca-s6-warn-bg);
-    color: var(--color-pca-s6-warn);
-    border: 1px solid rgba(255, 189, 110, 0.3);
-}
-
-.pca-s6-page .badge-danger {
-    background: var(--color-pca-s6-danger-bg);
-    color: var(--color-pca-s6-danger);
-    border: 1px solid rgba(255, 143, 163, 0.3);
-}
-
-/* Code */
-.pca-s6-page code {
-    font-family: var(--font-mono);
-    font-size: 13.5px;
-    background: var(--color-pca-s6-code-bg);
-    color: #aed0ff;
-    padding: 2px 7px;
-    border-radius: 5px;
-    border: 1px solid var(--color-pca-s6-border-soft);
-}
-
-/* Checklist */
-.pca-s6-page .checklist-card {
-    background: var(--color-pca-s6-surface-1);
-    border: 1px solid var(--color-pca-s6-border);
+    border: 1px solid #1d5a3a;
+    border-left: 4px solid var(--color-pca-s6-success);
     border-radius: 12px;
-    padding: 28px 32px;
-    margin: 32px 0;
+    padding: 20px 22px;
+    margin: 0 0 26px;
 }
 
-.pca-s6-page .checklist-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-    gap: 12px;
-}
-
-.pca-s6-page .checklist-header h3 {
-    margin: 0;
-    padding: 0;
-    border: none;
-}
-
-.pca-s6-page .checklist-header h3::before {
-    display: none;
-}
-
-.pca-s6-page .checklist-header .count {
-    font-size: 14px;
-    color: var(--color-pca-s6-accent);
-    font-weight: 700;
-}
-
-.pca-s6-page .check-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.pca-s6-page .check-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    padding: 12px 0;
-    border-bottom: 1px solid var(--color-pca-s6-border-soft);
-    font-size: 14.5px;
-    cursor: pointer;
-}
-
-.pca-s6-page .check-item:last-child {
-    border-bottom: none;
-}
-
-.pca-s6-page .check-item input[type='checkbox'] {
-    margin-top: 5px;
-    width: 17px;
-    height: 17px;
-    accent-color: var(--color-pca-s6-accent);
-    cursor: pointer;
+.pca-s6-page .callout-practice .icon {
     flex-shrink: 0;
+    width: 26px;
+    height: 26px;
+    border-radius: 7px;
+    background: var(--color-pca-s6-success);
+    color: #08150e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 900;
 }
 
-.pca-s6-page .check-item.done span {
-    text-decoration: line-through;
-    color: var(--color-pca-s6-foreground-dim);
+.pca-s6-page .callout-practice .body {
+    color: var(--color-pca-s6-foreground);
 }
 
-/* References Grid */
+.pca-s6-page .callout-practice .label {
+    font-size: 11.5px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    color: var(--color-pca-s6-success);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+}
+
+.pca-s6-page .callout-practice p {
+    margin: 0;
+    color: var(--color-pca-s6-foreground);
+}
+
+.pca-s6-page .practice-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    color: var(--color-pca-s6-success);
+    text-transform: uppercase;
+    margin: 0 0 10px;
+}
+
+.pca-s6-page .practice-label::before {
+    content: '✓';
+    font-size: 13px;
+}
+
+/* Reference grid */
 .pca-s6-page .ref-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 14px;
-    margin-top: 24px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin: 0 0 30px;
 }
 
 .pca-s6-page .ref-card {
-    background: var(--color-pca-s6-surface-1);
-    border: 1px solid var(--color-pca-s6-border);
-    border-radius: 8px;
-    padding: 14px 16px;
-    font-size: 13px;
-    line-height: 1.55;
     display: flex;
     gap: 12px;
-    transition: border-color 0.2s;
+    background: var(--color-pca-s6-surface-1);
+    border: 1px solid var(--color-pca-s6-border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    min-width: 0;
     scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 24px);
+    transition: border-color 0.2s;
 }
 
 .pca-s6-page .ref-card:hover {
@@ -505,35 +394,145 @@
 }
 
 .pca-s6-page .ref-card .num {
-    font-weight: 700;
-    color: var(--color-pca-s6-accent);
-    font-family: var(--font-mono);
-    min-width: 20px;
     flex-shrink: 0;
+    width: 26px;
+    height: 26px;
+    border-radius: 7px;
+    background: var(--color-pca-s6-accent-bg);
+    color: var(--color-pca-s6-accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 800;
 }
 
 .pca-s6-page .ref-card .txt {
+    font-size: 13px;
+    color: var(--color-pca-s6-foreground-dim);
+    min-width: 0;
     overflow-wrap: anywhere;
-    color: var(--color-pca-s6-foreground);
 }
 
-.pca-s6-page .ref-card a {
+.pca-s6-page .ref-card .txt a {
+    color: var(--color-pca-s6-accent);
+    font-weight: 600;
     display: block;
     font-size: 11.5px;
     margin-top: 4px;
-    color: var(--color-pca-s6-accent);
     overflow-wrap: anywhere;
+}
+
+/* Checklist */
+.pca-s6-page .checklist-card {
+    background: var(--color-pca-s6-surface-1);
+    border: 1px solid var(--color-pca-s6-border);
+    border-radius: 14px;
+    padding: 8px 22px 12px;
+    margin: 0 0 30px;
+}
+
+.pca-s6-page .checklist-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--color-pca-s6-border-soft);
+    margin-bottom: 6px;
+}
+
+.pca-s6-page .checklist-header .title {
+    font-weight: 700;
+    color: var(--color-pca-s6-foreground);
+    font-size: 14.5px;
+}
+
+.pca-s6-page .checklist-header .count {
+    font-size: 13px;
+    color: var(--color-pca-s6-accent);
+    font-weight: 700;
+}
+
+.pca-s6-page .checklist-card ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.pca-s6-page .checklist-card li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 11px 4px;
+    border-radius: 8px;
+    margin: 0;
+    transition: background 0.15s;
+    cursor: pointer;
+}
+
+.pca-s6-page .checklist-card li:hover {
+    background: rgba(124, 158, 255, 0.05);
+}
+
+.pca-s6-page .checklist-card input[type='checkbox'] {
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    width: 19px !important;
+    height: 19px !important;
+    flex-shrink: 0;
+    margin: 2px 0 0 0 !important;
+    padding: 0 !important;
+    border: 1.5px solid var(--color-pca-s6-border) !important;
+    border-radius: 5px !important;
+    background-color: var(--color-pca-s6-surface-2) !important;
+    background-image: none !important;
+    cursor: pointer;
+    position: relative;
+    outline: none;
+    box-shadow: none;
+}
+
+.pca-s6-page .checklist-card input[type='checkbox']:checked {
+    background-color: var(--color-pca-s6-accent) !important;
+    border-color: var(--color-pca-s6-accent) !important;
+}
+
+.pca-s6-page .checklist-card input[type='checkbox']:checked::after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 1px;
+    width: 5px;
+    height: 10px;
+    border: solid #08101f;
+    border-width: 0 2px 2px 0;
+    transform: rotate(40deg);
+    display: block;
+}
+
+.pca-s6-page .checklist-card label {
+    color: var(--color-pca-s6-foreground);
+    font-size: 14.5px;
+    cursor: pointer;
+    line-height: 1.6;
+}
+
+.pca-s6-page .checklist-card li:has(input:checked) label,
+.pca-s6-page .checklist-card li.done label {
+    text-decoration: line-through;
+    color: var(--color-pca-s6-foreground-faint);
 }
 
 /* Diagram styling */
 .pca-s6-page .mermaid-wrap {
-    display: block;
+    display: flex;
+    justify-content: safe center;
     width: 100%;
     margin: 1.5rem auto 2rem;
-    padding: 16px;
+    padding: 28px 20px;
     background: var(--color-pca-s6-surface-1);
     border: 1px solid var(--color-pca-s6-border);
-    border-radius: 10px;
+    border-radius: 14px;
     overflow-x: auto;
 }
 
@@ -542,6 +541,7 @@
     height: auto !important;
     display: block;
     margin: 0 auto;
+    flex-shrink: 0;
 }
 
 /* Scroll to top */
@@ -572,7 +572,7 @@
 }
 
 /* Responsive */
-@media (max-width: 900px) {
+@media (max-width: 980px) {
     .pca-s6-page .sidebar {
         transform: translateX(-100%);
     }
@@ -588,7 +588,7 @@
     .pca-s6-page .main {
         margin-left: 0;
         width: 100%;
-        padding: 40px 24px 80px;
+        padding: 80px 20px 100px;
     }
 
     .pca-s6-page .ref-grid {

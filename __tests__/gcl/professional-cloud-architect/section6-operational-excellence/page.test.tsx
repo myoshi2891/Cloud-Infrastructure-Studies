@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import inventory from '@/docs/migration-inventory/pca-section6-operational-excellence.json';
 import Page from '@/app/gcl/professional-cloud-architect/section6-operational-excellence/page';
@@ -71,5 +71,26 @@ describe('PCA Section 6: 視覚デザイン・UIコンポーネント構造の�
         expect(checklist).not.toBeNull();
         const checkboxes = container.querySelectorAll('.checklist-card input[type="checkbox"]');
         expect(checkboxes).toHaveLength(18);
+    });
+
+    it('チェックボックスをクリックすると完了状態とカウンターが連動して更新される', () => {
+        const { container } = render(<Page />);
+        const firstCheckbox = container.querySelector(
+            '.checklist-card input[type="checkbox"]',
+        ) as HTMLInputElement;
+        const countSpan = container.querySelector('.checklist-header .count');
+
+        expect(countSpan?.textContent).toBe('0 / 18 完了');
+        expect(firstCheckbox.checked).toBe(false);
+
+        // チェックを入れる
+        fireEvent.click(firstCheckbox);
+        expect(firstCheckbox.checked).toBe(true);
+        expect(countSpan?.textContent).toBe('1 / 18 完了');
+
+        // チェックを外す
+        fireEvent.click(firstCheckbox);
+        expect(firstCheckbox.checked).toBe(false);
+        expect(countSpan?.textContent).toBe('0 / 18 完了');
     });
 });
