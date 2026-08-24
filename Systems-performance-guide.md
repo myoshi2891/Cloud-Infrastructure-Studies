@@ -1,5 +1,6 @@
 # Systems Performance: Enterprise and the Cloud 実践ガイド
-### 〜初学者のためのステップバイステップ・システムパフォーマンス分析入門〜
+
+## 〜初学者のためのステップバイステップ・システムパフォーマンス分析入門〜
 
 > 本ガイドは、Brendan Gregg 著『Systems Performance: Enterprise and the Cloud, 2nd Edition』（邦訳：『詳解 システム・パフォーマンス 第2版』オライリー・ジャパン刊）を軸に、システムパフォーマンス分析の考え方・メソドロジ・ツールを初学者向けに整理したものです。原著者本人のブログ・スライドや、Netflix・AWS・Grafana Labsなど国際的に著名な開発者・組織の一次情報を裏付けとして参照しています（参考文献参照）。
 
@@ -142,7 +143,7 @@ USEメソッドをLinuxの主要リソースに具体的に当てはめると、
 | リソース | 使用率の指標例 | 飽和度の指標例 | エラーの指標例 |
 |---|---|---|---|
 | CPU | `mpstat`の`%user`+`%system` | `vmstat`の`r`列（実行待ちスレッド数） | `dmesg`のCPU関連エラー |
-| メモリ（容量） | `free`の使用済み容量 | スワッピングやOOM Killerの発生 | `dmesg`のメモリエラー |
+| メモリ（容量） | `free`の使用済み容量 | スワッピング（`vmstat`の`si`/`so`）の発生 | `dmesg`のメモリエラー、OOM Killerによるプロセス強制終了 |
 | ディスクI/O | `iostat`の`%util` | `iostat`の`avgqu-sz`（キュー長） | `smartctl`のディスクエラー |
 | ネットワーク | `nicstat`の帯域使用率 | 送受信バッファのドロップ数 | `netstat -s`のretransmit数 |
 
@@ -200,7 +201,7 @@ sequenceDiagram
     participant HW as ハードウェア
 
     App->>Kernel: システムコール発行 (例: read())
-    Note over App,Kernel: モード切り替え発生<br/>(コンテキストスイッチのコスト)
+    Note over App,Kernel: ユーザーモード/カーネルモードの<br/>モード切り替えコストが発生
     Kernel->>Kernel: スケジューラ / ファイルシステム / VFS処理
     Kernel->>HW: デバイスドライバ経由でI/O発行
     HW-->>Kernel: 割り込み (Interrupt) で完了通知
@@ -222,7 +223,7 @@ sequenceDiagram
 flowchart TB
     K["Linuxカーネル"] --> P1["/proc<br/>プロセス/システム統計"]
     K --> P2["/sys<br/>デバイス/カーネル設定"]
-    K --> TP["トレースポイント<br/>(Tracepoints)<br/>安定APIの静的計測点"]
+    K --> TP["トレースポイント<br/>(Tracepoints)<br/>比較的安定した静的計測点"]
     K --> KP["kprobe<br/>カーネル関数への動的プローブ"]
     K --> UP["uprobe<br/>ユーザー空間関数への動的プローブ"]
     K --> USDT["USDT<br/>アプリ埋め込み静的トレースポイント"]
@@ -241,6 +242,8 @@ flowchart TB
 ```
 
 初学者がまず押さえるべきは、**「安定した抽象化レイヤーほど壊れにくいが、粒度は粗い」**という原則です。`/proc`やトレースポイントは比較的安定したインターフェースで、カーネルバージョンが変わっても使い続けやすい一方、kprobe（カーネル関数への動的プローブ）はカーネル内部実装に依存するため、カーネルアップデートで動かなくなるリスクがあります。運用ツールを自作する際は、この安定性のトレードオフを意識する必要があります。
+
+> **注記**：トレースポイントは kprobe と比べれば安定していますが、**保証されたABIではありません**。イベント名・引数フィールドの構成・そもそもの提供有無は、カーネルのアップデートに伴って変更・削除されることがあります。利用可能なイベントとフィールドは、実行環境ごとに `bpftrace -l 'tracepoint:*'` や `/sys/kernel/debug/tracing/events/<subsystem>/<event>/format` で確認する運用にしてください。
 
 ---
 
@@ -307,7 +310,20 @@ flowchart TB
 - コンパイラ最適化オプション（`-O2`等）の見直し
 - プロセス優先度（`nice`/`renice`）やスケジューリングクラスの調整
 - CPUピニング／排他的cpusetによる特定コアへのバインド
-- コンテナ環境ではcgroupのCPUリソースコントロール（`cpu.shares`/`cpu.cfs_quota_us`等）の見直し
+- コンテナ環境ではcgroupのCPUリソースコントロールの見直し。ただし**cgroup v1とv2でインタフェースが異なる**点に注意が必要です
+
+| 項目 | cgroup v1 | cgroup v2 |
+|---|---|---|
+| 相対的な配分（重み） | `cpu.shares`（既定1024） | `cpu.weight`（既定100） |
+| 絶対的な上限（帯域制限） | `cpu.cfs_quota_us` と `cpu.cfs_period_us` の2ファイル | `cpu.max`（`"<quota> <period>"` を1ファイルで指定。無制限は `max`） |
+| スロットリング統計 | `cpu.stat`（`nr_throttled`, `throttled_time`） | `cpu.stat`（`nr_throttled`, `throttled_usec`） |
+
+どちらのバージョンがマウントされているかは、以下のコマンドで判別できます。
+
+```bash
+# cgroup2fs なら v2、tmpfs なら v1（またはハイブリッド構成）
+stat -fc %T /sys/fs/cgroup/
+```
 
 ---
 
@@ -369,7 +385,7 @@ flowchart TB
     class App,VFS,FSCache,FS,BLK,DRV,DISK layer
 ```
 
-**論理I/Oと物理I/Oの違い**も重要な概念です。アプリケーションが発行した読み書き（論理I/O）は、キャッシュヒットすればディスクまで到達せず（物理I/Oゼロ）、逆に先読み（readahead）機構によって1回の論理I/Oが複数の物理I/Oを発生させることもあります。`iostat`が示すのはあくまで物理I/O層の数値である点に注意が必要です。
+**論理I/Oと物理I/Oの違い**も重要な概念です。アプリケーションが発行した読み書き（論理I/O）は、キャッシュヒットすればディスクまで到達せず（物理I/Oゼロ）、逆に先読み（readahead）機構によって1回の論理I/Oが複数の物理I/Oを発生させることもあります。`iostat`が示すのは物理ディスクそのものではなく、**カーネルのブロックデバイス層で観測されたI/O統計**である点に注意が必要です。対象はカーネルから見えるデバイスまたはパーティションであり、仮想化環境やクラウドでは仮想ブロックデバイス（EBSボリューム等）の統計になります。バックエンドの物理I/Oの実態を知りたい場合は、クラウドプロバイダ側のメトリクス（例：CloudWatchのEBSメトリクス）を併せて確認してください。
 
 ### 8.2 ディスクI/OへのUSEメソッド適用
 
@@ -407,7 +423,7 @@ sequenceDiagram
     Note over C,S: TCPコネクション確立<br/>(この往復がレイテンシに直結)
     C->>S: データ送信
     S-->>C: ACK
-    Note over C,S: パケットロス発生時は<br/>再送タイムアウト後に再送
+    Note over C,S: パケットロス発生時は重複ACKを3回受信した<br/>時点でFast Retransmitにより早期再送。<br/>重複ACKが得られない場合はRTO満了後に再送
     C->>S: FIN (切断開始)
     S-->>C: ACK / FIN
     C->>S: ACK
@@ -543,8 +559,8 @@ eBPFは「Linuxをプログラム可能なカーネルに変える」技術だ�
 原著付録Cで多数紹介されている1行プログラムのうち、初学者が最初に試すのに適したものを抜粋します。
 
 ```bash
-# 新規プロセス実行をリアルタイムに表示
-bpftrace -e 'tracepoint:syscalls:sys_enter_execve { printf("%s\n", comm); }'
+# 新規プロセス実行をリアルタイムに表示（実行されるファイル名を表示）
+bpftrace -e 'tracepoint:syscalls:sys_enter_execve { printf("%s\n", str(args.filename)); }'
 
 # システムコールの発行回数をプロセス名ごとに集計
 bpftrace -e 'tracepoint:raw_syscalls:sys_enter { @[comm] = count(); }'
@@ -569,7 +585,7 @@ flowchart TB
     Q1["1. uptime<br/>ロードアベレージを確認"] --> Q2["2. dmesg | tail<br/>直近のカーネルエラー/OOMを確認"]
     Q2 --> Q3["3. vmstat 1<br/>r列(CPU飽和)、si/so(スワップ)"]
     Q3 --> Q4["4. mpstat -P ALL 1<br/>CPUコア間の偏りを確認"]
-    Q4 --> Q5["5. pidstat 1<br/>プロセス単位のCPU/メモリ/IO"]
+    Q4 --> Q5["5. pidstat -r -d 1<br/>プロセス単位のCPU/メモリ/IO"]
     Q5 --> Q6["6. iostat -xz 1<br/>ディスクの%util/await"]
     Q6 --> Q7["7. free -m<br/>実メモリ使用量とキャッシュ"]
     Q7 --> Q8["8. sar -n DEV 1<br/>ネットワークスループット"]
