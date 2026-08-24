@@ -65,11 +65,11 @@ describe('PCA Section 6: 視覚デザイン・UIコンポーネント構造の�
         expect(refCards).toHaveLength(52);
     });
 
-    it('チェックリストが .checklist-card 構造と 20 件のチェックボックスを持つ', () => {
+    it('チェックリストが .checklist-card 構造と 18 件のチェックボックスを持つ', () => {
         const container = renderPage();
         const checklist = container.querySelector('.checklist-card');
         expect(checklist).not.toBeNull();
         const checkboxes = container.querySelectorAll('.checklist-card input[type="checkbox"]');
-        expect(checkboxes).toHaveLength(20);
+        expect(checkboxes).toHaveLength(18);
     });
 });
