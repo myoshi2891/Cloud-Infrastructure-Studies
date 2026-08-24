@@ -1,6 +1,34 @@
 # 移行作業進捗管理ドキュメント (Migration Progress)
 
-(最終更新日: 2026-08-22)
+(最終更新日: 2026-08-24)
+
+---
+
+## 2026-08-24: Google Cloud Professional Cloud Architect (PCA) Section 2: 管理とプロビジョニング 完全ガイド 100%全量移行 (完了)
+
+### 目的
+
+`Gcp-pca-section2-managing-provisioning.html` および `Gcp-pca-section2-managing-provisioning.md` を、Next.js App Router 5ファイル構成 (`page.tsx`, `PcaSection2Guide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/gcl/professional-cloud-architect/section2-managing-provisioning` ルートへ移行。見出し(h1:1, h2:9, h3:19, h4:6)、全25個のテーブル、17個のMermaid図解、全リスト、全外部リンク(42件)・全本文・コールアウト注記・理解度チェックリスト・参考文献グリッドを一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for pca-section2-managing-provisioning` (`e4a9be4`)
+- [x] **Step 1 (Red)**: `test(gcl): add failing tests for pca-section2-managing-provisioning` (`0b0c38b`)
+- [x] **Step 2 (Green)**: `feat(gcl): implement pca-section2-managing-provisioning to pass tests` (`9d9e26c`)
+- [x] **Step 3 (Refactor)**: `refactor(gcl): integrate pca-section2-managing-provisioning into routing and update docs` (`1f5dc78`)
+- [x] **Step 4 (Archive & Sync)**: `chore(docs): update MIGRATION_PROGRESS.md — pca section 2 complete`
+
+### 関連ファイル
+
+- [app/gcl/professional-cloud-architect/section2-managing-provisioning/page.tsx](app/gcl/professional-cloud-architect/section2-managing-provisioning/page.tsx)
+- [app/gcl/professional-cloud-architect/section2-managing-provisioning/PcaSection2Guide.tsx](app/gcl/professional-cloud-architect/section2-managing-provisioning/PcaSection2Guide.tsx)
+- [app/gcl/professional-cloud-architect/section2-managing-provisioning/NavBar.tsx](app/gcl/professional-cloud-architect/section2-managing-provisioning/NavBar.tsx)
+- [app/gcl/professional-cloud-architect/section2-managing-provisioning/constants.ts](app/gcl/professional-cloud-architect/section2-managing-provisioning/constants.ts)
+- [app/gcl/professional-cloud-architect/section2-managing-provisioning/page.css](app/gcl/professional-cloud-architect/section2-managing-provisioning/page.css)
+- [`__tests__/gcl/professional-cloud-architect/section2-managing-provisioning/page.test.tsx`](__tests__/gcl/professional-cloud-architect/section2-managing-provisioning/page.test.tsx)
+- [docs/migration-inventory/pca-section2-managing-provisioning.json](docs/migration-inventory/pca-section2-managing-provisioning.json)
+- [archive/Gcl/Professional-Cloud-Architect/Gcp-pca-section2-managing-provisioning.html](archive/Gcl/Professional-Cloud-Architect/Gcp-pca-section2-managing-provisioning.html)
+- [archive/Gcl/Professional-Cloud-Architect/Gcp-pca-section2-managing-provisioning.md](archive/Gcl/Professional-Cloud-Architect/Gcp-pca-section2-managing-provisioning.md)
 
 ---
 
