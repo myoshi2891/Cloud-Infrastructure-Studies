@@ -10,7 +10,7 @@
 
 「詳解 システム・パフォーマンス 第2版」は、**エンタープライズとクラウド環境を対象としたOS・アプリケーションのパフォーマンス分析と改善**を扱う940ページの大著です。原著者のBrendan Greggは、Sun Microsystems・Oracle・Joyent・Netflix・Intel・OpenAI（2026年2月時点）で性能エンジニアリングに携わってきた、この分野で最も著名なエンジニアの一人です。USEメソッドの考案者であり、フレームグラフ（Flame Graph）の発明者でもあり、2013年にはUSENIXからLISA Outstanding Achievement Awardを受賞しています。
 
-第2版では初版（2014年）から大きく加筆され、特に **perf・Ftrace・拡張BPF（eBPF）の解説** と **クラウドコンピューティングの章** が充実しました。原著の目次は次の16章＋付録という構成です。
+第2版では初版（2014年）から大きく加筆され、特に **perf・Ftrace・拡張BPF（eBPF）の解説** と **クラウドコンピューティングの章** が充実しました。本書（日本語版）の目次は次の16章＋付録という構成です（英語版は付録A〜E＋用語集）。
 
 | パート | 章 | 主な内容 |
 |---|---|---|
@@ -226,7 +226,8 @@ flowchart TB
     K --> TP["トレースポイント<br/>(Tracepoints)<br/>比較的安定した静的計測点"]
     K --> KP["kprobe<br/>カーネル関数への動的プローブ"]
     K --> UP["uprobe<br/>ユーザー空間関数への動的プローブ"]
-    K --> USDT["USDT<br/>アプリ埋め込み静的トレースポイント"]
+    APP["アプリケーション/ランタイム<br/>(ユーザー空間)"] --> USDT["USDT<br/>アプリ埋め込み静的トレースポイント"]
+    K -.uprobe等の仕組みで接続.-> USDT
     K --> PMC["PMC<br/>ハードウェアパフォーマンスカウンタ"]
 
     P1 --> T1["vmstat, ps, top等が利用"]
@@ -238,7 +239,7 @@ flowchart TB
     PMC --> T7["perf stat が利用<br/>(IPC, キャッシュミス等)"]
 
     classDef src fill:#1b2a4a,stroke:#7c9eff,color:#eef2ff;
-    class K,P1,P2,TP,KP,UP,USDT,PMC src
+    class K,APP,P1,P2,TP,KP,UP,USDT,PMC src
 ```
 
 初学者がまず押さえるべきは、**「安定した抽象化レイヤーほど壊れにくいが、粒度は粗い」**という原則です。`/proc`やトレースポイントは比較的安定したインターフェースで、カーネルバージョンが変わっても使い続けやすい一方、kprobe（カーネル関数への動的プローブ）はカーネル内部実装に依存するため、カーネルアップデートで動かなくなるリスクがあります。運用ツールを自作する際は、この安定性のトレードオフを意識する必要があります。
@@ -471,7 +472,7 @@ flowchart TB
 | OS仮想化（コンテナ） | ホストカーネルをcgroup/namespaceで分離 | ミリ秒〜数秒 | 分離の甘さがトレードオフ（カーネルは共有） | Docker, containerd |
 | 軽量仮想化（microVM） | 独自カーネルを持ちつつ最小構成で高速起動 | 100ms前後 | VM相当の分離を保ちつつオーバーヘッドを抑制 | AWS Firecracker |
 
-**軽量仮想化の代表例：AWS Firecracker。** AWSがAWS Lambda向けに開発したオープンソースのVMM（Virtual Machine Monitor）で、KVMをベースに不要なデバイスエミュレーションを排除しています。公開されている実測値として、1台のmicroVMあたりのメモリオーバーヘッドは5MiB未満、起動時間は125ミリ秒程度とされており、コンテナに近い俊敏性とVMに近い分離レベルを両立させる設計として、サーバーレス基盤の標準的な実装パターンになっています。AWS NitroシステムにおけるEC2の側でも、この設計思想がセキュリティ・分離の基盤として採用されています。
+**軽量仮想化の代表例：AWS Firecracker。** AWSがAWS Lambda向けに開発したオープンソースのVMM（Virtual Machine Monitor）で、KVMをベースに不要なデバイスエミュレーションを排除しています。公開されている実測値として、1台のmicroVMあたりのメモリオーバーヘッドは5MiB未満、起動時間は125ミリ秒程度とされており、コンテナに近い俊敏性とVMに近い分離レベルを両立させる設計として、サーバーレス基盤の標準的な実装パターンになっています。なお、FirecrackerとAWS Nitroは**別の層の技術**であり、同一の設計として扱わないよう注意が必要です。Nitroは、仮想化処理を専用ハードウェア（Nitroカード・Nitroセキュリティチップ）と軽量なNitro Hypervisorへオフロードする**EC2の基盤コンポーネント**です。一方Firecrackerは、LambdaやFargateといったサーバーレス基盤において、そのNitroベースのインスタンス上でテナントごとのmicroVMを起動するために追加で用いられる**VMM層**です。
 
 ### 10.2 マルチテナンシーと「ノイジーネイバー」問題
 
@@ -565,22 +566,22 @@ bpftrace -e 'tracepoint:syscalls:sys_enter_execve { printf("%s\n", str(args.file
 # システムコールの発行回数をプロセス名ごとに集計
 bpftrace -e 'tracepoint:raw_syscalls:sys_enter { @[comm] = count(); }'
 
-# ブロックI/Oのレイテンシをヒストグラム表示
-bpftrace -e '
-tracepoint:block:block_rq_issue { @start[args.dev, args.sector] = nsecs; }
-tracepoint:block:block_rq_complete /@start[args.dev, args.sector]/ {
-    @usecs = hist((nsecs - @start[args.dev, args.sector]) / 1000);
-    delete(@start[args.dev, args.sector]);
-}'
+# ブロックI/Oのレイテンシをヒストグラム表示（BCC版。1秒ごとに出力）
+biolatency-bpfcc 1
+
+# bpftrace同梱版（ディストリビューションによりパスは異なる）
+bpftrace /usr/share/bpftrace/tools/biolatency.bt
 ```
 
-なお`kprobe:blk_account_io_start`のようなカーネル内部関数へのkprobeは、インライン化や関数名の変更でカーネルバージョンごとに使えなくなることがあります。上記のように安定した`tracepoint:block:*`を使うか、BCC/bpftraceに同梱の`biolatency`を利用するのが確実です。利用可能なプローブは`bpftrace -l 'tracepoint:block:*'`で事前に確認してください。
+ブロックI/Oのレイテンシは、`block_rq_issue`（発行）と`block_rq_complete`（完了）を自前でひも付ける1行プログラムとして書きたくなりますが、`args.dev`と`args.sector`の組をキーにする実装は避けてください。1つのリクエストが分割して完了する（partial completion）場合、完了イベントが持つセクタが発行時の値と一致せず、発行と完了のペアリングが崩れてヒストグラムがリクエストレイテンシを表さなくなります。`biolatency`はリクエストを一意に識別できる識別子（BCC版は`struct request *`）をキーに使い、部分完了も正しく扱うため、まずは既製ツールを使うのが確実です。
+
+なお`kprobe:blk_account_io_start`のようなカーネル内部関数へのkprobeは、インライン化や関数名の変更でカーネルバージョンごとに使えなくなることがあります。自作する場合は比較的安定した`tracepoint:block:*`を優先し、利用可能なプローブは`bpftrace -l 'tracepoint:block:*'`で事前に確認してください。
 
 ---
 
 ## 13. 実践：60秒Linuxパフォーマンス分析チェックリスト
 
-原著1章で紹介される「60秒でできるLinuxパフォーマンス分析」は、障害発生時に**まず何から手をつけるべきか**を示す実践的なチェックリストです。固定カウンタ系のツールのみを使うため、対象システムへの負荷がほぼゼロという利点があります。
+原著1章で紹介される「60秒でできるLinuxパフォーマンス分析」は、障害発生時に**まず何から手をつけるべきか**を示す実践的なチェックリストです。`uptime`・`vmstat`・`mpstat`・`pidstat`・`iostat`・`sar`・`top`といった、多くのLinuxディストリビューションで標準的に利用できる低オーバーヘッドの基本観測ツールを中心に構成されている点が利点です。ただしオーバーヘッドはゼロではありません。プロセス数やCPUコア数といった対象システムの規模と、サンプリング間隔（`1`秒指定など）に応じてコストは変動し、特にプロセス単位で集計する`pidstat`や`top`は大規模ホストで相応の負荷になり得ます。
 
 ```mermaid
 flowchart TB
