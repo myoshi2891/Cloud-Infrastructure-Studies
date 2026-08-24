@@ -1743,7 +1743,7 @@ export function PcaSection3Guide() {
                             </tr>
                             <tr className="even">
                                 <td>児童のプライバシー</td>
-                                <td>米国 COPPA（Children's Online Privacy Protection Act）等</td>
+                                <td>米国 COPPA（Children&apos;s Online Privacy Protection Act）等</td>
                                 <td>
                                     児童データを扱うサービス設計では、同意取得・データ収集最小化などの要件をアプリケーション層で実装する必要がある（Googleのプラットフォーム機能はこれを支援するが、準拠の主体は顧客）
                                 </td>
@@ -2626,7 +2626,7 @@ export function PcaSection3Guide() {
                     <div className="ref-card" id="ref-52">
                         <span className="ref-badge">52</span>
                         <div className="ref-body">
-                            <a href="https://medium.com/devsecops-ai/google-cloud-dlp-a-practitioners-guide-to-securing-sensitive-data-bcb5e74e6d4f" rel="noopener" target="_blank">Google Cloud DLP — A Practitioner's Guide to Securing Sensitive
+                            <a href="https://medium.com/devsecops-ai/google-cloud-dlp-a-practitioners-guide-to-securing-sensitive-data-bcb5e74e6d4f" rel="noopener" target="_blank">Google Cloud DLP — A Practitioner&apos;s Guide to Securing Sensitive
                                 Data</a>
                             <span className="ref-source">Medium</span>
                         </div>

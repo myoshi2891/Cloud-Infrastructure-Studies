@@ -273,7 +273,7 @@ const ALL_EXAMS: Exam[] = [
             },
             {
                 label: 'Section 3: セキュリティとコンプライアンス',
-                href: '/gcl/professional-cloud-architect#section-3-セキュリティとコンプライアンスの設計約175',
+                href: '/gcl/professional-cloud-architect/section3-security-compliance',
                 pct: '~17.5%',
             },
             {
