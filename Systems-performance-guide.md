@@ -73,7 +73,7 @@ flowchart TB
     OBS --> TR["トレーシング<br/>Tracing"]
     OBS --> MN["モニタリング<br/>Monitoring"]
 
-    FC --> FC1["例: uptime, vmstat<br/>常時軽量、サンプリングなし"]
+    FC --> FC1["例: uptime, vmstat<br/>軽量。vmstatは指定間隔で<br/>カウンタをサンプリング"]
     PR --> PR1["例: perf record<br/>一定間隔でサンプリング"]
     TR --> TR1["例: bpftrace, strace<br/>イベント単位で記録"]
     MN --> MN1["例: sar, Prometheus<br/>時系列で長期保存"]
@@ -288,7 +288,7 @@ pidstat 1
 perf record -F 99 -a -g -- sleep 30
 perf script > out.perf-script
 
-# Step3: bpftraceでスレッドのオンCPU時間をヒストグラム化
+# Step3: bpftraceでオンCPUサンプルの出現回数をカーネルスタック別に集計
 bpftrace -e 'profile:hz:99 { @[kstack] = count(); }'
 ```
 
@@ -353,11 +353,11 @@ flowchart LR
 
 | 観点 | 確認方法 | 意味 |
 |---|---|---|
-| 使用率 | `free -h`（buff/cacheを除いた実使用量） | 物理メモリのうち実際にプロセスが使用中の割合。ファイルシステムキャッシュは「空き」として扱ってよい |
+| 使用率 | `free -h`の`available`列 | `available`はスワップせずに新しいアプリケーションが利用できるメモリ量の推定値。`total - available`を実質的な使用量として見る（`used`はプロセス専用メモリでも`total - buff/cache`でもない） |
 | 飽和 | `vmstat`の`si`/`so`列（スワップイン/アウト）、PSI (`/proc/pressure/memory`) | スワップが発生している＝物理メモリが不足し始めているサイン |
 | エラー | OOM Killerのログ（`dmesg`） | メモリ確保に失敗しプロセスが強制終了された記録 |
 
-初学者が特に誤解しやすいのは、「`free`コマンドの空き容量が少ない＝メモリ不足」という早合点です。Linuxは積極的に空きメモリをファイルシステムキャッシュとして活用するため、`buff/cache`分は必要に応じて即座に解放可能な「実質的な空き」とみなすのが正しい解釈です。真に注視すべきはスワップ活動とOOM Killerの発生有無です。
+初学者が特に誤解しやすいのは、「`free`コマンドの`free`列が少ない＝メモリ不足」という早合点です。Linuxは積極的に空きメモリをファイルシステムキャッシュとして活用するため、`free`列が小さいこと自体は正常です。ただし`buff/cache`の全量が即座に空きになるわけではなく、ダーティページや再利用できないページも含まれます。そのためカーネルが回収可能性を加味して算出する`available`を判断基準とし、`available`が継続的に減少していないかを見るのが正しい解釈です。あわせて注視すべきはスワップ活動（`vmstat`の`si`/`so`）とOOM Killerの発生有無です。
 
 ### 7.3 メモリリーク検出の考え方
 
@@ -385,7 +385,7 @@ flowchart TB
     class App,VFS,FSCache,FS,BLK,DRV,DISK layer
 ```
 
-**論理I/Oと物理I/Oの違い**も重要な概念です。アプリケーションが発行した読み書き（論理I/O）は、キャッシュヒットすればディスクまで到達せず（物理I/Oゼロ）、逆に先読み（readahead）機構によって1回の論理I/Oが複数の物理I/Oを発生させることもあります。`iostat`が示すのは物理ディスクそのものではなく、**カーネルのブロックデバイス層で観測されたI/O統計**である点に注意が必要です。対象はカーネルから見えるデバイスまたはパーティションであり、仮想化環境やクラウドでは仮想ブロックデバイス（EBSボリューム等）の統計になります。バックエンドの物理I/Oの実態を知りたい場合は、クラウドプロバイダ側のメトリクス（例：CloudWatchのEBSメトリクス）を併せて確認してください。
+**論理I/Oと物理I/Oの違い**も重要な概念です。アプリケーションが発行した読み書き（論理I/O）は、キャッシュヒットすればディスクまで到達せず（物理I/Oゼロ）、逆に先読み（readahead）機構によって1回の論理I/Oが複数の物理I/Oを発生させることもあります。`iostat`が示すのは物理ディスクそのものではなく、**カーネルのブロックデバイス層で観測されたI/O統計**である点に注意が必要です。対象はカーネルから見えるデバイスまたはパーティションであり、仮想化環境やクラウドでは仮想ブロックデバイス（EBSボリューム等）の統計になります。ゲストのカーネルからはバックエンドのストレージインフラの挙動は見えないため、クラウド環境ではプロバイダ側のボリューム／サービスメトリクス（例：CloudWatchのEBSメトリクス）を併せて確認します。これらは物理ディスクを直接計測した値ではなく、プロバイダがボリューム単位で公開する指標ですが、IOPS／スループットの上限への到達、レイテンシ、バーストクレジットの消費といったバックエンド側の振る舞いを評価する手掛かりになります。
 
 ### 8.2 ディスクI/OへのUSEメソッド適用
 
@@ -559,7 +559,7 @@ eBPFは「Linuxをプログラム可能なカーネルに変える」技術だ�
 原著付録Cで多数紹介されている1行プログラムのうち、初学者が最初に試すのに適したものを抜粋します。
 
 ```bash
-# 新規プロセス実行をリアルタイムに表示（実行されるファイル名を表示）
+# execveによるプログラム実行をリアルタイムに表示（実行されるファイル名を表示）
 bpftrace -e 'tracepoint:syscalls:sys_enter_execve { printf("%s\n", str(args.filename)); }'
 
 # システムコールの発行回数をプロセス名ごとに集計
@@ -567,12 +567,14 @@ bpftrace -e 'tracepoint:raw_syscalls:sys_enter { @[comm] = count(); }'
 
 # ブロックI/Oのレイテンシをヒストグラム表示
 bpftrace -e '
-kprobe:blk_account_io_start { @start[arg0] = nsecs; }
-kprobe:blk_account_io_done /@start[arg0]/ {
-    @usecs = hist((nsecs - @start[arg0]) / 1000);
-    delete(@start[arg0]);
+tracepoint:block:block_rq_issue { @start[args.dev, args.sector] = nsecs; }
+tracepoint:block:block_rq_complete /@start[args.dev, args.sector]/ {
+    @usecs = hist((nsecs - @start[args.dev, args.sector]) / 1000);
+    delete(@start[args.dev, args.sector]);
 }'
 ```
+
+なお`kprobe:blk_account_io_start`のようなカーネル内部関数へのkprobeは、インライン化や関数名の変更でカーネルバージョンごとに使えなくなることがあります。上記のように安定した`tracepoint:block:*`を使うか、BCC/bpftraceに同梱の`biolatency`を利用するのが確実です。利用可能なプローブは`bpftrace -l 'tracepoint:block:*'`で事前に確認してください。
 
 ---
 
@@ -585,7 +587,7 @@ flowchart TB
     Q1["1. uptime<br/>ロードアベレージを確認"] --> Q2["2. dmesg | tail<br/>直近のカーネルエラー/OOMを確認"]
     Q2 --> Q3["3. vmstat 1<br/>r列(CPU飽和)、si/so(スワップ)"]
     Q3 --> Q4["4. mpstat -P ALL 1<br/>CPUコア間の偏りを確認"]
-    Q4 --> Q5["5. pidstat -r -d 1<br/>プロセス単位のCPU/メモリ/IO"]
+    Q4 --> Q5["5. pidstat -u -r -d 1<br/>プロセス単位のCPU/メモリ/IO"]
     Q5 --> Q6["6. iostat -xz 1<br/>ディスクの%util/await"]
     Q6 --> Q7["7. free -m<br/>実メモリ使用量とキャッシュ"]
     Q7 --> Q8["8. sar -n DEV 1<br/>ネットワークスループット"]
