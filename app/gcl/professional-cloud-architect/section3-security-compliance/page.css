@@ -144,7 +144,7 @@
     font-size: 34px;
     line-height: 1.4;
     margin: 0 0 10px;
-    background: linear-gradient(90deg, #dce6f2 0%, #9fb8e8 100%);
+    background: linear-gradient(90deg, var(--color-pca-s3-foreground) 0%, var(--color-pca-s3-hero-grad-b) 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;

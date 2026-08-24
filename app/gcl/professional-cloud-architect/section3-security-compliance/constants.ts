@@ -311,7 +311,7 @@ export const DIAGRAMS: Record<DiagramId, string> = {
     ORG -->|継承| F2["フォルダB"]
     F -->|継承 or 上書き| P1["プロジェクト1"]
     F -->|継承 or 上書き| P2["プロジェクト2(例外を許可)"]
-    Note["未設定の場合は、Googleが定める<br/>デフォルトの制約動作が適用される"]`,
+    ORG -.- Note["未設定の場合は、Googleが定める<br/>デフォルトの制約動作が適用される"]`,
 
     'diag-14': `flowchart TD
     Rule1["組織レベルの<br/>ファイアウォールポリシー<br/>(最優先で評価)"] --> Rule2["フォルダレベルの<br/>ファイアウォールポリシー"]
