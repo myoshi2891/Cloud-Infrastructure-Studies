@@ -4,6 +4,33 @@
 
 ---
 
+## 2026-08-25: Google Cloud Professional Cloud Architect (PCA) Section 5: 実装の管理 完全ガイド 100%全量移行 (完了)
+
+### 目的
+
+`Gcp-pca-section5-managing-implementation.html` を、Next.js App Router 5ファイル構成 (`page.tsx`, `PcaSection5Guide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/gcl/professional-cloud-architect/section5-managing-implementation` ルートへ移行。見出し(h1:1, h2:9, h3:11, h4:0)、全15個のテーブル、13個のMermaid図解、全リスト(59件)、全外部リンク(18件)・全本文(28件)・コールアウト注記・理解度チェックリスト(16件)・参考文献グリッド(18件)を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for pca-section5-managing-implementation` (`2818fbd`)
+- [x] **Step 1 (Red)**: `test(pca): add failing tests for section5-managing-implementation` (`311d5dc`)
+- [x] **Step 2 (Green)**: `feat(pca): implement section5-managing-implementation to pass tests` (`80923cb`)
+- [x] **Step 3 (Refactor)**: `refactor(pca): integrate section5-managing-implementation into routing and update docs` (`b32f20f`)
+- [x] **Step 4 (Archive & Sync)**: `chore(docs): update MIGRATION_PROGRESS.md — migrate PCA Section 5 guide`
+
+### 関連ファイル
+
+- [app/gcl/professional-cloud-architect/section5-managing-implementation/page.tsx](app/gcl/professional-cloud-architect/section5-managing-implementation/page.tsx)
+- [app/gcl/professional-cloud-architect/section5-managing-implementation/PcaSection5Guide.tsx](app/gcl/professional-cloud-architect/section5-managing-implementation/PcaSection5Guide.tsx)
+- [app/gcl/professional-cloud-architect/section5-managing-implementation/NavBar.tsx](app/gcl/professional-cloud-architect/section5-managing-implementation/NavBar.tsx)
+- [app/gcl/professional-cloud-architect/section5-managing-implementation/constants.ts](app/gcl/professional-cloud-architect/section5-managing-implementation/constants.ts)
+- [app/gcl/professional-cloud-architect/section5-managing-implementation/page.css](app/gcl/professional-cloud-architect/section5-managing-implementation/page.css)
+- [`__tests__/gcl/professional-cloud-architect/section5-managing-implementation/page.test.tsx`](__tests__/gcl/professional-cloud-architect/section5-managing-implementation/page.test.tsx)
+- [docs/migration-inventory/pca-section5-managing-implementation.json](docs/migration-inventory/pca-section5-managing-implementation.json)
+- [archive/Gcl/Professional-Cloud-Architect/Gcp-pca-section5-managing-implementation.html](archive/Gcl/Professional-Cloud-Architect/Gcp-pca-section5-managing-implementation.html)
+
+---
+
 ## 2026-08-25: Google Cloud Professional Cloud Architect (PCA) Section 4: プロセス分析と最適化 完全ガイド 100%全量移行 (完了)
 
 ### 目的
