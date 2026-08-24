@@ -4,6 +4,34 @@
 
 ---
 
+## 2026-08-24: Google Cloud Professional Cloud Architect (PCA) Section 3: セキュリティとコンプライアンスの設計 完全ガイド 100%全量移行 (完了)
+
+### 目的
+
+`Gcp-pca-section3-security-compliance.html` および `Gcp-pca-section3-security-compliance.md` を、Next.js App Router 5ファイル構成 (`page.tsx`, `PcaSection3Guide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/gcl/professional-cloud-architect/section3-security-compliance` ルートへ移行。見出し(h1:1, h2:6, h3:25, h4:37)、全40個のテーブル、26個のMermaid図解、全リスト、全外部リンク(74件)・全本文・コールアウト注記・理解度チェックリスト・参考文献グリッド(71件)を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for pca-section3-security-compliance` (`475fb24`)
+- [x] **Step 1 (Red)**: `test(gcl): add failing tests for pca-section3-security-compliance` (`a1aa863`)
+- [x] **Step 2 (Green)**: `feat(gcl): implement pca-section3-security-compliance to pass tests` (`f1552c3`)
+- [x] **Step 3 (Refactor)**: `refactor(gcl): integrate pca-section3-security-compliance into routing and update docs` (`b17852f`)
+- [x] **Step 4 (Archive & Sync)**: `chore(docs): update MIGRATION_PROGRESS.md — pca section 3 complete`
+
+### 関連ファイル
+
+- [app/gcl/professional-cloud-architect/section3-security-compliance/page.tsx](app/gcl/professional-cloud-architect/section3-security-compliance/page.tsx)
+- [app/gcl/professional-cloud-architect/section3-security-compliance/PcaSection3Guide.tsx](app/gcl/professional-cloud-architect/section3-security-compliance/PcaSection3Guide.tsx)
+- [app/gcl/professional-cloud-architect/section3-security-compliance/NavBar.tsx](app/gcl/professional-cloud-architect/section3-security-compliance/NavBar.tsx)
+- [app/gcl/professional-cloud-architect/section3-security-compliance/constants.ts](app/gcl/professional-cloud-architect/section3-security-compliance/constants.ts)
+- [app/gcl/professional-cloud-architect/section3-security-compliance/page.css](app/gcl/professional-cloud-architect/section3-security-compliance/page.css)
+- [`__tests__/gcl/professional-cloud-architect/section3-security-compliance/page.test.tsx`](__tests__/gcl/professional-cloud-architect/section3-security-compliance/page.test.tsx)
+- [docs/migration-inventory/pca-section3-security-compliance.json](docs/migration-inventory/pca-section3-security-compliance.json)
+- [archive/Gcl/Professional-Cloud-Architect/Gcp-pca-section3-security-compliance.html](archive/Gcl/Professional-Cloud-Architect/Gcp-pca-section3-security-compliance.html)
+- [archive/Gcl/Professional-Cloud-Architect/Gcp-pca-section3-security-compliance.md](archive/Gcl/Professional-Cloud-Architect/Gcp-pca-section3-security-compliance.md)
+
+---
+
 ## 2026-08-24: Google Cloud Professional Cloud Architect (PCA) Section 2: 管理とプロビジョニング 完全ガイド 100%全量移行 (完了)
 
 ### 目的
