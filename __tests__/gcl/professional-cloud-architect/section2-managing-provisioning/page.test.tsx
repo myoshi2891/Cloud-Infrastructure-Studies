@@ -2,6 +2,7 @@ import { render } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import inventory from '@/docs/migration-inventory/pca-section2-managing-provisioning.json';
 import Page from '@/app/gcl/professional-cloud-architect/section2-managing-provisioning/page';
+import { NAV_ITEMS } from '@/app/gcl/professional-cloud-architect/section2-managing-provisioning/constants';
 import { defineMigrationSuite } from '@/__tests__/gcl/agwa/migration-test-utils';
 
 vi.mock('@/components/MermaidDiagram', async () => {
@@ -27,8 +28,15 @@ describe('PCA Section 2: 視覚デザイン・UIコンポーネント構造の�
         expect(sidebar).not.toBeNull();
         expect(sidebar?.querySelector('.sidebar-brand')).not.toBeNull();
 
+        // NAV_ITEMS を正本として、リンク数・順序・ラベル・href が完全一致することを検証する
         const navLinks = container.querySelectorAll('.sidebar ul.nav-list a');
-        expect(navLinks.length).toBeGreaterThan(0);
+        expect(navLinks).toHaveLength(NAV_ITEMS.length);
+        expect(Array.from(navLinks, (anchor) => anchor.textContent?.trim())).toEqual(
+            NAV_ITEMS.map((item) => item.label),
+        );
+        expect(Array.from(navLinks, (anchor) => anchor.getAttribute('href'))).toEqual(
+            NAV_ITEMS.map((item) => `#${item.id}`),
+        );
     });
 
     it('全てのテーブルが .table-scroll ラッパー内に配置されている', () => {

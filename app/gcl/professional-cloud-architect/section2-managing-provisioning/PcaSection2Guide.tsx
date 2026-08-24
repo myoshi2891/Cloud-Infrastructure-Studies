@@ -102,7 +102,7 @@ export function PcaSection2Guide() {
                     </blockquote>
                     <hr />
 
-                    <h2 id="この章について">この章について</h2>
+                    <h2 id="この章について" tabIndex={-1}>この章について</h2>
                     <p>
                         Section 1（設計と計画）で描いたアーキテクチャを、実際に「作って動かす」段階が
                         Section 2 です。試験ガイドでは次の5つのタスクに分解されています。
@@ -170,7 +170,7 @@ export function PcaSection2Guide() {
                     </p>
                     <hr />
 
-                    <h2 id="21-ネットワークトポロジの構成">2.1 ネットワークトポロジの構成</h2>
+                    <h2 id="21-ネットワークトポロジの構成" tabIndex={-1}>2.1 ネットワークトポロジの構成</h2>
                     <p>このタスクは、以下の4つの観点で構成されています。</p>
                     <ol type="1">
                         <li>オンプレミス環境への拡張（ハイブリッドネットワーキング）</li>
@@ -179,7 +179,7 @@ export function PcaSection2Guide() {
                         <li>VPC設計とロードバランシング</li>
                     </ol>
 
-                    <h3 id="211-ハイブリッドネットワーキングオンプレミスとの接続">
+                    <h3 id="211-ハイブリッドネットワーキングオンプレミスとの接続" tabIndex={-1}>
                         2.1.1 ハイブリッドネットワーキング：オンプレミスとの接続
                     </h3>
                     <p>
@@ -286,7 +286,7 @@ export function PcaSection2Guide() {
                         </div>
                     </div>
 
-                    <h3 id="212-マルチクラウド環境への拡張">2.1.2 マルチクラウド環境への拡張</h3>
+                    <h3 id="212-マルチクラウド環境への拡張" tabIndex={-1}>2.1.2 マルチクラウド環境への拡張</h3>
                     <p>
                         複数のGoogle
                         CloudプロジェクトやVPC、あるいは他クラウドとの接続を一元管理するには、
@@ -303,7 +303,7 @@ export function PcaSection2Guide() {
                         Networkを利用している例が公式に紹介されています<sup>[2]</sup>。
                     </p>
 
-                    <h3 id="213-セキュリティ保護侵入防止アクセス制御ファイアウォール">
+                    <h3 id="213-セキュリティ保護侵入防止アクセス制御ファイアウォール" tabIndex={-1}>
                         2.1.3 セキュリティ保護（侵入防止・アクセス制御・ファイアウォール）
                     </h3>
                     <p>
@@ -396,8 +396,8 @@ export function PcaSection2Guide() {
                         </div>
                     </div>
 
-                    <h3 id="214-vpc設計とロードバランシング">2.1.4 VPC設計とロードバランシング</h3>
-                    <h4 id="vpcの基本設計方針">VPCの基本設計方針</h4>
+                    <h3 id="214-vpc設計とロードバランシング" tabIndex={-1}>2.1.4 VPC設計とロードバランシング</h3>
+                    <h4 id="vpcの基本設計方針" tabIndex={-1}>VPCの基本設計方針</h4>
                     <p>
                         Google
                         CloudのVPCはAWSやAzureと異なり、<strong>グローバルリソース</strong>です。1つのVPCが複数のリージョンにまたがるサブネットを持つことができ、リージョンをまたいだVPC
@@ -444,7 +444,7 @@ export function PcaSection2Guide() {
                         共有VPCでは、1つの「ホストプロジェクト」が持つネットワークを複数の「サービスプロジェクト」が利用します。ホストプロジェクトはサービスプロジェクトを兼ねることができず、サービスプロジェクトは1つのホストプロジェクトにのみ接続できます（複数ホストプロジェクトの構成自体は可能）<sup>[7]</sup>。この仕組みにより、ネットワーク管理者はネットワークとセキュリティを一元管理しつつ、各チームのプロジェクト管理者にはインスタンス作成などの限定的な権限のみを委譲でき、最小権限の原則を実現します<sup>[7][8]</sup>。
                     </p>
 
-                    <h4 id="private-service-connectpsc">Private Service Connect（PSC）</h4>
+                    <h4 id="private-service-connectpsc" tabIndex={-1}>Private Service Connect（PSC）</h4>
                     <p>
                         PSCは、VPCを越えてGoogle Cloudの管理サービス（Cloud
                         SQL、BigQueryなど）やサードパーティSaaS、あるいは自社が公開するサービスに、インターネットを経由せずプライベートにアクセスするための仕組みです。
@@ -506,7 +506,7 @@ export function PcaSection2Guide() {
                         </div>
                     </div>
 
-                    <h4 id="ロードバランサーの選択">ロードバランサーの選択</h4>
+                    <h4 id="ロードバランサーの選択" tabIndex={-1}>ロードバランサーの選択</h4>
                     <p>
                         Cloud Load
                         Balancingは「トラフィックの種類」「外部か内部か」「グローバルかリージョンか」の3軸で製品を選択します。
@@ -584,12 +584,12 @@ export function PcaSection2Guide() {
                     </div>
                     <hr />
 
-                    <h2 id="22-個別のストレージシステムの構成">2.2 個別のストレージシステムの構成</h2>
+                    <h2 id="22-個別のストレージシステムの構成" tabIndex={-1}>2.2 個別のストレージシステムの構成</h2>
                     <p>
                         このタスクは以下の7つの観点をカバーします。データ配置・処理／コンピュートのプロビジョニング・セキュリティ／アクセス管理・転送とレイテンシ・保持とライフサイクル・データ増加計画・データ保護（バックアップと復旧）。
                     </p>
 
-                    <h3 id="221-オブジェクトストレージcloud-storageクラスとライフサイクル管理">
+                    <h3 id="221-オブジェクトストレージcloud-storageクラスとライフサイクル管理" tabIndex={-1}>
                         2.2.1 オブジェクトストレージ（Cloud Storage）：クラスとライフサイクル管理
                     </h3>
                     <p>
@@ -708,7 +708,7 @@ export function PcaSection2Guide() {
                         </div>
                     </div>
 
-                    <h3 id="222-データ処理とコンピュートのプロビジョニングデータベースの選択">
+                    <h3 id="222-データ処理とコンピュートのプロビジョニングデータベースの選択" tabIndex={-1}>
                         2.2.2 データ処理とコンピュートのプロビジョニング／データベースの選択
                     </h3>
                     <p>
@@ -793,7 +793,7 @@ export function PcaSection2Guide() {
                         </div>
                     </div>
 
-                    <h3 id="223-ブロックストレージとファイルストレージ">
+                    <h3 id="223-ブロックストレージとファイルストレージ" tabIndex={-1}>
                         2.2.3 ブロックストレージとファイルストレージ
                     </h3>
                     <p>
@@ -856,7 +856,7 @@ export function PcaSection2Guide() {
                         </div>
                     </div>
 
-                    <h3 id="224-データ保護バックアップと復旧">
+                    <h3 id="224-データ保護バックアップと復旧" tabIndex={-1}>
                         2.2.4 データ保護（バックアップと復旧）
                     </h3>
                     <Diagram id="diag-10" label="データ保護とバックアップの選択肢" />
@@ -949,12 +949,12 @@ export function PcaSection2Guide() {
                     </div>
                     <hr />
 
-                    <h2 id="23-コンピュートシステムの構成">2.3 コンピュートシステムの構成</h2>
+                    <h2 id="23-コンピュートシステムの構成" tabIndex={-1}>2.3 コンピュートシステムの構成</h2>
                     <p>
                         このタスクは、コンピュートリソースのプロビジョニング、spot／standardの選択、クラウドネイティブなネットワーク構成、インフラのオーケストレーションとパッチ管理、コンテナオーケストレーション、サーバーレスコンピューティングの6項目で構成されます。
                     </p>
 
-                    <h3 id="231-コンピュートリソースのプロビジョニングマシンファミリーとカスタムマシンタイプ">
+                    <h3 id="231-コンピュートリソースのプロビジョニングマシンファミリーとカスタムマシンタイプ" tabIndex={-1}>
                         2.3.1
                         コンピュートリソースのプロビジョニング：マシンファミリーとカスタムマシンタイプ
                     </h3>
@@ -1026,7 +1026,7 @@ export function PcaSection2Guide() {
                         </div>
                     </div>
 
-                    <h3 id="232-コンピュートのボラティリティ構成spot-vm-vs-standard-vm">
+                    <h3 id="232-コンピュートのボラティリティ構成spot-vm-vs-standard-vm" tabIndex={-1}>
                         2.3.2 コンピュートのボラティリティ構成：Spot VM vs Standard VM
                     </h3>
                     <div className="table-scroll">
@@ -1115,7 +1115,7 @@ export function PcaSection2Guide() {
                         </div>
                     </div>
 
-                    <h3 id="233-クラウドネイティブなネットワーク構成compute-enginegkevmware-engine">
+                    <h3 id="233-クラウドネイティブなネットワーク構成compute-enginegkevmware-engine" tabIndex={-1}>
                         2.3.3 クラウドネイティブなネットワーク構成（Compute Engine／GKE／VMware Engine）
                     </h3>
                     <p>コンピュートリソースの種類ごとに、ネットワーク構成の考慮点が異なります。</p>
@@ -1197,10 +1197,10 @@ export function PcaSection2Guide() {
                         </div>
                     </div>
 
-                    <h3 id="234-インフラのオーケストレーションリソース構成パッチ管理">
+                    <h3 id="234-インフラのオーケストレーションリソース構成パッチ管理" tabIndex={-1}>
                         2.3.4 インフラのオーケストレーション、リソース構成、パッチ管理
                     </h3>
-                    <h4 id="infrastructure-as-codeiac">Infrastructure as Code（IaC）</h4>
+                    <h4 id="infrastructure-as-codeiac" tabIndex={-1}>Infrastructure as Code（IaC）</h4>
                     <div className="table-scroll">
                         <table>
                             <thead>
@@ -1267,7 +1267,7 @@ export function PcaSection2Guide() {
                         </div>
                     </div>
 
-                    <h4 id="パッチ管理vm-manager">パッチ管理（VM Manager）</h4>
+                    <h4 id="パッチ管理vm-manager" tabIndex={-1}>パッチ管理（VM Manager）</h4>
                     <p>
                         VM
                         Managerは、大規模なVMフリートのOSインベントリ・脆弱性・パッチ適用を統合管理するツール群です。
@@ -1335,7 +1335,7 @@ export function PcaSection2Guide() {
                         </div>
                     </div>
 
-                    <h3 id="235-コンテナオーケストレーションgke-autopilot-vs-standard">
+                    <h3 id="235-コンテナオーケストレーションgke-autopilot-vs-standard" tabIndex={-1}>
                         2.3.5 コンテナオーケストレーション：GKE Autopilot vs Standard
                     </h3>
                     <Diagram id="diag-13" label="コンピュート実行形態の選択フロー" />
@@ -1404,7 +1404,7 @@ export function PcaSection2Guide() {
                         </div>
                     </div>
 
-                    <h3 id="236-サーバーレスコンピューティングcloud-run">
+                    <h3 id="236-サーバーレスコンピューティングcloud-run" tabIndex={-1}>
                         2.3.6 サーバーレスコンピューティング：Cloud Run
                     </h3>
                     <p>
@@ -1468,7 +1468,7 @@ export function PcaSection2Guide() {
                     </div>
                     <hr />
 
-                    <h2 id="24-gemini-enterprise-agent-platformを活用したエンドツーエンドmlワークフロー">
+                    <h2 id="24-gemini-enterprise-agent-platformを活用したエンドツーエンドmlワークフロー" tabIndex={-1}>
                         2.4 Gemini Enterprise Agent Platformを活用したエンドツーエンドMLワークフロー
                     </h2>
                     <blockquote>
@@ -1484,7 +1484,7 @@ export function PcaSection2Guide() {
                         </p>
                     </blockquote>
 
-                    <h3 id="241-gemini-enterprise-agent-platformの全体像">
+                    <h3 id="241-gemini-enterprise-agent-platformの全体像" tabIndex={-1}>
                         2.4.1 Gemini Enterprise Agent Platformの全体像
                     </h3>
                     <p>
@@ -1551,7 +1551,7 @@ export function PcaSection2Guide() {
                         </span>
                     </div>
 
-                    <h3 id="242-agent-platform-pipelinesによる自動化とオーケストレーション">
+                    <h3 id="242-agent-platform-pipelinesによる自動化とオーケストレーション" tabIndex={-1}>
                         2.4.2 Agent Platform Pipelinesによる自動化とオーケストレーション
                     </h3>
                     <p>
@@ -1616,7 +1616,7 @@ export function PcaSection2Guide() {
                         </div>
                     </div>
 
-                    <h3 id="243-agent-platformデータ統合の準備">
+                    <h3 id="243-agent-platformデータ統合の準備" tabIndex={-1}>
                         2.4.3 Agent Platformデータ統合の準備
                     </h3>
                     <p>
@@ -1640,7 +1640,7 @@ export function PcaSection2Guide() {
                         </li>
                     </ul>
 
-                    <h3 id="244-ai-hypercomputerの活用">2.4.4 AI Hypercomputerの活用</h3>
+                    <h3 id="244-ai-hypercomputerの活用" tabIndex={-1}>2.4.4 AI Hypercomputerの活用</h3>
                     <p>
                         AI
                         Hypercomputerは、最適化されたハードウェア・オープンソフトウェア・柔軟な消費モデルをシステムレベルで協調設計（co-design）した、Google
@@ -1765,10 +1765,10 @@ export function PcaSection2Guide() {
                     </div>
                     <hr />
 
-                    <h2 id="25-agent-platformでの事前構築ソリューションまたはapiの構成">
+                    <h2 id="25-agent-platformでの事前構築ソリューションまたはapiの構成" tabIndex={-1}>
                         2.5 Agent Platformでの事前構築ソリューションまたはAPIの構成
                     </h2>
-                    <h3 id="251-google-ai-apiの使い分け">2.5.1 Google AI APIの使い分け</h3>
+                    <h3 id="251-google-ai-apiの使い分け" tabIndex={-1}>2.5.1 Google AI APIの使い分け</h3>
                     <p>
                         すべてのAI活用がカスタムモデルの学習を必要とするわけではありません。Google
                         Cloudは、画像・動画・音声・テキストのそれぞれに特化した事前学習済みAPIを提供しており、多くのユースケースではこれらを組み合わせるだけで実装が完了します。
@@ -1847,7 +1847,7 @@ export function PcaSection2Guide() {
                         </div>
                     </div>
 
-                    <h3 id="252-gemini-enterprise機能の統合ai-agentsおよび-notebooklm">
+                    <h3 id="252-gemini-enterprise機能の統合ai-agentsおよび-notebooklm" tabIndex={-1}>
                         2.5.2 Gemini Enterprise機能の統合（AI Agentsおよび NotebookLM）
                     </h3>
                     <p>
@@ -1917,7 +1917,7 @@ export function PcaSection2Guide() {
                         </div>
                     </div>
 
-                    <h3 id="253-model-gardenからのaiモデル統合">
+                    <h3 id="253-model-gardenからのaiモデル統合" tabIndex={-1}>
                         2.5.3 Model GardenからのAIモデル統合
                     </h3>
                     <p>
@@ -1996,7 +1996,7 @@ export function PcaSection2Guide() {
 
                     <hr />
 
-                    <h2 id="well-architected-frameworkとの関連">Well-Architected Frameworkとの関連</h2>
+                    <h2 id="well-architected-frameworkとの関連" tabIndex={-1}>Well-Architected Frameworkとの関連</h2>
                     <p>
                         Section 2で扱う「管理とプロビジョニング」の意思決定は、
                         <a href="https://cloud.google.com/architecture/framework">Well-Architected Framework</a>
@@ -2055,7 +2055,7 @@ export function PcaSection2Guide() {
                     </div>
                     <hr />
 
-                    <h2 id="学習チェックリスト">学習チェックリスト</h2>
+                    <h2 id="学習チェックリスト" tabIndex={-1}>学習チェックリスト</h2>
                     <div className="checklist-card">
                         <div className="checklist-bar">
                             <span className="checklist-counter" id="checklist-counter">
@@ -2085,7 +2085,7 @@ export function PcaSection2Guide() {
                     </div>
                     <hr />
 
-                    <h2 id="参考文献">参考文献</h2>
+                    <h2 id="参考文献" tabIndex={-1}>参考文献</h2>
                     <div className="ref-grid">
                         <div className="ref-card">
                             <span className="ref-badge">1</span>
