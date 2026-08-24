@@ -1,0 +1,1272 @@
+{
+  "source": "Gcp-pca-section3-security-compliance.html",
+  "h1": [
+    "Google Cloud Professional Cloud Architect 試験対策ガイド"
+  ],
+  "h2": [
+    "Section 3 の全体像",
+    "3.1 セキュリティの設計",
+    "3.2 コンプライアンスの設計",
+    "Well-Architected Frameworkセキュリティピラーとの関係",
+    "学習チェックリスト",
+    "参考文献"
+  ],
+  "h3": [
+    "3.1.1 Identity and Access Management（IAM）",
+    "3.1.2 リソース階層（組織・フォルダ・プロジェクト）",
+    "3.1.3 データセキュリティ（鍵管理・暗号化・シークレット管理）",
+    "3.1.4 職務分掌（Separation of Duties）",
+    "3.1.5 セキュリティ制御（監査・VPC Service Controls・コンテキストアウェアアクセス・組織ポリシー・階層ファイアウォールポリシー）",
+    "3.1.6 Cloud KMSによる顧客管理暗号鍵（CMEK）の管理",
+    "3.1.7 セキュアなリモートアクセス",
+    "3.1.8 ソフトウェアサプライチェーンのセキュリティ確保",
+    "3.1.9 AIのセキュリティ確保",
+    "3.2.1 法令・規制",
+    "3.2.2 商用データの取り扱い",
+    "3.2.3 業界認証",
+    "3.2.4 監査（ログを含む）",
+    "公式試験情報",
+    "IAM",
+    "リソース階層",
+    "データセキュリティ・Cloud KMS・Secret Manager",
+    "セキュリティ制御（監査・VPC Service Controls・コンテキストアウェアアクセス・組織ポリシー・ファイアウォールポリシー）",
+    "職務分掌",
+    "セキュアなリモートアクセス",
+    "ソフトウェアサプライチェーンのセキュリティ",
+    "AIのセキュリティ",
+    "コンプライアンス — 全般・法令規制・データ主権",
+    "コンプライアンス — 商用データ・PCI DSS",
+    "Well-Architected Framework",
+    "監査（Access Transparency / Access Approval）"
+  ],
+  "h4": [
+    "IAMの基本構成要素",
+    "ロールの3分類",
+    "IAMポリシーの評価フロー",
+    "リソース階層でのアクセス制御",
+    "IAMのベストプラクティス",
+    "階層構造",
+    "階層構造がもたらす3つの利点",
+    "リソース階層設計のベストプラクティス",
+    "暗号化オプションの比較",
+    "封筒暗号化（Envelope Encryption）の仕組み",
+    "Secret Managerによるシークレット管理",
+    "データセキュリティのベストプラクティス",
+    "Google Cloudにおける職務分掌の実現手段",
+    "Cloud KMSにおける鍵管理モデルの選択",
+    "職務分掌の実例（サービスアカウント関連ロール）",
+    "(1) Cloud Audit Logs",
+    "(2) VPC Service Controls",
+    "(3) コンテキストアウェアアクセス（Identity-Aware Proxy / Access Context Manager）",
+    "(4) 組織ポリシーサービス（Organization Policy Service）",
+    "(5) 階層ファイアウォールポリシー（Hierarchical Firewall Policies）",
+    "鍵の保護レベル（Protection Level）",
+    "Cloud KMS Autokey",
+    "CMEK運用のベストプラクティス",
+    "(1) Identity-Aware Proxy（IAP）",
+    "(2) サービスアカウントのなりすまし（Service Account Impersonation）",
+    "(3) Workload Identity Federation",
+    "(4) Chrome Enterprise Premium",
+    "SLSAフレームワークの成熟度レベル",
+    "ソフトウェアサプライチェーンを保護するパイプライン",
+    "主要コンポーネントの役割",
+    "Binary Authorizationの2つの動作モード",
+    "ソフトウェアサプライチェーンセキュリティのベストプラクティス",
+    "(1) Model Armor",
+    "(2) Sensitive Data Protection（旧Cloud DLP）",
+    "(3) セキュアなモデルデプロイ",
+    "データ主権とAssured Workloads",
+    "PCI DSS（クレジットカード情報）",
+    "PII（個人を特定できる情報）の取り扱い",
+    "監査対応のベストプラクティス"
+  ],
+  "th": [
+    "タスク",
+    "内容",
+    "主要サービス・機能",
+    "要素",
+    "説明",
+    "ロール種別",
+    "特徴",
+    "推奨度",
+    "ベストプラクティス",
+    "具体的な実践方法",
+    "出典",
+    "階層レベル",
+    "役割",
+    "主な特徴",
+    "ベストプラクティス",
+    "説明",
+    "方式",
+    "鍵の生成・管理主体",
+    "主な用途",
+    "特徴",
+    "内容",
+    "比較項目",
+    "Cloud KMS",
+    "Secret Manager",
+    "ベストプラクティス",
+    "説明",
+    "出典",
+    "モデル",
+    "特徴",
+    "適した組織",
+    "アンチパターン",
+    "問題点",
+    "是正策",
+    "ログタイプ",
+    "内容",
+    "デフォルトで有効か",
+    "保持期間の目安",
+    "ベストプラクティス",
+    "説明",
+    "リスク",
+    "VPC Service Controlsによる緩和策",
+    "モード",
+    "説明",
+    "構成要素",
+    "役割",
+    "組織ポリシー制約の例",
+    "目的",
+    "特徴",
+    "内容",
+    "制御",
+    "主な保護対象",
+    "判定基準",
+    "保護レベル",
+    "説明",
+    "用途",
+    "ベストプラクティス",
+    "説明",
+    "出典",
+    "方式",
+    "認証情報の性質",
+    "リスク",
+    "ベストプラクティス",
+    "説明",
+    "構成する4つの機能",
+    "役割",
+    "レベル",
+    "要件の概要",
+    "コンポーネント",
+    "役割",
+    "モード",
+    "説明",
+    "ベストプラクティス",
+    "説明",
+    "5つの主要機能",
+    "内容",
+    "機能",
+    "内容",
+    "観点",
+    "実践方法",
+    "規制領域",
+    "代表的な法令・要件",
+    "Google Cloudの対応",
+    "コントロールパッケージの種類",
+    "提供する制御",
+    "実装レイヤー",
+    "PCI DSS対応における主な検討事項",
+    "考慮事項",
+    "実践方法",
+    "認証・レポート",
+    "概要",
+    "機能",
+    "目的",
+    "特徴",
+    "ベストプラクティス",
+    "説明",
+    "WAFセキュリティピラーの原則",
+    "本ガイドでの対応セクション"
+  ],
+  "td": [
+    "3.1 セキュリティの設計",
+    "Identity and Access Management（IAM）、リソース階層、データセキュリティ、職務分掌、セキュリティ制御、Cloud KMSによるCMEK管理、セキュアなリモートアクセス、ソフトウェアサプライチェーンのセキュリティ、AIのセキュリティ",
+    "IAM、Resource Manager、Cloud KMS、Secret Manager、Cloud Audit Logs、VPC Service Controls、Context-Aware Access、Organization Policy Service、階層ファイアウォールポリシー、IAP、Workload Identity Federation、Chrome Enterprise Premium、Binary Authorization、Model Armor、Sensitive Data Protection",
+    "3.2 コンプライアンスの設計",
+    "法令・規制（健康記録のプライバシー、児童のプライバシー、データプライバシー、データ所有権、データ主権）、商用データ（クレジットカード情報、PII）、業界認証（SOC 2など）、監査（ログを含む）",
+    "Assured Workloads、Cloud Audit Logs、Access Transparency、Access Approval、Compliance resource center",
+    "プリンシパル（Principal）",
+    "リソースにアクセスする主体。ユーザー、Googleグループ、サービスアカウント、Cloud Identityドメインなど",
+    "ロール（Role）",
+    "一連の権限（permission）の集合。「compute.instances.list」のような個々の権限を束ねたもの",
+    "許可ポリシー（Allow Policy）",
+    "「どのプリンシパルに」「どのロールを」「どのリソースに対して」付与するかを定義するバインディングの集合",
+    "条件（IAM Conditions）",
+    "許可ポリシーに時間・リソース属性などの条件式（CEL: Common Expression Language）を付加し、動的な権限制御を実現",
+    "拒否ポリシー（Deny Policy）",
+    "許可ポリシーとは独立して、特定の権限を明示的に拒否する。許可ポリシーより優先される",
+    "基本ロール（Basic roles）",
+    "Owner・Editor・Viewerなど。プロジェクト内の広範な権限を一括付与",
+    "本番環境では非推奨。数千に及ぶ権限を含むため最小権限の原則に反する2",
+    "事前定義ロール（Predefined roles）",
+    "Google Cloudが職務単位で用意したロール（例: roles/compute.instanceAdmin.v1）",
+    "多くのユースケースで推奨",
+    "カスタムロール（Custom roles）",
+    "組織独自に権限を組み合わせて作成するロール",
+    "事前定義ロールで要件を満たせない場合に使用",
+    "最小権限の原則を徹底する",
+    "基本ロールを避け、事前定義ロールまたはカスタムロールを使用。ロール推奨（Role Recommender）で未使用権限を継続的に削減",
+    "25",
+    "個人ではなくグループに権限を付与する",
+    "Google Groupsを介してロールをバインドし、メンバー変更時のIAMポリシー更新を不要にする",
+    "6",
+    "デフォルトサービスアカウントへの自動ロール付与を無効化する",
+    "組織ポリシーでEditorロールの自動付与を制御。サービスにはサービスエージェントを利用させ、デフォルトSAに依存しない",
+    "5",
+    "サービスアカウントキーの利用を最小化する",
+    "Compute Engine・GKE・Cloud Run functionsなどではメタデータサーバー経由の認証を利用し、キーのエクスポートを避ける。他クラウドからはWorkload Identity Federationを使用（3.1.7参照）",
+    "57",
+    "Privileged Access Managerで昇格権限を時限化する",
+    "常時特権ではなく、必要な時だけ条件付きIAMバインディングで一時的に昇格権限を付与し、自動失効させる",
+    "8",
+    "IAM Denyポリシーで防御を多層化する",
+    "開発環境でのIAMロール変更・組織ポリシー変更・課金情報アクセスなど高権限操作を、許可ポリシーとは独立して拒否",
+    "3",
+    "ワークロードIDフェデレーションを優先する",
+    "外部ワークロード（GitHub Actions、AWS、オンプレミス等）からのアクセスにはサービスアカウントキーではなく、短期的な認証情報を発行するWorkload Identity Federationを使用",
+    "7",
+    "組織（Organization）",
+    "リソース階層のルート。会社全体を表す",
+    "Google WorkspaceまたはCloud Identityアカウントに紐づく。組織レベルのIAM/組織ポリシーはすべての子リソースに継承される9",
+    "フォルダ（Folder）",
+    "プロジェクトやフォルダをグルーピングする任意の中間層",
+    "最大10階層までネスト可能。1つの親フォルダに直接持てる子フォルダは300個まで10",
+    "プロジェクト（Project）",
+    "実際のリソース（VM、バケット等）を保持する基本単位であり、課金・API有効化・信頼境界の単位",
+    "プロジェクト内のサービスはデフォルトで相互に一定の信頼関係を持つ4",
+    "リソース（Resource）",
+    "Compute Engineインスタンス、Cloud Storageバケット、Pub/Subトピックなど個々のサービスリソース",
+    "一部のリソースはリソースレベルでのIAMロール付与にも対応",
+    "組織構造・環境・コンプライアンス境界に合わせてフォルダを設計する",
+    "部門・チーム・製品単位、または本番/検証/開発などの環境単位でフォルダを分割し、IAMと組織ポリシーの適用範囲を明確化する11",
+    "複数プロジェクトにまたがるロールはフォルダレベルで付与する",
+    "ユーザーやグループが複数プロジェクトへのアクセスを必要とする場合、個々のプロジェクトへの重複設定を避けフォルダレベルでロールを設定する4",
+    "ラベルとタグを併用してリソースをアノテーションする",
+    "階層による構造化に加え、ラベル（課金分析用）とタグ（条件付きポリシー適用用）できめ細かい管理を実現する4",
+    "サンドボックスフォルダから始める",
+    "本番導入前に単一のサンドボックスフォルダで階層設計を試行し、組織に最適な構成を検証する10",
+    "プロジェクトを信頼境界として扱う",
+    "同一プロジェクト内のサービスはデフォルトで一定の信頼関係を持つため、機密度の異なるワークロードは別プロジェクトに分離する4",
+    "デフォルト暗号化（Google-managed keys）",
+    "Google",
+    "追加設定不要。多くのワークロードで十分な保護レベル",
+    "顧客管理暗号鍵（CMEK: Customer-Managed Encryption Keys）",
+    "顧客がCloud KMS上で鍵を作成・管理",
+    "鍵のローテーション・無効化・削除（クリプトシュレッディング）を顧客が制御したい場合",
+    "顧客提供暗号鍵（CSEK: Customer-Supplied Encryption Keys）",
+    "顧客がGoogle Cloud外で鍵を保持し、リクエスト時に提供",
+    "鍵をGoogle Cloud上に一切保存したくない場合。一部サービスのみ対応",
+    "外部鍵管理（Cloud EKM: External Key Manager）",
+    "顧客がGoogle Cloud外部のサードパーティKMSで鍵を管理",
+    "主権要件が特に厳しい場合や、Google Cloud外に鍵の物理的な管理を残したい場合12",
+    "保管時の暗号化",
+    "AES-256で自動的に暗号化。追加設定は不要14",
+    "バージョニング",
+    "シークレットの変更履歴をバージョンとして保持し、ロールバックが可能14",
+    "レプリケーションポリシー",
+    "自動（Google Cloudが最適リージョンを選択）またはユーザー管理（リージョンを指定、データ主権要件に対応）を選択可能14",
+    "アクセス制御",
+    "IAMのきめ細かいロール（Secret Accessor / Secret Version Manager等）とIAM Conditionsで、閲覧・管理・監査の職責を分離可能15",
+    "自動ローテーション",
+    "有効期限に応じた自動ローテーション通知（Pub/Sub連携）を設定可能14",
+    "主な用途",
+    "暗号鍵そのものの生成・保管・ローテーション・利用制御",
+    "パスワードやAPIキーなど「シークレット値」そのものの保管・バージョニング",
+    "典型的な利用形態",
+    "他のGoogle CloudサービスのCMEK統合や、アプリケーションからの暗号/復号API呼び出し",
+    "アプリケーションが起動時にシークレット値を取得して利用",
+    "暗号化方式",
+    "鍵管理サービス自体（KMS上の鍵はHSMまたはソフトウェアで保護）",
+    "内部的にはGoogleが管理する鍵でAES-256暗号化（顧客はCMEKで保護することも可能）",
+    "シークレットをファイルシステムや環境変数に平置きしない",
+    "ディレクトリトラバーサル攻撃やデバッグエンドポイントからの漏えいリスクを避け、Secret Manager APIを直接呼び出す",
+    "16",
+    "シークレットへのアクセスはシークレット単位で最小権限を付与する",
+    "プロジェクトレベルでSecret Accessorロールを付与すると全シークレットが閲覧可能になるため、個別シークレットへのIAMバインディングを行う",
+    "17",
+    "組織所有権はセキュアな管理者アカウントに限定する",
+    "組織全体の管理権限を持つアカウントを最小限に絞り、環境（ステージング/本番）ごとにプロジェクトを分離する",
+    "16",
+    "Cloud Asset Inventoryでシークレット・鍵の設定状況を継続監視する",
+    "ローテーション・暗号化設定・所在地の組織要件への非準拠を検知する",
+    "15",
+    "VPC Service Controlsでネットワークベースの制御を追加する",
+    "IAMに加え、Secret Manager APIへのアクセスをサービス境界で制限し、データ持ち出しリスクを低減する",
+    "15",
+    "集中管理モデル（Centralized / Dedicated-project）",
+    "鍵を専用の「鍵管理プロジェクト」に集約し、中央のセキュリティチームが鍵の管理権限を持つ。リソースを含むプロジェクトの担当者は鍵プロジェクトへのアクセス権を持たない",
+    "中央集権的なセキュリティチームを持つ組織、または鍵材料の厳格な分離が求められる組織19",
+    "委任管理モデル（Delegated / Same-project）",
+    "CMEKをリソースと同一プロジェクトに保管する",
+    "開発者の俊敏性を優先し、中央セキュリティチームとのやり取りを減らしたい組織19",
+    "同一プリンシパルにService Account AdminとService Account Userの両方を付与",
+    "サービスアカウントの作成者が、そのサービスアカウントを利用したなりすまし操作まで単独で行えてしまう",
+    "作成・管理を行う担当者と、実際にサービスアカウントを利用してリソースを操作する担当者を分離する20",
+    "鍵管理者がデータへの直接アクセス権も保有",
+    "鍵の無効化権限とデータの読み取り権限が同一人物に集中し、内部不正のリスクが高まる",
+    "集中管理モデルを採用し、鍵プロジェクトのオーナー権限をデータプロジェクトの担当者から分離する21",
+    "Admin Activity（管理アクティビティ）",
+    "リソースの構成・メタデータを変更するAPI呼び出し（例: IAM権限の変更、VM作成）",
+    "常時有効・無効化不可",
+    "400日22",
+    "Data Access（データアクセス）",
+    "リソースの構成・メタデータの読み取り、およびユーザー提供データの作成・変更・読み取り",
+    "サービスごとに個別に有効化が必要（BigQueryは例外的にデフォルト有効）",
+    "30日22",
+    "System Event（システムイベント）",
+    "Google Cloudのシステムによって自動的に生成される変更（Compute Engineのライブマイグレーション等）",
+    "常時有効・無効化不可",
+    "Admin Activityと同様",
+    "Policy Denied（ポリシー拒否）",
+    "セキュリティポリシー（VPC Service Controls等）違反によりアクセスが拒否された記録",
+    "デフォルトで有効",
+    "Data Accessと同様",
+    "機密データを扱うサービスでData Accessログを個別に有効化する",
+    "Cloud Storageの機密バケット、Secret Manager、BigQueryの規制対象データセットなど、優先度の高い領域から有効化する2225",
+    "ログシンクを事前に設定する",
+    "シンクは過去のログを遡って取り込まないため、必要になる前にCloud Storage・BigQuery・Log Bucketへのエクスポート設定を行う22",
+    "IAM変更やサービスアカウントキー作成をアラート対象にする",
+    "SetIamPolicyやサービスアカウントキー作成イベントなど高リスク操作を監視し、異常検知に活用する22",
+    "Access TransparencyログとあわせてGoogle人員によるアクセスも監査する",
+    "顧客側の操作記録（Cloud Audit Logs）とGoogle人員の操作記録（Access Transparency）を併用し、完全な証跡を確保する（詳細は3.2.4）",
+    "盗まれたOAuth・サービスアカウント認証情報による境界外ネットワークからのアクセス",
+    "許可されたVPCネットワークからのプライベートアクセスのみを許可し、正規の認証情報であっても境界外からのアクセスを拒否",
+    "内部関係者や侵害されたコードによるデータの持ち出し",
+    "境界内のクライアントが境界外リソースへ読み書きすることを防止し、ネットワーク的な出口制御を補完",
+    "Dry-run（試行）モード",
+    "違反をログに記録するが、実際のアクセスはブロックしない。本番導入前の影響確認に使用27",
+    "Enforced（強制）モード",
+    "違反したリクエストを実際に拒否する。デフォルトのモード27",
+    "Identity-Aware Proxy（IAP）",
+    "HTTPS経由のアプリケーションおよびTCPフォワーディング（VM への SSH/RDP）に対する中央集権的な認可レイヤー。ネットワークレベルのファイアウォールに代わりアプリケーションレベルでアクセス制御する29",
+    "Access Context Manager",
+    "IPアドレス範囲やデバイス属性に基づく「アクセスレベル」を定義するルールエンジン30",
+    "IAM Conditions",
+    "URLパス・日時などに基づく追加の制約をIAMバインディングに付加30",
+    "constraints/iam.disableServiceAccountKeyCreation",
+    "サービスアカウントキーの作成自体を組織全体で禁止し、Workload Identity Federation等の利用を強制",
+    "constraints/compute.vmExternalIpAccess",
+    "外部IPを持つVMインスタンスの作成を制限",
+    "constraints/gcp.resourceLocations",
+    "リソースを作成できるリージョンを制限し、データ主権要件に対応",
+    "constraints/iam.allowedPolicyMemberDomains",
+    "IAMポリシーに追加できるドメインを制限し、外部ドメインへの誤った権限付与を防止",
+    "評価順序",
+    "組織レベル → フォルダレベル（上位から下位）→ VPCファイアウォールルールの順で評価される33",
+    "goto_nextアクション",
+    "組織レベルでは「絶対に必須の要件」（既知の不正IP遮断、ヘルスチェック許可等）のみを強制し、それ以外は下位レベルの判断に委譲する設計が推奨される34",
+    "ターゲット指定",
+    "階層ファイアウォールポリシーはネットワークタグではなく、ターゲットVPCネットワークまたはターゲットサービスアカウントで対象を指定する35",
+    "Layer 7検査との統合",
+    "apply_security_profile_groupアクションにより、Cloud Next Generation FirewallのURLフィルタリングや侵入検知・防止サービスと連携可能33",
+    "Cloud Audit Logs",
+    "可視性・証跡",
+    "誰が・何を・いつ行ったか",
+    "VPC Service Controls",
+    "データ持ち出し防止",
+    "サービス境界の内外",
+    "コンテキストアウェアアクセス（IAP）",
+    "アプリケーション/VMへのアクセス",
+    "ID + デバイス + ネットワークの文脈",
+    "組織ポリシー",
+    "リソースの構成可能性",
+    "リソース属性・設定値の許可/禁止",
+    "階層ファイアウォールポリシー",
+    "ネットワーク通信",
+    "送信元/宛先IP・ポート・プロトコル",
+    "ソフトウェア鍵（Software）",
+    "Cloud KMS内でソフトウェア的に保護される鍵。すべてのGoogle Cloudロケーションで利用可能",
+    "一般的なCMEK要件",
+    "Cloud HSM（マルチテナント）",
+    "FIPS 140-2レベル3準拠のハードウェアセキュリティモジュールで保護",
+    "より高いコンプライアンス要件（金融・医療等）",
+    "Cloud HSM（シングルテナント）",
+    "専有のHSMインスタンスを利用",
+    "最も厳格な分離要件",
+    "Cloud EKM（外部鍵管理）",
+    "Google Cloud外部のサードパーティKMSで鍵材料を保持",
+    "鍵材料をGoogle Cloud上に一切置きたくない主権要件",
+    "要件に基づきCMEKの要否を判断する",
+    "鍵の所有権・利用場所の制御・クリプトシュレッディング・監査ログが不要であれば、デフォルト暗号化で十分と判断する",
+    "13",
+    "鍵とデータのロケーションを一致させる",
+    "Cloud KMSリソースはプロジェクト内のロケーションに作成されるため、保護対象データと同一リージョンに鍵を配置し、レイテンシと主権要件を両立させる",
+    "13",
+    "鍵管理モデル（集中/委任）を組織要件に合わせて選択する",
+    "中央セキュリティチームがある場合は集中管理モデル、開発速度を優先する場合は委任管理モデルを選択（3.1.4参照）",
+    "19",
+    "組織ポリシーでCMEKの使用を強制する",
+    "constraints/gcp.restrictNonCmekServices等を用いて、対応リソースがCMEKで暗号化されることを組織ポリシーで保証する",
+    "12",
+    "ローテーションポリシーを定義する",
+    "対称鍵は自動ローテーションに対応。ローテーション後も旧バージョンで暗号化されたデータの復号は可能なため、鍵バージョンのライフサイクル管理方針を明確にする",
+    "37",
+    "Autokeyを既定の選択肢として検討する",
+    "Autokeyが要件を満たす場合、手動プロビジョニングよりシンプルかつベストプラクティス準拠になるため優先的に採用する",
+    "36",
+    "サービスアカウントキーのエクスポート",
+    "長期間有効な秘密鍵。ローテーションされない限り無期限に有効",
+    "漏えい時の影響が大きく、監査も困難",
+    "サービスアカウントのなりすまし（Impersonation）",
+    "権限を持つ既存プリンシパルが、IAM Credentials APIを介して短期間有効なトークンを発行",
+    "発行元プリンシパルの操作としてCloud Audit Logsに記録され、追跡性が高い",
+    "GitHubなどマルチテナントIdPとの連携では属性条件を使用する",
+    "ワークロードIDプールは外部IDの「ビュー」に過ぎず、設定によっては複数の外部IDが同一のIAMプリンシパルにマッピングされうる。属性条件でなりすまし攻撃のリスクを低減する7",
+    "ワークロードIDプールの管理を専用プロジェクトに集約する",
+    "プール・プロバイダの管理を一元化し、誤設定のリスクを下げる7",
+    "IAM APIのデータアクセスログを有効化する",
+    "なりすましシナリオを追跡するため、監査証跡を確保する7",
+    "一意なサブジェクトマッピングを使用する",
+    "外部IDとGoogle Cloudプリンシパルの対応関係を明確にし、非否認性（non-repudiation）のある監査証跡を維持する7",
+    "Identity-Aware Proxy（IAP）",
+    "VPNなしで社内アプリケーションへのアクセスを実現するプロキシ",
+    "IAM",
+    "ID管理・認可の基盤",
+    "Access Context Manager",
+    "デバイス・場所などのきめ細かい条件でアクセスレベルを定義",
+    "Endpoint Verification",
+    "暗号化状況・OSバージョン・ユーザー情報などのデバイス属性をChrome拡張機能で収集",
+    "SLSA 1",
+    "ビルドプロセスが自動化されており、ソース・ビルド手順に関するプロベナンス（来歴情報）メタデータが生成される",
+    "SLSA 2",
+    "ホスト型のビルドサービスを使用し、プロベナンスに署名がされる",
+    "SLSA 3",
+    "ビルド環境が改ざん耐性を持ち、分離・再現可能なビルドプロセスを備える",
+    "SLSA 4（最高レベル）",
+    "2名以上のレビューを経たソースと、密閉されたビルドプロセスを要求する最も厳格なレベル",
+    "Artifact Registry",
+    "コンテナイメージやパッケージを一元的に保存・管理するリポジトリ。Cloud Buildなど CI/CDシステムと統合44",
+    "Artifact Analysis（Container Analysis）",
+    "保存されたイメージを自動・オンデマンドでスキャンし、脆弱性情報や信頼済みメタデータを蓄積45",
+    "Cloud Build",
+    "マネージドCI基盤。SLSAレベル3ビルドを標準でサポートし、VPC Service Controls・分離されたエフェメラルなビルド環境などのセキュリティ機能を備える45",
+    "Binary Authorization",
+    "アテステーション（証明書）に基づく信頼のチェーンを確立・検証・維持するデプロイ時ゲートキーパー。ポリシーに準拠したイメージのみのデプロイを許可する43",
+    "Assured Open Source Software（Assured OSS）",
+    "Googleがキュレーション・テスト済みのOSSパッケージを信頼できる供給源として提供し、依存関係のセキュリティを強化45",
+    "モニターモード（Continuous Validation）",
+    "実行中のPodに紐づくコンテナイメージが定義済みポリシーに準拠しているかを定期的に監視し、非準拠の場合はCloud Loggingにログを記録する（Preview機能）43",
+    "エンフォースモード",
+    "デプロイ時にポリシーを強制適用し、アテステーションがポリシーの基準を満たさないイメージのデプロイをブロックする43",
+    "ビルドプロセスを完全に自動化する",
+    "手動ビルドを排除し、Cloud Buildのようなホスト型CIで検証可能なプロベナンスを生成することがSLSA準拠の出発点となる40",
+    "本番デプロイは中央管理されたリポジトリからのみ許可する",
+    "開発・検証環境では開発者に裁量を与えつつ、本番環境ではBinary Authorizationで承認済みイメージのみのデプロイを強制する44",
+    "依存関係にもスキャンと信頼済みソースを適用する",
+    "Assured OSSを活用し、サプライチェーンの上流（OSS依存関係）まで含めてリスクを低減する45",
+    "ビルド環境自体もセキュアにする",
+    "Cloud Workstationsを用いて、VPC Service Controls・プライベートIngress/Egressで保護された開発環境を提供し、開発ライフサイクルの左側（shift-left）からセキュリティを組み込む42",
+    "プロンプトインジェクション・ジェイルブレイク検知",
+    "LLMに指示や安全フィルタを無視させようとする操作を検知・ブロック48",
+    "機密データ保護",
+    "プロンプトと応答の双方でPII・財務情報・認証情報などの漏えいを検知・防止（Sensitive Data Protectionと連携）48",
+    "悪意あるURL検知",
+    "プロンプト・応答内のフィッシング・悪意あるリンクをスキャン48",
+    "コンテンツ安全フィルタ",
+    "ヘイトスピーチ、ハラスメント、性的表現、危険なトピックなどをきめ細かく制御49",
+    "Responsible AI信頼度しきい値",
+    "アプリケーションの文脈やリスク許容度に応じて、検知の確信度しきい値を調整可能49",
+    "検査（Inspect）",
+    "200種類以上の組み込みInfoType検出器（クレジットカード番号、SSN等）に加え、辞書・正規表現・文脈要素によるカスタムInfoTypeを定義可能50",
+    "秘匿化（De-identify）",
+    "マスキング、リダクション（削除）、バケット化、日付シフト、トークン化（形式保持暗号化）などの手法で機密要素を変換51",
+    "再識別（Re-identify）",
+    "可逆的な変換方式を用いた場合、認可されたプロセスでのみ元の値へ復元可能52",
+    "リスク分析",
+    "BigQueryの構造化データを分析し、再識別リスクを可視化53",
+    "デプロイパイプラインの保護",
+    "モデルアーティファクトもコンテナイメージと同様にArtifact Registryで管理し、Binary Authorizationでポリシー準拠を検証する（3.1.8参照）",
+    "モデルエンドポイントへのアクセス制御",
+    "IAM・VPC Service Controls・IAPを用いて、モデル推論エンドポイントへのアクセスを最小権限かつコンテキストアウェアに制御する",
+    "トレーニングデータの保護",
+    "Sensitive Data Protectionで学習データセットから機密情報を事前に秘匿化し、モデルが機密情報を記憶・再現するリスクを低減する",
+    "実行時の入出力スクリーニング",
+    "Model Armorをアプリケーション層またはAPI Gateway（Apigee等）に組み込み、本番運用中も継続的にプロンプト・応答を保護する",
+    "健康記録のプライバシー",
+    "米国 HIPAA（Health Insurance Portability and Accountability Act）",
+    "Business Associate Agreement（BAA）の締結により、対象サービスでのPHI（保護対象保健情報）取り扱いをサポート。ただしHIPAA準拠の認定制度自体は存在せず、責任共有モデルの下で顧客が最終的な準拠責任を負う5556",
+    "児童のプライバシー",
+    "米国 COPPA（Children's Online Privacy Protection Act）等",
+    "児童データを扱うサービス設計では、同意取得・データ収集最小化などの要件をアプリケーション層で実装する必要がある（Googleのプラットフォーム機能はこれを支援するが、準拠の主体は顧客）",
+    "データプライバシー",
+    "EU GDPR（General Data Protection Regulation）等",
+    "Cloud Data Processing Addendum（DPA）、Sensitive Data Protectionによるデータ最小化・秘匿化、Assured Workloadsによる地域データ境界の実現",
+    "データ所有権",
+    "契約上のデータ所有権の明確化",
+    "Google Cloudの利用規約において、顧客データの所有権は顧客に帰属することが明記されている",
+    "データ主権",
+    "特定国・地域内でのデータ保存・処理・運用の主権確保",
+    "Assured Workloads（後述）による、リージョン制限・人員アクセス制限・鍵管理の主権対応",
+    "地域データ境界",
+    "データ常駐地要件を満たすため、リソースの保存地理的範囲を制限。一部のパッケージではGoogleのデータアクセス自体への独立した承認制御も提供58",
+    "規制データ境界",
+    "特定の規制・コンプライアンス法令の要件を満たすよう調整された、認証済みの制御セット58",
+    "パートナーによる主権制御",
+    "データ常駐地・人員制御・地域サポートに加え、Cloud External Key Manager（Cloud EKM）・Cloud HSM・Key Access Justificationsといった強化されたデータ主権制御を提供58",
+    "リソース階層とIAM",
+    "カード会員データ環境（CDE）を独立したプロジェクト/フォルダに分離し、アクセスを最小権限で制御61",
+    "ネットワーク",
+    "VPC・階層ファイアウォールポリシー・Cloud Armorで、CDEとその他のネットワークセグメントを分離61",
+    "データ保護",
+    "Sensitive Data Protection（旧Cloud DLP）でカード会員データを検出・秘匿化し、意図しない保存・伝播を防止61",
+    "アクセス制御・可観測性",
+    "IAP・Security Command Centerで、CDEへのアクセスを可視化・制御61",
+    "データ収集の最小化",
+    "業務上必要なPIIのみを収集・保存する設計をアプリケーション層で徹底する",
+    "匿名化・仮名化の使い分け",
+    "分析用途にはトークン化（仮名化、可逆）またはバケット化（匿名化、不可逆）を用途に応じて選択する",
+    "アクセスの追跡可能性",
+    "Data Accessログを有効化し、誰がPIIにアクセスしたかを監査可能にする",
+    "SOC 2（Service Organization Controls 2）",
+    "AICPA（米国公認会計士協会）のTrust Services Criteria（セキュリティ、可用性、処理の整合性、機密性、プライバシー）に基づき、第三者監査人が統制の有効性を評価したレポート62",
+    "SOC 1 / SOC 3",
+    "SOC 1は財務報告に関連する統制、SOC 3はSOC 2の一般公開向けサマリー版63",
+    "ISO/IEC 27001",
+    "情報セキュリティマネジメントシステム（ISMS）の国際規格",
+    "ISO/IEC 27017",
+    "クラウドサービスに特化した情報セキュリティ管理策",
+    "ISO/IEC 27018",
+    "クラウド上の個人情報（PII）保護に特化した管理策",
+    "ISO/IEC 27701",
+    "プライバシー情報マネジメントシステム（PIMS）の拡張規格",
+    "PCI DSS",
+    "3.2.2を参照",
+    "FedRAMP",
+    "米国政府機関向けクラウドサービスのセキュリティ認証制度",
+    "Cloud Audit Logs",
+    "顧客組織内のメンバー（人・サービスアカウント）による操作を記録",
+    "詳細は3.1.5を参照",
+    "Access Transparency",
+    "Google従業員が顧客データにアクセスした際の操作（対象リソース・アクション・理由・アクセス者の所在地や職種等）を記録",
+    "サポート対応・障害対応など正当な業務理由でのアクセスであることを検証する目的で利用67",
+    "Access Approval",
+    "Google従業員による顧客データへのアクセス要求について、顧客が事前に承認・拒否を行う仕組み",
+    "「顧客対応起因（CUSTOMER_INITIATED_SUPPORT）」など特定の正当化理由を持つリクエストのみを許可するといった運用が可能69",
+    "Key Access Justifications",
+    "CMEKで保護されたデータへのアクセス要求ごとに、その正当化理由を可視化・制御",
+    "主権要件が特に厳しいAssured Workloadsのコントロールパッケージと組み合わせて利用68",
+    "Cloud Audit LogsとAccess Transparencyを併用する",
+    "顧客側の操作とGoogle側のアクセスの両方を記録することで、完全な監査証跡を確保する67",
+    "SIEMへログを統合する",
+    "Access TransparencyログをSIEMに取り込み、Security Command Centerの検出結果と突き合わせて分析する67",
+    "Access Approvalで緊急アクセスの取り扱いを明確化する",
+    "緊急時のアクセスも「自動承認済み」ステータスとして記録され、監査の連続性が保たれる設計になっている69",
+    "Assured Workloadsと組み合わせて主権要件に対応する",
+    "より高いデータ管理要件がある場合は、Access Transparency/Access Approval単体ではなくAssured Workloadsの利用を検討する69",
+    "セキュリティ・バイ・デザインを実装する（設計段階からセキュリティを組み込む）",
+    "3.1.1 IAM、3.1.2 リソース階層",
+    "ゼロトラストを実装する（「決して信頼せず、常に検証する」）",
+    "3.1.7 セキュアなリモートアクセス",
+    "シフトレフト・セキュリティを実装する（開発ライフサイクル早期からの統制）",
+    "3.1.8 ソフトウェアサプライチェーン",
+    "多層防御を実装する",
+    "3.1.5 セキュリティ制御群",
+    "データを保護する（暗号化・分類・秘匿化）",
+    "3.1.3・3.1.6 データセキュリティ・CMEK",
+    "コンプライアンス・プライバシー要件と整合させる",
+    "3.2 コンプライアンスの設計全般"
+  ],
+  "listItems": [
+    "3.1.1 Identity and Access Management（IAM）",
+    "3.1.2 リソース階層（組織・フォルダ・プロジェクト）",
+    "3.1.3 データセキュリティ（鍵管理・暗号化・シークレット管理）",
+    "3.1.4 職務分掌（Separation of Duties）",
+    "3.1.5 セキュリティ制御（監査・VPC Service Controls・コンテキストアウェアアクセス・組織ポリシー・階層ファイアウォールポリシー）",
+    "3.1.6 Cloud KMSによる顧客管理暗号鍵（CMEK）の管理",
+    "3.1.7 セキュアなリモートアクセス",
+    "3.1.8 ソフトウェアサプライチェーンのセキュリティ確保",
+    "3.1.9 AIのセキュリティ確保",
+    "3.2.1 法令・規制",
+    "3.2.2 商用データの取り扱い",
+    "3.2.3 業界認証",
+    "3.2.4 監査（ログを含む）",
+    "IAMのプリンシパル・ロール・許可ポリシー・拒否ポリシー・条件の違いを説明できる",
+    "基本ロール・事前定義ロール・カスタムロールの使い分けと、基本ロールが推奨されない理由を説明できる",
+    "リソース階層（組織・フォルダ・プロジェクト）の継承の仕組みと、フォルダ設計のベストプラクティスを説明できる",
+    "CMEK・CSEK・Cloud EKM・デフォルト暗号化の違いと、それぞれを選択する基準を説明できる",
+    "封筒暗号化（KEKとDEK）の仕組みを図で説明できる",
+    "Secret ManagerとCloud KMSの役割の違いを説明できる",
+    "職務分掌の考え方と、Cloud KMSの集中管理モデル/委任管理モデルの違いを説明できる",
+    "Cloud Audit Logsの4種類（Admin Activity、Data Access、System Event、Policy Denied）の違いとデフォルトの有効化状況を説明できる",
+    "VPC Service ControlsがIAMと独立した防御レイヤーとして機能する理由を説明できる",
+    "コンテキストアウェアアクセス（IAP + Access Context Manager）の仕組みを説明できる",
+    "組織ポリシーサービスと階層ファイアウォールポリシーの違いと、それぞれの継承ルールを説明できる",
+    "Cloud KMS Autokeyが手動プロビジョニングと比べて何を自動化するかを説明できる",
+    "サービスアカウントキーのエクスポートよりも、なりすまし（Impersonation）とWorkload Identity Federationが推奨される理由を説明できる",
+    "Chrome Enterprise Premiumを構成する4つの機能を挙げられる",
+    "SLSAフレームワークの目的と、Binary Authorizationがどのようにデプロイ時のゲートキーパーとして機能するかを説明できる",
+    "Model ArmorとSensitive Data Protectionの役割分担を説明できる",
+    "共有責任モデルにおける、Google・共有・顧客それぞれの責任範囲の考え方を説明できる",
+    "Assured Workloadsの3種類のコントロールパッケージ（地域データ境界・規制データ境界・パートナーによる主権制御）を説明できる",
+    "HIPAA・PCI DSSにおける「認証制度が存在しない」「責任共有モデルが適用される」という考え方を説明できる",
+    "Cloud Audit LogsとAccess Transparency / Access Approvalの違いを説明できる"
+  ],
+  "links": [
+    {
+      "text": "Exam Guide",
+      "href": "https://services.google.com/fh/files/misc/professional_cloud_architect_exam_guide_english.pdf"
+    },
+    {
+      "text": "Professional Cloud Architect Certification exam guide (PDF)",
+      "href": "https://services.google.com/fh/files/misc/professional_cloud_architect_exam_guide_english.pdf"
+    },
+    {
+      "text": "GCP IAM Best Practices: A Guide To IAM On Google Cloud",
+      "href": "https://www.d3vtech.com/insights/gcp-iam-best-practices-a-guide-to-iam-on-google-cloud/"
+    },
+    {
+      "text": "Using resource hierarchy for access control",
+      "href": "https://docs.cloud.google.com/iam/docs/resource-hierarchy-access-control"
+    },
+    {
+      "text": "Best practices for using service accounts securely",
+      "href": "https://docs.cloud.google.com/iam/docs/best-practices-service-accounts"
+    },
+    {
+      "text": "Scaling the IAM mountain: An in-depth guide to identity in Google Cloud",
+      "href": "https://cloud.google.com/blog/products/identity-security/scaling-the-iam-mountain-an-in-depth-guide-to-identity-in-google-cloud"
+    },
+    {
+      "text": "Best practices for using Workload Identity Federation",
+      "href": "https://docs.cloud.google.com/iam/docs/best-practices-for-using-workload-identity-federation"
+    },
+    {
+      "text": "Best practices for Privileged Access Manager",
+      "href": "https://docs.cloud.google.com/iam/docs/pam-best-practices"
+    },
+    {
+      "text": "About resource hierarchy",
+      "href": "https://docs.cloud.google.com/resource-manager/docs/cloud-platform-resource-hierarchy"
+    },
+    {
+      "text": "Create folders",
+      "href": "https://docs.cloud.google.com/resource-manager/docs/creating-managing-folders"
+    },
+    {
+      "text": "Organize resources",
+      "href": "https://docs.cloud.google.com/docs/get-started/organize-resources"
+    },
+    {
+      "text": "Cloud Key Management Service overview",
+      "href": "https://docs.cloud.google.com/kms/docs/key-management-service"
+    },
+    {
+      "text": "Best practices for using CMEKs",
+      "href": "https://docs.cloud.google.com/kms/docs/cmek-best-practices"
+    },
+    {
+      "text": "Secret Manager overview",
+      "href": "https://docs.cloud.google.com/secret-manager/docs/overview"
+    },
+    {
+      "text": "Secret Manager best practices",
+      "href": "https://docs.cloud.google.com/secret-manager/docs/best-practices"
+    },
+    {
+      "text": "Secret Manager best practices (regional secrets)",
+      "href": "https://docs.cloud.google.com/secret-manager/regional-secrets/best-practices-rs"
+    },
+    {
+      "text": "Google Cloud Secret Manager: Complete Tutorial",
+      "href": "https://computingforgeeks.com/google-cloud-secret-manager-tutorial/"
+    },
+    {
+      "text": "Separation of duties",
+      "href": "https://docs.cloud.google.com/kms/docs/separation-of-duties"
+    },
+    {
+      "text": "Cloud Key Management Service encryption",
+      "href": "https://docs.cloud.google.com/docs/security/key-management-deep-dive"
+    },
+    {
+      "text": "Customer-managed encryption keys (CMEK)",
+      "href": "https://docs.cloud.google.com/kms/docs/cmek"
+    },
+    {
+      "text": "How to Use Customer-Managed Encryption Keys Across All Google Cloud Services",
+      "href": "https://oneuptime.com/blog/post/2026-02-17-how-to-implement-customer-managed-encryption-keys-across-all-google-cloud-services/view"
+    },
+    {
+      "text": "Just say no: Build defense in depth with IAM Deny and Org Policies",
+      "href": "https://cloud.google.com/blog/products/identity-security/just-say-no-build-defense-in-depth-with-iam-deny-and-org-policies"
+    },
+    {
+      "text": "GCP Cloud Audit Logs Explained: Types, Retention, and Use Cases",
+      "href": "https://cloudwebschool.com/docs/gcp/security/cloud-audit-logs/"
+    },
+    {
+      "text": "Google Cloud Audit Logs",
+      "href": "https://docs.datadoghq.com/integrations/google-cloud-audit-logs/"
+    },
+    {
+      "text": "Cloud Audit Logs overview",
+      "href": "https://docs.cloud.google.com/logging/docs/audit"
+    },
+    {
+      "text": "GCP Log Types Explained: Audit Logs, VPC Flow Logs, Firewall Logs, and Application Logs",
+      "href": "https://cloudwebschool.com/docs/gcp/security/log-types-in-gcp/"
+    },
+    {
+      "text": "Overview of VPC Service Controls",
+      "href": "https://docs.cloud.google.com/vpc-service-controls/docs/overview"
+    },
+    {
+      "text": "Service perimeter details and configuration",
+      "href": "https://docs.cloud.google.com/vpc-service-controls/docs/service-perimeters"
+    },
+    {
+      "text": "Protecting your cloud VMs with Cloud IAP context-aware access controls",
+      "href": "https://cloud.google.com/blog/products/identity-security/protecting-your-cloud-vms-with-cloud-iap-context-aware-access-controls"
+    },
+    {
+      "text": "Identity-Aware Proxy overview",
+      "href": "https://docs.cloud.google.com/iap/docs/concepts-overview"
+    },
+    {
+      "text": "Setting up context-aware access with Identity-Aware Proxy",
+      "href": "https://docs.cloud.google.com/iap/docs/cloud-iap-context-aware-access-howto"
+    },
+    {
+      "text": "Organization Policy overview",
+      "href": "https://docs.cloud.google.com/organization-policy/overview"
+    },
+    {
+      "text": "Organization policy constraints",
+      "href": "https://docs.cloud.google.com/organization-policy/reference/org-policy-constraints"
+    },
+    {
+      "text": "Hierarchical firewall policies",
+      "href": "https://docs.cloud.google.com/firewall/docs/firewall-policies"
+    },
+    {
+      "text": "How to Create Hierarchical Firewall Policies at the Organization Level",
+      "href": "https://oneuptime.com/blog/post/2026-02-17-how-to-create-hierarchical-firewall-policies-at-the-organization-level-on-google-cloud/view"
+    },
+    {
+      "text": "Create hierarchical firewall policies and rules",
+      "href": "https://cloud.google.com/firewall/docs/using-firewall-policies"
+    },
+    {
+      "text": "Identity and security: Identity and access governance",
+      "href": "https://cloud.google.com/blog/products/identity-security/achieving-identity-and-access-governance-on-google-cloud/"
+    },
+    {
+      "text": "Enforce Separation of Duties for Service-Account Related Roles",
+      "href": "https://www.trendmicro.com/cloudoneconformity/knowledge-base/gcp/CloudIAM/enforce-separation-of-duties-for-service-account-roles.html"
+    },
+    {
+      "text": "BeyondCorp Zero Trust Enterprise Security",
+      "href": "https://cloud.google.com/beyondcorp?hl=en"
+    },
+    {
+      "text": "Chrome Enterprise Premium access protection overview",
+      "href": "https://docs.cloud.google.com/chrome-enterprise-premium/docs/access-protection"
+    },
+    {
+      "text": "Google introduces SLSA framework",
+      "href": "https://cloud.google.com/blog/products/application-development/google-introduces-slsa-framework"
+    },
+    {
+      "text": "Unlocking SLSA Level 3 — A Practical Guide for Google Cloud Platform",
+      "href": "https://medium.com/meghgen/unlocking-slsa-level-3-a-practical-guide-for-google-cloud-platform-3f4bf40b2258"
+    },
+    {
+      "text": "Software supply chain security",
+      "href": "https://docs.cloud.google.com/software-supply-chain-security/docs/overview"
+    },
+    {
+      "text": "Binary Authorization overview",
+      "href": "https://docs.cloud.google.com/binary-authorization/docs/overview"
+    },
+    {
+      "text": "Securing Cloud Run Deployments with Binary Authorization",
+      "href": "https://cloud.google.com/blog/topics/developers-practitioners/securing-cloud-run-deployments-binary-authorization/"
+    },
+    {
+      "text": "Software supply chain security",
+      "href": "https://cloud.google.com/security/solutions/software-supply-chain-security"
+    },
+    {
+      "text": "Model Armor overview",
+      "href": "https://docs.cloud.google.com/security-command-center/docs/model-armor-overview"
+    },
+    {
+      "text": "Shielding Your AI Models: A Dive into Google Cloud Model Armor for Securing LLMs",
+      "href": "https://azeezz.medium.com/shielding-your-ai-models-a-dive-into-google-cloud-model-armor-for-securing-llms-3f92ba2a66cd"
+    },
+    {
+      "text": "How Model Armor can help protect your AI apps",
+      "href": "https://cloud.google.com/blog/products/identity-security/how-model-armor-can-help-protect-your-ai-apps"
+    },
+    {
+      "text": "Model Armor",
+      "href": "https://cloud.google.com/security/products/model-armor"
+    },
+    {
+      "text": "Sensitive Data Protection documentation",
+      "href": "https://docs.cloud.google.com/sensitive-data-protection/docs"
+    },
+    {
+      "text": "De-identifying sensitive data",
+      "href": "https://docs.cloud.google.com/sensitive-data-protection/docs/deidentify-sensitive-data"
+    },
+    {
+      "text": "Google Cloud DLP — A Practitioner's Guide to Securing Sensitive Data",
+      "href": "https://medium.com/devsecops-ai/google-cloud-dlp-a-practitioners-guide-to-securing-sensitive-data-bcb5e74e6d4f"
+    },
+    {
+      "text": "Sensitive Data Protection overview",
+      "href": "https://docs.cloud.google.com/sensitive-data-protection/docs/sensitive-data-protection-overview"
+    },
+    {
+      "text": "Shared responsibilities and shared fate on Google Cloud",
+      "href": "https://docs.cloud.google.com/architecture/framework/security/shared-responsibility-shared-fate"
+    },
+    {
+      "text": "HIPAA Compliance on Google Cloud",
+      "href": "https://cloud.google.com/security/compliance/hipaa"
+    },
+    {
+      "text": "HIPAA - Compliance",
+      "href": "https://cloud.google.com/security/compliance/hipaa-compliance"
+    },
+    {
+      "text": "Overview of Assured Workloads",
+      "href": "https://docs.cloud.google.com/assured-workloads/docs/overview"
+    },
+    {
+      "text": "Control packages | Assured Workloads",
+      "href": "https://docs.cloud.google.com/assured-workloads/docs/control-packages"
+    },
+    {
+      "text": "SOC 2: compliance",
+      "href": "https://cloud.google.com/security/compliance/soc-2"
+    },
+    {
+      "text": "Data Protection Law Compliance",
+      "href": "https://business.safety.google/compliance/"
+    },
+    {
+      "text": "Trust Center - Security and Compliance",
+      "href": "https://cloud.google.com/trust-center"
+    },
+    {
+      "text": "Cloud compliance and regulations resources",
+      "href": "https://cloud.google.com/compliance?hl=en"
+    },
+    {
+      "text": "Compliance reports manager",
+      "href": "https://cloud.google.com/security/compliance/compliance-reports-manager"
+    },
+    {
+      "text": "PCI DSS - Compliance",
+      "href": "https://cloud.google.com/security/compliance/pci-dss"
+    },
+    {
+      "text": "Google Cloud Platform: PCI DSS v4.0.1 Shared Responsibility Matrix (PDF)",
+      "href": "https://services.google.com/fh/files/misc/gcp_pci_dss_v4_responsibility_matrix.pdf"
+    },
+    {
+      "text": "PCI DSS compliance on GKE",
+      "href": "https://docs.cloud.google.com/architecture/pci-dss-and-gke-guide"
+    },
+    {
+      "text": "Well-Architected Framework: Security, privacy, and compliance pillar",
+      "href": "https://docs.cloud.google.com/architecture/framework/security"
+    },
+    {
+      "text": "Implement security by design",
+      "href": "https://docs.cloud.google.com/architecture/framework/security/implement-security-by-design"
+    },
+    {
+      "text": "Overview of Access Transparency",
+      "href": "https://docs.cloud.google.com/assured-workloads/access-transparency/docs/overview"
+    },
+    {
+      "text": "Access Approval audit logging information",
+      "href": "https://docs.cloud.google.com/assured-workloads/access-approval/docs/audit-logging"
+    },
+    {
+      "text": "Understanding and using Access Transparency logs",
+      "href": "https://cloud.google.com/cloud-provider-access-management/access-transparency/docs/reading-logs"
+    },
+    {
+      "text": "公式Exam Guide",
+      "href": "https://services.google.com/fh/files/misc/professional_cloud_architect_exam_guide_english.pdf"
+    },
+    {
+      "text": "公式認定ページ",
+      "href": "https://cloud.google.com/learn/certification/cloud-architect"
+    }
+  ],
+  "bodyContent": [
+    {
+      "kind": "annotation",
+      "text": "Google Cloud PCA 試験対策 Section 3セキュリティとコンプライアンスの設計 Section 3 の全体像 3.1 セキュリティの設計 3.1.1 Identity and Access Management（IAM） 3.1.2 リソース階層（組織・フォルダ・プロジェクト） 3.1.3 データセキュリティ（鍵管理・暗号化・シークレット管理） 3.1.4 職務分掌（Separation of Duties） 3.1.5 セキュリティ制御（監査・VPC Service Controls・コンテキストアウェアアクセス・組織ポリシー・階層ファイアウォールポリシー） 3.1.6 Cloud KMSによる顧客管理暗号鍵（CMEK）の管理 3.1.7 セキュアなリモートアクセス 3.1.8 ソフトウェアサプライチェーンのセキュリティ確保 3.1.9 AIのセキュリティ確保 3.2 コンプライアンスの設計 3.2.1 法令・規制 3.2.2 商用データの取り扱い 3.2.3 業界認証 3.2.4 監査（ログを含む） Well-Architected Frameworkセキュリティピラーとの関係 学習チェックリスト 参考文献"
+    },
+    {
+      "kind": "paragraph",
+      "text": "Section 3: セキュリティとコンプライアンスの設計（配点 約17.5%）"
+    },
+    {
+      "kind": "paragraph",
+      "text": "Professional Cloud Architect試験の6セクションの中で、Section 3は約17.5%の配点を持つ「設計と計画」（Section 1、約25%）に次いで重要性の高い分野です。IAM、リソース階層、暗号鍵管理、ネットワークセキュリティ制御、AIセキュリティ、そしてコンプライアンス対応まで、クラウドアーキテクトが実務で最も頻繁に判断を求められる領域を横断的にカバーします。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "公式Exam Guideでは、Section 3は2つの主要タスクに分かれています。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "出典: 公式Exam Guide PDF「Section 3: Designing for security and compliance (~17.5% of the exam)」1"
+    },
+    {
+      "kind": "paragraph",
+      "text": "IAMは「誰が（Who）」「何に対して（Which resource）」「どのような操作を（What access)」行えるかを制御する、Google Cloudのセキュリティの根幹をなす仕組みです。試験ではIAMの構成要素の理解に加え、最小権限の原則（Principle of Least Privilege）をどう実践するかが繰り返し問われます。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "拒否ポリシーは許可ポリシーより優先して評価されるため、「特定の高権限操作を組織全体で禁止する」といった防御多層化（defense in depth）に有効です3。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "IAMの許可ポリシーは組織 → フォルダ → プロジェクト → 個別リソースの階層に沿って継承されます。上位で付与したロールは下位のすべての子リソースに自動的に伝播します（詳細は3.1.2）4。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "Google Cloudのすべてのリソースは、単一のルートを持つ木構造（ツリー構造）に編成されます。この構造を**リソース階層（Resource Hierarchy）**と呼び、IAM許可ポリシーと組織ポリシーの両方がこの階層に沿って継承される、いわば「ガバナンスの背骨」です9。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "出典: 9"
+    },
+    {
+      "kind": "paragraph",
+      "text": "Google Cloudでは保存データ（data at rest）はデフォルトですべて暗号化されますが、規制要件や独自のセキュリティポリシーに応じて、暗号化方式や鍵の管理主体を選択できます。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "CMEKを選択すべき典型的な要件は次のとおりです。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "出典: 13"
+    },
+    {
+      "kind": "paragraph",
+      "text": "CMEKはCloud KMS上の鍵暗号化鍵（KEK: Key Encryption Key）でデータ暗号化鍵（DEK: Data Encryption Key）をラップする「封筒暗号化」方式を採用しています。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "出典: 12"
+    },
+    {
+      "kind": "paragraph",
+      "text": "APIキー・パスワード・証明書などの機密性の高い設定値は、コードやコンテナイメージに埋め込まず、Secret Managerで一元管理することが推奨されます。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "Cloud KMSとSecret Managerの違いを理解することも重要です。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "職務分掌（SoD: Separation of Duties）は、単独の担当者が不正・誤操作を行うリスクを低減するために、重要な業務を複数の役割に分割し、それぞれ異なる担当者に割り当てる統制です18。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "出典: 183"
+    },
+    {
+      "kind": "paragraph",
+      "text": "Cloud KMSでは、鍵管理者とデータ利用者の職責を分離するために、2つの管理モデルが提供されています。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "両モデルは環境ごとに使い分けることも可能で、例えば本番環境は集中管理モデル、開発・検証環境は委任管理モデルとする構成が一般的です19。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "このセクションは3.1の中でも扱う機能が最も多く、試験でも頻出のテーマです。それぞれの制御が「何を」「どのレイヤーで」保護するのかを対比しながら理解することが重要です。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "Cloud Audit Logsは「誰が」「いつ」「どのリソースに対して」「どのAPIを呼び出したか」を記録する、コントロールプレーンの証跡です。4種類のログタイプがあります。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "出典: 232422"
+    },
+    {
+      "kind": "paragraph",
+      "text": "監査ログのベストプラクティス"
+    },
+    {
+      "kind": "paragraph",
+      "text": "VPC Service Controlsは、IAMとは独立した「サービス境界（Service Perimeter）」を構成し、Cloud StorageやBigQueryなどのGoogle管理サービスへのアクセスを、境界の内外という文脈で制御する仕組みです。主な目的はデータ持ち出し（exfiltration）リスクの低減です26。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "VPC Service Controlsが緩和する代表的なリスクは次の2つです26。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "運用モード"
+    },
+    {
+      "kind": "paragraph",
+      "text": "コンテキストアウェアアクセスは、ユーザーIDに加えて「どのネットワークから」「どのデバイスから」「いつ」アクセスしているかという文脈情報に基づいてアクセスを許可・拒否する仕組みです。VPNのような「ネットワークにいるか否か」の二択（全か無か）ではなく、より粒度の細かい制御を実現します28。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "出典: 2930"
+    },
+    {
+      "kind": "paragraph",
+      "text": "組織ポリシーサービスは、IAMのように「誰が」ではなく「リソースをどのように構成できるか」を制御する、プログラマティックなガードレールです。例えば「外部IPアドレスを持つVMの作成を禁止する」「特定のリージョン以外へのリソース作成を禁止する」といった制約（constraint）を組織・フォルダ・プロジェクト単位で適用できます31。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "出典: 3132"
+    },
+    {
+      "kind": "paragraph",
+      "text": "VPCファイアウォールルールがVPCネットワーク単位で適用されるのに対し、階層ファイアウォールポリシーは組織またはフォルダのレベルでファイアウォールルールを定義し、配下のすべてのプロジェクトのVMに一括適用する仕組みです33。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "出典: 3334"
+    },
+    {
+      "kind": "paragraph",
+      "text": "セキュリティ制御5機能の使い分けまとめ"
+    },
+    {
+      "kind": "paragraph",
+      "text": "3.1.3で暗号化オプションの全体像を扱いましたが、ここではCloud KMSを用いたCMEKの実装・運用面をさらに掘り下げます。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "出典: 12"
+    },
+    {
+      "kind": "paragraph",
+      "text": "手動でのCMEKプロビジョニングでは、Cloud KMS管理者が事前にキーリングと鍵の種類、サービスエージェントへのIAMロール付与を計画する必要がありました。Cloud KMS Autokeyはこのプロセスを自動化し、リソース作成時にオンデマンドでキーリング・鍵を生成し、必要なIAMロールも自動付与します36。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "Autokeyで生成される鍵は、ロケーションの整合性、鍵の粒度、マルチテナントHSM保護レベル、ローテーションスケジュール、職務分掌といった業界標準のベストプラクティスに自動的に準拠するよう設計されています36。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "従来型の「VPNで社内ネットワークに接続すればすべて信頼する」というペリメータ型セキュリティモデルに代わり、Google Cloudは**ゼロトラスト（Zero Trust）**モデルを採用しています。ゼロトラストの原則は「ネットワークの場所によってアクセスを決定しない」「ユーザーとデバイスの文脈に基づいてアクセスを許可する」「すべてのアクセスを認証・認可・暗号化する」の3点に要約されます38。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "3.1.5で解説したとおり、IAPはHTTPS経由のアプリケーションアクセスを中央集権的に制御する仕組みです。加えてIAPのTCPフォワーディング機能を使うことで、VMに外部IPを割り当てることなくSSH/RDPによる管理アクセスを実現できます28。これによりパブリックIPの露出や踏み台サーバーの管理コストを削減できます。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "サービスアカウントキー（JSON形式の長期認証情報）のエクスポート・利用は、漏えいリスクが高いため最終手段とすべきとされています5。代わりに推奨されるのがサービスアカウントのなりすましです。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "IAM Credentials APIを利用した一時的権限昇格は、鍵のエクスポートを伴わずに済むため、Cloud Audit LogsのserviceAccountDelegationInfoフィールドで「誰が」「どのサービスアカウントに」なりすましたかを追跡できます5。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "Workload Identity Federationは、AWS・Azure・オンプレミスのIdP・GitHub Actionsなど外部のワークロードIDを、サービスアカウントキーを発行することなくGoogle CloudのIAMプリンシパルとして扱う仕組みです。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "出典: 7"
+    },
+    {
+      "kind": "paragraph",
+      "text": "Workload Identity Federationのベストプラクティス"
+    },
+    {
+      "kind": "paragraph",
+      "text": "Chrome Enterprise Premium（旧称BeyondCorp Enterprise）は、BeyondCorpセキュリティモデルに基づき、デバイスの状態やユーザーの文脈に応じて、VPNなしでアプリケーションへの安全なアクセスを実現するソリューションです39。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "出典: 39"
+    },
+    {
+      "kind": "paragraph",
+      "text": "Chrome Enterprise Premiumを使うことで、例えば「管理対象デバイスかつ最新パッチ適用済みであれば、どのネットワークからでもアクセス許可」「管理者はコーポレートネットワークからのみコンソールにアクセス許可」といったポリシーを実現できます39。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "SolarWinds事件などを契機に、ソースコードからビルド、依存関係、デプロイに至るまでの一連の「ソフトウェアサプライチェーン」全体を保護する重要性が高まっています。Google Cloudでは、SLSA（Supply-chain Levels for Software Artifacts）フレームワークに沿った成熟度モデルと、それを支える一連のサービス群を提供しています40。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "出典: 41"
+    },
+    {
+      "kind": "paragraph",
+      "text": "出典: 4243"
+    },
+    {
+      "kind": "paragraph",
+      "text": "生成AI・エージェント型AIの普及に伴い、プロンプトインジェクション、機密情報の漏えい、有害コンテンツ生成といった従来のアプリケーションセキュリティでは想定されていなかった新たなリスクへの対応が求められています。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "出典: 46"
+    },
+    {
+      "kind": "paragraph",
+      "text": "Model Armorは、LLMのプロンプトと応答の両方をリアルタイムでスクリーニングし、脅威をブロックするマネージドサービスです。特定のモデルやクラウドに依存せず、マルチクラウド・マルチモデル環境でも利用できます47。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "**フロア設定（Floor Settings）**によって、Model Armorテンプレートが満たすべき組織全体の最低限のセキュリティ・安全基準を、組織またはフォルダレベルで一元的に強制できます48。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "Sensitive Data Protectionは、構造化・非構造化データの両方から機密情報を発見・分類・秘匿化するプラットフォームです。Model Armorの機密データ保護機能の内部でも利用されています46。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "出典: 5351"
+    },
+    {
+      "kind": "paragraph",
+      "text": "AIモデルそのものを保護するための考慮事項も、Section 3の範囲に含まれます。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "クラウドアーキテクトは、技術的なセキュリティ制御だけでなく、業界規制・法令に準拠したアーキテクチャを設計する責任も担います。ここで鍵となる考え方が**共有責任モデル（Shared Responsibility Model）**です。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "出典: 54"
+    },
+    {
+      "kind": "paragraph",
+      "text": "Googleは自社サービスのコンプライアンス認証取得やセキュリティ機能の提供を担いますが、それらの機能をどう構成し、どう運用するかは顧客の責任です。これは「共有ファイト（Shared Fate）」という考え方にも発展しており、Googleは単なる責任分界点の提示にとどまらず、ベストプラクティス・ブループリント・自動化ツールを通じて顧客のセキュリティ達成を積極的に支援します54。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "試験ガイドが例示する法令・規制領域は「健康記録のプライバシー」「児童のプライバシー」「データプライバシー」「データ所有権」「データ主権」です。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "Assured Workloadsは、規制の厳しいワークロード向けに、データ常駐地（residency）・人員アクセス・暗号鍵管理の境界を、事前定義された「コントロールパッケージ」としてフォルダ単位で適用する仕組みです57。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "出典: 58"
+    },
+    {
+      "kind": "paragraph",
+      "text": "試験ガイドでは「クレジットカード情報の取り扱い」や「PII（個人を特定できる情報）」が商用データの例として挙げられています。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "PCI DSS（Payment Card Industry Data Security Standard）は、カード会員データを扱うすべての事業者に適用される業界標準です。クラウド環境における責任は、Googleと顧客の間で明確に分担されます59。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "出典: 5960"
+    },
+    {
+      "kind": "paragraph",
+      "text": "PIIの取り扱いにおいては、Sensitive Data Protectionによる「検出 → 分類 → 秘匿化」のワークフローが中核となります（詳細は3.1.9）。加えて、次のような設計上の考慮が求められます。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "Google Cloudは、第三者機関による監査を通じて幅広い業界標準への準拠を継続的に証明しています。試験ガイドはSOC 2を例示していますが、実務ではISO/IEC認証群との組み合わせで理解しておくことが重要です。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "出典: 6465"
+    },
+    {
+      "kind": "paragraph",
+      "text": "出典: 66"
+    },
+    {
+      "kind": "paragraph",
+      "text": "コンプライアンス担当者・アーキテクトは、Compliance resource centerおよびCompliance Reports Managerを通じて、最新のISO証明書・SOCレポート・自己評価資料を追加費用なしで取得できます6566。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "コンプライアンスにおける「監査」は、顧客自身の操作記録に加え、Google人員による顧客データへのアクセス記録まで含めて考える必要があります。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "出典: 6768"
+    },
+    {
+      "kind": "paragraph",
+      "text": "公式Exam Guideの序文にあるとおり、Well-Architected Frameworkの6本柱（運用の卓越性・セキュリティ・信頼性・パフォーマンス最適化・コスト最適化・持続可能性）は試験全体に暗黙的・明示的に織り込まれています1。特に「セキュリティ、プライバシー、コンプライアンス」ピラーはSection 3と直接対応しており、その中核原則は本ガイドで扱った各機能と次のように対応します70。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "出典: 7170"
+    },
+    {
+      "kind": "paragraph",
+      "text": "以下は本セクションの理解度を自己確認するためのチェックリストです。すべて自信を持って説明できる状態を目指してください。"
+    },
+    {
+      "kind": "paragraph",
+      "text": "本ガイドは学習補助を目的として作成されています。試験の出題範囲・配点は変更される可能性があるため、必ず公式Exam Guideおよび公式認定ページで最新情報をご確認ください。"
+    }
+  ],
+  "counts": {
+    "table": 40,
+    "diagram": 26,
+    "codeBlock": 0,
+    "figure": 0
+  },
+  "structures": {
+    "tableColumnHeaders": [
+      3,
+      2,
+      3,
+      3,
+      3,
+      2,
+      3,
+      2,
+      3,
+      3,
+      3,
+      3,
+      4,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      3,
+      3,
+      3,
+      3,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      3,
+      2,
+      2,
+      2,
+      2,
+      3,
+      2,
+      2
+    ],
+    "codeLines": []
+  }
+}
