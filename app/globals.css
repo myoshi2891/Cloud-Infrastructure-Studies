@@ -127,6 +127,30 @@
     --color-pca-s3-code-bg: #0a1729;
     --color-pca-s3-sidebar-shadow: rgba(0, 0, 0, 0.5);
 
+    /* PCA Section 4 guide */
+    --color-pca-s4-background: #07111e;
+    --color-pca-s4-surface-1: #0d1a2b;
+    --color-pca-s4-surface-2: #101f33;
+    --color-pca-s4-sidebar-bg: #060d17;
+    --color-pca-s4-border: #1d3350;
+    --color-pca-s4-border-soft: #16283f;
+    --color-pca-s4-border-strong: #2c4770;
+    --color-pca-s4-foreground: #dbe4f3;
+    --color-pca-s4-foreground-dim: #8fa2c0;
+    --color-pca-s4-foreground-faint: #6a7d9c;
+    --color-pca-s4-accent: #7c9eff;
+    --color-pca-s4-accent-soft: #3a4f80;
+    --color-pca-s4-accent-bg: #15233d;
+    --color-pca-s4-accent-hover: rgba(124, 158, 255, 0.06);
+    --color-pca-s4-danger: #ff8fa3;
+    --color-pca-s4-danger-bg: #3a1420;
+    --color-pca-s4-warn: #ffbd6e;
+    --color-pca-s4-warn-bg: #3a2810;
+    --color-pca-s4-success: #7fe0a8;
+    --color-pca-s4-success-bg: #0f2c1e;
+    --color-pca-s4-code-bg: #0a1729;
+    --color-pca-s4-sidebar-shadow: rgba(0, 0, 0, 0.5);
+
 
     /* Shared dark-guide surfaces */
     --color-guide-background: #07111e;
