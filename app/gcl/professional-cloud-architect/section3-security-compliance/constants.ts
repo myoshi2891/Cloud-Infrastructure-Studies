@@ -160,13 +160,13 @@ export const DIAGRAMS: Record<DiagramId, string> = {
     ROOT --> S2`,
 
     'diag-2': `flowchart TD
-    A[プリンシパルがAPIを呼び出す] --> B{リソースに対する<br/>拒否ポリシーが存在するか}
-    B -- Yes・対象権限が拒否対象 --> C1[アクセス拒否]
-    B -- No --> D{許可ポリシーの<br/>バインディングが存在するか}
-    D -- No --> C2[アクセス拒否]
-    D -- Yes --> E{IAM Conditionsの<br/>条件式を満たすか}
-    E -- No --> C3[アクセス拒否]
-    E -- Yes --> F[アクセス許可]`,
+    A["プリンシパルがAPIを呼び出す"] --> B{"リソースに対する<br/>拒否ポリシーが存在するか"}
+    B -- Yes・対象権限が拒否対象 --> C1["アクセス拒否"]
+    B -- No --> D{"許可ポリシーの<br/>バインディングが存在するか"}
+    D -- No --> C2["アクセス拒否"]
+    D -- Yes --> E{"IAM Conditionsの<br/>条件式を満たすか"}
+    E -- No --> C3["アクセス拒否"]
+    E -- Yes --> F["アクセス許可"]`,
 
     'diag-3': `flowchart LR
     subgraph LP["最小権限"]
@@ -215,13 +215,13 @@ export const DIAGRAMS: Record<DiagramId, string> = {
     D --> D1["組織・フォルダ単位で<br/>一括してアクセス制御・<br/>コンプライアンス境界を設定"]`,
 
     'diag-6': `flowchart TD
-    A["CMEKを検討すべきか？"] --> B{以下のいずれかの<br/>要件があるか}
-    B -->|鍵の所有権を<br/>自社で保持したい| C[CMEKを使用]
+    A["CMEKを検討すべきか？"] --> B{"以下のいずれかの<br/>要件があるか"}
+    B -->|鍵の所有権を<br/>自社で保持したい| C["CMEKを使用"]
     B -->|鍵の利用場所を<br/>ポリシーで制限したい| C
-    B -->|オフボーディング時に<br/>暗号学的削除<br/>(crypto-shredding)を行いたい| C
+    B -->|オフボーディング時に<br/>暗号学的削除<br/>crypto-shreddingを行いたい| C
     B -->|顧客ごとに固有の<br/>暗号境界を確立したい| C
     B -->|鍵への管理アクセス・<br/>データアクセスを<br/>ログに残したい| C
-    B -->|上記に該当しない| D[デフォルト暗号化<br/>(Google-managed keys)で十分]`,
+    B -->|上記に該当しない| D["デフォルト暗号化<br/>(Google-managed keys)で十分"]`,
 
     'diag-7': `sequenceDiagram
     participant App as アプリケーション/サービス
@@ -269,24 +269,24 @@ export const DIAGRAMS: Record<DiagramId, string> = {
     AUDIT -.-> L3`,
 
     'diag-10': `flowchart LR
-    A[APIリクエスト] --> B{リクエストの種類}
-    B -->|構成変更| C[Admin Activity<br/>ログ]
-    B -->|データ読み書き<br/>要個別有効化| D[Data Access<br/>ログ]
-    B -->|Googleシステムによる<br/>自動変更| E[System Event<br/>ログ]
-    B -->|セキュリティポリシー<br/>違反で拒否| F[Policy Denied<br/>ログ]
-    C --> G[Cloud Logging<br/>_Default / _Required バケット]
+    A["APIリクエスト"] --> B{"リクエストの種類"}
+    B -->|構成変更| C["Admin Activity<br/>ログ"]
+    B -->|データ読み書き<br/>要個別有効化| D["Data Access<br/>ログ"]
+    B -->|Googleシステムによる<br/>自動変更| E["System Event<br/>ログ"]
+    B -->|セキュリティポリシー<br/>違反で拒否| F["Policy Denied<br/>ログ"]
+    C --> G["Cloud Logging<br/>_Default / _Required バケット"]
     D --> G
     E --> G
     F --> G
-    G --> H[BigQuery / Cloud Storage等へ<br/>シンクでエクスポート]`,
+    G --> H["BigQuery / Cloud Storage等へ<br/>シンクでエクスポート"]`,
 
     'diag-11': `flowchart TB
     subgraph Perimeter["サービス境界(Service Perimeter)"]
         direction TB
-        P1[プロジェクトA]
-        P2[プロジェクトB]
-        GCS[Cloud Storage]
-        BQ[BigQuery]
+        P1["プロジェクトA"]
+        P2["プロジェクトB"]
+        GCS["Cloud Storage"]
+        BQ["BigQuery"]
     end
     VM["境界内VPC上のVM<br/>(プライベートアクセス)"] -->|許可| Perimeter
     OnPrem["オンプレミス/他クラウド<br/>(限定公開Google アクセス経由)"] -->|許可された<br/>アクセスレベルのみ| Perimeter
@@ -296,14 +296,14 @@ export const DIAGRAMS: Record<DiagramId, string> = {
     style External fill:#3a1420,stroke:#c05a6e,color:#f5d8de`,
 
     'diag-12': `flowchart TD
-    U[ユーザー] --> IAP["Identity-Aware Proxy<br/>(アプリケーションレベルの<br/>アクセスゲートウェイ)"]
+    U["ユーザー"] --> IAP["Identity-Aware Proxy<br/>(アプリケーションレベルの<br/>アクセスゲートウェイ)"]
     IAP --> Auth{"ユーザー認証<br/>(Google/Cloud Identity)"}
-    Auth -->|失敗| Deny1[拒否]
+    Auth -->|失敗| Deny1["拒否"]
     Auth -->|成功| ACM["Access Context Manager<br/>でアクセスレベルを評価"]
     ACM --> Check{"IPアドレス範囲<br/>デバイスの信頼性<br/>地理的位置 等"}
-    Check -->|条件を満たさない| Deny2[拒否]
+    Check -->|条件を満たさない| Deny2["拒否"]
     Check -->|条件を満たす| IAMCheck{"IAM許可ポリシー<br/>(IAP-secured Web App User)"}
-    IAMCheck -->|権限なし| Deny3[拒否]
+    IAMCheck -->|権限なし| Deny3["拒否"]
     IAMCheck -->|権限あり| Allow["保護対象アプリケーション/<br/>VMへのアクセスを許可"]`,
 
     'diag-13': `flowchart TD
