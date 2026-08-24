@@ -2407,7 +2407,7 @@ export function PcaSection4Guide() {
                         <div className="ref-card" id="ref31">
                             <div className="num">31</div>
                             <div className="txt">
-                                Creating the industry's best customer success teams | Google Cloud
+                                Creating the industry&apos;s best customer success teams | Google Cloud
                                 Blog.
                                 <a
                                     href="https://cloud.google.com/blog/topics/customers/creating-the-industrys-best-customer-success-teams"

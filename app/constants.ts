@@ -278,7 +278,7 @@ const ALL_EXAMS: Exam[] = [
             },
             {
                 label: 'Section 4: プロセス分析と最適化',
-                href: '/gcl/professional-cloud-architect#section-4-技術ビジネスプロセスの分析と最適化約15',
+                href: '/gcl/professional-cloud-architect/section4-process-optimization',
                 pct: '~15%',
             },
             {
