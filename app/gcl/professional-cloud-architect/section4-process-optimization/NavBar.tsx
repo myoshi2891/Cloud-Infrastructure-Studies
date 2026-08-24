@@ -81,11 +81,13 @@ export function NavBar({ isOpen, onToggle }: NavBarProps) {
             aria-label="セクション目次"
         >
             <div className="sidebar-brand sidebar-header">
-                <div className="kicker">Google Cloud PCA</div>{" "}<h2>Section 4: プロセス分析と最適化</h2>
-            </div>{" "}<nav id="sidebarNav" className="sidebar-nav" aria-label="セクションナビゲーション">
+                <div className="kicker">Google Cloud PCA</div>{" "}
+                <h2>Section 4: プロセス分析と最適化</h2>
+            </div>{" "}
+            <nav id="sidebarNav" className="sidebar-nav" aria-label="セクションナビゲーション">
                 {NAV_ITEMS.map((item: NavItem) => {
                     const isActive = activeId === item.id;
-                    const levelClass = item.level === 3 ? 'nav-h3' : 'nav-h2';
+                    const levelClass = item.level === 3 ? 'lvl3 nav-h3' : 'nav-h2';
                     return (
                         <span key={item.id}>
                             <a
@@ -95,7 +97,8 @@ export function NavBar({ isOpen, onToggle }: NavBarProps) {
                                 aria-current={isActive ? 'true' : undefined}
                             >
                                 {item.label}
-                            </a>{' '}
+                            </a>
+                            {"\n"}
                         </span>
                     );
                 })}
