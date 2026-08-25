@@ -90,13 +90,13 @@ ${CLASS_DEFS}
 
     'diag-2': `flowchart TD
 ${CLASS_DEFS}
-    Start["オンプレミス／他クラウドとの<br/>接続要件"] --> Q1{"帯域幅は<br/>10Gbps以上か？"}
+    Start["オンプレミス／他クラウドとの<br/>接続要件"] --> Q3{"接続先はAWS/Azure/OCIか？"}
+    Q3 -->|"はい"| CCI["Cross-Cloud Interconnect<br/>マルチクラウド専用線"]
+    Q3 -->|"いいえ(オンプレミス等)"| Q1{"帯域幅は<br/>10Gbps以上か？"}
     Q1 -->|"いいえ(数百Mbps〜数Gbps)"| VPN["Cloud VPN(HA VPN)<br/>インターネット経由のIPsec"]
     Q1 -->|"はい"| Q2{"コロケーション施設に<br/>物理的に接続可能か？"}
     Q2 -->|"はい"| Dedicated["Dedicated Interconnect<br/>10/100/400Gbps専用線"]
     Q2 -->|"いいえ"| Partner["Partner Interconnect<br/>プロバイダ経由で接続"]
-    Start --> Q3{"接続先はAWS/Azure/OCIか？"}
-    Q3 -->|"はい"| CCI["Cross-Cloud Interconnect<br/>マルチクラウド専用線"]
     Dedicated --> NCC["Network Connectivity Center<br/>ハブ＆スポークで集約"]
     Partner --> NCC
     CCI --> NCC

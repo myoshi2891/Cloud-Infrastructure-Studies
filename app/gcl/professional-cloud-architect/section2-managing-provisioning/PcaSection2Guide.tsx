@@ -258,9 +258,12 @@ export function PcaSection2Guide() {
                         <div className="callout-body">
                             <ul>
                                 <li>
-                                    RFC1918（プライベートIP）同士の通信が必要な場合は、Dedicated
-                                    InterconnectまたはPartner Interconnectが必須です。VPC
-                                    Peeringはプライベートアドレッシングを提供しません<sup>[1]</sup>。
+                                    VPC同士のプライベート接続にはVPC Network
+                                    Peeringを、オンプレミスとの接続にはCloud VPNまたはCloud
+                                    Interconnectを使い分けます。Cloud
+                                    VPNもIPsecトンネル経由でプライベートアドレス（RFC1918）宛のトラフィックを伝送でき、Dedicated
+                                    InterconnectとPartner
+                                    Interconnectは帯域幅・レイテンシ・可用性などの接続要件に応じて選択します<sup>[1]</sup>。
                                 </li>
                                 {' '}
                                 <li>
@@ -744,7 +747,7 @@ export function PcaSection2Guide() {
                                 <tr className="odd">
                                     <td>Bigtable</td>
                                     <td>ワイドカラム（NoSQL）</td>
-                                    <td>結果整合性が基本</td>
+                                    <td>単一クラスタは強整合性、レプリケーション構成は既定で結果整合性</td>
                                     <td>大量書き込み・低レイテンシの時系列／IoT／広告技術</td>
                                     <td>複雑なクエリ・JOIN・トランザクション</td>
                                 </tr>

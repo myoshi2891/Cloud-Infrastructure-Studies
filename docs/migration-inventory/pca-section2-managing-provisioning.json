@@ -219,7 +219,7 @@
     "小規模・低コスト志向のワークロード",
     "Bigtable",
     "ワイドカラム（NoSQL）",
-    "結果整合性が基本",
+    "単一クラスタは強整合性、レプリケーション構成は既定で結果整合性",
     "大量書き込み・低レイテンシの時系列／IoT／広告技術",
     "複雑なクエリ・JOIN・トランザクション",
     "Firestore",
@@ -463,7 +463,7 @@
     "マルチクラウド環境への拡張（Google Cloud間通信を含む）",
     "セキュリティ保護（侵入防止、アクセス制御、ファイアウォール）",
     "VPC設計とロードバランシング",
-    "RFC1918（プライベートIP）同士の通信が必要な場合は、Dedicated InterconnectまたはPartner Interconnectが必須です。VPC Peeringはプライベートアドレッシングを提供しません[1]。",
+    "VPC同士のプライベート接続にはVPC Network Peeringを、オンプレミスとの接続にはCloud VPNまたはCloud Interconnectを使い分けます。Cloud VPNもIPsecトンネル経由でプライベートアドレス（RFC1918）宛のトラフィックを伝送でき、Dedicated InterconnectとPartner Interconnectは帯域幅・レイテンシ・可用性などの接続要件に応じて選択します[1]。",
     "HA VPNは静的・動的（BGP）ルーティングの両方に対応し、Classic VPNのBGPは非推奨（Deprecated）のため新規構築では避けます[1]。",
     "Cloud Interconnectは、リンク層暗号化のためMACsecをサポートし、VLANアタッチメントのトラフィックをIPsecで暗号化するHA VPN over Cloud Interconnectも構成可能です[1]。",
     "本番環境では、Interconnectを主回線、HA VPNをフェイルオーバー用のバックアップ回線とする構成が一般的です[2]。",
@@ -882,7 +882,7 @@
     },
     {
       "kind": "annotation",
-      "text": "💡ベストプラクティス RFC1918（プライベートIP）同士の通信が必要な場合は、Dedicated InterconnectまたはPartner Interconnectが必須です。VPC Peeringはプライベートアドレッシングを提供しません[1]。 HA VPNは静的・動的（BGP）ルーティングの両方に対応し、Classic VPNのBGPは非推奨（Deprecated）のため新規構築では避けます[1]。 Cloud Interconnectは、リンク層暗号化のためMACsecをサポートし、VLANアタッチメントのトラフィックをIPsecで暗号化するHA VPN over Cloud Interconnectも構成可能です[1]。 本番環境では、Interconnectを主回線、HA VPNをフェイルオーバー用のバックアップ回線とする構成が一般的です[2]。 MTU不一致はハイブリッド接続でパケットロスを引き起こす典型的な落とし穴です。オンプレミス側とVLANアタッチメント側でMTU設定を揃えます[2]。"
+      "text": "💡ベストプラクティス VPC同士のプライベート接続にはVPC Network Peeringを、オンプレミスとの接続にはCloud VPNまたはCloud Interconnectを使い分けます。Cloud VPNもIPsecトンネル経由でプライベートアドレス（RFC1918）宛のトラフィックを伝送でき、Dedicated InterconnectとPartner Interconnectは帯域幅・レイテンシ・可用性などの接続要件に応じて選択します[1]。 HA VPNは静的・動的（BGP）ルーティングの両方に対応し、Classic VPNのBGPは非推奨（Deprecated）のため新規構築では避けます[1]。 Cloud Interconnectは、リンク層暗号化のためMACsecをサポートし、VLANアタッチメントのトラフィックをIPsecで暗号化するHA VPN over Cloud Interconnectも構成可能です[1]。 本番環境では、Interconnectを主回線、HA VPNをフェイルオーバー用のバックアップ回線とする構成が一般的です[2]。 MTU不一致はハイブリッド接続でパケットロスを引き起こす典型的な落とし穴です。オンプレミス側とVLANアタッチメント側でMTU設定を揃えます[2]。"
     },
     {
       "kind": "paragraph",
