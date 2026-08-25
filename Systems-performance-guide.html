@@ -943,14 +943,14 @@ flowchart TD
                                 <td>CPU</td>
                                 <td>
                                     <code>mpstat</code
-                                    >の<code>%usr</code>（ユーザー空間実行時間）+<code>%sys</code>（カーネル空間実行時間）。他に<code>%iowait</code>（I/O待機）、<code>%steal</code>（他VMに寄られた時間）、<code>%idle</code>なども重要な状態。特にクラウド環境では<code>%steal</code>の高騰に注意
+                                    >の<code>%usr</code>（ユーザー空間実行時間）+<code>%sys</code>（カーネル空間実行時間）。他に<code>%iowait</code>（I/O待機）、<code>%steal</code>（ハイパーバイザが他のVMにCPUを割り当てている間、ゲストのvCPUが待たされた時間）、<code>%idle</code>なども重要な状態。特にクラウド環境では<code>%steal</code>の高騰に注意
                                 </td>
                                 <td><code>vmstat</code>の<code>r</code>列（実行待ちスレッド数）</td>
                                 <td><code>dmesg</code>のCPU関連エラー</td>
                             </tr>
                             <tr class="even">
                                 <td>メモリ（容量）</td>
-                                <td><code>free</code>の使用済み容量</td>
+                                <td><code>free -h</code>の<code>available</code>を基準にした実質使用量（<code>total - available</code>）</td>
                                 <td>
                                     スワッピング（<code>vmstat</code>の<code>si</code>/<code>so</code>）の発生
                                 </td>

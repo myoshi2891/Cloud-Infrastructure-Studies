@@ -142,8 +142,8 @@ USEメソッドをLinuxの主要リソースに具体的に当てはめると、
 
 | リソース | 使用率の指標例 | 飽和度の指標例 | エラーの指標例 |
 |---|---|---|---|
-| CPU | `mpstat`の`%usr`（ユーザー空間実行時間）+`%sys`（カーネル空間実行時間）。他に`%iowait`（I/O待機）、`%steal`（他VMに寄られた時間）、`%idle`なども重要な状態。特にクラウド環境では`%steal`の高騰に注意 | `vmstat`の`r`列（実行待ちスレッド数） | `dmesg`のCPU関連エラー |
-| メモリ（容量） | `free`の使用済み容量 | スワッピング（`vmstat`の`si`/`so`）の発生 | `dmesg`のメモリエラー、OOM Killerによるプロセス強制終了 |
+| CPU | `mpstat`の`%usr`（ユーザー空間実行時間）+`%sys`（カーネル空間実行時間）。他に`%iowait`（I/O待機）、`%steal`（ハイパーバイザが他のVMにCPUを割り当てている間、ゲストのvCPUが待たされた時間）、`%idle`なども重要な状態。特にクラウド環境では`%steal`の高騰に注意 | `vmstat`の`r`列（実行待ちスレッド数） | `dmesg`のCPU関連エラー |
+| メモリ（容量） | `free -h`の`available`を基準にした実質使用量（`total - available`） | スワッピング（`vmstat`の`si`/`so`）の発生 | `dmesg`のメモリエラー、OOM Killerによるプロセス強制終了 |
 | ディスクI/O | `iostat`の`%util` | `iostat`の`avgqu-sz`（キュー長） | `smartctl`のディスクエラー |
 | ネットワーク | `nicstat`の帯域使用率 | 送受信バッファのドロップ数 | `netstat -s`のretransmit数 |
 
