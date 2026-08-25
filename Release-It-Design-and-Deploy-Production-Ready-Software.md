@@ -357,7 +357,8 @@ Netflixのカオスエンジニアリングの源流である「Chaos Monkey」�
 | Let It Crash | Kubernetesのヘルスチェック＋Pod自動再起動、Supervisor/PM2 |
 | Handshaking | gRPCヘルスチェックプロトコル、サービスメッシュのヘルスプロービング |
 | Governor | デプロイのカナリア速度制限、フィーチャーフラグの段階的ロールアウト |
-| Expand/Contract デプロイ | ブルーグリーンデプロイ、カナリアリリース、後方互換スキーママイグレーション |
+| Expand/Migrate/Contract（スキーマ変更） | 後方互換なDBスキーママイグレーション（Flyway、Liquibase、Rails migration の多段適用） |
+| ゼロダウンタイムのアプリデプロイ | ブルーグリーンデプロイ、カナリアリリース、ローリングアップデート |
 | Chaos Engineering | Netflix Chaos Monkey/Simian Army、Gremlin、AWS Fault Injection Service |
 
 出典：Wikipediaのバルクヘッドパターンの解説では、MicrosoftがAzureのコアクラウドデザインパターンの一つとしてこれを文書化し、AWSも独自のレジリエンスガイダンスに組み込んだこと、Hystrixが2018年にメンテナンスモードに入った後、JVM向けのResilience4jや.NET向けのPollyがスレッドプール／セマフォ両方の分離戦略を引き継いだことが述べられています。

@@ -737,4 +737,6 @@ Observability Engineeringの著者でHoneycomb社CTOのCharity Majorsは、2026�
 
 ---
 
-*本ガイドは原著 "Site Reliability Engineering: How Google Runs Production Systems" (Copyright © 2017 Google, Inc., Published by O'Reilly Media, Inc., Licensed under CC BY-NC-ND 4.0) の内容を独自の言葉で要約・翻訳・再構成した非公式の学習用ガイドです。原文の完全な内容は [sre.google/sre-book](https://sre.google/sre-book/table-of-contents/) で無償公開されています。*
+*本ガイドは、原著 "Site Reliability Engineering: How Google Runs Production Systems" (Copyright © 2017 Google, Inc., Published by O'Reilly Media, Inc.) を参照しながら執筆した非公式の学習用ノートです。原文の完全な内容は [sre.google/sre-book](https://sre.google/sre-book/table-of-contents/) で無償公開されています。*
+
+*ライセンスに関する注意：原著は CC BY-NC-ND 4.0 で公開されています。同ライセンスは改変物（翻訳・要約・再構成を含む）の配布を許諾していないため、本ガイドは原著のライセンスの下で配布されるものではなく、その適用も受けません。原著に由来する翻訳・要約・再構成を含む形で本ガイドを再配布する場合は、事前に権利者の個別の許諾を得て、その旨を明記してください。許諾が得られない場合は、原著に依拠しない独立した解説として書き直したうえで配布してください。*
