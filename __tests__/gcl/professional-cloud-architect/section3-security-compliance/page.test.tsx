@@ -2,6 +2,7 @@ import { render } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import inventory from '@/docs/migration-inventory/pca-section3-security-compliance.json';
 import Page from '@/app/gcl/professional-cloud-architect/section3-security-compliance/page';
+import { NAV_ITEMS } from '@/app/gcl/professional-cloud-architect/section3-security-compliance/constants';
 import { defineMigrationSuite } from '@/__tests__/gcl/agwa/migration-test-utils';
 
 vi.mock('@/components/MermaidDiagram', async () => {
@@ -21,14 +22,21 @@ describe('PCA Section 3: 視覚デザイン・UIコンポーネント構造の�
         return container;
     };
 
-    it('サイドバーナビが .sidebar .sidebar-nav a 構造を持ち、19件の目次項目を描画する', () => {
+    it('サイドバーナビが .sidebar .sidebar-nav a 構造を持ち、目次項目を描画する', () => {
         const container = renderPage();
         const sidebar = container.querySelector('.sidebar');
         expect(sidebar).not.toBeNull();
         expect(sidebar?.querySelector('.sidebar-brand')).not.toBeNull();
 
+        // NAV_ITEMS を正本として、リンク数・順序・ラベル・href が完全一致することを検証する
         const navLinks = container.querySelectorAll('.sidebar a.nav-link');
-        expect(navLinks.length).toBe(19);
+        expect(navLinks.length).toBe(NAV_ITEMS.length);
+        expect(Array.from(navLinks, (anchor) => anchor.textContent?.trim())).toEqual(
+            NAV_ITEMS.map((item) => item.label),
+        );
+        expect(Array.from(navLinks, (anchor) => anchor.getAttribute('href'))).toEqual(
+            NAV_ITEMS.map((item) => `#${item.id}`),
+        );
     });
 
     it('全てのテーブルが .table-scroll ラッパー内に配置されている', () => {
