@@ -163,7 +163,7 @@
     font-weight: 800;
     line-height: 1.35;
     margin: 0 0 10px;
-    background: linear-gradient(90deg, #ffffff 0%, var(--color-pca-s2-accent-strong) 100%);
+    background: linear-gradient(90deg, var(--color-pca-s2-hero-grad-a) 0%, var(--color-pca-s2-accent-strong) 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -303,7 +303,7 @@
 }
 
 .pca-s2-page tbody tr:hover {
-    background: rgba(124, 158, 255, 0.04);
+    background: var(--color-pca-s2-row-hover);
 }
 
 /* ---------- Mermaid ---------- */
@@ -507,7 +507,7 @@
 }
 
 .pca-s2-page ul.task-list li:hover {
-    background: rgba(124, 158, 255, 0.05);
+    background: var(--color-pca-s2-task-hover);
 }
 
 .pca-s2-page ul.task-list li label {
