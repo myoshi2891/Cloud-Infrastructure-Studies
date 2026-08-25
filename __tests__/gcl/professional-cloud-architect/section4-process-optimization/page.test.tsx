@@ -30,7 +30,7 @@ describe('PCA Section 4: 視覚デザイン・UIコンポーネント構造の�
 
         // NAV_ITEMS を正本として、リンク数・順序・ラベル・href が完全一致することを検証する
         const navLinks = container.querySelectorAll('.sidebar a.nav-link');
-        expect(navLinks).toHaveLength(NAV_ITEMS.length);
+        expect(navLinks.length).toBe(NAV_ITEMS.length);
         expect(Array.from(navLinks, (anchor) => anchor.textContent?.trim())).toEqual(
             NAV_ITEMS.map((item) => item.label),
         );
@@ -42,7 +42,7 @@ describe('PCA Section 4: 視覚デザイン・UIコンポーネント構造の�
     it('全てのテーブルが .table-scroll ラッパー内に配置されている', () => {
         const container = renderPage();
         const tables = container.querySelectorAll('table');
-        expect(tables).toHaveLength(26);
+        expect(tables.length).toBe(26);
         tables.forEach((table) => {
             expect(table.closest('.table-scroll')).not.toBeNull();
         });
@@ -61,6 +61,6 @@ describe('PCA Section 4: 視覚デザイン・UIコンポーネント構造の�
         const refGrid = container.querySelector('.ref-grid');
         expect(refGrid).not.toBeNull();
         const refCards = container.querySelectorAll('.ref-card');
-        expect(refCards).toHaveLength(32);
+        expect(refCards.length).toBe(32);
     });
 });
