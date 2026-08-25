@@ -56,6 +56,7 @@
 - [`__tests__/gcl/professional-cloud-architect/section5-managing-implementation/page.test.tsx`](__tests__/gcl/professional-cloud-architect/section5-managing-implementation/page.test.tsx)
 - [docs/migration-inventory/pca-section5-managing-implementation.json](docs/migration-inventory/pca-section5-managing-implementation.json)
 - [archive/Gcl/Professional-Cloud-Architect/Gcp-pca-section5-managing-implementation.html](archive/Gcl/Professional-Cloud-Architect/Gcp-pca-section5-managing-implementation.html)
+- [archive/Gcl/Professional-Cloud-Architect/Gcp-pca-section5-managing-implementation.md](archive/Gcl/Professional-Cloud-Architect/Gcp-pca-section5-managing-implementation.md)
 
 ---
 
@@ -83,6 +84,7 @@
 - [`__tests__/gcl/professional-cloud-architect/section4-process-optimization/page.test.tsx`](__tests__/gcl/professional-cloud-architect/section4-process-optimization/page.test.tsx)
 - [docs/migration-inventory/pca-section4-process-optimization.json](docs/migration-inventory/pca-section4-process-optimization.json)
 - [archive/Gcl/Professional-Cloud-Architect/Gcp-pca-section4-process-optimization.html](archive/Gcl/Professional-Cloud-Architect/Gcp-pca-section4-process-optimization.html)
+- [archive/Gcl/Professional-Cloud-Architect/Gcp-pca-section4-process-optimization.md](archive/Gcl/Professional-Cloud-Architect/Gcp-pca-section4-process-optimization.md)
 
 ---
 
