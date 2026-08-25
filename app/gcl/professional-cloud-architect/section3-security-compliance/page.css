@@ -476,7 +476,7 @@
 @media (max-width: 960px) {
     .pca-s3-page .sidebar {
         transform: translateX(-100%);
-        box-shadow: 8px 0 24px rgba(0, 0, 0, 0.4);
+        box-shadow: 8px 0 24px var(--color-pca-s3-sidebar-drop-shadow);
     }
     .pca-s3-page .sidebar.open {
         transform: translateX(0);

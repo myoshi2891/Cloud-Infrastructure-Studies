@@ -242,7 +242,7 @@
 }
 
 .pca-s5-page .main strong {
-    color: #f0f4fc;
+    color: var(--color-pca-s5-strong);
     font-weight: 700;
 }
 
@@ -262,7 +262,7 @@
     border-radius: 5px;
     padding: 1px 6px;
     font-size: 0.9em;
-    color: #ffd08a;
+    color: var(--color-pca-s5-inline-code-fg);
     overflow-wrap: break-word;
 }
 
@@ -304,7 +304,7 @@
 }
 
 .pca-s5-page tbody tr:hover td {
-    background: rgba(124, 158, 255, 0.04);
+    background: var(--color-pca-s5-row-hover);
 }
 
 /* Mermaid Diagrams */
@@ -332,7 +332,7 @@
     display: flex;
     gap: 14px;
     background: var(--color-pca-s5-success-bg);
-    border: 1px solid #1d5a3a;
+    border: 1px solid var(--color-pca-s5-success-border);
     border-left: 4px solid var(--color-pca-s5-success);
     border-radius: 12px;
     padding: 20px 22px;
@@ -345,7 +345,7 @@
     height: 26px;
     border-radius: 7px;
     background: var(--color-pca-s5-success);
-    color: #08150e;
+    color: var(--color-pca-s5-on-success);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -483,7 +483,7 @@
 }
 
 .pca-s5-page .checklist-card li:hover {
-    background: rgba(124, 158, 255, 0.05);
+    background: var(--color-pca-s5-checklist-hover);
 }
 
 .pca-s5-page .checklist-card input[type='checkbox'] {
@@ -512,7 +512,7 @@
     top: 1px;
     width: 5px;
     height: 10px;
-    border: solid #08101f;
+    border: solid var(--color-pca-s5-on-accent);
     border-width: 0 2px 2px 0;
     transform: rotate(40deg);
 }

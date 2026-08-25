@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { NAV_ITEMS, type NavItem } from './constants';
 
 interface NavBarProps {
@@ -13,6 +13,7 @@ interface NavBarProps {
  */
 export function NavBar({ isOpen, onToggle }: NavBarProps) {
     const [activeId, setActiveId] = useState<string>(NAV_ITEMS[0]?.id ?? '');
+    const intersectingRef = useRef<Set<string>>(new Set());
 
     const handleLinkClick = useCallback(
         (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
@@ -43,12 +44,24 @@ export function NavBar({ isOpen, onToggle }: NavBarProps) {
 
         if (headings.length === 0) return;
 
+        const intersecting = intersectingRef.current;
+
         const observer = new IntersectionObserver(
             (entries) => {
-                const visibleEntries = entries.filter((entry) => entry.isIntersecting);
-                if (visibleEntries.length > 0 && visibleEntries[0]?.target.id) {
-                    setActiveId(visibleEntries[0].target.id);
+                // entries には「交差状態が変化した見出し」しか含まれないため、
+                // 交差中の見出し集合を Set で保持し続ける（Section 3 と同じ方式）。
+                for (const entry of entries) {
+                    if (entry.isIntersecting) {
+                        intersecting.add(entry.target.id);
+                    } else {
+                        intersecting.delete(entry.target.id);
+                    }
                 }
+
+                // NAV_ITEMS の並び順で最初に交差している見出しを採用する。
+                // 交差中の見出しが無い場合は直前の activeId を維持する。
+                const topMost = NAV_ITEMS.find((item) => intersecting.has(item.id));
+                if (topMost) setActiveId(topMost.id);
             },
             {
                 rootMargin: '-15% 0px -75% 0px',

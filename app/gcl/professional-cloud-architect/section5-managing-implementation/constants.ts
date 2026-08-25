@@ -122,7 +122,7 @@ export const DIAGRAMS: Record<DiagramId, string> = {
 
     'diag-2': `flowchart LR
     subgraph Source["ソースコード管理"]
-        A["Cloud Source Repositories<br/>/ GitHub / GitLab"]
+        A["GitHub / GitLab<br/>（Cloud Source Repositories は<br/>既存利用組織のみ）"]
     end
     subgraph Build["ビルド"]
         B["Cloud Build"]
