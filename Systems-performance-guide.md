@@ -438,7 +438,9 @@ sequenceDiagram
 ss -tino               # TCPソケットの詳細情報（RTT、輻輳ウィンドウ等）
 sar -n DEV 1           # インターフェースごとの送受信スループット
 nicstat 1              # NIC使用率（帯域に対する割合）
-tcpdump -i eth0 -w out.pcap   # パケットキャプチャ（詳細解析用）
+tcpdump -i eth0 'tcp port 443' -c 10000 -w out.pcap    # パケットキャプチャ（フィルタ＋件数上限で保存量を抑える）
+tcpdump -i eth0 'tcp port 443' -C 100 -W 5 -w out.pcap  # 長時間採取時はローテーション（100MB × 5ファイルで上限）
+tcpdump -r out.pcap -n | head                          # 保存したキャプチャを読み出して解析
 ```
 
 `bpftrace`を用いれば、TCPコネクションの生成から切断までのライフタイム（`tcplife`相当のツール）や、再送イベントの発生箇所（`tcpretrans`相当）を低オーバーヘッドでトレースできます。
@@ -573,7 +575,9 @@ biolatency-bpfcc 1
 bpftrace /usr/share/bpftrace/tools/biolatency.bt
 ```
 
-ブロックI/Oのレイテンシは、`block_rq_issue`（発行）と`block_rq_complete`（完了）を自前でひも付ける1行プログラムとして書きたくなりますが、発行と完了の対応付けは見た目より厄介です。現行のBCC版`biolatency`も、これらのトレースポイントを使う経路では`dev`と`sector`の組をキーにして完了イベントを発行イベントへ対応付けています（カーネル内のブロックI/O会計関数へ直接フックできる環境では、リクエストを一意に識別できるポインタをキーにする実装が使われていた時期もあり、どちらになるかは対象カーネルとBCCのバージョンに依存します）。`dev`＋`sector`をキーにする方式では、1つのリクエストが分割して完了する（partial completion）場合や、同一セクタへのI/Oが同時に複数走る場合にペアリングが崩れ、ヒストグラムがリクエストレイテンシを正しく表さないことがあります。自前実装で同じ落とし穴を踏むより、まずは既製ツールを使い、精度が問題になる場面では手元のバージョンの実装がどのキーを使っているかを確認するのが確実です。
+ブロックI/Oのレイテンシは、`tracepoint:block:block_rq_issue`（発行）と`tracepoint:block:block_rq_complete`（完了）を自前でひも付ける1行プログラムとして書きたくなりますが、発行と完了の対応付けは見た目より厄介です。この2つのトレースポイントだけではリクエストを一意に識別できるポインタが得られないため、`dev`と`sector`の組をキーにせざるを得ず、1つのリクエストが分割して完了する（partial completion）場合や、同一セクタへのI/Oが同時に複数走る場合にペアリングが崩れ、ヒストグラムがリクエストレイテンシを正しく表さないことがあります。
+
+一方、BCC版`biolatency`（`tools/biolatency.py`）は、計測区間を`-Q`オプションで切り替えます。`-Q`を付けるとOSのキュー待ち時間を含めて計測するため、開始イベントに`block_io_start`（比較的新しいカーネル）または`block_bio_queue`を、完了イベントに`block_io_done`または`block_rq_complete`を使います。`-Q`を付けない既定ではキュー待ちを除いたデバイス側のレイテンシを測るため、開始イベントに`blk_mq_start_request`（古いカーネルでは`blk_start_request`）を使います。どのプローブが選ばれるかは対象カーネルとBCCのバージョン、および`-Q`の有無に依存するので、精度が問題になる場面では手元の`biolatency.py`の実装を確認するのが確実です。自前実装で前段の落とし穴を踏むより、まずは既製ツールを使うことを勧めます。
 
 なお`kprobe:blk_account_io_start`のようなカーネル内部関数へのkprobeは、インライン化や関数名の変更でカーネルバージョンごとに使えなくなることがあります。自作する場合は比較的安定した`tracepoint:block:*`を優先し、利用可能なプローブは`bpftrace -l 'tracepoint:block:*'`で事前に確認してください。
 
