@@ -94,6 +94,9 @@
     --color-pca-s2-text-dim: #8fa0bf;
     --color-pca-s2-text-faint: #5b6a89;
     --color-pca-s2-sidebar-shadow: rgba(0, 0, 0, 0.5);
+    --color-pca-s2-hero-grad-a: #ffffff;
+    --color-pca-s2-row-hover: rgba(124, 158, 255, 0.04);
+    --color-pca-s2-task-hover: rgba(124, 158, 255, 0.05);
 
     /* PCA Section 3 guide */
     --color-pca-s3-background: #07111e;
@@ -116,6 +119,8 @@
     --color-pca-s3-code-bg: #0a1729;
     --color-pca-s3-hero-grad-b: #9fb8e8;
     --color-pca-s3-sidebar-shadow: rgba(0, 0, 0, 0.5);
+    --color-pca-s3-row-hover: rgba(124, 158, 255, 0.04);
+    --color-pca-s3-checklist-hover: rgba(124, 158, 255, 0.05);
 
     /* PCA Section 4 guide */
     --color-pca-s4-background: #07111e;
@@ -140,6 +145,13 @@
     --color-pca-s4-success-bg: #0f2c1e;
     --color-pca-s4-code-bg: #0a1729;
     --color-pca-s4-sidebar-shadow: rgba(0, 0, 0, 0.5);
+    --color-pca-s4-strong: #f0f4fc;
+    --color-pca-s4-code-text: #ffd08a;
+    --color-pca-s4-row-hover: rgba(124, 158, 255, 0.04);
+    --color-pca-s4-checklist-hover: rgba(124, 158, 255, 0.05);
+    --color-pca-s4-success-border: #1d5a3a;
+    --color-pca-s4-success-icon-fg: #08150e;
+    --color-pca-s4-checkmark: #08101f;
 
     /* PCA Section 5 guide */
     --color-pca-s5-background: #07111e;
