@@ -28,13 +28,13 @@ describe('PCA Section 3: 視覚デザイン・UIコンポーネント構造の�
         expect(sidebar?.querySelector('.sidebar-brand')).not.toBeNull();
 
         const navLinks = container.querySelectorAll('.sidebar a.nav-link');
-        expect(navLinks).toHaveLength(19);
+        expect(navLinks.length).toBe(19);
     });
 
     it('全てのテーブルが .table-scroll ラッパー内に配置されている', () => {
         const container = renderPage();
         const tables = container.querySelectorAll('table');
-        expect(tables).toHaveLength(40);
+        expect(tables.length).toBe(40);
         tables.forEach((table) => {
             expect(table.closest('.table-scroll')).not.toBeNull();
         });
@@ -53,6 +53,6 @@ describe('PCA Section 3: 視覚デザイン・UIコンポーネント構造の�
         const refGrid = container.querySelector('.ref-grid');
         expect(refGrid).not.toBeNull();
         const refCards = container.querySelectorAll('.ref-card');
-        expect(refCards).toHaveLength(71);
+        expect(refCards.length).toBe(71);
     });
 });

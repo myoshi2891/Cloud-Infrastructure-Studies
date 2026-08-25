@@ -281,13 +281,14 @@
 }
 
 .pca-s3-page tbody tr:hover {
-    background: rgba(124, 158, 255, 0.04);
+    background: var(--color-pca-s3-row-hover);
 }
 
 /* ---------- Mermaid Wrap ---------- */
 .pca-s3-page .mermaid-wrap {
     width: 100%;
     display: flex;
+    justify-content: center;
     justify-content: safe center;
     overflow-x: auto;
     background: var(--color-pca-s3-surface-1);
@@ -426,7 +427,7 @@
 }
 
 .pca-s3-page ul.checklist-list li:hover {
-    background: rgba(124, 158, 255, 0.05);
+    background: var(--color-pca-s3-checklist-hover);
 }
 
 .pca-s3-page .checklist-checkbox {

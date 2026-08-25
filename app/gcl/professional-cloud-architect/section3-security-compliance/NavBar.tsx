@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { NAV_ITEMS } from './constants';
 
 interface NavBarProps {
@@ -14,17 +14,27 @@ interface NavBarProps {
  */
 export function NavBar({ isOpen, onToggle, onClose }: NavBarProps) {
     const [activeId, setActiveId] = useState<string>(NAV_ITEMS[0]?.id || '');
+    const intersectingRef = useRef<Set<string>>(new Set());
 
     useEffect(() => {
         if (typeof IntersectionObserver === 'undefined') return;
 
+        const intersecting = intersectingRef.current;
+
         const observer = new IntersectionObserver(
             (entries) => {
-                entries.forEach((entry) => {
+                for (const entry of entries) {
                     if (entry.isIntersecting) {
-                        setActiveId(entry.target.id);
+                        intersecting.add(entry.target.id);
+                    } else {
+                        intersecting.delete(entry.target.id);
                     }
-                });
+                }
+
+                // NAV_ITEMS の並び順で最初に交差している見出しを採用する。
+                // 交差中の見出しが無い場合は直前の activeId を維持する。
+                const topMost = NAV_ITEMS.find((item) => intersecting.has(item.id));
+                if (topMost) setActiveId(topMost.id);
             },
             {
                 rootMargin: '-15% 0px -75% 0px',
