@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { Fragment, useCallback, useEffect, useState } from 'react';
 import { NAV_ITEMS, type NavItem } from './constants';
 
 interface NavBarProps {
@@ -22,7 +22,7 @@ export function NavBar({ isOpen, onToggle }: NavBarProps) {
             element.scrollIntoView({ behavior: 'smooth' });
             element.setAttribute('tabindex', '-1');
             element.focus({ preventScroll: true });
-            window.history.pushState(null, '', `#${encodeURIComponent(id)}`);
+            window.history.pushState(null, '', `#${id}`);
         }
         if (onToggle && isOpen) {
             onToggle();
@@ -89,7 +89,7 @@ export function NavBar({ isOpen, onToggle }: NavBarProps) {
                     const isActive = activeId === item.id;
                     const levelClass = item.level === 3 ? 'lvl3 nav-h3' : 'nav-h2';
                     return (
-                        <span key={item.id}>
+                        <Fragment key={item.id}>
                             <a
                                 href={`#${item.id}`}
                                 className={`nav-link ${levelClass} ${isActive ? 'active' : ''}`}
@@ -98,8 +98,10 @@ export function NavBar({ isOpen, onToggle }: NavBarProps) {
                             >
                                 {item.label}
                             </a>
+                            {/* サイドバー全文の textContent を移行元と一致させるための区切り。
+                                削除すると目次ラベルが連結され、全量移行検証が失敗する。 */}
                             {'\n'}
-                        </span>
+                        </Fragment>
                     );
                 })}
             </nav>

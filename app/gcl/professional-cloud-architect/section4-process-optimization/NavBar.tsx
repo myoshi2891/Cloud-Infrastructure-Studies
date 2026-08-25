@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { Fragment, useCallback, useEffect, useState } from 'react';
 import { NAV_ITEMS, type NavItem } from './constants';
 
 interface NavBarProps {
@@ -40,11 +40,24 @@ export function NavBar({ isOpen, onToggle }: NavBarProps) {
 
         if (headings.length === 0) return;
 
+        // IntersectionObserver は「交差状態が変化した」ターゲットのみを通知するため、
+        // 現在可視の見出し ID をコールバック横断で保持し、NAV_ITEMS の並び順（＝文書順）で
+        // 先頭のものをアクティブとする。
+        const visibleIds = new Set<string>();
+
         const observer = new IntersectionObserver(
             (entries) => {
-                const visibleEntries = entries.filter((entry) => entry.isIntersecting);
-                if (visibleEntries.length > 0 && visibleEntries[0]?.target.id) {
-                    setActiveId(visibleEntries[0].target.id);
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        visibleIds.add(entry.target.id);
+                    } else {
+                        visibleIds.delete(entry.target.id);
+                    }
+                });
+
+                const firstVisible = NAV_ITEMS.find((item) => visibleIds.has(item.id));
+                if (firstVisible) {
+                    setActiveId(firstVisible.id);
                 }
             },
             {
@@ -89,7 +102,7 @@ export function NavBar({ isOpen, onToggle }: NavBarProps) {
                     const isActive = activeId === item.id;
                     const levelClass = item.level === 3 ? 'lvl3 nav-h3' : 'nav-h2';
                     return (
-                        <span key={item.id}>
+                        <Fragment key={item.id}>
                             <a
                                 href={`#${item.id}`}
                                 className={`nav-link ${levelClass} ${isActive ? 'active' : ''}`}
@@ -98,8 +111,10 @@ export function NavBar({ isOpen, onToggle }: NavBarProps) {
                             >
                                 {item.label}
                             </a>
+                            {/* サイドバー全文の textContent を移行元と一致させるための区切り。
+                                削除すると目次ラベルが連結され、全量移行検証が失敗する。 */}
                             {"\n"}
-                        </span>
+                        </Fragment>
                     );
                 })}
             </nav>

@@ -311,6 +311,8 @@
 .pca-s4-page .mermaid-wrap {
     width: 100%;
     display: flex;
+    /* safe center 非対応ブラウザ向けのフォールバックを先に宣言する */
+    justify-content: center;
     justify-content: safe center;
     overflow-x: auto;
     background: var(--color-pca-s4-surface-1);

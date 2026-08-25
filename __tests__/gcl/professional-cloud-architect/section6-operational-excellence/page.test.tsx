@@ -2,7 +2,11 @@ import { render, fireEvent } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import inventory from '@/docs/migration-inventory/pca-section6-operational-excellence.json';
 import Page from '@/app/gcl/professional-cloud-architect/section6-operational-excellence/page';
-import { NAV_ITEMS } from '@/app/gcl/professional-cloud-architect/section6-operational-excellence/constants';
+import {
+    CHECKLIST_ITEMS,
+    NAV_ITEMS,
+    REF_CARDS,
+} from '@/app/gcl/professional-cloud-architect/section6-operational-excellence/constants';
 import { defineMigrationSuite } from '@/__tests__/gcl/agwa/migration-test-utils';
 
 vi.mock('@/components/MermaidDiagram', async () => {
@@ -42,7 +46,7 @@ describe('PCA Section 6: 視覚デザイン・UIコンポーネント構造の�
     it('全てのテーブルが .table-scroll ラッパー内に配置されている', () => {
         const container = renderPage();
         const tables = container.querySelectorAll('table');
-        expect(tables).toHaveLength(23);
+        expect(tables).toHaveLength(inventory.counts.table);
         tables.forEach((table) => {
             expect(table.closest('.table-scroll')).not.toBeNull();
         });
@@ -57,20 +61,20 @@ describe('PCA Section 6: 視覚デザイン・UIコンポーネント構造の�
         expect(hero?.querySelector('.meta-row')).not.toBeNull();
     });
 
-    it('参考文献が .ref-grid 構造と 52 件の .ref-card を持つ', () => {
+    it('参考文献が .ref-grid 構造と REF_CARDS と同数の .ref-card を持つ', () => {
         const container = renderPage();
         const refGrid = container.querySelector('.ref-grid');
         expect(refGrid).not.toBeNull();
         const refCards = container.querySelectorAll('.ref-card');
-        expect(refCards).toHaveLength(52);
+        expect(refCards).toHaveLength(REF_CARDS.length);
     });
 
-    it('チェックリストが .checklist-card 構造と 18 件のチェックボックスを持つ', () => {
+    it('チェックリストが .checklist-card 構造と CHECKLIST_ITEMS と同数のチェックボックスを持つ', () => {
         const container = renderPage();
         const checklist = container.querySelector('.checklist-card');
         expect(checklist).not.toBeNull();
         const checkboxes = container.querySelectorAll('.checklist-card input[type="checkbox"]');
-        expect(checkboxes).toHaveLength(18);
+        expect(checkboxes).toHaveLength(CHECKLIST_ITEMS.length);
     });
 
     it('チェックボックスをクリックすると完了状態とカウンターが連動して更新される', () => {

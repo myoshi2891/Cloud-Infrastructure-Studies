@@ -120,7 +120,7 @@ export function PcaSection5Guide() {
                         Google Cloud Well-Architected Framework（WAF）の6本柱のうち、Section 5は特に<strong>運用の卓越性</strong>（Operational Excellence）と密接に関連します。また、IaCによる一貫したプロビジョニングは信頼性・セキュリティの両面にも寄与します。
                     </p>
 
-                    <Diagram id="diag-1" label="Section 5とWell-Architected Frameworkの関連図" />
+                    <Diagram id="diag-1" label="Section 5の構成図。5.1「デプロイ支援」と5.2「プログラムによる対話」の各構成要素を示す" />
 
                     <div className="table-scroll">
                         <table>
