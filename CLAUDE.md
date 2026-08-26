@@ -310,6 +310,36 @@ app/
         NavBar.tsx                  # サイドバーナビ (IntersectionObserver)
         constants.ts                # Mermaid 図定義 (17図)
         page.css                    # ページ固有スタイル
+      section2-managing-provisioning/
+        page.tsx                    # PCA Section 2: 管理とプロビジョニング 完全ガイド (Server)
+        PcaSection2Guide.tsx        # 本文＋インタラクション (Client。全6セクション、17 Mermaid図、25テーブル等)
+        NavBar.tsx                  # サイドバーナビ (IntersectionObserver)
+        constants.ts                # Mermaid 図定義 (17図)
+        page.css                    # ページ固有スタイル
+      section3-security-compliance/
+        page.tsx                    # PCA Section 3: セキュリティとコンプライアンスの設計 完全ガイド (Server)
+        PcaSection3Guide.tsx        # 本文＋インタラクション (Client。全6セクション、26 Mermaid図、40テーブル等)
+        NavBar.tsx                  # サイドバーナビ (IntersectionObserver)
+        constants.ts                # Mermaid 図定義 (26図)
+        page.css                    # ページ固有スタイル
+      section4-process-optimization/
+        page.tsx                    # PCA Section 4: 技術的・ビジネスプロセスの分析と最適化 完全ガイド (Server)
+        PcaSection4Guide.tsx        # 本文＋インタラクション (Client。全7セクション、15 Mermaid図、26テーブル等)
+        NavBar.tsx                  # サイドバーナビ (IntersectionObserver)
+        constants.ts                # Mermaid 図定義 (15図)
+        page.css                    # ページ固有スタイル
+      section5-managing-implementation/
+        page.tsx                    # PCA Section 5: 実装の管理 完全ガイド (Server)
+        PcaSection5Guide.tsx        # 本文＋インタラクション (Client。全5セクション、13 Mermaid図、15テーブル等)
+        NavBar.tsx                  # サイドバーナビ (IntersectionObserver)
+        constants.ts                # Mermaid 図定義 (13図)
+        page.css                    # ページ固有スタイル
+      section6-operational-excellence/
+        page.tsx                    # PCA Section 6: ソリューションと運用の卓越性の確保 完全ガイド (Server)
+        PcaSection6Guide.tsx        # 本文＋インタラクション (Client。全8セクション、14 Mermaid図、23テーブル等)
+        NavBar.tsx                  # サイドバーナビ (IntersectionObserver)
+        constants.ts                # Mermaid 図定義 (14図)
+        page.css                    # ページ固有スタイル
   cisco/
     devnet-professional/
       page.tsx                      # Cisco Certified DevNet Professional 認定 徹底解説ガイド（Server）

@@ -79,6 +79,145 @@
     --color-pca-s1-green-outline: rgba(129, 201, 149, 0.28);
     --color-pca-s1-sidebar-shadow: rgba(0, 0, 0, 0.5);
 
+    /* PCA Section 2 guide */
+    --color-pca-s2-bg: #07111e;
+    --color-pca-s2-bg-elevated: #0e1b2f;
+    --color-pca-s2-bg-card: #101f36;
+    --color-pca-s2-border: #1f3350;
+    --color-pca-s2-border-soft: rgba(124, 158, 255, 0.16);
+    --color-pca-s2-accent: #7c9eff;
+    --color-pca-s2-accent-soft: rgba(124, 158, 255, 0.14);
+    --color-pca-s2-accent-strong: #a9c1ff;
+    --color-pca-s2-source-accent: #54c9a8;
+    --color-pca-s2-source-soft: rgba(84, 201, 168, 0.12);
+    --color-pca-s2-text: #e8edf7;
+    --color-pca-s2-text-dim: #8fa0bf;
+    --color-pca-s2-text-faint: #5b6a89;
+    --color-pca-s2-sidebar-shadow: rgba(0, 0, 0, 0.5);
+    --color-pca-s2-hero-grad-a: #ffffff;
+    --color-pca-s2-row-hover: rgba(124, 158, 255, 0.04);
+    --color-pca-s2-task-hover: rgba(124, 158, 255, 0.05);
+
+    /* PCA Section 3 guide */
+    --color-pca-s3-background: #07111e;
+    --color-pca-s3-surface-1: #0d1a2c;
+    --color-pca-s3-surface-2: #0f2036;
+    --color-pca-s3-border: #1c2f47;
+    --color-pca-s3-border-soft: #16273c;
+    --color-pca-s3-border-strong: #2a456c;
+    --color-pca-s3-foreground: #dce6f2;
+    --color-pca-s3-foreground-dim: #8ea3bd;
+    --color-pca-s3-foreground-faint: #5f7692;
+    --color-pca-s3-accent: #7c9eff;
+    --color-pca-s3-accent-soft: #3a5789;
+    --color-pca-s3-accent-bg: rgba(124, 158, 255, 0.1);
+    --color-pca-s3-accent-hover: rgba(124, 158, 255, 0.06);
+    --color-pca-s3-accent2: #5ee6c8;
+    --color-pca-s3-accent2-soft: rgba(94, 230, 200, 0.1);
+    --color-pca-s3-warn: #ff8a7c;
+    --color-pca-s3-warn-soft: rgba(255, 138, 124, 0.1);
+    --color-pca-s3-code-bg: #0a1729;
+    --color-pca-s3-hero-grad-b: #9fb8e8;
+    --color-pca-s3-sidebar-shadow: rgba(0, 0, 0, 0.5);
+    --color-pca-s3-row-hover: rgba(124, 158, 255, 0.04);
+    --color-pca-s3-checklist-hover: rgba(124, 158, 255, 0.05);
+    --color-pca-s3-sidebar-drop-shadow: rgba(0, 0, 0, 0.4);
+
+    /* PCA Section 4 guide */
+    --color-pca-s4-background: #07111e;
+    --color-pca-s4-surface-1: #0d1a2b;
+    --color-pca-s4-surface-2: #101f33;
+    --color-pca-s4-sidebar-bg: #060d17;
+    --color-pca-s4-border: #1d3350;
+    --color-pca-s4-border-soft: #16283f;
+    --color-pca-s4-border-strong: #2c4770;
+    --color-pca-s4-foreground: #dbe4f3;
+    --color-pca-s4-foreground-dim: #8fa2c0;
+    --color-pca-s4-foreground-faint: #6a7d9c;
+    --color-pca-s4-accent: #7c9eff;
+    --color-pca-s4-accent-soft: #3a4f80;
+    --color-pca-s4-accent-bg: #15233d;
+    --color-pca-s4-accent-hover: rgba(124, 158, 255, 0.06);
+    --color-pca-s4-danger: #ff8fa3;
+    --color-pca-s4-danger-bg: #3a1420;
+    --color-pca-s4-warn: #ffbd6e;
+    --color-pca-s4-warn-bg: #3a2810;
+    --color-pca-s4-success: #7fe0a8;
+    --color-pca-s4-success-bg: #0f2c1e;
+    --color-pca-s4-code-bg: #0a1729;
+    --color-pca-s4-sidebar-shadow: rgba(0, 0, 0, 0.5);
+    --color-pca-s4-strong: #f0f4fc;
+    --color-pca-s4-code-text: #ffd08a;
+    --color-pca-s4-row-hover: rgba(124, 158, 255, 0.04);
+    --color-pca-s4-checklist-hover: rgba(124, 158, 255, 0.05);
+    --color-pca-s4-success-border: #1d5a3a;
+    --color-pca-s4-success-icon-fg: #08150e;
+    --color-pca-s4-checkmark: #08101f;
+
+    /* PCA Section 5 guide */
+    --color-pca-s5-background: #07111e;
+    --color-pca-s5-surface-1: #0d1a2b;
+    --color-pca-s5-surface-2: #101f33;
+    --color-pca-s5-sidebar-bg: #060d17;
+    --color-pca-s5-border: #1d3350;
+    --color-pca-s5-border-soft: #16283f;
+    --color-pca-s5-border-strong: #2c4770;
+    --color-pca-s5-foreground: #dbe4f3;
+    --color-pca-s5-foreground-dim: #8fa2c0;
+    --color-pca-s5-foreground-faint: #6a7d9c;
+    --color-pca-s5-accent: #7c9eff;
+    --color-pca-s5-accent-soft: #3a4f80;
+    --color-pca-s5-accent-bg: #15233d;
+    --color-pca-s5-accent-hover: rgba(124, 158, 255, 0.06);
+    --color-pca-s5-danger: #ff8fa3;
+    --color-pca-s5-danger-bg: #3a1420;
+    --color-pca-s5-warn: #ffbd6e;
+    --color-pca-s5-warn-bg: #3a2810;
+    --color-pca-s5-success: #7fe0a8;
+    --color-pca-s5-success-bg: #0f2c1e;
+    --color-pca-s5-code-bg: #0a1729;
+    --color-pca-s5-sidebar-shadow: rgba(0, 0, 0, 0.5);
+    --color-pca-s5-strong: #f0f4fc;
+    --color-pca-s5-inline-code-fg: #ffd08a;
+    --color-pca-s5-row-hover: rgba(124, 158, 255, 0.04);
+    --color-pca-s5-checklist-hover: rgba(124, 158, 255, 0.05);
+    --color-pca-s5-success-border: #1d5a3a;
+    --color-pca-s5-on-success: #08150e;
+    --color-pca-s5-on-accent: #08101f;
+
+    /* PCA Section 6 guide */
+    --color-pca-s6-background: #07111e;
+    --color-pca-s6-surface-1: #0d1a2b;
+    --color-pca-s6-surface-2: #101f33;
+    --color-pca-s6-sidebar-bg: #060d17;
+    --color-pca-s6-border: #1d3350;
+    --color-pca-s6-border-soft: #16283f;
+    --color-pca-s6-border-strong: #2c4770;
+    --color-pca-s6-foreground: #dbe4f3;
+    --color-pca-s6-foreground-dim: #8fa2c0;
+    --color-pca-s6-foreground-faint: #6a7d9c;
+    --color-pca-s6-accent: #7c9eff;
+    --color-pca-s6-accent-soft: #3a4f80;
+    --color-pca-s6-accent-bg: #15233d;
+    --color-pca-s6-accent-hover: rgba(124, 158, 255, 0.06);
+    --color-pca-s6-danger: #ff8fa3;
+    --color-pca-s6-danger-bg: #3a1420;
+    --color-pca-s6-warn: #ffbd6e;
+    --color-pca-s6-warn-bg: #3a2810;
+    --color-pca-s6-success: #7fe0a8;
+    --color-pca-s6-success-bg: #0f2c1e;
+    --color-pca-s6-code-bg: #0a1729;
+    --color-pca-s6-sidebar-shadow: rgba(0, 0, 0, 0.5);
+    --color-pca-s6-strong: #f0f4fc;
+    --color-pca-s6-inline-code-fg: #ffd08a;
+    --color-pca-s6-row-hover: rgba(124, 158, 255, 0.04);
+    --color-pca-s6-checklist-hover: rgba(124, 158, 255, 0.05);
+    --color-pca-s6-success-border: #1d5a3a;
+    --color-pca-s6-on-success: #08150e;
+    --color-pca-s6-on-accent: #08101f;
+    --color-pca-s6-btn-shadow: rgba(0, 0, 0, 0.4);
+
+
 
     /* Shared dark-guide surfaces */
     --color-guide-background: #07111e;
@@ -457,6 +596,7 @@
     --radius-xl: 24px;
     --radius-guide-card: 12px;
     --radius-ccna-platforms: 14px;
+    --radius-pca-s2-card: 14px;
     --spacing-ccna-platforms-sidebar: 300px;
 
 }

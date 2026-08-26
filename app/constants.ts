@@ -268,27 +268,27 @@ const ALL_EXAMS: Exam[] = [
             },
             {
                 label: 'Section 2: 管理とプロビジョニング',
-                href: '/gcl/professional-cloud-architect#section-2-クラウドソリューションインフラの管理とプロビジョニング約175',
+                href: '/gcl/professional-cloud-architect/section2-managing-provisioning',
                 pct: '~17.5%',
             },
             {
                 label: 'Section 3: セキュリティとコンプライアンス',
-                href: '/gcl/professional-cloud-architect#section-3-セキュリティとコンプライアンスの設計約175',
+                href: '/gcl/professional-cloud-architect/section3-security-compliance',
                 pct: '~17.5%',
             },
             {
                 label: 'Section 4: プロセス分析と最適化',
-                href: '/gcl/professional-cloud-architect#section-4-技術ビジネスプロセスの分析と最適化約15',
+                href: '/gcl/professional-cloud-architect/section4-process-optimization',
                 pct: '~15%',
             },
             {
                 label: 'Section 5: 実装の管理',
-                href: '/gcl/professional-cloud-architect#section-5-実装の管理約125',
+                href: '/gcl/professional-cloud-architect/section5-managing-implementation',
                 pct: '~12.5%',
             },
             {
                 label: 'Section 6: 運用の卓越性',
-                href: '/gcl/professional-cloud-architect#section-6-ソリューションと運用の卓越性の確保約125',
+                href: '/gcl/professional-cloud-architect/section6-operational-excellence',
                 pct: '~12.5%',
             },
         ],

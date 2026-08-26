@@ -1,6 +1,146 @@
 # 移行作業進捗管理ドキュメント (Migration Progress)
 
-(最終更新日: 2026-08-22)
+(最終更新日: 2026-08-25)
+
+---
+
+## 2026-08-25: Google Cloud Professional Cloud Architect (PCA) Section 6: ソリューションと運用の卓越性の確保 完全ガイド 100%全量移行 (完了)
+
+### 目的
+
+`Gcp-pca-section6-operational-excellence.html` を、Next.js App Router 5ファイル構成 (`page.tsx`, `PcaSection6Guide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/gcl/professional-cloud-architect/section6-operational-excellence` ルートへ移行。見出し(h1:1, h2:12, h3:23, h4:0)、全23個のテーブル、14個のMermaid図解、全リスト(18件)、全外部リンク(18件)・全本文・コールアウト注記・理解度チェックリスト(18件)・参考文献グリッド(52件)を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for pca-section6-operational-excellence` (`ac120b1`)
+- [x] **Step 1 (Red)**: `test(pca): add failing tests for section6-operational-excellence` (`b446463`)
+- [x] **Step 2 (Green)**: `feat(pca): implement section6-operational-excellence to pass tests` (`3ea13cc`)
+- [x] **Step 3 (Refactor)**: `refactor(pca): integrate section6-operational-excellence into routing and update docs` (`11eb370`)
+- [x] **Step 4 (Archive & Sync)**: `chore(docs): update MIGRATION_PROGRESS.md — migrate PCA Section 6 guide`
+
+### 関連ファイル
+
+- [app/gcl/professional-cloud-architect/section6-operational-excellence/page.tsx](app/gcl/professional-cloud-architect/section6-operational-excellence/page.tsx)
+- [app/gcl/professional-cloud-architect/section6-operational-excellence/PcaSection6Guide.tsx](app/gcl/professional-cloud-architect/section6-operational-excellence/PcaSection6Guide.tsx)
+- [app/gcl/professional-cloud-architect/section6-operational-excellence/NavBar.tsx](app/gcl/professional-cloud-architect/section6-operational-excellence/NavBar.tsx)
+- [app/gcl/professional-cloud-architect/section6-operational-excellence/constants.ts](app/gcl/professional-cloud-architect/section6-operational-excellence/constants.ts)
+- [app/gcl/professional-cloud-architect/section6-operational-excellence/page.css](app/gcl/professional-cloud-architect/section6-operational-excellence/page.css)
+- [`__tests__/gcl/professional-cloud-architect/section6-operational-excellence/page.test.tsx`](__tests__/gcl/professional-cloud-architect/section6-operational-excellence/page.test.tsx)
+- [docs/migration-inventory/pca-section6-operational-excellence.json](docs/migration-inventory/pca-section6-operational-excellence.json)
+- [archive/Gcl/Professional-Cloud-Architect/Gcp-pca-section6-operational-excellence.html](archive/Gcl/Professional-Cloud-Architect/Gcp-pca-section6-operational-excellence.html)
+- [archive/Gcl/Professional-Cloud-Architect/Gcp-pca-section6-operational-excellence.md](archive/Gcl/Professional-Cloud-Architect/Gcp-pca-section6-operational-excellence.md)
+
+---
+
+## 2026-08-25: Google Cloud Professional Cloud Architect (PCA) Section 5: 実装の管理 完全ガイド 100%全量移行 (完了)
+
+### 目的
+
+`Gcp-pca-section5-managing-implementation.html` を、Next.js App Router 5ファイル構成 (`page.tsx`, `PcaSection5Guide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/gcl/professional-cloud-architect/section5-managing-implementation` ルートへ移行。見出し(h1:1, h2:9, h3:11, h4:0)、全15個のテーブル、13個のMermaid図解、全リスト(59件)、全外部リンク(18件)・全本文(28件)・コールアウト注記・理解度チェックリスト(16件)・参考文献グリッド(18件)を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for pca-section5-managing-implementation` (`2818fbd`)
+- [x] **Step 1 (Red)**: `test(pca): add failing tests for section5-managing-implementation` (`311d5dc`)
+- [x] **Step 2 (Green)**: `feat(pca): implement section5-managing-implementation to pass tests` (`80923cb`)
+- [x] **Step 3 (Refactor)**: `refactor(pca): integrate section5-managing-implementation into routing and update docs` (`b32f20f`)
+- [x] **Step 4 (Archive & Sync)**: `chore(docs): update MIGRATION_PROGRESS.md — migrate PCA Section 5 guide`
+
+### 関連ファイル
+
+- [app/gcl/professional-cloud-architect/section5-managing-implementation/page.tsx](app/gcl/professional-cloud-architect/section5-managing-implementation/page.tsx)
+- [app/gcl/professional-cloud-architect/section5-managing-implementation/PcaSection5Guide.tsx](app/gcl/professional-cloud-architect/section5-managing-implementation/PcaSection5Guide.tsx)
+- [app/gcl/professional-cloud-architect/section5-managing-implementation/NavBar.tsx](app/gcl/professional-cloud-architect/section5-managing-implementation/NavBar.tsx)
+- [app/gcl/professional-cloud-architect/section5-managing-implementation/constants.ts](app/gcl/professional-cloud-architect/section5-managing-implementation/constants.ts)
+- [app/gcl/professional-cloud-architect/section5-managing-implementation/page.css](app/gcl/professional-cloud-architect/section5-managing-implementation/page.css)
+- [`__tests__/gcl/professional-cloud-architect/section5-managing-implementation/page.test.tsx`](__tests__/gcl/professional-cloud-architect/section5-managing-implementation/page.test.tsx)
+- [docs/migration-inventory/pca-section5-managing-implementation.json](docs/migration-inventory/pca-section5-managing-implementation.json)
+- [archive/Gcl/Professional-Cloud-Architect/Gcp-pca-section5-managing-implementation.html](archive/Gcl/Professional-Cloud-Architect/Gcp-pca-section5-managing-implementation.html)
+- [archive/Gcl/Professional-Cloud-Architect/Gcp-pca-section5-managing-implementation.md](archive/Gcl/Professional-Cloud-Architect/Gcp-pca-section5-managing-implementation.md)
+
+---
+
+## 2026-08-25: Google Cloud Professional Cloud Architect (PCA) Section 4: プロセス分析と最適化 完全ガイド 100%全量移行 (完了)
+
+### 目的
+
+`Gcp-pca-section4-process-optimization.html` を、Next.js App Router 5ファイル構成 (`page.tsx`, `PcaSection4Guide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/gcl/professional-cloud-architect/section4-process-optimization` ルートへ移行。見出し(h1:1, h2:9, h3:15, h4:0)、全26個のテーブル、15個のMermaid図解、全リスト(30件)、全外部リンク(32件)・全本文(83件)・コールアウト注記・理解度チェックリスト(20件)・参考文献グリッド(32件)を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for pca-section4-process-optimization` (`5e76c78`)
+- [x] **Step 1 (Red)**: `test(gcl): add failing tests for pca-section4-process-optimization` (`e6846fa`)
+- [x] **Step 2 (Green)**: `feat(gcl): implement pca-section4-process-optimization to pass tests` (`3301732`)
+- [x] **Step 3 (Refactor)**: `refactor(gcl): integrate pca-section4-process-optimization into routing and update docs`
+- [x] **Step 4 (Archive & Sync)**: `chore(docs): update MIGRATION_PROGRESS.md — pca section 4 complete`
+
+### 関連ファイル
+
+- [app/gcl/professional-cloud-architect/section4-process-optimization/page.tsx](app/gcl/professional-cloud-architect/section4-process-optimization/page.tsx)
+- [app/gcl/professional-cloud-architect/section4-process-optimization/PcaSection4Guide.tsx](app/gcl/professional-cloud-architect/section4-process-optimization/PcaSection4Guide.tsx)
+- [app/gcl/professional-cloud-architect/section4-process-optimization/NavBar.tsx](app/gcl/professional-cloud-architect/section4-process-optimization/NavBar.tsx)
+- [app/gcl/professional-cloud-architect/section4-process-optimization/constants.ts](app/gcl/professional-cloud-architect/section4-process-optimization/constants.ts)
+- [app/gcl/professional-cloud-architect/section4-process-optimization/page.css](app/gcl/professional-cloud-architect/section4-process-optimization/page.css)
+- [`__tests__/gcl/professional-cloud-architect/section4-process-optimization/page.test.tsx`](__tests__/gcl/professional-cloud-architect/section4-process-optimization/page.test.tsx)
+- [docs/migration-inventory/pca-section4-process-optimization.json](docs/migration-inventory/pca-section4-process-optimization.json)
+- [archive/Gcl/Professional-Cloud-Architect/Gcp-pca-section4-process-optimization.html](archive/Gcl/Professional-Cloud-Architect/Gcp-pca-section4-process-optimization.html)
+- [archive/Gcl/Professional-Cloud-Architect/Gcp-pca-section4-process-optimization.md](archive/Gcl/Professional-Cloud-Architect/Gcp-pca-section4-process-optimization.md)
+
+---
+
+## 2026-08-24: Google Cloud Professional Cloud Architect (PCA) Section 3: セキュリティとコンプライアンスの設計 完全ガイド 100%全量移行 (完了)
+
+### 目的
+
+`Gcp-pca-section3-security-compliance.html` および `Gcp-pca-section3-security-compliance.md` を、Next.js App Router 5ファイル構成 (`page.tsx`, `PcaSection3Guide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/gcl/professional-cloud-architect/section3-security-compliance` ルートへ移行。見出し(h1:1, h2:6, h3:25, h4:37)、全40個のテーブル、26個のMermaid図解、全リスト、全外部リンク(74件)・全本文・コールアウト注記・理解度チェックリスト・参考文献グリッド(71件)を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for pca-section3-security-compliance` (`475fb24`)
+- [x] **Step 1 (Red)**: `test(gcl): add failing tests for pca-section3-security-compliance` (`a1aa863`)
+- [x] **Step 2 (Green)**: `feat(gcl): implement pca-section3-security-compliance to pass tests` (`f1552c3`)
+- [x] **Step 3 (Refactor)**: `refactor(gcl): integrate pca-section3-security-compliance into routing and update docs` (`b17852f`)
+- [x] **Step 4 (Archive & Sync)**: `chore(docs): update MIGRATION_PROGRESS.md — pca section 3 complete`
+
+### 関連ファイル
+
+- [app/gcl/professional-cloud-architect/section3-security-compliance/page.tsx](app/gcl/professional-cloud-architect/section3-security-compliance/page.tsx)
+- [app/gcl/professional-cloud-architect/section3-security-compliance/PcaSection3Guide.tsx](app/gcl/professional-cloud-architect/section3-security-compliance/PcaSection3Guide.tsx)
+- [app/gcl/professional-cloud-architect/section3-security-compliance/NavBar.tsx](app/gcl/professional-cloud-architect/section3-security-compliance/NavBar.tsx)
+- [app/gcl/professional-cloud-architect/section3-security-compliance/constants.ts](app/gcl/professional-cloud-architect/section3-security-compliance/constants.ts)
+- [app/gcl/professional-cloud-architect/section3-security-compliance/page.css](app/gcl/professional-cloud-architect/section3-security-compliance/page.css)
+- [`__tests__/gcl/professional-cloud-architect/section3-security-compliance/page.test.tsx`](__tests__/gcl/professional-cloud-architect/section3-security-compliance/page.test.tsx)
+- [docs/migration-inventory/pca-section3-security-compliance.json](docs/migration-inventory/pca-section3-security-compliance.json)
+- [archive/Gcl/Professional-Cloud-Architect/Gcp-pca-section3-security-compliance.html](archive/Gcl/Professional-Cloud-Architect/Gcp-pca-section3-security-compliance.html)
+- [archive/Gcl/Professional-Cloud-Architect/Gcp-pca-section3-security-compliance.md](archive/Gcl/Professional-Cloud-Architect/Gcp-pca-section3-security-compliance.md)
+
+---
+
+## 2026-08-24: Google Cloud Professional Cloud Architect (PCA) Section 2: 管理とプロビジョニング 完全ガイド 100%全量移行 (完了)
+
+### 目的
+
+`Gcp-pca-section2-managing-provisioning.html` および `Gcp-pca-section2-managing-provisioning.md` を、Next.js App Router 5ファイル構成 (`page.tsx`, `PcaSection2Guide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/gcl/professional-cloud-architect/section2-managing-provisioning` ルートへ移行。見出し(h1:1, h2:9, h3:19, h4:6)、全25個のテーブル、17個のMermaid図解、全リスト、全外部リンク(42件)・全本文・コールアウト注記・理解度チェックリスト・参考文献グリッドを一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for pca-section2-managing-provisioning` (`e4a9be4`)
+- [x] **Step 1 (Red)**: `test(gcl): add failing tests for pca-section2-managing-provisioning` (`0b0c38b`)
+- [x] **Step 2 (Green)**: `feat(gcl): implement pca-section2-managing-provisioning to pass tests` (`9d9e26c`)
+- [x] **Step 3 (Refactor)**: `refactor(gcl): integrate pca-section2-managing-provisioning into routing and update docs` (`1f5dc78`)
+- [x] **Step 4 (Archive & Sync)**: `chore(docs): update MIGRATION_PROGRESS.md — pca section 2 complete`
+
+### 関連ファイル
+
+- [app/gcl/professional-cloud-architect/section2-managing-provisioning/page.tsx](app/gcl/professional-cloud-architect/section2-managing-provisioning/page.tsx)
+- [app/gcl/professional-cloud-architect/section2-managing-provisioning/PcaSection2Guide.tsx](app/gcl/professional-cloud-architect/section2-managing-provisioning/PcaSection2Guide.tsx)
+- [app/gcl/professional-cloud-architect/section2-managing-provisioning/NavBar.tsx](app/gcl/professional-cloud-architect/section2-managing-provisioning/NavBar.tsx)
+- [app/gcl/professional-cloud-architect/section2-managing-provisioning/constants.ts](app/gcl/professional-cloud-architect/section2-managing-provisioning/constants.ts)
+- [app/gcl/professional-cloud-architect/section2-managing-provisioning/page.css](app/gcl/professional-cloud-architect/section2-managing-provisioning/page.css)
+- [`__tests__/gcl/professional-cloud-architect/section2-managing-provisioning/page.test.tsx`](__tests__/gcl/professional-cloud-architect/section2-managing-provisioning/page.test.tsx)
+- [docs/migration-inventory/pca-section2-managing-provisioning.json](docs/migration-inventory/pca-section2-managing-provisioning.json)
+- [archive/Gcl/Professional-Cloud-Architect/Gcp-pca-section2-managing-provisioning.html](archive/Gcl/Professional-Cloud-Architect/Gcp-pca-section2-managing-provisioning.html)
+- [archive/Gcl/Professional-Cloud-Architect/Gcp-pca-section2-managing-provisioning.md](archive/Gcl/Professional-Cloud-Architect/Gcp-pca-section2-managing-provisioning.md)
 
 ---
 
