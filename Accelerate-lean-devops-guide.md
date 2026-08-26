@@ -557,7 +557,7 @@ flowchart LR
     Y2018 --> Y2021["2021年<br/>信頼性(Reliability)を<br/>運用パフォーマンス指標として追加<br/>（デリバリー指標とは別系統）"]
     Y2021 --> Y2024["2024年<br/>5つ目のデリバリー指標<br/>Rework Rate を追加"]
     Y2024 --> Y2025["2025年<br/>State of AI-assisted<br/>Software Development に改題<br/>AI活用が中心テーマに"]
-    Y2025 --> Y2026["2026年<br/>AI起因の品質劣化・<br/>手戻り増大が焦点に"]
+    Y2025 --> Y2026["2026年<br/>ROI of AI-assisted<br/>Software Development 公開<br/>AI投資のROI測定が焦点に"]
 
     classDef step fill:#16233f,stroke:#7c9eff,color:#e6ebff
     class Y2014,Y2018,Y2021,Y2024,Y2025,Y2026 step
