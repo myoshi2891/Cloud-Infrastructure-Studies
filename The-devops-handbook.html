@@ -412,6 +412,53 @@
                 font-weight: 600;
             }
 
+            /* Anti-pattern warning grid */
+            .antipattern-grid {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 12px;
+                margin: 0 0 30px;
+            }
+            .antipattern-card {
+                display: flex;
+                gap: 14px;
+                background: rgba(255, 143, 163, 0.055);
+                border: 1px solid rgba(255, 143, 163, 0.2);
+                border-left: 4px solid var(--danger);
+                border-radius: 12px;
+                padding: 18px 20px;
+                min-width: 0;
+            }
+            .antipattern-card .icon {
+                flex-shrink: 0;
+                width: 26px;
+                height: 26px;
+                border-radius: 7px;
+                background: var(--danger);
+                color: #2a0810;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 13px;
+                font-weight: 900;
+            }
+            .antipattern-card .body {
+                min-width: 0;
+            }
+            .antipattern-card .title {
+                font-size: 14px;
+                font-weight: 800;
+                letter-spacing: 0.01em;
+                color: var(--danger);
+                margin-bottom: 8px;
+            }
+            .antipattern-card p {
+                margin: 0;
+                color: var(--text);
+                font-size: 14px;
+                line-height: 1.7;
+            }
+
             /* Checklist */
             .checklist-card {
                 background: var(--bg-card);
@@ -517,6 +564,9 @@
                     display: flex;
                 }
                 .ref-grid {
+                    grid-template-columns: 1fr;
+                }
+                .antipattern-grid {
                     grid-template-columns: 1fr;
                 }
             }
@@ -1531,13 +1581,10 @@
                                 定常状態（正常な挙動を表す測定可能な指標）を明確に定義してから実験を始める
                             </li>
                             <li>
-                                まず隔離された非本番環境で実験し、監視・アラート、緊急停止（アボート）手順、承認済みのブラストラディウス（影響範囲）が期待どおり機能することを検証する
+                                実験は本番相当の環境、できれば本番環境そのもので行う（ステージング環境では現実的な挙動が再現できないため）
                             </li>
                             <li>
-                                本番環境での実験は段階的導入の最終段階と位置づける。上記の安全策が実証され、関係者の承認を得たうえで、影響範囲を絞った小さな実験から開始する
-                            </li>
-                            <li>
-                                実験の自動化・継続実行に進むのは、ガードレールと自動停止条件が整備されてからとする
+                                影響範囲（ブラストラディウス）を最小限に抑えるガードレールを設けた上で、実験を自動化・継続実行する
                             </li>
                         </ul>
                     </div>
@@ -1833,41 +1880,77 @@
 
                 <h2 id="10-よくあるアンチパターン">10. よくあるアンチパターン</h2>
 
-                <ul>
-                    <li>
-                        <strong>⚠️ ビッグバン導入</strong>:
-                        全社一斉にDevOpsツールを導入しようとし、混乱と抵抗を招く（正しくは1つのバリューストリームから始める）
-                    </li>
-                    <li>
-                        <strong>⚠️ ツール導入だけで満足する</strong>:
-                        CI/CDツールやKubernetesを導入しただけでDevOpsが完了したと錯覚する（文化と組織設計の変革を伴わない技術導入は効果が限定的）
-                    </li>
-                    <li>
-                        <strong>⚠️ 長命なフィーチャーブランチの放置</strong>:
-                        マージ地獄を生み、継続的インテグレーションの恩恵を得られない
-                    </li>
-                    <li>
-                        <strong>⚠️ リリース末端でのセキュリティ監査</strong>:
-                        開発の最終段階でしかセキュリティを確認せず、手戻りコストを増大させる
-                    </li>
-                    <li>
-                        <strong>⚠️ 犯人探し型のポストモーテム</strong>:
-                        個人の責任追及に終始し、エンジニアが真実を語らなくなり、組織的な学習が止まる
-                    </li>
-                    <li>
-                        <strong>⚠️ 重量級の変更諮問委員会（CAB）への依存</strong>:
-                        週次会議での承認待ちがリードタイムを支配し、フローを阻害する
-                    </li>
-                    <li>
-                        <strong>⚠️ テレメトリなきデプロイ</strong>:
-                        本番での挙動を計測せずにリリースし、問題発覚が顧客からの苦情頼みになる
-                    </li>
-                    <li>
-                        <strong>⚠️ AIツール導入を基礎の代替と考える</strong>:
-                        トランクベース開発やテスト自動化などの基礎を整えないままAIコーディング支援を導入し、DORA
-                        2025が指摘する「不安定性の増幅」を招く
-                    </li>
-                </ul>
+                <div class="antipattern-grid">
+                    <div class="antipattern-card">
+                        <div class="icon">&#9888;</div>
+                        <div class="body">
+                            <div class="title">ビッグバン導入</div>
+                            <p>
+                                全社一斉にDevOpsツールを導入しようとし、混乱と抵抗を招く（正しくは1つのバリューストリームから始める）
+                            </p>
+                        </div>
+                    </div>
+                    <div class="antipattern-card">
+                        <div class="icon">&#9888;</div>
+                        <div class="body">
+                            <div class="title">ツール導入だけで満足する</div>
+                            <p>
+                                CI/CDツールやKubernetesを導入しただけでDevOpsが完了したと錯覚する（文化と組織設計の変革を伴わない技術導入は効果が限定的）
+                            </p>
+                        </div>
+                    </div>
+                    <div class="antipattern-card">
+                        <div class="icon">&#9888;</div>
+                        <div class="body">
+                            <div class="title">長命なフィーチャーブランチの放置</div>
+                            <p>マージ地獄を生み、継続的インテグレーションの恩恵を得られない</p>
+                        </div>
+                    </div>
+                    <div class="antipattern-card">
+                        <div class="icon">&#9888;</div>
+                        <div class="body">
+                            <div class="title">リリース末端でのセキュリティ監査</div>
+                            <p>
+                                開発の最終段階でしかセキュリティを確認せず、手戻りコストを増大させる
+                            </p>
+                        </div>
+                    </div>
+                    <div class="antipattern-card">
+                        <div class="icon">&#9888;</div>
+                        <div class="body">
+                            <div class="title">犯人探し型のポストモーテム</div>
+                            <p>
+                                個人の責任追及に終始し、エンジニアが真実を語らなくなり、組織的な学習が止まる
+                            </p>
+                        </div>
+                    </div>
+                    <div class="antipattern-card">
+                        <div class="icon">&#9888;</div>
+                        <div class="body">
+                            <div class="title">重量級の変更諮問委員会（CAB）への依存</div>
+                            <p>週次会議での承認待ちがリードタイムを支配し、フローを阻害する</p>
+                        </div>
+                    </div>
+                    <div class="antipattern-card">
+                        <div class="icon">&#9888;</div>
+                        <div class="body">
+                            <div class="title">テレメトリなきデプロイ</div>
+                            <p>
+                                本番での挙動を計測せずにリリースし、問題発覚が顧客からの苦情頼みになる
+                            </p>
+                        </div>
+                    </div>
+                    <div class="antipattern-card">
+                        <div class="icon">&#9888;</div>
+                        <div class="body">
+                            <div class="title">AIツール導入を基礎の代替と考える</div>
+                            <p>
+                                トランクベース開発やテスト自動化などの基礎を整えないままAIコーディング支援を導入し、DORA
+                                2025が指摘する「不安定性の増幅」を招く
+                            </p>
+                        </div>
+                    </div>
+                </div>
 
                 <hr />
 
