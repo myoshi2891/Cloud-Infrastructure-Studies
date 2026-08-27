@@ -720,13 +720,13 @@
 
       <div class="table-wrap">
         <table>
-          <thead><tr><th>指標</th><th>説明</th><th>スループット/安定性</th></tr></thead>
+          <thead><tr><th>指標</th><th>説明</th><th>スループット/不安定性</th></tr></thead>
           <tbody>
             <tr><td>デプロイ頻度</td><td>本番環境へのリリース頻度</td><td>スループット</td></tr>
             <tr><td>変更のリードタイム</td><td>コードのコミットから本番稼働までの所要時間</td><td>スループット</td></tr>
             <tr><td>失敗したデプロイの復旧時間</td><td>サービス低下を引き起こした失敗デプロイから、サービスが復旧するまでの所要時間。デプロイに起因しない障害は対象外(旧称: MTTR)</td><td>スループット</td></tr>
-            <tr><td>変更失敗率</td><td>デプロイのうちサービス低下や修正を要した割合</td><td>安定性</td></tr>
-            <tr><td>デプロイのリワーク率</td><td>本番の不具合対応のために発生した計画外デプロイの割合</td><td>安定性</td></tr>
+            <tr><td>変更失敗率</td><td>デプロイのうちサービス低下や修正を要した割合</td><td>不安定性</td></tr>
+            <tr><td>デプロイのリワーク率</td><td>本番の不具合対応のために発生した計画外デプロイの割合</td><td>不安定性</td></tr>
           </tbody>
         </table>
       </div>
@@ -735,7 +735,7 @@
 
       <div class="diagram-card">
         <div class="diagram-container" id="doraMetrics"><div class="diagram-loading">図を読み込み中...</div></div>
-        <div class="diagram-caption">DORA 5指標をスループットと安定性の2軸で分類した図</div>
+        <div class="diagram-caption">DORA 5指標をスループットと不安定性の2軸で分類した図</div>
       </div>
 
       <h3>3.2 パフォーマンス階層のベンチマーク</h3>
@@ -1131,7 +1131,7 @@
         B["変更のリードタイム"]
         D["失敗したデプロイの復旧時間"]
     end
-    subgraph ST["安定性指標"]
+    subgraph ST["不安定性指標"]
         direction TB
         C["変更失敗率"]
         E["デプロイのリワーク率"]
