@@ -129,7 +129,7 @@ flowchart TB
 
 なお、2024年版で追加された5つ目のデリバリー指標は「デプロイの再作業率(rework rate)」であり、信頼性(Reliability)はデリバリー指標ではなく運用パフォーマンスの指標として別枠で扱われます。
 
-DORA の 2024 State of DevOps Report では、エリートパフォーマーはオンデマンドで複数回デプロイし、リードタイムは1日未満、変更失敗率は5%前後、障害復旧は1時間以内という水準にあると報告されています。ただし、2026年の調査ではAIによるコード生成比率の増加によりデプロイ頻度・リードタイムの指標だけでは開発生産性を測りきれなくなっているとの指摘もあり、DORAはあくまで「土台」として捉え、他の指標と組み合わせて評価するのが実務上の潮流です。
+DORA の 2024 State of DevOps Report では、エリートパフォーマーはオンデマンドで複数回デプロイし、リードタイムは1日未満、変更失敗率は5%前後、障害復旧は1時間以内という水準にあると報告されています。ただし、DORA の 2025 年のレポート(State of AI-assisted Software Development)では、AI 活用の広がりに伴ってスループット(デプロイ頻度・リードタイム)と不安定性(変更失敗率など)をどう両立させるかが主要な論点として取り上げられています。デプロイ頻度・リードタイムだけを見て開発生産性を判断せず、DORAはあくまで「土台」として捉え、他の指標と組み合わせて評価するのが実務上の潮流です。
 
 ---
 
@@ -754,7 +754,7 @@ flowchart TB
     class T2023,Fork,GA,Diverge,IBM eventFill
 ```
 
-2026年時点では、OpenTofu は単なる「無料の代替品」ではなく、Terraform が未実装の機能(ネイティブな State 暗号化など)を先行して提供するなど、機能面でも独自の進化を遂げています。移行自体は「ほぼドロップイン」なケースが多いとされていますが、実際には次の順序で進めます。① State ファイルとコードのバックアップを取得する(State のバージョニングが有効なリモートバックエンドであることを確認する)。② 現在の Terraform のバージョンと各プロバイダーのバージョンを確認し、移行先の OpenTofu が対応しているかを互換性表で突き合わせる。③ OpenTofu 公式の移行手順に従って `tofu init` を実行する。④ `tofu plan` を実行し、差分がゼロ(No changes)であることを確認する。⑤ 差分がゼロでない場合は原因を解消し、必要な場合に限り `tofu apply` を実行する。なお、機能差が広がるにつれてこの移行の容易さの「賞味期限」は徐々に短くなっているとの指摘もあります。
+2026年時点では、OpenTofu は単なる「無料の代替品」ではなく、Terraform が未実装の機能(ネイティブな State 暗号化など)を先行して提供するなど、機能面でも独自の進化を遂げています。移行自体は「ほぼドロップイン」なケースが多いとされていますが、実際には次の順序で進めます。① State ファイルとコードのバックアップを取得する(State のバージョニングが有効なリモートバックエンドであることを確認する)。② 現在の Terraform のバージョンと各プロバイダーのバージョンを確認し、移行先の OpenTofu が対応しているかを互換性表で突き合わせる。③ OpenTofu 公式の移行手順に従って `tofu init` を実行する。④ `tofu plan` を実行し、予期しない差分が出ていないことを確認する。⑤ 予期しない差分がなければ、差分がゼロ(No changes)の場合でも `tofu apply` を実行して State の書き込みを OpenTofu 側で一度通し、移行を完了させる。予期しない差分がある場合はここで実行を止め、プロバイダーのバージョン差やコードの互換性など原因を解消してから ④ に戻る。なお、機能差が広がるにつれてこの移行の容易さの「賞味期限」は徐々に短くなっているとの指摘もあります。
 
 #### 主要ツールの比較
 
@@ -848,6 +848,8 @@ Policy as Code 導入で最も失敗しやすいポイントは、ツール選�
 > - 最初から Hard-mandatory で導入せず、Advisory → Soft-mandatory → Hard-mandatory と段階的に強制レベルを引き上げ、誤検知(False Positive)によるチームの反発を避ける
 > - 正当な例外(レガシーシステムの一時的な許容など)は、理由・承認者・見直し期限を明記したコード内コメントやチケットとして記録し、「なぜ例外を許したか」を追跡可能にする
 > - ネイティブの Terraform 機能(変数の`validation`ブロック、`precondition`/`postcondition`、`check`ブロック)だけでもポリシー課題の一定割合(3割程度という報告もある)は解決できるため、外部ツール導入前にまずネイティブ機能を使い切る
+> - ただしネイティブ機能は強制力が一様ではない。`validation`・`precondition`・`postcondition` はアサーションが失敗すると **エラーとなり plan/apply がそこで停止する** のに対し、`check`ブロックのアサーション失敗は **警告(Warning)を出すだけで plan/apply 自体は継続する**。したがって `check` は単独ではガードレールにならず、Advisory 相当と考える
+> - `check`の警告を実質的な強制に変えたい場合は、(a) CI 側で `terraform plan` の出力(`-json` の`@level == "warn"` など)を解析して警告検出時にジョブを失敗させる、または (b) 停止させたい条件はそもそも OPA/Conftest や Sentinel などの外部ポリシーエンジン側で Hard-mandatory ルールとして表現する、のいずれかを選ぶ。両者は役割が異なるため混同しない
 
 ---
 
@@ -940,5 +942,7 @@ flowchart TB
 25. Coding Protocols, "Terraform Policy as Code (2026): OPA/Conftest vs Sentinel vs Checkov". <https://codingprotocols.com/blog/terraform-policy-as-code-opa-sentinel-checkov>
 26. Yuri Kan, "Policy as Code Testing: OPA vs Sentinel in 2026". <https://yrkan.com/blog/policy-as-code-testing-opa-sentinel/>
 27. Medium(Jukka Koskelin), "Azure Verified Module Design Principles"(CUPIDプロパティのAzureモジュールへの応用). <https://medium.com/@merten_66723/azure-verified-module-design-principles-ba4fb18aecf2>
+28. Google Cloud / DORA, *State of AI-assisted Software Development*(2025年版レポート). <https://dora.dev/research/2025/dora-report/>
+29. DORA, "Balancing act: the tensions of AI-assisted software development"(AI活用におけるスループットと不安定性の論点). <https://dora.dev/research/2025/balancing-ai-tensions/>
 
 > 補足: 本ガイドは書籍の文章を逐語的に引用せず、Kief Morris が提示する原則・パターン・プラクティスの考え方を独自の言葉で再構成し、2026年時点の実際のツールエコシステムに接続する形で解説しています。書籍の正式な章立てと詳細な解説については、上記1・2の O'Reilly 公式ページ、またはオンライン学習プラットフォーム(O'Reilly Online Learning)でのご購読・購入をおすすめします。
