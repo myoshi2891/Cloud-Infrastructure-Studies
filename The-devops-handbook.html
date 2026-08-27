@@ -418,6 +418,8 @@
                 grid-template-columns: repeat(2, minmax(0, 1fr));
                 gap: 12px;
                 margin: 0 0 30px;
+                padding: 0;
+                list-style: none;
             }
             .antipattern-card {
                 display: flex;
@@ -1883,8 +1885,8 @@
 
                 <h2 id="10-よくあるアンチパターン">10. よくあるアンチパターン</h2>
 
-                <div class="antipattern-grid">
-                    <div class="antipattern-card">
+                <ul class="antipattern-grid" role="list">
+                    <li class="antipattern-card">
                         <div class="icon">&#9888;</div>
                         <div class="body">
                             <div class="title">ビッグバン導入</div>
@@ -1892,8 +1894,8 @@
                                 全社一斉にDevOpsツールを導入しようとし、混乱と抵抗を招く（正しくは1つのバリューストリームから始める）
                             </p>
                         </div>
-                    </div>
-                    <div class="antipattern-card">
+                    </li>
+                    <li class="antipattern-card">
                         <div class="icon">&#9888;</div>
                         <div class="body">
                             <div class="title">ツール導入だけで満足する</div>
@@ -1901,15 +1903,15 @@
                                 CI/CDツールやKubernetesを導入しただけでDevOpsが完了したと錯覚する（文化と組織設計の変革を伴わない技術導入は効果が限定的）
                             </p>
                         </div>
-                    </div>
-                    <div class="antipattern-card">
+                    </li>
+                    <li class="antipattern-card">
                         <div class="icon">&#9888;</div>
                         <div class="body">
                             <div class="title">長命なフィーチャーブランチの放置</div>
                             <p>マージ地獄を生み、継続的インテグレーションの恩恵を得られない</p>
                         </div>
-                    </div>
-                    <div class="antipattern-card">
+                    </li>
+                    <li class="antipattern-card">
                         <div class="icon">&#9888;</div>
                         <div class="body">
                             <div class="title">リリース末端でのセキュリティ監査</div>
@@ -1917,8 +1919,8 @@
                                 開発の最終段階でしかセキュリティを確認せず、手戻りコストを増大させる
                             </p>
                         </div>
-                    </div>
-                    <div class="antipattern-card">
+                    </li>
+                    <li class="antipattern-card">
                         <div class="icon">&#9888;</div>
                         <div class="body">
                             <div class="title">犯人探し型のポストモーテム</div>
@@ -1926,15 +1928,15 @@
                                 個人の責任追及に終始し、エンジニアが真実を語らなくなり、組織的な学習が止まる
                             </p>
                         </div>
-                    </div>
-                    <div class="antipattern-card">
+                    </li>
+                    <li class="antipattern-card">
                         <div class="icon">&#9888;</div>
                         <div class="body">
                             <div class="title">重量級の変更諮問委員会（CAB）への依存</div>
                             <p>週次会議での承認待ちがリードタイムを支配し、フローを阻害する</p>
                         </div>
-                    </div>
-                    <div class="antipattern-card">
+                    </li>
+                    <li class="antipattern-card">
                         <div class="icon">&#9888;</div>
                         <div class="body">
                             <div class="title">テレメトリなきデプロイ</div>
@@ -1942,8 +1944,8 @@
                                 本番での挙動を計測せずにリリースし、問題発覚が顧客からの苦情頼みになる
                             </p>
                         </div>
-                    </div>
-                    <div class="antipattern-card">
+                    </li>
+                    <li class="antipattern-card">
                         <div class="icon">&#9888;</div>
                         <div class="body">
                             <div class="title">AIツール導入を基礎の代替と考える</div>
@@ -1952,8 +1954,8 @@
                                 2025が指摘する「不安定性の増幅」を招く
                             </p>
                         </div>
-                    </div>
-                </div>
+                    </li>
+                </ul>
 
                 <hr />
 
