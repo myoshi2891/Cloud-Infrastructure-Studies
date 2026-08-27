@@ -1,661 +1,396 @@
-# Accelerate（Lean と DevOps の科学）— 初学者向けステップバイステップ解説ガイド
+# Accelerate 入門ガイド ― Leanと DevOps の科学を初学者向けに解説
 
-> 原題: *Accelerate: The Science of Lean Software and DevOps — Building and Scaling High Performing Technology Organizations*
-> 著者: Nicole Forsgren, PhD / Jez Humble / Gene Kim　出版: IT Revolution Press（2018年3月、288ページ）
-> 出典：[O'Reilly — Accelerate](https://www.oreilly.com/library/view/accelerate/9781457191435/)
+> 原著: *Accelerate: The Science of Lean Software and DevOps: Building and Scaling High Performing Technology Organizations*
+> 著者: Dr. Nicole Forsgren / Jez Humble / Gene Kim（IT Revolution Press, 2018年）
 
-## この記事について
-
-本ガイドは、DevOps・SRE・プラットフォームエンジニアリングを学び始めた方向けに、書籍『Accelerate』の内容を章立てに沿って解説するものです。ASCII図解は使用せず、フローチャートはすべて Mermaid、比較・一覧情報はすべて Markdown テーブルで表現しています。2026年8月24日時点の情報をもとにWeb検索を行い、Martin FowlerやGoogle Cloud DORAチームなど、著名で国際的な発信者の一次情報を優先して参照しました。各章末に出典を明記し、末尾に参考文献一覧を掲載しています。
+本ページは、ソフトウェアデリバリのパフォーマンス研究書『Accelerate』を学ぶための非公式の解説ログです。正確な内容は必ず原著をご確認ください。あわせて、原著刊行（2018年）以降にDORA（DevOps Research and Assessment）チームが継続してきた年次調査「State of DevOps Report」の最新動向（2025年のAI支援開発に関する調査を含む）も参照しています。
 
 ---
 
 ## 目次
 
-0. [この本の基本情報](#0-この本の基本情報)
-1. [なぜこの本が重要なのか — Martin Fowlerの警戒と転向](#1-なぜこの本が重要なのか--martin-fowlerの警戒と転向)
-2. [研究の全体像：4年間・数千社・数万件の調査](#2-研究の全体像4年間数千社数万件の調査)
-3. [ソフトウェアデリバリーパフォーマンスの測り方：4つの鍵指標](#3-ソフトウェアデリバリーパフォーマンスの測り方4つの鍵指標four-keys)
-4. [速度と安定性は両立する — ハイパフォーマーの実像](#4-速度と安定性は両立する--ハイパフォーマーの実像)
-5. [24の主要ケイパビリティ：全体マップ](#5-24の主要ケイパビリティ全体マップ)
-6. [継続的デリバリー（Continuous Delivery）ケイパビリティ](#6-継続的デリバリーcontinuous-deliveryケイパビリティ)
-7. [アーキテクチャケイパビリティ：疎結合とConwayの法則](#7-アーキテクチャケイパビリティ疎結合とconwayの法則)
-8. [製品・プロセスケイパビリティ：リーンプロダクトマネジメント](#8-製品プロセスケイパビリティリーンプロダクトマネジメント)
-9. [リーン管理・モニタリングケイパビリティ](#9-リーン管理モニタリングケイパビリティ)
-10. [情報セキュリティ（Infosec）の統合](#10-情報セキュリティinfosecの統合)
-11. [文化的ケイパビリティ：Westrumの組織文化モデル](#11-文化的ケイパビリティwestrumの組織文化モデル)
-12. [燃え尽き症候群とデプロイメントペイン](#12-燃え尽き症候群とデプロイメントペイン)
-13. [従業員満足度・アイデンティティ・エンゲージメント](#13-従業員満足度アイデンティティエンゲージメント)
-14. [リーダーとマネージャーの役割：変革型リーダーシップ](#14-リーダーとマネージャーの役割変革型リーダーシップ)
-15. [統計的手法の裏側：心理測定学とPLS-SEM超入門](#15-統計的手法の裏側心理測定学とpls-sem超入門)
-16. [Accelerateから現在へ：2018→2026年DORAレポートの進化](#16-accelerateから現在へ20182026年doraレポートの進化)
-17. [実践ロードマップ：初学者が明日から始める10ステップ](#17-実践ロードマップ初学者が明日から始める10ステップ)
-18. [よくある誤解とアンチパターン](#18-よくある誤解とアンチパターン)
-19. [まとめ：実践チェックリスト](#19-まとめ実践チェックリスト)
-20. [参考文献](#20-参考文献)
+1. [Accelerateとは何か](#1-accelerateとは何か)
+2. [なぜ「Lean」なのか ― LeanとDevOpsのつながり](#2-なぜleanなのか--leanとdevopsのつながり)
+3. [ソフトウェアデリバリのパフォーマンスを測る: DORAメトリクス](#3-ソフトウェアデリバリのパフォーマンスを測る-doraメトリクス)
+4. [パフォーマンスを生み出す24の能力（Capabilities）](#4-パフォーマンスを生み出す24の能力capabilities)
+5. [組織文化を科学する: Westrumモデル](#5-組織文化を科学する-westrumモデル)
+6. [初学者向けステップバイステップ実践ガイド](#6-初学者向けステップバイステップ実践ガイド)
+7. [2026年時点のアップデート: AI支援開発とDORAの進化](#7-2026年時点のアップデート-ai支援開発とdoraの進化)
+8. [よくある誤解とアンチパターン](#8-よくある誤解とアンチパターン)
+9. [まとめ: 実践チェックリスト](#9-まとめ-実践チェックリスト)
+10. [参考文献・出典](#10-参考文献出典)
 
 ---
 
-## 0. この本の基本情報
+## 1. Accelerateとは何か
 
-『Accelerate』は、2014〜2017年にかけて実施された「State of DevOps Report」（Puppet社と共同運営）の調査データをベースに、ソフトウェアデリバリーのパフォーマンスを統計的に裏付けようとした一冊です。全体は3部構成・16章＋付録3本からなり、実務者向けの「何がわかったか（Part One）」と、研究者向けの「その根拠となる科学（Part Two）」、そして実践事例を扱う「変革（Part Three）」に分かれています。
+『Accelerate』は、DORA（DevOps Research and Assessment）チームの共同創設者であるDr. Nicole Forsgren、Jez Humble、Gene Kimの3名が、2014年から継続してきた「State of DevOps Report」という年次調査の4年分の研究成果を一冊にまとめた書籍です。統計的因果推論の手法を用いて、どのような技術的・組織的プラクティスが「ソフトウェアデリバリのパフォーマンス」を高め、それが最終的に企業の収益性・市場シェア・顧客満足度といった組織パフォーマンスにつながるのかを、業種や企業規模を問わず数万件規模の調査データから明らかにした点が特徴です。出版元のIT Revolution PressによればShingo賞（生産性・オペレーショナルエクセレンスに関する権威ある賞）を受賞しており、実務よりも「勘と経験」に頼りがちだったソフトウェア開発の意思決定に、統計的根拠を持ち込んだ先駆的な一冊として位置づけられています。
+
+3人の著者の背景も特徴的です。Forsgren氏は主任研究者・統計学者として年次調査を率い、のちにGoogle傘下のDORAおよびMicrosoft Researchで研究を継続しました。Humble氏は2010年にDave Farley氏と共著した『Continuous Delivery』の著者であり、継続的デリバリという概念そのものの生みの親の一人です。Kim氏は2013年の小説形式のビジネス書『The Phoenix Project』の著者で、DevOpsの基本思想である「The Three Ways（フロー・フィードバック・継続的学習の3つの道）」を広めた人物です。
+
+DORAチームは2015年に設立され、2018年にGoogle Cloudの一部となりました。その後もチームは毎年「State of DevOps Report」を発行し続けており、直近では2024年版で世界39,000人超の専門家を対象に調査を実施、2025年にはAI支援開発に特化した新しい報告書シリーズを開始しています（詳細は第7章）。
 
 ```mermaid
 flowchart TB
-    Title["Accelerate<br/>The Science of Lean Software and DevOps"]
-    Title --> P1
-    Title --> P2
-    Title --> P3
-
-    subgraph P1["Part One: What We Found（実務者向け）"]
-        direction TB
-        C1["第1章 Accelerate<br/>（導入）"]
-        C2["第2章 パフォーマンスの測定"]
-        C3["第3章 文化の測定と変革"]
-        C4["第4章 技術的プラクティス"]
-        C5["第5章 アーキテクチャ"]
-        C6["第6章 Infosecの統合"]
-        C7["第7章 ソフトウェアの管理プラクティス"]
-        C8["第8章 プロダクト開発"]
-        C9["第9章 持続可能な働き方"]
-        C10["第10章 従業員満足度"]
-        C11["第11章 リーダーとマネージャー"]
-    end
-
-    subgraph P2["Part Two: The Research（研究者向け）"]
-        direction TB
-        C12["第12章 本書を支える科学"]
-        C13["第13章 心理測定学入門"]
-        C14["第14章 なぜ調査手法を使うのか"]
-        C15["第15章 プロジェクトのデータ"]
-    end
-
-    subgraph P3["Part Three: Transformation（実践編）"]
-        direction TB
-        C16["第16章 ハイパフォーマンスな<br/>リーダーシップとマネジメント"]
-        Concl["結論 + 付録A/B/C"]
-    end
-
-    classDef part fill:#1b2a4a,stroke:#7c9eff,color:#eef2ff
-    class P1,P2,P3 part
+    A["Lean生産方式とアジャイルの原則"] --> B["24の能力 Capabilities"]
+    B --> C["ソフトウェアデリバリのパフォーマンス"]
+    C --> D["DORA 5指標で計測"]
+    D --> E["組織パフォーマンス"]
+    D --> F["従業員の燃え尽き低下"]
+    E --> G["収益性 市場シェア 顧客満足度"]
 ```
 
-| 項目 | 内容 |
-|---|---|
-| 原著刊行 | 2018年3月（IT Revolution Press） |
-| ページ数 | 288ページ／読了目安 約5時間17分 |
-| 巻頭言 | Martin Fowler、Courtney Kissler（Nordstrom） |
-| 受賞歴 | Shingo Institute Publication Award（リーン・オペレーショナルエクセレンスの新知見に対して） |
-| 調査規模 | 4年間・約2,000組織・23,000件超の回答（後述） |
-| 著者の立場 | Nicole Forsgren：DORA創業者、Google Cloud（買収後）を経てMicrosoft Researchパートナー／Jez Humble：*Continuous Delivery*（2010）共著者、*The DevOps Handbook*共著者／Gene Kim：*The Phoenix Project*（2013）著者、Tripwire創業者 |
-
-出典：[O'Reilly — Accelerate 目次](https://www.oreilly.com/library/view/accelerate/9781457191435/)、[IT Revolution — Accelerate](https://itrevolution.com/product/accelerate/)
+Accelerateの中心的な主張はシンプルです。**ソフトウェアデリバリの速さと安定性の間にトレードオフは存在しない。** ハイパフォーマンスな組織は、高速なデプロイと高い安定性を同時に達成しています。これは「急いては事を仕損じる」という直感に反する結論であり、本書が業界に大きなインパクトを与えた理由のひとつです。
 
 ---
 
-## 1. なぜこの本が重要なのか — Martin Fowlerの警戒と転向
+## 2. なぜ「Lean」なのか ― LeanとDevOpsのつながり
 
-巻頭言を寄せたMartin Fowler（*Refactoring*著者、ThoughtWorksチーフサイエンティスト）は、業界に溢れる「ITパフォーマンスとビジネス成果の相関」を謳う調査レポートに長年懐疑的でした。彼は自身のブログで、多くのそうした主張を「科学を装った眉唾もの」として切り捨ててきたと率直に述べています。しかし2014年版のState of DevOps Reportだけは違いました。共著者に信頼する同僚Jez Humbleの名前があったためです。Fowlerが電話でNicole Forsgrenに調査手法を尋ねたところ、通常の業界レポートには見られない水準の統計的厳密性があることに納得し、以後State of DevOpsの継続的な支持者になったといいます。
+原題にある通り、Accelerateは「Leanソフトウェアとデブオプスの科学」を扱っています。ここでいうLeanとは、トヨタ生産方式に代表される製造業の改善思想（W. Edwards Demingの統計的品質管理の考え方を含む）をソフトウェア開発に応用したものです。書籍内では、Deming の「恐怖があるところでは、誤った数値が生まれる」という警句がたびたび引用されており、メトリクスを恐怖による管理の道具にしてはならないという原則が随所で強調されています。
 
-この逸話が象徴するのは、本書の核心的な価値です。ソフトウェア工学の言説は往々にして権威者の経験談やベンダーのマーケティングに依拠しがちですが、Accelerateは心理測定学（psychometrics）由来の構成概念妥当性の検証や、PLS構造方程式モデリング（PLS-SEM）といった、社会科学の厳密な統計手法を用いて「何が効くのか」を検証した点で異彩を放っています。
+Lean思想がDevOpsに与えた主な概念は次のとおりです。
 
-出典：[Martin Fowler — Foreword to Accelerate](https://martinfowler.com/articles/accelerate-foreword.html)
+| Lean由来の概念 | ソフトウェア開発での適用 |
+| --- | --- |
+| 小さなバッチサイズ | 大きな機能を一度にリリースせず、小さく頻繁にデプロイする |
+| フローの可視化 | バリューストリーム（価値の流れ）全体を見える化し、ボトルネックを特定する |
+| WIP（仕掛かり作業）の制限 | 同時に着手するタスク数を制限し、フローを最適化する |
+| 継続的な改善（カイゼン） | 一度作って終わりではなく、恒常的にプロセスを見直し続ける |
+| 現場への権限委譲 | 現場のエンジニアが変更を判断できるようにし、承認待ちのボトルネックを減らす |
 
----
-
-## 2. 研究の全体像：4年間・数千社・数万件の調査
-
-Accelerateの土台となったデータは、Puppet社と共同で運営された年次調査「State of DevOps Report」に由来します。2014年から2017年にかけて実施された4回分の調査データを統合し、業界・組織規模（従業員5名未満から1万名超まで）・グリーンフィールド／レガシーを問わず、幅広い技術組織から回答を集めました。
-
-```mermaid
-flowchart LR
-    A["年次サーベイ設計<br/>（Likertスケール等の心理測定尺度）"] --> B["回答収集<br/>State of DevOps Report<br/>2014〜2017年"]
-    B --> C["データクレンジング<br/>スノーボールサンプリング/<br/>プッシュポーリング対策"]
-    C --> D["構成概念の妥当性検証<br/>（第13章 心理測定学）"]
-    D --> E["PLS-SEMによる<br/>予測関係（統計的関連）の検証<br/>（第12章）"]
-    E --> F["書籍 Accelerate<br/>（2018年3月刊行）"]
-
-    classDef step fill:#16233f,stroke:#7c9eff,color:#e6ebff
-    class A,B,C,D,E,F step
-```
-
-研究の中心的な問いは「ソフトウェアデリバリーのパフォーマンスは統計的に意味のある形で測定できるか」「そのパフォーマンスは組織の収益性・市場シェア・生産性といった事業成果と結びついているか」というものでした。結論として、著者らは技術的プラクティスと文化的プラクティスの双方がソフトウェアデリバリー・パフォーマンスを予測し、そのパフォーマンスが非営利組織を含む組織パフォーマンス全体を予測することを、統計的に裏付けたとしています。
-
-出典：[Accelerate 目次 — Part Two: The Research](https://www.oreilly.com/library/view/accelerate/9781457191435/)
+Accelerateの継続的デリバリに関する技術的プラクティスの多くは、Jez Humble氏がDave Farley氏と2010年に著した『Continuous Delivery』に由来しています。同書の中心的な主張は、「ソフトウェアは常にリリース可能な状態に保つべきであり、そのためには変更を溜め込まず継続的に統合し続けることが必要」というものです。この考え方が、後述するトランクベース開発や継続的インテグレーションといった実践プラクティスの理論的支柱になっています。
 
 ---
 
-## 3. ソフトウェアデリバリーパフォーマンスの測り方：4つの鍵指標（Four Keys）
+## 3. ソフトウェアデリバリのパフォーマンスを測る: DORAメトリクス
 
-Accelerateが提示した最も広く知られた成果が、後に「DORA Four Keys」と呼ばれるようになった4つの指標です。著者らはこれらの指標が、開発チームの規模やアーキテクチャの複雑さに関わらず、スループット（速度）と安定性（品質）の両方を同時に捉えられる点を重視しました。
+### 3.1 4つの鍵指標から5指標モデルへ
+
+Accelerateが世に広めた最大の功績は、ソフトウェアデリバリのパフォーマンスを**4つの指標（Four Keys）**で定量化できることを示した点です。これらは「DORAメトリクス」または「Accelerateメトリクス」とも呼ばれます。DORAチームはその後も研究を継続しており、指標体系は次のように進化してきました。
+
+| 年 | 変化 |
+| --- | --- |
+| 2014年〜 | デプロイ頻度、変更のリードタイム、MTTR（平均修復時間）の3変数でIT パフォーマンスを定義 |
+| 2015年〜 | 変更失敗率を加えた4指標体系（スループット×安定性）が定着 |
+| 2018年 | Accelerate出版。4つの鍵指標として広く認知される |
+| 2021年 | 5番目の指標として「信頼性（Reliability）」を追加 |
+| 2023年 | MTTRを「失敗したデプロイの復旧時間」に名称変更（変更起因の障害と外部要因を分離するため） |
+| 2024年 | 変更失敗率から「デプロイのリワーク率」を分離。現行の5指標モデルへ |
+| 2025年〜 | AI支援開発時代に対応した補助的な計測フレームワークの検討が進行中（第7章参照） |
+
+現行の5指標は次のとおりです。
+
+| 指標 | 説明 | スループット/安定性 |
+| --- | --- | --- |
+| デプロイ頻度 | 本番環境へのリリース頻度 | スループット |
+| 変更のリードタイム | コードのコミットから本番稼働までの所要時間 | スループット |
+| 失敗したデプロイの復旧時間 | サービス低下を引き起こした失敗デプロイから、サービスが復旧するまでの所要時間。デプロイに起因しない障害は対象外（旧称: MTTR） | スループット |
+| 変更失敗率 | デプロイのうちサービス低下や修正を要した割合 | 安定性 |
+| デプロイのリワーク率 | 本番の不具合対応のために発生した計画外デプロイの割合 | 安定性 |
+
+これらに加え、システムの可用性やSLO（サービスレベル目標）の達成度を測る「信頼性」が準指標として位置づけられており、SRE（サイト信頼性エンジニアリング）チームとDevOpsチームの協働を促す役割を果たしています。
 
 ```mermaid
 flowchart TB
-    subgraph Throughput["スループット系（速さ）"]
+    subgraph TP["スループット指標"]
         direction TB
-        DF["デプロイ頻度<br/>Deployment Frequency<br/>本番環境へどれだけ<br/>頻繁にリリースできるか"]
-        LT["変更のリードタイム<br/>Lead Time for Changes<br/>コミットから本番稼働までの時間"]
+        A["デプロイ頻度"]
+        B["変更のリードタイム"]
+        D["失敗したデプロイの復旧時間"]
     end
-
-    subgraph Stability["安定性系（安全さ）"]
+    subgraph ST["安定性指標"]
         direction TB
-        CFR["変更失敗率<br/>Change Failure Rate<br/>本番変更のうち<br/>障害を引き起こした割合"]
-        MTTR["サービス復元時間<br/>Time to Restore Service<br/>障害発生から復旧までの時間"]
+        C["変更失敗率"]
+        E["デプロイのリワーク率"]
     end
-
-    Throughput -.->|"両立する（トレードオフではない）"| Stability
-
-    classDef fast fill:#12293a,stroke:#4fb3d9,color:#dff3ff
-    classDef stable fill:#1c2a1c,stroke:#5cb85c,color:#e6ffe6
-    class DF,LT fast
-    class CFR,MTTR stable
+    TP ~~~ ST
+    TP --> F["ソフトウェアデリバリのパフォーマンス"]
+    ST --> F
 ```
 
-| 指標 | 定義 | エリートパフォーマー（参考値の傾向） |
-|---|---|---|
-| デプロイ頻度 | 本番環境へのリリース頻度 | オンデマンド・1日に複数回 |
-| 変更のリードタイム | コミットから本番稼働までの所要時間 | 1時間未満〜1日未満 |
-| 変更失敗率 | 変更が原因で障害・ロールバック等を招いた割合 | 概ね0〜15%程度 |
-| サービス復元時間（MTTR） | 障害から回復するまでの時間 | 1時間未満 |
+### 3.2 パフォーマンス階層のベンチマーク
 
-これらは互いにトレードオフの関係にあると考えられがちですが、Accelerateの分析結果はその通念を覆すものでした。速く届けるチームほど安定性も高い、という相関がハイパフォーマー群で一貫して観測されています。
+年次調査では、回答データをクラスタ分析にかけ、Elite（エリート）／High（高）／Medium（中）／Low（低）というパフォーマンス階層を識別してきました。近年の調査（2024年版）では次のような目安が示されています（あくまで年ごとに変動する参考値です）。
 
-なお、DORAの調査では2024年に5つ目のソフトウェアデリバリー指標として「Rework Rate（手戻り率）」が追加されました。2025年は調査そのものが「State of AI-assisted Software Development Report」へ改題され、AI活用が中心テーマになった年です。また、信頼性（Reliability）は2021年に追加された運用パフォーマンス指標であり、Rework Rateとは別系統の変更です（詳細は第16章）。
+| 階層 | 変更失敗率の目安 | 特徴 |
+| --- | --- | --- |
+| Elite | 約5%前後 | オンデマンドでのデプロイ、1時間未満での障害復旧 |
+| High | 約20%前後 | 高い頻度でのデプロイ、比較的短い復旧時間 |
+| Medium | 中間的な水準 | 週〜月単位のデプロイ |
+| Low | 約40%前後 | デプロイ頻度が低く、復旧にも長時間を要する |
 
-出典：[Google Cloud — 2025 DORA State of AI-assisted Software Development Report](https://cloud.google.com/resources/content/2025-dora-ai-assisted-software-development-report)、[GitHub — dora-team/fourkeys](https://github.com/dora-team/fourkeys)
+2024年版の調査では、エリート層が全体の19%にとどまる一方、低パフォーマンス層は前年の17%から25%へ増加したと報告されており、パフォーマンスの二極化が進んでいる可能性が指摘されています。
+
+> **注意点**: DORAチーム自身が2023年10月、これらの指標をチーム間の序列づけ（リーグテーブル）に使うことに警鐘を鳴らしています。指標は「自分たちの過去と比較して改善しているか」を確認するための道具であり、他チームとの比較や個人評価に用いるとGoodhartの法則（測定対象が目標化されると、その測定は意味を失う）が働き、数値の水増しなど逆効果を招く恐れがあります。
 
 ---
 
-## 4. 速度と安定性は両立する — ハイパフォーマーの実像
+## 4. パフォーマンスを生み出す24の能力（Capabilities）
 
-Accelerateの調査では、回答組織をクラスタ分析によって「ロー」「ミディアム」「ハイ」「エリート」の4段階のパフォーマンス層に分類しました。重要なのは、この分類が単一指標ではなく4つの鍵指標の複合パターンから統計的に導かれている点です。
-
-```mermaid
-flowchart LR
-    Low["ローパフォーマー"] --> Medium["ミディアム<br/>パフォーマー"]
-    Medium --> High["ハイ<br/>パフォーマー"]
-    High --> Elite["エリート<br/>パフォーマー"]
-
-    Low -.->|"デプロイ頻度: 低い<br/>リードタイム: 長い<br/>変更失敗率: 高い<br/>MTTR: 長い"| LowNote[" "]
-    Elite -.->|"デプロイ頻度: 高い<br/>リードタイム: 短い<br/>変更失敗率: 低い<br/>MTTR: 短い<br/>＝速さと安定性が同時に高い"| EliteNote[" "]
-
-    classDef tier1 fill:#3a1420,stroke:#c05a6e,color:#f5d8de
-    classDef tier2 fill:#3a2f14,stroke:#c0975a,color:#f5ecd8
-    classDef tier3 fill:#123a2a,stroke:#5ac0a0,color:#d8f5ec
-    classDef tier4 fill:#0f2f4a,stroke:#5aa8c0,color:#d8ecf5
-    classDef note fill:none,stroke:none,color:#9fb3d9
-
-    class Low tier1
-    class Medium tier2
-    class High tier3
-    class Elite tier4
-    class LowNote,EliteNote note
-```
-
-著者らはさらに、エリートパフォーマー企業は組織の業績目標（収益性・生産性・市場シェアなど、営利・非営利を問わない目標）を達成する可能性が高いという相関も報告しています。これは「技術的卓越性はコストセンターではなく競争優位の源泉である」という、本書全体を貫くメッセージの中核です。
-
-出典：[Accelerate — Chapter 2: Measuring Performance（目次）](https://www.oreilly.com/library/view/accelerate/9781457191435/13-ch2.xhtml)
-
----
-
-## 5. 24の主要ケイパビリティ：全体マップ
-
-本書の実務的な核心は、ソフトウェアデリバリーパフォーマンス（そして文化・組織パフォーマンス）を予測することが統計的に確認された、24の「ケイパビリティ（能力）」の一覧です。これらは5つのカテゴリーに整理されています。
+DORAメトリクスは「結果」であり、Accelerateの本当の価値はその結果を生み出す**24の能力（Capabilities）**の特定にあります。これらは統計的に検証された、ハイパフォーマンスと相関の高い具体的なプラクティス群で、5つのカテゴリに整理されています。
 
 ```mermaid
 flowchart TB
-    Root["24の主要ケイパビリティ"]
-    Root --> CD
-    Root --> ARC
-    Root --> PP
-    Root --> LM
-    Root --> CU
-
-    subgraph CD["継続的デリバリー（8項目）"]
-        direction TB
-        cd1["1. バージョン管理"]
-        cd2["2. デプロイメント自動化"]
-        cd3["3. 継続的インテグレーション"]
-        cd4["4. トランクベース開発"]
-        cd5["5. テスト自動化"]
-        cd6["6. テストデータ管理"]
-        cd7["7. セキュリティのシフトレフト"]
-        cd8["8. 継続的デリバリー（CD）"]
-    end
-
-    subgraph ARC["アーキテクチャ（2項目）"]
-        direction TB
-        a1["9. 疎結合アーキテクチャ"]
-        a2["10. チームへの権限委譲"]
-    end
-
-    subgraph PP["製品・プロセス（4項目）"]
-        direction TB
-        p1["11. 顧客フィードバックの活用"]
-        p2["12. バリューストリーム全体の可視化"]
-        p3["13. 小さなバッチサイズでの作業"]
-        p4["14. チームによる実験"]
-    end
-
-    subgraph LM["リーン管理・モニタリング（5項目）"]
-        direction TB
-        l1["15. 軽量な変更承認プロセス"]
-        l2["16. 事業判断に資する<br/>本番モニタリング"]
-        l3["17. プロアクティブな<br/>システムヘルスチェック・通知"]
-        l4["18. WIP（仕掛中作業）の制限"]
-        l5["19. 作業の可視化"]
-    end
-
-    subgraph CU["文化（5項目）"]
-        direction TB
-        c1["20. 創成型（Generative）文化の醸成"]
-        c2["21. 学習の奨励・支援"]
-        c3["22. チーム間コラボレーションの促進"]
-        c4["23. 職務満足度<br/>（Job satisfaction）"]
-        c5["24. 変革型リーダーシップの支援"]
-    end
-
-    classDef cat fill:#1b2a4a,stroke:#7c9eff,color:#eef2ff
-    class CD,ARC,PP,LM,CU cat
+    A["24の能力 Capabilities"] --> B["継続的デリバリ 8項目"]
+    A --> C["アーキテクチャ 2項目"]
+    A --> D["プロダクトとプロセス 4項目"]
+    A --> E["リーン管理とモニタリング 5項目"]
+    A --> F["組織文化 5項目"]
+    B ~~~ C
+    C ~~~ D
+    D ~~~ E
+    E ~~~ F
 ```
 
-出典：[Software Meadows — "Accelerate" One Sheet Summary](https://www.softwaremeadows.com/posts/one_sheet_summary-_accelerate-_the_science_of_lean_software_and_devop/images/accelerate.pdf)、[Accelerate — Appendix A: Capabilities to Drive Improvement（目次）](https://www.oreilly.com/library/view/accelerate/9781457191435/32-app_A.xhtml)
+### 4.1 継続的デリバリの能力（8項目）
+
+| # | 能力 | 要点 |
+| --- | --- | --- |
+| 1 | バージョン管理 | アプリケーションコードだけでなく、構成情報やインフラ定義もバージョン管理下に置く |
+| 2 | デプロイの自動化 | 手作業を排除し、ボタン一つ・コマンド一つで再現性のあるデプロイを実現する |
+| 3 | 継続的インテグレーション（CI） | 変更を頻繁に統合し、自動ビルド・テストで即座に検証する |
+| 4 | トランクベース開発 | 長命なフィーチャーブランチを避け、1日1回以上トランクへ統合する |
+| 5 | テスト自動化 | 信頼できる自動テストスイートを整備し、手動テストへの依存を減らす |
+| 6 | テストデータ管理 | テストに必要なデータを適切に管理し、テストの高速化と安定化を図る |
+| 7 | セキュリティのシフトレフト | セキュリティ対策を開発の初期段階から組み込む |
+| 8 | 継続的デリバリ（CD） | いつでも安全にリリースできる状態をパイプライン全体で維持する |
+
+### 4.2 アーキテクチャの能力（2項目）
+
+| # | 能力 | 要点 |
+| --- | --- | --- |
+| 9 | 疎結合アーキテクチャ | 他チームの成果物に依存せずテスト・デプロイできる設計にする |
+| 10 | 権限委譲されたチーム | チームがツールや技術選定について自律的に意思決定できるようにする |
+
+### 4.3 プロダクトとプロセスの能力（4項目）
+
+| # | 能力 | 要点 |
+| --- | --- | --- |
+| 11 | 顧客フィードバック | 顧客からのフィードバックを収集し、プロダクトの意思決定に反映する |
+| 12 | バリューストリームの可視化 | 企画から本番稼働までの価値の流れ全体を関係者が把握できるようにする |
+| 13 | 小さなバッチでの作業 | 作業を小さな単位に分割し、フィードバックループを短くする |
+| 14 | チームによる実験 | 新しいアイデアを低リスクで試せる環境を整える |
+
+### 4.4 リーン管理とモニタリングの能力（5項目）
+
+| # | 能力 | 要点 |
+| --- | --- | --- |
+| 15 | 軽量な変更承認プロセス | 重厚な承認会議ではなく、ピアレビューと自動チェックを軸にする |
+| 16 | モニタリング | アプリケーションとインフラを横断的に監視し、ビジネス上の意思決定に活かす |
+| 17 | プロアクティブな通知 | 問題が深刻化する前に検知し、関係者に知らせる仕組みを作る |
+| 18 | WIP制限 | 同時進行のタスク数を制限し、フローを改善する |
+| 19 | 作業の可視化 | かんばんボードなどで作業状況とボトルネックを見える化する |
+
+### 4.5 組織文化の能力（5項目）
+
+| # | 能力 | 要点 |
+| --- | --- | --- |
+| 20 | Westrum型組織文化 | 情報が自由に流れる「生成的文化」を醸成する（第5章で詳述） |
+| 21 | 学習の支援 | 学習をコストではなく投資として捉え、時間と機会を提供する |
+| 22 | チーム間のコラボレーション | 開発・運用・セキュリティなど職能を超えた協働を促す |
+| 23 | 有意義な仕事と裁量権 | 挑戦しがいのある仕事を任せ、スキルを発揮できる裁量を与える |
+| 24 | 変革型リーダーシップ | ビジョンを示し、知的刺激を与え、個々への配慮を行うリーダーシップ |
+
+なお、DORAチームは書籍出版後も研究を継続しており、2021年時点で能力カタログは27項目まで拡張され、その後もプラットフォームエンジニアリングやドキュメント品質など新たな能力が追加され続けています（最新のカタログは公式サイト dora.dev で公開されています）。
 
 ---
 
-## 6. 継続的デリバリー（Continuous Delivery）ケイパビリティ
+## 5. 組織文化を科学する: Westrumモデル
 
-継続的デリバリー（CD）は、Jez Humbleが2010年の著書『Continuous Delivery』で体系化した考え方であり、Accelerateの技術的プラクティスの土台になっています。CDとは「いつでもリリース可能な状態を保ちながら、ビルド・テスト・デプロイのプロセスを自動化し続けること」を指し、単なるツール導入ではなく組織的な規律です。
+Accelerateの中でも特に印象的なのが、組織文化を定量的に扱った第3章です。著者らは、航空業界や医療分野など高リスク・高信頼性が求められる領域の事故分析を専門とする社会学者Ron Westrum氏が提唱した組織文化の類型論を応用しています。Westrum氏の理論は「良い情報がどれだけ組織内を流れるか」が安全性とパフォーマンスを予測するという考え方に基づいています。
 
-```mermaid
-flowchart LR
-    VC["1. バージョン管理<br/>コード・非機密の設定・インフラ定義を<br/>VCSで管理（秘密情報は除外）"] --> CI
-    CI["3. 継続的インテグレーション<br/>日次でトランクへマージし<br/>自動ビルド・テストを実行"] --> TA
-    TA["5. テスト自動化<br/>開発者自身が保守する<br/>信頼できるテストスイート"] --> TDM
-    TDM["6. テストデータ管理<br/>サニタイズ済みテストデータを<br/>十分に用意（本番データは持ち込まない）"] --> DA
-    DA["2. デプロイメント自動化<br/>人手を介さず<br/>再現可能なデプロイ"] --> CD8
-    CD8["8. 継続的デリバリー<br/>いつでも本番リリース<br/>可能な状態を維持"]
+| 文化のタイプ | 志向 | 協力の度合い | 悪い知らせを伝えた人への対応 | 失敗への反応 | 新しい発想への反応 |
+| --- | --- | --- | --- | --- | --- |
+| 病理的（Pathological） | 権力志向 | 低い協力 | messenger（伝達者）が罰せられる | 責任のなすりつけ | 潰される |
+| 官僚的（Bureaucratic） | 規則志向 | 中程度の協力 | messengerが無視される | 公正な処理にとどまる | 問題視される |
+| 生成的（Generative） | 成果志向 | 高い協力 | messengerが育成・歓迎される | 原因究明の機会になる | 積極的に実装される |
 
-    classDef step fill:#16233f,stroke:#7c9eff,color:#e6ebff
-    class VC,CI,TA,TDM,DA,CD8 step
-```
+DORAの研究によれば、この「生成的文化」の度合いを測るWestrum調査項目（情報が積極的に求められているか、失敗が改善の機会として扱われているかなど6つの設問）は統計的に妥当性・信頼性が高く、生成的文化のスコアが高い組織ほど、ソフトウェアデリバリのパフォーマンスだけでなく組織パフォーマンス全体、さらには従業員の燃え尽き症候群の低減とも相関することが示されています。
 
-### トランクベース開発（4. Trunk-Based Development）
-
-Accelerateの調査で特に議論を呼んだ発見のひとつが、長命なフィーチャーブランチ運用よりも、トランク（main/master）への頻繁なマージが高パフォーマンスと相関していたという結果です。マージ前に長時間分岐したブランチはマージコンフリクトのリスクを高め、統合のフィードバックを遅らせます。
-
-```mermaid
-flowchart TB
-    subgraph Anti["低パフォーマンス傾向: 長命フィーチャーブランチ"]
-        direction TB
-        fb1["ブランチ作成"] --> fb2["数週間〜数ヶ月<br/>単独で開発"]
-        fb2 --> fb3["巨大なマージ<br/>コンフリクト多発"]
-    end
-
-    subgraph Good["高パフォーマンス傾向: トランクベース開発"]
-        direction TB
-        tb1["トランクから分岐<br/>（生存期間は短く）"] --> tb2["1日1回以上<br/>トランクへマージ"]
-        tb2 --> tb3["フィーチャーフラグで<br/>未完成機能を隠蔽"]
-        tb3 --> tb4["常にリリース可能な<br/>トランクを維持"]
-    end
-
-    classDef bad fill:#3a1420,stroke:#c05a6e,color:#f5d8de
-    classDef good fill:#123a2a,stroke:#5ac0a0,color:#d8f5ec
-    class fb1,fb2,fb3 bad
-    class tb1,tb2,tb3,tb4 good
-```
-
-### セキュリティのシフトレフト（7. Shift Left on Security）
-
-セキュリティレビューをリリース直前の関門にするのではなく、設計段階から組み込む考え方です。詳細は第10章で扱います。
-
-出典：[Accelerate — Chapter 4: Technical Practices（目次）](https://www.oreilly.com/library/view/accelerate/9781457191435/15-ch4.xhtml)、[dora.dev — Resources](https://dora.dev/resources/)
+重要なのは、著者らが「文化は謎めいた魔法ではなく、具体的なプラクティスを実装することで醸成できる」と主張している点です。つまり、良い文化を「待つ」のではなく、24の能力に挙げた具体的な行動（軽量な変更承認、学習支援、フィードバックの奨励など）を実践することによって、後から文化がついてくるという順序が示唆されています。
 
 ---
 
-## 7. アーキテクチャケイパビリティ：疎結合とConwayの法則
+## 6. 初学者向けステップバイステップ実践ガイド
 
-Accelerateにおけるアーキテクチャの議論は、「特定の技術（マイクロサービス、モノリスなど）」ではなく「疎結合性（loose coupling）」という性質そのものがパフォーマンスを予測するという発見に基づいています。チームが他チームとの調整をほぼ必要とせず、独立してテスト・デプロイできるかどうかが鍵です。
+ここからは、Accelerateの知見を実際のチーム・組織に導入する際の実践的な順序を、初学者向けに段階を追って解説します。すべてを一度に導入する必要はありません。多くの高パフォーマンス組織も、小さな一歩から始めて継続的に改善を積み重ねています。
+
+### ステップ0: 現状を診断する
+
+いきなり施策を始める前に、自分たちのチームが今どの位置にいるかを把握しましょう。DORA公式サイトが提供する「DORA Quick Check」のような簡易診断ツールを使えば、数問の質問に答えるだけでデプロイ頻度・リードタイム・変更失敗率などの現在地を業界水準と比較できます。診断結果は「どの能力から着手すべきか」の優先順位づけに役立ちます。
+
+### ステップ1: バージョン管理と作業の可視化から始める
+
+- アプリケーションコードだけでなく、インフラ構成やデプロイスクリプトもすべてバージョン管理下に置きましょう。
+- かんばんボードなどで、今誰が何に取り組んでいるかをチーム全体が見える状態にします。
+- これは低コストで着手でき、後続のすべてのステップの土台になります。
+
+### ステップ2: テストを自動化する
+
+- 手動テストへの依存は、リリースを遅らせる最大の要因のひとつです。
+- 信頼できる自動テストスイートを段階的に構築し、「テストが通れば安心してリリースできる」状態を目指します。
+- テストデータの管理方法（本番データのマスキングやテスト用データセットの整備）も合わせて検討します。
+
+### ステップ3: 継続的インテグレーションとトランクベース開発を導入する
+
+継続的インテグレーション（CI）は、変更を頻繁に共有ブランチ（トランク／main）へ統合し、その都度自動ビルド・自動テストを走らせるプラクティスです。ThoughtWorksのチーフサイエンティストであるMartin Fowler氏は、長年にわたり長命なフィーチャーブランチの弊害について発信しており、統合のタイミングを遅らせるほどマージのコストが指数関数的に増大すると指摘しています。DORAの調査でも、ブランチの生存期間が1日未満であることや、アクティブなブランチ数が少ないことが継続的デリバリの重要な要素であることが確認されています。
 
 ```mermaid
 flowchart TB
-    subgraph Tight["密結合アーキテクチャ・組織"]
-        direction TB
-        t1["変更のたびに<br/>他チームとの調整が必要"]
-        t2["巨大なリリース列車で<br/>まとめてデプロイ"]
-        t3["1チームの変更が<br/>他チームをブロック"]
-    end
-
-    subgraph Loose["疎結合アーキテクチャ・組織"]
-        direction TB
-        l1["チームが自律的に<br/>設計・テスト・デプロイ"]
-        l2["明確なAPI境界で<br/>独立してリリース"]
-        l3["Conwayの法則を逆手に取り<br/>チーム構造とアーキテクチャを整合"]
-    end
-
-    Tight -->|"アーキテクチャと組織を<br/>同時に設計し直す"| Loose
-
-    classDef bad fill:#3a1420,stroke:#c05a6e,color:#f5d8de
-    classDef good fill:#123a2a,stroke:#5ac0a0,color:#d8f5ec
-    class t1,t2,t3 bad
-    class l1,l2,l3 good
+    A["小さく頻繁にトランクへコミット"] --> B["継続的インテグレーション 自動ビルドとテスト"]
+    B --> C{"テストは成功したか"}
+    C -->|はい| D["デプロイ可能な成果物"]
+    C -->|いいえ| E["直ちに修正する"]
+    E --> A
+    D --> F["継続的デリバリパイプライン"]
+    F --> G["自動デプロイ 本番環境"]
+    G --> H["モニタリングとフィードバック"]
+    H --> A
 ```
 
-もう一つのアーキテクチャケイパビリティが「チームへの権限委譲（empowered teams）」です。チームがアーキテクチャ上の意思決定を、外部の承認を待たずに行える度合いを指します。Accelerateはここで、著名なソフトウェアアーキテクトの間で広く知られる「Conwayの法則（組織のコミュニケーション構造がシステム設計に反映される）」を明示的に引用し、疎結合な技術アーキテクチャを実現したいなら、それを担うチーム構造も疎結合にする必要があると論じています。
+トランクベース開発を実践するうえでの代表的なテクニックには、次のようなものがあります。
 
-出典：[Accelerate — Chapter 5: Architecture（目次）](https://www.oreilly.com/library/view/accelerate/9781457191435/16-ch5.xhtml)
+- **フィーチャートグル（Feature Toggle）**: Martin Fowler氏が体系化した手法で、未完成の機能をコードごとトランクにマージしつつ、フラグで有効・無効を切り替えることで、機能公開のタイミングと統合のタイミングを分離します。
+- **Branch by Abstraction**: 大規模な変更を、抽象化レイヤーを介して段階的にトランク上で進める手法です。
+- **短命なブランチ**: どうしてもブランチを切る場合も、1日以内にマージすることを目安にします。
 
----
+トランクベース開発の実践に関する詳細な技法集は、Paul Hammant氏が運営するtrunkbaseddevelopment.comにも豊富にまとめられています。
 
-## 8. 製品・プロセスケイパビリティ：リーンプロダクトマネジメント
+### ステップ4: デプロイを自動化し、継続的デリバリを実現する
 
-このカテゴリーは、Eric Riesの『リーンスタートアップ』に代表される仮説駆動型のプロダクト開発思想を、Accelerateの実証研究に接続したものです。ポイントは「作ったものが顧客に価値を届けているか」を頻繁に検証するループを組み込むことにあります。
+- 手動デプロイの手順書は、いずれ自動化スクリプトに置き換えましょう。
+- 目指すゴールは「いつでも、誰でも、安全に、ボタン一つでデプロイできる」状態です。
+- 継続的デリバリが実現すると、リリースは「特別なイベント」ではなく「日常の作業」になります。
 
-```mermaid
-flowchart LR
-    A["11. 顧客フィードバック<br/>を継続的に取得"] --> B["13. 小さなバッチで<br/>仮説を検証可能な単位に分割"]
-    B --> C["14. チームによる実験<br/>（A/Bテスト等）"]
-    C --> D["12. バリューストリーム全体<br/>を可視化し無駄を特定"]
-    D --> A
+### ステップ5: 疎結合アーキテクチャとチームの自律性を整える
 
-    classDef step fill:#16233f,stroke:#7c9eff,color:#e6ebff
-    class A,B,C,D step
-```
+- 他チームの成果物と密結合したアーキテクチャは、変更のたびに広範な調整を必要とし、デプロイ頻度を下げます。
+- サービス指向・マイクロサービス的な設計への移行は、一度に全面刷新する必要はなく、段階的に進められます。
+- あわせて、チームがツールや技術スタックを自律的に選択できる権限を持つことも、パフォーマンスに寄与することが示されています。
 
-Accelerateはここで、「アウトプット（機能を作ったこと）」と「アウトカム（顧客・事業に価値をもたらしたこと）」を混同する典型的なアンチパターンにも触れています。バリューストリーム全体を可視化できているチームは、要求からリリースまでの流れのどこにボトルネックがあるかを組織全体で認識できるため、局所最適化に陥りにくいとされます。
+### ステップ6: 小さなバッチで作業し、顧客フィードバックを取り込む
 
-出典：[Accelerate — Chapter 8: Product Development（目次）](https://www.oreilly.com/library/view/accelerate/9781457191435/19-ch8.xhtml)
+- 大きな機能を一括でリリースするのではなく、小さな単位に分割して頻繁にリリースします。
+- バリューストリーム全体（アイデアから本番稼働まで）を可視化し、どこで作業が滞留しているかを特定します。
+- 顧客からのフィードバックを定期的に収集し、プロダクトの意思決定サイクルに組み込みます。
 
----
+### ステップ7: リーン管理プラクティスを導入する
 
-## 9. リーン管理・モニタリングケイパビリティ
+- 変更承認プロセスは、重厚な承認会議体（CAB: Change Advisory Board）ではなく、ピアレビューと自動化されたチェックを軸にします。DORAの2019年調査では、こうした軽量な承認プロセスの方が、重厚なプロセスよりも高いパフォーマンスと相関することが示されています。
+- WIP（仕掛かり作業）に上限を設け、同時に着手するタスクを絞り込みます。
+- アプリケーションとインフラの両方を横断的にモニタリングし、問題をプロアクティブに検知・通知する仕組みを整えます。
 
-このカテゴリーは、トヨタ生産方式に代表されるリーン生産方式の考え方を、ソフトウェア開発のマネジメントプラクティスに翻訳したものです。
+### ステップ8: 生成的な組織文化を醸成する
+
+- 情報が自由に流れ、失敗が「誰の責任か」ではなく「システムのどこに改善余地があるか」を学ぶ機会として扱われる文化を目指します。
+- 学習を「コスト」ではなく「投資」として位置づけ、時間とリソースを確保します。
+- リーダーは明確なビジョンを示し、現場への権限委譲を進めます。
+
+以上のステップは、一直線に一度きり実行するものではなく、継続的な計測と学習のサイクルとして繰り返し回していくものです。
 
 ```mermaid
 flowchart TB
-    WV["19. 作業の可視化<br/>（カンバン等）"] --> WIP["18. WIP制限<br/>仕掛中作業の上限を設定"]
-    WIP --> Mon["16. 事業判断に資する<br/>本番モニタリング"]
-    Mon --> Notify["17. プロアクティブな通知<br/>閾値超過を早期検知"]
-    Notify --> Approve["15. 軽量な変更承認<br/>ピアレビュー中心・<br/>外部承認会議に依存しない"]
-    Approve --> WV
-
-    classDef step fill:#16233f,stroke:#7c9eff,color:#e6ebff
-    class WV,WIP,Mon,Notify,Approve step
+    P1["フェーズ1 基盤整備 バージョン管理とテスト自動化"] --> P2["フェーズ2 技術プラクティス CI トランクベース開発 デプロイ自動化"]
+    P2 --> P3["フェーズ3 疎結合アーキテクチャとチームの自律性"]
+    P3 --> P4["フェーズ4 小さなバッチと顧客フィードバック"]
+    P4 --> P5["フェーズ5 リーン管理 WIP制限と作業の可視化"]
+    P5 --> P6["フェーズ6 生成的な組織文化の醸成"]
+    P6 -.継続的な計測と学習.-> P1
 ```
 
-### 変更承認プロセス：重量級 vs 軽量級
+---
 
-Accelerateの調査で興味深いのは、多くの組織が安全策として導入している「外部変更諮問委員会（CAB）による事前承認」が、実はソフトウェアデリバリーパフォーマンスと負の相関を示した、という結果です。
+## 7. 2026年時点のアップデート: AI支援開発とDORAの進化
+
+Accelerateの刊行から数年が経ち、生成AIによるコーディング支援が急速に普及したことを受け、DORAチームは2025年、年次報告書のテーマを従来の「State of DevOps」から**「State of AI-assisted Software Development」**へと大きく転換しました。これは、ほぼ5,000人の技術専門家への調査と100時間超の定性データに基づく調査で、次のような知見が示されています。
+
+- **AIは「増幅器（amplifier）」として働く**という中心的な主張が最大の発見です。既にハイパフォーマンスな組織ではAIがさらなる強みを増幅し、逆に技術的負債やプロセスの混乱を抱える組織では、AIがその機能不全を増幅してしまう、という「鏡」のような性質が確認されました。
+- AI導入率は2025年時点で90%に達し、前年から14ポイント増加しています。1日あたりの利用時間の中央値は約2時間で、主な用途は新規コード作成（71%）、技術文献の調査（68%）、既存コードの修正（66%）、校正・レビュー（66%）などです。
+- 2025年の調査では、AI導入とスループット（デプロイ頻度など）の間に正の相関が確認されました。これは、2024年の調査でAI導入がスループットにわずかな負の影響を与えていたとされた結果からの反転です。一方で、AI導入は依然として変更失敗率や手戻り（リワーク）の増加、すなわち安定性の低下と相関しており、「速くはなったが、より良くなったとは限らない」という課題が指摘されています。
+- こうした不安定化の一因として、AIが生成したコードのレビュー・検証にかかる認知的負荷（いわゆる「検証税」）が、コーディング自体で節約された時間を相殺し、ボトルネックがテストやコードレビューといった下流工程へ移動している可能性が挙げられています。
+- 報告書は、AIから真の価値を引き出せるかどうかは、ツールそのものよりも**内部プラットフォームの品質**に強く左右されると結論づけています。プラットフォーム品質が低い組織ではAIの効果はほぼ無視できる水準にとどまる一方、プラットフォーム品質が高い組織では、AIの効果が明確かつ強く現れます。
+- あわせて公表された「DORA AI Capabilities Model」では、AIの恩恵を増幅する7つの能力が提示されています。また、チームを7つの「アーキタイプ（類型）」（例: 調和のとれたハイアチーバー「harmonious high-achievers」から、レガシーの足かせを抱える「legacy bottleneck」まで）に分類し、それぞれに適した改善の道筋を示す枠組みも導入されました。
+- **バリューストリームマネジメント（VSM）**、すなわち企画から顧客への価値提供までの流れを可視化・改善する取り組みが、AIによる個々の生産性向上をチーム・プロダクトレベルの成果へとつなげる「増幅器の増幅器」として機能することも示されています。
 
 ```mermaid
 flowchart TB
-    subgraph Heavy["重量級プロセス（低パフォーマンスと相関）"]
-        direction TB
-        h1["変更申請を提出"] --> h2["外部承認委員会の<br/>定例会議を待つ"]
-        h2 --> h3["承認まで数日〜数週間"]
-        h3 --> h4["リリースが<br/>バッチ化・大型化"]
-    end
-
-    subgraph Light["軽量プロセス（高パフォーマンスと相関）"]
-        direction TB
-        p1["変更をコミット"] --> p2["ピアレビュー<br/>（コードレビュー等）"]
-        p2 --> p3["自動テストで<br/>品質を担保"]
-        p3 --> p4["即時デプロイ可能"]
-    end
-
-    classDef bad fill:#3a1420,stroke:#c05a6e,color:#f5d8de
-    classDef good fill:#123a2a,stroke:#5ac0a0,color:#d8f5ec
-    class h1,h2,h3,h4 bad
-    class p1,p2,p3,p4 good
+    A["AIコーディング支援の導入"] --> B{"組織の技術的基盤とプラットフォーム品質"}
+    B -->|強い基盤 高成熟度| C["スループットと質がさらに向上する"]
+    B -->|弱い基盤 機能不全| D["不安定性と手戻りが増幅される"]
+    C --> E["AIは増幅器として働く"]
+    D --> E
 ```
 
-著者らは、これは「承認プロセスをなくせ」という主張ではなく、「変更のリスクに見合わない重量級のゲートは、かえってバッチサイズを増大させ、リスクを高める」という逆説を指摘するものだと強調しています。
+さらに指標体系そのものも進化を続けています。2024年の報告書で変更失敗率から「デプロイのリワーク率」が分離されて以降、DORAは2026年に入っても指標体系のアップデートを続けており、公式サイトでは「4つの鍵指標から現行の5指標モデルへの移行」の経緯を解説する記事が公開されています。また2026年6月には、AIのトークン消費量そのものを成果指標として奨励する「tokenmaxxing」という風潮に対して、DORAチームが注意を促す記事を公開するなど、AI時代特有の計測上の落とし穴についても継続的に情報発信が行われています。
 
-出典：[Accelerate — Chapter 7: Management Practices for Software（目次）](https://www.oreilly.com/library/view/accelerate/9781457191435/18-ch7.xhtml)
-
----
-
-## 10. 情報セキュリティ（Infosec）の統合
-
-Accelerateは、セキュリティを開発プロセスの最後（リリース直前の監査）に置くのではなく、設計・実装の初期段階から組み込む「シフトレフト」の重要性を、統計データで裏付けています。
-
-```mermaid
-flowchart LR
-    Design["設計フェーズ<br/>脅威モデリング"] --> Code["実装フェーズ<br/>セキュアコーディング規約・<br/>静的解析(SAST)"]
-    Code --> Build["ビルド・CI<br/>依存関係の脆弱性スキャン"]
-    Build --> Test["テストフェーズ<br/>動的解析(DAST)・<br/>侵入テスト"]
-    Test --> Prod["本番運用<br/>継続的モニタリング・<br/>インシデント対応"]
-    Prod -.->|"フィードバックを<br/>設計にフィードバック"| Design
-
-    classDef step fill:#12293a,stroke:#4fb3d9,color:#dff3ff
-    class Design,Code,Build,Test,Prod step
-```
-
-ポイントは、Infosecチームを「ゲートキーパー」から「デリバリーチームに寄り添うイネーブラー」へと役割転換させることです。セキュリティ担当者がツールやガイドラインを早期に提供し、開発者自身が日常のワークフローの中でセキュリティ上の問題を発見・修正できる状態を目指します。
-
-出典：[Accelerate — Chapter 6: Integrating Infosec into the Delivery Lifecycle（目次）](https://www.oreilly.com/library/view/accelerate/9781457191435/17-ch6.xhtml)
+> **補足**: 本ガイドの知識のカットオフ以降も、DORAの研究は継続的にアップデートされています。最新の指標定義や能力カタログを確認したい場合は、公式サイト dora.dev を直接参照することをお勧めします。
 
 ---
 
-## 11. 文化的ケイパビリティ：Westrumの組織文化モデル
+## 8. よくある誤解とアンチパターン
 
-Accelerateの文化論の中核をなすのが、社会学者Ron Westrumが提唱した組織文化の類型論です。著者らはこの類型を「情報がどれだけ組織内をスムーズに流れるか」という軸で捉え直し、生成的（創成型）文化こそが高いソフトウェアデリバリーパフォーマンスを予測すると論じています。
+Accelerateの知見を導入する際に陥りやすい誤解を整理します。
 
-```mermaid
-flowchart LR
-    Path["病理型<br/>Pathological<br/>権力志向<br/>情報を隠す・<br/>責任の押し付け合い"] --> Bureau["官僚型<br/>Bureaucratic<br/>ルール志向<br/>部門ごとに<br/>情報がサイロ化"]
-    Bureau --> Gen["創成型<br/>Generative<br/>成果志向<br/>高い協働性・<br/>失敗を非難しない文化"]
-
-    classDef bad fill:#3a1420,stroke:#c05a6e,color:#f5d8de
-    classDef mid fill:#3a2f14,stroke:#c0975a,color:#f5ecd8
-    classDef good fill:#123a2a,stroke:#5ac0a0,color:#d8f5ec
-    class Path bad
-    class Bureau mid
-    class Gen good
-```
-
-Westrumの理論の根底には「事故調査が『ヒューマンエラー』という結論で止まってしまう組織は、危険である」という考え方があります。本当のヒューマンエラーは調査の終着点ではなく出発点であるべきだ、という視点です。Accelerateはこの理論を裏付ける関連研究として、Googleの社内リサーチ「効果的なチームの条件」（心理的安全性の重要性を明らかにした調査）にも言及しています。
-
-文化を変えるための著者らの助言は明快です。「人の考え方を変えようとする前に、まず人の行動を変えるところから始める」——つまり、価値観の啓蒙よりも、継続的デリバリーやリーン管理といった具体的なプラクティスの導入が、結果として文化を変えていくという因果の方向性を重視しています。
-
-出典：[Accelerate — Chapter 3: Measuring and Changing Culture（目次）](https://www.oreilly.com/library/view/accelerate/9781457191435/14-ch3.xhtml)、[Software Meadows — Accelerate Notes and Quotes](https://www.softwaremeadows.com/devops/accelerate_notes_and_quotes/)
+| アンチパターン | なぜ問題か | 代替アプローチ |
+| --- | --- | --- |
+| DORAメトリクスでチームや個人を序列化する | DORAチーム自身が2023年に警鐘を鳴らした誤用。Goodhartの法則により数値の水増しを招く | 自チームの過去の実績との比較にとどめ、改善のための対話の起点として使う |
+| 指標だけを追い、24の能力（実践）を導入しない | 指標は結果であり、原因である実践を変えなければ改善しない | まず能力（バージョン管理、CI、トランクベース開発など）の導入から着手する |
+| デプロイ頻度だけを上げようとする | スループットだけを追うと、安定性を犠牲にした「見せかけの改善」になりかねない | スループットと安定性の両方を同時に計測・改善する |
+| 文化を「自然に生まれるもの」として放置する | Accelerateは文化を具体的なプラクティスの結果として捉えている | 軽量な変更承認や学習支援など、文化を醸成する行動から着手する |
+| AI導入を「ツールを配るだけ」で終わらせる | 2025年のDORA調査で、プラットフォーム品質が低いとAIの効果はほぼ無いことが判明 | AI導入前後で内部プラットフォームやワークフローの整備に投資する |
 
 ---
 
-## 12. 燃え尽き症候群とデプロイメントペイン
+## 9. まとめ: 実践チェックリスト
 
-Accelerateは、技術的プラクティスの巧拙が従業員の心身の健康にまで波及することを定量的に示した点でも注目されました。「デプロイメントペイン（deployment pain）」——すなわちリリース作業そのものへの恐怖や苦痛——が高い組織ほど、燃え尽き症候群のリスクが高いという関連が確認されています。
+- [ ] 自チームの現状（デプロイ頻度・リードタイム・変更失敗率・失敗したデプロイの復旧時間・リワーク率）を把握した
+- [ ] アプリケーションコードとインフラ構成の両方をバージョン管理下に置いた
+- [ ] 自動テストスイートを整備し、手動テストへの依存を減らしている
+- [ ] トランクベース開発とCIを導入し、ブランチの生存期間を1日未満に抑えている
+- [ ] デプロイを自動化し、継続的デリバリの状態に近づけている
+- [ ] アーキテクチャの疎結合化とチームの自律性向上に取り組んでいる
+- [ ] 小さなバッチでの作業と顧客フィードバックの取り込みを実践している
+- [ ] 変更承認プロセスを軽量化し、WIPを制限し、作業を可視化している
+- [ ] 生成的な組織文化（情報の自由な流れ、学習支援、心理的安全性）を意識的に醸成している
+- [ ] AIを導入する際は、ツール単体ではなくプラットフォーム品質やワークフロー全体に投資している
 
-```mermaid
-flowchart TB
-    Manual["手作業中心の<br/>デプロイプロセス"] --> Fear["リリースへの恐怖<br/>（デプロイメントペイン）"]
-    Fear --> Batch["リリース頻度を<br/>下げてリスク回避しようとする"]
-    Batch --> Bigger["1回あたりの変更量が増大し<br/>かえってリスクが高まる"]
-    Bigger --> Fear
-    Fear --> Burnout["燃え尽き症候群の<br/>リスク上昇"]
-
-    classDef bad fill:#3a1420,stroke:#c05a6e,color:#f5d8de
-    class Manual,Fear,Batch,Bigger,Burnout bad
-```
-
-このループを断ち切る処方箋として、Accelerateは継続的デリバリーのケイパビリティ群（自動化・小さなバッチ・トランクベース開発）への投資を一貫して推奨しています。手作業とバッチサイズを減らすことが、皮肉にもデプロイの「痛み」を最小化する最短経路だという主張です。
-
-出典：[Accelerate — Chapter 9: Making Work Sustainable（目次）](https://www.oreilly.com/library/view/accelerate/9781457191435/20-ch9.xhtml)
+Accelerateがもたらした最大の教訓は、「ソフトウェアデリバリのパフォーマンスは、運や才能ではなく、具体的で再現可能なプラクティスの積み重ねによって高められる」という点です。本ガイドで紹介したステップを、自分たちのチームの状況に合わせて少しずつ取り入れてみてください。
 
 ---
 
-## 13. 従業員満足度・アイデンティティ・エンゲージメント
+## 10. 参考文献・出典
 
-第10章では、従業員満足度（employee Net Promoter Score等の指標を含む）とソフトウェアデリバリーパフォーマンスの関係が扱われます。ここでの核心的な発見は、高い技術力への投資が単なる生産性向上策ではなく、従業員が自組織にとどまり、より意欲的に働くための土台にもなっているという点です。
+本ガイドの作成にあたり、2026年8月24日時点で参照可能な以下の情報源を調査しました（DORA公式・Google Cloud公式・著名なソフトウェアエンジニアや組織による発信を優先しています）。
 
-| 要因 | 従業員満足度への影響（Accelerateの示唆） |
-|---|---|
-| デプロイメントペインの低さ | 低いほど満足度・定着率が高い傾向 |
-| 生成的（創成型）文化 | 心理的安全性が高く、離職意向が下がる傾向 |
-| 意味のある仕事へのアクセス | ツール・リソースが十分だと感じるほど満足度が高い |
-| 変革型リーダーシップの存在 | エンゲージメントとパフォーマンスの双方に正の影響 |
-
-出典：[Accelerate — Chapter 10: Employee Satisfaction, Identity, and Engagement（目次）](https://www.oreilly.com/library/view/accelerate/9781457191435/21-ch10.xhtml)
-
----
-
-## 14. リーダーとマネージャーの役割：変革型リーダーシップ
-
-Accelerateは、リーダーシップのスタイルそのものを定量的な調査対象として扱った点でも先駆的でした。用いられたのは組織心理学で確立された「変革型リーダーシップ（Transformational Leadership）」の尺度で、著者らはこれを5つの次元に分解しています。
-
-```mermaid
-flowchart TB
-    TL["変革型リーダーシップ"] --> V["ビジョン<br/>明確な将来像の提示"]
-    TL --> IM["鼓舞的コミュニケーション<br/>意欲を高める伝え方"]
-    TL --> IS["知的刺激<br/>既存の前提への挑戦を促す"]
-    TL --> SR["支援的リーダーシップ<br/>個々のメンバーへの配慮"]
-    TL --> PR["個人的評価<br/>成果を適切に承認する"]
-
-    classDef dim fill:#1b2a4a,stroke:#7c9eff,color:#eef2ff
-    class V,IM,IS,SR,PR dim
-```
-
-重要な発見は、変革型リーダーシップ自体は直接的にソフトウェアデリバリーパフォーマンスを生み出すわけではなく、24のケイパビリティへの投資を後押しする「増幅器（amplifier）」として機能するという構造です。つまりリーダーの役割は、現場のプラクティス改善を代替することではなく、それを可能にする条件（時間・裁量・心理的安全性）を整えることにあります。
-
-出典：[Accelerate — Chapter 11: Leaders and Managers（目次）](https://www.oreilly.com/library/view/accelerate/9781457191435/22-ch11.xhtml)、[Accelerate — Chapter 16: High-Performance Leadership and Management（目次）](https://www.oreilly.com/library/view/accelerate/9781457191435/29-ch16.xhtml)
+1. DORA公式サイト（DevOps Capabilities カタログ） ― https://dora.dev/devops-capabilities/
+2. DORA公式サイト（Capabilities: Generative organizational culture） ― https://dora.dev/capabilities/generative-organizational-culture/
+3. DORA公式サイト（DORAの指標体系の歴史） ― https://dora.dev/insights/dora-metrics-history/
+4. DORA公式サイト（ソフトウェアデリバリのパフォーマンス指標ガイド） ― https://dora.dev/guides/dora-metrics-four-keys/
+5. DORA公式サイト（Capabilities: Trunk-based development） ― https://dora.dev/capabilities/trunk-based-development/
+6. DORA公式サイト（Capabilities: Platform engineering） ― https://dora.dev/capabilities/platform-engineering/
+7. DORA公式サイト（2025年次まとめ） ― https://dora.dev/insights/dora-2025-year-in-review/
+8. DORA公式サイト（2025 State of AI-assisted Software Development） ― https://dora.dev/dora-report-2025/
+9. Google Cloud Blog（2025 DORA Report発表） ― https://cloud.google.com/blog/products/ai-machine-learning/announcing-the-2025-dora-report
+10. Google Blog（2025 DORA Reportの主要な発見） ― https://blog.google/innovation-and-ai/technology/developers-tools/dora-report-2025/
+11. IT Revolution（書籍『Accelerate』紹介ページ） ― https://itrevolution.com/product/accelerate/
+12. IT Revolution（24の主要能力の解説記事） ― https://itrevolution.com/articles/24-key-capabilities-to-drive-improvement-in-software-delivery/
+13. IT Revolution（AIの「鏡効果」に関する分析記事） ― https://itrevolution.com/articles/ais-mirror-effect-how-the-2025-dora-report-reveals-your-organizations-true-capabilities/
+14. Wikipedia（Accelerate (book)） ― https://en.wikipedia.org/wiki/Accelerate_(book)
+15. Wikipedia（DevOps Research and Assessment） ― https://en.wikipedia.org/wiki/DevOps_Research_and_Assessment
+16. Martin Fowler公式サイト（Patterns for Managing Source Code Branches） ― https://martinfowler.com/articles/branching-patterns.html
+17. Martin Fowler公式サイト（Continuous Integration） ― https://martinfowler.com/articles/continuousIntegration.html
+18. continuousdelivery.com（Jez Humble, Continuous Integration解説） ― https://continuousdelivery.com/foundations/continuous-integration/
+19. ThoughtWorks（Four Key Metricsに関するビジネス価値の解説） ― https://www.thoughtworks.com/en-us/insights/articles/improving-your-bottom-line-with-four-key-metrics
+20. ThoughtWorks（2025 DORA Reportに関する解説） ― https://www.thoughtworks.com/en-us/insights/reports/the-2025-dora-report
+21. ThoughtWorks（トランクベース開発とデプロイパイプライン） ― https://www.thoughtworks.com/insights/blog/enabling-trunk-based-development-deployment-pipelines
+22. Paul Hammant氏によるトランクベース開発の解説 ― https://paulhammant.com/2013/04/05/what-is-trunk-based-development/
+23. Luca Rossi（Refactoring）による書籍レビュー・24能力の解説 ― https://refactoring.fm/p/accelerate
+24. Swarmia（DORAメトリクスの実践ガイド） ― https://www.swarmia.com/blog/dora-metrics/
+25. Splunk（2025 DORA Reportのレビュー記事） ― https://www.splunk.com/en_us/blog/learn/state-of-devops.html
+26. CD Foundation（DORA 4指標から5指標への変化の解説） ― https://cd.foundation/blog/2025/10/16/dora-5-metrics/
+27. Software Meadows（『Accelerate』チャプター別ノート、24能力の一覧） ― https://www.softwaremeadows.com/devops/accelerate_notes_and_quotes/
+28. Psych Safety（Westrumの組織文化類型論の解説） ― https://psychsafety.com/psychological-safety-81-westrums-cultural-typologies/
 
 ---
 
-## 15. 統計的手法の裏側：心理測定学とPLS-SEM超入門
-
-Part Two（第12〜15章）は、実務者向けというより研究の透明性を担保するための章群です。初学者が押さえておくべき要点は3つあります。
-
-```mermaid
-flowchart TB
-    Q["調査票の設計<br/>Likertスケール等で<br/>回答者の主観を数値化"] --> Val["構成概念の妥当性検証<br/>（第13章 心理測定学）<br/>同じ概念を測る複数の設問が<br/>一貫した回答になっているか確認"]
-    Val --> Method["調査手法自体の是非を検討<br/>（第14章）<br/>スノーボールサンプリングの<br/>バイアスにも言及"]
-    Method --> PLS["PLS構造方程式モデリング<br/>（Partial Least Squares SEM）<br/>複数の潜在変数間の<br/>仮説上の予測関係を推定<br/>（従属変数の予測を最適化する<br/>相関ベースの手法）"]
-    PLS --> Result["技術プラクティス→SDP※→<br/>組織パフォーマンス・文化・<br/>従業員満足度という<br/>仮説モデルに沿った統計的関連を提示"]
-
-    classDef step fill:#16233f,stroke:#7c9eff,color:#e6ebff
-    class Q,Val,Method,PLS,Result step
-```
-
-※SDP = Software Delivery Performance（ソフトウェアデリバリーパフォーマンス）
-
-ここで注意すべきは、PLS-SEMが示すのはあくまで**仮説として置いたモデルに沿った潜在変数間の予測関係（統計的関連）**であり、因果関係の証明ではない点です。PLS-SEMは従属変数の予測（説明された分散）を最適化することを目的とした相関ベースの手法であり、本調査のような横断的な自己申告データから因果推論を行うことはできません。
-
-自己申告データであるがゆえの限界（ダニング＝クルーガー効果のような自己評価バイアスの可能性）についても、Martin Fowlerが巻頭言で触れているとおり、著者ら自身が意識的に議論の対象としています。統計に強くない読者であっても、第1部（Part One）の実務的な結論だけを読み、根拠づけの詳細（第2部）は必要に応じて参照する、という読み方が現実的です。
-
-出典：[Accelerate — Chapter 12〜15（目次）](https://www.oreilly.com/library/view/accelerate/9781457191435/24-ch12.xhtml)、[Martin Fowler — Foreword to Accelerate](https://martinfowler.com/articles/accelerate-foreword.html)
-
----
-
-## 16. Accelerateから現在へ：2018→2026年DORAレポートの進化
-
-Accelerateの刊行後、Nicole Forsgren率いるDORA（DevOps Research and Assessment）チームはGoogle Cloudに参画し、「State of DevOps Report」を年次で継続してきました。2026年8月時点で最も大きな転換点は、2025年に実施された調査が「State of AI-assisted Software Development Report」へと改題されたことです。
-
-```mermaid
-flowchart LR
-    Y2014["2014年〜<br/>State of DevOps Report<br/>（Puppet共同運営）"] --> Y2018["2018年<br/>書籍 Accelerate 刊行<br/>Four Keysの確立"]
-    Y2018 --> Y2021["2021年<br/>信頼性(Reliability)を<br/>運用パフォーマンス指標として追加<br/>（デリバリー指標とは別系統）"]
-    Y2021 --> Y2024["2024年<br/>5つ目のデリバリー指標<br/>Rework Rate を追加"]
-    Y2024 --> Y2025["2025年<br/>State of AI-assisted<br/>Software Development に改題<br/>AI活用が中心テーマに"]
-    Y2025 --> Y2026["2026年<br/>ROI of AI-assisted<br/>Software Development 公開<br/>AI投資のROI測定が焦点に"]
-
-    classDef step fill:#16233f,stroke:#7c9eff,color:#e6ebff
-    class Y2014,Y2018,Y2021,Y2024,Y2025,Y2026 step
-```
-
-### DORA指標の現在地（2024年の第5指標追加以降）
-
-| 指標 | 分類 | 概要 |
-|---|---|---|
-| デプロイ頻度 | Accelerate当時の4指標（現行5指標にも継続） | 本番リリースの頻度 |
-| 変更のリードタイム | Accelerate当時の4指標（現行5指標にも継続） | コミットから本番稼働までの時間 |
-| 変更失敗率 | Accelerate当時の4指標（現行5指標にも継続） | 変更が障害を招いた割合 |
-| Failed Deployment Recovery Time（デプロイ失敗からの復旧時間） | Accelerate当時は MTTR（サービス復旧時間）。2023年に「失敗したデプロイからの復旧時間」へ定義変更 | 失敗したデプロイを復旧させるまでの時間。旧MTTRが障害全般を対象としていたのに対し、対象をデプロイ起因の失敗に限定した点が異なる |
-| Rework Rate（手戻り率） | 2024年追加の第5のデリバリー指標 | 直近6か月間のデプロイのうち、ユーザーに影響したバグへ対処するために計画外で実施したデプロイが占める割合。計画的な再デプロイや修正対応全般は対象に含まない |
-| Reliability（信頼性） | 2021年追加の運用パフォーマンス指標（デリバリー指標とは別系統） | 可用性・パフォーマンス等、ユーザー体感の安定性 |
-
-DORA の近年のレポートは、AIコーディングアシスタントの普及によって個々の開発者が感じる生産性やスループットは向上する一方で、AI活用度の高まりがデリバリーの安定性（変更失敗率）や手戻り（Rework Rate）の悪化と結びつく傾向を報告しています。これはAccelerateが確立した「速度と安定性は両立する」という命題そのものへの反論ではなく、AIが導入プロセスの規律（レビュー・テスト自動化・小さなバッチ）を伴わない場合に、その両立が崩れうることを示す新たな知見と位置づけられます。
-
-出典：[Google Cloud — 2025 DORA State of AI-assisted Software Development Report](https://cloud.google.com/resources/content/2025-dora-ai-assisted-software-development-report)、[dora.dev — DORA Report 2025](https://dora.dev/dora-report-2025/)、[dora.dev — Insights: 4つの鍵から現行の5指標モデルへ](https://dora.dev/insights/)、[Future Processing — DORA metrics in the age of AI-driven delivery](https://www.future-processing.com/blog/dora-devops-metrics/)、[Oobeya — DORA Metrics Are Not Enough in 2026](https://www.oobeya.io/blog/dora-metrics-not-enough-2026)
-
----
-
-## 17. 実践ロードマップ：初学者が明日から始める10ステップ
-
-Accelerateは特定の技術スタックを推奨する本ではなく、どんな環境からでも着手できるケイパビリティ投資の優先順位を示唆しています。以下は、本書の内容と、その後のDORA/IT Revolutionコミュニティの実践知見を踏まえた、初学者向けの導入順序の一例です。
-
-```mermaid
-flowchart TB
-    S1["① 現行のDORA 5指標を計測する<br/>（Accelerate当時の4指標＋Rework Rate）"] --> S2["② バージョン管理の対象を<br/>コード以外にも拡大する<br/>（IaC・非機密の設定・スキーマ）"]
-    S2 --> S3["③ デプロイを自動化し<br/>手作業を排除する"]
-    S3 --> S4["④ トランクへのマージ頻度を上げ<br/>ブランチの生存期間を短縮する"]
-    S4 --> S5["⑤ テストスイートを開発者自身が<br/>保守できる状態にする"]
-    S5 --> S6["⑥ 変更承認プロセスを<br/>ピアレビュー中心の軽量なものにする"]
-    S6 --> S7["⑦ 作業を可視化しWIPを制限する"]
-    S7 --> S8["⑧ セキュリティを設計初期段階から<br/>組み込む"]
-    S8 --> S9["⑨ 顧客フィードバックのループを<br/>短くする"]
-    S9 --> S10["⑩ Westrumモデルを用いて<br/>自組織の文化を診断し<br/>創成型文化への投資を継続する"]
-
-    classDef step fill:#16233f,stroke:#7c9eff,color:#e6ebff
-    class S1,S2,S3,S4,S5,S6,S7,S8,S9,S10 step
-```
-
-著者らが繰り返し強調する原則は「まず1つのチームで深く実践してから、横展開する（"go deep before you go wide"）」ことです。全社一律の大規模な変革プログラムよりも、1チームで技術的プラクティスとリーン管理・文化醸成を同時並行で徹底的に実践し、その成功パターンを他チームへ伝播させる方が、持続的な変革につながるとされています。
-
-出典：[Medium — Book Summary: Accelerate（Tim de Vroome）](https://tdevroome.medium.com/book-summary-accelerate-c531efe4c34c)
-
----
-
-## 18. よくある誤解とアンチパターン
-
-| 誤解・アンチパターン | Accelerateが示す実際の知見 |
-|---|---|
-| 速さを追うと品質が犠牲になる | 統計的にはむしろ逆で、速さと安定性は同時に高まる傾向がある |
-| 成熟度モデル（マチュリティモデル）で段階的に到達すればよい | 著者らは「一度到達したら終わり」という静的な成熟度モデルの考え方自体に否定的で、能力（ケイパビリティ）への継続的投資という動的な捉え方を提唱している |
-| アウトプット（機能数・コード行数）で生産性を測る | アウトプットではなく、顧客・事業へのアウトカムやバリューストリーム全体の流れを見るべき |
-| 特定のツール・技術（例：特定のクラウド、特定の言語）を採用すればパフォーマンスが上がる | 技術そのものではなく、疎結合性やトランクベース開発のような「プラクティスの型」がパフォーマンスを予測する |
-| 重量級の変更承認プロセスほど安全である | 外部承認委員会への依存は、リリースの大型化・遅延を招き、むしろリスクを高める方向に相関する |
-| セキュリティは最後にまとめてチェックすればよい | シフトレフトしたセキュリティ統合の方が、速度と安全性を両立しやすい |
-
-出典：[Koalr — Accelerate Book Summary: Key Takeaways for Engineering Leaders](https://koalr.com/blog/accelerate-book-summary)
-
----
-
-## 19. まとめ：実践チェックリスト
-
-- [ ] 自チームの現行DORA 5指標（デプロイ頻度・変更のリードタイム・変更失敗率・Failed Deployment Recovery Time・Rework Rate）を計測できる状態にした
-- [ ] うち前者4つが Accelerate 刊行当時の「4つの鍵指標」に対応することを理解した（MTTR は2023年に Failed Deployment Recovery Time へ再定義済み）
-- [ ] バージョン管理の対象をアプリケーションコードだけでなく、インフラ定義・非機密の設定・サニタイズ済みテストデータにまで広げた（認証情報・秘密鍵・APIトークン・個人情報・本番データはVCSに置かず、Secret Manager／Vault等の外部シークレット管理へ分離する）
-- [ ] デプロイメント作業から手作業を排除し、再現可能な自動化パイプラインを整備した
-- [ ] フィーチャーブランチの生存期間を短縮し、トランクへのマージ頻度を上げた
-- [ ] 変更承認プロセスをピアレビュー中心の軽量なものに見直した
-- [ ] 作業をカンバン等で可視化し、WIP（仕掛中作業）に上限を設けた
-- [ ] セキュリティチームを開発の初期段階から巻き込む体制を作った
-- [ ] Westrumモデルに照らして自組織の文化（病理型・官僚型・創成型）を診断した
-- [ ] リーダー・マネージャーが変革型リーダーシップの5要素（ビジョン・鼓舞・知的刺激・支援・評価）を意識的に実践している
-- [ ] 1つのチームで実践を深めてから他チームへ横展開する計画を立てた
-
----
-
-## 20. 参考文献
-
-1. O'Reilly Online Learning — *Accelerate*（書誌・全16章目次） https://www.oreilly.com/library/view/accelerate/9781457191435/
-2. IT Revolution Press — *Accelerate* 製品ページ https://itrevolution.com/product/accelerate/
-3. Martin Fowler — *Foreword to Accelerate*（巻頭言全文） https://martinfowler.com/articles/accelerate-foreword.html
-4. Software Meadows — *"Accelerate" by Forsgren, Humble, and Kim: One Sheet Summary*（24ケイパビリティ一覧） https://www.softwaremeadows.com/posts/one_sheet_summary-_accelerate-_the_science_of_lean_software_and_devop/images/accelerate.pdf
-5. Software Meadows — *'Accelerate' Book Notes And Quotes*（Westrumモデル・リーン管理の要点） https://www.softwaremeadows.com/devops/accelerate_notes_and_quotes/
-6. Roman Imankulov — *Accelerate. Five-minute summary*（5カテゴリー構成の解説） https://roman.pt/posts/accelerate/
-7. Koalr — *Accelerate Book Summary: Key Takeaways for Engineering Leaders* https://koalr.com/blog/accelerate-book-summary
-8. Tim de Vroome (Medium) — *Book Summary: Accelerate*（実践ロードマップ関連） https://tdevroome.medium.com/book-summary-accelerate-c531efe4c34c
-9. Google Cloud — *2025 DORA State of AI-assisted Software Development Report* https://cloud.google.com/resources/content/2025-dora-ai-assisted-software-development-report
-10. dora.dev — *DORA Report 2025* https://dora.dev/dora-report-2025/
-11. dora.dev — *Insights*（4つの鍵から現行モデルへの移行） https://dora.dev/insights/
-12. dora.dev — *Resources*（Four Keysオープンソースツール等） https://dora.dev/resources/
-13. GitHub — *dora-team/fourkeys*（DORA公式の指標計測ツール） https://github.com/dora-team/fourkeys
-14. Future Processing — *DORA metrics in the age of AI-driven delivery*（2025年の指標拡張の解説） https://www.future-processing.com/blog/dora-devops-metrics/
-15. Oobeya — *DORA Metrics Are Not Enough in 2026: What Elite Engineering Teams Track Instead* https://www.oobeya.io/blog/dora-metrics-not-enough-2026
-16. GetDX — *DORA metrics: the complete guide to measuring DevOps performance in the AI era* https://getdx.com/blog/dora-metrics/
-
----
-
-*本ガイドは書籍『Accelerate』の内容を要約・翻案した二次的な学習教材であり、原著の文章を逐語的に引用するものではありません。正確な内容は必ず原著（[O'Reilly](https://www.oreilly.com/library/view/accelerate/9781457191435/) / IT Revolution Press刊）をご参照ください。*
+*本ガイドはMarkdown形式で作成されています。フローチャートはすべてMermaid記法で記述されており、対応するMarkdownビューアで直接レンダリングできます。*
