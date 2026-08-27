@@ -22,9 +22,9 @@
 | パート | 章番号 | 章タイトル（原題） |
 |---|---|---|
 | **第1部: 基本管理 (Basic Administration)** | 1〜12 | Where to Start／Booting／Access Control／Process Control／Filesystem／Software Installation／Scripting／User Management／Cloud Computing／Logging／Drivers and the Kernel／Printing |
-| **第2部: ネットワーキング (Networking)** | 13〜22 | TCP/IP／Physical Networking／IP Routing／DNS／Single Sign-On／Electronic Mail／Web Hosting／Storage／NFS／SMB |
-| **第3部: 運用 (Operations)** | 23〜29 | Configuration Management／Virtualization／Containers／CI/CD／Security／Monitoring／Performance Analysis |
-| **第4部: 組織と実務 (Management Practices)** | 30〜31 | Data Center Basics／Methodology, Policy, and Politics |
+| **第2部: ネットワーキング (Networking)** | 13〜19 | TCP/IP／Physical Networking／IP Routing／DNS／Single Sign-On／Electronic Mail／Web Hosting |
+| **第3部: ストレージ (Storage)** | 20〜22 | Storage／NFS／SMB |
+| **第4部: 運用 (Operations)** | 23〜31 | Configuration Management／Virtualization／Containers／CI/CD／Security／Monitoring／Performance Analysis／Data Center Basics／Methodology, Policy, and Politics |
 
 ---
 
@@ -208,8 +208,10 @@ sequenceDiagram
     S->>P: /etc/sudoers（visudoで編集）を照合
     P-->>S: ユーザーが許可された<br/>コマンドか判定
     alt 許可された操作
-        S->>U: パスワード再入力を要求（既定）
-        U->>S: パスワード入力
+        opt 認証情報キャッシュが失効、またはsudoersが認証を要求する場合
+            S->>U: パスワード入力を要求
+            U->>S: パスワード入力
+        end
         S->>R: 昇格した権限でコマンド実行
         R-->>U: 実行結果＋監査ログ記録
     else 許可されない操作
@@ -274,7 +276,7 @@ stateDiagram-v2
 | `SIGINT` | 2 | Ctrl+Cによる割り込み |
 | `SIGKILL` | 9 | 強制終了（プロセス側で捕捉・無視不可） |
 | `SIGTERM` | 15 | 正常終了の要求（既定のkillシグナル、捕捉可能） |
-| `SIGSTOP` / `SIGCONT` | 19 / 18 | 一時停止・再開 |
+| `SIGSTOP` / `SIGCONT` | 19 / 18（Linux x86/ARM） | 一時停止・再開。番号はアーキテクチャ依存（Alpha/SPARC・MIPSでは異なる）なので、コマンドでは `kill -STOP` / `kill -CONT` のように名前で指定する |
 
 ### ③ ベストプラクティス
 
@@ -291,7 +293,7 @@ stateDiagram-v2
 | `ps aux` / `ps -ef` | 全プロセス一覧 |
 | `top` / `htop` | リアルタイムリソース監視 |
 | `kill -TERM <pid>` | 正常終了要求 |
-| `kill -9 <pid>` | 強制終了 |
+| `kill -KILL <pid>` | 強制終了（`kill -9` と同義。番号より名前指定を推奨） |
 | `pgrep` / `pkill` | 名前によるプロセス検索・終了 |
 | `nice -n 10 cmd` | 優先度を下げて実行 |
 | `systemd-cgtop` | cgroup単位のリソース使用状況 |
@@ -485,7 +487,7 @@ flowchart TB
 ### ③ ベストプラクティス
 
 **ベストプラクティス**
-- 退職・異動が発生したら即座にアカウントを無効化する（`usermod -L` またはロック）。削除は監査証跡のため一定期間経過後に行う。
+- 退職・異動が発生したら即座にアカウントを無効化する。ローカルアカウントでは `usermod -L`（パスワードロック）だけでは不十分で、① アカウント期限の設定（`usermod -e 1` / `chage -E 0`）、② 登録済みSSH公開鍵（`.ssh/authorized_keys`）の無効化または削除、③ 既存セッションの終了（`loginctl terminate-user <user>` または該当プロセスの終了）をあわせて実施する。`usermod -L` は鍵認証や稼働中セッションを止められない点に注意。削除は監査証跡のため一定期間経過後に行う。
 - 共有アカウントを作らない。誰が何をしたかの追跡可能性（アカウンタビリティ）を最優先する。
 - パスワードポリシーは `pam_pwquality` で強制し、加えて可能な限りSSH鍵認証・多要素認証（MFA）へ移行する。
 - 定期的に（四半期ごと等）アカウント棚卸しを行い、不要な特権グループ所属を洗い出す。
@@ -496,7 +498,7 @@ flowchart TB
 | コマンド | 用途 |
 |---|---|
 | `useradd -m -s /bin/bash alice` | ユーザー作成（ホームディレクトリ付き） |
-| `usermod -aG docker alice` | 補助グループへの追加 |
+| `usermod -aG docker alice` | 補助グループへの追加。**警告**: rootfulなDockerデーモンでは `docker` グループ所属はホストへのroot相当の権限付与に等しい（任意のホストパスを特権コンテナでマウントできるため）。まずrootless Dockerの利用を検討し、rootfulで運用する場合は信頼できるユーザーのみを追加する |
 | `usermod -L alice` | アカウントロック |
 | `passwd -e alice` | 次回ログイン時のパスワード変更強制 |
 | `chage -l alice` | パスワード有効期限の確認 |
@@ -843,7 +845,7 @@ DNSSECは、DNS応答に暗号署名を付与し、キャッシュポイズニ�
 
 ### ① 何のための章か
 
-一度の認証で複数システムへアクセスできるSSOの仕組み（Kerberos, LDAP, SAML, OAuth/OIDC）を扱います。
+一度の認証で複数システムへアクセスできるSSOの仕組み（Kerberos, LDAP, SAML, OIDC）を扱います。ユーザーのSSO（認証）に用いるのはOIDCであり、OAuth 2.0はAPIアクセスを委任するための**認可**フレームワークです。OIDCはOAuth 2.0の上に構築された認証レイヤーであり、OAuth 2.0単体は認証方式ではない点に注意してください。
 
 ### ② 初学者向けの基礎解説
 
@@ -899,7 +901,7 @@ flowchart LR
 |---|---|
 | SPF | 送信元IPが正規のものかDNS TXTレコードで検証 |
 | DKIM | メール本文への電子署名で改ざん検知 |
-| DMARC | SPF/DKIM失敗時のポリシー（隔離・拒否）を宣言 |
+| DMARC | SPF/DKIMの認証結果に加え、認証されたドメインがヘッダFromのドメインと一致するか（identifier alignment）を評価。整合する認証結果が1つもない場合の処理（隔離・拒否など）を `p` ポリシーで宣言 |
 
 ### ③ ベストプラクティス
 
@@ -947,6 +949,8 @@ TLS証明書は現在、Let's Encryptに代表される無料の自動発行認�
 - 静的アセットはCDN経由で配信し、オリジンサーバーの負荷を下げる。
 
 ---
+
+# 第3部: ストレージ (Storage)
 
 ## 第20章: ストレージ (Storage)
 
@@ -1009,7 +1013,8 @@ flowchart TB
 - 本番用途ではRAID 5は避け、RAID 6またはRAID 10を優先する。大容量ディスク（10TB超）ではリビルド中の追加故障確率が無視できず、RAID 5は実質的にデータ損失リスクを内包する。
 - `mdadm`（ソフトウェアRAID）+ LVM（論理ボリューム管理）+ XFS/ext4（ファイルシステム）を組み合わせるのが、ディスク冗長性・柔軟なリサイズ・実績のあるFSを両立する定番構成。
 - RAIDやディスクの健康状態を `smartctl` と `mdadm --detail` で定期監視し、故障予兆をアラート化する。
-- XFSはオンラインでの拡張はできるが縮小できない、という制約をボリューム設計時に織り込む（将来的な縮小が必要な用途にはLVM thin provisioning + ext4を検討）。
+- XFSはオンラインでの拡張はできるが縮小できない、という制約をボリューム設計時に織り込む。将来的な縮小が必要な用途では縮小可能なext4を選ぶ。縮小はアンマウント → `resize2fs`（FS縮小）→ `lvreduce`（LV縮小）の順で行う（逆順はデータ破壊を招く）。
+- LVM thin provisioningはファイルシステムの縮小手段ではなく、割り当ての遅延によって過剰プロビジョニングを可能にする仕組みである。thinプールのデータ領域またはメタデータ領域が枯渇すると書き込みが失敗するため、使用率の監視と自動拡張の設定が必須。
 - バックアップは「RAIDの代わり」ではない。RAIDは可用性のための冗長化であり、誤削除・ランサムウェア・論理障害からはバックアップでしか守れない。
 
 ### ④ コマンドリファレンス
@@ -1018,7 +1023,7 @@ flowchart TB
 |---|---|
 | `pvcreate` / `vgcreate` / `lvcreate` | LVMの物理・ボリュームグループ・論理ボリューム作成 |
 | `lvextend -L +50G /dev/vg/lv` | 論理ボリュームの拡張 |
-| `mdadm --create /dev/md0 --level=1 --raid-devices=2 /dev/sdb /dev/sdc` | ソフトウェアRAID作成 |
+| `mdadm --create /dev/md0 --level=1 --raid-devices=2 /dev/sdb /dev/sdc` | ソフトウェアRAID作成。**警告**: 指定したデバイス上の既存データは破壊またはアクセス不能になる。実行前に `lsblk` で `/dev/sdb` `/dev/sdc` の実体を確認し、未マウントかつデータのないRAID専用ディスク（またはパーティション）だけを指定すること。必要なデータは事前にバックアップする |
 | `mdadm --detail /dev/md0` | RAIDアレイの状態確認 |
 | `smartctl -a /dev/sda` | ディスクのS.M.A.R.T.情報確認 |
 | `mkfs.xfs` / `mkfs.ext4` | ファイルシステム作成 |
@@ -1062,7 +1067,8 @@ flowchart LR
 | コマンド | 用途 |
 |---|---|
 | `exportfs -av` | `/etc/exports` の設定を反映 |
-| `showmount -e server` | サーバーが公開しているエクスポート一覧 |
+| `showmount -e server` | サーバーが公開しているエクスポート一覧（NFSv3の MOUNT プロトコル / `rpc.mountd` に依存）。MOUNTサービスを持たないNFSv4専用サーバーでは失敗する |
+| `exportfs -s`（サーバー側） / `mount -t nfs4 server:/ /mnt` で疑似ルートを列挙 | NFSv4環境でのエクスポート確認手順 |
 | `mount -t nfs4 server:/data /mnt` | NFSv4マウント |
 | `nfsstat` | NFS統計情報の確認 |
 
@@ -1097,7 +1103,7 @@ Sambaは、LinuxサーバーをWindowsファイルサーバー・ドメインコ
 
 ---
 
-# 第3部: 運用 (Operations)
+# 第4部: 運用 (Operations)
 
 ## 第23章: 構成管理 (Configuration Management)
 
@@ -1460,8 +1466,6 @@ flowchart TB
 > 出典: Brendan Gregg氏 公式サイト「The USE Method」 — https://www.brendangregg.com/usemethod.html ／ Brendan Gregg氏 公式サイト（Netflix Tech Blogでの「Linux Performance Analysis in 60,000 Milliseconds」への言及、および2026年時点の近況：Intel退社・OpenAI入社） — https://www.brendangregg.com/ ／ Wikipedia「Brendan Gregg」（USE法・フレームグラフの功績、2013年USENIX LISA Outstanding Achievement Award） — https://en.wikipedia.org/wiki/Brendan_Gregg
 
 ---
-
-# 第4部: 組織と実務 (Management Practices)
 
 ## 第30章: データセンターの基礎 (Data Center Basics)
 
