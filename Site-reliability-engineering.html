@@ -1,0 +1,2178 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>
+            Site Reliability Engineering 入門ガイド ――
+            Googleはどのようにプロダクションシステムを運用しているのか ――
+        </title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            :root {
+                --bg: #07111e;
+                --bg-card: #0d1a2b;
+                --bg-card-2: #101f33;
+                --border: #1d3350;
+                --border-soft: #16283f;
+                --text: #dbe4f3;
+                --text-dim: #8fa2c0;
+                --text-faint: #6a7d9c;
+                --accent: #7c9eff;
+                --accent-soft: #3a4f80;
+                --accent-bg: #15233d;
+                --danger: #ff8fa3;
+                --danger-bg: #3a1420;
+                --warn: #ffbd6e;
+                --warn-bg: #3a2810;
+                --success: #7fe0a8;
+                --success-bg: #0f2c1e;
+                --sidebar-w: 300px;
+                --font-jp: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', sans-serif;
+            }
+            * {
+                box-sizing: border-box;
+            }
+            html,
+            body {
+                overflow-x: hidden;
+            }
+            body {
+                margin: 0;
+                background: var(--bg);
+                color: var(--text);
+                font-family: var(--font-jp);
+                font-size: 16px;
+                line-height: 1.85;
+                -webkit-font-smoothing: antialiased;
+            }
+            a {
+                color: var(--accent);
+                text-decoration: none;
+            }
+            a:hover {
+                text-decoration: underline;
+            }
+
+            /* ---------- layout ---------- */
+            .layout {
+                display: block;
+            }
+
+            /* Sidebar */
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                width: var(--sidebar-w);
+                background: #060d17;
+                border-right: 1px solid var(--border-soft);
+                overflow-y: auto;
+                padding: 28px 0 40px;
+                z-index: 50;
+            }
+            .sidebar-header {
+                padding: 0 24px 20px;
+                border-bottom: 1px solid var(--border-soft);
+                margin-bottom: 16px;
+            }
+            .sidebar-header .kicker {
+                font-size: 12px;
+                letter-spacing: 0.08em;
+                color: var(--accent);
+                font-weight: 700;
+                text-transform: uppercase;
+            }
+            .sidebar-header h2 {
+                font-size: 16px;
+                margin: 6px 0 0;
+                color: var(--text);
+                line-height: 1.5;
+                font-weight: 700;
+            }
+            .sidebar nav {
+                padding: 0 12px;
+            }
+            .sidebar nav a {
+                display: block;
+                padding: 9px 12px;
+                border-radius: 8px;
+                font-size: 13.5px;
+                color: var(--text-dim);
+                line-height: 1.5;
+                margin-bottom: 2px;
+                transition:
+                    background 0.15s,
+                    color 0.15s;
+            }
+            .sidebar nav a:hover {
+                background: var(--accent-bg);
+                color: var(--text);
+                text-decoration: none;
+            }
+            .sidebar nav a.active {
+                background: var(--accent-bg);
+                color: var(--accent);
+                font-weight: 700;
+            }
+            .sidebar nav a.lvl3 {
+                padding-left: 28px;
+                font-size: 12.5px;
+            }
+            .sidebar-toggle {
+                display: none;
+                position: fixed;
+                top: 14px;
+                left: 14px;
+                z-index: 60;
+                width: 42px;
+                height: 42px;
+                border-radius: 10px;
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                color: var(--text);
+                font-size: 18px;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+            }
+
+            /* Main content */
+            .main {
+                margin-left: var(--sidebar-w);
+                padding: 56px 64px 120px;
+            }
+            .hero {
+                margin-bottom: 8px;
+            }
+            .hero .kicker {
+                font-size: 13px;
+                font-weight: 700;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+                color: var(--accent);
+                margin-bottom: 14px;
+            }
+            .hero h1 {
+                font-size: clamp(28px, 3.6vw, 42px);
+                line-height: 1.35;
+                margin: 0 0 18px;
+                background: linear-gradient(135deg, #dbe4f3 0%, #7c9eff 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                font-weight: 800;
+            }
+            .hero .meta-row {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+                margin-bottom: 32px;
+            }
+            .pill {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                padding: 6px 14px;
+                border-radius: 999px;
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                font-size: 12.5px;
+                color: var(--text-dim);
+            }
+            .pill strong {
+                color: var(--text);
+            }
+
+            .main h2 {
+                font-size: 26px;
+                margin: 56px 0 20px;
+                padding-top: 8px;
+                border-top: 1px solid var(--border-soft);
+                color: var(--text);
+                font-weight: 800;
+                letter-spacing: -0.01em;
+                scroll-margin-top: 24px;
+            }
+            .main > h2:first-of-type {
+                border-top: none;
+                padding-top: 0;
+                margin-top: 8px;
+            }
+            .main h3 {
+                font-size: 20px;
+                margin: 38px 0 16px;
+                color: var(--text);
+                font-weight: 700;
+                scroll-margin-top: 24px;
+            }
+            .main h3::before {
+                content: '';
+                display: inline-block;
+                width: 5px;
+                height: 18px;
+                background: var(--accent);
+                border-radius: 3px;
+                margin-right: 10px;
+                vertical-align: -2px;
+            }
+            .main p {
+                margin: 0 0 18px;
+                color: var(--text);
+            }
+            .main ul,
+            .main ol {
+                margin: 0 0 18px;
+                padding-left: 1.4em;
+                color: var(--text);
+            }
+            .main li {
+                margin-bottom: 8px;
+            }
+            .main hr {
+                border: none;
+                border-top: 1px solid var(--border-soft);
+                margin: 44px 0;
+            }
+            .main strong {
+                color: #f0f4fc;
+                font-weight: 700;
+            }
+            .footnote-ref {
+                margin-left: 2px;
+            }
+            .footnote-ref sup {
+                font-size: 11px;
+                color: var(--accent);
+                font-weight: 700;
+            }
+            .main code:not(pre code) {
+                background: var(--bg-card-2);
+                border: 1px solid var(--border);
+                border-radius: 5px;
+                padding: 1px 6px;
+                font-size: 0.9em;
+                color: #ffd08a;
+                overflow-wrap: break-word;
+                word-break: break-word;
+            }
+
+            /* Tables */
+            .table-scroll {
+                overflow-x: auto;
+                margin: 0 0 26px;
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                background: var(--bg-card);
+            }
+            table {
+                border-collapse: collapse;
+                width: 100%;
+                font-size: 14.5px;
+            }
+            thead th {
+                background: var(--accent-bg);
+                color: var(--text);
+                text-align: left;
+                padding: 12px 16px;
+                font-weight: 700;
+                border-bottom: 1px solid var(--border);
+                white-space: nowrap;
+            }
+            tbody td {
+                padding: 12px 16px;
+                border-bottom: 1px solid var(--border-soft);
+                color: var(--text-dim);
+                vertical-align: top;
+            }
+            tbody tr:last-child td {
+                border-bottom: none;
+            }
+            tbody tr:hover td {
+                background: rgba(124, 158, 255, 0.04);
+            }
+
+            /* Mermaid */
+            pre.mermaid {
+                width: 100%;
+                display: flex;
+                justify-content: safe center;
+                overflow-x: auto;
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-radius: 14px;
+                padding: 28px 20px;
+                margin: 0 0 30px;
+            }
+            pre.mermaid svg {
+                flex-shrink: 0;
+            }
+            pre.mermaid p {
+                color: inherit;
+                margin: 0;
+            }
+
+            /* Callouts */
+            .callout-practice {
+                display: flex;
+                gap: 14px;
+                background: var(--success-bg);
+                border: 1px solid #1d5a3a;
+                border-left: 4px solid var(--success);
+                border-radius: 12px;
+                padding: 20px 22px;
+                margin: 0 0 26px;
+            }
+            .callout-practice .icon {
+                flex-shrink: 0;
+                width: 26px;
+                height: 26px;
+                border-radius: 7px;
+                background: var(--success);
+                color: #08150e;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 14px;
+                font-weight: 900;
+            }
+            .callout-practice .body {
+                color: var(--text);
+            }
+            .callout-practice .label {
+                font-size: 11.5px;
+                font-weight: 800;
+                letter-spacing: 0.06em;
+                color: var(--success);
+                text-transform: uppercase;
+                margin-bottom: 6px;
+            }
+            .callout-practice p {
+                margin: 0;
+                color: var(--text);
+            }
+
+            .practice-label {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 12px;
+                font-weight: 800;
+                letter-spacing: 0.06em;
+                color: var(--success);
+                text-transform: uppercase;
+                margin: 0 0 10px;
+            }
+            .practice-label::before {
+                content: '✓';
+                font-size: 13px;
+            }
+
+            /* Reference grid */
+            .ref-grid {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 12px;
+                margin: 0 0 30px;
+            }
+            .ref-card {
+                display: flex;
+                gap: 12px;
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                padding: 14px 16px;
+                min-width: 0;
+            }
+            .ref-card .num {
+                flex-shrink: 0;
+                width: 26px;
+                height: 26px;
+                border-radius: 7px;
+                background: var(--accent-bg);
+                color: var(--accent);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 12px;
+                font-weight: 800;
+            }
+            .ref-card .txt {
+                font-size: 13px;
+                color: var(--text-dim);
+                min-width: 0;
+                overflow-wrap: break-word;
+                word-break: break-word;
+            }
+            .ref-card .txt a {
+                color: var(--accent);
+                font-weight: 600;
+            }
+
+            /* Checklist */
+            .checklist-card {
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-radius: 14px;
+                padding: 8px 22px 12px;
+                margin: 0 0 30px;
+            }
+            .checklist-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 14px 0;
+                border-bottom: 1px solid var(--border-soft);
+                margin-bottom: 6px;
+            }
+            .checklist-header .title {
+                font-weight: 700;
+                color: var(--text);
+                font-size: 14.5px;
+            }
+            .checklist-header .count {
+                font-size: 13px;
+                color: var(--accent);
+                font-weight: 700;
+            }
+            .checklist-card ul {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+            .checklist-card li {
+                display: flex;
+                align-items: flex-start;
+                gap: 12px;
+                padding: 11px 4px;
+                border-radius: 8px;
+                margin: 0;
+                transition: background 0.15s;
+            }
+            .checklist-card li:hover {
+                background: rgba(124, 158, 255, 0.05);
+            }
+            .checklist-card input[type='checkbox'] {
+                appearance: none;
+                -webkit-appearance: none;
+                width: 19px;
+                height: 19px;
+                flex-shrink: 0;
+                margin-top: 2px;
+                border: 1.5px solid var(--border);
+                border-radius: 5px;
+                background: var(--bg-card-2);
+                cursor: pointer;
+                position: relative;
+            }
+            .checklist-card input[type='checkbox']:checked {
+                background: var(--accent);
+                border-color: var(--accent);
+            }
+            .checklist-card input[type='checkbox']:checked::after {
+                content: '';
+                position: absolute;
+                left: 5px;
+                top: 1px;
+                width: 5px;
+                height: 10px;
+                border: solid #08101f;
+                border-width: 0 2px 2px 0;
+                transform: rotate(40deg);
+            }
+            .checklist-card label {
+                color: var(--text);
+                font-size: 14.5px;
+                cursor: pointer;
+                line-height: 1.6;
+            }
+            .checklist-card li:has(input:checked) label {
+                text-decoration: line-through;
+                color: var(--text-faint);
+            }
+
+            /* Footnotes (pandoc) */
+            aside.footnotes {
+                display: none;
+            } /* replaced entirely by ref-grid */
+
+            /* Responsive */
+            @media (max-width: 980px) {
+                .sidebar {
+                    transform: translateX(-100%);
+                    transition: transform 0.25s ease;
+                    box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+                }
+                .sidebar.open {
+                    transform: translateX(0);
+                }
+                .main {
+                    margin-left: 0;
+                    padding: 80px 20px 100px;
+                }
+                .sidebar-toggle {
+                    display: flex;
+                }
+                .ref-grid {
+                    grid-template-columns: 1fr;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="layout">
+            <button
+                class="sidebar-toggle"
+                id="sidebarToggle"
+                type="button"
+                aria-label="メニュー"
+                aria-controls="sidebar"
+                aria-expanded="false"
+            >
+                ☰
+            </button>
+            <aside class="sidebar" id="sidebar">
+                <div class="sidebar-header">
+                    <div class="kicker">Site Reliability Engineering</div>
+                    <h2>Site Reliability Engineering 入門ガイド</h2>
+                </div>
+                <nav id="sidebarNav">
+                    <a href="#about-this-guide" class="">この記事について</a>
+                    <a href="#part1" class="">第1部：SREとは何か</a>
+                    <a href="#why-sre" class="lvl3">1.1 SREはなぜ生まれたのか</a>
+                    <a href="#sre-vs-devops" class="lvl3">1.2 SREとDevOpsの関係</a>
+                    <a href="#book-structure" class="lvl3">1.3 本書の構成</a>
+                    <a href="#part2" class="">第2部：原則（Principles）</a>
+                    <a href="#risk" class="lvl3">2.1 リスクを受け入れる ―― エラーバジェット</a>
+                    <a href="#slo" class="lvl3">2.2 サービスレベル目標（SLI / SLO / SLA）</a>
+                    <a href="#toil" class="lvl3">2.3 トイルの撲滅</a>
+                    <a href="#monitoring" class="lvl3">2.4 分散システムの監視 ―― 4大シグナル</a>
+                    <a href="#automation" class="lvl3">2.5 自動化の進化</a>
+                    <a href="#release" class="lvl3">2.6 リリースエンジニアリング</a>
+                    <a href="#simplicity" class="lvl3">2.7 シンプルさという美徳</a>
+                    <a href="#part3" class="">第3部：実践（Practices）</a>
+                    <a href="#alerting" class="lvl3">3.1 実践的なアラート設計</a>
+                    <a href="#oncall" class="lvl3">3.2 オンコール対応</a>
+                    <a href="#troubleshooting" class="lvl3">3.3 効果的なトラブルシューティング</a>
+                    <a href="#emergency" class="lvl3">3.4 緊急対応</a>
+                    <a href="#incident" class="lvl3">3.5 インシデント管理</a>
+                    <a href="#postmortem" class="lvl3">3.6 ポストモーテム文化</a>
+                    <a href="#other-practices" class="lvl3">3.7 その他の実践トピック（概観）</a>
+                    <a href="#part4" class="">第4部：マネジメント（Management）</a>
+                    <a href="#accelerating" class="lvl3">4.1 オンコールへの導入とその先</a>
+                    <a href="#interrupts" class="lvl3">4.2 割り込みへの対処</a>
+                    <a href="#communication" class="lvl3">4.3 コミュニケーションと協業</a>
+                    <a href="#engagement" class="lvl3">4.4 SREエンゲージメントモデルの進化</a>
+                    <a href="#roadmap" class="">第5部：初学者向け導入ロードマップ</a>
+                    <a href="#ai-era" class="">第6部：2026年、AI時代のSRE</a>
+                    <a href="#reliability-redefined" class="lvl3"
+                        >6.1 「信頼性」の定義そのものが広がっている</a
+                    >
+                    <a href="#ai-amplifier" class="lvl3"
+                        >6.2 AIは「増幅器」である ―― DORAレポートの視点</a
+                    >
+                    <a href="#sre-role-change" class="lvl3">6.3 SREという職能自体の変化</a>
+                    <a href="#what-stays" class="lvl3">6.4 変わらないもの</a>
+                    <a href="#checklist" class="">まとめ：ベストプラクティスチェックリスト</a>
+                    <a href="#references" class="">参考文献</a>
+                </nav>
+            </aside>
+            <main class="main">
+                <div class="hero">
+                    <div class="kicker">Google SRE Book &middot; O'Reilly Media, 2016</div>
+                    <h1>
+                        Site Reliability Engineering 入門ガイド<br />――
+                        Googleはどのようにプロダクションシステムを運用しているのか ――
+                    </h1>
+                    <div class="meta-row">
+                        <span class="pill">原著 <strong>O'Reilly / sre.google</strong></span>
+                        <span class="pill">対象 <strong>初学者〜中級者</strong></span>
+                        <span class="pill">図解 <strong>Mermaid 15点</strong></span>
+                        <span class="pill">参考文献 <strong>19件</strong></span>
+                    </div>
+                </div>
+
+                <p>
+                    原著：<em>Site Reliability Engineering: How Google Runs Production Systems</em
+                    ><br />
+                    編者：Betsy Beyer, Chris Jones, Jennifer Petoff, Niall Richard Murphy（O'Reilly
+                    Media, 2016年刊）<br />
+                    全文は
+                    <a href="https://sre.google/sre-book/table-of-contents/"
+                        >https://sre.google/sre-book/table-of-contents/</a
+                    >
+                    で無償公開されており、本ガイドもこの一次情報源を主軸に構成しています。
+                </p>
+
+                <h2 id="about-this-guide">この記事について</h2>
+
+                <p>
+                    本ガイドは、Googleが2003年から社内で実践し、2016年に一冊の書籍として一般公開した「Site
+                    Reliability
+                    Engineering（SRE）」の考え方を、<strong>初めてSREという言葉に触れる方</strong>でも迷わず全体像をつかめるように、原著の章立てを踏襲しながら再構成した日本語の解説記事です。
+                </p>
+                <p>
+                    SREは単なる「運用チームの新しい呼び名」ではありません。<strong>「ソフトウェアエンジニアリングの手法を使って運用上の問題を解決する」という職能そのもの</strong>を指します。Googleの元VP、Ben
+                    Treynor
+                    Sloss（SREという言葉の生みの親）は、SREを一言で「ソフトウェアエンジニアにOpsの仕事をやらせたときに何が起きるか、という壮大な実験」と表現しました。本ガイドでは、その実験から生まれた原則（Principles）・実践（Practices）・マネジメント（Management）の3層構造を、順を追って学べるようにしています。
+                </p>
+                <p>
+                    <strong>対象読者</strong
+                    >：SRE・DevOps・インフラエンジニアを目指す方、オンコール運用やSLO設計にこれから取り組むエンジニア、Google流の信頼性エンジニアリングを体系的に理解したいソフトウェアエンジニア。
+                </p>
+                <p>
+                    <strong>読み方</strong
+                    >：第1部から順に読むと、Googleの思考の流れ（なぜ100%の信頼性を目指さないのか →
+                    どう測るのか → どう運用するのか →
+                    どう組織化するのか）がそのまま体験できます。すでに実務経験がある方は、目次から気になる章に直接ジャンプしても構いません。
+                </p>
+
+                <h2 id="part1">第1部：SREとは何か</h2>
+
+                <h3 id="why-sre">1.1 SREはなぜ生まれたのか</h3>
+
+                <p>
+                    2003年、Googleは検索エンジンの急成長を支えるために、7人のソフトウェアエンジニアからなる小さなチームを組織しました。このチームに与えられたミッションは、「本番システムを動かし続けること」でした。しかし彼らは伝統的な運用（Ops）チームのように手順書に従って手を動かすのではなく、<strong>ソフトウェアエンジニアとして問題を解決する</strong>ことを選びました。繰り返し発生する障害対応を自動化し、手作業のオペレーションをコードに置き換えていったのです。これが「Site
+                    Reliability Engineering」という職能の始まりです。
+                </p>
+                <p>
+                    原著の序文でBen Treynor
+                    Slossは、SREを次のように位置づけています。従来型のIT運用では、開発チーム（新機能を素早く届けたい）と運用チーム（システムを安定させたい）の間に構造的な対立が生まれがちです。SREはこの対立を、<strong>エンジニアリングによって解消しようとする組織的な回答</strong>です。つまり「運用タスクの多くはソフトウェアで解決できる」という前提に立ち、運用担当者にもソフトウェアエンジニアと同じスキルセットと採用基準を課すことで、運用そのものをスケールする仕組みに変えていきます。
+                </p>
+
+                <h3 id="sre-vs-devops">1.2 SREとDevOpsの関係</h3>
+
+                <p>
+                    「SREとDevOpsは何が違うのか」は初学者が必ず抱く疑問です。両者は同じ課題意識（開発と運用の壁をなくす）から生まれていますが、アプローチのレイヤーが異なります。DevOpsが「文化的なムーブメント・原則の集合」であるのに対し、SREは「その原則を具体的な役割・指標・組織構造に落とし込んだ、一つの実装形態」と捉えると理解しやすくなります。SREの分野でよく使われる表現に「class
+                    SRE implements
+                    DevOps」というものがあり、DevOpsという抽象的なインターフェースをSREという具体的なクラスが実装している、という関係性を示しています。
+                </p>
+
+                <pre class="mermaid">
+flowchart TB
+    subgraph DevOpsLayer["DevOpsという思想"]
+        D1["サイロの解消"]
+        D2["高速なフィードバックループ"]
+        D3["段階的な変更"]
+        D4["ツールと自動化の活用"]
+        D5["すべてを計測する"]
+    end
+
+    subgraph SRELayer["SREという実装"]
+        S1["エラーバジェットで&lt;br/&gt;リスクを定量化"]
+        S2["トイル上限50%の&lt;br/&gt;運用ルール"]
+        S3["カナリアリリースと&lt;br/&gt;段階的ロールアウト"]
+        S4["モニタリング・&lt;br/&gt;自動化基盤の整備"]
+        S5["SLI/SLOによる&lt;br/&gt;定量的な目標設定"]
+    end
+
+    D1 --&gt; S1
+    D2 --&gt; S3
+    D3 --&gt; S3
+    D4 --&gt; S4
+    D5 --&gt; S5</pre
+                >
+
+                <p>
+                    このように、SREはDevOpsが掲げる理想を「具体的な数値目標」「具体的な役割分担（SRE組織）」「具体的な運用プロセス（オンコール・ポストモーテム）」に翻訳したものだと考えると、両者は対立概念ではなく補完関係にあることが分かります。
+                </p>
+
+                <h3 id="book-structure">1.3 本書の構成</h3>
+
+                <p>
+                    原著は次の34章＋6つの付録で構成されています。本ガイドはこの構成をベースに、初学者がつまずきやすい概念を重点的に掘り下げます。
+                </p>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>パート</th>
+                                <th>主題</th>
+                                <th>本ガイドでの扱い</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>Part I：Introduction</td>
+                                <td>SREとは何か、Googleの本番環境の全体像</td>
+                                <td>第1部で要約</td>
+                            </tr>
+                            <tr class="even">
+                                <td>Part II：Principles</td>
+                                <td>
+                                    エラーバジェット、SLO、トイル、監視、自動化、リリース、シンプルさ
+                                </td>
+                                <td>第2部で詳解</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>Part III：Practices</td>
+                                <td>
+                                    アラート、オンコール、トラブルシューティング、インシデント管理、ポストモーテム、テスト、負荷分散など
+                                </td>
+                                <td>第3部で詳解</td>
+                            </tr>
+                            <tr class="even">
+                                <td>Part IV：Management</td>
+                                <td>
+                                    オンコール教育、割り込み対応、コミュニケーション、エンゲージメントモデル
+                                </td>
+                                <td>第4部で詳解</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>Part V：Conclusions</td>
+                                <td>他業界からの教訓、結論</td>
+                                <td>第6部・まとめで要約</td>
+                            </tr>
+                            <tr class="even">
+                                <td>Appendix A〜F</td>
+                                <td>
+                                    可用性早見表、テンプレート集（インシデント文書、ポストモーテム、ローンチチェックリスト等）
+                                </td>
+                                <td>第5部のロードマップに反映</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <hr />
+
+                <h2 id="part2">第2部：原則（Principles）</h2>
+
+                <h3 id="risk">2.1 リスクを受け入れる ―― エラーバジェット</h3>
+
+                <h4>なぜ「100%の信頼性」を目指してはいけないのか</h4>
+
+                <p>
+                    初学者が最初に驚くのが、この原則です。Googleは「サービスを絶対に落とさない」ことを目標にしていません。むしろ、<strong>過剰な信頼性はコストであり、ユーザー体験にとってもマイナスになりうる</strong>と考えます。
+                </p>
+                <p>
+                    理由は明快です。ユーザーが利用する経路には、スマートフォンのモバイル回線や自宅のWi-Fiなど、Googleが制御できない不安定な要素が必ず含まれます。仮にモバイル回線の信頼性が99%程度だとすれば、バックエンドの可用性を99.99%から99.999%に引き上げても、ユーザーはその差を体感できません。それどころか、信頼性を1桁引き上げるためのコストは、その前段階の改善よりも指数関数的に高くなる傾向があり、redundantな機材や検証工数といった「直接コスト」に加え、その工数を新機能開発に振り向けられない「機会コスト」も発生します。
+                </p>
+                <p>
+                    そこでSREは、可用性目標を「最低ライン」であると同時に「上限」としても扱います。目標を超過して達成し続けることは、実は新機能開発やリファクタリングに使えたはずのリソースの浪費だと捉えるのです。
+                </p>
+
+                <h4>エラーバジェットという発想</h4>
+
+                <p>
+                    この考え方を運用に落とし込む仕組みが<strong
+                        >エラーバジェット（error budget）</strong
+                    >です。仕組みは次の3ステップです。
+                </p>
+
+                <ol>
+                    <li>プロダクトオーナーが四半期のSLO（例：99.9%の可用性）を定める</li>
+                    <li>中立な監視システムが実際の可用性を計測する</li>
+                    <li>SLOと実測値の差分が「使ってよい不信頼性の残高」＝エラーバジェットになる</li>
+                </ol>
+
+                <p>
+                    エラーバジェットが残っている限り、開発チームはリリースを続けてよい。使い切ってしまったら、新機能のリリースを一時的に止め、安定化に工数を振り向ける
+                    ――
+                    これが基本ループです。Googleのワークブックによれば、<strong>本番障害のおよそ70%は変更（コードや設定のリリース）に起因する</strong>というデータがあり、エラーバジェットはまさにこの「変更に伴うリスク」をチーム間の共通言語として管理するための仕組みです。
+                </p>
+
+                <pre class="mermaid">
+flowchart TD
+    A["プロダクトオーナーが&lt;br/&gt;四半期SLOを設定&lt;br/&gt;例：99.9%"] --&gt; B["監視システムが&lt;br/&gt;実際の可用性を計測"]
+    B --&gt; C{"エラーバジェットは&lt;br/&gt;残っているか？"}
+    C --&gt;|"Yes（予算内）"| D["新機能のリリースを継続&lt;br/&gt;プロダクト開発チームが&lt;br/&gt;リスクを取れる"]
+    C --&gt;|"No（予算超過）"| E["リリースを一時停止&lt;br/&gt;安定化・テスト強化に&lt;br/&gt;工数を振り向ける"]
+    D --&gt; F["四半期末に&lt;br/&gt;SLO達成状況をレビュー"]
+    E --&gt; F
+    F --&gt; A
+
+    classDef successFill fill:#1a4a2a,stroke:#4ad97a,color:#ffffff;
+    classDef dangerFill fill:#5c1a1a,stroke:#d94a4a,color:#ffffff;
+    class D successFill
+    class E dangerFill</pre
+                >
+
+                <p>
+                    エラーバジェットの最大の価値は、「リリースするかどうか」という政治的・感情的になりがちな議論を、客観的な数字ベースの合意形成に変える点にあります。開発チームは自らエラーバジェットの残量を把握しているため、リスクを取りすぎないよう自律的に振る舞うようになり、SREチームは「感情論ではなくデータに基づいて」リリースを止める権限を持てるようになります。
+                </p>
+
+                <div class="callout-practice">
+                    <div class="icon">✓</div>
+                    <div class="body">
+                        <div class="label">ベストプラクティス：可用性目標の3つの決め手</div>
+                        <ul>
+                            <li>
+                                <strong>ユーザーが何を期待しているか</strong
+                                >：有償サービスか無償か、競合はどの水準を提供しているか
+                            </li>
+                            <li>
+                                <strong>障害の性質</strong
+                                >：全断と部分断のどちらがビジネスへの影響が大きいか（例：機密情報の誤表示は即座に全断すべき、対する画像の一部読み込み失敗は許容範囲）
+                            </li>
+                            <li>
+                                <strong>コストと収益への影響</strong
+                                >：可用性を1桁改善するコストと、それによって守れる収益を比較する
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3 id="slo">2.2 サービスレベル目標（SLI / SLO / SLA）</h3>
+
+                <p>
+                    「信頼性」という曖昧な言葉を、実務で使える指標に分解する枠組みがSLI・SLO・SLAの3層構造です。この3つの用語は現場でもしばしば混同されるため、丁寧に区別します。
+                </p>
+
+                <pre class="mermaid">
+flowchart TB
+    subgraph SLI_box["SLI：Service Level Indicator（指標）"]
+        SLI["実際に計測される定量的な値&lt;br/&gt;例：リクエスト成功率、レイテンシp99"]
+    end
+    subgraph SLO_box["SLO：Service Level Objective（目標）"]
+        SLO["SLIに対する目標値&lt;br/&gt;例：p99レイテンシ ＜ 100ms を&lt;br/&gt;99%のリクエストで達成"]
+    end
+    subgraph SLA_box["SLA：Service Level Agreement（合意）"]
+        SLA["SLO未達時の結果（違約金・返金等）を&lt;br/&gt;含む対外的な契約"]
+    end
+
+    SLI --&gt; SLO --&gt; SLA</pre
+                >
+
+                <ul>
+                    <li>
+                        <strong>SLI（指標）</strong
+                        >：実際に測るもの。代表的なSLIはレイテンシ・エラー率・スループット・可用性（＝正常に処理できたリクエストの割合）・データ耐久性。生の値を使うのではなく、一定の集計ウィンドウ（例：1分間平均）で扱うのが基本です。
+                    </li>
+                    <li>
+                        <strong>SLO（目標）</strong
+                        >：SLIに対する目標範囲。「99%のGetリクエストが100ms未満で完了する」のように、測定方法と有効条件を明記して定義します。
+                    </li>
+                    <li>
+                        <strong>SLA（合意）</strong
+                        >：SLO未達時に生じる結果（多くの場合は金銭的なペナルティ）を含む、ユーザーとの契約。「SLA違反」と言う場合、実際にはSLOの未達を指していることがほとんどで、真のSLA違反は契約不履行として法的措置に発展しうる、という違いを理解しておくと現場での会話がスムーズになります。
+                    </li>
+                </ul>
+
+                <h4>SLIを選ぶときの視点</h4>
+
+                <p>原著は、サービスの種類によって重視すべきSLIが変わると説明しています。</p>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>サービスの種類</th>
+                                <th>重視するSLI</th>
+                                <th>具体例</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>ユーザー向けサービング系（検索、Web UIなど）</td>
+                                <td>可用性・レイテンシ・スループット</td>
+                                <td>リクエストに応答できたか／どれだけ速いか／何件さばけたか</td>
+                            </tr>
+                            <tr class="even">
+                                <td>ストレージ系</td>
+                                <td>レイテンシ・可用性・耐久性</td>
+                                <td>
+                                    読み書きの速さ／いつでもアクセスできるか／データが消えないか
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>ビッグデータ系（パイプライン等）</td>
+                                <td>スループット・end-to-endレイテンシ</td>
+                                <td>処理量／取り込みから完了までの時間</td>
+                            </tr>
+                            <tr class="even">
+                                <td>すべてのシステム共通</td>
+                                <td>正しさ（correctness）</td>
+                                <td>正しいデータ・正しい答えが返ってきたか</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p>
+                    また、レイテンシのような指標は<strong
+                        >平均値ではなくパーセンタイル（p50, p95, p99など）で見る</strong
+                    >ことが強く推奨されています。平均値はロングテール（一部の極端に遅いリクエスト）を隠してしまうためです。ユーザー体験は「典型的な速さ」よりも「ばらつきの少なさ」に敏感であることが研究で示されており、多くのSREチームは高パーセンタイル値の改善を優先します。
+                </p>
+
+                <div class="callout-practice">
+                    <div class="icon">✓</div>
+                    <div class="body">
+                        <div class="label">ベストプラクティス：SLOを決める5つの心得</div>
+                        <ul>
+                            <li>現状のパフォーマンスをそのまま目標にしない（改善の余地を残す）</li>
+                            <li>集計をシンプルに保つ（複雑な合成指標は変化を見えにくくする）</li>
+                            <li>「常に」「無限に」といった絶対値表現を避ける</li>
+                            <li>SLOの数はできるだけ絞る（説明できないSLOは持たない）</li>
+                            <li>最初から完璧を目指さず、運用しながら調整する</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3 id="toil">2.3 トイルの撲滅</h3>
+
+                <h4>トイルとは何か</h4>
+
+                <p>
+                    SREにおける「トイル（toil）」は、単に「やりたくない仕事」ではありません。原著は、次の特徴を多く満たす作業をトイルと定義しています。
+                </p>
+
+                <pre class="mermaid">
+flowchart LR
+    T["トイルの6条件"] --&gt; T1["手作業&lt;br/&gt;Manual"]
+    T --&gt; T2["繰り返し発生&lt;br/&gt;Repetitive"]
+    T --&gt; T3["自動化可能&lt;br/&gt;Automatable"]
+    T --&gt; T4["対症療法的&lt;br/&gt;Tactical"]
+    T --&gt; T5["恒久的価値がない&lt;br/&gt;No enduring value"]
+    T --&gt; T6["サービス成長に比例&lt;br/&gt;O(n) with growth"]
+
+    classDef warnFill fill:#5c3a1a,stroke:#d9904a,color:#ffffff;
+    class T1,T2,T3,T4,T5,T6 warnFill</pre
+                >
+
+                <p>
+                    一方で、たとえ地味で泥臭い作業であっても、恒久的な改善につながるものはトイルではなく「オーバーヘッド」または「エンジニアリング」に分類されます。例えば、アラート設定を整理してノイズを減らす作業は地味ですが、システムを恒久的に良くするためトイルではありません。
+                </p>
+
+                <h4>「50%ルール」の意味</h4>
+
+                <p>
+                    GoogleのSRE組織は、<strong>各SREのトイルを業務時間の50%未満に抑える</strong>ことを目標として掲げています。逆に言えば、最低でも50%はエンジニアリングプロジェクト(将来のトイルを減らす、または機能を追加する仕事)に充てられるべきだ、という約束です。この数字には根拠があり、8人ローテーションのオンコール体制だけでも最低25%は運用に取られる計算になるため、それ以外の運用作業(割り込み対応、リリース作業など)を合わせても50%以内に収めることが現実的な上限とされています。
+                </p>
+                <p>
+                    原著によれば、Google社内の四半期調査でSREの平均トイル比率は約33%と、目標の50%を下回る良好な水準にありますが、個人差が大きく(0%〜80%まで分布)、過度にトイルが偏っている場合はマネージャーが負荷分散に介入すべきだとされています。
+                </p>
+
+                <div class="callout-practice">
+                    <div class="icon">✓</div>
+                    <div class="body">
+                        <div class="label">ベストプラクティス：トイルが多すぎることの弊害</div>
+                        <ul>
+                            <li>
+                                <strong>キャリアの停滞</strong
+                                >：プロジェクト経験が積めず評価につながらない
+                            </li>
+                            <li><strong>士気の低下</strong>：燃え尽き・退屈・不満の温床になる</li>
+                            <li>
+                                <strong>チームの機能不全</strong
+                                >：「SREはエンジニアリング組織である」というメッセージが崩れる
+                            </li>
+                            <li>
+                                <strong>前例の固定化</strong
+                                >：安易にトイルを引き受けると、開発チームから運用作業を押し付けられる前例を作ってしまう
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3 id="monitoring">2.4 分散システムの監視 ―― 4大シグナル</h3>
+
+                <h4>モニタリングの目的を整理する</h4>
+
+                <p>
+                    監視は「何かがおかしい」を検知するだけの仕組みではありません。原著は監視の目的を、長期トレンド分析・比較実験・アラート・ダッシュボード構築・アドホックなデバッグの5つに整理しています。特に重要な区別が「症状（symptom）」と「原因（cause）」です。
+                </p>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>症状（What's broken）</th>
+                                <th>原因（Why）</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>HTTP 500 や 404 を返している</td>
+                                <td>データベースが接続を拒否している</td>
+                            </tr>
+                            <tr class="even">
+                                <td>レスポンスが遅い</td>
+                                <td>CPUが過負荷、あるいはネットワークのパケットロス</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>特定地域のユーザーに配信できていない</td>
+                                <td>CDNが特定のIPをブロックしている</td>
+                            </tr>
+                            <tr class="even">
+                                <td>非公開のはずのコンテンツが誰でも見える</td>
+                                <td>新しいリリースでACL設定が失われた</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p>
+                    ページ（緊急呼び出し）は基本的に「症状」に対して発報し、「原因」はデバッグの手がかりとして別途参照するのが良い設計とされます。原因ベースでアラートを組み立てると、依存関係が複雑化しやすく壊れやすいアラートになりがちだからです。
+                </p>
+
+                <h4>4大シグナル（The Four Golden Signals）</h4>
+
+                <p>
+                    もし4つしか指標を測れないとしたら何を測るべきか、という問いに対するGoogleの回答が「4大シグナル」です。
+                </p>
+
+                <pre class="mermaid">
+flowchart TB
+    G["4大シグナル&lt;br/&gt;The Four Golden Signals"]
+    G --&gt; L["Latency（レイテンシ）&lt;br/&gt;成功リクエストと失敗リクエストの&lt;br/&gt;レイテンシを分けて見る"]
+    G --&gt; Tr["Traffic（トラフィック）&lt;br/&gt;QPS、同時接続数など&lt;br/&gt;需要の大きさ"]
+    G --&gt; E["Errors（エラー）&lt;br/&gt;明示的・暗黙的・ポリシー上の&lt;br/&gt;失敗の割合"]
+    G --&gt; S["Saturation（飽和度）&lt;br/&gt;システムがどれだけ&lt;br/&gt;「いっぱいか」"]
+
+    classDef highlightFill fill:#1a3a5c,stroke:#4a90d9,color:#ffffff;
+    class L,Tr,E,S highlightFill</pre
+                >
+
+                <ul>
+                    <li>
+                        <strong>レイテンシ</strong
+                        >：失敗したリクエストのレイテンシを成功リクエストと混ぜて集計すると誤った結論を導きます。「速く失敗するエラー」は「遅く失敗するエラー」より問題が軽い場合もあれば、逆に見落としを招く場合もあるため、必ず分離して計測します。
+                    </li>
+                    <li>
+                        <strong>トラフィック</strong
+                        >：Webサービスなら秒間リクエスト数、ストリーミングならI/Oレートや同時セッション数など、サービスの性質に応じた指標を選びます。
+                    </li>
+                    <li>
+                        <strong>エラー</strong>：HTTP
+                        500のような明示的な失敗だけでなく、「200は返ってきたが中身が間違っている」ような暗黙的な失敗も対象になります。
+                    </li>
+                    <li>
+                        <strong>飽和度</strong
+                        >：メモリ制約のあるシステムならメモリ使用率、I/O制約のあるシステムならI/O使用率など、最も制約になりやすいリソースに注目します。多くのシステムは100%使用率に達する前に性能劣化を始めるため、しきい値の設定が重要です。
+                    </li>
+                </ul>
+
+                <h4>平均値の罠</h4>
+
+                <p>
+                    レイテンシを平均値だけで監視すると、全体の傾向を見誤ります。例えば平均レイテンシが50msのシステムでも、上位5%のリクエストがその20倍遅い、というケースは珍しくありません。この「ロングテール」を捉えるには、リクエストをレイテンシ帯ごとにバケット化したヒストグラムで可視化し、p50・p95・p99といった高パーセンタイル値を追跡することが有効です。
+                </p>
+
+                <div class="callout-practice">
+                    <div class="icon">✓</div>
+                    <div class="body">
+                        <div class="label">ベストプラクティス：良いアラートの5つの問い</div>
+                        <ul>
+                            <li>
+                                見逃されている・緊急・実際に（あるいはまもなく）ユーザーに影響する状態を検知しているか
+                            </li>
+                            <li>「無視してよい」と分かっているアラートを放置していないか</li>
+                            <li>
+                                ユーザーへの実害があると確実に言えるか（ドレイン中のトラフィックなどの除外条件はあるか）
+                            </li>
+                            <li>
+                                そのアラートに対して取れるアクションがあるか。それは緊急か、自動化できないか
+                            </li>
+                            <li>同じ問題で他の人にも重複してページが飛んでいないか</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3 id="automation">2.5 自動化の進化</h3>
+
+                <p>
+                    Googleは自動化を「あるかないか」の二択ではなく、成熟度の異なる段階として捉えています。手作業から始まり、外部で管理されるシステムによる自動実行、さらにシステム自身がその機構を保守できる段階へと進化していく、というモデルです。
+                </p>
+
+                <pre class="mermaid">
+flowchart TB
+    A1["レベル0：&lt;br/&gt;人間による手作業&lt;br/&gt;No automation"] --&gt; A2["レベル1：&lt;br/&gt;外部システムが&lt;br/&gt;汎用の仕組みで実行"]
+    A2 --&gt; A3["レベル2：&lt;br/&gt;外部システムが&lt;br/&gt;サービス固有ロジックで実行"]
+    A3 --&gt; A4["レベル3：&lt;br/&gt;自らを保守する&lt;br/&gt;システムに内蔵された自動化"]
+
+    classDef dangerFill fill:#5c1a1a,stroke:#d94a4a,color:#ffffff;
+    classDef warnFill fill:#5c3a1a,stroke:#d9904a,color:#ffffff;
+    classDef highlightFill fill:#1a3a5c,stroke:#4a90d9,color:#ffffff;
+    classDef successFill fill:#1a4a2a,stroke:#4ad97a,color:#ffffff;
+    class A1 dangerFill
+    class A2 warnFill
+    class A3 highlightFill
+    class A4 successFill</pre
+                >
+
+                <p>
+                    自動化を進める価値は「人手を減らすこと」だけではありません。原著が強調するのは次の点です。
+                </p>
+
+                <ul>
+                    <li>
+                        <strong>一貫性</strong
+                        >：人間の手作業は個人差や気分によってばらつくが、自動化された処理は再現性が高い
+                    </li>
+                    <li>
+                        <strong>プラットフォーム化</strong
+                        >：一度自動化した処理は、他のチームにも展開できる汎用的な基盤になりうる
+                    </li>
+                    <li>
+                        <strong>迅速な修復</strong
+                        >：自動化された復旧アクションは、人間がページを見て対応するより圧倒的に速い
+                    </li>
+                    <li>
+                        <strong>時間の節約そのもの</strong
+                        >：自動化への投資は最初はコストに見えても、長期的にはトイル削減として返ってくる
+                    </li>
+                </ul>
+
+                <p>
+                    一方で、「人間の判断が本質的に必要なタスクか」を見極める慎重さも求められます。複雑な判断を要するアラートが日に何度も発生するようなサービスは、そもそも設計が過剰に複雑である可能性が高く、自動化する前にシステムそのものを簡素化すべきだ、という指摘は示唆に富みます。
+                </p>
+
+                <h3 id="release">2.6 リリースエンジニアリング</h3>
+
+                <p>
+                    信頼性の高いサービスを支えるには、信頼性の高いリリースプロセスが欠かせません。原著は、Googleのリリースエンジニアリングを支える4つの哲学を紹介しています。
+                </p>
+
+                <pre class="mermaid">
+flowchart LR
+    subgraph Philosophy["リリースエンジニアリングの4原則"]
+        P1["セルフサービス&lt;br/&gt;各チームが自分たちで&lt;br/&gt;リリースを制御できる"]
+        P2["高速性&lt;br/&gt;頻繁な小さいリリースは&lt;br/&gt;むしろテストしやすい"]
+        P3["Hermetic Build&lt;br/&gt;再現可能で環境非依存な&lt;br/&gt;ビルド"]
+        P4["ポリシーの強制&lt;br/&gt;コードレビューや&lt;br/&gt;アクセス制御の徹底"]
+    end</pre
+                >
+
+                <ul>
+                    <li>
+                        <strong>セルフサービスモデル</strong
+                        >：リリースプロセスを自動化し、各プロダクトチームが自律的にリリース頻度を決められるようにする。エンジニアの関与は問題発生時のみに絞る。
+                    </li>
+                    <li>
+                        <strong>高速なリリース</strong
+                        >：頻繁にリリースするほど、1回あたりの変更差分は小さくなり、結果としてテストとトラブルシューティングが容易になる、という一見逆説的な発想。
+                    </li>
+                    <li>
+                        <strong>Hermetic Build（再現可能なビルド）</strong
+                        >：ビルド結果はビルドマシンにインストールされているライブラリの状態に依存してはならず、既知のバージョンのツールとライブラリのみに依存させる。同じリビジョンからは常に同じ成果物が得られることを保証する。
+                    </li>
+                    <li>
+                        <strong>ポリシーとプロセスの強制</strong
+                        >：コードレビュー必須化、承認フロー、変更履歴の自動記録などをツールに組み込み、属人的な運用に頼らない。
+                    </li>
+                </ul>
+
+                <pre class="mermaid">
+flowchart LR
+    SRC["ソースリポジトリ&lt;br/&gt;（mainline）"] --&gt; BR["リリースブランチを作成"]
+    BR --&gt; BUILD["Blazeでビルド&lt;br/&gt;＋ユニットテスト実行"]
+    BUILD --&gt; PKG["MPMでパッケージング&lt;br/&gt;（バージョン・署名付き）"]
+    PKG --&gt; CANARY["カナリアデプロイ&lt;br/&gt;一部クラスタへ先行配信"]
+    CANARY --&gt; ROLLOUT["段階的ロールアウト&lt;br/&gt;クラスタを順次拡大"]
+    ROLLOUT --&gt; PROD["全クラスタへ展開完了"]</pre
+                >
+
+                <p>
+                    上図はGoogle内部の自動リリースシステム「Rapid」の流れを簡略化したものです。バグ修正が必要になった際は、mainlineの変更をリリースブランチへ個別に取り込む「チェリーピック」という手法を用い、意図しない変更が紛れ込むのを防ぎます。
+                </p>
+
+                <h3 id="simplicity">2.7 シンプルさという美徳</h3>
+
+                <p>
+                    原著9章のテーマは「シンプルさ」です。ソフトウェアシステムは放置すると自然に複雑化していく傾向があり、SREはその複雑化に抗う立場を担います。複雑さが増すほど、変更のリスク・保守コスト・障害発生時の調査コストはすべて増大します。
+                </p>
+                <p>
+                    SREが標榜する姿勢は「退屈であること（boring）」への積極的な評価です。予測可能で、驚きの少ないシステムは、優れたシステムの証だと捉えます。新しい技術や複雑な最適化を導入する際は、それによって得られる価値が、増える複雑さに見合うかどうかを常に問い直すべきだとされています。
+                </p>
+
+                <div class="callout-practice">
+                    <div class="icon">✓</div>
+                    <div class="body">
+                        <div class="label">ベストプラクティス：シンプルさを保つための姿勢</div>
+                        <ul>
+                            <li>「枯れた（boring）」技術を選ぶことを恥じない</li>
+                            <li>使われなくなったコードパス・設定・アラートは積極的に削除する</li>
+                            <li>モジュール間の境界を明確にし、変更の影響範囲を小さく保つ</li>
+                            <li>
+                                パフォーマンス最適化のための複雑さの追加は、実測データに基づいてのみ判断する
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <hr />
+
+                <h2 id="part3">第3部：実践（Practices）</h2>
+
+                <h3 id="alerting">3.1 実践的なアラート設計</h3>
+
+                <p>監視システムが人間に知らせる方法は、大きく3種類に分類されます。</p>
+
+                <pre class="mermaid">
+flowchart TB
+    Signal["検知されたシグナル"] --&gt; Decide{"緊急性・実害の&lt;br/&gt;有無を判定"}
+    Decide --&gt;|"今すぐ人が対応すべき"| Page["ページ（Pages）&lt;br/&gt;即座に人を呼び出す"]
+    Decide --&gt;|"数日以内に対応が必要"| Ticket["チケット（Tickets）&lt;br/&gt;キューに積んで後で対応"]
+    Decide --&gt;|"記録として残せば十分"| Log["ロギング（Logging）&lt;br/&gt;後から分析できるよう保存"]
+
+    classDef dangerFill fill:#5c1a1a,stroke:#d94a4a,color:#ffffff;
+    classDef warnFill fill:#5c3a1a,stroke:#d9904a,color:#ffffff;
+    class Page dangerFill
+    class Ticket warnFill</pre
+                >
+
+                <p>
+                    ページは最もコストの高い通知手段です。業務時間中であれば集中を妨げ、業務時間外であれば私生活や睡眠を妨げます。ページが多すぎると、エンジニアはアラートを読み飛ばしたり無視したりするようになり、本当に重要なページさえノイズに埋もれてしまう「アラート疲れ（alert
+                    fatigue）」を引き起こします。したがって、ページに値するのは「SLOを脅かす、緊急性のある、実行可能なアクションが取れる」シグナルに限定すべきです。
+                </p>
+
+                <h3 id="oncall">3.2 オンコール対応</h3>
+
+                <h4>バランスの取れたオンコール体制</h4>
+
+                <p>Googleのオンコール設計は、「量」と「質」の2軸でバランスを管理します。</p>
+
+                <ul>
+                    <li>
+                        <strong>量の管理</strong
+                        >：エンジニアリング時間50%を確保する原則から逆算すると、オンコールに割ける時間は最大でも25%です。24時間365日のプライマリ＋セカンダリ体制を1週間交代で維持するには、単一拠点のチームで最低8人が必要になるという試算が示されています。
+                    </li>
+                    <li>
+                        <strong>質の管理</strong
+                        >：1回のインシデント対応（原因調査・修復・ポストモーテム作成を含む）には平均6時間かかるとされ、12時間シフトあたり最大2件までがサステナブルな上限とされます。特定のコンポーネントが毎日のようにページを発生させている場合は、根本的な設計変更が必要なサインです。
+                    </li>
+                </ul>
+
+                <pre class="mermaid">
+flowchart TB
+    subgraph Rotation["週次オンコールローテーション例（単一拠点・8人チーム）"]
+        W1["Week1: Aさん Primary&lt;br/&gt;Bさん Secondary"]
+        W2["Week2: Cさん Primary&lt;br/&gt;Dさん Secondary"]
+        W3["Week3: Eさん Primary&lt;br/&gt;Fさん Secondary"]
+        W4["Week4: Gさん Primary&lt;br/&gt;Hさん Secondary"]
+    end
+    W1 --&gt; W2 --&gt; W3 --&gt; W4 --&gt; W1</pre
+                >
+
+                <h4>「安心して」オンコールにつくために</h4>
+
+                <p>
+                    原著が特に強調するのは、オンコール担当者の心理的な安全性です。人間は強いストレス下では「直感的・反射的な思考」に偏りやすく、これは複雑な分散システムの障害対応には不向きです。冷静で分析的な思考を維持するために、次の3つのリソースが用意されているべきだとされます。
+                </p>
+
+                <ul>
+                    <li>明確なエスカレーションパス</li>
+                    <li>定義済みのインシデント管理手順</li>
+                    <li>ブレームレス（非難のない）なポストモーテム文化</li>
+                </ul>
+
+                <p>
+                    また、オンコールが「静かすぎる」ことにも注意が必要です。長期間本番環境から離れていると、いざという時に対応力が鈍る「オペレーショナル・アンダーロード」という逆のリスクがあります。定期的な障害対応演習（Wheel
+                    of
+                    Misfortune、DiRTと呼ばれる全社的な災害復旧訓練）は、この鈍化を防ぐ役割も果たしています。
+                </p>
+
+                <h3 id="troubleshooting">3.3 効果的なトラブルシューティング</h3>
+
+                <p>
+                    トラブルシューティングは属人的な「勘」の産物と思われがちですが、原著はこれを体系的なプロセスとして分解しています。
+                </p>
+
+                <pre class="mermaid">
+flowchart TB
+    Report["問題の報告&lt;br/&gt;Problem Report"] --&gt; Triage["トリアージ&lt;br/&gt;影響範囲・緊急度の把握"]
+    Triage --&gt; Examine["調査（Examine）&lt;br/&gt;ログ・メトリクス・&lt;br/&gt;変更履歴を確認"]
+    Examine --&gt; Diagnose["仮説を立てて検証&lt;br/&gt;Diagnose"]
+    Diagnose --&gt; Test{"仮説は&lt;br/&gt;正しいか？"}
+    Test --&gt;|No| Examine
+    Test --&gt;|Yes| Treat["応急処置（Treat）&lt;br/&gt;まず被害を止める"]
+    Treat --&gt; Cure["恒久対策（Cure）&lt;br/&gt;根本原因を修正"]</pre
+                >
+
+                <p>
+                    ここで強調されるのが「<strong>まず被害を止める（Treat）ことを、根本原因の特定（Cure）より優先する</strong>」という順序です。デバッグに没頭するあまりユーザーへの影響拡大を放置してしまうのは典型的なアンチパターンとされ、ロールバックのような即効性のある対処を先に打ってから、腰を据えて根本原因を追うべきだとされています。また、システムを深く理解していないと効果的にデバッグできないため、平時から自分の担当システムの構成図・依存関係を把握しておくことが推奨されます。
+                </p>
+
+                <h3 id="emergency">3.4 緊急対応</h3>
+
+                <p>
+                    緊急対応の章では、実際の障害事例をもとに「何が功を奏し、何が裏目に出たか」を学ぶことの価値が語られます。原著が挙げる教訓は次のように要約できます。
+                </p>
+
+                <ul>
+                    <li>
+                        <strong
+                            >テスト済みの手順書（Playbook）がある方が、その場の即興対応より平均復旧時間（MTTR）が短くなる傾向がある</strong
+                        >
+                    </li>
+                    <li>変更を加える前に「ロールバックできるか」を必ず自問する</li>
+                    <li>一人で抱え込まず、早めに助けを呼ぶことをためらわない</li>
+                    <li>対応の最中に取った行動は、後のポストモーテムのために逐一記録する</li>
+                </ul>
+
+                <h3 id="incident">3.5 インシデント管理</h3>
+
+                <h4>「管理されていない」インシデントはなぜ悪化するのか</h4>
+
+                <p>
+                    原著14章は、架空のオンコール担当者Maryのストーリーを通じて、インシデント対応が崩壊していく典型的なパターンを描いています。共通する3つの落とし穴は、「技術的な問題に集中しすぎて全体像を見失う」「コミュニケーション不足で誰が何をしているか分からなくなる」「良かれと思って勝手に変更を加える（フリーランシング）」の3つです。
+                </p>
+                <p>
+                    これを防ぐのが、米国の消防・救急で使われる<strong>インシデント・コマンド・システム（ICS）</strong>を土台にしたGoogle流のインシデント管理プロセスです。
+                </p>
+
+                <pre class="mermaid">
+flowchart TB
+    IC["インシデントコマンダー&lt;br/&gt;（Incident Commander）&lt;br/&gt;全体の意思決定と役割分担"]
+    IC --&gt; Ops["Ops Lead&lt;br/&gt;実際の復旧作業を実施&lt;br/&gt;本番変更はこのチームのみ"]
+    IC --&gt; Comms["Communications Lead&lt;br/&gt;関係者・経営層への&lt;br/&gt;定期的な状況報告"]
+    IC --&gt; Planning["Planning Lead&lt;br/&gt;長期タスク・引き継ぎ・&lt;br/&gt;バグ登録・状態文書の管理"]
+
+    classDef highlightFill fill:#1a3a5c,stroke:#4a90d9,color:#ffffff;
+    class IC highlightFill</pre
+                >
+
+                <ul>
+                    <li>
+                        <strong>インシデントコマンダー</strong
+                        >：委任していない役割はすべて自動的に自分が持つ、という原則で全体責任を負う
+                    </li>
+                    <li>
+                        <strong>Ops Lead</strong
+                        >：本番環境に変更を加えられるのはこのチームだけ、という一本化が「フリーランシング」を防ぐ鍵になる
+                    </li>
+                    <li>
+                        <strong>Communications Lead</strong
+                        >：定期的な状況更新を発信し、経営層からの問い合わせでOps
+                        Leadの集中力を削がないよう防波堤になる
+                    </li>
+                    <li>
+                        <strong>Planning Lead</strong
+                        >：バグ登録・食事の手配・引き継ぎ調整など、Opsが目の前の作業に専念できるよう長期的な雑務を巻き取る
+                    </li>
+                </ul>
+
+                <p>
+                    さらに重要な運用ルールとして、<strong
+                        >生きたインシデント状態文書（Living Incident State Document）</strong
+                    >を全員が編集可能な形で共有し続けること、そして<strong>シフト交代時には「あなたが今からインシデントコマンダーです、いいですね？」と明示的な確認を取ってから離れる</strong>ことが定められています。
+                </p>
+
+                <h4>いつインシデントを宣言すべきか</h4>
+
+                <p>判断に迷ったら、次のいずれかに該当すれば宣言すべきだとされています。</p>
+
+                <ul>
+                    <li>対応に2つ目以上のチームの関与が必要か</li>
+                    <li>障害がユーザーから見える状態か</li>
+                    <li>1時間集中して調べても解決しない状態が続いているか</li>
+                </ul>
+
+                <p>
+                    「早めに宣言して、簡単な修正で早めにクローズする」方が、こじれてから慌てて体制を組むよりもずっとコストが低い、というのが原著の一貫した主張です。
+                </p>
+
+                <h3 id="postmortem">3.6 ポストモーテム文化</h3>
+
+                <h4>ブレームレスであることの意味</h4>
+
+                <p>
+                    ポストモーテムは「インシデントの記録、影響範囲、取られた対処、根本原因、再発防止策」をまとめた文書です。原著が繰り返し強調するのが、<strong>ポストモーテムは処罰ではなく学習機会である</strong>という原則です。
+                </p>
+                <p>
+                    ブレームレス（非難のない）なポストモーテムとは、関係者全員が「その時点で持っていた情報の中で最善の判断をした」という前提に立ち、個人や特定チームの「悪い行動」を追及しないことを意味します。この文化は医療・航空業界に起源を持ち、ミスが致命的になりうる領域ほど「仕組みを直す」姿勢が徹底されているという知見に基づきます。人を「直す」ことはできませんが、その人が正しい選択をしやすいように仕組みや情報を変えることはできる、という考え方です。
+                </p>
+
+                <pre class="mermaid">
+flowchart LR
+    Trigger["トリガー発生&lt;br/&gt;ユーザー影響のある障害&lt;br/&gt;データ損失／SLO違反等"] --&gt; Draft["ドラフト作成&lt;br/&gt;タイムライン・影響範囲を&lt;br/&gt;共同編集で記録"]
+    Draft --&gt; Review["レビュー&lt;br/&gt;シニアエンジニアが&lt;br/&gt;網羅性・深さを確認"]
+    Review --&gt; Share["組織全体へ共有&lt;br/&gt;ニュースレター・輪読会等"]
+    Share --&gt; Action["アクションアイテムの&lt;br/&gt;実行・追跡"]
+    Action --&gt; Prevent["再発防止&lt;br/&gt;ナレッジベースへ蓄積"]</pre
+                >
+
+                <h4>ポストモーテムを書くべきタイミング</h4>
+
+                <p>
+                    明確な基準を事前に定めておくことが推奨されており、代表的なトリガーは次の通りです。
+                </p>
+
+                <ul>
+                    <li>ユーザーが体感するレベルのダウンタイムや性能劣化</li>
+                    <li>あらゆる種類のデータ損失</li>
+                    <li>
+                        オンコール担当者による本番介入（ロールバックやトラフィック切り替えなど）
+                    </li>
+                    <li>一定時間を超えた復旧</li>
+                    <li>監視の見落とし（＝人力でしか障害に気づけなかった）</li>
+                </ul>
+
+                <div class="callout-practice">
+                    <div class="icon">✓</div>
+                    <div class="body">
+                        <div class="label">
+                            ベストプラクティス：ポストモーテム文化を根付かせる工夫
+                        </div>
+                        <ul>
+                            <li>
+                                <strong>月間ポストモーテム</strong
+                                >：優れたポストモーテムを社内報で紹介し、模範例として共有する
+                            </li>
+                            <li>
+                                <strong>輪読会（Reading Club）</strong
+                                >：軽食を囲みながら過去のポストモーテムを議論する場を設ける
+                            </li>
+                            <li>
+                                <strong>Wheel of Misfortune</strong
+                                >：過去のインシデントを新人が疑似体験する再演トレーニング
+                            </li>
+                            <li>
+                                <strong>未レビューのポストモーテムは存在しないのと同じ</strong
+                                >：レビューを経て初めて組織の知識になる
+                            </li>
+                            <li>
+                                <strong>経営層の可視的な称賛</strong
+                                >：Googleでは実際に全社集会でポストモーテムの実例が称賛され、迅速な対応をした社員に報奨が贈られた事例が紹介されています
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3 id="other-practices">3.7 その他の実践トピック（概観）</h3>
+
+                <p>
+                    原著Part
+                    IIIには、より高度な分散システム設計に関わる章も含まれます。初学者は詳細より「何を扱っている章か」を把握しておくと、後で必要になったときに参照しやすくなります。
+                </p>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>章</th>
+                                <th>テーマ</th>
+                                <th>一言要約</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>17. テストの信頼性</td>
+                                <td>単体・統合・システムテスト戦略</td>
+                                <td>本番相当の検証をどれだけ手前で行うか</td>
+                            </tr>
+                            <tr class="even">
+                                <td>18. SREにおけるソフトウェアエンジニアリング</td>
+                                <td>SREチーム自身の開発生産性</td>
+                                <td>運用チームも「作る」仕事を評価・投資対象にする</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>19-20. ロードバランシング</td>
+                                <td>フロントエンド／データセンター内</td>
+                                <td>トラフィックを健全なバックエンドへどう分散するか</td>
+                            </tr>
+                            <tr class="even">
+                                <td>21. 過負荷への対応</td>
+                                <td>Handling Overload</td>
+                                <td>優雅な劣化（グレースフルデグラデーション）の設計</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>22. カスケード障害への対応</td>
+                                <td>Addressing Cascading Failures</td>
+                                <td>小さな障害が連鎖的に拡大するのを防ぐ設計原則</td>
+                            </tr>
+                            <tr class="even">
+                                <td>23. 分散合意によるクリティカルステート管理</td>
+                                <td>Distributed Consensus</td>
+                                <td>Paxosなどによる状態管理の信頼性確保</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>24-25. Cronとデータパイプライン</td>
+                                <td>定期実行・バッチ処理の信頼性</td>
+                                <td>分散環境での「確実に1回実行する」難しさ</td>
+                            </tr>
+                            <tr class="even">
+                                <td>26. データ整合性</td>
+                                <td>Data Integrity</td>
+                                <td>「書いたものが読めること」をどう保証するか</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>27. 大規模ローンチの信頼性</td>
+                                <td>Reliable Product Launches</td>
+                                <td>ローンチチェックリストによる事前レビュー</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <hr />
+
+                <h2 id="part4">第4部：マネジメント（Management）</h2>
+
+                <h3 id="accelerating">4.1 オンコールへの導入とその先</h3>
+
+                <p>
+                    新しくSREチームに加わったエンジニアが、いきなり本番のページに対応することはありません。段階的なオンボーディングを経て、シャドーイング（先輩の対応に同席する）→逆シャドーイング（自分が対応し先輩がレビューする）→単独オンコールという順を踏みます。前述の「Wheel
+                    of Misfortune」もこの教育プロセスの一部として位置づけられています。
+                </p>
+
+                <h3 id="interrupts">4.2 割り込みへの対処</h3>
+
+                <p>
+                    ページほど緊急ではないが日常的に発生する「割り込み」（チケット対応、質問対応など）は、トイルの主要な発生源の一つです。原著は、割り込み処理専任のロール（「トリアージ担当」のような役割）をローテーションの中に明示的に設けることで、他のメンバーが集中して作業できる時間を確保する手法を紹介しています。
+                </p>
+
+                <h3 id="communication">4.3 コミュニケーションと協業</h3>
+
+                <p>
+                    SREはしばしば複数のプロダクトチームを横断的に支援するため、通常のソフトウェアエンジニアリングチーム以上に、明文化されたコミュニケーション習慣が重要になります。定例の「本番会議（Production
+                    Meeting）」でその週に起きた障害・変更・リスクを共有する慣習や、チーム間の期待値をすり合わせるオンボーディングドキュメントの整備がこれにあたります。
+                </p>
+
+                <h3 id="engagement">4.4 SREエンゲージメントモデルの進化</h3>
+
+                <p>
+                    あるサービスにSREチームが関わり始める際、Googleでは段階的な関与モデルを採用しています。
+                </p>
+
+                <pre class="mermaid">
+flowchart LR
+    E1["コンサルティング&lt;br/&gt;設計レビュー・助言のみ&lt;br/&gt;運用責任は持たない"] --&gt; E2["Kickstart&lt;br/&gt;短期集中で信頼性改善に伴走&lt;br/&gt;本番運用にはまだ入らない"]
+    E2 --&gt; E3["フルエンゲージメント&lt;br/&gt;オンコール込みで&lt;br/&gt;本番運用の責任を持つ"]</pre
+                >
+
+                <p>
+                    この段階的なアプローチには理由があります。SREチームがフルエンゲージメントで運用責任を引き受けるのは、そのサービスが一定の信頼性基準（適切な監視、十分なテスト、オンコールに耐えるドキュメント等）を満たしている場合に限られます。基準を満たさないサービスをいきなり引き受けると、SREチーム自身がトイルに埋もれてしまうためです。
+                </p>
+
+                <hr />
+
+                <h2 id="roadmap">第5部：初学者向け導入ロードマップ</h2>
+
+                <p>
+                    「明日から何をすればいいのか」という問いに答えるため、ここまでの内容を実践導入の順序としてまとめ直します。組織の規模によらず、この順序は概ね有効です。
+                </p>
+
+                <pre class="mermaid">
+flowchart TB
+    S1["Step1&lt;br/&gt;ユーザーにとっての&lt;br/&gt;『信頼性』を定義する"] --&gt; S2["Step2&lt;br/&gt;SLIを計測できる&lt;br/&gt;基盤を用意する"]
+    S2 --&gt; S3["Step3&lt;br/&gt;現実的なSLOを設定し&lt;br/&gt;エラーバジェットを定義する"]
+    S3 --&gt; S4["Step4&lt;br/&gt;4大シグナルを軸に&lt;br/&gt;ダッシュボードを整備する"]
+    S4 --&gt; S5["Step5&lt;br/&gt;症状ベースのアラートへ&lt;br/&gt;整理し直す"]
+    S5 --&gt; S6["Step6&lt;br/&gt;オンコール体制と&lt;br/&gt;エスカレーションパスを整備"]
+    S6 --&gt; S7["Step7&lt;br/&gt;インシデント管理の&lt;br/&gt;役割分担を文書化する"]
+    S7 --&gt; S8["Step8&lt;br/&gt;ブレームレスな&lt;br/&gt;ポストモーテム文化を導入"]
+    S8 --&gt; S9["Step9&lt;br/&gt;トイルを計測し&lt;br/&gt;継続的に自動化投資する"]
+    S9 --&gt; S10["Step10&lt;br/&gt;エラーバジェットの&lt;br/&gt;消費状況を定例で振り返る"]
+    S10 -.-&gt;|"継続的改善サイクル"| S3</pre
+                >
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>ステップ</th>
+                                <th>やること</th>
+                                <th>つまずきやすいポイント</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>Step 1</td>
+                                <td>
+                                    ユーザー体験の観点で「信頼性」が何を意味するか関係者と合意する
+                                </td>
+                                <td>いきなり技術指標から入ると、ビジネス側との合意が取れない</td>
+                            </tr>
+                            <tr class="even">
+                                <td>Step 2</td>
+                                <td>クライアント側・サーバー側の両方でSLIを計測できるようにする</td>
+                                <td>サーバー側だけの計測ではクライアントの体感遅延を見落とす</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>Step 3</td>
+                                <td>現状の実績値をベースに、無理のないSLOから始める</td>
+                                <td>最初から厳しすぎる目標を置き、誰も守れず形骸化する</td>
+                            </tr>
+                            <tr class="even">
+                                <td>Step 4</td>
+                                <td>
+                                    レイテンシ・トラフィック・エラー・飽和度の4指標を最低限揃える
+                                </td>
+                                <td>指標を増やしすぎてダッシュボードが誰にも読めなくなる</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>Step 5</td>
+                                <td>
+                                    「原因」ベースの複雑なアラートルールを、「症状」ベースへ整理する
+                                </td>
+                                <td>依存関係を細かく作り込みすぎて壊れやすいアラートになる</td>
+                            </tr>
+                            <tr class="even">
+                                <td>Step 6</td>
+                                <td>
+                                    プライマリ／セカンダリのローテーションと呼び出し手順を整備する
+                                </td>
+                                <td>補償や負荷分散のルールを決めずに属人的な運用のまま拡大する</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>Step 7</td>
+                                <td>
+                                    インシデントコマンダー等の役割と生きた状態文書のテンプレートを用意する
+                                </td>
+                                <td>役割が曖昧なまま「とりあえず集まって対応」を繰り返す</td>
+                            </tr>
+                            <tr class="even">
+                                <td>Step 8</td>
+                                <td>ポストモーテムのテンプレートとレビュープロセスを定める</td>
+                                <td>書いて終わりにし、アクションアイテムが実行されない</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>Step 9</td>
+                                <td>トイルを定期的にアンケートや時間記録で可視化する</td>
+                                <td>「感覚的に忙しい」だけで終わり、削減対象が特定できない</td>
+                            </tr>
+                            <tr class="even">
+                                <td>Step 10</td>
+                                <td>四半期ごとにSLO達成率とエラーバジェット消費をレビューする</td>
+                                <td>一度決めたSLOを見直さず、実態と乖離したまま放置する</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <hr />
+
+                <h2 id="ai-era">第6部：2026年、AI時代のSRE</h2>
+
+                <p>
+                    原著が刊行された2016年から10年が経ち、SREを取り巻く環境は大きく変化しています。ここでは2026年8月時点での最新動向を、複数の情報源から紹介します。
+                </p>
+
+                <h3 id="reliability-redefined">6.1 「信頼性」の定義そのものが広がっている</h3>
+
+                <p>
+                    Catchpoint社（LogicMonitor傘下）が2026年1月に公表した「The SRE Report
+                    2026」（世界400名超のSRE・DevOps・IT専門家への調査、8回目の実施）は、信頼性の定義がアップタイムだけでは語れなくなっていることを指摘しています。回答者の約3分の2が「パフォーマンスの劣化はダウンタイムと同じくらい深刻な問題である」と回答しており、これは2年連続で同水準の結果です。AIシステムが本番環境に組み込まれるにつれ、従来の死活監視だけでは実態を捉えきれなくなっている、という報告は、原著の「4大シグナル」の考え方を土台にしつつも、それをアプリケーション層だけでなくインターネットスタック全体・体験全体に広げる必要性を示しています。
+                </p>
+                <p>
+                    同レポートは、トイルの中央値が34%であるという調査結果も報告しており、これは原著刊行時にGoogle社内で報告されていた約33%という数字と驚くほど近い水準です。AIによる自動化がトイル削減に寄与したと回答したエンジニアは半数近くに上るものの、その実感には役職による差があり、現場エンジニアより経営層の方が楽観的である、という傾向も示されています。
+                </p>
+
+                <h3 id="ai-amplifier">6.2 AIは「増幅器」である ―― DORAレポートの視点</h3>
+
+                <p>
+                    Google Cloudが2025年9月に発表した「2025 DORA Report: State of AI-assisted
+                    Software
+                    Development」は、世界約5,000人のテクノロジー専門家への調査と100時間超の定性データに基づく報告です。この調査が導き出した中心的な結論は、<strong>AIはチームの実力を「修正」するのではなく「増幅」する</strong>というものです。すでに高いパフォーマンスを発揮しているチームはAIの活用でさらに加速する一方、技術的負債やプロセスの混乱を抱えるチームは、AIの導入によってその問題がむしろ拡大する傾向が見られました。この知見は、SREが長年主張してきた「トイルを減らし、健全な運用基盤を整えることが先決である」という原則の正しさを、AI時代においても裏付けるものだと言えます。
+                </p>
+
+                <h3 id="sre-role-change">6.3 SREという職能自体の変化</h3>
+
+                <p>
+                    Observability Engineeringの著者でHoneycomb社CTOのCharity
+                    Majorsは、2025年のインタビューで、SREの立ち位置を約15年前のQAエンジニアの立ち位置になぞらえています。エージェント型AIが「使い捨てのソフトウェア」の生成を加速させる未来（同氏の見立てでは少なくとも5年先）において、SREが担う役割そのものが再定義されていく、という見方を示しています。一方で同氏は継続して、SLOこそがダッシュボードよりも先に置かれるべき「エンジニアリングチームのためのAPI」であると主張しており、原著が確立したSLO中心の思想は、観測可能性（オブザーバビリティ）を重視する新しい潮流の中でも引き続き土台であり続けています。
+                </p>
+                <p>
+                    また、原著の編者の一人であるNiall Richard
+                    Murphyは、2026年7月にAI運用エージェント企業Ciroosのディスティングイッシュト・エンジニアに就任したことが報じられました。Amazon・Google・Microsoftを渡り歩いた同氏がAIエージェントによる「自律的な信頼性」の領域に軸足を移したことは、SREという分野が次のフェーズ――人間のオンコール担当者を支援する自動化から、AIエージェントが一次対応を担う世界――へ移行しつつあることを象徴する動きと言えるでしょう。
+                </p>
+
+                <h3 id="what-stays">6.4 変わらないもの</h3>
+
+                <p>
+                    これらの新しい動向に共通しているのは、<strong>エラーバジェット・SLO・トイル削減・ブレームレスなポストモーテムといった原著の核となる概念が、10年を経てもなお共通言語であり続けている</strong>という事実です。ツールやAIの実装は目まぐるしく変わっても、「信頼性をどう測り、どう組織として合意し、どう学習を積み重ねるか」という原著の骨格は、2026年のSREレポートやDORAレポートの議論の土台として、今も参照され続けています。
+                </p>
+
+                <hr />
+
+                <h2 id="checklist">まとめ：ベストプラクティスチェックリスト</h2>
+
+                <div class="checklist-card">
+                    <div class="checklist-header">
+                        <span class="title">ベストプラクティスチェックリスト</span
+                        ><span class="count">0 / 12 完了</span>
+                    </div>
+                    <ul>
+                        <li>
+                            <input id="chk1" type="checkbox" /><label for="chk1"
+                                >100%の信頼性を目指さず、ユーザー体験とコストのバランスからSLOを定義している</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk2" type="checkbox" /><label for="chk2"
+                                >エラーバジェットを、リリース可否を判断する客観的な共通言語として運用している</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk3" type="checkbox" /><label for="chk3"
+                                >SLIは平均値ではなくパーセンタイル（p95/p99等）で計測している</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk4" type="checkbox" /><label for="chk4"
+                                >トイルを定期的に計測し、業務時間の50%を超えないよう管理している</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk5" type="checkbox" /><label for="chk5"
+                                >ダッシュボードは最低限、レイテンシ・トラフィック・エラー・飽和度の4指標をカバーしている</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk6" type="checkbox" /><label for="chk6"
+                                >アラートは「症状」ベースで設計し、「原因」の追跡はデバッグ時の参考情報にとどめている</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk7" type="checkbox" /><label for="chk7"
+                                >オンコールのプライマリ／セカンダリ体制と、エスカレーションパスが明文化されている</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk8" type="checkbox" /><label for="chk8"
+                                >インシデント発生時の役割（コマンダー／Ops／Comms／Planning）が事前に定義されている</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk9" type="checkbox" /><label for="chk9"
+                                >生きたインシデント状態文書を使い、シフト交代時は明示的な引き継ぎ確認を行っている</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk10" type="checkbox" /><label for="chk10"
+                                >ポストモーテムはブレームレスな文化のもとで作成され、レビューを経て組織に共有されている</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk11" type="checkbox" /><label for="chk11"
+                                >リリースはHermetic
+                                Buildとカナリア展開を基本とし、変更差分を小さく保っている</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk12" type="checkbox" /><label for="chk12"
+                                >四半期ごとにSLO達成率・エラーバジェット消費・トイル比率を振り返り、目標を調整している</label
+                            >
+                        </li>
+                    </ul>
+                </div>
+
+                <hr />
+
+                <h2 id="references">参考文献</h2>
+
+                <p>
+                    本ガイドは以下の一次情報源・調査レポート・インタビュー記事を参照して作成しました。
+                </p>
+
+                <div class="ref-grid" id="referenceGrid">
+                    <div class="ref-card" id="ref1">
+                        <div class="num">1</div>
+                        <div class="txt">
+                            Google, "Site Reliability Engineering - Table of Contents".
+                            <a href="https://sre.google/sre-book/table-of-contents/"
+                                >https://sre.google/sre-book/table-of-contents/</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref2">
+                        <div class="num">2</div>
+                        <div class="txt">
+                            Google, "Chapter 3 - Embracing Risk".
+                            <a href="https://sre.google/sre-book/embracing-risk/"
+                                >https://sre.google/sre-book/embracing-risk/</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref3">
+                        <div class="num">3</div>
+                        <div class="txt">
+                            Google, "Chapter 4 - Service Level Objectives".
+                            <a href="https://sre.google/sre-book/service-level-objectives/"
+                                >https://sre.google/sre-book/service-level-objectives/</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref4">
+                        <div class="num">4</div>
+                        <div class="txt">
+                            Google, "Chapter 5 - Eliminating Toil".
+                            <a href="https://sre.google/sre-book/eliminating-toil/"
+                                >https://sre.google/sre-book/eliminating-toil/</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref5">
+                        <div class="num">5</div>
+                        <div class="txt">
+                            Google, "Chapter 6 - Monitoring Distributed Systems".
+                            <a href="https://sre.google/sre-book/monitoring-distributed-systems/"
+                                >https://sre.google/sre-book/monitoring-distributed-systems/</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref6">
+                        <div class="num">6</div>
+                        <div class="txt">
+                            Google, "Chapter 8 - Release Engineering".
+                            <a href="https://sre.google/sre-book/release-engineering/"
+                                >https://sre.google/sre-book/release-engineering/</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref7">
+                        <div class="num">7</div>
+                        <div class="txt">
+                            Google, "Chapter 11 - Being On-Call".
+                            <a href="https://sre.google/sre-book/being-on-call/"
+                                >https://sre.google/sre-book/being-on-call/</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref8">
+                        <div class="num">8</div>
+                        <div class="txt">
+                            Google, "Chapter 14 - Managing Incidents".
+                            <a href="https://sre.google/sre-book/managing-incidents/"
+                                >https://sre.google/sre-book/managing-incidents/</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref9">
+                        <div class="num">9</div>
+                        <div class="txt">
+                            Google, "Chapter 15 - Postmortem Culture: Learning from Failure".
+                            <a href="https://sre.google/sre-book/postmortem-culture/"
+                                >https://sre.google/sre-book/postmortem-culture/</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref10">
+                        <div class="num">10</div>
+                        <div class="txt">
+                            Google, "SRE Workbook - Error Budget Policy".
+                            <a href="https://sre.google/workbook/error-budget-policy/"
+                                >https://sre.google/workbook/error-budget-policy/</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref11">
+                        <div class="num">11</div>
+                        <div class="txt">
+                            Google SRE, "Site Reliability Engineering at
+                            Google"（書籍紹介・目次索引）.
+                            <a href="https://sre.google/resources/book-update/"
+                                >https://sre.google/resources/book-update/</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref12">
+                        <div class="num">12</div>
+                        <div class="txt">
+                            O'Reilly Media, "Site Reliability Engineering: How Google Runs
+                            Production Systems" 書籍ページ.
+                            <a
+                                href="https://www.oreilly.com/library/view/site-reliability-engineering/9781491929117/"
+                                >https://www.oreilly.com/library/view/site-reliability-engineering/9781491929117/</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref13">
+                        <div class="num">13</div>
+                        <div class="txt">
+                            Catchpoint (LogicMonitor), "The SRE Report 2026: Reliability Is Being
+                            Redefined".
+                            <a href="https://www.catchpoint.com/learn/sre-report-2026"
+                                >https://www.catchpoint.com/learn/sre-report-2026</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref14">
+                        <div class="num">14</div>
+                        <div class="txt">
+                            LogicMonitor Press Release, "The SRE Report 2026: Reliability Is Being
+                            Redefined"（2026年1月22日）.
+                            <a
+                                href="https://www.logicmonitor.com/press/the-sre-report-2026-reliability-is-being-redefined"
+                                >https://www.logicmonitor.com/press/the-sre-report-2026-reliability-is-being-redefined</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref15">
+                        <div class="num">15</div>
+                        <div class="txt">
+                            Google Cloud Blog, "Announcing the 2025 DORA Report"（2025年9月）.
+                            <a
+                                href="https://cloud.google.com/blog/products/ai-machine-learning/announcing-the-2025-dora-report"
+                                >https://cloud.google.com/blog/products/ai-machine-learning/announcing-the-2025-dora-report</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref16">
+                        <div class="num">16</div>
+                        <div class="txt">
+                            Google Research, "DORA 2025 State of AI-assisted Software Development
+                            Report".
+                            <a
+                                href="https://research.google/pubs/dora-2025-state-of-ai-assisted-software-development-report/"
+                                >https://research.google/pubs/dora-2025-state-of-ai-assisted-software-development-report/</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref17">
+                        <div class="num">17</div>
+                        <div class="txt">
+                            The Pragmatic Engineer (Gergely Orosz), "Observability: the present and
+                            future, with Charity Majors".
+                            <a
+                                href="https://newsletter.pragmaticengineer.com/p/observability-the-present-and-future"
+                                >https://newsletter.pragmaticengineer.com/p/observability-the-present-and-future</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref18">
+                        <div class="num">18</div>
+                        <div class="txt">
+                            TechTarget, "Charity Majors on AI observability and the future of SRE".
+                            <a
+                                href="https://www.techtarget.com/searchitoperations/podcast/Charity-Majors-on-AI-observability-and-the-future-of-SRE"
+                                >https://www.techtarget.com/searchitoperations/podcast/Charity-Majors-on-AI-observability-and-the-future-of-SRE</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref19">
+                        <div class="num">19</div>
+                        <div class="txt">
+                            GlobeNewswire / The Manila Times, "Ciroos Appoints SRE Pioneer Niall
+                            Murphy as Distinguished Engineer to Shape the Future of Autonomous
+                            Reliability"（2026年7月28日）.
+                            <a
+                                href="https://www.manilatimes.net/2026/07/28/tmt-newswire/globenewswire/ciroos-appoints-sre-pioneer-niall-murphy-as-distinguished-engineer-to-shape-the-future-of-autonomous-reliability/2393160"
+                                >https://www.manilatimes.net/2026/07/28/tmt-newswire/globenewswire/ciroos-appoints-sre-pioneer-niall-murphy-as-distinguished-engineer-to-shape-the-future-of-autonomous-reliability/2393160</a
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <p>
+                    <em
+                        >本ガイドは、原著 "Site Reliability Engineering: How Google Runs Production
+                        Systems" (Copyright © 2017 Google, Inc., Published by O'Reilly Media, Inc.)
+                        を参照しながら執筆した非公式の学習用ノートです。原文の完全な内容は
+                        <a href="https://sre.google/sre-book/table-of-contents/"
+                            >sre.google/sre-book</a
+                        >
+                        で無償公開されています。</em
+                    >
+                </p>
+                <p>
+                    <em
+                        >ライセンスに関する注意：原著は CC BY-NC-ND 4.0
+                        で公開されています。同ライセンスは改変物（翻訳・要約・再構成を含む）の配布を許諾していないため、本ガイドは原著のライセンスの下で配布されるものではなく、その適用も受けません。原著に由来する翻訳・要約・再構成を含む形で本ガイドを再配布する場合は、事前に権利者の個別の許諾を得て、その旨を明記してください。許諾が得られない場合は、原著に依拠しない独立した解説として書き直したうえで配布してください。</em
+                    >
+                </p>
+            </main>
+        </div>
+        <script
+            src="https://cdn.jsdelivr.net/npm/mermaid@11.13.0/dist/mermaid.min.js"
+            integrity="sha384-tI0sDqjGJcqrQ8e/XKiQGS+ee11v5knTNWx2goxMBxe4DO9U0uKlfxJtYB9ILZ4j"
+            crossorigin="anonymous"
+        ></script>
+        <script>
+            (function () {
+                'use strict';
+
+                // ---------- Mermaid init + render ----------
+                function initMermaid() {
+                    if (typeof mermaid === 'undefined') {
+                        console.warn('mermaid not loaded');
+                        return;
+                    }
+                    var fontFamily = getComputedStyle(document.body).fontFamily;
+                    mermaid.initialize({
+                        startOnLoad: false,
+                        theme: 'base',
+                        securityLevel: 'loose',
+                        fontFamily: fontFamily,
+                        themeVariables: {
+                            fontSize: '16px',
+                            background: '#0d1a2b',
+                            primaryColor: '#12233b',
+                            primaryTextColor: '#dbe4f3',
+                            primaryBorderColor: '#2c4770',
+                            lineColor: '#4a6390',
+                            secondaryColor: '#101f33',
+                            tertiaryColor: '#101f33',
+                            edgeLabelBackground: '#0d1a2b',
+                            clusterBkg: '#0d1a2b',
+                            clusterBorder: '#2c4770',
+                            nodeTextColor: '#dbe4f3',
+                        },
+                        flowchart: {
+                            useMaxWidth: false,
+                            htmlLabels: true,
+                            subGraphTitleMargin: { top: 12, bottom: 18 },
+                            nodeSpacing: 70,
+                            rankSpacing: 60,
+                            curve: 'basis',
+                        },
+                    });
+
+                    var fontSpecs = [
+                        ['700', '"Noto Sans JP"'],
+                        ['400', '"Noto Sans JP"'],
+                    ];
+                    var sample = '設計とアーキテクチャ0123ABC';
+                    var loadPromises = fontSpecs.map(function (spec) {
+                        try {
+                            return document.fonts.load(spec[0] + ' 16px ' + spec[1], sample);
+                        } catch (e) {
+                            return Promise.resolve();
+                        }
+                    });
+
+                    Promise.all(loadPromises)
+                        .then(function () {
+                            return document.fonts ? document.fonts.ready : Promise.resolve();
+                        })
+                        .catch(function () {})
+                        .then(function () {
+                            try {
+                                mermaid
+                                    .run({ querySelector: 'pre.mermaid' })
+                                    .then(function () {
+                                        healOverflowingLabels();
+                                        setTimeout(healOverflowingLabels, 600);
+                                    })
+                                    .catch(function (err) {
+                                        console.error('mermaid render error', err);
+                                    });
+                            } catch (e) {
+                                console.error('mermaid run failed', e);
+                            }
+                        });
+                }
+
+                function healOverflowingLabels() {
+                    document.querySelectorAll('pre.mermaid svg').forEach(function (svg) {
+                        svg.querySelectorAll('.node').forEach(function (node) {
+                            var rect = node.querySelector('rect.basic, rect');
+                            var fo = node.querySelector('foreignObject');
+                            if (!rect || !fo) return;
+                            var div = fo.querySelector('div');
+                            if (!div) return;
+                            var neededW = div.scrollWidth;
+                            var neededH = div.scrollHeight;
+                            var curW = parseFloat(fo.getAttribute('width')) || 0;
+                            var curH = parseFloat(fo.getAttribute('height')) || 0;
+                            if (neededW > curW - 2 || neededH > curH - 2) {
+                                var buffer = 6;
+                                var newW = Math.max(curW, neededW + buffer);
+                                var newH = Math.max(curH, neededH + buffer);
+                                var x = parseFloat(fo.getAttribute('x')) || 0;
+                                var y = parseFloat(fo.getAttribute('y')) || 0;
+                                var dx = (newW - curW) / 2;
+                                var dy = (newH - curH) / 2;
+                                fo.setAttribute('width', newW);
+                                fo.setAttribute('height', newH);
+                                fo.setAttribute('x', x - dx);
+                                fo.setAttribute('y', y - dy);
+                                var rx = parseFloat(rect.getAttribute('x'));
+                                var ry = parseFloat(rect.getAttribute('y'));
+                                var rw = parseFloat(rect.getAttribute('width'));
+                                var rh = parseFloat(rect.getAttribute('height'));
+                                if (!isNaN(rx) && !isNaN(rw)) {
+                                    rect.setAttribute('x', rx - dx);
+                                    rect.setAttribute('width', rw + newW - curW);
+                                }
+                                if (!isNaN(ry) && !isNaN(rh)) {
+                                    rect.setAttribute('y', ry - dy);
+                                    rect.setAttribute('height', rh + newH - curH);
+                                }
+                            }
+                        });
+                    });
+                }
+
+                try {
+                    initMermaid();
+                } catch (e) {
+                    console.error('mermaid init failed', e);
+                }
+
+                // ---------- Sidebar toggle (mobile) ----------
+                var sidebar = document.getElementById('sidebar');
+                var toggle = document.getElementById('sidebarToggle');
+                function syncToggleState() {
+                    if (!toggle || !sidebar) return;
+                    toggle.setAttribute(
+                        'aria-expanded',
+                        sidebar.classList.contains('open') ? 'true' : 'false',
+                    );
+                }
+                if (toggle) {
+                    toggle.addEventListener('click', function () {
+                        sidebar.classList.toggle('open');
+                        syncToggleState();
+                    });
+                }
+                document.querySelectorAll('#sidebarNav a').forEach(function (a) {
+                    a.addEventListener('click', function () {
+                        sidebar.classList.remove('open');
+                        syncToggleState();
+                    });
+                });
+                syncToggleState();
+
+                // ---------- Scroll-spy ----------
+                var navLinks = Array.from(document.querySelectorAll('#sidebarNav a'));
+                var linkMap = new Map();
+                navLinks.forEach(function (a) {
+                    var id = decodeURIComponent(a.getAttribute('href').slice(1));
+                    linkMap.set(id, a);
+                });
+
+                var headings = Array.from(linkMap.keys())
+                    .map(function (id) {
+                        return document.getElementById(id);
+                    })
+                    .filter(Boolean);
+
+                var spyObserver = new IntersectionObserver(
+                    function (entries) {
+                        entries.forEach(function (entry) {
+                            var link = linkMap.get(entry.target.id);
+                            if (!link) return;
+                            if (entry.isIntersecting) {
+                                navLinks.forEach(function (a) {
+                                    a.classList.remove('active');
+                                });
+                                link.classList.add('active');
+                            }
+                        });
+                    },
+                    { rootMargin: '-15% 0px -75% 0px', threshold: 0 },
+                );
+
+                headings.forEach(function (h) {
+                    spyObserver.observe(h);
+                });
+
+                // ---------- Checklist progress ----------
+                document.querySelectorAll('.checklist-card').forEach(function (card) {
+                    var boxes = card.querySelectorAll('input[type="checkbox"]');
+                    var counter = card.querySelector('.count');
+                    function update() {
+                        var checked = card.querySelectorAll(
+                            'input[type="checkbox"]:checked',
+                        ).length;
+                        if (counter) counter.textContent = checked + ' / ' + boxes.length + ' 完了';
+                    }
+                    boxes.forEach(function (b) {
+                        b.addEventListener('change', update);
+                    });
+                    update();
+                });
+            })();
+        </script>
+    </body>
+</html>
