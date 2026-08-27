@@ -170,7 +170,7 @@ IaC は目的ではなく手段です。書籍は IaC がもたらす価値を�
 | 原則 | 意味 | 具体例 |
 |---|---|---|
 | システムは信頼できないと想定する | ハードウェア障害・ネットワーク分断は日常的に起こる前提で設計する | Auto Scaling グループ、マルチAZ配置 |
-| すべてを再現可能にする | 同じコードから何度でも同じ環境を作れるようにする | Terraform の `apply` を何度実行しても同じ結果になる冪等性 |
+| すべてを再現可能にする | 同じコードから何度でも同じ環境を作れるようにする | 設定・プロバイダー・外部の状態が安定していれば、Terraform の `apply` の再実行で望ましい状態へ収束する(コード外で変更が加わった場合は再適用時に差分が生じ得る) |
 | スノーフレークシステムを避ける | 手作業のパッチが積み重なった「世界に一つだけの」環境を作らない | 手動SSHでの設定変更を禁止し、必ずコード変更経由にする |
 | 使い捨て可能なものを作る | サーバーやコンテナは壊れたら再作成すればよい対象として扱う | Immutable Server(イミュータブルサーバー)パターン |
 | バリエーションを最小化する | 環境ごとの差異(dev/staging/prodの違い)を極力減らす | 同じモジュールをパラメータだけ変えて複数環境に適用 |
@@ -607,7 +607,7 @@ flowchart TB
 
 | 分類 | テストの種類 | 目的 | 代表的なツール |
 |---|---|---|---|
-| オフライン | 構文チェック | HCL/YAML などの文法エラー検出 | `terraform validate`, `tofu validate` |
+| オフライン | 構文チェック | HCL および `.tf.json` 形式の構成ファイルの文法・整合性エラー検出 | `terraform validate`, `tofu validate` |
 | オフライン | 静的コード解析(オフライン) | ベストプラクティス違反・セキュリティ設定ミスの検出 | tflint, Checkov, tfsec(Trivy に統合) |
 | オフライン | サプライチェーンチェック | 依存モジュール・プロバイダーの脆弱性・改ざんの検出 | チェックサム検証、SBOM生成 |
 | オンライン | 静的コード解析(クラウド接続あり) | 実際のクラウドAPIのスキーマと突き合わせた検証 | クラウドプロバイダーのAPIバリデーション |
@@ -741,7 +741,7 @@ flowchart LR
 
 #### ライセンス変更と OpenTofu の誕生という転換点
 
-2026年時点の IaC ツール選定を理解する上で欠かせない前提が、2023年8月に起きたライセンス変更です。HashiCorp が Terraform のライセンスを、オープンソースライセンスである MPL 2.0 から、商用利用に制限を課す Business Source License(BSL)1.1 へ変更しました。これに対し、Linux Foundation の傘下で、**OpenTofu** が MPL 2.0 ライセンス下にあった最後の Terraform のコミットからフォークされ、2024年1月に安定版(GA)がリリースされました。
+2026年時点の IaC ツール選定を理解する上で欠かせない前提が、2023年8月に起きたライセンス変更です。HashiCorp が Terraform のライセンスを、オープンソースライセンスである MPL 2.0 から、Business Source License(BSL)1.1 へ変更しました。BSL 1.1 は商用利用全般を禁じるものではなく、組織内での利用や通常の商用利用は引き続き認めた上で、HashiCorp の有償版と大きく競合する製品を第三者へホスト型・組込み型で提供する行為を制限するものです。これに対し、Linux Foundation の傘下で、**OpenTofu** が MPL 2.0 ライセンス下にあった最後の Terraform のコミットからフォークされ、2024年1月に安定版(GA)がリリースされました。
 
 ```mermaid
 flowchart TB
@@ -943,6 +943,6 @@ flowchart TB
 26. Yuri Kan, "Policy as Code Testing: OPA vs Sentinel in 2026". <https://yrkan.com/blog/policy-as-code-testing-opa-sentinel/>
 27. Medium(Jukka Koskelin), "Azure Verified Module Design Principles"(CUPIDプロパティのAzureモジュールへの応用). <https://medium.com/@merten_66723/azure-verified-module-design-principles-ba4fb18aecf2>
 28. Google Cloud / DORA, *State of AI-assisted Software Development*(2025年版レポート). <https://dora.dev/research/2025/dora-report/>
-29. DORA, "Balancing act: the tensions of AI-assisted software development"(AI活用におけるスループットと不安定性の論点). <https://dora.dev/research/2025/balancing-ai-tensions/>
+29. DORA, "Balancing act: the tensions of AI-assisted software development"(AI活用におけるスループットと不安定性の論点). <https://dora.dev/insights/balancing-ai-tensions/>
 
 > 補足: 本ガイドは書籍の文章を逐語的に引用せず、Kief Morris が提示する原則・パターン・プラクティスの考え方を独自の言葉で再構成し、2026年時点の実際のツールエコシステムに接続する形で解説しています。書籍の正式な章立てと詳細な解説については、上記1・2の O'Reilly 公式ページ、またはオンライン学習プラットフォーム(O'Reilly Online Learning)でのご購読・購入をおすすめします。
