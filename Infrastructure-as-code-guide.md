@@ -849,7 +849,8 @@ Policy as Code 導入で最も失敗しやすいポイントは、ツール選�
 > - 正当な例外(レガシーシステムの一時的な許容など)は、理由・承認者・見直し期限を明記したコード内コメントやチケットとして記録し、「なぜ例外を許したか」を追跡可能にする
 > - ネイティブの Terraform 機能(変数の`validation`ブロック、`precondition`/`postcondition`、`check`ブロック)だけでも一定の範囲のポリシー要件は解決できるため、外部ツール導入前にまずネイティブ機能を使い切る
 > - ただしネイティブ機能は強制力が一様ではない。`validation`・`precondition`・`postcondition` はアサーションが失敗すると **エラーとなり plan/apply がそこで停止する** のに対し、`check`ブロックのアサーション失敗は **警告(Warning)を出すだけで plan/apply 自体は継続する**。したがって `check` は単独ではガードレールにならず、Advisory 相当と考える
-> - `check`の警告を実質的な強制に変えたい場合は、(a) CI 側で `terraform plan` の出力(`-json` の`@level == "warn"` など)を解析して警告検出時にジョブを失敗させる、または (b) 停止させたい条件はそもそも OPA/Conftest や Sentinel などの外部ポリシーエンジン側で Hard-mandatory ルールとして表現する、のいずれかを選ぶ。両者は役割が異なるため混同しない
+> - `check` は「plan/apply を止める仕組み」ではなく「継続的検証(continuous validation)」の仕組みである。アサーションは plan 時だけでなく **apply 後にも評価** され、条件が plan 時点で未知の値(unknown)に依存する場合は評価が apply 後まで持ち越される。そのため plan の警告の有無だけで合否を決めると、正当な変更(新規作成リソースの属性がまだ確定していないケースなど)を誤って停止させたり、逆に apply 後にはじめて顕在化する違反を見逃したりする
+> - 使い分けの指針として、**確実に停止させたい条件** は `check` ではなく、失敗が即エラーになる `validation`・`precondition`・`postcondition`、または OPA/Conftest・Sentinel といった外部ポリシーエンジンの Hard-mandatory ルールとして表現する。`check` は主に apply 後の健全性監視に使い、定期的な `terraform plan` / `tofu plan` の `-json` 出力から **対象の `check` ブロックのアドレスを特定して** 結果を収集し、監視・アラート基盤へ流す運用にする。CI で警告をゲートに使う場合も `@level == "warn"` を一律に失敗扱いにせず(非推奨引数の警告など無関係な警告まで拾ってしまう)、対象の `check` を明示的に絞り込んだうえで、あくまで Advisory 相当の運用であることを前提にする
 
 ---
 
