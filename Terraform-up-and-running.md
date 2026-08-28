@@ -13,7 +13,7 @@
 | 対象読者 | Terraformに初めて触れるソフトウェアエンジニア・インフラエンジニア |
 | 前提知識 | 基本的なLinuxコマンド操作、クラウド（本ガイドはAWSを主軸）の基礎概念 |
 | ゴール | Terraformの思想・基本構文・State管理・モジュール化・チーム運用までを一気通貫で理解する |
-| 対応バージョン | Terraform 1.15系（2026年8月時点の最新安定版）、一部でOpenTofu 1.11系にも言及 |
+| 対応バージョン | Terraform 1.16系（2026年8月時点の最新安定版）、一部でOpenTofu 1.12系にも言及 |
 | 図解ポリシー | ASCIIアートは使用せず、フローチャートはMermaid、比較情報はMarkdown表で統一 |
 
 原著は「Intermediate to advanced」向けとされていますが、本ガイドではその内容を噛み砕き、各章の要点・具体的なHCLコード例・ベストプラクティスを初学者向けに再構成しています。
@@ -53,11 +53,11 @@ DevOpsは「開発（Development）」と「運用（Operations）」を統合�
 
 ### 0-2. Infrastructure as Code（IaC）とは
 
-IaCとは、サーバー・ネットワーク・データベースなどのインフラをGUI操作ではなく「コード」として定義し、バージョン管理・レビュー・自動テスト・自動デプロイの対象にするプラクティスです。IaCツールは大きく4つのカテゴリに分類できます。
+IaCとは、サーバー・ネットワーク・データベースなどのインフラをGUI操作ではなく「コード」として定義し、バージョン管理・レビュー・自動テスト・自動デプロイの対象にするプラクティスです。IaCツールは大きく5つのカテゴリに分類できます。
 
 ```mermaid
 flowchart TB
-    IAC["Infrastructure as Code<br/>ツールの4分類"]
+    IAC["Infrastructure as Code<br/>ツールの5分類"]
     IAC --> A["アドホックスクリプト<br/>(Ad Hoc Scripts)"]
     IAC --> B["構成管理ツール<br/>(Configuration Management)"]
     IAC --> C["サーバーテンプレートツール<br/>(Server Templating)"]
@@ -226,7 +226,7 @@ terraform version
 
 ```hcl
 terraform {
-  required_version = "~> 1.15.0"
+  required_version = ">= 1.16.0, < 2.0.0"
 }
 ```
 
@@ -304,7 +304,7 @@ resource "aws_instance" "example" {
 
 ### 2-5. 設定可能なWebサーバー（変数の導入）
 
-ハードコードを避けるため`variable`ブロックで入力値を外出しします。
+ハードコードを避けるため`variable`ブロックで入力値を外出しします。変数を定義しただけでは何も変わらないため、2-4でポート番号を直書きしていた箇所（セキュリティグループの`ingress`と`user_data`）を必ず`var.server_port`への参照に置き換えます。
 
 ```hcl
 variable "server_port" {
@@ -312,12 +312,46 @@ variable "server_port" {
   type        = number
   default     = 8080
 }
+```
+
+```hcl
+resource "aws_security_group" "instance" {
+  name = "terraform-example-instance"
+
+  ingress {
+    from_port   = var.server_port
+    to_port     = var.server_port
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+resource "aws_instance" "example" {
+  ami                    = "ami-0fb653ca2d3203ac1"
+  instance_type          = "t2.micro"
+  vpc_security_group_ids = [aws_security_group.instance.id]
+
+  # ${var.server_port} で変数の値をスクリプトへ埋め込む（HEREDOC内でも補間が効く）
+  user_data = <<-EOF
+              #!/bin/bash
+              echo "Hello, World" > index.html
+              nohup busybox httpd -f -p ${var.server_port} &
+              EOF
+
+  user_data_replace_on_change = true
+
+  tags = {
+    Name = "terraform-example"
+  }
+}
 
 output "public_ip" {
   value       = aws_instance.example.public_ip
   description = "The public IP address of the web server"
 }
 ```
+
+これで`server_port`の値を変えるだけで、**実際に待ち受けるポートと許可するポートの両方**が追従します。片方だけを変数化すると、サーバーは新しいポートで待ち受けるのにセキュリティグループは旧ポートを開けたまま、という接続不能な状態になるため、必ず両方をひとつの変数から導出します。
 
 **ベストプラクティス**
 - すべての`variable`と`output`に`description`を書く（自己文書化、`terraform-docs`との相性も良い）
@@ -561,6 +595,13 @@ variable "instance_type" {
   description = "The type of EC2 Instance to run"
   type        = string
   default     = "t2.micro"
+
+  # 空文字を弾く。この validation があって初めて、
+  # 第9部の expect_failures = [var.instance_type] が検証エラーを検出できる
+  validation {
+    condition     = length(trimspace(var.instance_type)) > 0
+    error_message = "instance_type must not be empty."
+  }
 }
 ```
 
@@ -695,7 +736,13 @@ resource "aws_autoscaling_schedule" "scale_out_during_business_hours" {
 
 ### 5-6. ゼロダウンタイムデプロイ
 
-`create_before_destroy`ライフサイクルルールを使うと、新リソースを先に作成してから旧リソースを削除するため、サービス断が発生しません。
+`create_before_destroy`ライフサイクルルールは、Terraformの既定の「削除してから作成」を「作成してから削除」へ**順序を入れ替える**ものです。ただしこれ**単体ではダウンタイムがなくなることは保証されません**。Terraformはリソースの作成APIが完了した時点で次のステップへ進むだけで、新しいインスタンス上でアプリケーションが実際にリクエストを処理できる状態になったかどうかは判断しないためです。ヘルスチェックを待たずに旧リソースを破棄すれば、その隙間はそのままサービス断になります。
+
+無停止に近づけるには、`create_before_destroy`に加えて次の3点を揃える必要があります。
+
+1. **新旧のASGを同じロードバランサー（ターゲットグループ）に接続する。** 接続していなければ、そもそもトラフィックの引き継ぎ先が存在しません。
+2. **`min_elb_capacity`（ASG新規作成時）または`wait_for_elb_capacity`（既存ASGの容量変更時）で、指定台数がELBのヘルスチェックを通過するまでTerraformを待たせる。** この待機がないと、健全なインスタンスが揃う前に旧ASGが破棄されます。
+3. **既存ASGのインスタンス入れ替えは`instance_refresh`に任せ、その完了を明示的に確認する。** `instance_refresh`は`apply`の完了後もAWS側で非同期に進むため、**`apply`が成功しても入れ替えが成功したとは限りません**。CDパイプライン側でリフレッシュのステータス（`Successful` / `Failed` / `Cancelled`）をポーリングし、失敗・中断時は直前のLaunch Templateバージョンへ戻すロールバック手順まで用意して初めて運用に耐えます。
 
 ```mermaid
 sequenceDiagram
@@ -705,10 +752,11 @@ sequenceDiagram
     participant LB as ロードバランサー
 
     TF->>New: 1. 新しいリソースを先に作成
-    New->>LB: 2. ヘルスチェック通過後トラフィック登録
-    TF->>Old: 3. 旧リソースをロードバランサーから切り離し
-    TF->>Old: 4. 旧リソースを破棄
-    Note over TF,LB: create_before_destroy = true により<br/>常にどちらかのASGが稼働中
+    New->>LB: 2. ターゲットグループへ登録
+    LB-->>TF: 3. min_elb_capacity 台がヘルスチェックを通過するまで待機
+    TF->>Old: 4. 旧リソースをロードバランサーから切り離し
+    TF->>Old: 5. 旧リソースを破棄
+    Note over TF,LB: create_before_destroy だけでは不十分<br/>ELBへの接続とヘルスチェック待機が揃って初めて無停止に近づく
 ```
 
 ```hcl
@@ -721,7 +769,23 @@ resource "aws_launch_template" "example" {
 
 resource "aws_autoscaling_group" "example" {
   # ...
+
+  # 1. ロードバランサー（ターゲットグループ）へ接続し、健全性の判定もELBに委ねる
+  target_group_arns = [aws_lb_target_group.asg.arn]
+  health_check_type = "ELB"
+
+  # 2. 指定台数がELBのヘルスチェックを通過するまで apply を完了させない
   min_elb_capacity = var.min_size
+
+  # 3. 既存ASGのインスタンス入れ替えは instance_refresh に任せる
+  #    ただし apply 完了後もAWS側で非同期に進むため、
+  #    CD側で完了確認とロールバックを別途実装すること
+  instance_refresh {
+    strategy = "Rolling"
+    preferences {
+      min_healthy_percentage = 100
+    }
+  }
 
   lifecycle {
     create_before_destroy = true
@@ -784,10 +848,10 @@ variable "db_password" {
 
 ### 6-4.【2026年最新】Ephemeral Resources & Write-Only Argumentsによる根本解決
 
-長年の「Stateにシークレットが残ってしまう」問題に対し、HashiCorpは**Terraform 1.10でEphemeral ResourcesとWrite-Only Argumentsを実験導入し、Terraform 1.11で正式GA**しました。これは原著第3版（2022年刊）の時点では存在しなかった、2026年時点における最重要のシークレット管理アップデートです。
+長年の「Stateにシークレットが残ってしまう」問題に対し、HashiCorpは**Terraform 1.10でEphemeral Resourcesを、続くTerraform 1.11でWrite-Only Argumentsを**導入しました。よく一組で語られますが、両者は同じリリースで登場したわけではなく導入バージョンが1つずれています。いずれも原著第3版（2022年刊）の時点では存在しなかった、2026年時点における最重要のシークレット管理アップデートです。
 
-- **Ephemeral Resources**（`ephemeral`ブロック）: `apply`実行中のメモリ上にのみ存在し、PlanファイルにもStateファイルにも書き込まれないリソース
-- **Write-Only Arguments**（`_wo`サフィックスの引数）: プロバイダー側がサポートする場合、値を受け取って設定するが、Stateには保存しない引数
+- **Ephemeral Resources**（`ephemeral`ブロック、**Terraform 1.10以降**）: `apply`実行中のメモリ上にのみ存在し、PlanファイルにもStateファイルにも書き込まれないリソース
+- **Write-Only Arguments**（`_wo`サフィックスの引数、**Terraform 1.11以降**）: プロバイダー側がサポートする場合、値を受け取って設定するが、Stateには保存しない引数
 
 ```mermaid
 sequenceDiagram
@@ -828,7 +892,7 @@ resource "aws_db_instance" "example" {
 | CLI出力へのマスキング | あり | あり |
 | State fileへの平文保存 | される（要暗号化・厳格なアクセス制御） | されない |
 | Plan fileへの保存 | される | されない |
-| 対応バージョン | 全バージョン | Terraform 1.10で実験導入、1.11でGA |
+| 対応バージョン | 全バージョン | Ephemeral Resources: Terraform 1.10以降／Write-Only Arguments: Terraform 1.11以降 |
 | プロバイダー側の対応 | 不要 | Write-Only引数の実装が必要（`hashicorp/aws`は`password_wo`等で順次対応） |
 | 利用可能な場所 | 変数、リソース属性全般 | プロバイダーブロックの認証情報、対応リソースのWrite-Only属性のみ |
 
@@ -932,6 +996,12 @@ resource "aws_eks_cluster" "cluster" {
   vpc_config {
     subnet_ids = var.subnet_ids
   }
+}
+
+# provider ブロックが参照する認証トークンの供給元。
+# これを定義しないと data.aws_eks_cluster_auth.cluster.token が解決できない
+data "aws_eks_cluster_auth" "cluster" {
+  name = aws_eks_cluster.cluster.name
 }
 
 provider "kubernetes" {
@@ -1066,6 +1136,8 @@ run "reject_invalid_instance_type" {
 }
 ```
 
+`expect_failures`は「そのオブジェクトの検証が失敗すること」を期待するテストです。したがって`var.instance_type`を指定する場合、**変数側に`validation`ブロックが定義されていることが前提**になります。上の`reject_invalid_instance_type`が意図どおり動くのは、第4部で`instance_type`に空文字を拒否する`validation`を書いてあるからです。`validation`のない変数に`expect_failures`を指定すると、失敗が発生せずテスト自体が失敗します。
+
 ```bash
 terraform test
 ```
@@ -1188,7 +1260,7 @@ flowchart TB
 |---|---|---|
 | 運営元 | HashiCorp（IBM傘下） | Linux Foundation |
 | ライセンス | BUSL 1.1（ソースアベイラブル） | MPL 2.0（オープンソース） |
-| 最新安定版 | 1.15.x系（1.15.8、2026年7月リリース） | 1.11.x系（1.11.6、2026年4月リリース） |
+| 最新安定版 | 1.16.x系（1.16.0、2026年8月リリース） | 1.12.x系（1.12.6、2026年8月リリース） |
 | 商用マネージドSaaS | HCP Terraform（旧Terraform Cloud） | Scalr、Spacelift等サードパーティ |
 | Policy as Code | Sentinel（HCP Terraform/Enterprise専用）+ OPA | OPA中心 |
 | State暗号化 | HCP Terraform経由で対応 | OSS単体でネイティブ対応（差別化ポイント） |
