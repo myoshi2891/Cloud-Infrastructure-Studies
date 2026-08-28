@@ -262,8 +262,8 @@ IaC ツールを使う上で必ず理解すべき概念が「いつコードが�
 ```mermaid
 flowchart LR
     Code["インフラコード<br/>(.tf ファイルなど)"] --> Plan["Plan/Preview<br/>現在の状態と比較して差分を計算"]
-    Plan --> Review["人間またはポリシーエンジンによるレビュー"]
-    Review --> Apply["Apply<br/>実際にクラウドAPIを呼び出して変更"]
+    Plan --> Review["保存した plan ファイルを人間またはポリシーエンジンがレビュー"]
+    Review --> Apply["Apply<br/>レビュー済みの plan ファイルを渡してクラウドAPIを呼び出す"]
     Apply --> State["状態ファイル(State)を更新<br/>次回の差分計算の基準になる"]
     State -.フィードバック.-> Plan
 ```
@@ -274,6 +274,7 @@ flowchart LR
 > - **保存時暗号化**を有効にする。バックエンド側の暗号化(S3 のサーバーサイド暗号化など)に加え、OpenTofu では State と plan ファイル自体をクライアント側で暗号化する **State Encryption** 機能が使える(これはバックエンドの一種ではなく、任意のバックエンドの上に重ねる暗号化機能で、Terraform には同等の機能がない)。ただし State Encryption は鍵を失うと State も plan も復号できなくなるため、有効化する **前に** 鍵管理と復旧の手順を必ず整備する: ① 鍵の保管場所(KMS / Vault など)を文書化する、② 鍵を冗長にバックアップし、State バックエンドとは別の障害ドメインに保管する、③ 鍵ローテーションの手順と頻度を定める、④ バックアップ鍵からの復号・復旧を定期的にリハーサルして手順が機能することを確認する
 > - **State locking** で同時実行による破損を防ぐ。Terraform の S3 backend では現行のロック方法は `use_lockfile = true`(S3 のコンディショナルライトを使うネイティブロック)であり、従来の `dynamodb_table` によるロックは非推奨で将来のマイナーバージョンで削除予定
 > - `plan` の結果を必ず人間または自動ポリシーチェックがレビューしてから `apply` する運用を徹底する。CI パイプラインで `apply` を自動実行する場合も、承認ステップを挟む
+> - **レビューした plan ファイルそのものを `apply` に渡す**。`apply` 時に plan を作り直すと、レビューから承認までの間に実インフラ・変数・プロバイダーのバージョンが変化していた場合に、レビューされていない変更がそのまま適用されてしまう。自動実行では次の順序を必須とする: ① `terraform plan -out=tfplan`(`tofu plan -out=tfplan`)で plan をファイルに保存する、② 保存した plan を `terraform show -json tfplan` などでレビュー・ポリシー検査する、③ `terraform apply tfplan`(`tofu apply tfplan`)のように保存済み plan を明示的に渡して適用する。なお plan ファイルは機微値を平文で含みうるため、保管場所のアクセス制御と保持期間も併せて定める
 > - ツール選定よりも先に「状態管理の方針」を決める。ツールを乗り換えても状態管理の失敗は同じ形で繰り返される
 
 ---
@@ -766,7 +767,9 @@ flowchart TB
 | AWS CDK | TypeScript/Python/Javaなど(CloudFormationにコンパイル) | Apache 2.0(AWS) | AWS環境に閉じるならアプリ開発者に馴染みやすい構文で書ける |
 | Ansible | YAML(手続き寄りだが冪等性を意識した設計) | GPL系(Red Hat) | サーバー構成管理・アプリケーションデプロイとの親和性が高い |
 
-Pulumi の優位点は言語選択そのものではなく「テスト容易性」にあるとの指摘があります。Pulumi のプログラムは、実際にクラウドリソースをプロビジョニングせずに、各言語の標準的なテストフレームワーク(Jest、pytest、Go の testing など)でユニットテストを書けます。一方の HCL 側も、Terraform 1.6 で導入された `terraform test`(`.tftest.hcl` によるテストファイル)と、Terraform 1.7 以降の `mock_provider`(プロバイダーやリソース、データソースの応答をモックする機能)により、実環境にリソースを作らずにモジュールをテストできるようになっています。OpenTofu も 1.6 でテストフレームワーク(`.tftest.hcl` によるテストファイルと `run` ブロック)を、1.8 で `mock_provider` / `mock_resource` / `mock_data` を導入しており、基本的な書き方は共通です。ただし両者は完全互換ではなく、たとえば Terraform 1.7 以降が `mock_provider` ブロック内にネストして記述できる `override_resource` / `override_data` を OpenTofu はサポートしていません。OpenTofu では `mock_provider` 内の `mock_resource` / `mock_data`、またはトップレベルの `override_resource` / `override_data` へ書き換える必要があり、既存のテスト資産を移行する際はこの差分ぶんのテスト再構成が発生します。したがって「HCL にはテスト手段がない」わけではなく、既存の言語エコシステム(アサーションライブラリ、カバレッジ、モックフレームワーク)をそのまま使えるかどうかが実質的な差になります。一方で、宣言型で確立されたワークフロー(HCLベース)に慣れているチームにとっては、Terraform・OpenTofu も依然として効果的に機能し続けています。
+Pulumi の優位点は言語選択そのものではなく「テスト容易性」にあるとの指摘があります。Pulumi のプログラムは、実際にクラウドリソースをプロビジョニングせずに、各言語の標準的なテストフレームワーク(Jest、pytest、Go の testing など)でユニットテストを書けます。一方の HCL 側も、Terraform 1.6 で導入された `terraform test`(`.tftest.hcl` によるテストファイル)と、Terraform 1.7 以降の `mock_provider`(プロバイダーやリソース、データソースの応答をモックする機能)により、実環境にリソースを作らずにモジュールをテストできるようになっています。OpenTofu も 1.6 でテストフレームワーク(`.tftest.hcl` によるテストファイルと `run` ブロック)を、1.8 で `mock_provider` / `mock_resource` / `mock_data` を導入しており、基本的な書き方は共通です。両者の差はバージョンによって変化しており、Terraform 1.7 以降が `mock_provider` ブロック内にネストして記述できる `override_resource` / `override_data` は、OpenTofu では 1.7 / 1.8 の時点ではサポートされておらず、`mock_provider` 内の `mock_resource` / `mock_data`、またはトップレベルの `override_resource` / `override_data` へ書き換える必要がありました。ただしこの制約は **OpenTofu 1.9 で解消**され、1.9 以降(現行の 1.11 系・1.12 系を含む)はプロバイダースコープにネストした `override_resource` / `override_data` を Terraform と同様に記述できます。したがって 1.9 以降を前提とする限り、この点を理由としたテスト資産の再構成は発生しません。
+
+つまり「HCL にはテスト手段がない」わけではなく、既存の言語エコシステム(アサーションライブラリ、カバレッジ、モックフレームワーク)をそのまま使えるかどうかが実質的な差になります。一方で、宣言型で確立されたワークフロー(HCLベース)に慣れているチームにとっては、Terraform・OpenTofu も依然として効果的に機能し続けています。
 
 > **ベストプラクティス**
 > - ツール選定に時間をかけすぎない。書籍が繰り返し強調するように「原則・パターン・プラクティス」はツールを問わず適用できるため、既存のチームスキルセットや周辺エコシステム(モジュールの入手性、社内の知見)を優先して選ぶ
