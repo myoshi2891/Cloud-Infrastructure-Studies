@@ -311,6 +311,10 @@ Accelerateの刊行から数年が経ち、生成AIによるコーディング�
 - 報告書は、AIから真の価値を引き出せるかどうかは、ツールそのものよりも**内部プラットフォームの品質**に強く左右されると結論づけています。プラットフォーム品質が低い組織ではAIの効果はほぼ無視できる水準にとどまる一方、プラットフォーム品質が高い組織では、AIの効果が明確かつ強く現れます。
 - あわせて公表された「DORA AI Capabilities Model」では、AIの恩恵を増幅する7つの能力が提示されています。また、チームを7つの「アーキタイプ（類型）」（例: 調和のとれたハイアチーバー「harmonious high-achievers」から、レガシーの足かせを抱える「legacy bottleneck」まで）に分類し、それぞれに適した改善の道筋を示す枠組みも導入されました。
 - **バリューストリームマネジメント（VSM）**、すなわち企画から顧客への価値提供までの流れを可視化・改善する取り組みが、AIによる個々の生産性向上をチーム・プロダクトレベルの成果へとつなげる「増幅器の増幅器」として機能することも示されています。
+- **2026年4月22日には、続編にあたる「ROI of AI-assisted Software Development」（v.2026.1）が公開されました。** これは「AIは生産性を上げるのか」ではなく「その効果を金額としてどう測るのか」へ問いを移した報告書で、Google CloudのDORAチームとGoogle Cloud Consultingのdelta innovation practiceによる共著です。実務上の要点は次の3点です。
+  - **初期の生産性低下（J-Curve）を前提として織り込む**: AI導入の直後は、学習コスト、生成コードを検証する「検証税」、パイプラインの適応コストによって生産性が一時的に落ち込みます。報告書はこれを変革の「授業料（tuition cost）」と位置づけ、避けるべき失敗ではなく、あらかじめ予算と期待値に組み込むべき投資として扱うよう促しています。
+  - **ROIを金額へ翻訳する枠組みと公式の計算ツール**: エンジニアリング指標をビジネス価値へ変換する計算モデルと、自社の前提値を入力できる対話型のROI計算ツールが提供されています。著者らは保守的・現実的・楽観的の3シナリオを試算し、単一の数値ではなく「幅」として財務部門と合意することを推奨しています。
+  - **取り戻した能力の再投資こそが最大のリターン**: 最も大きな利得は、ツールそのものではなく、不要な手戻り（リワーク）を削減してエンジニアリングの余力（capacity）を取り戻し、それを再投資することで、人員を増やさずにチームの産出量を広げる点から生まれると結論づけています。これは前述の「AIは増幅器である」という2025年の知見を、金額の観点から裏づけるものです。
 
 ```mermaid
 flowchart TB
@@ -372,24 +376,26 @@ Accelerateがもたらした最大の教訓は、「ソフトウェアデリバ�
 8. DORA公式サイト（2025 State of AI-assisted Software Development） ― https://dora.dev/dora-report-2025/
 9. Google Cloud Blog（2025 DORA Report発表） ― https://cloud.google.com/blog/products/ai-machine-learning/announcing-the-2025-dora-report
 10. Google Blog（2025 DORA Reportの主要な発見） ― https://blog.google/innovation-and-ai/technology/developers-tools/dora-report-2025/
-11. IT Revolution（書籍『Accelerate』紹介ページ） ― https://itrevolution.com/product/accelerate/
-12. IT Revolution（24の主要能力の解説記事） ― https://itrevolution.com/articles/24-key-capabilities-to-drive-improvement-in-software-delivery/
-13. IT Revolution（AIの「鏡効果」に関する分析記事） ― https://itrevolution.com/articles/ais-mirror-effect-how-the-2025-dora-report-reveals-your-organizations-true-capabilities/
-14. Wikipedia（Accelerate (book)） ― https://en.wikipedia.org/wiki/Accelerate_(book)
-15. Wikipedia（DevOps Research and Assessment） ― https://en.wikipedia.org/wiki/DevOps_Research_and_Assessment
-16. Martin Fowler公式サイト（Patterns for Managing Source Code Branches） ― https://martinfowler.com/articles/branching-patterns.html
-17. Martin Fowler公式サイト（Continuous Integration） ― https://martinfowler.com/articles/continuousIntegration.html
-18. continuousdelivery.com（Jez Humble, Continuous Integration解説） ― https://continuousdelivery.com/foundations/continuous-integration/
-19. ThoughtWorks（Four Key Metricsに関するビジネス価値の解説） ― https://www.thoughtworks.com/en-us/insights/articles/improving-your-bottom-line-with-four-key-metrics
-20. ThoughtWorks（2025 DORA Reportに関する解説） ― https://www.thoughtworks.com/en-us/insights/reports/the-2025-dora-report
-21. ThoughtWorks（トランクベース開発とデプロイパイプライン） ― https://www.thoughtworks.com/insights/blog/enabling-trunk-based-development-deployment-pipelines
-22. Paul Hammant氏によるトランクベース開発の解説 ― https://paulhammant.com/2013/04/05/what-is-trunk-based-development/
-23. Luca Rossi（Refactoring）による書籍レビュー・24能力の解説 ― https://refactoring.fm/p/accelerate
-24. Swarmia（DORAメトリクスの実践ガイド） ― https://www.swarmia.com/blog/dora-metrics/
-25. Splunk（2025 DORA Reportのレビュー記事） ― https://www.splunk.com/en_us/blog/learn/state-of-devops.html
-26. CD Foundation（DORA 4指標から5指標への変化の解説） ― https://cd.foundation/blog/2025/10/16/dora-5-metrics/
-27. Software Meadows（『Accelerate』チャプター別ノート、24能力の一覧） ― https://www.softwaremeadows.com/devops/accelerate_notes_and_quotes/
-28. Psych Safety（Westrumの組織文化類型論の解説） ― https://psychsafety.com/psychological-safety-81-westrums-cultural-typologies/
+11. DORA公式サイト（ROI of AI-assisted Software Development report、v.2026.1、2026年4月22日公開） ― https://dora.dev/ai/roi/report/
+12. DORA公式サイト（AI関連リサーチとROI計算ツールのハブ） ― https://dora.dev/ai/
+13. IT Revolution（書籍『Accelerate』紹介ページ） ― https://itrevolution.com/product/accelerate/
+14. IT Revolution（24の主要能力の解説記事） ― https://itrevolution.com/articles/24-key-capabilities-to-drive-improvement-in-software-delivery/
+15. IT Revolution（AIの「鏡効果」に関する分析記事） ― https://itrevolution.com/articles/ais-mirror-effect-how-the-2025-dora-report-reveals-your-organizations-true-capabilities/
+16. Wikipedia（Accelerate (book)） ― https://en.wikipedia.org/wiki/Accelerate_(book)
+17. Wikipedia（DevOps Research and Assessment） ― https://en.wikipedia.org/wiki/DevOps_Research_and_Assessment
+18. Martin Fowler公式サイト（Patterns for Managing Source Code Branches） ― https://martinfowler.com/articles/branching-patterns.html
+19. Martin Fowler公式サイト（Continuous Integration） ― https://martinfowler.com/articles/continuousIntegration.html
+20. continuousdelivery.com（Jez Humble, Continuous Integration解説） ― https://continuousdelivery.com/foundations/continuous-integration/
+21. ThoughtWorks（Four Key Metricsに関するビジネス価値の解説） ― https://www.thoughtworks.com/en-us/insights/articles/improving-your-bottom-line-with-four-key-metrics
+22. ThoughtWorks（2025 DORA Reportに関する解説） ― https://www.thoughtworks.com/en-us/insights/reports/the-2025-dora-report
+23. ThoughtWorks（トランクベース開発とデプロイパイプライン） ― https://www.thoughtworks.com/insights/blog/enabling-trunk-based-development-deployment-pipelines
+24. Paul Hammant氏によるトランクベース開発の解説 ― https://paulhammant.com/2013/04/05/what-is-trunk-based-development/
+25. Luca Rossi（Refactoring）による書籍レビュー・24能力の解説 ― https://refactoring.fm/p/accelerate
+26. Swarmia（DORAメトリクスの実践ガイド） ― https://www.swarmia.com/blog/dora-metrics/
+27. Splunk（2025 DORA Reportのレビュー記事） ― https://www.splunk.com/en_us/blog/learn/state-of-devops.html
+28. CD Foundation（DORA 4指標から5指標への変化の解説） ― https://cd.foundation/blog/2025/10/16/dora-5-metrics/
+29. Software Meadows（『Accelerate』チャプター別ノート、24能力の一覧） ― https://www.softwaremeadows.com/devops/accelerate_notes_and_quotes/
+30. Psych Safety（Westrumの組織文化類型論の解説） ― https://psychsafety.com/psychological-safety-81-westrums-cultural-typologies/
 
 ---
 
