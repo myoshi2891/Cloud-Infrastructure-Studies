@@ -379,7 +379,11 @@ resource "aws_launch_template" "example" {
 resource "aws_autoscaling_group" "example" {
   launch_template {
     id      = aws_launch_template.example.id
-    version = "$Latest"
+    version = aws_launch_template.example.latest_version
+  }
+
+  instance_refresh {
+    strategy = "Rolling"
   }
 
   min_size = 2
@@ -392,6 +396,8 @@ resource "aws_autoscaling_group" "example" {
   }
 }
 ```
+
+`version`に文字列`"$Latest"`を書くと、Launch Templateの中身（AMIやユーザーデータ）を変更してもASG側の属性値は`"$Latest"`のまま変わらないため、Terraformは差分を検知せずASGを更新しません。`aws_launch_template.example.latest_version`を参照すれば、テンプレート更新のたびにバージョン番号が変わってASGにも差分が現れ、`instance_refresh`によるローリング入れ替えが起動します。
 
 ### 2-7. ロードバランサーのデプロイ
 
@@ -988,7 +994,10 @@ flowchart TB
 
 ### 7-5. EKSでのDockerコンテナデプロイ
 
+クラスタ本体とクラスタ内のリソースは、**別々のroot module（＝別State）**として構成します。まずEKSクラスタを作る側です。
+
 ```hcl
+# root module A（例: live/eks-cluster）: aws プロバイダーでクラスタ本体だけを管理する
 resource "aws_eks_cluster" "cluster" {
   name     = "example-cluster"
   role_arn = aws_iam_role.cluster.arn
@@ -998,15 +1007,33 @@ resource "aws_eks_cluster" "cluster" {
   }
 }
 
-# provider ブロックが参照する認証トークンの供給元。
-# これを定義しないと data.aws_eks_cluster_auth.cluster.token が解決できない
+output "cluster_name" {
+  value       = aws_eks_cluster.cluster.name
+  description = "Kubernetesリソース側のroot moduleへ渡すクラスタ名"
+}
+```
+
+次に、そのクラスタ内でKubernetesリソースを管理する側です。クラスタは自分では作らず、**data sourceで既存クラスタを参照**して`provider "kubernetes"`を構成します。
+
+```hcl
+# root module B（例: live/eks-workloads）: kubernetes プロバイダーでクラスタ内リソースを管理する
+variable "cluster_name" {
+  description = "root module A の cluster_name 出力（terraform_remote_state 等で受け取る）"
+  type        = string
+}
+
+data "aws_eks_cluster" "cluster" {
+  name = var.cluster_name
+}
+
+# provider ブロックが参照する認証トークンの供給元
 data "aws_eks_cluster_auth" "cluster" {
-  name = aws_eks_cluster.cluster.name
+  name = var.cluster_name
 }
 
 provider "kubernetes" {
-  host                   = aws_eks_cluster.cluster.endpoint
-  cluster_ca_certificate = base64decode(aws_eks_cluster.cluster.certificate_authority[0].data)
+  host                   = data.aws_eks_cluster.cluster.endpoint
+  cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority[0].data)
   token                  = data.aws_eks_cluster_auth.cluster.token
 }
 
@@ -1022,7 +1049,7 @@ resource "kubernetes_deployment" "example" {
 }
 ```
 
-**ベストプラクティス**: EKSクラスタ本体（`aws`プロバイダー管轄）と、その中で動くKubernetesリソース（`kubernetes`プロバイダー管轄）は、依存関係が明確な一方で変更頻度・責任分界点が異なるため、実運用ではStateを分離することもよく行われます。
+**ベストプラクティス**: EKSクラスタ本体（`aws`プロバイダー管轄）と、その中で動くKubernetesリソース（`kubernetes`プロバイダー管轄）は、必ずroot module／Stateを分離します。同一のapplyでクラスタを作りながら、そのクラスタの`endpoint`や`token`で`provider "kubernetes"`を構成すると、プロバイダー設定が「まだ存在しないリソースの属性」に依存することになり、初回`apply`や`plan`が失敗したり、クラスタの再作成時にプロバイダーの初期化ごと壊れてStateを手当てできなくなったりします。分離しておけば、クラスタ側の変更（バージョンアップ、ノードグループ変更）とアプリ側の変更（Deploymentの更新）を独立した変更頻度・責任分界点で回せます。
 
 ---
 
