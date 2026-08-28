@@ -998,6 +998,35 @@ flowchart TB
 
 ```hcl
 # root module A（例: live/eks-cluster）: aws プロバイダーでクラスタ本体だけを管理する
+
+# クラスタが参照する前提を同じroot module内で宣言しておく
+variable "subnet_ids" {
+  description = "EKSコントロールプレーンを配置するサブネットID（最低2つ、別AZ）"
+  type        = list(string)
+}
+
+data "aws_iam_policy_document" "cluster_assume_role" {
+  statement {
+    effect  = "Allow"
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["eks.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_iam_role" "cluster" {
+  name               = "example-cluster-role"
+  assume_role_policy = data.aws_iam_policy_document.cluster_assume_role.json
+}
+
+resource "aws_iam_role_policy_attachment" "cluster" {
+  role       = aws_iam_role.cluster.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
+}
+
 resource "aws_eks_cluster" "cluster" {
   name     = "example-cluster"
   role_arn = aws_iam_role.cluster.arn
@@ -1005,6 +1034,9 @@ resource "aws_eks_cluster" "cluster" {
   vpc_config {
     subnet_ids = var.subnet_ids
   }
+
+  # ロール権限が付与される前にクラスタ作成が走らないようにする
+  depends_on = [aws_iam_role_policy_attachment.cluster]
 }
 
 output "cluster_name" {
@@ -1232,15 +1264,15 @@ func TestWebServerCluster(t *testing.T) {
 ```mermaid
 flowchart TB
     Start(["変更を加えたい"]) --> Branch["1. バージョン管理<br/>featureブランチを作成"]
-    Branch --> Local["2. ローカルで実行<br/>terraform plan で確認"]
-    Local --> Change["3. コード変更<br/>コミット"]
-    Change --> PR["4. レビュー依頼<br/>Pull Requestを作成"]
+    Branch --> Change["2. コード変更<br/>コミット"]
+    Change --> Local["3. ローカルで実行<br/>変更後のコードを terraform plan で確認"]
+    Local --> PR["4. レビュー依頼<br/>Pull Requestを作成"]
     PR --> CI["5. 自動テスト<br/>fmt/validate/test/tflint/セキュリティスキャン"]
     CI --> Merge["6. マージ<br/>mainブランチへ統合"]
     Merge --> Deploy["7. デプロイ<br/>CI/CDがplan結果を提示 → 承認 → apply"]
 
     classDef step fill:#1e3a5f,stroke:#7c9eff,color:#eaf1ff
-    class Start,Branch,Local,Change,PR,CI,Merge,Deploy step
+    class Start,Branch,Change,Local,PR,CI,Merge,Deploy step
 ```
 
 | 観点 | アプリケーションコード | インフラコード |
@@ -1290,7 +1322,8 @@ flowchart TB
 | 最新安定版 | 1.16.x系（1.16.0、2026年8月リリース） | 1.12.x系（1.12.6、2026年8月リリース） |
 | 商用マネージドSaaS | HCP Terraform（旧Terraform Cloud） | Scalr、Spacelift等サードパーティ |
 | Policy as Code | Sentinel（HCP Terraform/Enterprise専用）+ OPA | OPA中心 |
-| State暗号化 | HCP Terraform経由で対応 | OSS単体でネイティブ対応（差別化ポイント） |
+| State保存時暗号化（バックエンド側） | S3 backendの`encrypt = true`、GCS/Azureのサーバーサイド暗号化など | 同左（Terraform互換のバックエンド機能をそのまま利用） |
+| ネイティブなState/Plan暗号化（クライアント側） | OSS単体では非対応（HCP Terraform経由で保管時暗号化を利用） | OSS単体でネイティブ対応（1.7以降のState Encryption。差別化ポイント） |
 | AI/MCP統合 | HCP Terraform MCPサーバーでレジストリ検索・ワークスペース操作に対応 | コミュニティベースのツールが中心 |
 | プロバイダー互換性 | ― | Terraformプロバイダーの多くがそのまま利用可能 |
 
@@ -1298,7 +1331,7 @@ flowchart TB
 
 ### 11-4. HCP Terraform: Stacks・料金体系・AI統合
 
-- **Terraform Stacks**: 複数のインフラコンポーネント（VPC、DB、アプリ基盤など）をライフサイクルの異なる単位としてまとめて管理する機能。2025年のHashiConfでGAとなり、2026年にはリンクドStacks（Stacks間の依存関係の自動連携）やモノレポ対応がGA
+- **Terraform Stacks**: 複数のインフラコンポーネント（VPC、DB、アプリ基盤など）をライフサイクルの異なる単位としてまとめて管理する機能。2025年のHashiConfでGA。関連機能はそれぞれ状況が異なり、**リンクドStacks**（Stacks間の依存関係の自動連携）は2025年2月25日にPublic Betaとして発表された段階、**モノレポのネイティブサポート**は2025年12月にGAとなっている
 - **無料枠の変更**: 従来のHCP Terraform無料プランは2026年3月31日に終了し、現在は「管理対象リソース500個まで」という新しい無料枠に移行。有償プランは概ね管理対象リソース1つあたり月額0.10ドル程度から
 - **AI/MCP統合**: HCP Terraform MCPサーバーにより、AIエージェントやIDEから自然言語でレジストリ検索・ワークスペース操作・コスト影響の問い合わせが可能になっている（2025〜2026年のロードマップの中心テーマ）
 
@@ -1309,7 +1342,7 @@ flowchart TB
     Plan["terraform plan の出力"] --> Gate{"ポリシーゲート"}
     Gate --> Sentinel["Sentinel<br/>HCP Terraform/Enterprise専用<br/>plan/state/run/config段階で評価"]
     Gate --> OPA["OPA (Rego)<br/>ベンダー中立<br/>Kubernetes等とも共通の言語"]
-    Gate --> Scanner["Checkov / tfsec(Trivy)<br/>事前定義済みのセキュリティルール集<br/>設定即利用可能"]
+    Gate --> Scanner["Checkov / Trivy config<br/>事前定義済みのセキュリティルール集<br/>設定即利用可能"]
     Sentinel --> Result["合格 → apply実行 / 不合格 → ブロック"]
     OPA --> Result
     Scanner --> Result
@@ -1324,7 +1357,7 @@ flowchart TB
 |---|---|---|---|
 | Sentinel | 統合型プロプライエタリゲート | HCP Terraform/Enterprise専用 | run全体（plan/state/config）との緊密な統合 |
 | OPA（Rego） | 汎用ポリシーエンジン | なし（Kubernetes等でも同一言語） | 組織独自のガバナンスルールの一元管理 |
-| Checkov / tfsec（Trivy） | 静的セキュリティスキャナー | なし | 既知の誤設定（公開バケット等）の即時検出 |
+| Checkov / Trivy config | 静的セキュリティスキャナー | なし | 既知の誤設定（公開バケット等）の即時検出。tfsecはレガシー扱いでTrivyのconfigスキャンへ統合・移行が進んでいるため、新規導入はTrivyを選ぶ |
 
 **ベストプラクティス**: 単一ツールに頼らず、「スキャナーで既知の穴を塞ぐ」＋「OPA/Sentinelで組織固有のガバナンスを強制する」の2層構成が2026年時点の成熟した構成として紹介されています。ネイティブHCLの`precondition`/`postcondition`/`check`ブロックだけでも、ポリシー違反の一定割合（分析によれば約3割程度）は事前に検出できるため、まずはHCL標準機能から始めるのも有効です。
 
