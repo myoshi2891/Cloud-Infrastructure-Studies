@@ -386,7 +386,7 @@ flowchart TB
 | 手動パラメータ入力 | 最もシンプルだが、ヒューマンエラーのリスクが高く自動化に向かない |
 | 環境変数 | CI/CD パイプラインとの親和性が高い |
 | スクリプトによる動的パラメータ生成 | 柔軟だが、ロジックが複雑化しやすい |
-| 設定ファイル(YAML/JSON/tfvars) | 可読性が高くレビューしやすい。最も一般的 |
+| 設定ファイル(YAML/JSON/tfvars) | 可読性が高くレビューしやすい。最も一般的。ただし Terraform/OpenTofu が変数定義ファイルとして自動認識するのは `.tfvars` と `.tfvars.json` のみで、YAML を使う場合は事前に `.tfvars`/`.tfvars.json` へ変換するか、`yamldecode()` などで読み取る処理が別途必要になる |
 | パイプラインのステージパラメータ | パイプラインのステージごとに値を切り替える |
 | 設定レジストリ(Parameter Store 等) | 一元管理でき、複数スタックから参照可能 |
 
@@ -766,7 +766,7 @@ flowchart TB
 | AWS CDK | TypeScript/Python/Javaなど(CloudFormationにコンパイル) | Apache 2.0(AWS) | AWS環境に閉じるならアプリ開発者に馴染みやすい構文で書ける |
 | Ansible | YAML(手続き寄りだが冪等性を意識した設計) | GPL系(Red Hat) | サーバー構成管理・アプリケーションデプロイとの親和性が高い |
 
-Pulumi の優位点は言語選択そのものではなく「テスト容易性」にあるとの指摘があります。Pulumi のプログラムは、実際にクラウドリソースをプロビジョニングせずに、各言語の標準的なテストフレームワーク(Jest、pytest、Go の testing など)でユニットテストを書けます。一方の HCL 側も、Terraform 1.6 で導入された `terraform test`(`.tftest.hcl` によるテストファイル)と、Terraform 1.7 以降の `mock_provider`(プロバイダーやリソース、データソースの応答をモックする機能)により、実環境にリソースを作らずにモジュールをテストできるようになっています。OpenTofu も 1.6 でテストフレームワーク(`.tftest.hcl` によるテストファイルと `run` ブロック)を、1.7 で `mock_provider` を導入しており、基本的な書き方は共通です。ただし両者は完全互換ではなく、たとえば Terraform 1.7 以降が `mock_provider` ブロック内にネストして記述できる `override_resource` / `override_data` を OpenTofu はサポートしていません。OpenTofu では `mock_provider` 内の `mock_resource` / `mock_data`、またはトップレベルの `override_resource` / `override_data` へ書き換える必要があり、既存のテスト資産を移行する際はこの差分ぶんのテスト再構成が発生します。したがって「HCL にはテスト手段がない」わけではなく、既存の言語エコシステム(アサーションライブラリ、カバレッジ、モックフレームワーク)をそのまま使えるかどうかが実質的な差になります。一方で、宣言型で確立されたワークフロー(HCLベース)に慣れているチームにとっては、Terraform・OpenTofu も依然として効果的に機能し続けています。
+Pulumi の優位点は言語選択そのものではなく「テスト容易性」にあるとの指摘があります。Pulumi のプログラムは、実際にクラウドリソースをプロビジョニングせずに、各言語の標準的なテストフレームワーク(Jest、pytest、Go の testing など)でユニットテストを書けます。一方の HCL 側も、Terraform 1.6 で導入された `terraform test`(`.tftest.hcl` によるテストファイル)と、Terraform 1.7 以降の `mock_provider`(プロバイダーやリソース、データソースの応答をモックする機能)により、実環境にリソースを作らずにモジュールをテストできるようになっています。OpenTofu も 1.6 でテストフレームワーク(`.tftest.hcl` によるテストファイルと `run` ブロック)を、1.8 で `mock_provider` / `mock_resource` / `mock_data` を導入しており、基本的な書き方は共通です。ただし両者は完全互換ではなく、たとえば Terraform 1.7 以降が `mock_provider` ブロック内にネストして記述できる `override_resource` / `override_data` を OpenTofu はサポートしていません。OpenTofu では `mock_provider` 内の `mock_resource` / `mock_data`、またはトップレベルの `override_resource` / `override_data` へ書き換える必要があり、既存のテスト資産を移行する際はこの差分ぶんのテスト再構成が発生します。したがって「HCL にはテスト手段がない」わけではなく、既存の言語エコシステム(アサーションライブラリ、カバレッジ、モックフレームワーク)をそのまま使えるかどうかが実質的な差になります。一方で、宣言型で確立されたワークフロー(HCLベース)に慣れているチームにとっては、Terraform・OpenTofu も依然として効果的に機能し続けています。
 
 > **ベストプラクティス**
 > - ツール選定に時間をかけすぎない。書籍が繰り返し強調するように「原則・パターン・プラクティス」はツールを問わず適用できるため、既存のチームスキルセットや周辺エコシステム(モジュールの入手性、社内の知見)を優先して選ぶ
@@ -847,7 +847,7 @@ Policy as Code 導入で最も失敗しやすいポイントは、ツール選�
 > **ベストプラクティス**
 > - 最初から Hard-mandatory で導入せず、Advisory → Soft-mandatory → Hard-mandatory と段階的に強制レベルを引き上げ、誤検知(False Positive)によるチームの反発を避ける
 > - 正当な例外(レガシーシステムの一時的な許容など)は、理由・承認者・見直し期限を明記したコード内コメントやチケットとして記録し、「なぜ例外を許したか」を追跡可能にする
-> - ネイティブの Terraform 機能(変数の`validation`ブロック、`precondition`/`postcondition`、`check`ブロック)だけでもポリシー課題の一定割合(3割程度という報告もある)は解決できるため、外部ツール導入前にまずネイティブ機能を使い切る
+> - ネイティブの Terraform 機能(変数の`validation`ブロック、`precondition`/`postcondition`、`check`ブロック)だけでも一定の範囲のポリシー要件は解決できるため、外部ツール導入前にまずネイティブ機能を使い切る
 > - ただしネイティブ機能は強制力が一様ではない。`validation`・`precondition`・`postcondition` はアサーションが失敗すると **エラーとなり plan/apply がそこで停止する** のに対し、`check`ブロックのアサーション失敗は **警告(Warning)を出すだけで plan/apply 自体は継続する**。したがって `check` は単独ではガードレールにならず、Advisory 相当と考える
 > - `check`の警告を実質的な強制に変えたい場合は、(a) CI 側で `terraform plan` の出力(`-json` の`@level == "warn"` など)を解析して警告検出時にジョブを失敗させる、または (b) 停止させたい条件はそもそも OPA/Conftest や Sentinel などの外部ポリシーエンジン側で Hard-mandatory ルールとして表現する、のいずれかを選ぶ。両者は役割が異なるため混同しない
 
