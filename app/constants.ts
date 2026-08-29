@@ -2,7 +2,7 @@
 
 import { HANDS_ON_ENABLED } from '@/lib/featureFlags';
 
-export type Provider = 'GCP' | 'AWS' | 'Cisco' | 'CompTIA';
+export type Provider = 'GCP' | 'AWS' | 'Cisco' | 'CompTIA' | 'Books';
 
 export interface ExamDomain {
     label: string;
@@ -19,7 +19,8 @@ export type ColorKey =
     | 'card-pca'
     | 'card-aws-saa'
     | 'card-ccna'
-    | 'card-comptia';
+    | 'card-comptia'
+    | 'card-accelerate';
 
 export interface Exam {
     id: string;
@@ -50,6 +51,7 @@ export const cardColorMap: Record<ColorKey, string> = {
     'card-ccna': 'card-ccna',
     'card-aws-saa': 'card-aws-saa',
     'card-comptia': 'card-comptia',
+    'card-accelerate': 'card-accelerate',
 };
 
 export const providerMeta: Record<
@@ -76,9 +78,14 @@ export const providerMeta: Record<
         kicker: 'Infrastructure & Security',
         description: 'ベンダーニュートラルなITインフラ・ネットワーク・セキュリティ標準を学ぶ',
     },
+    Books: {
+        label: 'Recommended Books',
+        kicker: 'Engineering & DevOps',
+        description: '名著から学ぶエンジニアリング・DevOps・アーキテクチャの本質',
+    },
 };
 
-export const providerOrder: Provider[] = ['GCP', 'AWS', 'Cisco', 'CompTIA'];
+export const providerOrder: Provider[] = ['GCP', 'AWS', 'Cisco', 'CompTIA', 'Books'];
 
 const ALL_EXAMS: Exam[] = [
     {
@@ -590,6 +597,27 @@ const ALL_EXAMS: Exam[] = [
         badge: 'ネットワーク基礎',
         icon: '⚡',
         provider: 'CompTIA',
+    },
+    {
+        id: 'accelerate',
+        label: 'Accelerate',
+        abbr: 'Accelerate',
+        level: 'DevOps & Lean',
+        score: 'DORA 5指標 / 24能力',
+        color: 'card-accelerate',
+        href: '/recommended-books/accelerate',
+        description:
+            'LeanとDevOpsの科学。DORAメトリクス、24の能力、Westrum組織文化モデル、AI支援開発時代の最新知見までを体系的に解説する完全ガイド。',
+        domains: [
+            {
+                label: '完全解説ガイド',
+                href: '/recommended-books/accelerate',
+                pct: '完全解説',
+            },
+        ],
+        badge: '名著ガイド',
+        icon: '📚',
+        provider: 'Books',
     },
 ];
 

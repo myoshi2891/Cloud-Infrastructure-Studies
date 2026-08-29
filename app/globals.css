@@ -504,6 +504,9 @@
     --color-theme-cisco-bg: hsl(215 70% 50% / 0.20);
     --color-theme-cisco-fg: hsl(215 95% 70%);
 
+    --color-theme-accelerate-bg: hsl(225 45% 45% / 0.25);
+    --color-theme-accelerate-fg: hsl(225 75% 70%);
+
     --navy: #0a2e4d;
     --navy-mid: #123a57;
     --amber: #e8a33d;
@@ -640,6 +643,7 @@ body {
 .card-pca { --card-accent: var(--color-theme-pca-fg); }
 .card-ccna { --card-accent: var(--color-theme-cisco-fg); }
 .card-aws-saa { --card-accent: var(--color-theme-aws-fg); }
+.card-accelerate { --card-accent: var(--color-theme-accelerate-fg); }
 
 @utility text-gradient-aurora {
     background: linear-gradient(135deg, var(--color-brand-text-start), var(--color-brand-text-end));
@@ -706,6 +710,11 @@ body {
 @utility icon-theme-hands-on {
     background: var(--color-theme-ace-bg);
     color: var(--color-theme-ace-fg);
+}
+
+@utility icon-theme-accelerate {
+    background: var(--color-theme-accelerate-bg);
+    color: var(--color-theme-accelerate-fg);
 }
 
 /* Provider identity marks: メニューとホームで同じ視覚言語を共有する。 */
