@@ -4,6 +4,33 @@
 
 ---
 
+## 2026-08-29: 『Infrastructure as Code』実践ガイド 100%全量移行 (完了)
+
+### 目的
+
+`Infrastructure-as-code-guide.html` を、Next.js App Router 5ファイル構成 (`page.tsx`, `InfrastructureAsCodeGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/recommended-books/infrastructure-as-code` ルートへ移行。グローバルナビゲーションの「Recommended Books」に追加。見出し(h1:1, h2:10, h3:27, h4:0)、全19個のテーブル、26個のMermaid図解、全リスト(84件)、全外部リンク(29件)・全本文・コールアウト注記(3件)・実践チェックリスト(14件)・参考文献一覧(27件)を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for infrastructure-as-code` (`79081aa`)
+- [x] **Step 1 (Red)**: `test(books): add failing tests for infrastructure-as-code` (`2315a83`)
+- [x] **Step 2 (Green)**: `feat(books): implement infrastructure-as-code to pass tests` (`51fe7ed`)
+- [x] **Step 3 (Refactor)**: `refactor(books): integrate infrastructure-as-code into routing and update docs` (`6935dfe`)
+- [x] **Step 4 (Archive & Sync)**: `chore(docs): update MIGRATION_PROGRESS.md — migrate infrastructure-as-code`
+
+### 関連ファイル
+
+- [app/recommended-books/infrastructure-as-code/page.tsx](app/recommended-books/infrastructure-as-code/page.tsx)
+- [app/recommended-books/infrastructure-as-code/InfrastructureAsCodeGuide.tsx](app/recommended-books/infrastructure-as-code/InfrastructureAsCodeGuide.tsx)
+- [app/recommended-books/infrastructure-as-code/NavBar.tsx](app/recommended-books/infrastructure-as-code/NavBar.tsx)
+- [app/recommended-books/infrastructure-as-code/constants.ts](app/recommended-books/infrastructure-as-code/constants.ts)
+- [app/recommended-books/infrastructure-as-code/page.css](app/recommended-books/infrastructure-as-code/page.css)
+- [`__tests__/recommended-books/infrastructure-as-code/page.test.tsx`](__tests__/recommended-books/infrastructure-as-code/page.test.tsx)
+- [docs/migration-inventory/infrastructure-as-code.json](docs/migration-inventory/infrastructure-as-code.json)
+- [archive/Books/html/Infrastructure-as-code-guide.html](archive/Books/html/Infrastructure-as-code-guide.html)
+
+---
+
 ## 2026-08-29: 『Release It!』第2版 本番対応ソフトウェア設計・デプロイ完全ガイド 100%全量移行 (完了)
 
 ### 目的
