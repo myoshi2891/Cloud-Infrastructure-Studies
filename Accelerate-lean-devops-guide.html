@@ -558,6 +558,14 @@
   }
 
   /* ===================== Responsive ===================== */
+  /* サイドバー固定時の本文幅 = viewport - 288px(サイドバー) - 144px(左右パディング)。
+     4列(min 160px x 4 + gap 16px x 3 = 688px)を収めるには 1120px 以上が必要なため、
+     それ未満では 2列へ落として横スクロールを防ぐ。 */
+  @media (max-width: 1119px) {
+    .stat-row { grid-template-columns: repeat(2, 1fr); }
+    .domain-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
   @media (max-width: 980px) {
     .sidebar-toggle { display: flex; }
     .sidebar {
@@ -570,8 +578,6 @@
     .sidebar.open { transform: translateX(0); visibility: visible; }
     .main-content { margin-left: 0; padding: 88px 24px 100px; }
     .hero h1 { font-size: 32px; }
-    .stat-row { grid-template-columns: repeat(2, 1fr); }
-    .domain-grid { grid-template-columns: repeat(2, 1fr); }
     .glossary-grid { grid-template-columns: 1fr; }
   }
 
@@ -1053,6 +1059,7 @@
           <li><span class="ref-name">Google Blog(2025 DORA Reportの主要な発見)</span><a class="ref-url" href="https://blog.google/innovation-and-ai/technology/developers-tools/dora-report-2025/" target="_blank" rel="noopener">https://blog.google/innovation-and-ai/technology/developers-tools/dora-report-2025/</a></li>
           <li><span class="ref-name">DORA公式サイト(ROI of AI-assisted Software Development report、v.2026.1、2026年4月22日公開)</span><a class="ref-url" href="https://dora.dev/ai/roi/report/" target="_blank" rel="noopener">https://dora.dev/ai/roi/report/</a></li>
           <li><span class="ref-name">DORA公式サイト(AI関連リサーチとROI計算ツールのハブ)</span><a class="ref-url" href="https://dora.dev/ai/" target="_blank" rel="noopener">https://dora.dev/ai/</a></li>
+          <li><span class="ref-name">DORA公式サイト(Finding balance in the era of tokenmaxxing、2026年6月2日公開)</span><a class="ref-url" href="https://dora.dev/insights/finding-balance-in-the-era-of-tokenmaxxing/" target="_blank" rel="noopener">https://dora.dev/insights/finding-balance-in-the-era-of-tokenmaxxing/</a></li>
         </ul>
       </div>
 

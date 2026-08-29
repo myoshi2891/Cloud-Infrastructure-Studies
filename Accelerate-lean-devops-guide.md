@@ -378,24 +378,25 @@ Accelerateがもたらした最大の教訓は、「ソフトウェアデリバ�
 10. Google Blog（2025 DORA Reportの主要な発見） ― https://blog.google/innovation-and-ai/technology/developers-tools/dora-report-2025/
 11. DORA公式サイト（ROI of AI-assisted Software Development report、v.2026.1、2026年4月22日公開） ― https://dora.dev/ai/roi/report/
 12. DORA公式サイト（AI関連リサーチとROI計算ツールのハブ） ― https://dora.dev/ai/
-13. IT Revolution（書籍『Accelerate』紹介ページ） ― https://itrevolution.com/product/accelerate/
-14. IT Revolution（24の主要能力の解説記事） ― https://itrevolution.com/articles/24-key-capabilities-to-drive-improvement-in-software-delivery/
-15. IT Revolution（AIの「鏡効果」に関する分析記事） ― https://itrevolution.com/articles/ais-mirror-effect-how-the-2025-dora-report-reveals-your-organizations-true-capabilities/
-16. Wikipedia（Accelerate (book)） ― https://en.wikipedia.org/wiki/Accelerate_(book)
-17. Wikipedia（DevOps Research and Assessment） ― https://en.wikipedia.org/wiki/DevOps_Research_and_Assessment
-18. Martin Fowler公式サイト（Patterns for Managing Source Code Branches） ― https://martinfowler.com/articles/branching-patterns.html
-19. Martin Fowler公式サイト（Continuous Integration） ― https://martinfowler.com/articles/continuousIntegration.html
-20. continuousdelivery.com（Jez Humble, Continuous Integration解説） ― https://continuousdelivery.com/foundations/continuous-integration/
-21. ThoughtWorks（Four Key Metricsに関するビジネス価値の解説） ― https://www.thoughtworks.com/en-us/insights/articles/improving-your-bottom-line-with-four-key-metrics
-22. ThoughtWorks（2025 DORA Reportに関する解説） ― https://www.thoughtworks.com/en-us/insights/reports/the-2025-dora-report
-23. ThoughtWorks（トランクベース開発とデプロイパイプライン） ― https://www.thoughtworks.com/insights/blog/enabling-trunk-based-development-deployment-pipelines
-24. Paul Hammant氏によるトランクベース開発の解説 ― https://paulhammant.com/2013/04/05/what-is-trunk-based-development/
-25. Luca Rossi（Refactoring）による書籍レビュー・24能力の解説 ― https://refactoring.fm/p/accelerate
-26. Swarmia（DORAメトリクスの実践ガイド） ― https://www.swarmia.com/blog/dora-metrics/
-27. Splunk（2025 DORA Reportのレビュー記事） ― https://www.splunk.com/en_us/blog/learn/state-of-devops.html
-28. CD Foundation（DORA 4指標から5指標への変化の解説） ― https://cd.foundation/blog/2025/10/16/dora-5-metrics/
-29. Software Meadows（『Accelerate』チャプター別ノート、24能力の一覧） ― https://www.softwaremeadows.com/devops/accelerate_notes_and_quotes/
-30. Psych Safety（Westrumの組織文化類型論の解説） ― https://psychsafety.com/psychological-safety-81-westrums-cultural-typologies/
+13. DORA公式サイト（Finding balance in the era of tokenmaxxing、2026年6月2日公開） ― https://dora.dev/insights/finding-balance-in-the-era-of-tokenmaxxing/
+14. IT Revolution（書籍『Accelerate』紹介ページ） ― https://itrevolution.com/product/accelerate/
+15. IT Revolution（24の主要能力の解説記事） ― https://itrevolution.com/articles/24-key-capabilities-to-drive-improvement-in-software-delivery/
+16. IT Revolution（AIの「鏡効果」に関する分析記事） ― https://itrevolution.com/articles/ais-mirror-effect-how-the-2025-dora-report-reveals-your-organizations-true-capabilities/
+17. Wikipedia（Accelerate (book)） ― https://en.wikipedia.org/wiki/Accelerate_(book)
+18. Wikipedia（DevOps Research and Assessment） ― https://en.wikipedia.org/wiki/DevOps_Research_and_Assessment
+19. Martin Fowler公式サイト（Patterns for Managing Source Code Branches） ― https://martinfowler.com/articles/branching-patterns.html
+20. Martin Fowler公式サイト（Continuous Integration） ― https://martinfowler.com/articles/continuousIntegration.html
+21. continuousdelivery.com（Jez Humble, Continuous Integration解説） ― https://continuousdelivery.com/foundations/continuous-integration/
+22. ThoughtWorks（Four Key Metricsに関するビジネス価値の解説） ― https://www.thoughtworks.com/en-us/insights/articles/improving-your-bottom-line-with-four-key-metrics
+23. ThoughtWorks（2025 DORA Reportに関する解説） ― https://www.thoughtworks.com/en-us/insights/reports/the-2025-dora-report
+24. ThoughtWorks（トランクベース開発とデプロイパイプライン） ― https://www.thoughtworks.com/insights/blog/enabling-trunk-based-development-deployment-pipelines
+25. Paul Hammant氏によるトランクベース開発の解説 ― https://paulhammant.com/2013/04/05/what-is-trunk-based-development/
+26. Luca Rossi（Refactoring）による書籍レビュー・24能力の解説 ― https://refactoring.fm/p/accelerate
+27. Swarmia（DORAメトリクスの実践ガイド） ― https://www.swarmia.com/blog/dora-metrics/
+28. Splunk（2025 DORA Reportのレビュー記事） ― https://www.splunk.com/en_us/blog/learn/state-of-devops.html
+29. CD Foundation（DORA 4指標から5指標への変化の解説） ― https://cd.foundation/blog/2025/10/16/dora-5-metrics/
+30. Software Meadows（『Accelerate』チャプター別ノート、24能力の一覧） ― https://www.softwaremeadows.com/devops/accelerate_notes_and_quotes/
+31. Psych Safety（Westrumの組織文化類型論の解説） ― https://psychsafety.com/psychological-safety-81-westrums-cultural-typologies/
 
 ---
 
