@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, type FC, type MouseEvent } from 'react';
+import { scrollBehavior } from '@/lib/motion';
 import { NAV_ITEMS } from './constants';
 
 interface NavBarProps {
@@ -51,7 +52,7 @@ export const NavBar: FC<NavBarProps> = ({ isOpen = false, onClose }) => {
         e.preventDefault();
         const target = document.getElementById(id);
         if (target) {
-            target.scrollIntoView({ behavior: 'smooth' });
+            target.scrollIntoView({ behavior: scrollBehavior() });
             window.history.pushState(null, '', `#${id}`);
             target.focus();
         }
