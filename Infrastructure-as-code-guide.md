@@ -388,7 +388,7 @@ flowchart TB
 | 手動パラメータ入力 | 最もシンプルだが、ヒューマンエラーのリスクが高く自動化に向かない |
 | 環境変数 | CI/CD パイプラインとの親和性が高い |
 | スクリプトによる動的パラメータ生成 | 柔軟だが、ロジックが複雑化しやすい |
-| 設定ファイル(YAML/JSON/tfvars) | 可読性が高くレビューしやすい。最も一般的。ただし Terraform/OpenTofu が変数定義ファイルとして自動認識するのは `.tfvars` と `.tfvars.json` のみで、YAML を使う場合は事前に `.tfvars`/`.tfvars.json` へ変換するか、`yamldecode()` などで読み取る処理が別途必要になる |
+| 設定ファイル(YAML/JSON/tfvars) | 可読性が高くレビューしやすい。最も一般的。ただし Terraform/OpenTofu が自動で読み込むのは `terraform.tfvars`・`terraform.tfvars.json`・`*.auto.tfvars`・`*.auto.tfvars.json` の4パターンのみで、`dev.tfvars` のようなそれ以外の `.tfvars`/`.tfvars.json` は `-var-file` での明示指定が必要。YAML を使う場合は事前に `.tfvars`/`.tfvars.json` へ変換するか、`yamldecode()` などで読み取る処理が別途必要になる |
 | パイプラインのステージパラメータ | パイプラインのステージごとに値を切り替える |
 | 設定レジストリ(Parameter Store 等) | 一元管理でき、複数スタックから参照可能 |
 
@@ -770,7 +770,9 @@ flowchart TB
 
 Pulumi の優位点は言語選択そのものではなく「テスト容易性」にあるとの指摘があります。Pulumi のプログラムは、実際にクラウドリソースをプロビジョニングせずに、各言語の標準的なテストフレームワーク(Jest、pytest、Go の testing など)でユニットテストを書けます。一方の HCL 側も、Terraform 1.6 で導入された `terraform test`(`.tftest.hcl` によるテストファイル)と、Terraform 1.7 以降の `mock_provider`(プロバイダーやリソース、データソースの応答をモックする機能)により、実環境にリソースを作らずにモジュールをテストできるようになっています。OpenTofu も 1.6 でテストフレームワーク(`.tftest.hcl` によるテストファイルと `run` ブロック)を、1.8 で `mock_provider` / `mock_resource` / `mock_data` を導入しており、基本的な書き方は共通です。
 
-ここで注意が必要なのは、`terraform test` / `tofu test` の `run` ブロックの**既定のコマンドは `plan` ではなく `apply`** である点です。つまり `mock_provider` / `override_resource` / `override_data` も `command = plan` も指定していないテストは、実際のプロバイダーを呼び出して本物のリソースを作成し、課金や既存環境への影響を発生させ得ます(テストの実行後には作成したリソースの破棄が試みられますが、途中で失敗すると後片付けされずに残ることがあります)。モックで検証できる範囲は `mock_provider` などで実 API を呼ばせず、実リソースでの検証がどうしても必要な場合は、本番アカウントではなく**いつ破棄しても構わないテスト専用のアカウント/プロジェクト**を用意してそこで実行する方針を徹底します。両者の差はバージョンによって変化しており、Terraform 1.7 以降が `mock_provider` ブロック内にネストして記述できる `override_resource` / `override_data` は、OpenTofu では 1.7 / 1.8 の時点ではサポートされておらず、`mock_provider` 内の `mock_resource` / `mock_data`、またはトップレベルの `override_resource` / `override_data` へ書き換える必要がありました。ただしこの制約は **OpenTofu 1.9 で解消**され、1.9 以降(現行の 1.11 系・1.12 系を含む)はプロバイダースコープにネストした `override_resource` / `override_data` を Terraform と同様に記述できます。したがって 1.9 以降を前提とする限り、この点を理由としたテスト資産の再構成は発生しません。
+ここで注意が必要なのは、`terraform test` / `tofu test` の `run` ブロックの**既定のコマンドは `plan` ではなく `apply`** である点です。つまり `mock_provider` / `override_resource` / `override_data` / `override_module` も `command = plan` も指定していないテストは、実際のプロバイダーを呼び出して本物のリソースを作成し、課金や既存環境への影響を発生させ得ます(テストの実行後には作成したリソースの破棄が試みられますが、途中で失敗すると後片付けされずに残ることがあります)。
+
+なお `override_module` は指定したモジュール呼び出しの中身(モジュール内のコードとリソース)を一切実行せず、宣言した出力値で置き換えるため、そのモジュール配下では実リソースが作られません。ただし `override_*` はいずれも「上書きした対象だけ」が対象であり、オーバーライドしていないリソースは実プロバイダー経由でそのまま作成され、環境に影響し得る点は変わりません。モックで検証できる範囲は `mock_provider` などで実 API を呼ばせず、実リソースでの検証がどうしても必要な場合は、本番アカウントではなく**いつ破棄しても構わないテスト専用のアカウント/プロジェクト**を用意してそこで実行する方針を徹底します。両者の差はバージョンによって変化しており、Terraform 1.7 以降が `mock_provider` ブロック内にネストして記述できる `override_resource` / `override_data` は、OpenTofu では 1.7 / 1.8 の時点ではサポートされておらず、`mock_provider` 内の `mock_resource` / `mock_data`、またはトップレベルの `override_resource` / `override_data` へ書き換える必要がありました。ただしこの制約は **OpenTofu 1.9 で解消**され、1.9 以降(現行の 1.11 系・1.12 系を含む)はプロバイダースコープにネストした `override_resource` / `override_data` を Terraform と同様に記述できます。したがって 1.9 以降を前提とする限り、この点を理由としたテスト資産の再構成は発生しません。
 
 つまり「HCL にはテスト手段がない」わけではなく、既存の言語エコシステム(アサーションライブラリ、カバレッジ、モックフレームワーク)をそのまま使えるかどうかが実質的な差になります。一方で、宣言型で確立されたワークフロー(HCLベース)に慣れているチームにとっては、Terraform・OpenTofu も依然として効果的に機能し続けています。
 
@@ -796,7 +798,7 @@ flowchart LR
     Report -.状態確認.-> Detect
 ```
 
-GitOps の2大 CNCF(Cloud Native Computing Foundation)卒業プロジェクトが **Argo CD** と **Flux** です。CNCF の2025年の調査では、回答者が管理する Kubernetes クラスターのうち Argo CD が使われているものが60%を超えると報告されています。これは Argo CD という単一ツールの利用割合であり、GitOps 全体の普及率を示す数値ではない点に注意が必要です。
+GitOps の2大 CNCF(Cloud Native Computing Foundation)卒業プロジェクトが **Argo CD** と **Flux** です。CNCF の2025年の調査では、回答者が管理する Kubernetes クラスターのうち Argo CD が使われているものがほぼ60%に達すると報告されています。これは Argo CD という単一ツールの利用割合であり、GitOps 全体の普及率を示す数値ではない点に注意が必要です。
 
 | 観点 | Argo CD | Flux |
 |---|---|---|
@@ -842,21 +844,28 @@ Sentinel は Terraform の実行環境に深く統合されているだけでな
 
 #### ポリシーの強制レベル
 
-Policy as Code 導入で最も失敗しやすいポイントは、ツール選びではなく「強制レベル」の設計だと指摘されています。
+Policy as Code 導入で最も失敗しやすいポイントは、ツール選びではなく「強制レベル」の設計だと指摘されています。ただし強制レベルの体系はツールごとに異なるため、まず **HashiCorp Sentinel の3段階** を基準に整理します。
+
+**Sentinel の強制レベル(3段階)**
 
 | 強制レベル | 挙動 | 向いている段階 |
 |---|---|---|
 | Advisory(助言のみ) | 違反があっても警告のみで `apply` は継続できる | 導入初期、ルールの精度を検証している段階 |
-| Soft-mandatory(条件付き強制) | 違反時は承認者の明示的な承認があれば適用できる | ルールが安定してきた中間段階 |
-| Hard-mandatory(強制) | 違反時は `apply` 自体をブロックする | ルールが十分に検証された成熟段階 |
+| Soft-mandatory(条件付き強制) | 違反時は適用がブロックされるが、権限を持つ担当者がオーバーライド(明示的な上書き承認)すれば適用できる | ルールが安定してきた中間段階 |
+| Hard-mandatory(強制) | 違反時は `apply` 自体をブロックし、オーバーライドもできない | ルールが十分に検証された成熟段階 |
+
+**その他のツールの強制のしかた**
+
+- **HCP Terraform の OPA ポリシー**: 強制レベルは **Advisory と Mandatory の2段階** のみで、Soft-mandatory に相当するオーバーライド可能な中間段階は存在しない。Advisory で警告運用を始め、精度が固まったら Mandatory へ引き上げる2段構えになる
+- **Checkov / Conftest(OPA CLI)**: そもそも強制レベルという設定項目を持たない。違反検出時の **終了コード(既定で非ゼロ)** をもって CI ジョブを失敗させるかどうかで強制する。段階導入したい場合は、Checkov の `--soft-fail`(常に終了コード0)や対象チェックの絞り込み、CI 側の `continue-on-error` などで「落とさない運用」から始め、後で外して強制へ切り替える
 
 > **ベストプラクティス**
-> - 最初から Hard-mandatory で導入せず、Advisory → Soft-mandatory → Hard-mandatory と段階的に強制レベルを引き上げ、誤検知(False Positive)によるチームの反発を避ける
+> - 最初から Hard-mandatory で導入せず、Advisory → Soft-mandatory → Hard-mandatory と段階的に強制レベルを引き上げ、誤検知(False Positive)によるチームの反発を避ける(Sentinel 以外では、OPA なら Advisory → Mandatory、Checkov/Conftest なら「CI で落とさない → 落とす」への切り替えが同等の段階導入にあたる)
 > - 正当な例外(レガシーシステムの一時的な許容など)は、理由・承認者・見直し期限を明記したコード内コメントやチケットとして記録し、「なぜ例外を許したか」を追跡可能にする
 > - ネイティブの Terraform 機能(変数の`validation`ブロック、`precondition`/`postcondition`、`check`ブロック)だけでも一定の範囲のポリシー要件は解決できるため、外部ツール導入前にまずネイティブ機能を使い切る
 > - ただしネイティブ機能は強制力が一様ではない。`validation`・`precondition`・`postcondition` はアサーションが失敗すると **エラーとなり plan/apply がそこで停止する** のに対し、`check`ブロックのアサーション失敗は **警告(Warning)を出すだけで plan/apply 自体は継続する**。したがって `check` は単独ではガードレールにならず、Advisory 相当と考える
 > - `check` は「plan/apply を止める仕組み」ではなく「継続的検証(continuous validation)」の仕組みである。アサーションは plan 時だけでなく **apply 後にも評価** され、条件が plan 時点で未知の値(unknown)に依存する場合は評価が apply 後まで持ち越される。そのため plan の警告の有無だけで合否を決めると、正当な変更(新規作成リソースの属性がまだ確定していないケースなど)を誤って停止させたり、逆に apply 後にはじめて顕在化する違反を見逃したりする
-> - 使い分けの指針として、**確実に停止させたい条件** は `check` ではなく、失敗が即エラーになる `validation`・`precondition`・`postcondition`、または OPA/Conftest・Sentinel といった外部ポリシーエンジンの Hard-mandatory ルールとして表現する。`check` は主に apply 後の健全性監視に使い、定期的な `terraform plan` / `tofu plan` の `-json` 出力から **対象の `check` ブロックのアドレスを特定して** 結果を収集し、監視・アラート基盤へ流す運用にする。CI で警告をゲートに使う場合も `@level == "warn"` を一律に失敗扱いにせず(非推奨引数の警告など無関係な警告まで拾ってしまう)、対象の `check` を明示的に絞り込んだうえで、あくまで Advisory 相当の運用であることを前提にする
+> - 使い分けの指針として、**確実に停止させたい条件** は `check` ではなく、失敗が即エラーになる `validation`・`precondition`・`postcondition`、または外部ポリシーエンジンの強制ルール(Sentinel なら Hard-mandatory、HCP Terraform の OPA なら Mandatory、Conftest/Checkov なら CI ジョブを失敗させる設定)として表現する。`check` は主に apply 後の健全性監視に使い、定期的な `terraform plan` / `tofu plan` の `-json` 出力から **対象の `check` ブロックのアドレスを特定して** 結果を収集し、監視・アラート基盤へ流す運用にする。CI で警告をゲートに使う場合も `@level == "warn"` を一律に失敗扱いにせず(非推奨引数の警告など無関係な警告まで拾ってしまう)、対象の `check` を明示的に絞り込んだうえで、あくまで Advisory 相当の運用であることを前提にする
 
 ---
 
