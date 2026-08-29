@@ -4,6 +4,34 @@
 
 ---
 
+## 2026-08-29: 『Release It!』第2版 本番対応ソフトウェア設計・デプロイ完全ガイド 100%全量移行 (完了)
+
+### 目的
+
+`Release-It-Design-and-Deploy-Production-Ready-Software.html` を、Next.js App Router 5ファイル構成 (`page.tsx`, `ReleaseItGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/recommended-books/release-it` ルートへ移行。グローバルナビゲーションの「Recommended Books」に追加。見出し(h1:1, h2:14, h3:12, h4:5)、全5個のテーブル、14個のMermaid図解、全リスト(26件)、全外部リンク(22件)・全本文・コールアウト注記(2件)・実践チェックリスト(10件)・参考文献一覧(22件)を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for release-it` (`537c66c`)
+- [x] **Step 1 (Red)**: `test(recommended-books): add failing tests for release-it` (`e9a5ccc`)
+- [x] **Step 2 (Green)**: `feat(recommended-books): implement release-it to pass tests` (`abb9bac`)
+- [x] **Step 3 (Refactor)**: `refactor(recommended-books): integrate release-it into routing and update docs` (`d334276`)
+- [x] **Step 4 (Archive & Sync)**: `chore(docs): update MIGRATION_PROGRESS.md — migrate release-it`
+
+### 関連ファイル
+
+- [app/recommended-books/release-it/page.tsx](app/recommended-books/release-it/page.tsx)
+- [app/recommended-books/release-it/ReleaseItGuide.tsx](app/recommended-books/release-it/ReleaseItGuide.tsx)
+- [app/recommended-books/release-it/NavBar.tsx](app/recommended-books/release-it/NavBar.tsx)
+- [app/recommended-books/release-it/constants.ts](app/recommended-books/release-it/constants.ts)
+- [app/recommended-books/release-it/page.css](app/recommended-books/release-it/page.css)
+- [`__tests__/recommended-books/release-it/page.test.tsx`](__tests__/recommended-books/release-it/page.test.tsx)
+- [docs/migration-inventory/release-it.json](docs/migration-inventory/release-it.json)
+- [archive/Books/html/Release-It-Design-and-Deploy-Production-Ready-Software.html](archive/Books/html/Release-It-Design-and-Deploy-Production-Ready-Software.html)
+- [archive/Books/md/Release-It-Design-and-Deploy-Production-Ready-Software.md](archive/Books/md/Release-It-Design-and-Deploy-Production-Ready-Software.md)
+
+---
+
 ## 2026-08-29: 『The DevOps Handbook』第2版 初学者のためのステップバイステップ実践ガイド 100%全量移行 (完了)
 
 ### 目的
