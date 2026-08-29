@@ -313,7 +313,7 @@ export const DIAGRAMS: Record<DiagramId, string> = {
     SHARE --> GLOBAL["組織全体への<br/>グローバルな改善へ変換"]
     GLOBAL --> STANDARD["標準ライブラリ/<br/>チェックリストへ反映"]
     STANDARD --> TIME["改善のための時間を<br/>組織的に確保"]
-    TIME -.-&gt;|継続的なサイクル| INCIDENT`,
+    TIME -.->|継続的なサイクル| INCIDENT`,
 
     chaosEngineering: `flowchart LR
     STEADY["平常時の<br/>定常状態を定義"] --> HYP2["仮説を立てる<br/>『この障害でも<br/>定常状態は保たれる』"]

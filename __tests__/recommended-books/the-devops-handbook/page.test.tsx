@@ -106,4 +106,14 @@ describe('the-devops-handbook — 移行元コンテンツの全量移行', () =
             expect(codeLineCount(block)).toBe(inventory.structures.codeLines[index]);
         });
     });
+
+    it('すべての Mermaid ダイアグラム定義が構文エラーなく parse できること', async () => {
+        const { DIAGRAMS } = await import('@/app/recommended-books/the-devops-handbook/constants');
+        const mermaidModule = await import('mermaid');
+        const mermaid = mermaidModule.default;
+        for (const [id, chart] of Object.entries(DIAGRAMS)) {
+            const result = await mermaid.parse(chart);
+            expect(result, `Diagram ${id} failed syntax validation`).toBeTruthy();
+        }
+    });
 });
