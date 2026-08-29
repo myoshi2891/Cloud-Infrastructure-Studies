@@ -522,6 +522,9 @@
     --color-theme-release-it-bg: hsl(220 50% 40% / 0.25);
     --color-theme-release-it-fg: hsl(220 85% 72%);
 
+    --color-theme-infrastructure-as-code-bg: hsl(220 55% 40% / 0.25);
+    --color-theme-infrastructure-as-code-fg: hsl(220 90% 74%);
+
     --navy: #0a2e4d;
     --navy-mid: #123a57;
     --amber: #e8a33d;
@@ -663,6 +666,7 @@ body {
 .card-sre { --card-accent: var(--color-theme-sre-fg); }
 .card-devops-handbook { --card-accent: var(--color-theme-devops-handbook-fg); }
 .card-release-it { --card-accent: var(--color-theme-release-it-fg); }
+.card-infrastructure-as-code { --card-accent: var(--color-theme-infrastructure-as-code-fg); }
 
 @utility text-gradient-aurora {
     background: linear-gradient(135deg, var(--color-brand-text-start), var(--color-brand-text-end));
@@ -749,6 +753,11 @@ body {
 @utility icon-theme-release-it {
     background: var(--color-theme-release-it-bg);
     color: var(--color-theme-release-it-fg);
+}
+
+@utility icon-theme-infrastructure-as-code {
+    background: var(--color-theme-infrastructure-as-code-bg);
+    color: var(--color-theme-infrastructure-as-code-fg);
 }
 
 /* Provider identity marks: メニューとホームで同じ視覚言語を共有する。 */

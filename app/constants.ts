@@ -23,7 +23,8 @@ export type ColorKey =
     | 'card-accelerate'
     | 'card-sre'
     | 'card-devops-handbook'
-    | 'card-release-it';
+    | 'card-release-it'
+    | 'card-infrastructure-as-code';
 
 export interface Exam {
     id: string;
@@ -58,6 +59,7 @@ export const cardColorMap: Record<ColorKey, string> = {
     'card-sre': 'card-sre',
     'card-devops-handbook': 'card-devops-handbook',
     'card-release-it': 'card-release-it',
+    'card-infrastructure-as-code': 'card-infrastructure-as-code',
 };
 
 export const providerMeta: Record<
@@ -699,6 +701,27 @@ const ALL_EXAMS: Exam[] = [
             {
                 label: '完全解説ガイド',
                 href: '/recommended-books/release-it',
+                pct: '完全解説',
+            },
+        ],
+        badge: '名著ガイド',
+        icon: '📚',
+        provider: 'Books',
+    },
+    {
+        id: 'infrastructure-as-code',
+        label: 'Infrastructure as Code',
+        abbr: 'IaC',
+        level: 'IaC & Architecture',
+        score: '5部22章 / 26図解',
+        color: 'card-infrastructure-as-code',
+        href: '/recommended-books/infrastructure-as-code',
+        description:
+            'Kief Morris 著『Infrastructure as Code』の考え方を土台に、2026年最新エコシステム（Terraform / OpenTofu / Pulumi / GitOps / Policy as Code）を踏まえて再構成した、初学者向けの実践ガイド。',
+        domains: [
+            {
+                label: '完全解説ガイド',
+                href: '/recommended-books/infrastructure-as-code',
                 pct: '完全解説',
             },
         ],

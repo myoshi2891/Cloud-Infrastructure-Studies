@@ -483,6 +483,12 @@ app/
       NavBar.tsx                    # サイドバーナビ (IntersectionObserver)
       constants.ts                  # Mermaid 図定義（14図）
       page.css                      # ページ固有スタイル
+    infrastructure-as-code/
+      page.tsx                      # 『Infrastructure as Code』実践ガイド (Server)
+      InfrastructureAsCodeGuide.tsx # 本文＋インタラクション (Client。5部22章、Mermaid 26図、チェックリスト等)
+      NavBar.tsx                    # サイドバーナビ (IntersectionObserver)
+      constants.ts                  # Mermaid 図定義（26図）
+      page.css                      # ページ固有スタイル
 
 
 components/
