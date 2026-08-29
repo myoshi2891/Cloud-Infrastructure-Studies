@@ -46,6 +46,7 @@ const guideLayouts = [
     ['app/gcl/hands-on/terraform-gcp-challenge-lab-guide/page.css', '.terraform-lab-guide-page .sidebar', '.terraform-lab-guide-page .main'],
     ['app/recommended-books/site-reliability-engineering/page.css', '.sre-guide-page .sidebar', '.sre-guide-page .main'],
     ['app/recommended-books/the-devops-handbook/page.css', '.the-devops-handbook-page .sidebar', '.the-devops-handbook-page .main'],
+    ['app/recommended-books/release-it/page.css', '.release-it-page .sidebar', '.release-it-page .main'],
 ] as const;
 
 describe('all sidebar guide layouts', () => {
