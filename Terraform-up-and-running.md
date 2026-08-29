@@ -859,7 +859,9 @@ resource "aws_autoscaling_group" "example" {
   health_check_type = "ELB"
 
   # 2. 指定台数がELBのヘルスチェックを通過するまで apply を完了させない
-  min_elb_capacity = var.min_size
+  #    min_elb_capacity は「作成時」しか待たないため、既存ASGの更新でも待つ
+  #    wait_for_elb_capacity を使う
+  wait_for_elb_capacity = var.min_size
 
   # 3. 既存ASGのインスタンス入れ替えは instance_refresh に任せる
   #    ただし apply 完了後もAWS側で非同期に進むため、
@@ -1076,7 +1078,7 @@ flowchart TB
         K8sProv["kubernetes provider<br/>クラスタ内のDeployment/Serviceを作成"]
         DockerProv["docker provider<br/>ローカル検証用コンテナ起動"]
     end
-    AWSProv -->|EKSクラスタのendpoint/tokenを出力| K8sProv
+    AWSProv -->|root module A は cluster_name のみ出力<br/>endpoint/token は root module B が data source で取得| K8sProv
 
     classDef p fill:#123024,stroke:#4caf82,color:#eaf1ff
     class AWSProv,K8sProv,DockerProv p
