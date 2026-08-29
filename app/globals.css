@@ -735,6 +735,11 @@ body {
     color: var(--color-theme-ace-fg);
 }
 
+@utility icon-theme-comptia {
+    background: var(--color-theme-comptia-bg);
+    color: var(--color-theme-comptia-fg);
+}
+
 @utility icon-theme-accelerate {
     background: var(--color-theme-accelerate-bg);
     color: var(--color-theme-accelerate-fg);
@@ -745,7 +750,7 @@ body {
     color: var(--color-theme-sre-fg);
 }
 
-@utility icon-theme-the-devops-handbook {
+@utility icon-theme-devops-handbook {
     background: var(--color-theme-devops-handbook-bg);
     color: var(--color-theme-devops-handbook-fg);
 }

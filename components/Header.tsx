@@ -329,7 +329,7 @@ export function Header() {
                                     <input
                                         type="search"
                                         aria-label="ナビゲーション検索"
-                                        placeholder="試験名・ドメインで検索..."
+                                        placeholder="試験名・書籍名・ドメインで検索..."
                                         value={query}
                                         onChange={(e) => setQuery(e.target.value)}
                                         className="w-full rounded-xl border border-white/[0.1] bg-white/[0.035] py-2.5 pl-9 pr-3 text-[14px] text-[var(--color-foreground)] placeholder:text-[var(--color-muted-foreground)] focus:border-[var(--color-primary)]/60 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/15 md:w-[30rem] md:rounded-2xl md:py-3.5 md:pl-12 md:pr-4 md:text-[15px]"
@@ -355,7 +355,7 @@ export function Header() {
                                     aria-live="polite"
                                     className="rounded-xl border border-white/[0.06] bg-white/[0.02] px-5 py-8 text-center text-[14px] text-[var(--color-muted-foreground)] md:py-12 md:text-[15px]"
                                 >
-                                    「{query}」に該当する試験はありません。
+                                    「{query}」に該当する項目はありません。
                                 </div>
                             )}
 
@@ -420,6 +420,13 @@ const ACCENT_CLASS: Record<string, string> = {
     'card-pcne': 'before:bg-[var(--color-theme-pcne-fg)]',
     'card-aws-saa': 'before:bg-[var(--color-theme-aws-fg)]',
     'card-ccna': 'before:bg-[var(--color-theme-cisco-fg)]',
+    'card-pca': 'before:bg-[var(--color-theme-pca-fg)]',
+    'card-comptia': 'before:bg-[var(--color-theme-comptia-fg)]',
+    'card-accelerate': 'before:bg-[var(--color-theme-accelerate-fg)]',
+    'card-sre': 'before:bg-[var(--color-theme-sre-fg)]',
+    'card-devops-handbook': 'before:bg-[var(--color-theme-devops-handbook-fg)]',
+    'card-release-it': 'before:bg-[var(--color-theme-release-it-fg)]',
+    'card-infrastructure-as-code': 'before:bg-[var(--color-theme-infrastructure-as-code-fg)]',
 };
 
 /**
