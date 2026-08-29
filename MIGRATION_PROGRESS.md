@@ -4,6 +4,34 @@
 
 ---
 
+## 2026-08-29: 『Site Reliability Engineering』Googleのプロダクション運用 完全ガイド 100%全量移行 (完了)
+
+### 目的
+
+`Site-reliability-engineering.html` を、Next.js App Router 5ファイル構成 (`page.tsx`, `SreGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/recommended-books/site-reliability-engineering` ルートへ移行。グローバルナビゲーションの「Recommended Books」に追加。見出し(h1:1, h2:8, h3:18, h4:14)、全4個のテーブル、15個のMermaid図解、全リスト(124件)、全外部リンク(22件)・全本文・コールアウト注記(6件)・実践チェックリスト(12件)・参考文献一覧(19件)を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for site-reliability-engineering` (`d409ccd`)
+- [x] **Step 1 (Red)**: `test(books): add failing tests for site-reliability-engineering` (`290e359`)
+- [x] **Step 2 (Green)**: `feat(books): implement site-reliability-engineering to pass tests` (`31fd789`)
+- [x] **Step 3 (Refactor)**: `refactor(books): integrate site-reliability-engineering into routing and update docs` (`a77522d`)
+- [x] **Step 4 (Archive & Sync)**: `chore(docs): update MIGRATION_PROGRESS.md — migrate site-reliability-engineering`
+
+### 関連ファイル
+
+- [app/recommended-books/site-reliability-engineering/page.tsx](app/recommended-books/site-reliability-engineering/page.tsx)
+- [app/recommended-books/site-reliability-engineering/SreGuide.tsx](app/recommended-books/site-reliability-engineering/SreGuide.tsx)
+- [app/recommended-books/site-reliability-engineering/NavBar.tsx](app/recommended-books/site-reliability-engineering/NavBar.tsx)
+- [app/recommended-books/site-reliability-engineering/constants.ts](app/recommended-books/site-reliability-engineering/constants.ts)
+- [app/recommended-books/site-reliability-engineering/page.css](app/recommended-books/site-reliability-engineering/page.css)
+- [`__tests__/recommended-books/site-reliability-engineering/page.test.tsx`](__tests__/recommended-books/site-reliability-engineering/page.test.tsx)
+- [docs/migration-inventory/site-reliability-engineering.json](docs/migration-inventory/site-reliability-engineering.json)
+- [archive/Books/html/Site-reliability-engineering.html](archive/Books/html/Site-reliability-engineering.html)
+- [archive/Books/md/Site-reliability-engineering.md](archive/Books/md/Site-reliability-engineering.md)
+
+---
+
 ## 2026-08-29: 『Accelerate』LeanとDevOpsの科学 完全ガイド 100%全量移行 (完了)
 
 ### 目的
