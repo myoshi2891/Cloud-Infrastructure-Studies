@@ -5,7 +5,6 @@ import { describe, expect, it, vi } from 'vitest';
 import inventory from '@/docs/migration-inventory/accelerate-lean-devops-guide.json';
 import Page from '@/app/recommended-books/accelerate/page';
 import {
-    MermaidDiagramMock,
     codeBlockSelector,
     codeLineCount,
     extractBodyContent,
@@ -13,7 +12,10 @@ import {
 } from '@/__tests__/gcl/agwa/migration-test-utils';
 
 // MermaidDiagram は名前付きエクスポート。default でモックすると必ず落ちる。
-vi.mock('@/components/MermaidDiagram', () => ({ MermaidDiagram: MermaidDiagramMock }));
+vi.mock('@/components/MermaidDiagram', async () => {
+    const { MermaidDiagramMock } = await import('@/__tests__/gcl/agwa/migration-test-utils');
+    return { MermaidDiagram: MermaidDiagramMock };
+});
 
 describe('accelerate-lean-devops-guide — 移行元コンテンツの全量移行', () => {
     const renderPage = () => {
