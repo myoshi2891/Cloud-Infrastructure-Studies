@@ -50,6 +50,38 @@ export function ProviderMark({ provider, compact = false }: ProviderMarkProps) {
         );
     }
 
+    if (provider === 'CompTIA') {
+        return (
+            <span
+                className="provider-mark provider-mark-comptia"
+                data-compact={compact || undefined}
+                aria-hidden="true"
+            >
+                <svg viewBox="0 0 28 28" fill="none">
+                    <rect x="3" y="3" width="22" height="22" rx="7" stroke="currentColor" strokeWidth="2" />
+                    <path d="M14 9v10M9 14h10" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" />
+                </svg>
+                <span>COMPTIA</span>
+            </span>
+        );
+    }
+
+    if (provider === 'Books') {
+        return (
+            <span
+                className="provider-mark provider-mark-books"
+                data-compact={compact || undefined}
+                aria-hidden="true"
+            >
+                <svg viewBox="0 0 32 24" fill="none">
+                    <path d="M16 6.5C13.4 4.6 10.4 4 5.5 4.4v13C10.4 17 13.4 17.6 16 19.5c2.6-1.9 5.6-2.5 10.5-2.1v-13C21.6 4 18.6 4.6 16 6.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
+                    <path d="M16 6.5v13" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+                </svg>
+                <span>BOOKS</span>
+            </span>
+        );
+    }
+
     return (
         <span
             className="provider-mark provider-mark-cisco"

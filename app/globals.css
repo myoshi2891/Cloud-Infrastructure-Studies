@@ -504,6 +504,12 @@
     --color-theme-cisco-bg: hsl(215 70% 50% / 0.20);
     --color-theme-cisco-fg: hsl(215 95% 70%);
 
+    --color-theme-comptia-bg: hsl(350 70% 50% / 0.20);
+    --color-theme-comptia-fg: hsl(350 85% 70%);
+
+    --color-theme-books-bg: hsl(38 80% 50% / 0.20);
+    --color-theme-books-fg: hsl(38 90% 68%);
+
     --color-theme-accelerate-bg: hsl(225 45% 45% / 0.25);
     --color-theme-accelerate-fg: hsl(225 75% 70%);
 
@@ -643,6 +649,7 @@ body {
 .card-pca { --card-accent: var(--color-theme-pca-fg); }
 .card-ccna { --card-accent: var(--color-theme-cisco-fg); }
 .card-aws-saa { --card-accent: var(--color-theme-aws-fg); }
+.card-comptia { --card-accent: var(--color-theme-comptia-fg); }
 .card-accelerate { --card-accent: var(--color-theme-accelerate-fg); }
 
 @utility text-gradient-aurora {
@@ -791,6 +798,40 @@ body {
 .provider-mark-cisco svg {
     width: 40px;
     height: 19px;
+}
+
+.provider-mark-comptia {
+    width: 46px;
+    height: 34px;
+    flex-direction: column;
+    gap: 1px;
+    color: var(--color-theme-comptia-fg);
+    font-family: Arial, sans-serif;
+    font-size: 7px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+}
+
+.provider-mark-comptia svg {
+    width: 21px;
+    height: 21px;
+}
+
+.provider-mark-books {
+    width: 46px;
+    height: 34px;
+    flex-direction: column;
+    gap: 1px;
+    color: var(--color-theme-books-fg);
+    font-family: Arial, sans-serif;
+    font-size: 7px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+}
+
+.provider-mark-books svg {
+    width: 30px;
+    height: 22px;
 }
 
 .provider-mark[data-compact] {
