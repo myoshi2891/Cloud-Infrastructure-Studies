@@ -106,4 +106,55 @@ describe('infrastructure-as-code — 移行元コンテンツの全量移行', (
             expect(codeLineCount(block)).toBe(inventory.structures.codeLines[index]);
         });
     });
+
+    it('すべての Mermaid ダイアグラム定義が構文エラーなく parse できること', async () => {
+        const { DIAGRAMS } = await import('@/app/recommended-books/infrastructure-as-code/constants');
+        const mermaidModule = await import('mermaid');
+        const mermaid = mermaidModule.default;
+        for (const [id, chart] of Object.entries(DIAGRAMS)) {
+            const result = await mermaid.parse(chart);
+            expect(result, `Diagram ${id} failed syntax validation`).toBeTruthy();
+        }
+    });
+
+    it('チェックリストが 14 項目存在し、トグル可能で完了カウントが正しく更新されること', async () => {
+        const { fireEvent } = await import('@testing-library/react');
+        const container = renderPage();
+        const checklistCard = container.querySelector('.checklist-card');
+        expect(checklistCard).not.toBeNull();
+
+        const checkboxes = container.querySelectorAll<HTMLInputElement>('.checklist-card input[type="checkbox"]');
+        expect(checkboxes).toHaveLength(14);
+
+        const countEl = container.querySelector('.checklist-header .count');
+        expect(countEl?.textContent?.trim()).toBe('0 / 14 完了');
+
+        // 1つ目のチェックボックスをクリック
+        const firstBox = checkboxes[0];
+        if (firstBox) {
+            fireEvent.click(firstBox);
+            expect(countEl?.textContent?.trim()).toBe('1 / 14 完了');
+
+            // 再度クリックして解除
+            fireEvent.click(firstBox);
+            expect(countEl?.textContent?.trim()).toBe('0 / 14 完了');
+        }
+    });
+
+    it('参考文献が 27 件すべて .ref-card として存在し、番号とリンクが一致すること', () => {
+        const container = renderPage();
+        const refGrid = container.querySelector('.ref-grid');
+        expect(refGrid).not.toBeNull();
+
+        const cards = container.querySelectorAll('.ref-card');
+        expect(cards).toHaveLength(27);
+
+        cards.forEach((card, index) => {
+            const numEl = card.querySelector('.num');
+            expect(numEl?.textContent?.trim()).toBe(String(index + 1));
+            const linkEl = card.querySelector('a[href^="http"]');
+            expect(linkEl).not.toBeNull();
+        });
+    });
 });
+
