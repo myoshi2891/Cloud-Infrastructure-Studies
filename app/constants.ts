@@ -60,32 +60,50 @@ export const cardColorMap: Record<ColorKey, string> = {
 
 export const providerMeta: Record<
     Provider,
-    { label: string; kicker: string; description: string }
+    {
+        label: string;
+        kicker: string;
+        description: string;
+        /** グループ件数の単位（ホーム: 英語 / ナビ: 日本語）。書籍は「試験」で数えない */
+        countUnit: { en: string; ja: string };
+        /** カード CTA の文言 */
+        ctaLabel: string;
+    }
 > = {
     GCP: {
         label: 'Google Cloud',
         kicker: 'Cloud & AI',
         description: 'クラウド基盤、生成AI、Workspaceまでを体系的に学ぶ',
+        countUnit: { en: 'exams', ja: '試験' },
+        ctaLabel: 'この試験を学ぶ',
     },
     AWS: {
         label: 'Amazon Web Services',
         kicker: 'Cloud Architecture',
         description: '可用性・セキュリティ・コストを意識した設計力を磨く',
+        countUnit: { en: 'exams', ja: '試験' },
+        ctaLabel: 'この試験を学ぶ',
     },
     Cisco: {
         label: 'Cisco',
         kicker: 'Network & Automation',
         description: 'ネットワーク基礎から設計、自動化、DevNetまでを深掘りする',
+        countUnit: { en: 'exams', ja: '試験' },
+        ctaLabel: 'この試験を学ぶ',
     },
     CompTIA: {
         label: 'CompTIA',
         kicker: 'Infrastructure & Security',
         description: 'ベンダーニュートラルなITインフラ・ネットワーク・セキュリティ標準を学ぶ',
+        countUnit: { en: 'exams', ja: '試験' },
+        ctaLabel: 'この試験を学ぶ',
     },
     Books: {
         label: 'Recommended Books',
         kicker: 'Engineering & DevOps',
         description: '名著から学ぶエンジニアリング・DevOps・アーキテクチャの本質',
+        countUnit: { en: 'books', ja: '冊' },
+        ctaLabel: 'この書籍を読む',
     },
 };
 

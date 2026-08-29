@@ -4,7 +4,7 @@ import { useState, useRef, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { EXAMS } from '@/app/constants';
+import { EXAMS, providerMeta } from '@/app/constants';
 import { toNavTree, type NavExam, type NavGroup } from '@/app/navigation';
 import { getRecent, type RecentEntry } from '@/lib/recentPages';
 import { ProviderMark, SiteMark } from '@/components/ProviderMark';
@@ -464,7 +464,7 @@ function ProviderSection({
                     </h2>
                 </div>
                 <span className="rounded-full bg-white/[0.06] px-2.5 py-0.5 text-[11px] font-medium text-[var(--color-muted-foreground)] md:px-3 md:py-1 md:text-[12px]">
-                    {group.exams.length} 試験
+                    {group.exams.length} {providerMeta[group.provider].countUnit.ja}
                 </span>
             </div>
 

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { cardColorMap, type Exam } from '@/app/constants';
+import { cardColorMap, providerMeta, type Exam } from '@/app/constants';
 import styles from '@/app/page.module.css';
 
 /** Renders one exam and its associated study-guide links. */
@@ -43,7 +43,7 @@ export function ExamCard({ exam }: { exam: Exam }) {
             </details>
 
             <Link href={exam.href} className={`home-card-cta ${styles.ctaBtn}`}>
-                <span>この試験を学ぶ</span>
+                <span>{providerMeta[exam.provider].ctaLabel}</span>
                 <span aria-hidden>↗</span>
             </Link>
         </article>

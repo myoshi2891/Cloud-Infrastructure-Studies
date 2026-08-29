@@ -33,7 +33,9 @@ export function ExamCatalog({ exams }: { exams: Exam[] }) {
                                 <h2 id={`provider-heading-${provider}`}>{meta.label}</h2>
                             </div>
                             <p className={styles.providerDescription}>{meta.description}</p>
-                            <span className={styles.providerCount}>{providerExams.length} exams</span>
+                            <span className={styles.providerCount}>
+                                {providerExams.length} {meta.countUnit.en}
+                            </span>
                         </header>
                         <div className={styles.cards}>
                             {providerExams.map((exam) => (
