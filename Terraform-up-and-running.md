@@ -723,6 +723,19 @@ Terraformには目的の異なる4種類のループ構文があります。使�
 | `for`文字列ディレクティブ | テンプレート文字列内 | 文字列の中でループを展開 | `user_data`スクリプト等の動的生成 |
 
 ```hcl
+# 以下の例が参照する入力変数。宣言がないと undeclared variable エラーになる
+variable "names" {
+  description = "for式で大文字化する名前のリスト"
+  type        = list(string)
+  default     = ["neo", "trinity", "morpheus"]
+}
+
+variable "users" {
+  description = "バケットポリシーへ展開するユーザー名のリスト"
+  type        = list(string)
+  default     = ["neo", "trinity"]
+}
+
 # count: 単純な複製（ただしリスト順序に依存し途中削除に弱い）
 resource "aws_iam_user" "example" {
   count = 3
@@ -757,6 +770,12 @@ locals {
 Terraformには`if`文はありませんが、三項演算子と`count`/`for_each`を組み合わせて条件付きリソース作成を表現します。
 
 ```hcl
+variable "enable_autoscaling" {
+  description = "スケジュールベースのオートスケーリングを有効にするか"
+  type        = bool
+  default     = false
+}
+
 resource "aws_autoscaling_schedule" "scale_out_during_business_hours" {
   count = var.enable_autoscaling ? 1 : 0
 
@@ -805,8 +824,12 @@ resource "aws_launch_template" "example" {
 # ASGが参照するターゲットグループ。この宣言がないと
 # aws_lb_target_group.asg は未定義参照となり terraform validate が失敗する
 resource "aws_lb_target_group" "asg" {
-  name     = "terraform-asg-example"
-  port     = 80
+  name = "terraform-asg-example"
+
+  # インスタンスが待ち受け、セキュリティグループが開放しているポートと一致させる。
+  # ここを 80 のままにするとヘルスチェックが通らず、min_elb_capacity の待機が
+  # タイムアウトして apply が失敗する
+  port     = 8080
   protocol = "HTTP"
   vpc_id   = var.vpc_id
 
@@ -945,6 +968,14 @@ resource "aws_db_instance" "example" {
 
   password_wo         = ephemeral.random_password.db_password.result
   password_wo_version  = 1
+
+  # 学習・検証用DBの前提。これを省くとAWSが最終スナップショット識別子を要求し、
+  # terraform destroy が失敗する。本番DBでは skip_final_snapshot は false のままにし、
+  # final_snapshot_identifier に有効な識別子を指定すること
+  #   skip_final_snapshot       = false
+  #   final_snapshot_identifier = var.final_snapshot_identifier  # 例: "my-db-final-2026-08-29"
+  # timestamp() のような毎回変わる関数は差分が消えなくなるため使わない
+  skip_final_snapshot = true
 }
 ```
 
@@ -959,7 +990,7 @@ resource "aws_db_instance" "example" {
 | Plan fileへの保存 | される | されない |
 | 対応バージョン | 全バージョン | Ephemeral Resources: Terraform 1.10以降／Write-Only Arguments: Terraform 1.11以降 |
 | プロバイダー側の対応 | 不要 | Write-Only引数の実装が必要（`hashicorp/aws`は`password_wo`等で順次対応） |
-| 利用可能な場所 | 変数、リソース属性全般 | プロバイダーブロックの認証情報、対応リソースのWrite-Only属性のみ |
+| 主な利用先 | 変数、リソース属性全般 | `locals`、Ephemeral変数（`ephemeral = true`）、子モジュールのEphemeral出力、`ephemeral`ブロック、プロバイダー設定、プロビジョナーと`connection`ブロック、対応リソースのWrite-Only引数 |
 
 **ベストプラクティス**: 2026年8月時点で新規に本番コードを書く場合、パスワードやAPIトークンのような一度きりの機微値は、プロバイダーが対応していれば積極的にEphemeral Resources + Write-Only Argumentsへ移行する。既存コードの移行は、影響範囲の大きいDB系リソースから段階的に行うのが安全です。
 
@@ -1135,10 +1166,12 @@ resource "kubernetes_deployment" "example" {
 
   spec {
     replicas = 3
-    # ...
+    # selector と template は紙面の都合で省略している（どちらも必須ブロック）
   }
 }
 ```
+
+> このスニペットは要点のみを抜き出した**断片**です。そのまま`apply`できる形にするには、`terraform`ブロックの`required_providers`で`hashicorp/aws`と`hashicorp/kubernetes`を宣言し、`kubernetes_deployment`の`spec`に必須の`selector`と`template`を補う必要があります。
 
 **ベストプラクティス**: EKSクラスタ本体（`aws`プロバイダー管轄）と、その中で動くKubernetesリソース（`kubernetes`プロバイダー管轄）は、必ずroot module／Stateを分離します。同一のapplyでクラスタを作りながら、そのクラスタの`endpoint`や`token`で`provider "kubernetes"`を構成すると、プロバイダー設定が「まだ存在しないリソースの属性」に依存することになり、初回`apply`や`plan`が失敗したり、クラスタの再作成時にプロバイダーの初期化ごと壊れてStateを手当てできなくなったりします。分離しておけば、クラスタ側の変更（バージョンアップ、ノードグループ変更）とアプリ側の変更（Deploymentの更新）を独立した変更頻度・責任分界点で回せます。
 
