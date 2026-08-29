@@ -247,11 +247,13 @@ DORA --> D1["デプロイ頻度<br/>Deployment Frequency"]
 DORA --> D2["変更のリードタイム<br/>Lead Time for Changes"]
 DORA --> D3["変更失敗率<br/>Change Failure Rate"]
 DORA --> D4["平均復旧時間<br/>MTTR"]
+DORA --> D5["デプロイの再作業率<br/>Rework Rate (2024年追加)"]
 
 D1 -.スピード指標.-> Speed["デリバリー速度"]
 D2 -.スピード指標.-> Speed
 D3 -.安定性指標.-> Stable["デリバリー安定性"]
 D4 -.安定性指標.-> Stable
+D5 -.安定性指標.-> Stable
 
 Speed --> Elite["エリートパフォーマー:<br/>速度と安定性を両立"]
 Stable --> Elite
@@ -259,7 +261,7 @@ Stable --> Elite
 classDef speedStyle fill:#1a2942,stroke:#7c9eff,color:#e8edf7
 classDef stableStyle fill:#241a35,stroke:#b98af0,color:#ece3fb
 class D1,D2,Speed speedStyle
-class D3,D4,Stable stableStyle`,
+class D3,D4,D5,Stable stableStyle`,
 
     'diag-4': `flowchart LR
 subgraph IronAge["鉄器時代"]
