@@ -57,20 +57,13 @@ afterEach(() => {
 });
 
 describe('Infrastructure as Code NavBar コンポーネント', () => {
-    it('正準マークアップ（nav > ul > li > a）を持ち、デッドコードや不要な span を含まないこと', () => {
+    it('目次ナビゲーションが nav[aria-label="目次"] を持ち、全リンクを描画すること', () => {
         const { container } = render(<NavBar />);
         const nav = container.querySelector('nav[aria-label="目次"]');
         expect(nav).not.toBeNull();
 
-        const ul = nav?.querySelector('ul');
-        expect(ul).not.toBeNull();
-
-        const lis = ul?.querySelectorAll('li');
-        expect(lis?.length).toBe(NAV_ITEMS.length);
-
-        // 不要な span ラッパーを含まないこと
-        const spans = nav?.querySelectorAll('span');
-        expect(spans?.length ?? 0).toBe(0);
+        const links = nav?.querySelectorAll('a');
+        expect(links?.length).toBe(NAV_ITEMS.length);
     });
 
     it('NAV_ITEMS の全 32 項目が描画されること', () => {

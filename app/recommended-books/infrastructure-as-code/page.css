@@ -228,8 +228,15 @@
     color: var(--color-pca-s4-foreground);
 }
 
-.infrastructure-as-code-page .main ul,
+.infrastructure-as-code-page .main ul {
+    list-style-type: disc;
+    margin: 0 0 18px;
+    padding-left: 1.4em;
+    color: var(--color-pca-s4-foreground);
+}
+
 .infrastructure-as-code-page .main ol {
+    list-style-type: decimal;
     margin: 0 0 18px;
     padding-left: 1.4em;
     color: var(--color-pca-s4-foreground);
@@ -545,6 +552,7 @@
     .infrastructure-as-code-page .main {
         margin-left: 0;
         width: 100%;
+        max-width: none;
         padding: 80px 20px 100px;
     }
 
