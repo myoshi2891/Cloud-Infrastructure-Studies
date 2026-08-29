@@ -249,6 +249,29 @@ resource "aws_instance" "example" {
 }
 ```
 
+**注意**: AMI ID はリージョン固有かつ時間とともに廃止・置き換えが進むため、上のようにハードコードした ID は別リージョンや将来の実行では解決できずに `apply` が失敗します。実務では `aws_ami` データソースで最新の AMI を動的に解決します。
+
+```hcl
+data "aws_ami" "ubuntu" {
+  most_recent = true
+  owners      = ["099720109477"] # Canonical
+
+  filter {
+    name   = "name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]
+  }
+}
+
+resource "aws_instance" "example" {
+  ami           = data.aws_ami.ubuntu.id
+  instance_type = "t2.micro"
+
+  tags = {
+    Name = "terraform-example"
+  }
+}
+```
+
 基本ワークフローは次の3ステップです。
 
 ```mermaid
@@ -552,6 +575,12 @@ resource "aws_instance" "example" {
 
 **ベストプラクティス**: モジュール間の依存関係を`terraform_remote_state`で明示することで、VPCのような基盤コンポーネントと、アプリケーション固有のリソースを別々のStateに分離しつつ連携できます。
 
+**セキュリティ上の注意**: `outputs.subnet_id`のように特定の出力値だけを参照していても、`terraform_remote_state`はバックエンド(上の例ではS3バケット)から**State全体を読み取ります**。つまり参照側にバックエンドの読み取り権限を与えることは、そのStateに含まれるすべての値（DBパスワードや秘密鍵など、リソース属性としてStateに平文で残る機密情報を含む）へのアクセスを許すことと同義です。機密情報を含むStateを他チームと共有する場合は、必要な値だけを渡す限定的な手段を検討します。
+
+- HCP Terraform/Enterpriseでは`tfe_outputs`データソースを使い、State全体ではなくワークスペースの出力値だけを共有する
+- 出力値をSSM Parameter StoreやSecrets Managerへ書き出し、参照側にはそのパラメータのみ読み取り権限を与える
+- そもそもStateに機密情報を残さないよう、write-only引数（第6部参照）やエフェメラルリソースを使う
+
 ---
 
 ## 第4部（原著第4章対応）: 再利用可能なインフラをモジュールで作る
@@ -773,6 +802,32 @@ resource "aws_launch_template" "example" {
   }
 }
 
+# ASGが参照するターゲットグループ。この宣言がないと
+# aws_lb_target_group.asg は未定義参照となり terraform validate が失敗する
+resource "aws_lb_target_group" "asg" {
+  name     = "terraform-asg-example"
+  port     = 80
+  protocol = "HTTP"
+  vpc_id   = var.vpc_id
+
+  health_check {
+    path     = "/"
+    protocol = "HTTP"
+    matcher  = "200"
+  }
+}
+
+variable "vpc_id" {
+  description = "ターゲットグループを作成するVPCのID"
+  type        = string
+}
+
+variable "min_size" {
+  description = "ASGの最小インスタンス数（min_elb_capacityの待機台数にも使う）"
+  type        = number
+  default     = 2
+}
+
 resource "aws_autoscaling_group" "example" {
   # ...
 
@@ -892,6 +947,10 @@ resource "aws_db_instance" "example" {
   password_wo_version  = 1
 }
 ```
+
+**生成したパスワードの受け取りとローテーション**: この構成では生成値がStateにもPlanにも残らないため、`terraform output`で後から取り出すことは**できません**。値を人やアプリが使う必要がある場合は、同じ`apply`の中でシークレットストアへ書き込み、以後はそこから読む運用にします（`aws_secretsmanager_secret_version`の`secret_string_wo`と`secret_string_wo_version`を使えば、Secrets Manager側にもStateを経由せずに書き込めます）。
+
+ローテーション時の注意点は`password_wo_version`です。write-only引数の値そのものはStateに保存されないため、Terraformは値の変化を検知できません。**新しいパスワードを実際に適用するには、`password_wo_version`をインクリメントする**必要があります（`1` → `2`）。バージョンを据え置いたままパスワード生成側だけを変えても、プロバイダーは更新を行わず、コード上の値と実際のDBパスワードが乖離します。定期ローテーションを行う場合は、この整数をコードまたは変数として管理し、ローテーションのたびに必ず1つ上げる手順をランブック化しておきます。
 
 | 比較項目 | 従来方式（`sensitive = true`のみ） | 2026年推奨方式（Ephemeral + Write-Only） |
 |---|---|---|
@@ -1188,6 +1247,10 @@ run "reject_invalid_instance_type" {
   command = plan
 
   variables {
+    # instance_type の validation 失敗だけをテストしたいので、
+    # 必須変数である cluster_name には有効な値を与えておく
+    # （未指定だと「変数未設定」で先に失敗し、意図したテストにならない）
+    cluster_name  = "test-cluster"
     instance_type = ""
   }
 
