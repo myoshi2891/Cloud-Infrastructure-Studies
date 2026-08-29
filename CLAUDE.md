@@ -477,6 +477,12 @@ app/
       NavBar.tsx                    # サイドバーナビ (IntersectionObserver)
       constants.ts                  # Mermaid 図定義（19図）
       page.css                      # ページ固有スタイル
+    release-it/
+      page.tsx                      # 『Release It!』本番対応ソフトウェア設計・デプロイ 完全ガイド (Server)
+      ReleaseItGuide.tsx            # 本文＋インタラクション (Client。4部17章、Mermaid 14図、チェックリスト等)
+      NavBar.tsx                    # サイドバーナビ (IntersectionObserver)
+      constants.ts                  # Mermaid 図定義（14図）
+      page.css                      # ページ固有スタイル
 
 
 components/

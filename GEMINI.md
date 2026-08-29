@@ -61,6 +61,7 @@ Updated 2026-08-29
   - `/app/recommended-books/accelerate`: 『Accelerate』LeanとDevOpsの科学 完全ガイド（DORA 5指標、24の能力、Westrum組織文化モデル、AI支援開発時代の最新知見）。
   - `/app/recommended-books/site-reliability-engineering`: 『Site Reliability Engineering』Googleのプロダクション運用 完全ガイド（原則・実践・マネジメント、SLI/SLO/SLA、エラーバジェット、トイル撲滅、AI時代のSRE最新動向）。
   - `/app/recommended-books/the-devops-handbook`: 『The DevOps Handbook』DevOpsバイブル 完全ガイド（全23章・6パート構成、3つの道、技術的実践、シフトレフトセキュリティ、2026年AI時代のDORA・プラットフォームエンジニアリング最新知見）。
+  - `/app/recommended-books/release-it`: 『Release It!』本番対応ソフトウェア設計・デプロイ 完全ガイド（初版・第2版対応、4部17章構成、サーキットブレーカー・バルクヘッド・タイムアウト等12パターン/12アンチパターン、ゼロダウンタイムデプロイ、カオスエンジニアリング、Mermaid 14図）。
 - `/app/constants.ts`: 試験データ正本（EXAMS / STATS）。`provider: 'GCP' | 'AWS' | 'Cisco' | 'CompTIA' | 'Books'` で分類され、`toNavTree` が自動グルーピング。
 - AWS: `app/aws/` 配下（`solutions-architect-associate/page.tsx` 完全対策ガイド、`solutions-architect-associate/domain1/page.tsx` ドメイン1ガイド、`solutions-architect-associate/domain2/page.tsx` ドメイン2ガイド、`solutions-architect-associate/domain3/page.tsx` ドメイン3ガイド、`solutions-architect-associate/domain4/page.tsx` ドメイン4ガイド）
 - Cisco: `app/cisco/` 配下（`ccna/beginner-guide/page.tsx` 完全ガイド、`ccna/automation-software-development-design/page.tsx`、`ccna/automation-application-deployment-security/page.tsx`、`ccna/automation-cisco-platforms-and-development/page.tsx`、`ccna/automation-infrastructure-and-automation/page.tsx`、`ccna/ip-connectivity-guide/page.tsx`、`ccna/ip-services-guide/page.tsx`、`ccna/automation-programmability/page.tsx` 含む）

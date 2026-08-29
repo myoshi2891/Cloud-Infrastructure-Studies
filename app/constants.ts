@@ -22,7 +22,8 @@ export type ColorKey =
     | 'card-comptia'
     | 'card-accelerate'
     | 'card-sre'
-    | 'card-devops-handbook';
+    | 'card-devops-handbook'
+    | 'card-release-it';
 
 export interface Exam {
     id: string;
@@ -56,6 +57,7 @@ export const cardColorMap: Record<ColorKey, string> = {
     'card-accelerate': 'card-accelerate',
     'card-sre': 'card-sre',
     'card-devops-handbook': 'card-devops-handbook',
+    'card-release-it': 'card-release-it',
 };
 
 export const providerMeta: Record<
@@ -676,6 +678,27 @@ const ALL_EXAMS: Exam[] = [
             {
                 label: '完全解説ガイド',
                 href: '/recommended-books/the-devops-handbook',
+                pct: '完全解説',
+            },
+        ],
+        badge: '名著ガイド',
+        icon: '📚',
+        provider: 'Books',
+    },
+    {
+        id: 'release-it',
+        label: 'Release It!',
+        abbr: 'Release It!',
+        level: 'Production-Ready & Stability',
+        score: '4部17章 / 14図解',
+        color: 'card-release-it',
+        href: '/recommended-books/release-it',
+        description:
+            '『Release It!: Design and Deploy Production-Ready Software』初版・第2版の完全ガイド。サーキットブレーカー、バルクヘッド、タイムアウト、ゼロダウンタイムデプロイ、カオスエンジニアリングまで、本番対応ソフトウェア設計・運用の勘所を体系的に解説。',
+        domains: [
+            {
+                label: '完全解説ガイド',
+                href: '/recommended-books/release-it',
                 pct: '完全解説',
             },
         ],
