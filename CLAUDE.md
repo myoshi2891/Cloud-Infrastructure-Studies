@@ -471,6 +471,12 @@ app/
       NavBar.tsx                    # サイドバーナビ (IntersectionObserver)
       constants.ts                  # Mermaid 図定義（15図）
       page.css                      # ページ固有スタイル
+    the-devops-handbook/
+      page.tsx                      # 『The DevOps Handbook』第2版 完全ガイド (Server)
+      TheDevOpsHandbookGuide.tsx    # 本文＋インタラクション (Client。全23章・6パート、Mermaid 19図、チェックリスト等)
+      NavBar.tsx                    # サイドバーナビ (IntersectionObserver)
+      constants.ts                  # Mermaid 図定義（19図）
+      page.css                      # ページ固有スタイル
 
 
 components/

@@ -20,7 +20,9 @@ export type ColorKey =
     | 'card-aws-saa'
     | 'card-ccna'
     | 'card-comptia'
-    | 'card-accelerate';
+    | 'card-accelerate'
+    | 'card-sre'
+    | 'card-devops-handbook';
 
 export interface Exam {
     id: string;
@@ -52,6 +54,8 @@ export const cardColorMap: Record<ColorKey, string> = {
     'card-aws-saa': 'card-aws-saa',
     'card-comptia': 'card-comptia',
     'card-accelerate': 'card-accelerate',
+    'card-sre': 'card-sre',
+    'card-devops-handbook': 'card-devops-handbook',
 };
 
 export const providerMeta: Record<
@@ -633,6 +637,27 @@ const ALL_EXAMS: Exam[] = [
             {
                 label: '入門完全ガイド',
                 href: '/recommended-books/site-reliability-engineering',
+                pct: '完全解説',
+            },
+        ],
+        badge: '名著ガイド',
+        icon: '📚',
+        provider: 'Books',
+    },
+    {
+        id: 'the-devops-handbook',
+        label: 'The DevOps Handbook',
+        abbr: 'DevOps HB',
+        level: 'DevOps & Org',
+        score: '23章 / 19図解',
+        color: 'card-devops-handbook',
+        href: '/recommended-books/the-devops-handbook',
+        description:
+            '『The DevOps Handbook』第2版の全23章・6パート構成を初学者向けに解説。3つの道（フロー・フィードバック・継続的学習）、低リスクリリース、テレメトリ、シフトレフトセキュリティ、2026年AI時代のDORAとプラットフォームエンジニアリングまでを体系的に解説する完全ガイド。',
+        domains: [
+            {
+                label: '完全解説ガイド',
+                href: '/recommended-books/the-devops-handbook',
                 pct: '完全解説',
             },
         ],

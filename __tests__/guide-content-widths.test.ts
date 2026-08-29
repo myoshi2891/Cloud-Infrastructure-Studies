@@ -45,6 +45,7 @@ const guideLayouts = [
     ['app/gcl/hands-on/iap-tcp-forwarding-best-practices-guide/page.css', '.iap-guide-page .sidebar', '.iap-guide-page main'],
     ['app/gcl/hands-on/terraform-gcp-challenge-lab-guide/page.css', '.terraform-lab-guide-page .sidebar', '.terraform-lab-guide-page .main'],
     ['app/recommended-books/site-reliability-engineering/page.css', '.sre-guide-page .sidebar', '.sre-guide-page .main'],
+    ['app/recommended-books/the-devops-handbook/page.css', '.the-devops-handbook-page .sidebar', '.the-devops-handbook-page .main'],
 ] as const;
 
 describe('all sidebar guide layouts', () => {

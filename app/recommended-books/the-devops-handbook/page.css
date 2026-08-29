@@ -577,6 +577,7 @@
     .the-devops-handbook-page .main {
         margin-left: 0;
         width: 100%;
+        max-width: none;
         padding: 80px 20px 100px;
     }
     .the-devops-handbook-page .sidebar-toggle {
