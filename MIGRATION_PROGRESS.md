@@ -26,6 +26,7 @@
 - [app/recommended-books/infrastructure-as-code/constants.ts](app/recommended-books/infrastructure-as-code/constants.ts)
 - [app/recommended-books/infrastructure-as-code/page.css](app/recommended-books/infrastructure-as-code/page.css)
 - [`__tests__/recommended-books/infrastructure-as-code/page.test.tsx`](__tests__/recommended-books/infrastructure-as-code/page.test.tsx)
+- [`__tests__/recommended-books/infrastructure-as-code/NavBar.test.tsx`](__tests__/recommended-books/infrastructure-as-code/NavBar.test.tsx)
 - [docs/migration-inventory/infrastructure-as-code.json](docs/migration-inventory/infrastructure-as-code.json)
 - [archive/Books/html/Infrastructure-as-code-guide.html](archive/Books/html/Infrastructure-as-code-guide.html)
 
