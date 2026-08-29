@@ -322,6 +322,14 @@
   padding-left: 24px;
 }
 
+.accelerate-page ul {
+  list-style: disc;
+}
+
+.accelerate-page ol {
+  list-style: decimal;
+}
+
 .accelerate-page li {
   margin-bottom: 8px;
 }
