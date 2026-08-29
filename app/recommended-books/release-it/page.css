@@ -321,7 +321,7 @@
     padding: 28px 20px;
 }
 
-.release-it-page .mermaid-wrap :global(svg) {
+.release-it-page .mermaid-wrap svg {
     height: auto !important;
 }
 
