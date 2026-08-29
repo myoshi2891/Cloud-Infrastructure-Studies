@@ -619,6 +619,27 @@ const ALL_EXAMS: Exam[] = [
         icon: '📚',
         provider: 'Books',
     },
+    {
+        id: 'sre',
+        label: 'Site Reliability Engineering',
+        abbr: 'SRE',
+        level: 'SRE & Ops',
+        score: '34章 / 15図解',
+        color: 'card-sre',
+        href: '/recommended-books/site-reliability-engineering',
+        description:
+            'Googleが実践するSite Reliability Engineering（SRE）の原則・実践・マネジメント、SLI/SLO/SLA、エラーバジェット、トイル撲滅、AI時代のSRE最新動向までを体系的に解説する完全ガイド。',
+        domains: [
+            {
+                label: '入門完全ガイド',
+                href: '/recommended-books/site-reliability-engineering',
+                pct: '完全解説',
+            },
+        ],
+        badge: '名著ガイド',
+        icon: '📚',
+        provider: 'Books',
+    },
 ];
 
 export const EXAMS: Exam[] = HANDS_ON_ENABLED

@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## プロジェクト概要
 
-GCP/AWS/Cisco/CompTIA 資格試験対策およびエンジニアリング・DevOps名著（『Accelerate』など）の学習を目的としたNext.js学習アプリ。
+GCP/AWS/Cisco/CompTIA 資格試験対策およびエンジニアリング・DevOps名著（『Accelerate』、『Site Reliability Engineering』など）の学習を目的としたNext.js学習アプリ。
 
 試験データの正本は `app/constants.ts` の `EXAMS` 配列。ナビゲーションは `app/navigation.ts` の `toNavTree(EXAMS)` で自動生成されるため、新試験追加時は **`Header.tsx` を直接編集しない**。新試験追加の手順は ① `app/constants.ts` の `EXAMS` にエントリ追加、② `app/globals.css` に `icon-theme-<id>` ユーティリティ追加、③ 試験ページ作成 の 3 ファイルのみ変更すれば Header に自動反映される。
 
@@ -458,6 +458,19 @@ app/
         NavBar.tsx                  # ドメイン4サイドバーナビ
         constants.ts                # Mermaid 図定義（29図）
         page.css                    # ドメイン4ページ固有スタイル
+  recommended-books/
+    accelerate/
+      page.tsx                      # 『Accelerate』LeanとDevOpsの科学 完全ガイド (Server)
+      AccelerateGuide.tsx           # 本文＋インタラクション (Client。DORA 5指標、24能力等)
+      NavBar.tsx                    # サイドバーナビ (IntersectionObserver)
+      constants.ts                  # Mermaid 図定義（10図）
+      page.css                      # ページ固有スタイル
+    site-reliability-engineering/
+      page.tsx                      # 『Site Reliability Engineering』Googleのプロダクション運用 完全ガイド (Server)
+      SreGuide.tsx                  # 本文＋インタラクション (Client。SLI/SLO/SLA、トイル撲滅、Mermaid 15図等)
+      NavBar.tsx                    # サイドバーナビ (IntersectionObserver)
+      constants.ts                  # Mermaid 図定義（15図）
+      page.css                      # ページ固有スタイル
 
 
 components/
