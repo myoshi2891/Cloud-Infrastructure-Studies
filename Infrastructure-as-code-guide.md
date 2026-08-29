@@ -101,22 +101,24 @@ flowchart TB
 | インフラは先に構築してから、あとで自動化すればいい | 後付けの自動化は「今動いている状態」を正として逆算する必要があり、最初からコード化するより遥かにコストが高い |
 | スピードと品質はトレードオフである | 自動化されたテストとデリバリーパイプラインがあれば、変更を高速化しながら品質(信頼性)も同時に高められる |
 
-### DORA Four Keys ― 「速いか安全か」ではなく両方測る
+### DORA のデリバリー指標 ― 「速いか安全か」ではなく両方測る
 
-3つ目の神話(速度と品質のトレードオフ)を定量的に裏付けるのが、Google Cloud の DevOps Research and Assessment(DORA)チームによる調査です。DORA は、書籍 *Accelerate*(Nicole Forsgren, Jez Humble, Gene Kim 著)を通じて、ソフトウェアデリバリーのパフォーマンスを4つの指標で測定できることを示しました。
+3つ目の神話(速度と品質のトレードオフ)を定量的に裏付けるのが、Google Cloud の DevOps Research and Assessment(DORA)チームによる調査です。DORA は、書籍 *Accelerate*(Nicole Forsgren, Jez Humble, Gene Kim 著)を通じて、ソフトウェアデリバリーのパフォーマンスを4つの指標(いわゆる **Four Keys**)で測定できることを示しました。ただし Four Keys は歴史的な呼称であり、**2024年以降のモデルは「デプロイの再作業率」を加えた5指標** になっています。
 
 ```mermaid
 flowchart TB
-    DORA["DORA Four Keys<br/>(2024年にデリバリー指標の5つ目として<br/>「デプロイの再作業率」を追加)"]
+    DORA["DORA デリバリー指標(5指標)<br/>(旧称 Four Keys に<br/>2024年「デプロイの再作業率」を追加)"]
     DORA --> D1["デプロイ頻度<br/>Deployment Frequency"]
     DORA --> D2["変更のリードタイム<br/>Lead Time for Changes"]
     DORA --> D3["変更失敗率<br/>Change Failure Rate"]
-    DORA --> D4["平均復旧時間<br/>MTTR"]
+    DORA --> D4["失敗したデプロイの復旧時間<br/>Failed Deployment Recovery Time"]
+    DORA --> D5["デプロイの再作業率<br/>Deployment Rework Rate<br/>(2024年追加)"]
 
     D1 -.スピード指標.-> Speed["デリバリー速度"]
     D2 -.スピード指標.-> Speed
     D3 -.安定性指標.-> Stable["デリバリー安定性"]
     D4 -.安定性指標.-> Stable
+    D5 -.安定性指標.-> Stable
 
     Speed --> Elite["エリートパフォーマー:<br/>速度と安定性を両立"]
     Stable --> Elite
@@ -124,10 +126,10 @@ flowchart TB
     classDef speedStyle fill:#1a2942,stroke:#7c9eff,color:#e8edf7
     classDef stableStyle fill:#241a35,stroke:#b98af0,color:#ece3fb
     class D1,D2,Speed speedStyle
-    class D3,D4,Stable stableStyle
+    class D3,D4,D5,Stable stableStyle
 ```
 
-なお、2024年版で追加された5つ目のデリバリー指標は「デプロイの再作業率(rework rate)」であり、信頼性(Reliability)はデリバリー指標ではなく運用パフォーマンスの指標として別枠で扱われます。
+なお、2024年版で追加された5つ目のデリバリー指標は「デプロイの再作業率(rework rate)」であり、同時に従来 MTTR と呼ばれていた指標は「失敗したデプロイの復旧時間(Failed Deployment Recovery Time)」へ改称されています。信頼性(Reliability)はデリバリー指標ではなく運用パフォーマンスの指標として別枠で扱われます。
 
 DORA の 2024 State of DevOps Report では、エリートパフォーマーはオンデマンドで複数回デプロイし、リードタイムは1日未満、変更失敗率は5%前後、障害復旧は1時間以内という水準にあると報告されています。ただし、DORA の 2025 年のレポート(State of AI-assisted Software Development)では、AI 活用の広がりに伴ってスループット(デプロイ頻度・リードタイム)と不安定性(変更失敗率など)をどう両立させるかが主要な論点として取り上げられています。デプロイ頻度・リードタイムだけを見て開発生産性を判断せず、DORAはあくまで「土台」として捉え、他の指標と組み合わせて評価するのが実務上の潮流です。
 
@@ -161,7 +163,7 @@ IaC は目的ではなく手段です。書籍は IaC がもたらす価値を�
 
 > **ベストプラクティス**
 > - IaC 導入を提案するときは、「クールだから」ではなく「変更のリードタイムをどれだけ短縮できるか」「障害復旧時間をどれだけ短縮できるか」という具体的な指標で語る
-> - チームや経営層に対しては、DORA Four Keys のような定量指標で Before/After を示すと説得力が増す
+> - チームや経営層に対しては、DORA のデリバリー指標のような定量指標で Before/After を示すと説得力が増す
 
 ### 第2章: クラウド時代のインフラ原則
 
@@ -272,7 +274,7 @@ flowchart LR
 > - 状態ファイル(Terraform の `terraform.tfstate` など)は「インフラの中で最も危険なファイル」と心得る。リソースID・出力値・場合によっては平文シークレットが含まれるため、ローカルや Git に直接コミットしない
 > - **リモートバックエンド**で共有する(S3、Azure Blob Storage、GCS、HCP Terraform など)。チーム全員が同じ State を参照でき、バージョニングやアクセス制御をバックエンド側の機能に任せられる
 > - **保存時暗号化**を有効にする。バックエンド側の暗号化(S3 のサーバーサイド暗号化など)に加え、OpenTofu では State と plan ファイル自体をクライアント側で暗号化する **State Encryption** 機能が使える(これはバックエンドの一種ではなく、任意のバックエンドの上に重ねる暗号化機能で、Terraform には同等の機能がない)。ただし State Encryption は鍵を失うと State も plan も復号できなくなるため、有効化する **前に** 鍵管理と復旧の手順を必ず整備する: ① 鍵の保管場所(KMS / Vault など)を文書化する、② 鍵を冗長にバックアップし、State バックエンドとは別の障害ドメインに保管する、③ 鍵ローテーションの手順と頻度を定める、④ バックアップ鍵からの復号・復旧を定期的にリハーサルして手順が機能することを確認する
->   - **既存の平文 State / plan からの移行手順**: State Encryption は OpenTofu 1.7 で導入された機能で、現行の 1.11 系・1.12 系でも同じ書式が使える。既に平文の State / plan が存在する環境へ後から導入する場合は、公式の移行手順どおり **`unencrypted` メソッドを fallback として一度経由する** 二段階で行う: (1) `encryption` ブロックに実際の鍵メソッド(`method "aes_gcm" "new"` など)に加えて `method "unencrypted" "migrate"` を定義する、(2) `state`(および暗号化済み plan を読む必要があるなら `plan`)の `fallback` から `method.unencrypted.migrate` を参照し、メインの `method` には新しい鍵メソッドを指定する、(3) この状態で `tofu plan -out=tfplan` → `tofu apply tfplan` を実行すると、読み込みは平文の fallback、書き込みは新しい鍵で行われ、State が暗号化された状態に置き換わる、(4) 移行完了を確認したら `fallback` と `unencrypted` メソッドの定義を削除する。平文への復帰を確実に塞ぎたい場合は、この後で `enforced = true` を有効にして暗号化されていない State / plan の読み書きを禁止する
+>   - **既存の平文 State / plan からの移行手順**: State Encryption は OpenTofu 1.7 で導入された機能で、現行の 1.11 系・1.12 系でも同じ書式が使える。既に平文の State / plan が存在する環境へ後から導入する場合は、公式の移行手順どおり **`unencrypted` メソッドを fallback として一度経由する** 二段階で行う: (1) `encryption` ブロックに実際の鍵メソッド(`method "aes_gcm" "new"` など)に加えて `method "unencrypted" "migrate"` を定義する、(2) `state` の `fallback` から `method.unencrypted.migrate` を参照し、既存の平文 plan ファイルを読んで移行する必要があるなら `plan` の `fallback` からも同じ `method.unencrypted.migrate` を参照し、メインの `method` には新しい鍵メソッドを指定する、(3) この状態で `tofu plan -out=tfplan` → `tofu apply tfplan` を実行すると、読み込みは平文の fallback、書き込みは新しい鍵で行われ、State が暗号化された状態に置き換わる、(4) 移行完了を確認したら `fallback` と `unencrypted` メソッドの定義を削除する。平文への復帰を確実に塞ぎたい場合は、この後で `enforced = true` を有効にして暗号化されていない State / plan の読み書きを禁止する
 > - **State locking** で同時実行による破損を防ぐ。Terraform の S3 backend では現行のロック方法は `use_lockfile = true`(S3 のコンディショナルライトを使うネイティブロック)であり、従来の `dynamodb_table` によるロックは非推奨で将来のマイナーバージョンで削除予定
 > - `plan` の結果を必ず人間または自動ポリシーチェックがレビューしてから `apply` する運用を徹底する。CI パイプラインで `apply` を自動実行する場合も、承認ステップを挟む
 > - **レビューした plan ファイルそのものを `apply` に渡す**。`apply` 時に plan を作り直すと、レビューから承認までの間に実インフラ・変数・プロバイダーのバージョンが変化していた場合に、レビューされていない変更がそのまま適用されてしまう。自動実行では次の順序を必須とする: ① `terraform plan -out=tfplan`(`tofu plan -out=tfplan`)で plan をファイルに保存する、② 保存した plan を `terraform show -json tfplan` などでレビュー・ポリシー検査する、③ `terraform apply tfplan`(`tofu apply tfplan`)のように保存済み plan を明示的に渡して適用する。なお plan ファイルは機微値を平文で含みうるため、保管場所のアクセス制御と保持期間も併せて定める
@@ -303,7 +305,7 @@ flowchart TB
     class C1,C2,C3,C4,C5 cupidFill
 ```
 
-初学者向けに超訳すると、「一つのモジュールに何でも詰め込まず、名前から中身が予測でき、他のモジュールと自由に組み合わせられる部品を作る」ということです。この考え方は Azure や AWS が公式に提供する検証済みモジュール群(Verified/Reference Modules)の設計原則としても参照されています。
+初学者向けに超訳すると、「一つのモジュールに何でも詰め込まず、名前から中身が予測でき、他のモジュールと自由に組み合わせられる部品を作る」ということです。この考え方は、Azure や AWS が公式に提供する検証済みモジュール群(Azure Verified Modules、AWS のリファレンスモジュール等)が掲げる「単一責務・組み合わせ可能・命名の一貫性」といった方針とも **設計上の共通点があります**(これらのモジュール群が CUPID を公式の設計原則として採用していると公表しているわけではありません)。
 
 #### 凝集度と結合度
 
@@ -856,7 +858,7 @@ Policy as Code 導入で最も失敗しやすいポイントは、ツール選�
 
 **その他のツールの強制のしかた**
 
-- **HCP Terraform の OPA ポリシー**: 強制レベルは **Advisory と Mandatory の2段階** のみで、Soft-mandatory に相当するオーバーライド可能な中間段階は存在しない。Advisory で警告運用を始め、精度が固まったら Mandatory へ引き上げる2段構えになる
+- **HCP Terraform の OPA ポリシー**: 強制レベルは **Advisory と Mandatory の2段階** のみで、Sentinel の Soft-mandatory に相当する「オーバーライド可能」という独立した中間レベルは存在しない。Advisory で警告運用を始め、精度が固まったら Mandatory へ引き上げる2段構えになる。なお Mandatory の違反を上書きして適用するには、**そのポリシーセット側でオーバーライドが許可されていること**、かつ操作者が **Manage Policy Overrides 権限** を持っていることの両方が必要で、どちらか一方でも欠ければ実質的に上書き不可のゲートとして機能する
 - **Checkov / Conftest(OPA CLI)**: そもそも強制レベルという設定項目を持たない。違反検出時の **終了コード(既定で非ゼロ)** をもって CI ジョブを失敗させるかどうかで強制する。段階導入したい場合は、Checkov の `--soft-fail`(常に終了コード0)や対象チェックの絞り込み、CI 側の `continue-on-error` などで「落とさない運用」から始め、後で外して強制へ切り替える
 
 > **ベストプラクティス**
@@ -920,10 +922,10 @@ flowchart TB
 - [ ] CI パイプラインに構文チェック・Lint・セキュリティスキャンを組み込んでいる
 - [ ] 静的解析・Plan検証・統合テストなど、複数のテスト層を重ねている(スイスチーズモデル)
 - [ ] 破壊的な変更には Expand and Contract パターンや非推奨化期間を設けている
-- [ ] Policy as Code を段階的な強制レベル(Advisory → Soft-mandatory → Hard-mandatory)で導入している
+- [ ] Policy as Code を、使用するツールの強制方式に応じて段階的に導入している(Sentinel なら Advisory → Soft-mandatory → Hard-mandatory、HCP Terraform の OPA なら Advisory → Mandatory、Checkov/Conftest なら「CI で落とさない → 終了コードで落とす」)
 - [ ] サーバーは可能な限り Immutable Server パターンで運用し、直接ログインしての変更を避けている
 - [ ] dev/staging/prod 環境間の構成差異(バリエーション)を最小化している
-- [ ] DORA Four Keys など定量指標でデリバリーパフォーマンスを定期的に計測している
+- [ ] DORA のデリバリー指標(旧称 Four Keys に「デプロイの再作業率」を加えた5指標)など、定量指標でデリバリーパフォーマンスを定期的に計測している
 
 ---
 
