@@ -1,6 +1,34 @@
 # 移行作業進捗管理ドキュメント (Migration Progress)
 
-(最終更新日: 2026-08-25)
+(最終更新日: 2026-08-29)
+
+---
+
+## 2026-08-29: 『Accelerate』LeanとDevOpsの科学 完全ガイド 100%全量移行 (完了)
+
+### 目的
+
+`Accelerate-lean-devops-guide.html` を、Next.js App Router 5ファイル構成 (`page.tsx`, `AccelerateGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/recommended-books/accelerate` ルートへ移行。グローバルナビゲーションに新規プロバイダー「Recommended Books」を追加。見出し(h1:1, h2:10, h3:16, h4:6)、全11個のテーブル、6個のMermaid図解、全リスト(44件)、全外部リンク(29件)・全本文・コールアウト注記(3件)・実践チェックリスト(10件)・参考文献一覧(29件)を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for accelerate-lean-devops-guide` (`bdaeb69`)
+- [x] **Step 1 (Red)**: `test(books): add failing tests for accelerate-lean-devops-guide` (`efa6f7c`)
+- [x] **Step 2 (Green)**: `feat(books): implement accelerate-lean-devops-guide to pass tests` (`9467847`)
+- [x] **Step 3 (Refactor)**: `refactor(books): integrate accelerate-lean-devops-guide into routing and update docs` (`99a7329`)
+- [x] **Step 4 (Archive & Sync)**: `chore(docs): update MIGRATION_PROGRESS.md — migrate accelerate-lean-devops-guide`
+
+### 関連ファイル
+
+- [app/recommended-books/accelerate/page.tsx](app/recommended-books/accelerate/page.tsx)
+- [app/recommended-books/accelerate/AccelerateGuide.tsx](app/recommended-books/accelerate/AccelerateGuide.tsx)
+- [app/recommended-books/accelerate/NavBar.tsx](app/recommended-books/accelerate/NavBar.tsx)
+- [app/recommended-books/accelerate/constants.ts](app/recommended-books/accelerate/constants.ts)
+- [app/recommended-books/accelerate/page.css](app/recommended-books/accelerate/page.css)
+- [`__tests__/recommended-books/accelerate/page.test.tsx`](__tests__/recommended-books/accelerate/page.test.tsx)
+- [docs/migration-inventory/accelerate-lean-devops-guide.json](docs/migration-inventory/accelerate-lean-devops-guide.json)
+- [archive/Books/html/Accelerate-lean-devops-guide.html](archive/Books/html/Accelerate-lean-devops-guide.html)
+- [archive/Books/md/Accelerate-lean-devops-guide.md](archive/Books/md/Accelerate-lean-devops-guide.md)
 
 ---
 

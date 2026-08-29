@@ -1,12 +1,12 @@
 # CLAUDE.md
 
-Updated 2026-08-15
+Updated 2026-08-29
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## プロジェクト概要
 
-GCP/AWS/Cisco 資格試験対策（Associate Cloud Engineer, Generative AI Leader, Cloud Digital Leader, Associate Google Workspace Administrator, Professional Cloud Network Engineer, Cisco Certified Network Associate, Cisco Certified Network Associate Automation、AWS Certified Solutions Architect – Associate ※準備中）を目的としたNext.js学習アプリ。
+GCP/AWS/Cisco/CompTIA 資格試験対策およびエンジニアリング・DevOps名著（『Accelerate』など）の学習を目的としたNext.js学習アプリ。
 
 試験データの正本は `app/constants.ts` の `EXAMS` 配列。ナビゲーションは `app/navigation.ts` の `toNavTree(EXAMS)` で自動生成されるため、新試験追加時は **`Header.tsx` を直接編集しない**。新試験追加の手順は ① `app/constants.ts` の `EXAMS` にエントリ追加、② `app/globals.css` に `icon-theme-<id>` ユーティリティ追加、③ 試験ページ作成 の 3 ファイルのみ変更すれば Header に自動反映される。
 
