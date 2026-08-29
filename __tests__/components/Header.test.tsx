@@ -105,4 +105,44 @@ describe('Header (drawer nav)', () => {
             expect(hrefs).not.toContain(exam.href);
         }
     });
+    it('Recommended Books グループのカウントは「試験」ではなく「冊」で数えること', async () => {
+        // Arrange
+        const user = userEvent.setup();
+        render(<Header />);
+
+        // Act
+        await user.click(screen.getByRole('button', { name: 'メニューを開く' }));
+
+        // Assert
+        const dialog = screen.getByRole('dialog', { name: 'サイトナビゲーション' });
+        const booksSection = dialog
+            .querySelector('.provider-mark-books')
+            ?.closest('section') as HTMLElement | null;
+        expect(booksSection).not.toBeNull();
+        const booksCount = EXAMS.filter(
+            (e) => e.provider === 'Books' && e.status !== 'coming-soon',
+        ).length;
+        expect(within(booksSection as HTMLElement).getByText(`${booksCount} 冊`)).toBeInTheDocument();
+        expect(within(booksSection as HTMLElement).queryByText(/試験$/)).not.toBeInTheDocument();
+    });
+
+    it('資格プロバイダのグループカウントは引き続き「試験」で数えること', async () => {
+        // Arrange
+        const user = userEvent.setup();
+        render(<Header />);
+
+        // Act
+        await user.click(screen.getByRole('button', { name: 'メニューを開く' }));
+
+        // Assert
+        const dialog = screen.getByRole('dialog', { name: 'サイトナビゲーション' });
+        const ciscoSection = dialog
+            .querySelector('.provider-mark-cisco')
+            ?.closest('section') as HTMLElement | null;
+        expect(ciscoSection).not.toBeNull();
+        const ciscoCount = EXAMS.filter(
+            (e) => e.provider === 'Cisco' && e.status !== 'coming-soon',
+        ).length;
+        expect(within(ciscoSection as HTMLElement).getByText(`${ciscoCount} 試験`)).toBeInTheDocument();
+    });
 });
