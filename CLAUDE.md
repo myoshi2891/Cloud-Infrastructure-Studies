@@ -463,7 +463,7 @@ app/
       page.tsx                      # 『Accelerate』LeanとDevOpsの科学 完全ガイド (Server)
       AccelerateGuide.tsx           # 本文＋インタラクション (Client。DORA 5指標、24能力等)
       NavBar.tsx                    # サイドバーナビ (IntersectionObserver)
-      constants.ts                  # Mermaid 図定義（10図）
+      constants.ts                  # Mermaid 図定義（6図）
       page.css                      # ページ固有スタイル
     site-reliability-engineering/
       page.tsx                      # 『Site Reliability Engineering』Googleのプロダクション運用 完全ガイド (Server)

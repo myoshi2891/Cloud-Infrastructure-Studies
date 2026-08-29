@@ -394,7 +394,7 @@ resource "aws_launch_template" "example" {
   user_data = base64encode(<<-EOF
               #!/bin/bash
               echo "Hello, World" > index.html
-              nohup busybox httpd -f -p 8080 &
+              nohup busybox httpd -f -p ${var.server_port} &
               EOF
   )
 }
@@ -795,7 +795,7 @@ resource "aws_autoscaling_schedule" "scale_out_during_business_hours" {
 無停止に近づけるには、`create_before_destroy`に加えて次の3点を揃える必要があります。
 
 1. **新旧のASGを同じロードバランサー（ターゲットグループ）に接続する。** 接続していなければ、そもそもトラフィックの引き継ぎ先が存在しません。
-2. **`min_elb_capacity`（ASG新規作成時）または`wait_for_elb_capacity`（既存ASGの容量変更時）で、指定台数がELBのヘルスチェックを通過するまでTerraformを待たせる。** この待機がないと、健全なインスタンスが揃う前に旧ASGが破棄されます。
+2. **`min_elb_capacity`（ASGの新規作成時のみ待機）または`wait_for_elb_capacity`（新規作成時と更新時の両方で待機）で、指定台数がELBのヘルスチェックを通過するまでTerraformを待たせる。** この待機がないと、健全なインスタンスが揃う前に旧ASGが破棄されます。
 3. **既存ASGのインスタンス入れ替えは`instance_refresh`に任せ、その完了を明示的に確認する。** `instance_refresh`は`apply`の完了後もAWS側で非同期に進むため、**`apply`が成功しても入れ替えが成功したとは限りません**。CDパイプライン側でリフレッシュのステータス（`Successful` / `Failed` / `Cancelled`）をポーリングし、失敗・中断時は直前のLaunch Templateバージョンへ戻すロールバック手順まで用意して初めて運用に耐えます。
 
 ```mermaid
@@ -826,10 +826,10 @@ resource "aws_launch_template" "example" {
 resource "aws_lb_target_group" "asg" {
   name = "terraform-asg-example"
 
-  # インスタンスが待ち受け、セキュリティグループが開放しているポートと一致させる。
-  # ここを 80 のままにするとヘルスチェックが通らず、min_elb_capacity の待機が
-  # タイムアウトして apply が失敗する
-  port     = 8080
+  # インスタンスが待ち受け、セキュリティグループが開放しているポートと
+  # 同じ変数から導出する。ここを 80 のような固定値にするとヘルスチェックが
+  # 通らず、容量待機がタイムアウトして apply が失敗する
+  port     = var.server_port
   protocol = "HTTP"
   vpc_id   = var.vpc_id
 
@@ -838,6 +838,12 @@ resource "aws_lb_target_group" "asg" {
     protocol = "HTTP"
     matcher  = "200"
   }
+}
+
+variable "server_port" {
+  description = "サーバーが待ち受け、ターゲットグループが転送するポート"
+  type        = number
+  default     = 8080
 }
 
 variable "vpc_id" {
@@ -934,7 +940,7 @@ variable "db_password" {
 
 ### 6-4.【2026年最新】Ephemeral Resources & Write-Only Argumentsによる根本解決
 
-長年の「Stateにシークレットが残ってしまう」問題に対し、HashiCorpは**Terraform 1.10でEphemeral Resourcesを、続くTerraform 1.11でWrite-Only Argumentsを**導入しました。よく一組で語られますが、両者は同じリリースで登場したわけではなく導入バージョンが1つずれています。いずれも原著第3版（2022年刊）の時点では存在しなかった、2026年時点における最重要のシークレット管理アップデートです。
+長年の「Stateにシークレットが残ってしまう」問題に対し、HashiCorpは**Terraform 1.10でEphemeral Resourcesを、続くTerraform 1.11でWrite-Only Argumentsを**導入しました。よく一組として扱われますが、両者は同じリリースで登場したわけではなく導入バージョンが1つずれています。いずれも原著第3版（2022年刊）の時点では存在しなかった、2026年時点における最重要のシークレット管理アップデートです。
 
 - **Ephemeral Resources**（`ephemeral`ブロック、**Terraform 1.10以降**）: `apply`実行中のメモリ上にのみ存在し、PlanファイルにもStateファイルにも書き込まれないリソース
 - **Write-Only Arguments**（`_wo`サフィックスの引数、**Terraform 1.11以降**）: プロバイダー側がサポートする場合、値を受け取って設定するが、Stateには保存しない引数
@@ -1457,7 +1463,7 @@ flowchart TB
 | OPA（Rego） | 汎用ポリシーエンジン | なし（Kubernetes等でも同一言語） | 組織独自のガバナンスルールの一元管理 |
 | Checkov / Trivy config | 静的セキュリティスキャナー | なし | 既知の誤設定（公開バケット等）の即時検出。tfsecはレガシー扱いでTrivyのconfigスキャンへ統合・移行が進んでいるため、新規導入はTrivyを選ぶ |
 
-**ベストプラクティス**: 単一ツールに頼らず、「スキャナーで既知の穴を塞ぐ」＋「OPA/Sentinelで組織固有のガバナンスを強制する」の2層構成が2026年時点の成熟した構成として紹介されています。ネイティブHCLの`precondition`/`postcondition`/`check`ブロックだけでも、ポリシー違反の一定割合（分析によれば約3割程度）は事前に検出できるため、まずはHCL標準機能から始めるのも有効です。
+**ベストプラクティス**: 単一ツールに頼らず、「スキャナーで既知の穴を塞ぐ」＋「OPA/Sentinelで組織固有のガバナンスを強制する」の2層構成が2026年時点の成熟した構成として紹介されています。ネイティブHCLの`precondition`/`postcondition`/`check`ブロックだけでも、変数の値域や参照先リソースの属性など「宣言内で表現できる前提条件」は`plan`/`apply`の時点で弾けるため、まずはHCL標準機能から始めるのも有効です。
 
 ---
 
