@@ -48,12 +48,15 @@ describe('accelerate-lean-devops-guide — 移行元コンテンツの全量移�
         expect(rendered).toEqual(items.map(squash));
     });
 
-    it('外部リンクが件数・順序・URL まで移行元と一致する', () => {
+    it('外部リンクが件数・順序・URL・ラベルまで移行元と一致する', () => {
         const container = renderPage();
-        const rendered = [...container.querySelectorAll('a[href^="http"]')].map((anchor) =>
-            anchor.getAttribute('href'),
+        const rendered = [...container.querySelectorAll('a[href^="http"]')].map((anchor) => ({
+            href: anchor.getAttribute('href'),
+            text: squash(anchor.textContent ?? ''),
+        }));
+        expect(rendered).toEqual(
+            inventory.links.map((link) => ({ href: link.href, text: squash(link.text) })),
         );
-        expect(rendered).toEqual(inventory.links.map((link) => link.href));
     });
 
     it('本文・注釈・画像 alt・コード全文が移行元の順序どおり一致する', () => {
