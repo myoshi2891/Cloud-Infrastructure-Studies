@@ -406,7 +406,7 @@ export const InfrastructureAsCodeGuide: FC = () => {
 
 <Diagram id="diag-24" label="Infrastructure as Code 図解 24" />
 
-<p>GitOps の2大 CNCF(Cloud Native Computing Foundation)卒業プロジェクトが <strong>Argo CD</strong> と <strong>Flux</strong> です。2026年時点でのエンタープライズ Kubernetes 運用では、GitOps が主要なデリバリー手段として60%を超える普及率に達しているという調査もあります。</p>
+<p>GitOps の2大 CNCF(Cloud Native Computing Foundation)卒業プロジェクトが <strong>Argo CD</strong> と <strong>Flux</strong> です。いずれも CNCF の Graduated（卒業）プロジェクトであり、Kubernetes 環境における継続的デリバリーの主要な選択肢として広く採用されています。</p>
 
 <div className="table-scroll"><table><thead><tr className="header"><th scope="col">観点</th><th scope="col">Argo CD</th><th scope="col">Flux</th></tr></thead><tbody><tr className="odd"><td>アーキテクチャ</td><td>単一のアプリケーションとして動作し、UIとAPIサーバーを持つ</td><td>Source/Kustomize/Helm/Notificationなど複数の軽量コントローラーの集合体</td></tr><tr className="even"><td>UI</td><td>リッチなWeb UIを標準搭載</td><td>CLI中心(サードパーティのダッシュボードと組み合わせ可能)</td></tr><tr className="odd"><td>向いている組織</td><td>複数クラスタを一元管理したい、非エンジニアにも可視性を提供したいプラットフォームチーム</td><td>攻撃対象領域を最小化したい、Kubernetesネイティブなツールを好むチーム</td></tr><tr className="even"><td>進行的デリバリー連携</td><td>Argo Rollouts(カナリア・Blue-Green)</td><td>Flagger</td></tr></tbody></table></div>
 

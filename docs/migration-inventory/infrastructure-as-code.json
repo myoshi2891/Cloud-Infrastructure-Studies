@@ -938,7 +938,7 @@
     },
     {
       "kind": "paragraph",
-      "text": "GitOps の2大 CNCF(Cloud Native Computing Foundation)卒業プロジェクトが Argo CD と Flux です。2026年時点でのエンタープライズ Kubernetes 運用では、GitOps が主要なデリバリー手段として60%を超える普及率に達しているという調査もあります。"
+      "text": "GitOps の2大 CNCF(Cloud Native Computing Foundation)卒業プロジェクトが Argo CD と Flux です。いずれも CNCF の Graduated（卒業）プロジェクトであり、Kubernetes 環境における継続的デリバリーの主要な選択肢として広く採用されています。"
     },
     {
       "kind": "paragraph",
