@@ -100,7 +100,7 @@ export const NAV_ITEMS: readonly NavItem[] = [
 
 export const DIAGRAMS: Record<DiagramId, string> = {
     editionComparison: `flowchart LR
-    A["初版（2007年3月）<br/>326ページ・Javaが前提<br/>単一データセンターの時代"] --> B["第2版（2018年1月）<br/>378ページ<br/>DevOps・マイクロサービス・<br/>クラウドネイティブ・カオスエンジニアリング"]`,
+    A["初版（2007年3月）<br/>326ページ・Javaが前提<br/>単一データセンターの時代"] --> B["第2版（2018年1月）<br/>376ページ<br/>DevOps・マイクロサービス・<br/>クラウドネイティブ・カオスエンジニアリング"]`,
 
     bookStructure: `flowchart TB
     A["第1部: 安定性を作る<br/>Create Stability<br/>（障害を『起こさない』設計）"] --> B["第2部: 本番のために設計する<br/>Design for Production<br/>（本番で『運用できる』設計）"]
