@@ -63,9 +63,6 @@ const CHECKLIST_ITEMS = [
     },
 ];
 
-/**
- * Release It! 完全ガイドのメインコンポーネント（Client Component）。
- */
 export function ReleaseItGuide() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
