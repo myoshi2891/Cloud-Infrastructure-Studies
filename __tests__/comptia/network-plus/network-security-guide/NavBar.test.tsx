@@ -53,6 +53,7 @@ beforeEach(() => {
 
 afterEach(() => {
     vi.unstubAllGlobals();
+    vi.restoreAllMocks();
     document.body.innerHTML = '';
 });
 
@@ -101,26 +102,36 @@ describe('network-security-guide NavBar', () => {
         expect(linkFor('overview')).not.toHaveAttribute('aria-current');
     });
 
-    it('クリック時に pushState で URL ハッシュを更新し、対象要素へ focus() する', () => {
+    it('修飾キー付きクリック・副ボタンのクリックでは既定動作を妨げない', () => {
         render(<NavBar />);
 
-        const targetSection = document.getElementById('attacks') as HTMLElement;
-        const focusSpy = vi.spyOn(targetSection, 'focus');
-        const pushStateSpy = vi.spyOn(window.history, 'pushState');
-
-        fireEvent.click(linkFor('attacks'), { button: 0 });
-
-        expect(pushStateSpy).toHaveBeenCalledWith(null, '', '#attacks');
-        expect(focusSpy).toHaveBeenCalledTimes(1);
+        for (const modifier of [
+            { metaKey: true },
+            { ctrlKey: true },
+            { shiftKey: true },
+            { altKey: true },
+            { button: 1 },
+        ]) {
+            const event = new MouseEvent('click', { bubbles: true, cancelable: true, ...modifier });
+            linkFor('attacks').dispatchEvent(event);
+            expect(event.defaultPrevented).toBe(false);
+        }
+        expect(linkFor(NAV_ITEMS[0]!.id)).toHaveAttribute('aria-current', 'location');
     });
 
-    it('修飾キー付きクリック（新規タブ等）では pushState や preventDefault を呼ばない', () => {
+    it('修飾なしの主ボタンのクリックは既定動作を止めてページ内遷移する', () => {
         render(<NavBar />);
 
-        const pushStateSpy = vi.spyOn(window.history, 'pushState');
-        fireEvent.click(linkFor('attacks'), { button: 0, metaKey: true });
+        const target = document.getElementById('attacks') as HTMLElement;
+        target.scrollIntoView = vi.fn();
+        const event = new MouseEvent('click', { bubbles: true, cancelable: true, button: 0 });
+        fireEvent(linkFor('attacks'), event);
 
-        expect(pushStateSpy).not.toHaveBeenCalled();
+        expect(event.defaultPrevented).toBe(true);
+        expect(target.scrollIntoView).toHaveBeenCalled();
+        expect(window.location.hash).toBe('#attacks');
+        expect(document.activeElement).toBe(target);
+        expect(linkFor('attacks')).toHaveAttribute('aria-current', 'location');
     });
 
     it('モバイルトグルボタンのクリックで open クラスと aria-expanded が切り替わる', () => {
@@ -152,15 +163,48 @@ describe('network-security-guide NavBar', () => {
         fireEvent.click(toggleButton);
         expect(sidebar).toHaveClass('open');
 
+        const target = document.getElementById('defenses') as HTMLElement;
+        target.scrollIntoView = vi.fn();
         fireEvent.click(linkFor('defenses'), { button: 0 });
         expect(sidebar).not.toHaveClass('open');
         expect(toggleButton).toHaveAttribute('aria-expanded', 'false');
     });
 
-    it('URLハッシュがある状態でマウントされた場合、そのセクションを active にする', () => {
-        window.history.replaceState(null, '', '/#checklist');
+    it('初期表示時に URL のハッシュから active を決める', () => {
+        window.history.replaceState(null, '', '#checklist');
         render(<NavBar />);
 
         expect(linkFor('checklist')).toHaveAttribute('aria-current', 'location');
+    });
+
+    it('ブラウザの戻る操作（popstate / hashchange）で active を再同期する', () => {
+        render(<NavBar />);
+
+        act(() => {
+            window.history.replaceState(null, '', '#concepts');
+            window.dispatchEvent(new Event('hashchange'));
+        });
+        expect(linkFor('concepts')).toHaveAttribute('aria-current', 'location');
+
+        act(() => {
+            window.history.replaceState(null, '', '#attacks');
+            window.dispatchEvent(new PopStateEvent('popstate'));
+        });
+        expect(linkFor('attacks')).toHaveAttribute('aria-current', 'location');
+    });
+
+    it('壊れたパーセントエスケープのハッシュでも例外を投げず active を保つ', () => {
+        window.history.replaceState(null, '', '#%');
+
+        expect(() => render(<NavBar />)).not.toThrow();
+        expect(linkFor(NAV_ITEMS[0]!.id)).toHaveAttribute('aria-current', 'location');
+    });
+
+    it('存在しないハッシュでは active を書き換えない', () => {
+        window.history.replaceState(null, '', '#not-a-section');
+
+        render(<NavBar />);
+
+        expect(linkFor(NAV_ITEMS[0]!.id)).toHaveAttribute('aria-current', 'location');
     });
 });
