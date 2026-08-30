@@ -354,10 +354,10 @@ export const DIAGRAMS: Record<DiagramId, string> = {
     end
     subgraph low["ローパフォーマー（DORA調査の過去分類・2021年基準）"]
         direction TB
-        LW1["デプロイ頻度: 1ヶ月〜半年に1回"]
-        LW2["変更のリードタイム: 1〜6ヶ月"]
+        LW1["デプロイ頻度: 半年に1回未満"]
+        LW2["変更のリードタイム: 6ヶ月超"]
         LW3["変更失敗率: 高水準"]
-        LW4["サービス復旧時間: 1週間〜1ヶ月"]
+        LW4["サービス復旧時間: 6ヶ月超"]
     end
 
     classDef successFill fill:#1a4a2a,stroke:#4ad97a,color:#ffffff;
