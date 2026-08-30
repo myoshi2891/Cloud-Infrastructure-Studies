@@ -13,6 +13,9 @@ describe('site-reliability-engineering — 目次リンク先のフォーカス�
     it('NAV_ITEMS の全リンク先が存在し、tabIndex="-1" でプログラム的にフォーカスできる', () => {
         const { container } = render(<Page />);
 
+        // NAV_ITEMS が空/削減されると unfocusable が空配列になり検証が空振りするため、件数を固定する
+        expect(NAV_ITEMS.length).toBe(34);
+
         const unfocusable = NAV_ITEMS.filter((item) => {
             const target = container.querySelector(`#${CSS.escape(item.id)}`);
             return !target || target.getAttribute('tabindex') !== '-1';
