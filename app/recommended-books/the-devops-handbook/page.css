@@ -592,3 +592,10 @@
         grid-template-columns: 1fr;
     }
 }
+
+/* 動きの抑制を希望するユーザーではドロワーのアニメーションを無効化する */
+@media (prefers-reduced-motion: reduce) {
+    .the-devops-handbook-page .sidebar {
+        transition: none;
+    }
+}
