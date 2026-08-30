@@ -1,0 +1,3967 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Terraform: Up and Running 実践ガイド ― 初学者のためのステップバイステップ解説</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            :root {
+                --bg: #07111e;
+                --bg-card: #0d1b2e;
+                --bg-card-2: #101f34;
+                --bg-elevated: #132540;
+                --border: #1e3352;
+                --accent: #7c9eff;
+                --accent-2: #4caf82;
+                --danger: #c05a6e;
+                --warn: #d9a441;
+                --text: #eaf1ff;
+                --text-dim: #9db1d4;
+                --text-dimmer: #6f84a8;
+                --font-main:
+                    'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+                --font-mono:
+                    'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+                --sidebar-width: 320px;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+            html,
+            body {
+                overflow-x: hidden;
+            }
+
+            body {
+                margin: 0;
+                background: var(--bg);
+                color: var(--text);
+                font-family: var(--font-main);
+                line-height: 1.85;
+                font-size: 16px;
+                -webkit-font-smoothing: antialiased;
+            }
+
+            a {
+                color: var(--accent);
+                text-decoration: none;
+            }
+            a:hover {
+                text-decoration: underline;
+            }
+
+            .hero {
+                margin-left: var(--sidebar-width);
+                padding: 64px 48px 40px 48px;
+                background: radial-gradient(ellipse at top left, #0e2038 0%, var(--bg) 60%);
+                border-bottom: 1px solid var(--border);
+            }
+            .hero-eyebrow {
+                display: inline-block;
+                font-size: 13px;
+                letter-spacing: 0.08em;
+                color: var(--accent);
+                font-weight: 700;
+                margin-bottom: 16px;
+                text-transform: uppercase;
+            }
+            .hero h1 {
+                font-size: 34px;
+                line-height: 1.4;
+                margin: 0 0 20px 0;
+                font-weight: 900;
+                background: linear-gradient(90deg, #eaf1ff, #b9caf5 60%, #7c9eff);
+                -webkit-background-clip: text;
+                background-clip: text;
+                -webkit-text-fill-color: transparent;
+                max-width: 1000px;
+            }
+            .hero-pills {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            .pill {
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                color: var(--text-dim);
+                padding: 7px 16px;
+                border-radius: 999px;
+                font-size: 13px;
+                font-weight: 500;
+            }
+            .pill strong {
+                color: var(--text);
+                font-weight: 700;
+            }
+
+            .layout {
+                display: block;
+                position: relative;
+            }
+
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: var(--sidebar-width);
+                height: 100vh;
+                overflow-y: auto;
+                background: #081525;
+                border-right: 1px solid var(--border);
+                padding: 24px 0 60px 0;
+                z-index: 50;
+            }
+            .sidebar-title {
+                padding: 0 24px 16px 24px;
+                font-size: 12px;
+                letter-spacing: 0.1em;
+                color: var(--text-dimmer);
+                text-transform: uppercase;
+                font-weight: 700;
+                border-bottom: 1px solid var(--border);
+                margin-bottom: 8px;
+            }
+            .nav-link {
+                display: block;
+                padding: 8px 24px;
+                color: var(--text-dim);
+                font-size: 13.5px;
+                border-left: 3px solid transparent;
+                transition: all 0.15s ease;
+            }
+            .nav-link:hover {
+                background: var(--bg-card);
+                color: var(--text);
+                text-decoration: none;
+            }
+            .nav-link.nav-h2 {
+                font-weight: 700;
+                color: var(--text);
+                margin-top: 10px;
+                font-size: 14px;
+            }
+            .nav-link.nav-h3 {
+                padding-left: 40px;
+                font-size: 13px;
+            }
+            .nav-link.active {
+                border-left-color: var(--accent);
+                color: var(--accent);
+                background: rgba(124, 158, 255, 0.08);
+            }
+
+            .sidebar-toggle {
+                display: none;
+                position: fixed;
+                top: 16px;
+                left: 16px;
+                z-index: 100;
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                color: var(--text);
+                width: 44px;
+                height: 44px;
+                border-radius: 10px;
+                font-size: 20px;
+                cursor: pointer;
+            }
+
+            .main {
+                margin-left: var(--sidebar-width);
+                padding: 56px 64px 120px 64px;
+            }
+
+            .main h2 {
+                font-size: 27px;
+                font-weight: 900;
+                margin: 64px 0 22px 0;
+                padding-top: 8px;
+                color: var(--text);
+                border-top: 1px solid var(--border);
+                padding-top: 32px;
+            }
+            .main > h2:first-child {
+                border-top: none;
+                margin-top: 0;
+                padding-top: 0;
+            }
+            .main h3 {
+                font-size: 20px;
+                font-weight: 700;
+                margin: 40px 0 16px 0;
+                color: var(--accent);
+            }
+            .main p {
+                margin: 0 0 18px 0;
+                color: var(--text);
+            }
+            .main ul,
+            .main ol {
+                margin: 0 0 18px 0;
+                padding-left: 28px;
+                color: var(--text);
+            }
+            .main li {
+                margin-bottom: 8px;
+            }
+            .main strong {
+                color: #fff;
+                font-weight: 700;
+            }
+            .main em {
+                color: var(--text-dim);
+            }
+
+            code {
+                font-family: var(--font-mono);
+                background: var(--bg-elevated);
+                padding: 2px 7px;
+                border-radius: 5px;
+                font-size: 0.88em;
+                color: #ffd479;
+                overflow-wrap: break-word;
+                word-break: break-word;
+            }
+
+            pre.code-block {
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                padding: 20px 22px;
+                overflow-x: auto;
+                margin: 0 0 22px 0;
+            }
+            pre.code-block code {
+                background: none;
+                padding: 0;
+                color: #d7e3ff;
+                font-size: 14px;
+                line-height: 1.7;
+                white-space: pre;
+            }
+
+            /* Mermaid */
+            pre.mermaid {
+                width: 100%;
+                display: flex;
+                justify-content: safe center;
+                overflow-x: auto;
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-radius: 14px;
+                padding: 28px 20px;
+                margin: 0 0 26px 0;
+            }
+            pre.mermaid svg {
+                flex-shrink: 0;
+            }
+            pre.mermaid p {
+                color: inherit;
+                margin: 0;
+            }
+
+            /* Tables */
+            .table-scroll {
+                overflow-x: auto;
+                margin: 0 0 26px 0;
+                border: 1px solid var(--border);
+                border-radius: 12px;
+            }
+            table {
+                border-collapse: collapse;
+                width: 100%;
+                font-size: 14.5px;
+            }
+            th,
+            td {
+                padding: 12px 16px;
+                text-align: left;
+                border-bottom: 1px solid var(--border);
+                white-space: normal;
+            }
+            tr.row-header th {
+                background: var(--bg-elevated);
+                color: var(--accent);
+                font-weight: 700;
+                font-size: 13px;
+                letter-spacing: 0.02em;
+            }
+            tr.row-odd td {
+                background: var(--bg-card);
+            }
+            tr.row-even td {
+                background: #0a1729;
+            }
+            tr:last-child td {
+                border-bottom: none;
+            }
+
+            /* Callouts */
+            .callout {
+                display: flex;
+                gap: 16px;
+                padding: 20px 22px;
+                border-radius: 12px;
+                margin: 0 0 24px 0;
+                border: 1px solid var(--border);
+            }
+            .callout-icon {
+                flex-shrink: 0;
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 16px;
+                line-height: 1;
+                font-weight: 700;
+                color: #07111e;
+            }
+            .callout-body {
+                flex: 1;
+                min-width: 0;
+            }
+            .callout-body p:last-child {
+                margin-bottom: 0;
+            }
+            .callout-label {
+                font-weight: 700;
+                font-size: 13px;
+                letter-spacing: 0.03em;
+                text-transform: uppercase;
+                margin-bottom: 8px;
+            }
+            .callout-practice {
+                background: rgba(76, 175, 130, 0.08);
+                border-color: rgba(76, 175, 130, 0.35);
+            }
+            .callout-practice .callout-icon {
+                background: var(--accent-2);
+            }
+            .callout-practice .callout-label {
+                color: var(--accent-2);
+            }
+            .callout-warning {
+                background: rgba(217, 164, 65, 0.08);
+                border-color: rgba(217, 164, 65, 0.35);
+            }
+            .callout-warning .callout-icon {
+                background: var(--warn);
+            }
+            .callout-warning .callout-label {
+                color: var(--warn);
+            }
+            .callout-note {
+                background: rgba(124, 158, 255, 0.07);
+                border-color: rgba(124, 158, 255, 0.3);
+            }
+            .callout-note .callout-icon {
+                background: var(--accent);
+            }
+
+            /* Checklist */
+            .checklist-card {
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-radius: 14px;
+                padding: 4px 0 12px 0;
+                margin: 0 0 26px 0;
+            }
+            .checklist-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 16px 22px;
+                border-bottom: 1px solid var(--border);
+            }
+            .checklist-title {
+                font-weight: 700;
+                color: var(--text);
+            }
+            .checklist-counter {
+                font-size: 13px;
+                color: var(--accent);
+                font-weight: 700;
+            }
+            ul.checklist {
+                list-style: none;
+                padding: 8px 10px;
+                margin: 0;
+            }
+            ul.checklist li {
+                margin: 0;
+            }
+            ul.checklist label {
+                display: flex;
+                align-items: flex-start;
+                gap: 12px;
+                padding: 10px 12px;
+                border-radius: 8px;
+                cursor: pointer;
+                color: var(--text);
+            }
+            ul.checklist label:hover {
+                background: var(--bg-elevated);
+            }
+            ul.checklist input[type='checkbox'] {
+                appearance: none;
+                -webkit-appearance: none;
+                width: 19px;
+                height: 19px;
+                border: 2px solid var(--border);
+                border-radius: 5px;
+                flex-shrink: 0;
+                margin-top: 2px;
+                position: relative;
+                cursor: pointer;
+                background: var(--bg-elevated);
+            }
+            ul.checklist input[type='checkbox']:checked {
+                background: var(--accent-2);
+                border-color: var(--accent-2);
+            }
+            ul.checklist input[type='checkbox']:checked::after {
+                content: '';
+                position: absolute;
+                left: 5px;
+                top: 1px;
+                width: 5px;
+                height: 10px;
+                border: solid #07111e;
+                border-width: 0 2px 2px 0;
+                transform: rotate(45deg);
+            }
+            ul.checklist li:has(input:checked) label {
+                color: var(--text-dimmer);
+                text-decoration: line-through;
+            }
+
+            /* Reference grid */
+            .ref-grid {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 16px;
+                margin: 0 0 26px 0;
+            }
+            .ref-card {
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                padding: 18px 20px;
+                overflow-wrap: break-word;
+                word-break: break-word;
+                min-width: 0;
+            }
+            .ref-card-label {
+                font-weight: 700;
+                color: var(--accent);
+                font-size: 14.5px;
+                margin-bottom: 12px;
+                padding-bottom: 10px;
+                border-bottom: 1px solid var(--border);
+            }
+            .ref-line {
+                font-size: 13.5px;
+                color: var(--text-dim);
+                margin-bottom: 10px;
+                line-height: 1.65;
+            }
+            .ref-line:last-child {
+                margin-bottom: 0;
+            }
+            .ref-line a {
+                color: var(--accent);
+                word-break: break-all;
+            }
+
+            @media (max-width: 900px) {
+                .ref-grid {
+                    grid-template-columns: 1fr;
+                }
+                .sidebar {
+                    transform: translateX(-100%);
+                    transition: transform 0.25s ease;
+                    width: 280px;
+                }
+                .sidebar.open {
+                    transform: translateX(0);
+                    box-shadow: 8px 0 30px rgba(0, 0, 0, 0.5);
+                }
+                .sidebar-toggle {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+                .main {
+                    margin-left: 0;
+                    padding: 88px 20px 80px 20px;
+                }
+                .hero {
+                    margin-left: 0;
+                    padding: 88px 20px 32px 20px;
+                }
+                .hero h1 {
+                    font-size: 24px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <button class="sidebar-toggle" id="sidebarToggle" aria-label="メニュー">&#9776;</button>
+
+        <header class="hero">
+            <div class="hero-eyebrow">
+                Terraform 実践ガイド &middot; 初学者向けステップバイステップ解説
+            </div>
+            <h1>Terraform: Up and Running 実践ガイド ― 初学者のためのステップバイステップ解説</h1>
+            <div class="hero-pills">
+                <span class="pill">対象: <strong>Terraform初学者</strong></span>
+                <span class="pill"
+                    >対応版: <strong>Terraform 1.16系 / OpenTofu 1.12系</strong></span
+                >
+                <span class="pill">図解: <strong>Mermaid 19点</strong></span>
+                <span class="pill">表: <strong>18件</strong></span>
+                <span class="pill">参考文献: <strong>7件</strong></span>
+            </div>
+        </header>
+
+        <div class="layout">
+            <nav class="sidebar" id="sidebar">
+                <div class="sidebar-title">目次</div>
+                <a href="#この記事について" class="nav-link nav-h2" data-target="この記事について"
+                    >この記事について</a
+                >
+                <a
+                    href="#第0部-前提知識--devopsとinfrastructure-as-codeとは"
+                    class="nav-link nav-h2"
+                    data-target="第0部-前提知識--devopsとinfrastructure-as-codeとは"
+                    >第0部: 前提知識 ― DevOpsとInfrastructure as Codeとは</a
+                >
+                <a
+                    href="#0-1-devopsとは何か"
+                    class="nav-link nav-h3"
+                    data-target="0-1-devopsとは何か"
+                    >0-1. DevOpsとは何か</a
+                >
+                <a
+                    href="#0-2-infrastructure-as-codeiacとは"
+                    class="nav-link nav-h3"
+                    data-target="0-2-infrastructure-as-codeiacとは"
+                    >0-2. Infrastructure as Code（IaC）とは</a
+                >
+                <a
+                    href="#0-3-iacの4つのメリット"
+                    class="nav-link nav-h3"
+                    data-target="0-3-iacの4つのメリット"
+                    >0-3. IaCの4つのメリット</a
+                >
+                <a
+                    href="#第1部原著第1章対応-なぜterraformなのか"
+                    class="nav-link nav-h2"
+                    data-target="第1部原著第1章対応-なぜterraformなのか"
+                    >第1部（原著第1章対応）: なぜTerraformなのか</a
+                >
+                <a
+                    href="#1-1-terraformの仕組み"
+                    class="nav-link nav-h3"
+                    data-target="1-1-terraformの仕組み"
+                    >1-1. Terraformの仕組み</a
+                >
+                <a
+                    href="#1-2-比較-configuration-management-vs-provisioning"
+                    class="nav-link nav-h3"
+                    data-target="1-2-比較-configuration-management-vs-provisioning"
+                    >1-2. 比較: Configuration Management vs Provisioning</a
+                >
+                <a
+                    href="#1-3-比較-mutable-infrastructure-vs-immutable-infrastructure"
+                    class="nav-link nav-h3"
+                    data-target="1-3-比較-mutable-infrastructure-vs-immutable-infrastructure"
+                    >1-3. 比較: Mutable Infrastructure vs Immutable Infrastructure</a
+                >
+                <a
+                    href="#1-4-比較-procedural-language-vs-declarative-language"
+                    class="nav-link nav-h3"
+                    data-target="1-4-比較-procedural-language-vs-declarative-language"
+                    >1-4. 比較: Procedural Language vs Declarative Language</a
+                >
+                <a
+                    href="#1-5-比較-主要iac構成管理ツールの全体像"
+                    class="nav-link nav-h3"
+                    data-target="1-5-比較-主要iac構成管理ツールの全体像"
+                    >1-5. 比較: 主要IaC/構成管理ツールの全体像</a
+                >
+                <a href="#まとめ" class="nav-link nav-h3" data-target="まとめ">まとめ</a>
+                <a
+                    href="#第2部原著第2章対応-terraformことはじめ"
+                    class="nav-link nav-h2"
+                    data-target="第2部原著第2章対応-terraformことはじめ"
+                    >第2部（原著第2章対応）: Terraformことはじめ</a
+                >
+                <a
+                    href="#2-1-awsアカウントの準備ベストプラクティス"
+                    class="nav-link nav-h3"
+                    data-target="2-1-awsアカウントの準備ベストプラクティス"
+                    >2-1. AWSアカウントの準備（ベストプラクティス）</a
+                >
+                <a
+                    href="#2-2-terraformのインストール"
+                    class="nav-link nav-h3"
+                    data-target="2-2-terraformのインストール"
+                    >2-2. Terraformのインストール</a
+                >
+                <a
+                    href="#2-3-単一サーバーのデプロイ"
+                    class="nav-link nav-h3"
+                    data-target="2-3-単一サーバーのデプロイ"
+                    >2-3. 単一サーバーのデプロイ</a
+                >
+                <a
+                    href="#2-4-単一webサーバーのデプロイ"
+                    class="nav-link nav-h3"
+                    data-target="2-4-単一webサーバーのデプロイ"
+                    >2-4. 単一Webサーバーのデプロイ</a
+                >
+                <a
+                    href="#2-5-設定可能なwebサーバー変数の導入"
+                    class="nav-link nav-h3"
+                    data-target="2-5-設定可能なwebサーバー変数の導入"
+                    >2-5. 設定可能なWebサーバー（変数の導入）</a
+                >
+                <a
+                    href="#2-6-webサーバークラスタのデプロイ"
+                    class="nav-link nav-h3"
+                    data-target="2-6-webサーバークラスタのデプロイ"
+                    >2-6. Webサーバークラスタのデプロイ</a
+                >
+                <a
+                    href="#2-7-ロードバランサーのデプロイ"
+                    class="nav-link nav-h3"
+                    data-target="2-7-ロードバランサーのデプロイ"
+                    >2-7. ロードバランサーのデプロイ</a
+                >
+                <a
+                    href="#2-8-クリーンアップ"
+                    class="nav-link nav-h3"
+                    data-target="2-8-クリーンアップ"
+                    >2-8. クリーンアップ</a
+                >
+                <a
+                    href="#第3部原著第3章対応-terraformの状態state管理"
+                    class="nav-link nav-h2"
+                    data-target="第3部原著第3章対応-terraformの状態state管理"
+                    >第3部（原著第3章対応）: Terraformの状態（State）管理</a
+                >
+                <a
+                    href="#3-1-state-fileとは何かなぜ必要か"
+                    class="nav-link nav-h3"
+                    data-target="3-1-state-fileとは何かなぜ必要か"
+                    >3-1. State fileとは何か、なぜ必要か</a
+                >
+                <a
+                    href="#3-2-stateの共有ストレージリモートバックエンド"
+                    class="nav-link nav-h3"
+                    data-target="3-2-stateの共有ストレージリモートバックエンド"
+                    >3-2. Stateの共有ストレージ（リモートバックエンド）</a
+                >
+                <a
+                    href="#3-3-2026年最新s3ネイティブロックとdynamodbの非推奨化"
+                    class="nav-link nav-h3"
+                    data-target="3-3-2026年最新s3ネイティブロックとdynamodbの非推奨化"
+                    >3-3. 【2026年最新】S3ネイティブロックとDynamoDBの非推奨化</a
+                >
+                <a href="#3-4-backendの制約" class="nav-link nav-h3" data-target="3-4-backendの制約"
+                    >3-4. Backendの制約</a
+                >
+                <a
+                    href="#3-5-state分離-workspacesとfile-layout"
+                    class="nav-link nav-h3"
+                    data-target="3-5-state分離-workspacesとfile-layout"
+                    >3-5. State分離: WorkspacesとFile Layout</a
+                >
+                <a
+                    href="#3-6-terraform_remote_stateデータソース"
+                    class="nav-link nav-h3"
+                    data-target="3-6-terraform_remote_stateデータソース"
+                    >3-6. terraform_remote_stateデータソース</a
+                >
+                <a
+                    href="#第4部原著第4章対応-再利用可能なインフラをモジュールで作る"
+                    class="nav-link nav-h2"
+                    data-target="第4部原著第4章対応-再利用可能なインフラをモジュールで作る"
+                    >第4部（原著第4章対応）: 再利用可能なインフラをモジュールで作る</a
+                >
+                <a
+                    href="#4-1-モジュールの基本"
+                    class="nav-link nav-h3"
+                    data-target="4-1-モジュールの基本"
+                    >4-1. モジュールの基本</a
+                >
+                <a
+                    href="#4-2-モジュール入力変数module-inputs"
+                    class="nav-link nav-h3"
+                    data-target="4-2-モジュール入力変数module-inputs"
+                    >4-2. モジュール入力変数（Module Inputs）</a
+                >
+                <a
+                    href="#4-3-モジュールのlocal値"
+                    class="nav-link nav-h3"
+                    data-target="4-3-モジュールのlocal値"
+                    >4-3. モジュールのlocal値</a
+                >
+                <a
+                    href="#4-4-モジュール出力値module-outputs"
+                    class="nav-link nav-h3"
+                    data-target="4-4-モジュール出力値module-outputs"
+                    >4-4. モジュール出力値（Module Outputs）</a
+                >
+                <a
+                    href="#4-5-モジュールの落とし穴"
+                    class="nav-link nav-h3"
+                    data-target="4-5-モジュールの落とし穴"
+                    >4-5. モジュールの落とし穴</a
+                >
+                <a
+                    href="#4-6-モジュールバージョニング"
+                    class="nav-link nav-h3"
+                    data-target="4-6-モジュールバージョニング"
+                    >4-6. モジュールバージョニング</a
+                >
+                <a
+                    href="#第5部原著第5章対応-ループ条件分岐デプロイ落とし穴"
+                    class="nav-link nav-h2"
+                    data-target="第5部原著第5章対応-ループ条件分岐デプロイ落とし穴"
+                    >第5部（原著第5章対応）: ループ・条件分岐・デプロイ・落とし穴</a
+                >
+                <a
+                    href="#5-15-4-ループの4パターン"
+                    class="nav-link nav-h3"
+                    data-target="5-15-4-ループの4パターン"
+                    >5-1〜5-4. ループの4パターン</a
+                >
+                <a href="#5-5-条件分岐" class="nav-link nav-h3" data-target="5-5-条件分岐"
+                    >5-5. 条件分岐</a
+                >
+                <a
+                    href="#5-6-ゼロダウンタイムデプロイ"
+                    class="nav-link nav-h3"
+                    data-target="5-6-ゼロダウンタイムデプロイ"
+                    >5-6. ゼロダウンタイムデプロイ</a
+                >
+                <a
+                    href="#5-7-terraformの落とし穴"
+                    class="nav-link nav-h3"
+                    data-target="5-7-terraformの落とし穴"
+                    >5-7. Terraformの落とし穴</a
+                >
+                <a
+                    href="#第6部原著第6章対応-シークレット管理"
+                    class="nav-link nav-h2"
+                    data-target="第6部原著第6章対応-シークレット管理"
+                    >第6部（原著第6章対応）: シークレット管理</a
+                >
+                <a
+                    href="#6-1-シークレット管理の基礎"
+                    class="nav-link nav-h3"
+                    data-target="6-1-シークレット管理の基礎"
+                    >6-1. シークレット管理の基礎</a
+                >
+                <a
+                    href="#6-2-主要シークレット管理ツール比較"
+                    class="nav-link nav-h3"
+                    data-target="6-2-主要シークレット管理ツール比較"
+                    >6-2. 主要シークレット管理ツール比較</a
+                >
+                <a
+                    href="#6-3-terraformでのシークレット利用パターン"
+                    class="nav-link nav-h3"
+                    data-target="6-3-terraformでのシークレット利用パターン"
+                    >6-3. Terraformでのシークレット利用パターン</a
+                >
+                <a
+                    href="#6-42026年最新ephemeral-resources--write-only-argumentsによる根本解決"
+                    class="nav-link nav-h3"
+                    data-target="6-42026年最新ephemeral-resources--write-only-argumentsによる根本解決"
+                    >6-4.【2026年最新】Ephemeral Resources & Write-Only Argumentsによる根本解決</a
+                >
+                <a
+                    href="#第7部原著第7章対応-複数プロバイダーの利用"
+                    class="nav-link nav-h2"
+                    data-target="第7部原著第7章対応-複数プロバイダーの利用"
+                    >第7部（原著第7章対応）: 複数プロバイダーの利用</a
+                >
+                <a
+                    href="#7-1-単一プロバイダーでの作業とプロバイダーのインストール"
+                    class="nav-link nav-h3"
+                    data-target="7-1-単一プロバイダーでの作業とプロバイダーのインストール"
+                    >7-1. 単一プロバイダーでの作業とプロバイダーのインストール</a
+                >
+                <a
+                    href="#7-2-同一プロバイダーの複数コピーマルチリージョンマルチアカウント"
+                    class="nav-link nav-h3"
+                    data-target="7-2-同一プロバイダーの複数コピーマルチリージョンマルチアカウント"
+                    >7-2. 同一プロバイダーの複数コピー（マルチリージョン・マルチアカウント）</a
+                >
+                <a
+                    href="#7-3-複数プロバイダーに対応したモジュールの作成"
+                    class="nav-link nav-h3"
+                    data-target="7-3-複数プロバイダーに対応したモジュールの作成"
+                    >7-3. 複数プロバイダーに対応したモジュールの作成</a
+                >
+                <a
+                    href="#7-4-異なる複数プロバイダーの利用-dockerkubernetesクラッシュコース"
+                    class="nav-link nav-h3"
+                    data-target="7-4-異なる複数プロバイダーの利用-dockerkubernetesクラッシュコース"
+                    >7-4. 異なる複数プロバイダーの利用: Docker/Kubernetesクラッシュコース</a
+                >
+                <a
+                    href="#7-5-eksでのdockerコンテナデプロイ"
+                    class="nav-link nav-h3"
+                    data-target="7-5-eksでのdockerコンテナデプロイ"
+                    >7-5. EKSでのDockerコンテナデプロイ</a
+                >
+                <a
+                    href="#第8部原著第8章対応-本番グレードのterraformコード"
+                    class="nav-link nav-h2"
+                    data-target="第8部原著第8章対応-本番グレードのterraformコード"
+                    >第8部（原著第8章対応）: 本番グレードのTerraformコード</a
+                >
+                <a
+                    href="#8-1-なぜ本番グレードのインフラ構築は時間がかかるのか"
+                    class="nav-link nav-h3"
+                    data-target="8-1-なぜ本番グレードのインフラ構築は時間がかかるのか"
+                    >8-1. なぜ本番グレードのインフラ構築は時間がかかるのか</a
+                >
+                <a
+                    href="#8-2-本番グレードインフラのチェックリスト"
+                    class="nav-link nav-h3"
+                    data-target="8-2-本番グレードインフラのチェックリスト"
+                    >8-2. 本番グレードインフラのチェックリスト</a
+                >
+                <a
+                    href="#8-3-本番グレードモジュールの4原則"
+                    class="nav-link nav-h3"
+                    data-target="8-3-本番グレードモジュールの4原則"
+                    >8-3. 本番グレードモジュールの4原則</a
+                >
+                <a
+                    href="#8-4-terraformを超えて"
+                    class="nav-link nav-h3"
+                    data-target="8-4-terraformを超えて"
+                    >8-4. Terraformを超えて</a
+                >
+                <a
+                    href="#第9部原著第9章対応-terraformコードのテスト手法"
+                    class="nav-link nav-h2"
+                    data-target="第9部原著第9章対応-terraformコードのテスト手法"
+                    >第9部（原著第9章対応）: Terraformコードのテスト手法</a
+                >
+                <a href="#9-1-手動テスト" class="nav-link nav-h3" data-target="9-1-手動テスト"
+                    >9-1. 手動テスト</a
+                >
+                <a
+                    href="#9-2-自動テストの3階層"
+                    class="nav-link nav-h3"
+                    data-target="9-2-自動テストの3階層"
+                    >9-2. 自動テストの3階層</a
+                >
+                <a
+                    href="#9-32026年最新terraform-testネイティブテストフレームワーク"
+                    class="nav-link nav-h3"
+                    data-target="9-32026年最新terraform-testネイティブテストフレームワーク"
+                    >9-3.【2026年最新】terraform testネイティブテストフレームワーク</a
+                >
+                <a
+                    href="#9-4-mock_providerによる高速ユニットテスト"
+                    class="nav-link nav-h3"
+                    data-target="9-4-mock_providerによる高速ユニットテスト"
+                    >9-4. mock_providerによる高速ユニットテスト</a
+                >
+                <a
+                    href="#9-5-terratest等その他のアプローチ"
+                    class="nav-link nav-h3"
+                    data-target="9-5-terratest等その他のアプローチ"
+                    >9-5. Terratest等その他のアプローチ</a
+                >
+                <a
+                    href="#第10部原著第10章対応-チームでterraformを使う"
+                    class="nav-link nav-h2"
+                    data-target="第10部原著第10章対応-チームでterraformを使う"
+                    >第10部（原著第10章対応）: チームでTerraformを使う</a
+                >
+                <a
+                    href="#10-1-チームへのiac導入"
+                    class="nav-link nav-h3"
+                    data-target="10-1-チームへのiac導入"
+                    >10-1. チームへのIaC導入</a
+                >
+                <a
+                    href="#10-210-3-アプリケーションコードとインフラコードのデプロイワークフロー"
+                    class="nav-link nav-h3"
+                    data-target="10-210-3-アプリケーションコードとインフラコードのデプロイワークフロー"
+                    >10-2〜10-3. アプリケーションコードとインフラコードのデプロイワークフロー</a
+                >
+                <a
+                    href="#10-4-まとめて考える"
+                    class="nav-link nav-h3"
+                    data-target="10-4-まとめて考える"
+                    >10-4. まとめて考える</a
+                >
+                <a
+                    href="#第11部独自追加-2026年8月時点のterraformエコシステム最新動向"
+                    class="nav-link nav-h2"
+                    data-target="第11部独自追加-2026年8月時点のterraformエコシステム最新動向"
+                    >第11部（独自追加）: 2026年8月時点のTerraformエコシステム最新動向</a
+                >
+                <a
+                    href="#11-1-ライセンス変更とopentofuフォークの経緯"
+                    class="nav-link nav-h3"
+                    data-target="11-1-ライセンス変更とopentofuフォークの経緯"
+                    >11-1. ライセンス変更とOpenTofuフォークの経緯</a
+                >
+                <a
+                    href="#11-2-ibmによるhashicorp買収2025年2月完了"
+                    class="nav-link nav-h3"
+                    data-target="11-2-ibmによるhashicorp買収2025年2月完了"
+                    >11-2. IBMによるHashiCorp買収（2025年2月完了）</a
+                >
+                <a
+                    href="#11-3-terraform-vs-opentofu-現状比較表2026年8月時点"
+                    class="nav-link nav-h3"
+                    data-target="11-3-terraform-vs-opentofu-現状比較表2026年8月時点"
+                    >11-3. Terraform vs OpenTofu 現状比較表（2026年8月時点）</a
+                >
+                <a
+                    href="#11-4-hcp-terraform-stacks料金体系ai統合"
+                    class="nav-link nav-h3"
+                    data-target="11-4-hcp-terraform-stacks料金体系ai統合"
+                    >11-4. HCP Terraform: Stacks・料金体系・AI統合</a
+                >
+                <a
+                    href="#11-5-policy-as-code-sentinel-vs-opa-vs-スキャナー系ツール比較"
+                    class="nav-link nav-h3"
+                    data-target="11-5-policy-as-code-sentinel-vs-opa-vs-スキャナー系ツール比較"
+                    >11-5. Policy as Code: Sentinel vs OPA vs スキャナー系ツール比較</a
+                >
+                <a
+                    href="#学習ロードマップチェックリスト"
+                    class="nav-link nav-h2"
+                    data-target="学習ロードマップチェックリスト"
+                    >学習ロードマップ・チェックリスト</a
+                >
+                <a
+                    href="#初学者向け学習ステップ"
+                    class="nav-link nav-h3"
+                    data-target="初学者向け学習ステップ"
+                    >初学者向け学習ステップ</a
+                >
+                <a
+                    href="#学習導入チェックリスト"
+                    class="nav-link nav-h3"
+                    data-target="学習導入チェックリスト"
+                    >学習・導入チェックリスト</a
+                >
+                <a
+                    href="#資格取得を目指す場合の補足"
+                    class="nav-link nav-h3"
+                    data-target="資格取得を目指す場合の補足"
+                    >資格取得を目指す場合の補足</a
+                >
+                <a
+                    href="#付録a-推奨リソース原著付録arecommended-reading準拠の構成"
+                    class="nav-link nav-h2"
+                    data-target="付録a-推奨リソース原著付録arecommended-reading準拠の構成"
+                    >付録A: 推奨リソース（原著付録A「Recommended Reading」準拠の構成）</a
+                >
+                <a href="#books関連書籍" class="nav-link nav-h3" data-target="books関連書籍"
+                    >Books（関連書籍）</a
+                >
+                <a href="#blogsブログ" class="nav-link nav-h3" data-target="blogsブログ"
+                    >Blogs（ブログ）</a
+                >
+                <a
+                    href="#talksカンファレンス動画"
+                    class="nav-link nav-h3"
+                    data-target="talksカンファレンス動画"
+                    >Talks（カンファレンス動画）</a
+                >
+                <a
+                    href="#newslettersニュースレター"
+                    class="nav-link nav-h3"
+                    data-target="newslettersニュースレター"
+                    >Newsletters（ニュースレター）</a
+                >
+                <a
+                    href="#online-forumsオンラインフォーラム"
+                    class="nav-link nav-h3"
+                    data-target="online-forumsオンラインフォーラム"
+                    >Online Forums（オンラインフォーラム）</a
+                >
+                <a href="#参考文献" class="nav-link nav-h2" data-target="参考文献">参考文献</a>
+            </nav>
+
+            <main class="main" id="mainContent">
+                <div class="callout callout-note">
+                    <div class="callout-icon">ℹ</div>
+                    <div class="callout-body">
+                        <p>
+                            <strong>原著</strong>:
+                            <em>Terraform: Up and Running, 3rd Edition</em>（Yevgeniy
+                            Brikman著、O'Reilly Media、2022年9月刊、全460ページ）
+                            <strong>原著URL</strong>:
+                            <a
+                                href="https://www.oreilly.com/library/view/terraform-up-and/9781098116736/"
+                                >https://www.oreilly.com/library/view/terraform-up-and/9781098116736/</a
+                            >
+                            本ガイドは同書の10章構成（前書き・第1〜10章・付録A「推奨読書リスト」）を土台に、初学者が挫折しないよう独自に再構成し、2026年8月時点の最新エコシステム動向（HCP
+                            Terraform、OpenTofu、Ephemeral
+                            Resources等）を補足した学習ドキュメントです。書籍本文の引用ではなく、公式ドキュメントとWeb検索で確認した一次情報に基づく解説です。
+                        </p>
+                    </div>
+                </div>
+
+                <h2 id="この記事について">この記事について</h2>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header row-header">
+                                <th>項目</th>
+                                <th>内容</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd row-odd">
+                                <td>対象読者</td>
+                                <td>
+                                    Terraformに初めて触れるソフトウェアエンジニア・インフラエンジニア
+                                </td>
+                            </tr>
+                            <tr class="even row-even">
+                                <td>前提知識</td>
+                                <td>
+                                    基本的なLinuxコマンド操作、クラウド（本ガイドはAWSを主軸）の基礎概念
+                                </td>
+                            </tr>
+                            <tr class="odd row-odd">
+                                <td>ゴール</td>
+                                <td>
+                                    Terraformの思想・基本構文・State管理・モジュール化・チーム運用までを一気通貫で理解する
+                                </td>
+                            </tr>
+                            <tr class="even row-even">
+                                <td>対応バージョン</td>
+                                <td>
+                                    Terraform 1.16系（2026年8月時点の最新安定版）、一部でOpenTofu
+                                    1.12系にも言及
+                                </td>
+                            </tr>
+                            <tr class="odd row-odd">
+                                <td>図解ポリシー</td>
+                                <td>
+                                    ASCIIアートは使用せず、フローチャートはMermaid、比較情報はMarkdown表で統一
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>
+                    原著は「Intermediate to
+                    advanced」向けとされていますが、本ガイドではその内容を噛み砕き、各章の要点・具体的なHCLコード例・ベストプラクティスを初学者向けに再構成しています。
+                </p>
+
+                <h2 id="第0部-前提知識--devopsとinfrastructure-as-codeとは">
+                    第0部: 前提知識 ― DevOpsとInfrastructure as Codeとは
+                </h2>
+                <h3 id="0-1-devopsとは何か">0-1. DevOpsとは何か</h3>
+                <p>
+                    DevOpsは「開発（Development）」と「運用（Operations）」を統合し、ソフトウェアを高速かつ安全にリリースし続けるための文化・プラクティスの総称です。特定のツールや役職名ではなく、以下のような目標を達成するための考え方の集合体だと理解するのが適切です。
+                </p>
+                <ul>
+                    <li>変更を小さく・頻繁にリリースする</li>
+                    <li>自動化によって人的ミスを減らす</li>
+                    <li>障害からの復旧を高速化する</li>
+                    <li>チーム間のサイロ（分断）を解消する</li>
+                </ul>
+                <h3 id="0-2-infrastructure-as-codeiacとは">
+                    0-2. Infrastructure as Code（IaC）とは
+                </h3>
+                <p>
+                    IaCとは、サーバー・ネットワーク・データベースなどのインフラをGUI操作ではなく「コード」として定義し、バージョン管理・レビュー・自動テスト・自動デプロイの対象にするプラクティスです。IaCツールは大きく5つのカテゴリに分類できます。
+                </p>
+                <pre class="mermaid">
+flowchart TB
+    IAC["Infrastructure as Code&lt;br/&gt;ツールの5分類"]
+    IAC --&gt; A["アドホックスクリプト&lt;br/&gt;(Ad Hoc Scripts)"]
+    IAC --&gt; B["構成管理ツール&lt;br/&gt;(Configuration Management)"]
+    IAC --&gt; C["サーバーテンプレートツール&lt;br/&gt;(Server Templating)"]
+    IAC --&gt; D["オーケストレーションツール&lt;br/&gt;(Orchestration)"]
+    IAC --&gt; E["プロビジョニングツール&lt;br/&gt;(Provisioning)"]
+
+    A --&gt; A1["Bashスクリプト等&lt;br/&gt;再現性・べき等性に難あり"]
+    B --&gt; B1["Chef / Puppet / Ansible&lt;br/&gt;既存サーバーの状態を管理"]
+    C --&gt; C1["Docker / Packer&lt;br/&gt;イメージそのものを構築"]
+    D --&gt; D1["Kubernetes&lt;br/&gt;コンテナ化されたアプリの実行制御"]
+    E --&gt; E1["Terraform / OpenTofu / Pulumi / CloudFormation&lt;br/&gt;クラウドリソース自体を作成・変更・削除"]
+
+    classDef cat fill:#1e3a5f,stroke:#7c9eff,color:#eaf1ff
+    classDef leaf fill:#123024,stroke:#4caf82,color:#eaf1ff
+    class A,B,C,D,E cat
+    class A1,B1,C1,D1,E1 leaf</pre
+                >
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header row-header">
+                                <th>カテゴリ</th>
+                                <th>代表ツール</th>
+                                <th>主な役割</th>
+                                <th>べき等性</th>
+                                <th>学習コスト</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd row-odd">
+                                <td>アドホックスクリプト</td>
+                                <td>Bash, Python</td>
+                                <td>何でもできるが再現性が低い</td>
+                                <td>実装依存</td>
+                                <td>低</td>
+                            </tr>
+                            <tr class="even row-even">
+                                <td>構成管理ツール</td>
+                                <td>Chef, Puppet, Ansible, SaltStack</td>
+                                <td>既存サーバーへのソフトウェア導入・設定</td>
+                                <td>高</td>
+                                <td>中</td>
+                            </tr>
+                            <tr class="odd row-odd">
+                                <td>サーバーテンプレートツール</td>
+                                <td>Docker, Packer, Vagrant</td>
+                                <td>不変のイメージを事前に作成</td>
+                                <td>高（イメージ単位）</td>
+                                <td>中</td>
+                            </tr>
+                            <tr class="even row-even">
+                                <td>オーケストレーションツール</td>
+                                <td>Kubernetes, Nomad, ECS</td>
+                                <td>コンテナ／プロセスの配置とスケーリング</td>
+                                <td>高</td>
+                                <td>高</td>
+                            </tr>
+                            <tr class="odd row-odd">
+                                <td>プロビジョニングツール</td>
+                                <td>Terraform, OpenTofu, Pulumi, AWS CDK, CloudFormation</td>
+                                <td>クラウドAPIを叩きインフラそのものを作成</td>
+                                <td>高</td>
+                                <td>中〜高</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <h3 id="0-3-iacの4つのメリット">0-3. IaCの4つのメリット</h3>
+                <ol type="1">
+                    <li>
+                        <strong>セルフサービス化</strong>:
+                        チケット申請なしにチームが自分でインフラを立てられる
+                    </li>
+                    <li>
+                        <strong>速度と安全性の両立</strong>:
+                        自動テスト・自動レビューにより人手より高速かつ確実
+                    </li>
+                    <li>
+                        <strong>ドキュメントとしてのコード</strong>:
+                        コード自体が「今のインフラがどうなっているか」の正となる
+                    </li>
+                    <li>
+                        <strong>バージョン管理と監査可能性</strong>:
+                        Gitの履歴がそのまま変更履歴・監査ログになる
+                    </li>
+                </ol>
+
+                <h2 id="第1部原著第1章対応-なぜterraformなのか">
+                    第1部（原著第1章対応）: なぜTerraformなのか
+                </h2>
+                <h3 id="1-1-terraformの仕組み">1-1. Terraformの仕組み</h3>
+                <p>
+                    Terraformは、HashiCorp社が開発した宣言的（declarative）なプロビジョニングツールです。HCL（HashiCorp
+                    Configuration
+                    Language）と呼ばれるDSL（ドメイン特化言語）でインフラのあるべき状態（Desired
+                    State）を記述し、<code>terraform plan</code> で現状との差分を計算、<code
+                        >terraform apply</code
+                    >
+                    でクラウドAPIを呼び出して差分を解消します。
+                </p>
+                <pre class="mermaid">
+flowchart LR
+    subgraph Author["記述"]
+        HCL[".tfファイル&lt;br/&gt;(HCL / Desired State)"]
+    end
+    subgraph Core["Terraform Core"]
+        Plan["terraform plan&lt;br/&gt;差分計算"]
+        Apply["terraform apply&lt;br/&gt;差分解消"]
+        State[("terraform.tfstate&lt;br/&gt;現在の状態")]
+    end
+    subgraph Providers["プロバイダープラグイン"]
+        P1["AWS Provider"]
+        P2["Google Cloud Provider"]
+        P3["Azure Provider"]
+        P4["Kubernetes Provider"]
+    end
+    subgraph Clouds["実際のインフラ"]
+        C1[("AWS API")]
+        C2[("GCP API")]
+        C3[("Azure API")]
+        C4[("Kubernetes API")]
+    end
+
+    HCL --&gt; Plan
+    State --&gt; Plan
+    Plan --&gt; Apply
+    Apply --&gt; P1 &amp; P2 &amp; P3 &amp; P4
+    P1 --&gt; C1
+    P2 --&gt; C2
+    P3 --&gt; C3
+    P4 --&gt; C4
+    Apply --&gt; State
+
+    classDef core fill:#1e3a5f,stroke:#7c9eff,color:#eaf1ff
+    classDef provider fill:#123024,stroke:#4caf82,color:#eaf1ff
+    class Plan,Apply,State core
+    class P1,P2,P3,P4 provider</pre
+                >
+                <p>
+                    Terraformは特定プロバイダーの機能をコアには持たず、プロバイダー（Provider）というプラグイン機構を通じて各クラウド・SaaSのAPIと通信します。この設計により、AWS・GCP・Azure・Kubernetes・Datadog・GitHubなど数千種類のプロバイダーが同じHCL構文とワークフローで扱えます。
+                </p>
+                <h3 id="1-2-比較-configuration-management-vs-provisioning">
+                    1-2. 比較: Configuration Management vs Provisioning
+                </h3>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header row-header">
+                                <th>観点</th>
+                                <th>Configuration Management（Chef/Ansible）</th>
+                                <th>Provisioning（Terraform）</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd row-odd">
+                                <td>主対象</td>
+                                <td>既存サーバー内部のソフトウェア設定</td>
+                                <td>クラウドリソースそのものの作成・削除</td>
+                            </tr>
+                            <tr class="even row-even">
+                                <td>典型操作</td>
+                                <td>パッケージインストール、設定ファイル配布</td>
+                                <td>VM/VPC/ロードバランサー/DBの作成</td>
+                            </tr>
+                            <tr class="odd row-odd">
+                                <td>実行の抽象度</td>
+                                <td>サーバーにログインして変更</td>
+                                <td>クラウドAPI経由でリソースを操作</td>
+                            </tr>
+                            <tr class="even row-even">
+                                <td>組み合わせ例</td>
+                                <td>Terraformでサーバーを作り、Ansibleで中身を構成する</td>
+                                <td>―</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <h3 id="1-3-比較-mutable-infrastructure-vs-immutable-infrastructure">
+                    1-3. 比較: Mutable Infrastructure vs Immutable Infrastructure
+                </h3>
+                <pre class="mermaid">
+flowchart TB
+    subgraph Mutable["Mutable Infrastructure（可変）"]
+        M1["既存サーバーに&lt;br/&gt;SSHでログイン"] --&gt; M2["設定を都度上書き"] --&gt; M3["構成ドリフトが蓄積&lt;br/&gt;『スノーフレークサーバー』化"]
+    end
+    subgraph Immutable["Immutable Infrastructure（不変）"]
+        I1["新しいイメージ/構成を&lt;br/&gt;ゼロから作成"] --&gt; I2["新しいサーバー群に置き換え"] --&gt; I3["旧サーバーは破棄&lt;br/&gt;常にクリーンな状態"]
+    end
+
+    classDef bad fill:#3a1420,stroke:#c05a6e,color:#f5d8de
+    classDef good fill:#123024,stroke:#4caf82,color:#eaf1ff
+    class M1,M2,M3 bad
+    class I1,I2,I3 good</pre
+                >
+                <p>
+                    Terraform自体は可変・不変どちらの運用にも対応できますが、Server
+                    Templatingツール（Packer等）と組み合わせてAMIやコンテナイメージ単位で丸ごと入れ替える不変運用が、2026年時点でも本番環境のベストプラクティスとされています。
+                </p>
+                <h3 id="1-4-比較-procedural-language-vs-declarative-language">
+                    1-4. 比較: Procedural Language vs Declarative Language
+                </h3>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header row-header">
+                                <th>観点</th>
+                                <th>手続き型（Chef, Ansibleの一部）</th>
+                                <th>宣言型（Terraform, CloudFormation）</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd row-odd">
+                                <td>記述内容</td>
+                                <td>「どうやって」目的の状態にするかの手順</td>
+                                <td>「何を」実現したいかの最終状態</td>
+                            </tr>
+                            <tr class="even row-even">
+                                <td>べき等性の担保</td>
+                                <td>開発者が自前で条件分岐を書く必要がある</td>
+                                <td>ツールが自動的に差分のみ適用</td>
+                            </tr>
+                            <tr class="odd row-odd">
+                                <td>依存関係の解決</td>
+                                <td>手動で順序を管理</td>
+                                <td>Terraformが依存グラフを自動構築</td>
+                            </tr>
+                            <tr class="even row-even">
+                                <td>コードの再利用性</td>
+                                <td>実行順序に強く依存し低い</td>
+                                <td>宣言の組み合わせで高い</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <h3 id="1-5-比較-主要iac構成管理ツールの全体像">
+                    1-5. 比較: 主要IaC/構成管理ツールの全体像
+                </h3>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header row-header">
+                                <th>ツール</th>
+                                <th>ベンダー</th>
+                                <th>言語/形式</th>
+                                <th>主対象</th>
+                                <th>ライセンス（2026年8月時点）</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd row-odd">
+                                <td>Terraform</td>
+                                <td>HashiCorp（IBM傘下）</td>
+                                <td>HCL</td>
+                                <td>マルチクラウドのプロビジョニング</td>
+                                <td>BUSL 1.1（ソースアベイラブル）</td>
+                            </tr>
+                            <tr class="even row-even">
+                                <td>OpenTofu</td>
+                                <td>Linux Foundation</td>
+                                <td>HCL（Terraform互換）</td>
+                                <td>マルチクラウドのプロビジョニング</td>
+                                <td>MPL 2.0（オープンソース）</td>
+                            </tr>
+                            <tr class="odd row-odd">
+                                <td>Pulumi</td>
+                                <td>Pulumi Corp</td>
+                                <td>TypeScript/Python/Go等の汎用言語</td>
+                                <td>マルチクラウドのプロビジョニング</td>
+                                <td>Apache 2.0</td>
+                            </tr>
+                            <tr class="even row-even">
+                                <td>AWS CloudFormation</td>
+                                <td>AWS</td>
+                                <td>YAML/JSON</td>
+                                <td>AWS専用プロビジョニング</td>
+                                <td>AWSマネージドサービス（無料）</td>
+                            </tr>
+                            <tr class="odd row-odd">
+                                <td>Chef</td>
+                                <td>Progress Software</td>
+                                <td>Ruby DSL</td>
+                                <td>サーバー構成管理</td>
+                                <td>商用/コミュニティ版</td>
+                            </tr>
+                            <tr class="even row-even">
+                                <td>Puppet</td>
+                                <td>Perforce</td>
+                                <td>独自DSL</td>
+                                <td>サーバー構成管理</td>
+                                <td>商用/コミュニティ版</td>
+                            </tr>
+                            <tr class="odd row-odd">
+                                <td>Ansible</td>
+                                <td>Red Hat（IBM傘下）</td>
+                                <td>YAML</td>
+                                <td>サーバー構成管理・簡易プロビジョニング</td>
+                                <td>GPLv3</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="callout callout-note">
+                    <div class="callout-icon">ℹ</div>
+                    <div class="callout-body">
+                        <p>
+                            <strong>2026年時点の重要な補足</strong>:
+                            HashiCorpは2023年8月にTerraformのライセンスをMPL 2.0からBUSL
+                            1.1（Business Source
+                            License）へ変更し、これに反発したコミュニティがLinux
+                            Foundation傘下でOpenTofuをフォークしました。さらに2025年2月27日、IBMがHashiCorpを約64億ドルで買収完了しています。この経緯の詳細は第11部で解説します。
+                        </p>
+                    </div>
+                </div>
+                <h3 id="まとめ">まとめ</h3>
+                <ul>
+                    <li>
+                        TerraformはHCLで書く宣言型のプロビジョニングツールであり、Provider機構によりマルチクラウドを同一ワークフローで扱える
+                    </li>
+                    <li>
+                        構成管理・サーバーテンプレート・オーケストレーション・プロビジョニングは役割が異なり、実務では組み合わせて使うのが一般的
+                    </li>
+                    <li>不変インフラの考え方はTerraform運用のベストプラクティスの土台になる</li>
+                </ul>
+
+                <h2 id="第2部原著第2章対応-terraformことはじめ">
+                    第2部（原著第2章対応）: Terraformことはじめ
+                </h2>
+                <p>
+                    原著第2章は、AWS上で「単一サーバー」→「単一Webサーバー」→「設定可能なWebサーバー」→「Webサーバークラスタ」→「ロードバランサー」という順に、段階的に本番相当の構成へ育てていくハンズオン構成になっています。本ガイドでも同じ順序で、各ステップの目的とHCLコード例を示します。
+                </p>
+                <h3 id="2-1-awsアカウントの準備ベストプラクティス">
+                    2-1. AWSアカウントの準備（ベストプラクティス）
+                </h3>
+                <p>本番運用を見据える場合、以下は必ず押さえておくべき基本です。</p>
+                <ul>
+                    <li>
+                        <strong>ルートユーザーは日常利用しない</strong>:
+                        MFAを設定した上で金庫にしまい、IAMユーザー/IAM Identity Center経由で作業する
+                    </li>
+                    <li>
+                        <strong>最小権限のIAMユーザーでTerraformを実行する</strong>:
+                        <code>AdministratorAccess</code>を安易に付与しない
+                    </li>
+                    <li>
+                        <strong>認証情報をコードに埋め込まない</strong>:
+                        環境変数や<code>.aws/credentials</code>、あるいはCI/CDのOIDC連携を使う
+                    </li>
+                </ul>
+                <h3 id="2-2-terraformのインストール">2-2. Terraformのインストール</h3>
+                <pre class="bash code-block"><code class="lang-bash"># macOS (Homebrew)
+brew tap hashicorp/tap
+brew install hashicorp/tap/terraform
+
+# バージョン確認
+terraform version</code></pre>
+                <p>
+                    複数バージョンを切り替える場合は<code>tfenv</code>や<code>asdf</code>のようなバージョンマネージャの利用が推奨されます。プロジェクトごとにバージョンを固定するため、<code>required_version</code>をコード側にも明示します。
+                </p>
+                <pre class="hcl code-block"><code class="lang-hcl">terraform {
+  required_version = "&gt;= 1.16.0, &lt; 2.0.0"
+}</code></pre>
+                <h3 id="2-3-単一サーバーのデプロイ">2-3. 単一サーバーのデプロイ</h3>
+                <p>Terraformの最小構成は「provider」と「resource」の2ブロックです。</p>
+                <pre class="hcl code-block"><code class="lang-hcl">provider "aws" {
+  region = "us-east-2"
+}
+
+resource "aws_instance" "example" {
+  ami           = "ami-0fb653ca2d3203ac1"
+  instance_type = "t2.micro"
+
+  tags = {
+    Name = "terraform-example"
+  }
+}</code></pre>
+                <div class="callout callout-warning">
+                    <div class="callout-icon">⚠</div>
+                    <div class="callout-body">
+                        <div class="callout-label">注意</div>
+                        <p>
+                            AMI ID
+                            はリージョン固有かつ時間とともに廃止・置き換えが進むため、上のようにハードコードした
+                            ID は別リージョンや将来の実行では解決できずに
+                            <code>apply</code> が失敗します。実務では
+                            <code>aws_ami</code> データソースで最新の AMI を動的に解決します。
+                        </p>
+                    </div>
+                </div>
+                <pre class="hcl code-block"><code class="lang-hcl">data "aws_ami" "ubuntu" {
+  most_recent = true
+  owners      = ["099720109477"] # Canonical
+
+  filter {
+    name   = "name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]
+  }
+}
+
+resource "aws_instance" "example" {
+  ami           = data.aws_ami.ubuntu.id
+  instance_type = "t2.micro"
+
+  tags = {
+    Name = "terraform-example"
+  }
+}</code></pre>
+                <p>基本ワークフローは次の3ステップです。</p>
+                <pre class="mermaid">
+flowchart LR
+    Init["terraform init&lt;br/&gt;プロバイダープラグインの取得"] --&gt; Plan["terraform plan&lt;br/&gt;変更内容のプレビュー"]
+    Plan --&gt; Apply["terraform apply&lt;br/&gt;変更の実行"]
+    Apply --&gt; Destroy["terraform destroy&lt;br/&gt;（必要な場合）リソース削除"]
+
+    classDef step fill:#1e3a5f,stroke:#7c9eff,color:#eaf1ff
+    class Init,Plan,Apply,Destroy step</pre
+                >
+                <div class="callout callout-practice">
+                    <div class="callout-icon">✓</div>
+                    <div class="callout-body">
+                        <div class="callout-label">ベストプラクティス</div>
+                        <ul>
+                            <li>
+                                <code>terraform plan</code
+                                >の出力は必ず目視確認してから<code>apply</code>する（CI上でも<code>plan</code>結果をレビュー対象にする）
+                            </li>
+                            <li>
+                                <code>terraform apply</code>の前に<code>terraform fmt</code>と<code
+                                    >terraform validate</code
+                                >をCIに組み込み、構文エラーを早期検出する
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3 id="2-4-単一webサーバーのデプロイ">2-4. 単一Webサーバーのデプロイ</h3>
+                <p>
+                    <code>user_data</code
+                    >でサーバー起動時にスクリプトを実行し、<code>aws_security_group</code>でポートを開放します。
+                </p>
+                <pre
+                    class="hcl code-block"
+                ><code class="lang-hcl">resource "aws_security_group" "instance" {
+  name = "terraform-example-instance"
+
+  ingress {
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+resource "aws_instance" "example" {
+  ami                    = "ami-0fb653ca2d3203ac1"
+  instance_type          = "t2.micro"
+  vpc_security_group_ids = [aws_security_group.instance.id]
+
+  user_data = &lt;&lt;-EOF
+              #!/bin/bash
+              echo "Hello, World" &gt; index.html
+              nohup busybox httpd -f -p 8080 &amp;
+              EOF
+
+  user_data_replace_on_change = true
+
+  tags = {
+    Name = "terraform-example"
+  }
+}</code></pre>
+                <p>
+                    <code>0.0.0.0/0</code
+                    >のような全開放CIDRは学習用の最小構成であり、本番では特定のCIDRブロックやセキュリティグループ参照に絞り込むのがベストプラクティスです。
+                </p>
+                <h3 id="2-5-設定可能なwebサーバー変数の導入">
+                    2-5. 設定可能なWebサーバー（変数の導入）
+                </h3>
+                <p>
+                    ハードコードを避けるため<code>variable</code>ブロックで入力値を外出しします。変数を定義しただけでは何も変わらないため、2-4でポート番号を直書きしていた箇所（セキュリティグループの<code>ingress</code>と<code>user_data</code>）を必ず<code>var.server_port</code>への参照に置き換えます。
+                </p>
+                <pre class="hcl code-block"><code class="lang-hcl">variable "server_port" {
+  description = "The port the server will use for HTTP requests"
+  type        = number
+  default     = 8080
+}</code></pre>
+                <pre
+                    class="hcl code-block"
+                ><code class="lang-hcl">resource "aws_security_group" "instance" {
+  name = "terraform-example-instance"
+
+  ingress {
+    from_port   = var.server_port
+    to_port     = var.server_port
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+resource "aws_instance" "example" {
+  ami                    = "ami-0fb653ca2d3203ac1"
+  instance_type          = "t2.micro"
+  vpc_security_group_ids = [aws_security_group.instance.id]
+
+  # ${var.server_port} で変数の値をスクリプトへ埋め込む（HEREDOC内でも補間が効く）
+  user_data = &lt;&lt;-EOF
+              #!/bin/bash
+              echo "Hello, World" &gt; index.html
+              nohup busybox httpd -f -p ${var.server_port} &amp;
+              EOF
+
+  user_data_replace_on_change = true
+
+  tags = {
+    Name = "terraform-example"
+  }
+}
+
+output "public_ip" {
+  value       = aws_instance.example.public_ip
+  description = "The public IP address of the web server"
+}</code></pre>
+                <p>
+                    これで<code>server_port</code>の値を変えるだけで、<strong>実際に待ち受けるポートと許可するポートの両方</strong>が追従します。片方だけを変数化すると、サーバーは新しいポートで待ち受けるのにセキュリティグループは旧ポートを開けたまま、という接続不能な状態になるため、必ず両方をひとつの変数から導出します。
+                </p>
+                <div class="callout callout-practice">
+                    <div class="callout-icon">✓</div>
+                    <div class="callout-body">
+                        <div class="callout-label">ベストプラクティス</div>
+                        <ul>
+                            <li>
+                                すべての<code>variable</code>と<code>output</code>に<code>description</code>を書く（自己文書化、<code>terraform-docs</code>との相性も良い）
+                            </li>
+                            <li>型制約（<code>type</code>）を明示し、想定外の値の混入を防ぐ</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3 id="2-6-webサーバークラスタのデプロイ">2-6. Webサーバークラスタのデプロイ</h3>
+                <p>
+                    単一サーバーでは可用性が確保できないため、Auto Scaling Group（ASG）とLaunch
+                    Templateでクラスタ化します。
+                </p>
+                <pre
+                    class="hcl code-block"
+                ><code class="lang-hcl">resource "aws_launch_template" "example" {
+  image_id      = "ami-0fb653ca2d3203ac1"
+  instance_type = "t2.micro"
+
+  vpc_security_group_ids = [aws_security_group.instance.id]
+
+  user_data = base64encode(&lt;&lt;-EOF
+              #!/bin/bash
+              echo "Hello, World" &gt; index.html
+              nohup busybox httpd -f -p 8080 &amp;
+              EOF
+  )
+}
+
+resource "aws_autoscaling_group" "example" {
+  launch_template {
+    id      = aws_launch_template.example.id
+    version = aws_launch_template.example.latest_version
+  }
+
+  instance_refresh {
+    strategy = "Rolling"
+  }
+
+  min_size = 2
+  max_size = 10
+
+  tag {
+    key                 = "Name"
+    value               = "terraform-asg-example"
+    propagate_at_launch = true
+  }
+}</code></pre>
+                <p>
+                    <code>version</code>に文字列<code>"$Latest"</code>を書くと、Launch
+                    Templateの中身（AMIやユーザーデータ）を変更してもASG側の属性値は<code>"$Latest"</code>のまま変わらないため、Terraformは差分を検知せずASGを更新しません。<code>aws_launch_template.example.latest_version</code>を参照すれば、テンプレート更新のたびにバージョン番号が変わってASGにも差分が現れ、<code>instance_refresh</code>によるローリング入れ替えが起動します。
+                </p>
+                <h3 id="2-7-ロードバランサーのデプロイ">2-7. ロードバランサーのデプロイ</h3>
+                <p>
+                    ALB（Application Load
+                    Balancer）をASGの手前に配置し、ヘルスチェック付きでトラフィックを分散します。
+                </p>
+                <pre class="mermaid">
+flowchart TB
+    User(["利用者"]) --&gt; ALB["Application Load Balancer&lt;br/&gt;(aws_lb + aws_lb_listener)"]
+    ALB --&gt; TG["Target Group&lt;br/&gt;(aws_lb_target_group)&lt;br/&gt;ヘルスチェック"]
+    TG --&gt; ASG["Auto Scaling Group&lt;br/&gt;(aws_autoscaling_group)"]
+    ASG --&gt; I1["EC2インスタンス #1"]
+    ASG --&gt; I2["EC2インスタンス #2"]
+    ASG --&gt; I3["EC2インスタンス #N&lt;br/&gt;(min_size〜max_sizeで自動増減)"]
+
+    classDef entry fill:#1e3a5f,stroke:#7c9eff,color:#eaf1ff
+    classDef compute fill:#123024,stroke:#4caf82,color:#eaf1ff
+    class ALB,TG entry
+    class ASG,I1,I2,I3 compute</pre
+                >
+                <h3 id="2-8-クリーンアップ">2-8. クリーンアップ</h3>
+                <p>
+                    学習環境では課金を止めるため<code>terraform destroy</code
+                    >で作成したリソースを確実に削除します。共有環境では<code
+                        >terraform plan -destroy</code
+                    >で影響範囲を確認してから実行するのが安全です。
+                </p>
+                <div class="callout callout-practice">
+                    <div class="callout-icon">✓</div>
+                    <div class="callout-body">
+                        <div class="callout-label">ベストプラクティス</div>
+                        <ul>
+                            <li>
+                                個人の検証環境は使い終わったら都度<code>destroy</code>する（コスト管理）
+                            </li>
+                            <li>
+                                本番環境では<code>prevent_destroy</code>ライフサイクルルールで誤削除を防止する
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <pre
+                    class="hcl code-block"
+                ><code class="lang-hcl">resource "aws_db_instance" "production" {
+  # ...
+
+  lifecycle {
+    prevent_destroy = true
+  }
+}</code></pre>
+
+                <h2 id="第3部原著第3章対応-terraformの状態state管理">
+                    第3部（原著第3章対応）: Terraformの状態（State）管理
+                </h2>
+                <h3 id="3-1-state-fileとは何かなぜ必要か">3-1. State fileとは何か、なぜ必要か</h3>
+                <p>
+                    Terraformは実際のクラウドリソースと、HCLで書いた宣言との対応関係を<code>terraform.tfstate</code>というJSONファイルに記録します。このState
+                    fileがあることで、Terraformは「今何が存在するか」「次の<code>apply</code>で何を変更すべきか」を判断できます。State
+                    fileがなければ、Terraformは既存リソースをゼロから再作成しようとしてしまいます。
+                </p>
+                <h3 id="3-2-stateの共有ストレージリモートバックエンド">
+                    3-2. Stateの共有ストレージ（リモートバックエンド）
+                </h3>
+                <p>
+                    チーム開発ではState fileをローカルに置かず、S3・Google Cloud Storage・Azure Blob
+                    Storage・HCP
+                    Terraformのようなリモートバックエンドで共有・排他制御するのが必須のベストプラクティスです。
+                </p>
+                <pre class="hcl code-block"><code class="lang-hcl">terraform {
+  backend "s3" {
+    bucket       = "my-company-terraform-state"
+    key          = "global/services/webserver-cluster/terraform.tfstate"
+    region       = "us-east-2"
+    encrypt      = true
+    use_lockfile = true
+  }
+}</code></pre>
+                <h3 id="3-3-2026年最新s3ネイティブロックとdynamodbの非推奨化">
+                    3-3. 【2026年最新】S3ネイティブロックとDynamoDBの非推奨化
+                </h3>
+                <p>
+                    長年、S3バックエンドでの排他ロックにはDynamoDBテーブルの併設が「お作法」とされてきました。しかし<strong
+                        >Terraform
+                        1.10（2024年11月）でS3ネイティブロック（<code>use_lockfile</code>）が実験的機能として導入され、Terraform
+                        1.11でGA（正式版）に昇格、同時に<code>dynamodb_table</code>引数が非推奨化</strong
+                    >されました。S3の条件付き書き込み（Conditional
+                    Writes）機能を使い、state本体と同じバケット内に<code>.tflock</code>ファイルを作成する仕組みで、DynamoDBテーブルの作成・IAM権限管理が不要になります。
+                </p>
+                <pre class="mermaid">
+sequenceDiagram
+    participant Dev as 開発者のTerraform CLI
+    participant S3 as S3バケット
+    Dev-&gt;&gt;S3: PutObject (.tflockファイル, If-None-Match条件付き)
+    alt ロック取得成功
+        S3--&gt;&gt;Dev: 200 OK（ロック取得）
+        Dev-&gt;&gt;S3: state読み込み → plan/apply実行
+        Dev-&gt;&gt;S3: state書き込み
+        Dev-&gt;&gt;S3: .tflock削除（ロック解放）
+    else 既にロック済み
+        S3--&gt;&gt;Dev: 412 Precondition Failed（他者が実行中）
+        Dev-&gt;&gt;Dev: エラー表示・処理中断
+    end</pre
+                >
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header row-header">
+                                <th>項目</th>
+                                <th>旧方式（S3 + DynamoDB）</th>
+                                <th>新方式（S3ネイティブロック）</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd row-odd">
+                                <td>必要なAWSリソース</td>
+                                <td>S3バケット + DynamoDBテーブル</td>
+                                <td>S3バケットのみ</td>
+                            </tr>
+                            <tr class="even row-even">
+                                <td>設定パラメータ</td>
+                                <td><code>dynamodb_table = "terraform-locks"</code></td>
+                                <td><code>use_lockfile = true</code></td>
+                            </tr>
+                            <tr class="odd row-odd">
+                                <td>対応バージョン</td>
+                                <td>全バージョン（非推奨方向）</td>
+                                <td>Terraform 1.10で実験導入、1.11でGA</td>
+                            </tr>
+                            <tr class="even row-even">
+                                <td>IAM権限</td>
+                                <td>S3権限 + DynamoDB権限</td>
+                                <td>S3権限のみ</td>
+                            </tr>
+                            <tr class="odd row-odd">
+                                <td>今後の見通し</td>
+                                <td><code>dynamodb_table</code>は非推奨、将来削除予定</td>
+                                <td>新規プロジェクトの標準として推奨</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="callout callout-practice">
+                    <div class="callout-icon">✓</div>
+                    <div class="callout-body">
+                        <div class="callout-label">ベストプラクティス</div>
+                        <p>
+                            新規プロジェクトは<code>use_lockfile = true</code
+                            >を採用し、既存プロジェクトも計画的に移行する。移行時はS3バケットのバージョニングを有効化しておくこと。
+                        </p>
+                    </div>
+                </div>
+                <h3 id="3-4-backendの制約">3-4. Backendの制約</h3>
+                <ul>
+                    <li>
+                        バックエンド設定自体は変数展開ができない（<code>backend</code>ブロック内でvariableは使えない）
+                    </li>
+                    <li>
+                        バックエンドの切り替えには<code>terraform init -migrate-state</code>が必要
+                    </li>
+                    <li>
+                        ロックの取得に失敗するとチーム全体の作業がブロックされるため、CI/CDのタイムアウト設計が重要
+                    </li>
+                </ul>
+                <h3 id="3-5-state分離-workspacesとfile-layout">
+                    3-5. State分離: WorkspacesとFile Layout
+                </h3>
+                <p>環境（dev/staging/prod）ごとにStateを分離する方法は主に2つあります。</p>
+                <pre class="mermaid">
+flowchart TB
+    subgraph WS["方式A: Terraform Workspaces"]
+        direction LR
+        WSCode["単一の.tfコード"] --&gt; WSDev["workspace: dev"]
+        WSCode --&gt; WSStg["workspace: staging"]
+        WSCode --&gt; WSProd["workspace: prod"]
+    end
+    subgraph FL["方式B: ファイルレイアウトによる分離"]
+        direction LR
+        FLDev["dev/ ディレクトリ&lt;br/&gt;専用backend設定"]
+        FLStg["staging/ ディレクトリ&lt;br/&gt;専用backend設定"]
+        FLProd["prod/ ディレクトリ&lt;br/&gt;専用backend設定"]
+    end
+
+    classDef ws fill:#1e3a5f,stroke:#7c9eff,color:#eaf1ff
+    classDef fl fill:#123024,stroke:#4caf82,color:#eaf1ff
+    class WSCode,WSDev,WSStg,WSProd ws
+    class FLDev,FLStg,FLProd fl</pre
+                >
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header row-header">
+                                <th>観点</th>
+                                <th>Workspaces</th>
+                                <th>ファイルレイアウト分離</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd row-odd">
+                                <td>コードの重複</td>
+                                <td>なし（1本のコードを使い回す）</td>
+                                <td>ディレクトリごとに重複しやすい</td>
+                            </tr>
+                            <tr class="even row-even">
+                                <td>環境間の設定差分</td>
+                                <td><code>terraform.workspace</code>変数で分岐が必要</td>
+                                <td>ディレクトリごとに完全に独立して記述可能</td>
+                            </tr>
+                            <tr class="odd row-odd">
+                                <td>誤爆リスク</td>
+                                <td>「今どのworkspaceにいるか」の見落としリスクあり</td>
+                                <td>ディレクトリが分かれているため誤爆しにくい</td>
+                            </tr>
+                            <tr class="even row-even">
+                                <td>原著の推奨</td>
+                                <td>小規模・一時的な環境分離向け</td>
+                                <td>本番運用の環境分離として推奨</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="callout callout-practice">
+                    <div class="callout-icon">✓</div>
+                    <div class="callout-body">
+                        <div class="callout-label">ベストプラクティス</div>
+                        <p>
+                            本番環境の分離にはWorkspacesよりファイルレイアウトによる分離（Gruntwork社が提唱する「live」リポジトリのパターンなど）が安全とされています。理由は、Workspacesは「今どの環境を操作しているか」がコマンドライン上で見えにくく、誤って本番を破壊するリスクがあるためです。
+                        </p>
+                    </div>
+                </div>
+                <h3 id="3-6-terraform_remote_stateデータソース">
+                    3-6. <code>terraform_remote_state</code>データソース
+                </h3>
+                <p>
+                    あるコンポーネントのStateから、別のコンポーネントが出力値を参照する仕組みです。
+                </p>
+                <pre
+                    class="hcl code-block"
+                ><code class="lang-hcl">data "terraform_remote_state" "vpc" {
+  backend = "s3"
+
+  config = {
+    bucket = "my-company-terraform-state"
+    key    = "global/vpc/terraform.tfstate"
+    region = "us-east-2"
+  }
+}
+
+resource "aws_instance" "example" {
+  subnet_id = data.terraform_remote_state.vpc.outputs.subnet_id
+}</code></pre>
+                <div class="callout callout-practice">
+                    <div class="callout-icon">✓</div>
+                    <div class="callout-body">
+                        <div class="callout-label">ベストプラクティス</div>
+                        <p>
+                            モジュール間の依存関係を<code>terraform_remote_state</code>で明示することで、VPCのような基盤コンポーネントと、アプリケーション固有のリソースを別々のStateに分離しつつ連携できます。
+                        </p>
+                    </div>
+                </div>
+                <div class="callout callout-warning">
+                    <div class="callout-icon">⚠</div>
+                    <div class="callout-body">
+                        <div class="callout-label">セキュリティ上の注意</div>
+                        <p>
+                            <code>outputs.subnet_id</code
+                            >のように特定の出力値だけを参照していても、<code>terraform_remote_state</code>はバックエンド(上の例ではS3バケット)から<strong>State全体を読み取ります</strong>。つまり参照側にバックエンドの読み取り権限を与えることは、そのStateに含まれるすべての値（DBパスワードや秘密鍵など、リソース属性としてStateに平文で残る機密情報を含む）へのアクセスを許すことと同義です。機密情報を含むStateを他チームと共有する場合は、必要な値だけを渡す限定的な手段を検討します。
+                        </p>
+                    </div>
+                </div>
+                <ul>
+                    <li>
+                        HCP
+                        Terraform/Enterpriseでは<code>tfe_outputs</code>データソースを使い、State全体ではなくワークスペースの出力値だけを共有する
+                    </li>
+                    <li>
+                        出力値をSSM Parameter StoreやSecrets
+                        Managerへ書き出し、参照側にはそのパラメータのみ読み取り権限を与える
+                    </li>
+                    <li>
+                        そもそもStateに機密情報を残さないよう、write-only引数（第6部参照）やエフェメラルリソースを使う
+                    </li>
+                </ul>
+
+                <h2 id="第4部原著第4章対応-再利用可能なインフラをモジュールで作る">
+                    第4部（原著第4章対応）: 再利用可能なインフラをモジュールで作る
+                </h2>
+                <h3 id="4-1-モジュールの基本">4-1. モジュールの基本</h3>
+                <p>
+                    モジュールとは、<code>.tf</code>ファイル群をまとめたディレクトリのことです。ルートモジュール（実行の起点）から子モジュールを<code>module</code>ブロックで呼び出します。
+                </p>
+                <pre class="hcl code-block"><code class="lang-hcl">module "webserver_cluster" {
+  source = "../../modules/services/webserver-cluster"
+
+  cluster_name  = "webservers-stage"
+  instance_type = "t2.micro"
+  min_size      = 2
+  max_size      = 2
+}</code></pre>
+                <pre class="mermaid">
+flowchart TB
+    Root["ルートモジュール&lt;br/&gt;(live/stage/webserver-cluster)"]
+    Root --&gt;|module呼び出し| Child["子モジュール&lt;br/&gt;(modules/services/webserver-cluster)"]
+    Child --&gt; Var["variables.tf&lt;br/&gt;入力インターフェース"]
+    Child --&gt; Main["main.tf&lt;br/&gt;実際のリソース定義"]
+    Child --&gt; Loc["locals.tf&lt;br/&gt;内部でのみ使う計算値"]
+    Child --&gt; Out["outputs.tf&lt;br/&gt;戻り値インターフェース"]
+    Out -.-&gt;|出力を参照| Root
+
+    classDef rootStyle fill:#1e3a5f,stroke:#7c9eff,color:#eaf1ff
+    classDef childStyle fill:#123024,stroke:#4caf82,color:#eaf1ff
+    class Root rootStyle
+    class Child,Var,Main,Loc,Out childStyle</pre
+                >
+                <h3 id="4-2-モジュール入力変数module-inputs">
+                    4-2. モジュール入力変数（Module Inputs）
+                </h3>
+                <p>
+                    呼び出し元から値を注入するためのインターフェースです。<code>default</code>を持たない変数は必須パラメータになります。
+                </p>
+                <pre class="hcl code-block"><code class="lang-hcl">variable "cluster_name" {
+  description = "The name to use for all the cluster resources"
+  type        = string
+}
+
+variable "instance_type" {
+  description = "The type of EC2 Instance to run"
+  type        = string
+  default     = "t2.micro"
+
+  # 空文字を弾く。この validation があって初めて、
+  # 第9部の expect_failures = [var.instance_type] が検証エラーを検出できる
+  validation {
+    condition     = length(trimspace(var.instance_type)) &gt; 0
+    error_message = "instance_type must not be empty."
+  }
+}</code></pre>
+                <h3 id="4-3-モジュールのlocal値">4-3. モジュールのlocal値</h3>
+                <p>
+                    繰り返し使う計算式や、外部に公開する必要のない中間値は<code>locals</code>にまとめます。
+                </p>
+                <pre class="hcl code-block"><code class="lang-hcl">locals {
+  http_port    = 80
+  any_port     = 0
+  any_protocol = "-1"
+  all_ips      = ["0.0.0.0/0"]
+}</code></pre>
+                <h3 id="4-4-モジュール出力値module-outputs">
+                    4-4. モジュール出力値（Module Outputs）
+                </h3>
+                <p>呼び出し元やCLIから参照できる戻り値です。</p>
+                <pre class="hcl code-block"><code class="lang-hcl">output "asg_name" {
+  value       = aws_autoscaling_group.example.name
+  description = "The name of the Auto Scaling Group"
+}
+
+output "alb_dns_name" {
+  value       = aws_lb.example.dns_name
+  description = "The domain name of the load balancer"
+}</code></pre>
+                <h3 id="4-5-モジュールの落とし穴">4-5. モジュールの落とし穴</h3>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header row-header">
+                                <th>落とし穴</th>
+                                <th>内容</th>
+                                <th>対処</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd row-odd">
+                                <td>ファイルパス</td>
+                                <td>
+                                    <code>user_data</code
+                                    >等でモジュール内の相対ファイルを読む際、実行時のカレントディレクトリ基準になってしまう
+                                </td>
+                                <td>
+                                    <code>path.module</code
+                                    >を使い、常にモジュール自身のディレクトリからの相対パスにする
+                                </td>
+                            </tr>
+                            <tr class="even row-even">
+                                <td>インラインブロック</td>
+                                <td>
+                                    <code>ingress {}</code
+                                    >のようなインラインブロックは、呼び出し元から動的に個数を増減できない
+                                </td>
+                                <td>
+                                    可能な限り<code>aws_security_group_rule</code>等の別リソースに分離し、<code>for_each</code>で動的生成する
+                                </td>
+                            </tr>
+                            <tr class="odd row-odd">
+                                <td>ハードコードされたリージョン/プロバイダー</td>
+                                <td>
+                                    モジュール内で<code>provider "aws" { region = ... }</code
+                                    >を固定すると再利用性が落ちる
+                                </td>
+                                <td>プロバイダー設定は呼び出し元（ルートモジュール）に任せる</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <pre
+                    class="hcl code-block"
+                ><code class="lang-hcl"># path.moduleの利用例（落とし穴の対処）
+resource "aws_instance" "example" {
+  user_data = file("${path.module}/user-data.sh")
+}</code></pre>
+                <h3 id="4-6-モジュールバージョニング">4-6. モジュールバージョニング</h3>
+                <p>
+                    Gitリポジトリやレジストリの参照時に<code>ref</code>やバージョン制約を明示し、意図しない破壊的変更の巻き込みを防ぎます。
+                </p>
+                <pre class="hcl code-block"><code class="lang-hcl">module "webserver_cluster" {
+  source  = "github.com/foo/modules//services/webserver-cluster?ref=v0.1.4"
+
+  cluster_name  = "webservers-stage"
+  instance_type = "t2.micro"
+}
+
+# Terraformレジストリ経由の場合
+module "vpc" {
+  source  = "terraform-aws-modules/vpc/aws"
+  version = "~&gt; 5.0"
+}</code></pre>
+                <div class="callout callout-practice">
+                    <div class="callout-icon">✓</div>
+                    <div class="callout-body">
+                        <div class="callout-label">ベストプラクティス</div>
+                        <ul>
+                            <li>
+                                <code>ref</code
+                                >にブランチ名（<code>main</code>等）を指定しない。必ずタグ／コミットハッシュで固定する
+                            </li>
+                            <li>
+                                セマンティックバージョニング（<code>~&gt; 5.0</code
+                                >のような制約演算子）で、意図しないメジャーアップデートの巻き込みを防ぐ
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h2 id="第5部原著第5章対応-ループ条件分岐デプロイ落とし穴">
+                    第5部（原著第5章対応）: ループ・条件分岐・デプロイ・落とし穴
+                </h2>
+                <h3 id="5-15-4-ループの4パターン">5-1〜5-4. ループの4パターン</h3>
+                <p>
+                    Terraformには目的の異なる4種類のループ構文があります。使い分けを誤ると保守性が大きく下がるため、表で整理します。
+                </p>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header row-header">
+                                <th>構文</th>
+                                <th>対象</th>
+                                <th>特徴</th>
+                                <th>典型的な用途</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd row-odd">
+                                <td><code>count</code></td>
+                                <td>リソース／モジュール全体</td>
+                                <td>インデックス番号(<code>count.index</code>)で複製</td>
+                                <td>単純に同じものをN個作る</td>
+                            </tr>
+                            <tr class="even row-even">
+                                <td><code>for_each</code>（マップ/セット）</td>
+                                <td>リソース／モジュール全体</td>
+                                <td>各要素にキー文字列が付き、途中の要素削除に強い</td>
+                                <td>名前付きの複数リソースを作る</td>
+                            </tr>
+                            <tr class="odd row-odd">
+                                <td><code>for</code>式</td>
+                                <td>リスト・マップの変換</td>
+                                <td>値の変換・フィルタリングのみ、リソースは複製しない</td>
+                                <td>変数の加工、出力値の整形</td>
+                            </tr>
+                            <tr class="even row-even">
+                                <td><code>for</code>文字列ディレクティブ</td>
+                                <td>テンプレート文字列内</td>
+                                <td>文字列の中でループを展開</td>
+                                <td><code>user_data</code>スクリプト等の動的生成</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <pre
+                    class="hcl code-block"
+                ><code class="lang-hcl"># 以下の例が参照する入力変数。宣言がないと undeclared variable エラーになる
+variable "names" {
+  description = "for式で大文字化する名前のリスト"
+  type        = list(string)
+  default     = ["neo", "trinity", "morpheus"]
+}
+
+variable "users" {
+  description = "バケットポリシーへ展開するユーザー名のリスト"
+  type        = list(string)
+  default     = ["neo", "trinity"]
+}
+
+# count: 単純な複製（ただしリスト順序に依存し途中削除に弱い）
+resource "aws_iam_user" "example" {
+  count = 3
+  name  = "neo.${count.index}"
+}
+
+# for_each: キーに基づく複製（推奨）。順序に依存しないため安全に増減できる
+resource "aws_iam_user" "example2" {
+  for_each = toset(["neo", "trinity", "morpheus"])
+  name     = each.value
+}
+
+# for式: 値の変換
+locals {
+  upper_names = [for name in var.names : upper(name)]
+}
+
+# for文字列ディレクティブ: テンプレート内でのループ
+locals {
+  bucket_policy = &lt;&lt;-EOF
+  %{ for user in var.users ~}
+  Allow access for ${user}
+  %{ endfor ~}
+  EOF
+}</code></pre>
+                <div class="callout callout-practice">
+                    <div class="callout-icon">✓</div>
+                    <div class="callout-body">
+                        <div class="callout-label">ベストプラクティス</div>
+                        <p>
+                            <code>count</code
+                            >は「同じものをN個作る」だけの単純なケースに留め、要素の識別が必要な場合は<code>for_each</code>を優先する。<code>for_each</code>はキーで管理されるため、リストの途中の要素を削除しても他のリソースが不要に再作成されません。
+                        </p>
+                    </div>
+                </div>
+                <h3 id="5-5-条件分岐">5-5. 条件分岐</h3>
+                <p>
+                    Terraformには<code>if</code>文はありませんが、三項演算子と<code>count</code>/<code>for_each</code>を組み合わせて条件付きリソース作成を表現します。
+                </p>
+                <pre class="hcl code-block"><code class="lang-hcl">variable "enable_autoscaling" {
+  description = "スケジュールベースのオートスケーリングを有効にするか"
+  type        = bool
+  default     = false
+}
+
+resource "aws_autoscaling_schedule" "scale_out_during_business_hours" {
+  count = var.enable_autoscaling ? 1 : 0
+
+  scheduled_action_name = "scale-out-during-business-hours"
+  min_size               = 2
+  max_size               = 10
+  desired_capacity       = 10
+  recurrence             = "0 9 * * *"
+  autoscaling_group_name = aws_autoscaling_group.example.name
+}</code></pre>
+                <h3 id="5-6-ゼロダウンタイムデプロイ">5-6. ゼロダウンタイムデプロイ</h3>
+                <p>
+                    <code>create_before_destroy</code
+                    >ライフサイクルルールは、Terraformの既定の「削除してから作成」を「作成してから削除」へ<strong>順序を入れ替える</strong>ものです。ただしこれ<strong>単体ではダウンタイムがなくなることは保証されません</strong>。Terraformはリソースの作成APIが完了した時点で次のステップへ進むだけで、新しいインスタンス上でアプリケーションが実際にリクエストを処理できる状態になったかどうかは判断しないためです。ヘルスチェックを待たずに旧リソースを破棄すれば、その隙間はそのままサービス断になります。
+                </p>
+                <p>
+                    無停止に近づけるには、<code>create_before_destroy</code>に加えて次の3点を揃える必要があります。
+                </p>
+                <ol type="1">
+                    <li>
+                        <strong
+                            >新旧のASGを同じロードバランサー（ターゲットグループ）に接続する。</strong
+                        >
+                        接続していなければ、そもそもトラフィックの引き継ぎ先が存在しません。
+                    </li>
+                    <li>
+                        <strong
+                            ><code>min_elb_capacity</code
+                            >（ASG新規作成時）または<code>wait_for_elb_capacity</code>（既存ASGの容量変更時）で、指定台数がELBのヘルスチェックを通過するまでTerraformを待たせる。</strong
+                        >
+                        この待機がないと、健全なインスタンスが揃う前に旧ASGが破棄されます。
+                    </li>
+                    <li>
+                        <strong
+                            >既存ASGのインスタンス入れ替えは<code>instance_refresh</code>に任せ、その完了を明示的に確認する。</strong
+                        >
+                        <code>instance_refresh</code
+                        >は<code>apply</code>の完了後もAWS側で非同期に進むため、<strong
+                            ><code>apply</code>が成功しても入れ替えが成功したとは限りません</strong
+                        >。CDパイプライン側でリフレッシュのステータス（<code>Successful</code> /
+                        <code>Failed</code> /
+                        <code>Cancelled</code>）をポーリングし、失敗・中断時は直前のLaunch
+                        Templateバージョンへ戻すロールバック手順まで用意して初めて運用に耐えます。
+                    </li>
+                </ol>
+                <pre class="mermaid">
+sequenceDiagram
+    participant TF as Terraform
+    participant Old as 旧ASG/旧Launch Template
+    participant New as 新ASG/新Launch Template
+    participant LB as ロードバランサー
+
+    TF-&gt;&gt;New: 1. 新しいリソースを先に作成
+    New-&gt;&gt;LB: 2. ターゲットグループへ登録
+    LB--&gt;&gt;TF: 3. min_elb_capacity 台がヘルスチェックを通過するまで待機
+    TF-&gt;&gt;Old: 4. 旧リソースをロードバランサーから切り離し
+    TF-&gt;&gt;Old: 5. 旧リソースを破棄
+    Note over TF,LB: create_before_destroy だけでは不十分&lt;br/&gt;ELBへの接続とヘルスチェック待機が揃って初めて無停止に近づく</pre
+                >
+                <pre
+                    class="hcl code-block"
+                ><code class="lang-hcl">resource "aws_launch_template" "example" {
+  # ...
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+# ASGが参照するターゲットグループ。この宣言がないと
+# aws_lb_target_group.asg は未定義参照となり terraform validate が失敗する
+resource "aws_lb_target_group" "asg" {
+  name = "terraform-asg-example"
+
+  # インスタンスが待ち受け、セキュリティグループが開放しているポートと一致させる。
+  # ここを 80 のままにするとヘルスチェックが通らず、min_elb_capacity の待機が
+  # タイムアウトして apply が失敗する
+  port     = 8080
+  protocol = "HTTP"
+  vpc_id   = var.vpc_id
+
+  health_check {
+    path     = "/"
+    protocol = "HTTP"
+    matcher  = "200"
+  }
+}
+
+variable "vpc_id" {
+  description = "ターゲットグループを作成するVPCのID"
+  type        = string
+}
+
+variable "min_size" {
+  description = "ASGの最小インスタンス数（min_elb_capacityの待機台数にも使う）"
+  type        = number
+  default     = 2
+}
+
+resource "aws_autoscaling_group" "example" {
+  # ...
+
+  # 1. ロードバランサー（ターゲットグループ）へ接続し、健全性の判定もELBに委ねる
+  target_group_arns = [aws_lb_target_group.asg.arn]
+  health_check_type = "ELB"
+
+  # 2. 指定台数がELBのヘルスチェックを通過するまで apply を完了させない
+  #    min_elb_capacity は「作成時」しか待たないため、既存ASGの更新でも待つ
+  #    wait_for_elb_capacity を使う
+  wait_for_elb_capacity = var.min_size
+
+  # 3. 既存ASGのインスタンス入れ替えは instance_refresh に任せる
+  #    ただし apply 完了後もAWS側で非同期に進むため、
+  #    CD側で完了確認とロールバックを別途実装すること
+  instance_refresh {
+    strategy = "Rolling"
+    preferences {
+      min_healthy_percentage = 100
+    }
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}</code></pre>
+                <h3 id="5-7-terraformの落とし穴">5-7. Terraformの落とし穴</h3>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header row-header">
+                                <th>落とし穴</th>
+                                <th>内容</th>
+                                <th>対処</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd row-odd">
+                                <td><code>count</code>/<code>for_each</code>の制約</td>
+                                <td>
+                                    値をリソースブロック内の計算結果に依存させられない場合がある（plan時に値が未確定だとエラー）
+                                </td>
+                                <td>
+                                    可能な限り<code>variable</code>など、plan前に確定する値をループ対象にする
+                                </td>
+                            </tr>
+                            <tr class="even row-even">
+                                <td>ゼロダウンタイムデプロイの限界</td>
+                                <td>DBのようなステートフルなリソースには単純に適用できない</td>
+                                <td>Blue/Greenやマイグレーション専用の仕組みを別途設計する</td>
+                            </tr>
+                            <tr class="odd row-odd">
+                                <td>Valid Plansが失敗することがある</td>
+                                <td>
+                                    <code>plan</code
+                                    >が通っても、<code>apply</code>時にクラウド側の制約（クォータ等）でエラーになることがある
+                                </td>
+                                <td>リトライ処理・クォータの事前申請・段階的apply</td>
+                            </tr>
+                            <tr class="even row-even">
+                                <td>リファクタリングの難しさ</td>
+                                <td>
+                                    リソース名の変更やモジュール構造の変更は、Terraform内部では「削除→再作成」と解釈されがち
+                                </td>
+                                <td>
+                                    <code>moved</code>ブロック（Terraform 1.1以降）や<code
+                                        >terraform state mv</code
+                                    >で安全に移行する
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <pre
+                    class="hcl code-block"
+                ><code class="lang-hcl"># リソース名変更時の安全な移行(movedブロック)
+moved {
+  from = aws_instance.old_name
+  to   = aws_instance.new_name
+}</code></pre>
+
+                <h2 id="第6部原著第6章対応-シークレット管理">
+                    第6部（原著第6章対応）: シークレット管理
+                </h2>
+                <h3 id="6-1-シークレット管理の基礎">6-1. シークレット管理の基礎</h3>
+                <p>シークレット管理を設計する際は、次の3つの問いに答える必要があります。</p>
+                <ol type="1">
+                    <li>
+                        <strong>何を保存するか</strong>: パスワード、APIキー、証明書の秘密鍵など
+                    </li>
+                    <li>
+                        <strong>どこに保存するか</strong>: 暗号化されたストレージ（Vault、Secrets
+                        Manager等）
+                    </li>
+                    <li>
+                        <strong>どうアクセスさせるか</strong>:
+                        環境変数、ファイルマウント、動的な短命クレデンシャル発行
+                    </li>
+                </ol>
+                <h3 id="6-2-主要シークレット管理ツール比較">6-2. 主要シークレット管理ツール比較</h3>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header row-header">
+                                <th>ツール</th>
+                                <th>提供元</th>
+                                <th>動的シークレット</th>
+                                <th>主な用途</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd row-odd">
+                                <td>HashiCorp Vault</td>
+                                <td>HashiCorp（IBM傘下）</td>
+                                <td>対応（DB/クラウド認証情報を動的発行）</td>
+                                <td>マルチクラウド・オンプレ横断のシークレット管理</td>
+                            </tr>
+                            <tr class="even row-even">
+                                <td>AWS Secrets Manager</td>
+                                <td>AWS</td>
+                                <td>一部対応（RDSローテーション等）</td>
+                                <td>AWS中心の環境</td>
+                            </tr>
+                            <tr class="odd row-odd">
+                                <td>AWS SSM Parameter Store</td>
+                                <td>AWS</td>
+                                <td>非対応（静的値）</td>
+                                <td>低コストな設定値・軽量シークレット</td>
+                            </tr>
+                            <tr class="even row-even">
+                                <td>Azure Key Vault</td>
+                                <td>Microsoft</td>
+                                <td>一部対応</td>
+                                <td>Azure中心の環境</td>
+                            </tr>
+                            <tr class="odd row-odd">
+                                <td>Google Secret Manager</td>
+                                <td>Google</td>
+                                <td>非対応（静的値）</td>
+                                <td>GCP中心の環境</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <h3 id="6-3-terraformでのシークレット利用パターン">
+                    6-3. Terraformでのシークレット利用パターン
+                </h3>
+                <p>
+                    Terraformの<code>sensitive = true</code
+                    >はCLI出力へのマスキングのみを行い、<strong
+                        >State
+                        fileには平文（またはそれに近い形）でシークレットが記録されてしまう</strong
+                    >という長年の課題がありました。
+                </p>
+                <pre class="hcl code-block"><code class="lang-hcl">variable "db_password" {
+  description = "The password for the database"
+  type        = string
+  sensitive   = true
+}</code></pre>
+                <div class="callout callout-warning">
+                    <div class="callout-icon">⚠</div>
+                    <div class="callout-body">
+                        <div class="callout-label">重要な注意</div>
+                        <p>
+                            <code>sensitive</code>はあくまで表示上のマスクです。State
+                            file自体を暗号化する（リモートバックエンドの暗号化オプションを有効にする）ことと、アクセス権限をIAMで絞ることが必須のベストプラクティスです。
+                        </p>
+                    </div>
+                </div>
+                <h3 id="6-42026年最新ephemeral-resources--write-only-argumentsによる根本解決">
+                    6-4.【2026年最新】Ephemeral Resources &amp; Write-Only Argumentsによる根本解決
+                </h3>
+                <p>
+                    長年の「Stateにシークレットが残ってしまう」問題に対し、HashiCorpは<strong
+                        >Terraform 1.10でEphemeral Resourcesを、続くTerraform 1.11でWrite-Only
+                        Argumentsを</strong
+                    >導入しました。よく一組で語られますが、両者は同じリリースで登場したわけではなく導入バージョンが1つずれています。いずれも原著第3版（2022年刊）の時点では存在しなかった、2026年時点における最重要のシークレット管理アップデートです。
+                </p>
+                <ul>
+                    <li>
+                        <strong>Ephemeral Resources</strong
+                        >（<code>ephemeral</code>ブロック、<strong>Terraform 1.10以降</strong>）:
+                        <code>apply</code
+                        >実行中のメモリ上にのみ存在し、PlanファイルにもStateファイルにも書き込まれないリソース
+                    </li>
+                    <li>
+                        <strong>Write-Only Arguments</strong
+                        >（<code>_wo</code>サフィックスの引数、<strong>Terraform 1.11以降</strong
+                        >）:
+                        プロバイダー側がサポートする場合、値を受け取って設定するが、Stateには保存しない引数
+                    </li>
+                </ul>
+                <pre class="mermaid">
+sequenceDiagram
+    participant Cfg as HCLコード
+    participant Core as Terraform Core（メモリ上）
+    participant Provider as AWSプロバイダー
+    participant State as terraform.tfstate
+
+    Cfg-&gt;&gt;Core: ephemeral "random_password" でパスワード生成
+    Note over Core: メモリ上にのみ存在&lt;br/&gt;Stateには一切書き込まれない
+    Core-&gt;&gt;Provider: password_wo (write-only引数) として渡す
+    Provider-&gt;&gt;Provider: RDSインスタンスのパスワードとして設定
+    Core--xState: パスワードの値は書き込まない
+    Core-&gt;&gt;State: password_wo_versionという整数のみ記録&lt;br/&gt;(変更検知用、値そのものではない)</pre
+                >
+                <pre
+                    class="hcl code-block"
+                ><code class="lang-hcl">ephemeral "random_password" "db_password" {
+  length           = 16
+  override_special = "!#$%&amp;*()-_=+[]{}&lt;&gt;:?"
+}
+
+resource "aws_db_instance" "example" {
+  identifier        = "my-db"
+  engine            = "postgres"
+  instance_class    = "db.t3.micro"
+  allocated_storage = 20
+
+  username = "app_user"
+
+  password_wo         = ephemeral.random_password.db_password.result
+  password_wo_version  = 1
+
+  # 学習・検証用DBの前提。これを省くとAWSが最終スナップショット識別子を要求し、
+  # terraform destroy が失敗する。本番DBでは skip_final_snapshot は false のままにし、
+  # final_snapshot_identifier に有効な識別子を指定すること
+  #   skip_final_snapshot       = false
+  #   final_snapshot_identifier = var.final_snapshot_identifier  # 例: "my-db-final-2026-08-29"
+  # timestamp() のような毎回変わる関数は差分が消えなくなるため使わない
+  skip_final_snapshot = true
+}</code></pre>
+                <p>
+                    <strong>生成したパスワードの受け取りとローテーション</strong>:
+                    この構成では生成値がStateにもPlanにも残らないため、<code>terraform output</code
+                    >で後から取り出すことは<strong>できません</strong>。値を人やアプリが使う必要がある場合は、同じ<code>apply</code>の中でシークレットストアへ書き込み、以後はそこから読む運用にします（<code>aws_secretsmanager_secret_version</code>の<code>secret_string_wo</code>と<code>secret_string_wo_version</code>を使えば、Secrets
+                    Manager側にもStateを経由せずに書き込めます）。
+                </p>
+                <p>
+                    ローテーション時の注意点は<code>password_wo_version</code>です。write-only引数の値そのものはStateに保存されないため、Terraformは値の変化を検知できません。<strong>新しいパスワードを実際に適用するには、<code>password_wo_version</code>をインクリメントする</strong>必要があります（<code
+                        >1</code
+                    >
+                    →
+                    <code>2</code
+                    >）。バージョンを据え置いたままパスワード生成側だけを変えても、プロバイダーは更新を行わず、コード上の値と実際のDBパスワードが乖離します。定期ローテーションを行う場合は、この整数をコードまたは変数として管理し、ローテーションのたびに必ず1つ上げる手順をランブック化しておきます。
+                </p>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header row-header">
+                                <th>比較項目</th>
+                                <th>従来方式（<code>sensitive = true</code>のみ）</th>
+                                <th>2026年推奨方式（Ephemeral + Write-Only）</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd row-odd">
+                                <td>CLI出力へのマスキング</td>
+                                <td>あり</td>
+                                <td>あり</td>
+                            </tr>
+                            <tr class="even row-even">
+                                <td>State fileへの平文保存</td>
+                                <td>される（要暗号化・厳格なアクセス制御）</td>
+                                <td>されない</td>
+                            </tr>
+                            <tr class="odd row-odd">
+                                <td>Plan fileへの保存</td>
+                                <td>される</td>
+                                <td>されない</td>
+                            </tr>
+                            <tr class="even row-even">
+                                <td>対応バージョン</td>
+                                <td>全バージョン</td>
+                                <td>
+                                    Ephemeral Resources: Terraform 1.10以降／Write-Only Arguments:
+                                    Terraform 1.11以降
+                                </td>
+                            </tr>
+                            <tr class="odd row-odd">
+                                <td>プロバイダー側の対応</td>
+                                <td>不要</td>
+                                <td>
+                                    Write-Only引数の実装が必要（<code>hashicorp/aws</code>は<code>password_wo</code>等で順次対応）
+                                </td>
+                            </tr>
+                            <tr class="even row-even">
+                                <td>主な利用先</td>
+                                <td>変数、リソース属性全般</td>
+                                <td>
+                                    <code>locals</code>、Ephemeral変数（<code>ephemeral = true</code
+                                    >）、子モジュールのEphemeral出力、<code>ephemeral</code>ブロック、プロバイダー設定、プロビジョナーと<code>connection</code>ブロック、対応リソースのWrite-Only引数
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="callout callout-practice">
+                    <div class="callout-icon">✓</div>
+                    <div class="callout-body">
+                        <div class="callout-label">ベストプラクティス</div>
+                        <p>
+                            2026年8月時点で新規に本番コードを書く場合、パスワードやAPIトークンのような一度きりの機微値は、プロバイダーが対応していれば積極的にEphemeral
+                            Resources + Write-Only
+                            Argumentsへ移行する。既存コードの移行は、影響範囲の大きいDB系リソースから段階的に行うのが安全です。
+                        </p>
+                    </div>
+                </div>
+
+                <h2 id="第7部原著第7章対応-複数プロバイダーの利用">
+                    第7部（原著第7章対応）: 複数プロバイダーの利用
+                </h2>
+                <h3 id="7-1-単一プロバイダーでの作業とプロバイダーのインストール">
+                    7-1. 単一プロバイダーでの作業とプロバイダーのインストール
+                </h3>
+                <p>
+                    プロバイダーは<code>required_providers</code>ブロックでソースとバージョンを明示します。
+                </p>
+                <pre class="hcl code-block"><code class="lang-hcl">terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~&gt; 6.0"
+    }
+  }
+}</code></pre>
+                <h3 id="7-2-同一プロバイダーの複数コピーマルチリージョンマルチアカウント">
+                    7-2. 同一プロバイダーの複数コピー（マルチリージョン・マルチアカウント）
+                </h3>
+                <p>
+                    <code>alias</code
+                    >を使うことで、1つのTerraformコード内から複数リージョン・複数AWSアカウントを扱えます。
+                </p>
+                <pre class="hcl code-block"><code class="lang-hcl">provider "aws" {
+  region = "us-east-2"
+}
+
+provider "aws" {
+  alias  = "usa_west_2"
+  region = "us-west-2"
+}
+
+resource "aws_instance" "east" {
+  provider = aws
+  # ...
+}
+
+resource "aws_instance" "west" {
+  provider = aws.usa_west_2
+  # ...
+}</code></pre>
+                <pre class="mermaid">
+flowchart TB
+    Root["1つのTerraformコード"]
+    Root --&gt;|provider aws（デフォルト）| East["us-east-2リージョン"]
+    Root --&gt;|provider aws.usa_west_2| West["us-west-2リージョン"]
+    Root --&gt;|provider aws.account_b| AccountB["別AWSアカウント&lt;br/&gt;(assume_role経由)"]
+
+    classDef region fill:#1e3a5f,stroke:#7c9eff,color:#eaf1ff
+    class East,West,AccountB region</pre
+                >
+                <h3 id="7-3-複数プロバイダーに対応したモジュールの作成">
+                    7-3. 複数プロバイダーに対応したモジュールの作成
+                </h3>
+                <p>
+                    モジュールを複数プロバイダーで再利用可能にするには、<code>configuration_aliases</code>でエイリアスの受け渡しを明示します。
+                </p>
+                <pre class="hcl code-block"><code class="lang-hcl">terraform {
+  required_providers {
+    aws = {
+      source                = "hashicorp/aws"
+      version               = "~&gt; 6.0"
+      configuration_aliases = [aws.usa_west_2]
+    }
+  }
+}</code></pre>
+                <h3 id="7-4-異なる複数プロバイダーの利用-dockerkubernetesクラッシュコース">
+                    7-4. 異なる複数プロバイダーの利用: Docker/Kubernetesクラッシュコース
+                </h3>
+                <p>
+                    TerraformはAWSのようなクラウドAPIだけでなく、DockerデーモンやKubernetes
+                    APIも「プロバイダー」として扱えます。
+                </p>
+                <pre class="mermaid">
+flowchart TB
+    subgraph Providers["異なる種類のプロバイダーの組み合わせ例"]
+        AWSProv["aws provider&lt;br/&gt;EKSクラスタ自体を作成"]
+        K8sProv["kubernetes provider&lt;br/&gt;クラスタ内のDeployment/Serviceを作成"]
+        DockerProv["docker provider&lt;br/&gt;ローカル検証用コンテナ起動"]
+    end
+    AWSProv --&gt;|root module A は cluster_name のみ出力&lt;br/&gt;endpoint/token は root module B が data source で取得| K8sProv
+
+    classDef p fill:#123024,stroke:#4caf82,color:#eaf1ff
+    class AWSProv,K8sProv,DockerProv p</pre
+                >
+                <h3 id="7-5-eksでのdockerコンテナデプロイ">7-5. EKSでのDockerコンテナデプロイ</h3>
+                <p>
+                    クラスタ本体とクラスタ内のリソースは、**別々のroot
+                    module（＝別State）**として構成します。まずEKSクラスタを作る側です。
+                </p>
+                <pre
+                    class="hcl code-block"
+                ><code class="lang-hcl"># root module A（例: live/eks-cluster）: aws プロバイダーでクラスタ本体だけを管理する
+
+# クラスタが参照する前提を同じroot module内で宣言しておく
+variable "subnet_ids" {
+  description = "EKSコントロールプレーンを配置するサブネットID（最低2つ、別AZ）"
+  type        = list(string)
+}
+
+data "aws_iam_policy_document" "cluster_assume_role" {
+  statement {
+    effect  = "Allow"
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["eks.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_iam_role" "cluster" {
+  name               = "example-cluster-role"
+  assume_role_policy = data.aws_iam_policy_document.cluster_assume_role.json
+}
+
+resource "aws_iam_role_policy_attachment" "cluster" {
+  role       = aws_iam_role.cluster.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
+}
+
+resource "aws_eks_cluster" "cluster" {
+  name     = "example-cluster"
+  role_arn = aws_iam_role.cluster.arn
+
+  vpc_config {
+    subnet_ids = var.subnet_ids
+  }
+
+  # ロール権限が付与される前にクラスタ作成が走らないようにする
+  depends_on = [aws_iam_role_policy_attachment.cluster]
+}
+
+output "cluster_name" {
+  value       = aws_eks_cluster.cluster.name
+  description = "Kubernetesリソース側のroot moduleへ渡すクラスタ名"
+}</code></pre>
+                <p>
+                    次に、そのクラスタ内でKubernetesリソースを管理する側です。クラスタは自分では作らず、<strong
+                        >data sourceで既存クラスタを参照</strong
+                    >して<code>provider "kubernetes"</code>を構成します。
+                </p>
+                <pre
+                    class="hcl code-block"
+                ><code class="lang-hcl"># root module B（例: live/eks-workloads）: kubernetes プロバイダーでクラスタ内リソースを管理する
+variable "cluster_name" {
+  description = "root module A の cluster_name 出力（terraform_remote_state 等で受け取る）"
+  type        = string
+}
+
+data "aws_eks_cluster" "cluster" {
+  name = var.cluster_name
+}
+
+# provider ブロックが参照する認証トークンの供給元
+data "aws_eks_cluster_auth" "cluster" {
+  name = var.cluster_name
+}
+
+provider "kubernetes" {
+  host                   = data.aws_eks_cluster.cluster.endpoint
+  cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority[0].data)
+  token                  = data.aws_eks_cluster_auth.cluster.token
+}
+
+resource "kubernetes_deployment" "example" {
+  metadata {
+    name = "example-app"
+  }
+
+  spec {
+    replicas = 3
+    # selector と template は紙面の都合で省略している（どちらも必須ブロック）
+  }
+}</code></pre>
+                <div class="callout callout-note">
+                    <div class="callout-icon">ℹ</div>
+                    <div class="callout-body">
+                        <p>
+                            このスニペットは要点のみを抜き出した<strong>断片</strong>です。そのまま<code>apply</code>できる形にするには、<code>terraform</code>ブロックの<code>required_providers</code>で<code>hashicorp/aws</code>と<code>hashicorp/kubernetes</code>を宣言し、<code>kubernetes_deployment</code>の<code>spec</code>に必須の<code>selector</code>と<code>template</code>を補う必要があります。
+                        </p>
+                    </div>
+                </div>
+                <div class="callout callout-practice">
+                    <div class="callout-icon">✓</div>
+                    <div class="callout-body">
+                        <div class="callout-label">ベストプラクティス</div>
+                        <p>
+                            EKSクラスタ本体（<code>aws</code>プロバイダー管轄）と、その中で動くKubernetesリソース（<code>kubernetes</code>プロバイダー管轄）は、必ずroot
+                            module／Stateを分離します。同一のapplyでクラスタを作りながら、そのクラスタの<code>endpoint</code>や<code>token</code>で<code
+                                >provider "kubernetes"</code
+                            >を構成すると、プロバイダー設定が「まだ存在しないリソースの属性」に依存することになり、初回<code>apply</code>や<code>plan</code>が失敗したり、クラスタの再作成時にプロバイダーの初期化ごと壊れてStateを手当てできなくなったりします。分離しておけば、クラスタ側の変更（バージョンアップ、ノードグループ変更）とアプリ側の変更（Deploymentの更新）を独立した変更頻度・責任分界点で回せます。
+                        </p>
+                    </div>
+                </div>
+
+                <h2 id="第8部原著第8章対応-本番グレードのterraformコード">
+                    第8部（原著第8章対応）: 本番グレードのTerraformコード
+                </h2>
+                <h3 id="8-1-なぜ本番グレードのインフラ構築は時間がかかるのか">
+                    8-1. なぜ本番グレードのインフラ構築は時間がかかるのか
+                </h3>
+                <p>
+                    「動くだけのTerraformコード」と「本番運用に耐えるTerraformコード」の間には大きなギャップがあります。原著はこのギャップを埋める要素を「本番グレードインフラのチェックリスト」として整理しています。
+                </p>
+                <h3 id="8-2-本番グレードインフラのチェックリスト">
+                    8-2. 本番グレードインフラのチェックリスト
+                </h3>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header row-header">
+                                <th>カテゴリ</th>
+                                <th>具体項目</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd row-odd">
+                                <td>インストール</td>
+                                <td>バージョン管理、依存関係管理、OS起動時の自動起動設定</td>
+                            </tr>
+                            <tr class="even row-even">
+                                <td>設定</td>
+                                <td>環境ごとの設定値管理、シークレット管理（第6部参照）</td>
+                            </tr>
+                            <tr class="odd row-odd">
+                                <td>ビルド</td>
+                                <td>パッケージング、コンテナ化、Immutableなアーティファクト管理</td>
+                            </tr>
+                            <tr class="even row-even">
+                                <td>デプロイ</td>
+                                <td>ゼロダウンタイムデプロイ、ロールバック手順</td>
+                            </tr>
+                            <tr class="odd row-odd">
+                                <td>高可用性</td>
+                                <td>複数AZ/複数リージョン、Auto Scaling、フェイルオーバー</td>
+                            </tr>
+                            <tr class="even row-even">
+                                <td>スケーラビリティ</td>
+                                <td>水平/垂直スケーリング、負荷分散</td>
+                            </tr>
+                            <tr class="odd row-odd">
+                                <td>パフォーマンス</td>
+                                <td>キャッシュ、CDN、コネクションプーリング</td>
+                            </tr>
+                            <tr class="even row-even">
+                                <td>監視</td>
+                                <td>メトリクス、ログ集約、アラート、ダッシュボード</td>
+                            </tr>
+                            <tr class="odd row-odd">
+                                <td>セキュリティ</td>
+                                <td>最小権限、暗号化（転送時/保管時）、ネットワーク分離</td>
+                            </tr>
+                            <tr class="even row-even">
+                                <td>コスト最適化</td>
+                                <td>
+                                    適切なインスタンスサイズ、スポットインスタンス活用、未使用リソースの削除
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <h3 id="8-3-本番グレードモジュールの4原則">8-3. 本番グレードモジュールの4原則</h3>
+                <pre class="mermaid">
+flowchart TB
+    Prod["本番グレードモジュール"]
+    Prod --&gt; Small["Small（小さい）&lt;br/&gt;単一責任、レビューしやすい単位"]
+    Prod --&gt; Composable["Composable（組み合わせ可能）&lt;br/&gt;他モジュールと疎結合"]
+    Prod --&gt; Testable["Testable（テスト可能）&lt;br/&gt;自動テストで検証できる"]
+    Prod --&gt; Versioned["Versioned（バージョン管理された）&lt;br/&gt;タグ/リリースで固定できる"]
+
+    classDef principle fill:#1e3a5f,stroke:#7c9eff,color:#eaf1ff
+    class Small,Composable,Testable,Versioned principle</pre
+                >
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header row-header">
+                                <th>原則</th>
+                                <th>悪い例</th>
+                                <th>良い例</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd row-odd">
+                                <td>Small</td>
+                                <td>1つのモジュールにVPC・ASG・RDS・IAMをすべて詰め込む</td>
+                                <td>VPCモジュール、ASGモジュール、RDSモジュールに分割</td>
+                            </tr>
+                            <tr class="even row-even">
+                                <td>Composable</td>
+                                <td>モジュール内部でハードコードされたリソース名に依存</td>
+                                <td>入力変数と出力値だけで疎結合に連携</td>
+                            </tr>
+                            <tr class="odd row-odd">
+                                <td>Testable</td>
+                                <td>手動でのAWSコンソール確認に依存</td>
+                                <td><code>terraform test</code>やTerratestで自動検証可能</td>
+                            </tr>
+                            <tr class="even row-even">
+                                <td>Versioned</td>
+                                <td><code>source</code>にブランチ名やパスをそのまま指定</td>
+                                <td>タグ・コミットハッシュでバージョン固定</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <h3 id="8-4-terraformを超えて">8-4. Terraformを超えて</h3>
+                <p>
+                    本番運用では、Terraformだけで完結せず、CI/CDパイプライン、監視ツール（Datadog等）、Policy
+                    as Codeツール（第11部参照）との組み合わせが前提になります。
+                </p>
+
+                <h2 id="第9部原著第9章対応-terraformコードのテスト手法">
+                    第9部（原著第9章対応）: Terraformコードのテスト手法
+                </h2>
+                <h3 id="9-1-手動テスト">9-1. 手動テスト</h3>
+                <p>
+                    <code>terraform apply</code>で実際にデプロイし、curlやブラウザで動作確認、<code
+                        >terraform destroy</code
+                    >で片付ける、という最も基本的な検証方法です。手動テストは重要ですが、繰り返し実行するコストが高く、実施漏れが起きやすいという弱点があります。
+                </p>
+                <h3 id="9-2-自動テストの3階層">9-2. 自動テストの3階層</h3>
+                <pre class="mermaid">
+flowchart TB
+    E2E["E2Eテスト&lt;br/&gt;本番相当環境を丸ごとデプロイし、&lt;br/&gt;ユーザー視点で動作確認"]
+    Integration["インテグレーションテスト&lt;br/&gt;複数モジュールを組み合わせてデプロイし検証"]
+    Unit["ユニットテスト&lt;br/&gt;単一モジュール単位で検証、実行が高速"]
+
+    Unit --&gt; Integration --&gt; E2E
+
+    classDef pyramid fill:#123024,stroke:#4caf82,color:#eaf1ff
+    class Unit,Integration,E2E pyramid</pre
+                >
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header row-header">
+                                <th>階層</th>
+                                <th>実行速度</th>
+                                <th>カバー範囲</th>
+                                <th>実行頻度の目安</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd row-odd">
+                                <td>ユニットテスト</td>
+                                <td>速い（秒〜分）</td>
+                                <td>単一モジュールのロジック</td>
+                                <td>全PRで実行</td>
+                            </tr>
+                            <tr class="even row-even">
+                                <td>インテグレーションテスト</td>
+                                <td>中程度（分）</td>
+                                <td>モジュール間の連携</td>
+                                <td>全PRまたはマージ時</td>
+                            </tr>
+                            <tr class="odd row-odd">
+                                <td>E2Eテスト</td>
+                                <td>遅い（分〜時間）</td>
+                                <td>本番相当環境全体</td>
+                                <td>定期実行・リリース前</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <h3 id="9-32026年最新terraform-testネイティブテストフレームワーク">
+                    9-3.【2026年最新】<code>terraform test</code>ネイティブテストフレームワーク
+                </h3>
+                <p>
+                    原著刊行時点（2022年）ではTerraform公式のテストフレームワークは存在せず、Go言語製のTerratest（Gruntwork社製）が事実上の標準でした。しかし<strong
+                        >Terraform 1.6でネイティブの<code>terraform test</code
+                        >コマンドがGAとなり、Terraform
+                        1.7で<code>mock_provider</code>によるモック機能が追加</strong
+                    >されたことで、HCLだけで書ける公式テストの選択肢が確立しました。2026年時点では「ロジック検証はネイティブ<code
+                        >terraform test</code
+                    >＋モック、実クラウド確認が必要な深いテストはTerratest」という併用が一般的なベストプラクティスです。
+                </p>
+                <p><code>tests/webserver_cluster.tftest.hcl</code>の例:</p>
+                <pre class="hcl code-block"><code class="lang-hcl">mock_provider "aws" {}
+
+run "validate_cluster_size" {
+  command = plan
+
+  variables {
+    cluster_name  = "test-cluster"
+    instance_type = "t2.micro"
+    min_size      = 2
+    max_size      = 2
+  }
+
+  assert {
+    condition     = aws_autoscaling_group.example.min_size == 2
+    error_message = "ASGのmin_sizeが期待値と一致しません"
+  }
+}
+
+run "reject_invalid_instance_type" {
+  command = plan
+
+  variables {
+    # instance_type の validation 失敗だけをテストしたいので、
+    # 必須変数である cluster_name には有効な値を与えておく
+    # （未指定だと「変数未設定」で先に失敗し、意図したテストにならない）
+    cluster_name  = "test-cluster"
+    instance_type = ""
+  }
+
+  expect_failures = [var.instance_type]
+}</code></pre>
+                <p>
+                    <code>expect_failures</code
+                    >は「そのオブジェクトの検証が失敗すること」を期待するテストです。したがって<code>var.instance_type</code>を指定する場合、<strong>変数側に<code>validation</code>ブロックが定義されていることが前提</strong>になります。上の<code>reject_invalid_instance_type</code>が意図どおり動くのは、第4部で<code>instance_type</code>に空文字を拒否する<code>validation</code>を書いてあるからです。<code>validation</code>のない変数に<code>expect_failures</code>を指定すると、失敗が発生せずテスト自体が失敗します。
+                </p>
+                <pre class="bash code-block"><code class="lang-bash">terraform test</code></pre>
+                <h3 id="9-4-mock_providerによる高速ユニットテスト">
+                    9-4. <code>mock_provider</code>による高速ユニットテスト
+                </h3>
+                <p>
+                    <code>mock_provider</code
+                    >を使うと、実際のクラウド認証情報なしに、計算属性（ARN、IDなど）をTerraformが自動生成してテストを走らせられます。
+                </p>
+                <pre class="mermaid">
+flowchart LR
+    subgraph WithMock["mock_providerあり（ユニットテスト）"]
+        M1["terraform test&lt;br/&gt;command = plan"] --&gt; M2["モックプロバイダー&lt;br/&gt;認証情報不要、実リソース作成なし"] --&gt; M3["数秒で完了&lt;br/&gt;ロジック検証に最適"]
+    end
+    subgraph WithReal["実プロバイダーあり（インテグレーションテスト）"]
+        R1["terraform test&lt;br/&gt;command = apply"] --&gt; R2["実際のクラウドAPI&lt;br/&gt;認証情報が必要"] --&gt; R3["実リソースを作成・検証・自動破棄&lt;br/&gt;実際の挙動を検証"]
+    end
+
+    classDef mock fill:#123024,stroke:#4caf82,color:#eaf1ff
+    classDef real fill:#1e3a5f,stroke:#7c9eff,color:#eaf1ff
+    class M1,M2,M3 mock
+    class R1,R2,R3 real</pre
+                >
+                <div class="callout callout-practice">
+                    <div class="callout-icon">✓</div>
+                    <div class="callout-body">
+                        <div class="callout-label">ベストプラクティス</div>
+                        <p>
+                            <code>mock_provider</code
+                            >によるplanベースのユニットテストをCIの最初のゲートとして高速に回し、実プロバイダーを使うapplyベースのインテグレーションテストは頻度を抑えて（例:
+                            マージ時のみ）実行する構成が、速度とコストのバランスに優れています。
+                        </p>
+                    </div>
+                </div>
+                <h3 id="9-5-terratest等その他のアプローチ">9-5. Terratest等その他のアプローチ</h3>
+                <p>
+                    Go言語でTerraformコードをデプロイし、HTTPリクエストやAWS
+                    SDK呼び出しで検証後に自動破棄する手法です。<code>terraform test</code
+                    >では表現しづらい複雑な検証ロジック（外部APIとの結合確認等）に向いています。
+                </p>
+                <pre class="go code-block"><code class="lang-go">package test
+
+import (
+    "testing"
+    "github.com/gruntwork-io/terratest/modules/terraform"
+)
+
+func TestWebServerCluster(t *testing.T) {
+    terraformOptions := &amp;terraform.Options{
+        TerraformDir: "../examples/webserver-cluster",
+    }
+
+    defer terraform.Destroy(t, terraformOptions)
+    terraform.InitAndApply(t, terraformOptions)
+    // HTTPリクエストなどで検証
+}</code></pre>
+
+                <h2 id="第10部原著第10章対応-チームでterraformを使う">
+                    第10部（原著第10章対応）: チームでTerraformを使う
+                </h2>
+                <h3 id="10-1-チームへのiac導入">10-1. チームへのIaC導入</h3>
+                <p>原著が強調するのは、技術的な正しさだけでなく「組織的にどう導入するか」です。</p>
+                <ul>
+                    <li>
+                        上司・意思決定者に投資対効果（デプロイ速度、障害復旧時間の改善）を説明する
+                    </li>
+                    <li>
+                        一度にすべてを移行せず、新規プロジェクトや影響範囲の小さい部分から段階的に導入する
+                    </li>
+                    <li>
+                        チームに学習時間を確保する（Terraformの学習コストをスケジュールに織り込む）
+                    </li>
+                </ul>
+                <h3 id="10-210-3-アプリケーションコードとインフラコードのデプロイワークフロー">
+                    10-2〜10-3. アプリケーションコードとインフラコードのデプロイワークフロー
+                </h3>
+                <p>
+                    原著は「アプリケーションコードのデプロイ」と「インフラコードのデプロイ」を並べて比較し、共通のワークフロー原則を示しています。
+                </p>
+                <pre class="mermaid">
+flowchart TB
+    Start(["変更を加えたい"]) --&gt; Branch["1. バージョン管理&lt;br/&gt;featureブランチを作成"]
+    Branch --&gt; Change["2. コード変更&lt;br/&gt;コミット"]
+    Change --&gt; Local["3. ローカルで実行&lt;br/&gt;変更後のコードを terraform plan で確認"]
+    Local --&gt; PR["4. レビュー依頼&lt;br/&gt;Pull Requestを作成"]
+    PR --&gt; CI["5. 自動テスト&lt;br/&gt;fmt/validate/test/tflint/セキュリティスキャン"]
+    CI --&gt; Merge["6. マージ&lt;br/&gt;mainブランチへ統合"]
+    Merge --&gt; Deploy["7. デプロイ&lt;br/&gt;CI/CDがplan結果を提示 → 承認 → apply"]
+
+    classDef step fill:#1e3a5f,stroke:#7c9eff,color:#eaf1ff
+    class Start,Branch,Change,Local,PR,CI,Merge,Deploy step</pre
+                >
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header row-header">
+                                <th>観点</th>
+                                <th>アプリケーションコード</th>
+                                <th>インフラコード</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd row-odd">
+                                <td>デプロイ単位</td>
+                                <td>ビルド済みアーティファクト（バイナリ/コンテナ）</td>
+                                <td><code>terraform apply</code>によるクラウドAPI呼び出し</td>
+                            </tr>
+                            <tr class="even row-even">
+                                <td>ロールバック</td>
+                                <td>旧アーティファクトへの切り戻し</td>
+                                <td>
+                                    直前のコードへの<code>revert</code> +
+                                    再<code>apply</code>（データを伴う変更は要注意）
+                                </td>
+                            </tr>
+                            <tr class="odd row-odd">
+                                <td>承認プロセス</td>
+                                <td>コードレビュー + CIパス</td>
+                                <td>コードレビュー + <code>plan</code>結果の目視確認</td>
+                            </tr>
+                            <tr class="even row-even">
+                                <td>特有のリスク</td>
+                                <td>ロジックバグ</td>
+                                <td>削除を伴う変更による本番データ/リソースの喪失</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <h3 id="10-4-まとめて考える">10-4. まとめて考える</h3>
+                <ul>
+                    <li>
+                        インフラコードもアプリケーションコードと同じ厳密さでバージョン管理・レビュー・テストする
+                    </li>
+                    <li>
+                        <code>terraform plan</code
+                        >の出力を「デプロイ前の最終確認ポイント」としてワークフローに組み込む
+                    </li>
+                    <li>CI/CD上での<code>apply</code>実行権限は最小限のロール・環境に限定する</li>
+                </ul>
+
+                <h2 id="第11部独自追加-2026年8月時点のterraformエコシステム最新動向">
+                    第11部（独自追加）: 2026年8月時点のTerraformエコシステム最新動向
+                </h2>
+                <p>
+                    原著第3版は2022年9月刊行のため、その後の約4年間でTerraformを取り巻く状況は大きく変化しました。本部は2026年8月27日時点でのWeb検索結果に基づき、実務上インパクトの大きい変化を整理します。
+                </p>
+                <h3 id="11-1-ライセンス変更とopentofuフォークの経緯">
+                    11-1. ライセンス変更とOpenTofuフォークの経緯
+                </h3>
+                <pre class="mermaid">
+flowchart TB
+    A["2023年8月&lt;br/&gt;HashiCorpがTerraformのライセンスを&lt;br/&gt;MPL 2.0からBUSL 1.1へ変更"] --&gt; B["競合サービス事業者による&lt;br/&gt;商用利用に制限がかかる"]
+    B --&gt; C["コミュニティが反発&lt;br/&gt;Linux Foundation傘下でフォークを開始"]
+    C --&gt; D["2023年9月&lt;br/&gt;OpenTofuが発足&lt;br/&gt;MPL 2.0ライセンスを維持"]
+    D --&gt; E["2024年4月&lt;br/&gt;HashiCorpがOpenTofuに&lt;br/&gt;コード無断使用を主張しCease &amp; Desist送付"]
+    E --&gt; F["OpenTofu側は当該コードが&lt;br/&gt;MPL版由来と反論・否定"]
+    F --&gt; G["2026年8月時点&lt;br/&gt;両プロジェクトは併存&lt;br/&gt;プロバイダーエコシステムは概ね互換"]
+
+    classDef event fill:#1e3a5f,stroke:#7c9eff,color:#eaf1ff
+    class A,B,C,D,E,F,G event</pre
+                >
+                <h3 id="11-2-ibmによるhashicorp買収2025年2月完了">
+                    11-2. IBMによるHashiCorp買収（2025年2月完了）
+                </h3>
+                <p>
+                    2024年4月に発表されたIBMによるHashiCorp買収（約64億ドル、1株35ドルの現金買収）は、英国競争市場庁（CMA）と米国連邦取引委員会（FTC）の承認を経て<strong>2025年2月27日に完了</strong>しました。TerraformはRed
+                    Hat Ansibleと、VaultはOpenShift/Guardiumと統合される方針が示されています。
+                </p>
+                <h3 id="11-3-terraform-vs-opentofu-現状比較表2026年8月時点">
+                    11-3. Terraform vs OpenTofu 現状比較表（2026年8月時点）
+                </h3>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header row-header">
+                                <th>項目</th>
+                                <th>Terraform</th>
+                                <th>OpenTofu</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd row-odd">
+                                <td>運営元</td>
+                                <td>HashiCorp（IBM傘下）</td>
+                                <td>Linux Foundation</td>
+                            </tr>
+                            <tr class="even row-even">
+                                <td>ライセンス</td>
+                                <td>BUSL 1.1（ソースアベイラブル）</td>
+                                <td>MPL 2.0（オープンソース）</td>
+                            </tr>
+                            <tr class="odd row-odd">
+                                <td>最新安定版</td>
+                                <td>1.16.x系（1.16.0、2026年8月リリース）</td>
+                                <td>1.12.x系（1.12.6、2026年8月リリース）</td>
+                            </tr>
+                            <tr class="even row-even">
+                                <td>商用マネージドSaaS</td>
+                                <td>HCP Terraform（旧Terraform Cloud）</td>
+                                <td>Scalr、Spacelift等サードパーティ</td>
+                            </tr>
+                            <tr class="odd row-odd">
+                                <td>Policy as Code</td>
+                                <td>Sentinel（HCP Terraform/Enterprise専用）+ OPA</td>
+                                <td>OPA中心</td>
+                            </tr>
+                            <tr class="even row-even">
+                                <td>State保存時暗号化（バックエンド側）</td>
+                                <td>
+                                    S3 backendの<code>encrypt = true</code
+                                    >、GCS/Azureのサーバーサイド暗号化など
+                                </td>
+                                <td>同左（Terraform互換のバックエンド機能をそのまま利用）</td>
+                            </tr>
+                            <tr class="odd row-odd">
+                                <td>ネイティブなState/Plan暗号化（クライアント側）</td>
+                                <td>OSS単体では非対応（HCP Terraform経由で保管時暗号化を利用）</td>
+                                <td>
+                                    OSS単体でネイティブ対応（1.7以降のState
+                                    Encryption。差別化ポイント）
+                                </td>
+                            </tr>
+                            <tr class="even row-even">
+                                <td>AI/MCP統合</td>
+                                <td>
+                                    HCP Terraform
+                                    MCPサーバーでレジストリ検索・ワークスペース操作に対応
+                                </td>
+                                <td>コミュニティベースのツールが中心</td>
+                            </tr>
+                            <tr class="odd row-odd">
+                                <td>プロバイダー互換性</td>
+                                <td>―</td>
+                                <td>Terraformプロバイダーの多くがそのまま利用可能</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>
+                    <strong>実務上の判断軸</strong>: HCP
+                    Terraformの高度な機能（Stacks、Sentinel、AI統合）を積極活用したい組織はTerraformを、ライセンスの自由度やベンダーロックイン回避を重視する組織はOpenTofuを選ぶ、という「二刀流」戦略を取る企業も増えています。
+                </p>
+                <h3 id="11-4-hcp-terraform-stacks料金体系ai統合">
+                    11-4. HCP Terraform: Stacks・料金体系・AI統合
+                </h3>
+                <ul>
+                    <li>
+                        <strong>Terraform Stacks</strong>:
+                        複数のインフラコンポーネント（VPC、DB、アプリ基盤など）をライフサイクルの異なる単位としてまとめて管理する機能。2025年のHashiConfでGA。関連機能はそれぞれ状況が異なり、<strong>リンクドStacks</strong>（Stacks間の依存関係の自動連携）は2025年2月25日にPublic
+                        Betaとして発表された段階、<strong>モノレポのネイティブサポート</strong>は2025年12月にGAとなっている
+                    </li>
+                    <li>
+                        <strong>無料枠の変更</strong>: 従来のHCP
+                        Terraform無料プランは2026年3月31日に終了し、現在は「管理対象リソース500個まで」という新しい無料枠に移行。有償プランは概ね管理対象リソース1つあたり月額0.10ドル程度から
+                    </li>
+                    <li>
+                        <strong>AI/MCP統合</strong>: HCP Terraform
+                        MCPサーバーにより、AIエージェントやIDEから自然言語でレジストリ検索・ワークスペース操作・コスト影響の問い合わせが可能になっている（2025〜2026年のロードマップの中心テーマ）
+                    </li>
+                </ul>
+                <h3 id="11-5-policy-as-code-sentinel-vs-opa-vs-スキャナー系ツール比較">
+                    11-5. Policy as Code: Sentinel vs OPA vs スキャナー系ツール比較
+                </h3>
+                <pre class="mermaid">
+flowchart TB
+    Plan["terraform plan の出力"] --&gt; Gate{"ポリシーゲート"}
+    Gate --&gt; Sentinel["Sentinel&lt;br/&gt;HCP Terraform/Enterprise専用&lt;br/&gt;plan/state/run/config段階で評価"]
+    Gate --&gt; OPA["OPA (Rego)&lt;br/&gt;ベンダー中立&lt;br/&gt;Kubernetes等とも共通の言語"]
+    Gate --&gt; Scanner["Checkov / Trivy config&lt;br/&gt;事前定義済みのセキュリティルール集&lt;br/&gt;設定即利用可能"]
+    Sentinel --&gt; Result["合格 → apply実行 / 不合格 → ブロック"]
+    OPA --&gt; Result
+    Scanner --&gt; Result
+
+    classDef gate fill:#1e3a5f,stroke:#7c9eff,color:#eaf1ff
+    classDef tool fill:#123024,stroke:#4caf82,color:#eaf1ff
+    class Gate gate
+    class Sentinel,OPA,Scanner tool</pre
+                >
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header row-header">
+                                <th>ツール</th>
+                                <th>分類</th>
+                                <th>ロックイン</th>
+                                <th>得意分野</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd row-odd">
+                                <td>Sentinel</td>
+                                <td>統合型プロプライエタリゲート</td>
+                                <td>HCP Terraform/Enterprise専用</td>
+                                <td>run全体（plan/state/config）との緊密な統合</td>
+                            </tr>
+                            <tr class="even row-even">
+                                <td>OPA（Rego）</td>
+                                <td>汎用ポリシーエンジン</td>
+                                <td>なし（Kubernetes等でも同一言語）</td>
+                                <td>組織独自のガバナンスルールの一元管理</td>
+                            </tr>
+                            <tr class="odd row-odd">
+                                <td>Checkov / Trivy config</td>
+                                <td>静的セキュリティスキャナー</td>
+                                <td>なし</td>
+                                <td>
+                                    既知の誤設定（公開バケット等）の即時検出。tfsecはレガシー扱いでTrivyのconfigスキャンへ統合・移行が進んでいるため、新規導入はTrivyを選ぶ
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="callout callout-practice">
+                    <div class="callout-icon">✓</div>
+                    <div class="callout-body">
+                        <div class="callout-label">ベストプラクティス</div>
+                        <p>
+                            単一ツールに頼らず、「スキャナーで既知の穴を塞ぐ」＋「OPA/Sentinelで組織固有のガバナンスを強制する」の2層構成が2026年時点の成熟した構成として紹介されています。ネイティブHCLの<code>precondition</code>/<code>postcondition</code>/<code>check</code>ブロックだけでも、ポリシー違反の一定割合（分析によれば約3割程度）は事前に検出できるため、まずはHCL標準機能から始めるのも有効です。
+                        </p>
+                    </div>
+                </div>
+
+                <h2 id="学習ロードマップチェックリスト">学習ロードマップ・チェックリスト</h2>
+                <h3 id="初学者向け学習ステップ">初学者向け学習ステップ</h3>
+                <pre class="mermaid">
+flowchart LR
+    S1["Step1&lt;br/&gt;HCL基礎構文&lt;br/&gt;(provider/resource/variable/output)"] --&gt; S2["Step2&lt;br/&gt;単一リソースのplan/apply/destroy"]
+    S2 --&gt; S3["Step3&lt;br/&gt;State管理とリモートバックエンド"]
+    S3 --&gt; S4["Step4&lt;br/&gt;モジュール化と再利用"]
+    S4 --&gt; S5["Step5&lt;br/&gt;ループ・条件分岐・ゼロダウンタイムデプロイ"]
+    S5 --&gt; S6["Step6&lt;br/&gt;シークレット管理&lt;br/&gt;(Ephemeral Resources含む)"]
+    S6 --&gt; S7["Step7&lt;br/&gt;テスト自動化&lt;br/&gt;(terraform test / mock_provider)"]
+    S7 --&gt; S8["Step8&lt;br/&gt;CI/CD統合とチーム運用"]
+    S8 --&gt; S9["Step9&lt;br/&gt;Policy as Code / 本番グレード化"]
+
+    classDef step fill:#1e3a5f,stroke:#7c9eff,color:#eaf1ff
+    class S1,S2,S3,S4,S5,S6,S7,S8,S9 step</pre
+                >
+                <h3 id="学習導入チェックリスト">学習・導入チェックリスト</h3>
+                <div class="checklist-card">
+                    <div class="checklist-header">
+                        <span class="checklist-title">チェックリスト</span
+                        ><span class="checklist-counter">0 / 0 完了</span>
+                    </div>
+                    <ul class="checklist">
+                        <li>
+                            <label
+                                ><input type="checkbox" /><code>terraform version</code
+                                >で意図したバージョンが使われているか確認した</label
+                            >
+                        </li>
+                        <li>
+                            <label
+                                ><input
+                                    type="checkbox"
+                                />Stateをローカルではなくリモートバックエンド（S3等）に置き、<code
+                                    >use_lockfile = true</code
+                                >でロックを有効化した</label
+                            >
+                        </li>
+                        <li>
+                            <label
+                                ><input
+                                    type="checkbox"
+                                />すべての<code>variable</code>/<code>output</code>に<code>description</code>と<code>type</code>を明記した</label
+                            >
+                        </li>
+                        <li>
+                            <label
+                                ><input
+                                    type="checkbox"
+                                />モジュールの<code>source</code>をタグ・コミットハッシュで固定し、ブランチ名を直接参照していない</label
+                            >
+                        </li>
+                        <li>
+                            <label
+                                ><input type="checkbox" />シークレットは<code>sensitive = true</code
+                                >任せにせず、可能な範囲でEphemeral Resources/Write-Only
+                                Argumentsへの移行を検討した</label
+                            >
+                        </li>
+                        <li>
+                            <label
+                                ><input type="checkbox" />CIで<code>terraform fmt -check</code
+                                >・<code>terraform validate</code>・<code>terraform test</code
+                                >を実行している</label
+                            >
+                        </li>
+                        <li>
+                            <label
+                                ><input type="checkbox" /><code>terraform plan</code
+                                >の出力を人がレビューしてから<code>apply</code>する運用になっている</label
+                            >
+                        </li>
+                        <li>
+                            <label
+                                ><input
+                                    type="checkbox"
+                                />本番の重要リソースに<code>prevent_destroy</code>を設定した</label
+                            >
+                        </li>
+                        <li>
+                            <label
+                                ><input type="checkbox" />OPA/Sentinel/Checkov等、最低1つのPolicy as
+                                Codeレイヤーを導入した</label
+                            >
+                        </li>
+                    </ul>
+                </div>
+                <h3 id="資格取得を目指す場合の補足">資格取得を目指す場合の補足</h3>
+                <p>
+                    HashiCorp Certified: Terraform
+                    Associateは2026年1月8日に旧003版から<strong>004版</strong>へ刷新され、Terraform
+                    1.12時点の機能（安全なライフサイクル戦略、カスタム条件、HCP
+                    Terraformプロジェクト等）に対応した出題内容になっています。本ガイドの第2〜5部・第9部の内容は、同資格の主要出題範囲（Terraformの基本概念、ワークフロー、State、モジュール、HCP
+                    Terraform）と重なっています。
+                </p>
+
+                <h2 id="付録a-推奨リソース原著付録arecommended-reading準拠の構成">
+                    付録A: 推奨リソース（原著付録A「Recommended Reading」準拠の構成）
+                </h2>
+                <p>
+                    原著の付録Aは「Books」「Blogs」「Talks」「Newsletters」「Online
+                    Forums」の5カテゴリで関連リソースを紹介する構成になっています。本ガイドでも同じカテゴリ構成で、2026年8月時点でも参照価値の高いソースを整理します。
+                </p>
+                <h3 id="books関連書籍">Books（関連書籍）</h3>
+                <ul>
+                    <li>
+                        <em>Terraform: Up and Running, 3rd Edition</em> ― Yevgeniy
+                        Brikman著（本ガイドの原著）
+                    </li>
+                    <li>
+                        <em>Fundamentals of DevOps and Software Delivery</em> ― Yevgeniy
+                        Brikman著（DevOps全般の考え方を体系的に学べる姉妹書）
+                    </li>
+                </ul>
+                <h3 id="blogsブログ">Blogs（ブログ）</h3>
+                <ul>
+                    <li>
+                        Gruntwork Blog（著者Yevgeniy
+                        Brikman本人が現在も更新するTerraform/OpenTofu/Terragrunt関連の一次情報源）
+                    </li>
+                    <li>HashiCorp公式ブログ（新機能・破壊的変更のリリースノートの一次情報源）</li>
+                </ul>
+                <h3 id="talksカンファレンス動画">Talks（カンファレンス動画）</h3>
+                <ul>
+                    <li>
+                        HashiConf（HashiCorp主催の年次カンファレンス。Terraform
+                        Stacks等の大型発表が行われる場）
+                    </li>
+                </ul>
+                <h3 id="newslettersニュースレター">Newsletters（ニュースレター）</h3>
+                <ul>
+                    <li>Gruntwork Newsletter（DevOps/IaCの実務トピックを定期配信）</li>
+                </ul>
+                <h3 id="online-forumsオンラインフォーラム">
+                    Online Forums（オンラインフォーラム）
+                </h3>
+                <ul>
+                    <li>HashiCorp Discuss（公式コミュニティフォーラム）</li>
+                    <li>
+                        GitHub
+                        Issues（<code>hashicorp/terraform</code>および<code>opentofu/opentofu</code>リポジトリ、バグ報告・仕様議論の一次情報）
+                    </li>
+                </ul>
+
+                <h2 id="参考文献">参考文献</h2>
+                <div class="ref-grid">
+                    <div class="ref-card">
+                        <div class="ref-card-label">書籍・著者情報</div>
+                        <div class="ref-line">
+                            Terraform: Up and Running, 3rd Edition（O'Reilly公式ページ、目次） ―
+                            <a
+                                href="https://www.oreilly.com/library/view/terraform-up-and/9781098116736/"
+                                >https://www.oreilly.com/library/view/terraform-up-and/9781098116736/</a
+                            >
+                        </div>
+                        <div class="ref-line">
+                            Yevgeniy Brikman ホームページ（Gruntwork共同創業者、本書著者） ―
+                            <a href="https://www.ybrikman.com/">https://www.ybrikman.com/</a>
+                        </div>
+                        <div class="ref-line">
+                            Gruntwork Blog「A Comprehensive Guide to
+                            Terraform」（著者本人による原型ブログシリーズ） ―
+                            <a
+                                href="https://www.gruntwork.io/blog/a-comprehensive-guide-to-terraform"
+                                >https://www.gruntwork.io/blog/a-comprehensive-guide-to-terraform</a
+                            >
+                        </div>
+                        <div class="ref-line">
+                            Gruntwork Blog「Terraform: Up &amp; Running」刊行告知 ―
+                            <a href="https://blog.gruntwork.io/terraform-up-running-5869b53edcde"
+                                >https://blog.gruntwork.io/terraform-up-running-5869b53edcde</a
+                            >
+                        </div>
+                        <div class="ref-line">
+                            Gruntwork Blog トップページ（継続更新中） ―
+                            <a href="https://www.gruntwork.io/blog"
+                                >https://www.gruntwork.io/blog</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card">
+                        <div class="ref-card-label">バージョン・ライセンス・組織動向</div>
+                        <div class="ref-line">
+                            Hashicorp Terraform | endoflife.date（バージョン・サポート期限一覧） ―
+                            <a href="https://endoflife.date/terraform"
+                                >https://endoflife.date/terraform</a
+                            >
+                        </div>
+                        <div class="ref-line">
+                            Releases · hashicorp/terraform（GitHub公式リリースノート） ―
+                            <a href="https://github.com/hashicorp/terraform/releases"
+                                >https://github.com/hashicorp/terraform/releases</a
+                            >
+                        </div>
+                        <div class="ref-line">
+                            Terraform (software) | Wikipedia（ライセンス・沿革） ―
+                            <a href="https://en.wikipedia.org/wiki/Terraform_(software)"
+                                >https://en.wikipedia.org/wiki/Terraform_(software)</a
+                            >
+                        </div>
+                        <div class="ref-line">
+                            OpenTofu | Wikipedia（フォークの経緯） ―
+                            <a href="https://en.wikipedia.org/wiki/OpenTofu"
+                                >https://en.wikipedia.org/wiki/OpenTofu</a
+                            >
+                        </div>
+                        <div class="ref-line">
+                            IBM closes $6.4B HashiCorp acquisition | TechCrunch ―
+                            <a
+                                href="https://techcrunch.com/2025/02/27/ibm-closes-6-4b-hashicorp-acquisition/"
+                                >https://techcrunch.com/2025/02/27/ibm-closes-6-4b-hashicorp-acquisition/</a
+                            >
+                        </div>
+                        <div class="ref-line">
+                            IBM completes HashiCorp acquisition after gaining regulatory approval |
+                            IT Pro ―
+                            <a
+                                href="https://www.itpro.com/business/acquisition/ibm-hashicorp-acquisition-complete"
+                                >https://www.itpro.com/business/acquisition/ibm-hashicorp-acquisition-complete</a
+                            >
+                        </div>
+                        <div class="ref-line">
+                            HashiCorp Terraform OpenTofu and the IBM Acquisition Wild Card for
+                            Infrastructure as Code | SoftwareSeni ―
+                            <a
+                                href="https://www.softwareseni.com/hashicorp-terraform-opentofu-and-the-ibm-acquisition-wild-card-for-infrastructure-as-code/"
+                                >https://www.softwareseni.com/hashicorp-terraform-opentofu-and-the-ibm-acquisition-wild-card-for-infrastructure-as-code/</a
+                            >
+                        </div>
+                        <div class="ref-line">
+                            OpenTofu vs Terraform in 2026: Is the Fork Finally Worth It? | DEV
+                            Community ―
+                            <a
+                                href="https://dev.to/mechcloud_academy/opentofu-vs-terraform-in-2026-is-the-fork-finally-worth-it-3nd1"
+                                >https://dev.to/mechcloud_academy/opentofu-vs-terraform-in-2026-is-the-fork-finally-worth-it-3nd1</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card">
+                        <div class="ref-card-label">State管理・S3ネイティブロック</div>
+                        <div class="ref-line">
+                            Terraform State Locking Without DynamoDB: S3 Native Locking Explained |
+                            DEV Community ―
+                            <a
+                                href="https://dev.to/aws-builders/terraform-state-locking-without-dynamodb-s3-native-locking-explained-448l"
+                                >https://dev.to/aws-builders/terraform-state-locking-without-dynamodb-s3-native-locking-explained-448l</a
+                            >
+                        </div>
+                        <div class="ref-line">
+                            Terraform S3 State Locking Without DynamoDB (2026) | Nerd Level Tech ―
+                            <a
+                                href="https://nerdleveltech.com/terraform-s3-native-state-locking-tutorial"
+                                >https://nerdleveltech.com/terraform-s3-native-state-locking-tutorial</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card">
+                        <div class="ref-card-label">
+                            シークレット管理（Ephemeral Resources / Write-Only Arguments）
+                        </div>
+                        <div class="ref-line">
+                            Use temporary write-only arguments | Terraform | HashiCorp
+                            Developer（公式ドキュメント） ―
+                            <a
+                                href="https://developer.hashicorp.com/terraform/language/manage-sensitive-data/write-only"
+                                >https://developer.hashicorp.com/terraform/language/manage-sensitive-data/write-only</a
+                            >
+                        </div>
+                        <div class="ref-line">
+                            Ephemeral values in resources | Terraform | HashiCorp
+                            Developer（公式ドキュメント） ―
+                            <a
+                                href="https://developer.hashicorp.com/terraform/language/manage-sensitive-data/ephemeral"
+                                >https://developer.hashicorp.com/terraform/language/manage-sensitive-data/ephemeral</a
+                            >
+                        </div>
+                        <div class="ref-line">
+                            Ephemeral values in Terraform | HashiCorp公式ブログ ―
+                            <a
+                                href="https://www.hashicorp.com/en/blog/ephemeral-values-in-terraform"
+                                >https://www.hashicorp.com/en/blog/ephemeral-values-in-terraform</a
+                            >
+                        </div>
+                        <div class="ref-line">
+                            Adopting Terraform Ephemeral Resources | DEV Community ―
+                            <a
+                                href="https://dev.to/drewmullen/adopting-terraform-ephemeral-resources-1b67"
+                                >https://dev.to/drewmullen/adopting-terraform-ephemeral-resources-1b67</a
+                            >
+                        </div>
+                        <div class="ref-line">
+                            Terraform Ephemeral Resources Explained: Temporary Values ―
+                            <a
+                                href="https://www.terraformpilot.com/articles/terraform-ephemeral-resources-explained/"
+                                >https://www.terraformpilot.com/articles/terraform-ephemeral-resources-explained/</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card">
+                        <div class="ref-card-label">テスト（terraform test / mock_provider）</div>
+                        <div class="ref-line">
+                            Tests - Provider Mocking | Terraform | HashiCorp
+                            Developer（公式ドキュメント） ―
+                            <a
+                                href="https://developer.hashicorp.com/terraform/language/tests/mocking"
+                                >https://developer.hashicorp.com/terraform/language/tests/mocking</a
+                            >
+                        </div>
+                        <div class="ref-line">
+                            Terraform 1.7 adds test mocking and config-driven remove |
+                            HashiCorp公式ブログ ―
+                            <a
+                                href="https://www.hashicorp.com/en/blog/terraform-1-7-adds-test-mocking-and-config-driven-remove"
+                                >https://www.hashicorp.com/en/blog/terraform-1-7-adds-test-mocking-and-config-driven-remove</a
+                            >
+                        </div>
+                        <div class="ref-line">
+                            terraform test: The Built-in Terraform Module Testing Framework, No Go
+                            Required ―
+                            <a href="https://recca0120.github.io/en/2026/03/15/terraform-test/"
+                                >https://recca0120.github.io/en/2026/03/15/terraform-test/</a
+                            >
+                        </div>
+                        <div class="ref-line">
+                            How to Use Mock Providers in Terraform Tests | OneUptime ―
+                            <a
+                                href="https://oneuptime.com/blog/post/2026-02-23-how-to-use-mock-providers-in-terraform-tests/view"
+                                >https://oneuptime.com/blog/post/2026-02-23-how-to-use-mock-providers-in-terraform-tests/view</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card">
+                        <div class="ref-card-label">Policy as Code・HCP Terraform最新動向</div>
+                        <div class="ref-line">
+                            Enforce policy as code | HashiCorp Terraform（公式） ―
+                            <a
+                                href="https://www.hashicorp.com/en/products/terraform/use-cases/enforce-policy-as-code"
+                                >https://www.hashicorp.com/en/products/terraform/use-cases/enforce-policy-as-code</a
+                            >
+                        </div>
+                        <div class="ref-line">
+                            Manage policies and policy sets in Terraform Enterprise | HashiCorp
+                            Developer（公式） ―
+                            <a
+                                href="https://developer.hashicorp.com/terraform/enterprise/workspaces/policy-enforcement/manage-policy-sets"
+                                >https://developer.hashicorp.com/terraform/enterprise/workspaces/policy-enforcement/manage-policy-sets</a
+                            >
+                        </div>
+                        <div class="ref-line">
+                            OPA vs Sentinel vs Scalr: Policy as Code for Terraform | Scalr ―
+                            <a
+                                href="https://scalr.com/learning-center/enforcing-policy-as-code-in-terraform-a-comprehensive-guide"
+                                >https://scalr.com/learning-center/enforcing-policy-as-code-in-terraform-a-comprehensive-guide</a
+                            >
+                        </div>
+                        <div class="ref-line">
+                            Terraform Policy as Code (2026): OPA/Conftest vs Sentinel vs Checkov |
+                            Coding Protocols ―
+                            <a
+                                href="https://codingprotocols.com/blog/terraform-policy-as-code-opa-sentinel-checkov"
+                                >https://codingprotocols.com/blog/terraform-policy-as-code-opa-sentinel-checkov</a
+                            >
+                        </div>
+                        <div class="ref-line">
+                            HCP Terraform Free Tier in 2026: What Survived the EOL | Scalr ―
+                            <a
+                                href="https://scalr.com/learning-center/hcp-terraform-free-tier-is-being-discontinued-what-you-need-to-know"
+                                >https://scalr.com/learning-center/hcp-terraform-free-tier-is-being-discontinued-what-you-need-to-know</a
+                            >
+                        </div>
+                        <div class="ref-line">
+                            Terraform Stacks, explained | HashiCorp公式ブログ ―
+                            <a href="https://www.hashicorp.com/en/blog/terraform-stacks-explained"
+                                >https://www.hashicorp.com/en/blog/terraform-stacks-explained</a
+                            >
+                        </div>
+                        <div class="ref-line">
+                            Terraform introduces workspaces and Stacks restore, and more |
+                            HashiCorp公式ブログ ―
+                            <a
+                                href="https://www.hashicorp.com/en/blog/terraform-introduces-workspaces-and-stacks-restore-and-more"
+                                >https://www.hashicorp.com/en/blog/terraform-introduces-workspaces-and-stacks-restore-and-more</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card">
+                        <div class="ref-card-label">認定資格</div>
+                        <div class="ref-line">
+                            HashiCorp Certified: Terraform Associate (004) – The Ultimate 2026 Exam
+                            Guide | FlashGenius ―
+                            <a
+                                href="https://flashgenius.net/blog-article/hashicorp-certified-terraform-associate-004-the-ultimate-2026-exam-guide"
+                                >https://flashgenius.net/blog-article/hashicorp-certified-terraform-associate-004-the-ultimate-2026-exam-guide</a
+                            >
+                        </div>
+                        <div class="ref-line">
+                            How to Pass HashiCorp Terraform Associate (004) in 2026: Complete Study
+                            Guide | CertLand Blog ―
+                            <a
+                                href="https://certland.net/blog/hashicorp-terraform-associate-004-study-guide-2026/"
+                                >https://certland.net/blog/hashicorp-terraform-associate-004-study-guide-2026/</a
+                            >
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <script
+            src="https://cdn.jsdelivr.net/npm/mermaid@11.17.2/dist/mermaid.min.js"
+            integrity="sha384-EOXBFmc3gx5mb+vn0vPvvGqACToJD24hhacX5Yx+8NUUQrHIle/Qi5Bg9o3zKwW2"
+            crossorigin="anonymous"
+        ></script>
+        <script>
+            // ---------- Mermaid init (isolated, guarded) ----------
+            (function () {
+                function initMermaid() {
+                    if (typeof mermaid === 'undefined') {
+                        console.warn('mermaid failed to load from CDN');
+                        return;
+                    }
+                    try {
+                        mermaid.initialize({
+                            startOnLoad: false,
+                            theme: 'dark',
+                            securityLevel: 'loose',
+                            fontFamily: "'Noto Sans JP', sans-serif",
+                            themeVariables: {
+                                fontSize: '16px',
+                                primaryColor: '#132540',
+                                primaryTextColor: '#eaf1ff',
+                                primaryBorderColor: '#7c9eff',
+                                lineColor: '#4a6fa5',
+                                secondaryColor: '#123024',
+                                tertiaryColor: '#0d1b2e',
+                                background: '#07111e',
+                                mainBkg: '#132540',
+                                nodeTextColor: '#eaf1ff',
+                                clusterBkg: '#0a1729',
+                                clusterBorder: '#2a4266',
+                                edgeLabelBackground: '#07111e',
+                            },
+                            flowchart: {
+                                useMaxWidth: false,
+                                htmlLabels: true,
+                                subGraphTitleMargin: { top: 12, bottom: 18 },
+                                nodeSpacing: 60,
+                                rankSpacing: 70,
+                            },
+                            sequence: { useMaxWidth: false },
+                        });
+
+                        function healOverflowingLabels() {
+                            document
+                                .querySelectorAll('pre.mermaid svg .node')
+                                .forEach(function (node) {
+                                    var fo = node.querySelector('foreignObject');
+                                    var rect = node.querySelector('rect');
+                                    if (!fo || !rect) return;
+                                    var label = fo.querySelector('div');
+                                    if (!label) return;
+                                    var needW = label.scrollWidth + 8;
+                                    var needH = label.scrollHeight + 6;
+                                    var curW = parseFloat(fo.getAttribute('width') || '0');
+                                    var curH = parseFloat(fo.getAttribute('height') || '0');
+                                    if (needW > curW || needH > curH) {
+                                        var newW = Math.max(needW, curW);
+                                        var newH = Math.max(needH, curH);
+                                        var x =
+                                            parseFloat(fo.getAttribute('x') || '0') -
+                                            (newW - curW) / 2;
+                                        var y =
+                                            parseFloat(fo.getAttribute('y') || '0') -
+                                            (newH - curH) / 2;
+                                        fo.setAttribute('width', newW);
+                                        fo.setAttribute('height', newH);
+                                        fo.setAttribute('x', x);
+                                        fo.setAttribute('y', y);
+                                        var rx =
+                                            parseFloat(rect.getAttribute('x') || '0') -
+                                            (newW - curW) / 2;
+                                        var ry =
+                                            parseFloat(rect.getAttribute('y') || '0') -
+                                            (newH - curH) / 2;
+                                        rect.setAttribute('width', newW);
+                                        rect.setAttribute('height', newH);
+                                        rect.setAttribute('x', rx);
+                                        rect.setAttribute('y', ry);
+                                    }
+                                });
+                        }
+
+                        var sampleText = '日本語サンプルAa0123ephemeral';
+                        var fontChecks = [
+                            document.fonts.load('400 16px "Noto Sans JP"', sampleText),
+                            document.fonts.load('700 16px "Noto Sans JP"', sampleText),
+                            document.fonts.load('500 16px "Noto Sans JP"', sampleText),
+                        ];
+                        Promise.all(fontChecks)
+                            .then(function () {
+                                return document.fonts.ready;
+                            })
+                            .catch(function () {})
+                            .then(function () {
+                                mermaid
+                                    .run({ querySelector: 'pre.mermaid' })
+                                    .then(function () {
+                                        healOverflowingLabels();
+                                        setTimeout(healOverflowingLabels, 600);
+                                    })
+                                    .catch(function (e) {
+                                        console.error('mermaid render error', e);
+                                    });
+                            });
+                    } catch (e) {
+                        console.error('mermaid init error', e);
+                    }
+                }
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', initMermaid);
+                } else {
+                    initMermaid();
+                }
+            })();
+
+            // ---------- Sidebar toggle (mobile) ----------
+            (function () {
+                var toggle = document.getElementById('sidebarToggle');
+                var sidebar = document.getElementById('sidebar');
+                if (!toggle || !sidebar) return;
+                toggle.addEventListener('click', function () {
+                    sidebar.classList.toggle('open');
+                });
+                sidebar.querySelectorAll('.nav-link').forEach(function (a) {
+                    a.addEventListener('click', function () {
+                        sidebar.classList.remove('open');
+                    });
+                });
+            })();
+
+            // ---------- Scroll-spy ----------
+            (function () {
+                var links = Array.from(document.querySelectorAll('.nav-link'));
+                var map = new Map();
+                links.forEach(function (a) {
+                    var id = a.getAttribute('data-target');
+                    var el = document.getElementById(id);
+                    if (el) map.set(id, a);
+                });
+                var targets = Array.from(map.keys());
+                if (!targets.length) return;
+
+                var observer = new IntersectionObserver(
+                    function (entries) {
+                        entries.forEach(function (entry) {
+                            var id = entry.target.id;
+                            var link = map.get(id);
+                            if (!link) return;
+                            if (entry.isIntersecting) {
+                                links.forEach(function (l) {
+                                    l.classList.remove('active');
+                                });
+                                link.classList.add('active');
+                            }
+                        });
+                    },
+                    { rootMargin: '-15% 0px -75% 0px', threshold: 0 },
+                );
+
+                targets.forEach(function (id) {
+                    var el = document.getElementById(id);
+                    if (el) observer.observe(el);
+                });
+            })();
+
+            // ---------- Checklist progress counter ----------
+            (function () {
+                document.querySelectorAll('.checklist-card').forEach(function (card) {
+                    var boxes = card.querySelectorAll('input[type=checkbox]');
+                    var counter = card.querySelector('.checklist-counter');
+                    function update() {
+                        var checked = Array.from(boxes).filter(function (b) {
+                            return b.checked;
+                        }).length;
+                        counter.textContent = checked + ' / ' + boxes.length + ' 完了';
+                    }
+                    boxes.forEach(function (b) {
+                        b.addEventListener('change', update);
+                    });
+                    update();
+                });
+            })();
+        </script>
+    </body>
+</html>
