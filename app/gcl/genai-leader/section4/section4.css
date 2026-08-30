@@ -2,43 +2,13 @@
    Section 4 — Executive Strategy / Art Deco Gold
    Layer 3: page-scoped CSS (.s4-page)
    フォント: Playfair Display (serif) × DM Mono
-   カラー: gold #c8960a / amber #f5b731 / sage / rose / steel
+   カラー: --color-genai-s4-* (globals.css @theme が正本)
 ══════════════════════════════════════ */
 
 .s4-page {
-    --ink: #0a0804;
-    --bg1: #100d08;
-    --bg2: #171209;
-    --bg3: #1f170b;
-    --bg4: #27200f;
-    --border: #2e2213;
-    --brd2: #3d2e18;
-
-    --gold: #c8960a;
-    --amber: #f5b731;
-    --cream: #f0e6c8;
-    --copper: #b87333;
-    --sage: #7aad8a;
-    --rose: #d4706a;
-    --steel: #7a9ab0;
-    --sand: #c4a882;
-
-    --text: #c9b99a;
-    --muted: #cabeaa;
-    --bright: #f5ead8;
-
-    --serif: var(--font-playfair-display, 'Playfair Display'), 'Noto Sans JP', serif;
-    --mono: var(--font-dm-mono, 'DM Mono'), monospace;
-    --body: 'Noto Sans JP', sans-serif;
-
-    --r1: 3px;
-    --r2: 8px;
-    --r3: 14px;
-    --r4: 20px;
-
-    background: var(--ink);
-    color: var(--text);
-    font-family: var(--body);
+    background: var(--color-genai-s4-ink);
+    color: var(--color-genai-s4-text);
+    font-family: var(--font-body);
     line-height: 1.8;
     min-height: 100vh;
     overflow-x: clip;
@@ -89,9 +59,9 @@
     display: inline-flex;
     align-items: center;
     gap: 12px;
-    font-family: var(--mono);
+    font-family: var(--font-dm-mono);
     font-size: 10px;
-    color: var(--sand);
+    color: var(--color-genai-s4-sand);
     text-transform: uppercase;
     letter-spacing: 3px;
     margin-bottom: 28px;
@@ -103,15 +73,15 @@
     display: inline-block;
     width: 20px;
     height: 1px;
-    background: var(--gold);
+    background: var(--color-genai-s4-gold);
     opacity: 0.5;
 }
 
 .s4-page .hero h1 {
-    font-family: var(--serif);
+    font-family: var(--font-playfair-display);
     font-size: clamp(28px, 5vw, 52px);
     font-weight: 700;
-    color: var(--bright);
+    color: var(--color-genai-s4-bright);
     line-height: 1.2;
     margin-bottom: 20px;
     position: relative;
@@ -119,7 +89,7 @@
 }
 
 .s4-page .hero h1 .gold-text {
-    background: linear-gradient(135deg, var(--gold), var(--amber), var(--cream));
+    background: linear-gradient(135deg, var(--color-genai-s4-gold), var(--color-genai-s4-amber), var(--color-genai-s4-cream));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -127,13 +97,13 @@
 
 .s4-page .hero h1 .italic-span {
     font-style: italic;
-    color: var(--amber);
-    -webkit-text-fill-color: var(--amber);
+    color: var(--color-genai-s4-amber);
+    -webkit-text-fill-color: var(--color-genai-s4-amber);
 }
 
 .s4-page .hero-sub {
     font-size: 15px;
-    color: var(--muted);
+    color: var(--color-genai-s4-muted);
     max-width: 680px;
     margin: 0 auto 32px;
     line-height: 1.9;
@@ -147,7 +117,7 @@
     gap: 16px;
     background: rgba(200, 150, 10, 0.05);
     border: 1px solid rgba(200, 150, 10, 0.25);
-    border-radius: var(--r4);
+    border-radius: 20px;
     padding: 16px 28px;
     margin-bottom: 28px;
     position: relative;
@@ -155,10 +125,10 @@
 }
 
 .s4-page .hero-badge .pct {
-    font-family: var(--serif);
+    font-family: var(--font-playfair-display);
     font-size: 36px;
     font-weight: 700;
-    color: var(--amber);
+    color: var(--color-genai-s4-amber);
     line-height: 1;
 }
 
@@ -166,15 +136,15 @@
 
 .s4-page .hero-badge .meta strong {
     display: block;
-    font-family: var(--mono);
+    font-family: var(--font-dm-mono);
     font-size: 11px;
-    color: var(--bright);
+    color: var(--color-genai-s4-bright);
     margin-bottom: 3px;
 }
 
 .s4-page .hero-badge .meta span {
     font-size: 11px;
-    color: var(--muted);
+    color: var(--color-genai-s4-muted);
 }
 
 .s4-page .ss-pills {
@@ -187,12 +157,12 @@
 }
 
 .s4-page .ss-pill {
-    font-family: var(--mono);
+    font-family: var(--font-dm-mono);
     font-size: 11px;
     padding: 6px 14px;
-    border-radius: var(--r1);
+    border-radius: 3px;
     border: 1px solid rgba(200, 150, 10, 0.25);
-    color: var(--sand);
+    color: var(--color-genai-s4-sand);
     background: rgba(200, 150, 10, 0.04);
 }
 
@@ -204,7 +174,7 @@
     background: rgba(10, 8, 4, 0.92);
     -webkit-backdrop-filter: blur(16px);
     backdrop-filter: blur(16px);
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--color-genai-s4-border);
     display: flex;
     flex-wrap: wrap;
     padding: 0 24px;
@@ -217,28 +187,28 @@
     gap: 8px;
     padding: 12px 16px;
     font-size: 13px;
-    color: var(--muted);
+    color: var(--color-genai-s4-muted);
     text-decoration: none;
     border-bottom: 2px solid transparent;
     transition: color 0.2s, border-color 0.2s;
 }
 
-.s4-page .snav a:hover { color: var(--bright); }
-.s4-page .n1:hover { border-color: var(--amber); color: var(--amber); }
-.s4-page .n2:hover { border-color: var(--rose); color: var(--rose); }
-.s4-page .n3:hover { border-color: var(--sage); color: var(--sage); }
+.s4-page .snav a:hover { color: var(--color-genai-s4-bright); }
+.s4-page .n1:hover { border-color: var(--color-genai-s4-amber); color: var(--color-genai-s4-amber); }
+.s4-page .n2:hover { border-color: var(--color-genai-s4-rose); color: var(--color-genai-s4-rose); }
+.s4-page .n3:hover { border-color: var(--color-genai-s4-sage); color: var(--color-genai-s4-sage); }
 
 .s4-page .snav-num {
-    font-family: var(--mono);
+    font-family: var(--font-dm-mono);
     font-size: 10px;
     font-weight: 600;
     padding: 2px 7px;
-    border-radius: var(--r1);
+    border-radius: 3px;
 }
 
-.s4-page .nn1 { background: rgba(245,183,49,0.12); color: var(--amber); }
-.s4-page .nn2 { background: rgba(212,112,106,0.12); color: var(--rose); }
-.s4-page .nn3 { background: rgba(122,173,138,0.12); color: var(--sage); }
+.s4-page .nn1 { background: rgba(245,183,49,0.12); color: var(--color-genai-s4-amber); }
+.s4-page .nn2 { background: rgba(212,112,106,0.12); color: var(--color-genai-s4-rose); }
+.s4-page .nn3 { background: rgba(122,173,138,0.12); color: var(--color-genai-s4-sage); }
 
 /* ── LAYOUT ── */
 .s4-page .wrap {
@@ -253,8 +223,8 @@
     align-items: flex-start;
     gap: 16px;
     padding: 24px 28px;
-    border: 1px solid var(--border);
-    border-radius: var(--r3);
+    border: 1px solid var(--color-genai-s4-border);
+    border-radius: 14px;
     margin-bottom: 32px;
     position: relative;
     overflow: hidden;
@@ -269,15 +239,15 @@
     height: 2px;
 }
 
-.s4-page .sh-amber { background: linear-gradient(135deg, var(--bg1), var(--bg2)); }
-.s4-page .sh-amber::before { background: linear-gradient(90deg, var(--amber), transparent); }
-.s4-page .sh-rose { background: linear-gradient(135deg, var(--bg1), var(--bg2)); }
-.s4-page .sh-rose::before { background: linear-gradient(90deg, var(--rose), transparent); }
-.s4-page .sh-sage { background: linear-gradient(135deg, var(--bg1), var(--bg2)); }
-.s4-page .sh-sage::before { background: linear-gradient(90deg, var(--sage), transparent); }
+.s4-page .sh-amber { background: linear-gradient(135deg, var(--color-genai-s4-bg-1), var(--color-genai-s4-bg-2)); }
+.s4-page .sh-amber::before { background: linear-gradient(90deg, var(--color-genai-s4-amber), transparent); }
+.s4-page .sh-rose { background: linear-gradient(135deg, var(--color-genai-s4-bg-1), var(--color-genai-s4-bg-2)); }
+.s4-page .sh-rose::before { background: linear-gradient(90deg, var(--color-genai-s4-rose), transparent); }
+.s4-page .sh-sage { background: linear-gradient(135deg, var(--color-genai-s4-bg-1), var(--color-genai-s4-bg-2)); }
+.s4-page .sh-sage::before { background: linear-gradient(90deg, var(--color-genai-s4-sage), transparent); }
 
 .s4-page .sec-num {
-    font-family: var(--mono);
+    font-family: var(--font-dm-mono);
     font-size: 28px;
     font-weight: 700;
     line-height: 1;
@@ -285,21 +255,21 @@
     padding-top: 4px;
 }
 
-.s4-page .sn-a { color: var(--amber); }
-.s4-page .sn-r { color: var(--rose); }
-.s4-page .sn-s { color: var(--sage); }
+.s4-page .sn-a { color: var(--color-genai-s4-amber); }
+.s4-page .sn-r { color: var(--color-genai-s4-rose); }
+.s4-page .sn-s { color: var(--color-genai-s4-sage); }
 
 .s4-page .sec-h h2 {
-    font-family: var(--serif);
+    font-family: var(--font-playfair-display);
     font-size: 18px;
     font-weight: 700;
-    color: var(--bright);
+    color: var(--color-genai-s4-bright);
     margin-bottom: 4px;
 }
 
 .s4-page .sec-h p {
     font-size: 13px;
-    color: var(--muted);
+    color: var(--color-genai-s4-muted);
     line-height: 1.6;
 }
 
@@ -307,36 +277,36 @@
     margin-left: auto;
     padding: 4px 12px;
     border-radius: 100px;
-    font-family: var(--mono);
+    font-family: var(--font-dm-mono);
     font-size: 10px;
     white-space: nowrap;
     flex-shrink: 0;
 }
 
-.s4-page .sb-amber { background: rgba(245,183,49,0.1); color: var(--amber); border: 1px solid rgba(245,183,49,0.3); }
-.s4-page .sb-rose { background: rgba(212,112,106,0.1); color: var(--rose); border: 1px solid rgba(212,112,106,0.3); }
-.s4-page .sb-sage { background: rgba(122,173,138,0.1); color: var(--sage); border: 1px solid rgba(122,173,138,0.3); }
+.s4-page .sb-amber { background: rgba(245,183,49,0.1); color: var(--color-genai-s4-amber); border: 1px solid rgba(245,183,49,0.3); }
+.s4-page .sb-rose { background: rgba(212,112,106,0.1); color: var(--color-genai-s4-rose); border: 1px solid rgba(212,112,106,0.3); }
+.s4-page .sb-sage { background: rgba(122,173,138,0.1); color: var(--color-genai-s4-sage); border: 1px solid rgba(122,173,138,0.3); }
 
 /* ── CARD ── */
 .s4-page .card {
-    background: linear-gradient(135deg, var(--bg1), var(--bg2));
-    border: 1px solid var(--border);
-    border-radius: var(--r3);
+    background: linear-gradient(135deg, var(--color-genai-s4-bg-1), var(--color-genai-s4-bg-2));
+    border: 1px solid var(--color-genai-s4-border);
+    border-radius: 14px;
     padding: 28px 32px;
     margin-bottom: 20px;
     transition: border-color 0.2s, transform 0.15s;
 }
 
 .s4-page .card:hover {
-    border-color: var(--brd2);
+    border-color: var(--color-genai-s4-border-strong);
     transform: translateY(-2px);
 }
 
 .s4-page .card-h {
-    font-family: var(--serif);
+    font-family: var(--font-playfair-display);
     font-size: 16px;
     font-weight: 700;
-    color: var(--bright);
+    color: var(--color-genai-s4-bright);
     margin-bottom: 16px;
 }
 
@@ -349,23 +319,23 @@
 }
 
 .s4-page .fi {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-left: 3px solid var(--gold);
-    border-radius: var(--r2);
+    background: var(--color-genai-s4-bg-2);
+    border: 1px solid var(--color-genai-s4-border);
+    border-left: 3px solid var(--color-genai-s4-gold);
+    border-radius: 8px;
     padding: 16px;
 }
 
 .s4-page .fi-t {
     font-size: 13px;
     font-weight: 700;
-    color: var(--bright);
+    color: var(--color-genai-s4-bright);
     margin-bottom: 6px;
 }
 
 .s4-page .fi-d {
     font-size: 12px;
-    color: var(--muted);
+    color: var(--color-genai-s4-muted);
     line-height: 1.7;
 }
 
@@ -380,19 +350,19 @@
 .s4-page .ctbl th {
     padding: 10px 16px;
     text-align: left;
-    color: var(--muted);
+    color: var(--color-genai-s4-muted);
     font-weight: 600;
     font-size: 10px;
     text-transform: uppercase;
     letter-spacing: 1.5px;
-    border-bottom: 1px solid var(--border);
-    font-family: var(--mono);
+    border-bottom: 1px solid var(--color-genai-s4-border);
+    font-family: var(--font-dm-mono);
 }
 
 .s4-page .ctbl td {
     padding: 11px 16px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-    color: var(--text);
+    color: var(--color-genai-s4-text);
     vertical-align: top;
     line-height: 1.6;
 }
@@ -423,31 +393,31 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: var(--serif);
+    font-family: var(--font-playfair-display);
     font-size: 18px;
     font-weight: 700;
-    color: var(--amber);
+    color: var(--color-genai-s4-amber);
     flex-shrink: 0;
 }
 
 .s4-page .step-body {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: var(--r2);
+    background: var(--color-genai-s4-bg-2);
+    border: 1px solid var(--color-genai-s4-border);
+    border-radius: 8px;
     padding: 14px 18px;
 }
 
 .s4-page .step-title {
-    font-family: var(--serif);
+    font-family: var(--font-playfair-display);
     font-size: 14px;
     font-weight: 700;
-    color: var(--bright);
+    color: var(--color-genai-s4-bright);
     margin-bottom: 4px;
 }
 
 .s4-page .step-desc {
     font-size: 12px;
-    color: var(--muted);
+    color: var(--color-genai-s4-muted);
     line-height: 1.7;
 }
 
@@ -460,9 +430,9 @@
 }
 
 .s4-page .principle {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: var(--r2);
+    background: var(--color-genai-s4-bg-2);
+    border: 1px solid var(--color-genai-s4-border);
+    border-radius: 8px;
     padding: 20px;
     text-align: center;
 }
@@ -470,16 +440,16 @@
 .s4-page .principle-icon { font-size: 28px; margin-bottom: 10px; }
 
 .s4-page .principle-name {
-    font-family: var(--serif);
+    font-family: var(--font-playfair-display);
     font-size: 14px;
     font-weight: 700;
-    color: var(--bright);
+    color: var(--color-genai-s4-bright);
     margin-bottom: 6px;
 }
 
 .s4-page .principle-desc {
     font-size: 11px;
-    color: var(--muted);
+    color: var(--color-genai-s4-muted);
     line-height: 1.7;
 }
 
@@ -487,17 +457,17 @@
 .s4-page .bp {
     background: rgba(122, 173, 138, 0.04);
     border: 1px solid rgba(122, 173, 138, 0.2);
-    border-left: 3px solid var(--sage);
-    border-radius: var(--r2);
+    border-left: 3px solid var(--color-genai-s4-sage);
+    border-radius: 8px;
     padding: 16px 20px;
     margin: 14px 0;
 }
 
 .s4-page .bpt {
-    font-family: var(--mono);
+    font-family: var(--font-dm-mono);
     font-size: 10px;
     font-weight: 600;
-    color: var(--sage);
+    color: var(--color-genai-s4-sage);
     text-transform: uppercase;
     letter-spacing: 2px;
     margin-bottom: 9px;
@@ -507,7 +477,7 @@
 
 .s4-page .bp li {
     font-size: 13px;
-    color: var(--text);
+    color: var(--color-genai-s4-text);
     padding: 4px 0 4px 18px;
     position: relative;
     line-height: 1.65;
@@ -515,7 +485,7 @@
 
 .s4-page .bp li::before {
     content: '▸';
-    color: var(--sage);
+    color: var(--color-genai-s4-sage);
     position: absolute;
     left: 0;
     font-size: 11px;
@@ -525,16 +495,16 @@
 .s4-page .warn {
     background: rgba(212, 112, 106, 0.04);
     border: 1px solid rgba(212, 112, 106, 0.2);
-    border-left: 3px solid var(--rose);
-    border-radius: var(--r2);
+    border-left: 3px solid var(--color-genai-s4-rose);
+    border-radius: 8px;
     padding: 14px 18px;
     margin: 12px 0;
 }
 
 .s4-page .warnt {
-    font-family: var(--mono);
+    font-family: var(--font-dm-mono);
     font-size: 10px;
-    color: var(--rose);
+    color: var(--color-genai-s4-rose);
     text-transform: uppercase;
     letter-spacing: 2px;
     margin-bottom: 7px;
@@ -544,7 +514,7 @@
 
 .s4-page .warn li {
     font-size: 13px;
-    color: var(--text);
+    color: var(--color-genai-s4-text);
     line-height: 1.65;
     padding: 3px 0 3px 16px;
     position: relative;
@@ -552,34 +522,34 @@
 
 .s4-page .warn li::before {
     content: '!';
-    font-family: var(--mono);
+    font-family: var(--font-dm-mono);
     font-weight: 700;
     font-size: 11px;
     position: absolute;
     left: 0;
     top: 4px;
-    color: var(--rose);
+    color: var(--color-genai-s4-rose);
 }
 
 /* ── DIVIDER ── */
 .s4-page .sdiv {
     height: 1px;
-    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    background: linear-gradient(90deg, transparent, var(--color-genai-s4-border), transparent);
     margin: 48px 0;
 }
 
 /* ── FOOTER ── */
 .s4-page footer {
-    background: var(--bg1);
-    border-top: 1px solid var(--border);
+    background: var(--color-genai-s4-bg-1);
+    border-top: 1px solid var(--color-genai-s4-border);
     padding: 48px 40px;
     text-align: center;
-    color: var(--muted);
+    color: var(--color-genai-s4-muted);
     font-size: 13px;
 }
 
-.s4-page footer a { color: var(--amber); text-decoration: none; }
-.s4-page footer strong { color: var(--text); }
+.s4-page footer a { color: var(--color-genai-s4-amber); text-decoration: none; }
+.s4-page footer strong { color: var(--color-genai-s4-text); }
 
 /* ── RESPONSIVE ── */
 @media (max-width: 680px) {

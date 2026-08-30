@@ -195,7 +195,7 @@ describe('自己ホストフォント — next/font/google 依存の撤廃', () 
                 if (match[1]) referenced.add(match[1]);
             }
         });
-        expect(referenced.size).toBe(8);
+        expect(referenced.size).toBe(9);
         const undefinedTokens = [...referenced].filter(
             (token) => !new RegExp(`^\\s*${token}:`, 'm').test(theme),
         );
