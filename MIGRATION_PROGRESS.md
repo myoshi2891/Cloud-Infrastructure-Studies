@@ -64,7 +64,7 @@
 
 ### 目的
 
-`The-devops-handbook.html` を、Next.js App Router 5ファイル構成 (`page.tsx`, `TheDevOpsHandbookGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/recommended-books/the-devops-handbook` ルートへ移行。グローバルナビゲーションの「Recommended Books」に追加。見出し(h1:1, h2:14, h3:29, h4:0)、全4個のテーブル、19個のMermaid図解、全リスト(124件)、全外部リンク(18件)・全本文・コールアウト注記(21件)・実践チェックリスト(11件)・参考文献一覧(18件)・アンチパターン(8件)・用語集(10件)を一切の省略・要約なしで100%全量移植。
+`The-devops-handbook.html` を、Next.js App Router 5ファイル構成 (`page.tsx`, `TheDevOpsHandbookGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/recommended-books/the-devops-handbook` ルートへ移行。グローバルナビゲーションの「Recommended Books」に追加。見出し(h1:1, h2:14, h3:28, h4:0)、全4個のテーブル、19個のMermaid図解、全リスト(124件)、全外部リンク(18件)・全本文・コールアウト注記(21件)・実践チェックリスト(11件)・参考文献一覧(18件)・アンチパターン(8件)・用語集(10件)を一切の省略・要約なしで100%全量移植。
 
 ### 完了済みステップ
 
