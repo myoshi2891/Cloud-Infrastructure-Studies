@@ -311,7 +311,6 @@
 
 .sre-guide-page .mermaid-wrap svg {
     flex-shrink: 0;
-    max-width: 100% !important;
     height: auto !important;
 }
 
