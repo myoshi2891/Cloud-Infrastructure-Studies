@@ -167,25 +167,46 @@
     fill: #000000 !important;
 }
 
-/* ── Accelerate カラーコードフォールバック (classDef を持たない既存図の互換用) ── */
-.mermaidTarget :global(.node[style*="FAF1DF" i] .nodeLabel),
-.mermaidTarget :global(.node[style*="FAF1DF" i] .nodeLabel *),
+/* ── Accelerate カラーコードフォールバック (classDef を持たない既存図の互換用) ──
+   属性セレクタは i フラグで大文字・小文字を同時に拾う。Mermaid は明色を .node の
+   inline style に置く場合と、子の rect/polygon/path の fill 属性または inline style に
+   置く場合があるため、その3経路すべてを網羅する。 */
 .mermaidTarget :global(.node[style*="faf1df" i] .nodeLabel),
 .mermaidTarget :global(.node[style*="faf1df" i] .nodeLabel *),
-.mermaidTarget :global(.node[style*="EEF1F8" i] .nodeLabel),
-.mermaidTarget :global(.node[style*="EEF1F8" i] .nodeLabel *),
-.mermaidTarget :global(.node[style*="eef1f8" i] .nodeLabel),
-.mermaidTarget :global(.node[style*="eef1f8" i] .nodeLabel *),
-.mermaidTarget :global(.node[style*="EAF4EC" i] .nodeLabel),
-.mermaidTarget :global(.node[style*="EAF4EC" i] .nodeLabel *),
-.mermaidTarget :global(.node[style*="eaf4ec" i] .nodeLabel),
-.mermaidTarget :global(.node[style*="eaf4ec" i] .nodeLabel *),
+.mermaidTarget :global(.node[style*="faf1df" i] text),
+.mermaidTarget :global(.node[style*="faf1df" i] tspan),
 .mermaidTarget :global(.node:has([fill*="faf1df" i]) .nodeLabel),
 .mermaidTarget :global(.node:has([fill*="faf1df" i]) .nodeLabel *),
+.mermaidTarget :global(.node:has([fill*="faf1df" i]) text),
+.mermaidTarget :global(.node:has([fill*="faf1df" i]) tspan),
+.mermaidTarget :global(.node:has([style*="faf1df" i]) .nodeLabel),
+.mermaidTarget :global(.node:has([style*="faf1df" i]) .nodeLabel *),
+.mermaidTarget :global(.node:has([style*="faf1df" i]) text),
+.mermaidTarget :global(.node:has([style*="faf1df" i]) tspan),
+.mermaidTarget :global(.node[style*="eef1f8" i] .nodeLabel),
+.mermaidTarget :global(.node[style*="eef1f8" i] .nodeLabel *),
+.mermaidTarget :global(.node[style*="eef1f8" i] text),
+.mermaidTarget :global(.node[style*="eef1f8" i] tspan),
 .mermaidTarget :global(.node:has([fill*="eef1f8" i]) .nodeLabel),
 .mermaidTarget :global(.node:has([fill*="eef1f8" i]) .nodeLabel *),
+.mermaidTarget :global(.node:has([fill*="eef1f8" i]) text),
+.mermaidTarget :global(.node:has([fill*="eef1f8" i]) tspan),
+.mermaidTarget :global(.node:has([style*="eef1f8" i]) .nodeLabel),
+.mermaidTarget :global(.node:has([style*="eef1f8" i]) .nodeLabel *),
+.mermaidTarget :global(.node:has([style*="eef1f8" i]) text),
+.mermaidTarget :global(.node:has([style*="eef1f8" i]) tspan),
+.mermaidTarget :global(.node[style*="eaf4ec" i] .nodeLabel),
+.mermaidTarget :global(.node[style*="eaf4ec" i] .nodeLabel *),
+.mermaidTarget :global(.node[style*="eaf4ec" i] text),
+.mermaidTarget :global(.node[style*="eaf4ec" i] tspan),
 .mermaidTarget :global(.node:has([fill*="eaf4ec" i]) .nodeLabel),
-.mermaidTarget :global(.node:has([fill*="eaf4ec" i]) .nodeLabel *) {
+.mermaidTarget :global(.node:has([fill*="eaf4ec" i]) .nodeLabel *),
+.mermaidTarget :global(.node:has([fill*="eaf4ec" i]) text),
+.mermaidTarget :global(.node:has([fill*="eaf4ec" i]) tspan),
+.mermaidTarget :global(.node:has([style*="eaf4ec" i]) .nodeLabel),
+.mermaidTarget :global(.node:has([style*="eaf4ec" i]) .nodeLabel *),
+.mermaidTarget :global(.node:has([style*="eaf4ec" i]) text),
+.mermaidTarget :global(.node:has([style*="eaf4ec" i]) tspan) {
     color: #000000 !important;
     fill: #000000 !important;
 }
