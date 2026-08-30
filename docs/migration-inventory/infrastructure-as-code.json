@@ -910,7 +910,7 @@
     },
     {
       "kind": "paragraph",
-      "text": "2026年時点の IaC ツール選定を理解する上で欠かせない前提が、2023年8月に起きたライセンス変更です。HashiCorp が Terraform のライセンスを、オープンソースライセンスである MPL 2.0 から、商用利用に制限を課す Business Source License(BSL)1.1 へ変更しました。これに対し、Linux Foundation の傘下で OpenTofu が Terraform 1.5.x からフォークされ、2024年1月に安定版(GA)がリリースされました。"
+      "text": "2026年時点の IaC ツール選定を理解する上で欠かせない前提が、2023年8月に起きたライセンス変更です。HashiCorp が Terraform のライセンスを、オープンソースライセンスである MPL 2.0 から、Business Source License(BSL)1.1 へ変更しました。BSL 1.1 は通常の商用利用そのものは許容する一方で、HashiCorp の製品と競合する特定の用途(競合サービスとしての提供)を制限します。これに対し、Linux Foundation の傘下で OpenTofu が Terraform 1.5.x からフォークされ、2024年1月に安定版(GA)がリリースされました。"
     },
     {
       "kind": "paragraph",
