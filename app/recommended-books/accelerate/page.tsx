@@ -8,9 +8,6 @@ export const metadata: Metadata = {
         'Nicole Forsgren・Jez Humble・Gene Kim著『Accelerate』とDORAメトリクス、24の能力、Westrum組織文化モデルを初学者向けにステップバイステップで解説する完全ガイド。',
 };
 
-/**
- * Accelerate 完全ガイドのページエントリーポイント（Server Component）。
- */
 export default function AcceleratePage() {
     return <AccelerateGuide />;
 }

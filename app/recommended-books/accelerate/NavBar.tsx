@@ -9,10 +9,6 @@ interface NavBarProps {
     onClose?: () => void;
 }
 
-/**
- * Accelerate ガイド用のサイドバーナビゲーションコンポーネント。
- * 目次リンクの表示、IntersectionObserver によるスクロールスパイ、キーボードアクセシビリティを提供します。
- */
 export const NavBar: FC<NavBarProps> = ({ isOpen = false, onClose }) => {
     const [activeId, setActiveId] = useState<string>(NAV_ITEMS[0]?.id ?? '');
 

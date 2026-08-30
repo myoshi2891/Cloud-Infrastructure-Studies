@@ -5,9 +5,6 @@ import { MermaidDiagram } from '@/components/MermaidDiagram';
 import { NavBar } from './NavBar';
 import { DIAGRAMS, STAT_ITEMS, type DiagramId } from './constants';
 
-/**
- * Mermaid 図を表示するメモ化された安全なコンポーネント。
- */
 const Diagram = memo(function Diagram({ id, label }: { id: DiagramId; label: string }) {
     const chart = DIAGRAMS[id];
     if (!chart) return null;
@@ -18,10 +15,6 @@ const Diagram = memo(function Diagram({ id, label }: { id: DiagramId; label: str
     );
 });
 
-/**
- * 『Accelerate』LeanとDevOpsの科学 完全ガイドのメインUIコンポーネント。
- * 全10セクションの解説、DORA 5指標、24の能力、Westrum組織文化モデル、AI支援開発時代の最新動向を網羅します。
- */
 export const AccelerateGuide: FC = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
