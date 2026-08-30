@@ -9,10 +9,6 @@ interface NavBarProps {
     onClose?: () => void;
 }
 
-/**
- * Infrastructure as Code 実践ガイド用のサイドバーナビゲーションコンポーネント。
- * 目次リンクの表示、IntersectionObserver によるスクロールスパイ、キーボードアクセシビリティを提供します。
- */
 export const NavBar: FC<NavBarProps> = ({ isOpen = false, onClose }) => {
     const [activeId, setActiveId] = useState<string>(NAV_ITEMS[0]?.id ?? 'この記事の対象読者');
 

@@ -8,9 +8,6 @@ export const metadata: Metadata = {
         'Kief Morris 著『Infrastructure as Code』の考え方を土台に、2026年最新エコシステム（Terraform / OpenTofu / Pulumi / GitOps / Policy as Code）を踏まえて再構成した、初学者向けの実践ガイド。',
 };
 
-/**
- * Infrastructure as Code 実践ガイドのページエントリーポイント（Server Component）。
- */
 export default function InfrastructureAsCodePage() {
     return <InfrastructureAsCodeGuide />;
 }

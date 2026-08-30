@@ -10,9 +10,6 @@ interface DiagramProps {
     label: string;
 }
 
-/**
- * Mermaid 図解描画用のメモ化コンポーネント。
- */
 const Diagram: FC<DiagramProps> = memo(function Diagram({ id, label }) {
     const chart = DIAGRAMS[id];
     if (!chart) return null;
@@ -23,9 +20,6 @@ const Diagram: FC<DiagramProps> = memo(function Diagram({ id, label }) {
     );
 });
 
-/**
- * Infrastructure as Code 実践ガイドのメインビューコンポーネント。
- */
 export const InfrastructureAsCodeGuide: FC = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
     const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
