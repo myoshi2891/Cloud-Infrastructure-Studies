@@ -140,6 +140,12 @@ app/
         NavBar.tsx                  # サイドバーナビ (ScrollSpy)
         constants.ts                # Mermaid 図定義（10図）、ナビ項目
         page.css                    # ページ固有スタイル（サイドバー幅280px契約準拠）
+      network-security-guide/
+        page.tsx                    # Domain 4.0: Network Security ガイド (Server)
+        ComptiaNetworkSecurityGuide.tsx # 本文＋インタラクション (Client。3ステップ、Mermaid 7図)
+        NavBar.tsx                  # サイドバーナビ (ScrollSpy)
+        constants.ts                # Mermaid 図定義（7図）、ナビ項目
+        page.css                    # ページ固有スタイル（サイドバー幅280px契約準拠）
     hands-on/
       cloud-load-balancing-guide/
         page.tsx                    # Cloud Load Balancing 完全入門（Server。メタデータ定義）
