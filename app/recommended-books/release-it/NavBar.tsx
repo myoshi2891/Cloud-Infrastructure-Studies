@@ -54,7 +54,7 @@ export const NavBar: FC<NavBarProps> = ({ isOpen = false, onClose }) => {
         if (target) {
             target.scrollIntoView({ behavior: scrollBehavior() });
             window.history.pushState(null, '', `#${id}`);
-            target.focus();
+            target.focus({ preventScroll: true });
         }
         if (onClose) {
             onClose();
