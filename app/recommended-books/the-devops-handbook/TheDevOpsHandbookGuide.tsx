@@ -882,7 +882,7 @@ export const TheDevOpsHandbookGuide: FC = () => {
                         <a href="https://roadie.io/blog/platform-engineering-in-2026-why-diy-is-dead/">
                             出典: Roadie.io, &quot;Platform Engineering in 2026&quot;
                         </a>
-                        ）。CNCF Q1 2026 Technology Radarによれば、ハイブリッドAIワークフロー（AIと人間の協調作業）を採用するプラットフォームチームは35%、専任プラットフォームエンジニアリングチームを持つ組織は28%に達しているとも報告されています（
+                        ）。CNCF Q1 2026 Technology Radarによれば、ハイブリッドAIワークフロー（AIと人間の協調作業）を利用している開発者は35%、社内向けプラットフォームを担当するプラットフォームチームが存在すると回答した開発者は28%に達しているとも報告されています（
                         <a href="https://radar.cncf.io/">
                             出典: CNCF, &quot;Technology Radar Q1 2026&quot;
                         </a>
