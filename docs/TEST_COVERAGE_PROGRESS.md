@@ -29,11 +29,11 @@
 | **Generative AI Leader (GCL)** | 5 / 24 | **21%** | ⚠️ 21% | ❌ 0% | ⚠️ 4% | ❌ 0% | ✅ 実装 | ✅ 実装 | ✅ 実装 | ✅ 実装 |
 | **Cloud Digital Leader (CDL)** | 21 / 167 | **13%** | ⚠️ 13% | ❌ 0% | ⚠️ 1% | ❌ 0% | ✅ 実装 | ✅ 実装 | ✅ 実装 | ✅ 実装 |
 | **Google Workspace Admin (AGWA)** | 11 / 35 | **31%** | ⚠️ 31% | ❌ 0% | ⚠️ 3% | ❌ 0% | ✅ 実装 | ✅ 実装 | ✅ 実装 | ✅ 実装 |
-| **Professional Cloud Network Engineer (PCNE)** | 12 / 23 | **52%** | ⚠️ 52% | ❌ 0% | ⚠️ 4% | ❌ 0% | ✅ 実装 | ✅ 実装 | ✅ 実装 | ✅ 実装 |
+| **Professional Cloud Network Engineer (PCNE)** | 16 / 43 | **37%** | ⚠️ 37% | ❌ 0% | ⚠️ 2% | ❌ 0% | ✅ 実装 | ✅ 実装 | ✅ 実装 | ✅ 実装 |
 | **PCNE Step-by-Step** | 7 / 11 | **64%** | ⚠️ 55% | ❌ 0% | ⚠️ 9% | ❌ 0% | ✅ 実装 | ✅ 実装 | ✅ 実装 | ✅ 実装 |
 | **Cisco CCNA** | 22 / 66 | **33%** | ⚠️ 33% | ❌ 0% | ❌ 0% | ❌ 0% | ❌ 0% | ❌ 0% | ❌ 0% | ✅ 実装 |
 | **Cisco DevNet / Automation** | 1 / 10 | **10%** | ⚠️ 10% | ❌ 0% | ❌ 0% | ❌ 0% | ❌ 0% | ❌ 0% | ❌ 0% | ✅ 実装 |
-| **共通 (components / lib / navigation)** | 15 / 45 | **33%** | ⚠️ 29% | ⚠️ 9% | ⚠️ 2% | ⚠️ 2% | ✅ 実装 | ✅ 実装 | ✅ 実装 | ✅ 実装 |
+| **共通 (components / lib / navigation)** | 15 / 46 | **33%** | ⚠️ 28% | ⚠️ 9% | ⚠️ 2% | ⚠️ 2% | ✅ 実装 | ✅ 実装 | ✅ 実装 | ✅ 実装 |
 
 > **凡例:**
 > - ✅ **実装済み（Visual / A11y / Performance / Security）**: 対応テストが1件以上
@@ -47,12 +47,12 @@
 
 ### ① Unit（単体テスト）
 
-- **現状**: PCNE（52%）や PCNE Step-by-Step（55%）など、比較的新しい移行セクションでは TDD 開発ルールに従って単体テストが整備されています。AGWA は Section 1〜6 を含む12テストファイルで、移行本文、テーブル構造、リンク順序、Section 2/4のスクロール末尾判定を検証しています。CCNA（33%）/ DevNet（10%）は独立ドメインとして集計されています。
+- **現状**: PCNE（37%）や PCNE Step-by-Step（55%）など、比較的新しい移行セクションでは TDD 開発ルールに従って単体テストが整備されています。AGWA は Section 1〜6 を含む12テストファイルで、移行本文、テーブル構造、リンク順序、Section 2/4のスクロール末尾判定を検証しています。CCNA（33%）/ DevNet（10%）は独立ドメインとして集計されています。
 - **課題**: 移行元の HTML から復元されたコンポーネントや追加コンポーネントのテストカバレッジ底上げが必要です。
 
 ### ② Integration（結合テスト）
 
-- **現状**: 共通ロジックである `lib/navigation.test.ts`, `lib/recentPages.test.ts`, `lib/utils.test.ts` の3件が共通ソース45件中4件を部分的（9%）にカバーし、正準対象 `lib/recentPages.ts`、`lib/utils.ts`、`app/navigation.ts` をすべて保護します。
+- **現状**: 共通ロジックである `lib/navigation.test.ts`, `lib/recentPages.test.ts`, `lib/utils.test.ts` の3件が共通ソース46件中4件を部分的（9%）にカバーし、正準対象 `lib/recentPages.ts`、`lib/utils.ts`、`app/navigation.ts` をすべて保護します。
 - **課題**: 試験ドメインごとのコンポーネント間連携（例: `navigation` から各セクションページへの遷移ロジック）を検証する結合テストが全ドメインで未実装です。
 
 ### ③ E2E（エンドツーエンドテスト）
