@@ -384,7 +384,7 @@ export const InfrastructureAsCodeGuide: FC = () => {
 
 <p><strong>ライセンス変更と OpenTofu の誕生という転換点</strong></p>
 
-<p>2026年時点の IaC ツール選定を理解する上で欠かせない前提が、2023年8月に起きたライセンス変更です。HashiCorp が Terraform のライセンスを、オープンソースライセンスである MPL 2.0 から、商用利用に制限を課す Business Source License(BSL)1.1 へ変更しました。これに対し、Linux Foundation の傘下で <strong>OpenTofu</strong> が Terraform 1.6 からフォークされ、2024年1月に安定版(GA)がリリースされました。</p>
+<p>2026年時点の IaC ツール選定を理解する上で欠かせない前提が、2023年8月に起きたライセンス変更です。HashiCorp が Terraform のライセンスを、オープンソースライセンスである MPL 2.0 から、商用利用に制限を課す Business Source License(BSL)1.1 へ変更しました。これに対し、Linux Foundation の傘下で <strong>OpenTofu</strong> が Terraform 1.5.x からフォークされ、2024年1月に安定版(GA)がリリースされました。</p>
 
 <Diagram id="diag-23" label="Infrastructure as Code 図解 23" />
 
