@@ -5,6 +5,7 @@ import {
     codeBlockSelector,
     codeLineCount,
     columnHeaderCount,
+    diagramSelector,
     extractBodyContent,
     normalize,
 } from './inventory-extraction.mjs';
@@ -35,7 +36,6 @@ const texts = (sel) =>
     [...doc.querySelectorAll(sel)]
         .map((el) => normalize(el.textContent ?? ''))
         .filter(Boolean);
-const diagramSelector = '[data-testid="mermaid-diagram"], .mermaid, [id^="diag-"]';
 const diagrams = [...doc.querySelectorAll(diagramSelector)].filter(
     (element) => !element.querySelector(diagramSelector),
 );

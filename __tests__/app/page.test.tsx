@@ -151,4 +151,34 @@ describe('Home ページ', () => {
         const allLinks = (cdlCard as HTMLElement).querySelectorAll('a');
         expect(allLinks).toHaveLength(cdlExam.domains.length + 1);
     });
+    it('Recommended Books セクションのカウントは exams ではなく books で数えること', () => {
+        const { container } = render(<Home />);
+        const booksSection = container.querySelector('#provider-books') as HTMLElement | null;
+        expect(booksSection).not.toBeNull();
+        const booksCount = VISIBLE_EXAMS.filter((e) => e.provider === 'Books').length;
+        expect(
+            within(booksSection as HTMLElement).getByText(`${booksCount} books`),
+        ).toBeInTheDocument();
+    });
+
+    it('資格プロバイダのセクションカウントは引き続き exams で数えること', () => {
+        const { container } = render(<Home />);
+        const ciscoSection = container.querySelector('#provider-cisco') as HTMLElement | null;
+        expect(ciscoSection).not.toBeNull();
+        const ciscoCount = VISIBLE_EXAMS.filter((e) => e.provider === 'Cisco').length;
+        expect(
+            within(ciscoSection as HTMLElement).getByText(`${ciscoCount} exams`),
+        ).toBeInTheDocument();
+    });
+
+    it('書籍カードの CTA は「この試験を学ぶ」ではなく「この書籍を読む」であること', () => {
+        const { container } = render(<Home />);
+        const booksSection = container.querySelector('#provider-books') as HTMLElement | null;
+        expect(booksSection).not.toBeNull();
+        const ctas = within(booksSection as HTMLElement).getAllByText('この書籍を読む');
+        expect(ctas).toHaveLength(VISIBLE_EXAMS.filter((e) => e.provider === 'Books').length);
+        expect(
+            within(booksSection as HTMLElement).queryByText('この試験を学ぶ'),
+        ).not.toBeInTheDocument();
+    });
 });

@@ -1,6 +1,146 @@
 # 移行作業進捗管理ドキュメント (Migration Progress)
 
-(最終更新日: 2026-08-25)
+(最終更新日: 2026-08-29)
+
+---
+
+## 2026-08-29: 『Infrastructure as Code』実践ガイド 100%全量移行 (完了)
+
+### 目的
+
+`Infrastructure-as-code-guide.html` を、Next.js App Router 5ファイル構成 (`page.tsx`, `InfrastructureAsCodeGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/recommended-books/infrastructure-as-code` ルートへ移行。グローバルナビゲーションの「Recommended Books」に追加。見出し(h1:1, h2:10, h3:27, h4:0)、全19個のテーブル、26個のMermaid図解、全リスト(84件)、全外部リンク(29件)・全本文・コールアウト注記(3件)・実践チェックリスト(14件)・参考文献一覧(27件)を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for infrastructure-as-code` (`79081aa`)
+- [x] **Step 1 (Red)**: `test(books): add failing tests for infrastructure-as-code` (`2315a83`)
+- [x] **Step 2 (Green)**: `feat(books): implement infrastructure-as-code to pass tests` (`51fe7ed`)
+- [x] **Step 3 (Refactor)**: `refactor(books): integrate infrastructure-as-code into routing and update docs` (`6935dfe`)
+- [x] **Step 4 (Archive & Sync)**: `chore(docs): update MIGRATION_PROGRESS.md — migrate infrastructure-as-code`
+
+### 関連ファイル
+
+- [app/recommended-books/infrastructure-as-code/page.tsx](app/recommended-books/infrastructure-as-code/page.tsx)
+- [app/recommended-books/infrastructure-as-code/InfrastructureAsCodeGuide.tsx](app/recommended-books/infrastructure-as-code/InfrastructureAsCodeGuide.tsx)
+- [app/recommended-books/infrastructure-as-code/NavBar.tsx](app/recommended-books/infrastructure-as-code/NavBar.tsx)
+- [app/recommended-books/infrastructure-as-code/constants.ts](app/recommended-books/infrastructure-as-code/constants.ts)
+- [app/recommended-books/infrastructure-as-code/page.css](app/recommended-books/infrastructure-as-code/page.css)
+- [`__tests__/recommended-books/infrastructure-as-code/page.test.tsx`](__tests__/recommended-books/infrastructure-as-code/page.test.tsx)
+- [`__tests__/recommended-books/infrastructure-as-code/NavBar.test.tsx`](__tests__/recommended-books/infrastructure-as-code/NavBar.test.tsx)
+- [docs/migration-inventory/infrastructure-as-code.json](docs/migration-inventory/infrastructure-as-code.json)
+- [archive/Books/html/Infrastructure-as-code-guide.html](archive/Books/html/Infrastructure-as-code-guide.html)
+
+---
+
+## 2026-08-29: 『Release It!』第2版 本番対応ソフトウェア設計・デプロイ完全ガイド 100%全量移行 (完了)
+
+### 目的
+
+`Release-It-Design-and-Deploy-Production-Ready-Software.html` を、Next.js App Router 5ファイル構成 (`page.tsx`, `ReleaseItGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/recommended-books/release-it` ルートへ移行。グローバルナビゲーションの「Recommended Books」に追加。見出し(h1:1, h2:14, h3:12, h4:5)、全5個のテーブル、14個のMermaid図解、全リスト(26件)、全外部リンク(22件)・全本文・コールアウト注記(2件)・実践チェックリスト(10件)・参考文献一覧(22件)を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for release-it` (`537c66c`)
+- [x] **Step 1 (Red)**: `test(recommended-books): add failing tests for release-it` (`e9a5ccc`)
+- [x] **Step 2 (Green)**: `feat(recommended-books): implement release-it to pass tests` (`abb9bac`)
+- [x] **Step 3 (Refactor)**: `refactor(recommended-books): integrate release-it into routing and update docs` (`d334276`)
+- [x] **Step 4 (Archive & Sync)**: `chore(docs): update MIGRATION_PROGRESS.md — migrate release-it`
+
+### 関連ファイル
+
+- [app/recommended-books/release-it/page.tsx](app/recommended-books/release-it/page.tsx)
+- [app/recommended-books/release-it/ReleaseItGuide.tsx](app/recommended-books/release-it/ReleaseItGuide.tsx)
+- [app/recommended-books/release-it/NavBar.tsx](app/recommended-books/release-it/NavBar.tsx)
+- [app/recommended-books/release-it/constants.ts](app/recommended-books/release-it/constants.ts)
+- [app/recommended-books/release-it/page.css](app/recommended-books/release-it/page.css)
+- [`__tests__/recommended-books/release-it/page.test.tsx`](__tests__/recommended-books/release-it/page.test.tsx)
+- [docs/migration-inventory/release-it.json](docs/migration-inventory/release-it.json)
+- [archive/Books/html/Release-It-Design-and-Deploy-Production-Ready-Software.html](archive/Books/html/Release-It-Design-and-Deploy-Production-Ready-Software.html)
+- [archive/Books/md/Release-It-Design-and-Deploy-Production-Ready-Software.md](archive/Books/md/Release-It-Design-and-Deploy-Production-Ready-Software.md)
+
+---
+
+## 2026-08-29: 『The DevOps Handbook』第2版 初学者のためのステップバイステップ実践ガイド 100%全量移行 (完了)
+
+### 目的
+
+`The-devops-handbook.html` を、Next.js App Router 5ファイル構成 (`page.tsx`, `TheDevOpsHandbookGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/recommended-books/the-devops-handbook` ルートへ移行。グローバルナビゲーションの「Recommended Books」に追加。見出し(h1:1, h2:14, h3:28, h4:0)、全4個のテーブル、19個のMermaid図解、全リスト(124件)、全外部リンク(18件)・全本文・コールアウト注記(23件)・実践チェックリスト(11件)・参考文献一覧(18件)・アンチパターン(8件)・用語集(10件)を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for the-devops-handbook` (`8e714ab`)
+- [x] **Step 1 (Red)**: `test(recommended-books): add failing tests for the-devops-handbook` (`6cebddd`)
+- [x] **Step 2 (Green)**: `feat(recommended-books): implement the-devops-handbook to pass tests` (`5f67da9`)
+- [x] **Step 3 (Refactor)**: `refactor(recommended-books): integrate the-devops-handbook into routing and update docs` (`5213d4e`)
+- [x] **Step 4 (Archive & Sync)**: `chore(docs): update MIGRATION_PROGRESS.md — migrate the-devops-handbook`
+
+### 関連ファイル
+
+- [app/recommended-books/the-devops-handbook/page.tsx](app/recommended-books/the-devops-handbook/page.tsx)
+- [app/recommended-books/the-devops-handbook/TheDevOpsHandbookGuide.tsx](app/recommended-books/the-devops-handbook/TheDevOpsHandbookGuide.tsx)
+- [app/recommended-books/the-devops-handbook/NavBar.tsx](app/recommended-books/the-devops-handbook/NavBar.tsx)
+- [app/recommended-books/the-devops-handbook/constants.ts](app/recommended-books/the-devops-handbook/constants.ts)
+- [app/recommended-books/the-devops-handbook/page.css](app/recommended-books/the-devops-handbook/page.css)
+- [`__tests__/recommended-books/the-devops-handbook/page.test.tsx`](__tests__/recommended-books/the-devops-handbook/page.test.tsx)
+- [docs/migration-inventory/the-devops-handbook.json](docs/migration-inventory/the-devops-handbook.json)
+- [archive/Books/html/The-devops-handbook.html](archive/Books/html/The-devops-handbook.html)
+- [archive/Books/md/The-devops-handbook.md](archive/Books/md/The-devops-handbook.md)
+
+---
+
+## 2026-08-29: 『Site Reliability Engineering』Googleのプロダクション運用 完全ガイド 100%全量移行 (完了)
+
+### 目的
+
+`Site-reliability-engineering.html` を、Next.js App Router 5ファイル構成 (`page.tsx`, `SreGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/recommended-books/site-reliability-engineering` ルートへ移行。グローバルナビゲーションの「Recommended Books」に追加。見出し(h1:1, h2:8, h3:18, h4:14)、全4個のテーブル、15個のMermaid図解、全リスト(124件)、全外部リンク(22件)・全本文・コールアウト注記(6件)・実践チェックリスト(12件)・参考文献一覧(19件)を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for site-reliability-engineering` (`d409ccd`)
+- [x] **Step 1 (Red)**: `test(books): add failing tests for site-reliability-engineering` (`290e359`)
+- [x] **Step 2 (Green)**: `feat(books): implement site-reliability-engineering to pass tests` (`31fd789`)
+- [x] **Step 3 (Refactor)**: `refactor(books): integrate site-reliability-engineering into routing and update docs` (`a77522d`)
+- [x] **Step 4 (Archive & Sync)**: `chore(docs): update MIGRATION_PROGRESS.md — migrate site-reliability-engineering`
+
+### 関連ファイル
+
+- [app/recommended-books/site-reliability-engineering/page.tsx](app/recommended-books/site-reliability-engineering/page.tsx)
+- [app/recommended-books/site-reliability-engineering/SreGuide.tsx](app/recommended-books/site-reliability-engineering/SreGuide.tsx)
+- [app/recommended-books/site-reliability-engineering/NavBar.tsx](app/recommended-books/site-reliability-engineering/NavBar.tsx)
+- [app/recommended-books/site-reliability-engineering/constants.ts](app/recommended-books/site-reliability-engineering/constants.ts)
+- [app/recommended-books/site-reliability-engineering/page.css](app/recommended-books/site-reliability-engineering/page.css)
+- [`__tests__/recommended-books/site-reliability-engineering/page.test.tsx`](__tests__/recommended-books/site-reliability-engineering/page.test.tsx)
+- [docs/migration-inventory/site-reliability-engineering.json](docs/migration-inventory/site-reliability-engineering.json)
+- [archive/Books/html/Site-reliability-engineering.html](archive/Books/html/Site-reliability-engineering.html)
+- [archive/Books/md/Site-reliability-engineering.md](archive/Books/md/Site-reliability-engineering.md)
+
+---
+
+## 2026-08-29: 『Accelerate』LeanとDevOpsの科学 完全ガイド 100%全量移行 (完了)
+
+### 目的
+
+`Accelerate-lean-devops-guide.html` を、Next.js App Router 5ファイル構成 (`page.tsx`, `AccelerateGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/recommended-books/accelerate` ルートへ移行。グローバルナビゲーションに新規プロバイダー「Recommended Books」を追加。見出し(h1:1, h2:10, h3:16, h4:6)、全11個のテーブル、6個のMermaid図解、全リスト(44件)、全外部リンク(29件)・全本文・コールアウト注記(3件)・実践チェックリスト(10件)・参考文献一覧(29件)を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for accelerate-lean-devops-guide` (`bdaeb69`)
+- [x] **Step 1 (Red)**: `test(books): add failing tests for accelerate-lean-devops-guide` (`efa6f7c`)
+- [x] **Step 2 (Green)**: `feat(books): implement accelerate-lean-devops-guide to pass tests` (`9467847`)
+- [x] **Step 3 (Refactor)**: `refactor(books): integrate accelerate-lean-devops-guide into routing and update docs` (`99a7329`)
+- [x] **Step 4 (Archive & Sync)**: `chore(docs): update MIGRATION_PROGRESS.md — migrate accelerate-lean-devops-guide`
+
+### 関連ファイル
+
+- [app/recommended-books/accelerate/page.tsx](app/recommended-books/accelerate/page.tsx)
+- [app/recommended-books/accelerate/AccelerateGuide.tsx](app/recommended-books/accelerate/AccelerateGuide.tsx)
+- [app/recommended-books/accelerate/NavBar.tsx](app/recommended-books/accelerate/NavBar.tsx)
+- [app/recommended-books/accelerate/constants.ts](app/recommended-books/accelerate/constants.ts)
+- [app/recommended-books/accelerate/page.css](app/recommended-books/accelerate/page.css)
+- [`__tests__/recommended-books/accelerate/page.test.tsx`](__tests__/recommended-books/accelerate/page.test.tsx)
+- [docs/migration-inventory/accelerate-lean-devops-guide.json](docs/migration-inventory/accelerate-lean-devops-guide.json)
+- [archive/Books/html/Accelerate-lean-devops-guide.html](archive/Books/html/Accelerate-lean-devops-guide.html)
+- [archive/Books/md/Accelerate-lean-devops-guide.md](archive/Books/md/Accelerate-lean-devops-guide.md)
 
 ---
 

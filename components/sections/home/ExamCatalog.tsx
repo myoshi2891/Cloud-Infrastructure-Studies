@@ -3,14 +3,14 @@ import styles from '@/app/page.module.css';
 import { ProviderMark } from '@/components/ProviderMark';
 import { ExamCard } from './ExamCard';
 
-/** Groups the supplied exams into provider-specific catalog sections. */
+/** Groups the supplied entries into provider-specific catalog sections. */
 export function ExamCatalog({ exams }: { exams: Exam[] }) {
     return (
         <section id="catalog" className={styles.catalog}>
             <div className={styles.catalogIntro}>
-                <p>Certification catalog</p>
+                <p>Study catalog</p>
                 <h2>学びたい領域から選ぶ</h2>
-                <span>ベンダーごとに整理された学習パスから、次の一歩を選択できます。</span>
+                <span>プロバイダごとに整理された学習パスから、次の一歩を選択できます。</span>
             </div>
 
             {providerOrder.map((provider, index) => {
@@ -33,7 +33,9 @@ export function ExamCatalog({ exams }: { exams: Exam[] }) {
                                 <h2 id={`provider-heading-${provider}`}>{meta.label}</h2>
                             </div>
                             <p className={styles.providerDescription}>{meta.description}</p>
-                            <span className={styles.providerCount}>{providerExams.length} exams</span>
+                            <span className={styles.providerCount}>
+                                {providerExams.length} {meta.countUnit.en}
+                            </span>
                         </header>
                         <div className={styles.cards}>
                             {providerExams.map((exam) => (

@@ -504,6 +504,27 @@
     --color-theme-cisco-bg: hsl(215 70% 50% / 0.20);
     --color-theme-cisco-fg: hsl(215 95% 70%);
 
+    --color-theme-comptia-bg: hsl(350 70% 50% / 0.20);
+    --color-theme-comptia-fg: hsl(350 85% 70%);
+
+    --color-theme-books-bg: hsl(38 80% 50% / 0.20);
+    --color-theme-books-fg: hsl(38 90% 68%);
+
+    --color-theme-accelerate-bg: hsl(225 45% 45% / 0.25);
+    --color-theme-accelerate-fg: hsl(225 75% 70%);
+
+    --color-theme-sre-bg: hsl(218 50% 40% / 0.25);
+    --color-theme-sre-fg: hsl(218 85% 72%);
+
+    --color-theme-devops-handbook-bg: hsl(215 50% 40% / 0.25);
+    --color-theme-devops-handbook-fg: hsl(215 85% 72%);
+
+    --color-theme-release-it-bg: hsl(220 50% 40% / 0.25);
+    --color-theme-release-it-fg: hsl(220 85% 72%);
+
+    --color-theme-infrastructure-as-code-bg: hsl(220 55% 40% / 0.25);
+    --color-theme-infrastructure-as-code-fg: hsl(220 90% 74%);
+
     --navy: #0a2e4d;
     --navy-mid: #123a57;
     --amber: #e8a33d;
@@ -640,6 +661,12 @@ body {
 .card-pca { --card-accent: var(--color-theme-pca-fg); }
 .card-ccna { --card-accent: var(--color-theme-cisco-fg); }
 .card-aws-saa { --card-accent: var(--color-theme-aws-fg); }
+.card-comptia { --card-accent: var(--color-theme-comptia-fg); }
+.card-accelerate { --card-accent: var(--color-theme-accelerate-fg); }
+.card-sre { --card-accent: var(--color-theme-sre-fg); }
+.card-devops-handbook { --card-accent: var(--color-theme-devops-handbook-fg); }
+.card-release-it { --card-accent: var(--color-theme-release-it-fg); }
+.card-infrastructure-as-code { --card-accent: var(--color-theme-infrastructure-as-code-fg); }
 
 @utility text-gradient-aurora {
     background: linear-gradient(135deg, var(--color-brand-text-start), var(--color-brand-text-end));
@@ -706,6 +733,36 @@ body {
 @utility icon-theme-hands-on {
     background: var(--color-theme-ace-bg);
     color: var(--color-theme-ace-fg);
+}
+
+@utility icon-theme-comptia {
+    background: var(--color-theme-comptia-bg);
+    color: var(--color-theme-comptia-fg);
+}
+
+@utility icon-theme-accelerate {
+    background: var(--color-theme-accelerate-bg);
+    color: var(--color-theme-accelerate-fg);
+}
+
+@utility icon-theme-sre {
+    background: var(--color-theme-sre-bg);
+    color: var(--color-theme-sre-fg);
+}
+
+@utility icon-theme-devops-handbook {
+    background: var(--color-theme-devops-handbook-bg);
+    color: var(--color-theme-devops-handbook-fg);
+}
+
+@utility icon-theme-release-it {
+    background: var(--color-theme-release-it-bg);
+    color: var(--color-theme-release-it-fg);
+}
+
+@utility icon-theme-infrastructure-as-code {
+    background: var(--color-theme-infrastructure-as-code-bg);
+    color: var(--color-theme-infrastructure-as-code-fg);
 }
 
 /* Provider identity marks: メニューとホームで同じ視覚言語を共有する。 */
@@ -782,6 +839,40 @@ body {
 .provider-mark-cisco svg {
     width: 40px;
     height: 19px;
+}
+
+.provider-mark-comptia {
+    width: 46px;
+    height: 34px;
+    flex-direction: column;
+    gap: 1px;
+    color: var(--color-theme-comptia-fg);
+    font-family: Arial, sans-serif;
+    font-size: 7px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+}
+
+.provider-mark-comptia svg {
+    width: 21px;
+    height: 21px;
+}
+
+.provider-mark-books {
+    width: 46px;
+    height: 34px;
+    flex-direction: column;
+    gap: 1px;
+    color: var(--color-theme-books-fg);
+    font-family: Arial, sans-serif;
+    font-size: 7px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+}
+
+.provider-mark-books svg {
+    width: 30px;
+    height: 22px;
 }
 
 .provider-mark[data-compact] {

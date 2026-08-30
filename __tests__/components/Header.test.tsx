@@ -53,6 +53,22 @@ describe('Header (drawer nav)', () => {
         expect(dialog.querySelector('.provider-mark-cisco')).toBeInTheDocument();
     });
 
+    it('CompTIA / Recommended Books は Cisco とは別の専用マークで描画されること', async () => {
+        // Arrange
+        const user = userEvent.setup();
+        render(<Header />);
+
+        // Act
+        await user.click(screen.getByRole('button', { name: 'メニューを開く' }));
+
+        // Assert
+        const dialog = screen.getByRole('dialog', { name: 'サイトナビゲーション' });
+        expect(dialog.querySelector('.provider-mark-comptia')).toBeInTheDocument();
+        expect(dialog.querySelector('.provider-mark-books')).toBeInTheDocument();
+        // Cisco マークは Cisco グループのみ（CompTIA/Books へ流用されない）
+        expect(dialog.querySelectorAll('.provider-mark-cisco')).toHaveLength(1);
+    });
+
     it('Drawer に EXAMS の全試験（available 分）の概要リンクと domain リンクが網羅されること', async () => {
         // Arrange
         const user = userEvent.setup();
@@ -88,5 +104,45 @@ describe('Header (drawer nav)', () => {
             if (exam.status !== 'coming-soon') continue;
             expect(hrefs).not.toContain(exam.href);
         }
+    });
+    it('Recommended Books グループのカウントは「試験」ではなく「冊」で数えること', async () => {
+        // Arrange
+        const user = userEvent.setup();
+        render(<Header />);
+
+        // Act
+        await user.click(screen.getByRole('button', { name: 'メニューを開く' }));
+
+        // Assert
+        const dialog = screen.getByRole('dialog', { name: 'サイトナビゲーション' });
+        const booksSection = dialog
+            .querySelector('.provider-mark-books')
+            ?.closest('section') as HTMLElement | null;
+        expect(booksSection).not.toBeNull();
+        const booksCount = EXAMS.filter(
+            (e) => e.provider === 'Books' && e.status !== 'coming-soon',
+        ).length;
+        expect(within(booksSection as HTMLElement).getByText(`${booksCount} 冊`)).toBeInTheDocument();
+        expect(within(booksSection as HTMLElement).queryByText(/試験$/)).not.toBeInTheDocument();
+    });
+
+    it('資格プロバイダのグループカウントは引き続き「試験」で数えること', async () => {
+        // Arrange
+        const user = userEvent.setup();
+        render(<Header />);
+
+        // Act
+        await user.click(screen.getByRole('button', { name: 'メニューを開く' }));
+
+        // Assert
+        const dialog = screen.getByRole('dialog', { name: 'サイトナビゲーション' });
+        const ciscoSection = dialog
+            .querySelector('.provider-mark-cisco')
+            ?.closest('section') as HTMLElement | null;
+        expect(ciscoSection).not.toBeNull();
+        const ciscoCount = EXAMS.filter(
+            (e) => e.provider === 'Cisco' && e.status !== 'coming-soon',
+        ).length;
+        expect(within(ciscoSection as HTMLElement).getByText(`${ciscoCount} 試験`)).toBeInTheDocument();
     });
 });

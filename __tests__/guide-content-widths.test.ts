@@ -44,6 +44,10 @@ const guideLayouts = [
     ['app/gcl/hands-on/griffin-wordpress-gke-guide/page.css', '.griffin-wordpress-gke-guide-page .sidebar', '.griffin-wordpress-gke-guide-page .main'],
     ['app/gcl/hands-on/iap-tcp-forwarding-best-practices-guide/page.css', '.iap-guide-page .sidebar', '.iap-guide-page main'],
     ['app/gcl/hands-on/terraform-gcp-challenge-lab-guide/page.css', '.terraform-lab-guide-page .sidebar', '.terraform-lab-guide-page .main'],
+    ['app/recommended-books/site-reliability-engineering/page.css', '.sre-guide-page .sidebar', '.sre-guide-page .main'],
+    ['app/recommended-books/the-devops-handbook/page.css', '.the-devops-handbook-page .sidebar', '.the-devops-handbook-page .main'],
+    ['app/recommended-books/release-it/page.css', '.release-it-page .sidebar', '.release-it-page .main'],
+    ['app/recommended-books/infrastructure-as-code/page.css', '.infrastructure-as-code-page .sidebar', '.infrastructure-as-code-page .main'],
 ] as const;
 
 describe('all sidebar guide layouts', () => {

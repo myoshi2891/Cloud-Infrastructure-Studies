@@ -211,14 +211,27 @@ describe('toNavTree', () => {
     });
 
     describe('実 EXAMS との結合', () => {
-        it('現行 EXAMS から全 4 プロバイダーのグループが生成される', () => {
+        it('現行 EXAMS から全 5 プロバイダーのグループが生成される', () => {
             // Arrange & Act
             const result = toNavTree(EXAMS);
 
             // Assert
             const providers = result.map((g: NavGroup) => g.provider);
-            expect(result).toHaveLength(4);
-            expect(providers).toEqual(['GCP', 'AWS', 'Cisco', 'CompTIA']);
+            expect(result).toHaveLength(5);
+            expect(providers).toEqual(['GCP', 'AWS', 'Cisco', 'CompTIA', 'Books']);
+        });
+
+        it('Books グループに accelerate が含まれる', () => {
+            // Arrange & Act
+            const result = toNavTree(EXAMS);
+            const books = result.find((g) => g.provider === 'Books');
+
+            // Assert
+            expect(books).toBeDefined();
+            if (!books) return;
+            expect(books.label).toBe('Recommended Books');
+            const ids = books.exams.map((e) => e.id);
+            expect(ids).toContain('accelerate');
         });
 
         it('Cisco グループに ccna 試験が含まれる', () => {

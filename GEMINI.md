@@ -1,8 +1,8 @@
 # Project Overview: Cloud Infrastructure Studies
 
-Updated 2026-08-25
+Updated 2026-08-29
 
-このプロジェクトは、Google Cloud / AWS / Cisco のクラウド・ネットワーク資格試験対策（Associate Cloud Engineer, Generative AI Leader, Cloud Digital Leader, Associate Google Workspace Administrator, Professional Cloud Network Engineer, Professional Cloud Architect, Cisco Certified Network Associate, Cisco Certified Network Associate Automation、AWS Certified Solutions Architect – Associate）を目的とした学習用 Next.js アプリケーションです。
+このプロジェクトは、Google Cloud / AWS / Cisco / CompTIA のクラウド・ネットワーク資格試験対策およびエンジニアリング・DevOps名著（『Accelerate』など）の解説を目的とした学習用 Next.js アプリケーションです。
 試験ガイド、重要ポイントの解説、およびテスト対策コンテンツを提供します。
 
 ## 主な技術スタック
@@ -58,7 +58,12 @@ Updated 2026-08-25
   - `/app/cisco/ccna/network-fundamentals-guide`: CCNA 200-301 Network Fundamentals ネットワークの基礎 入門ガイド。
   - `/app/comptia/network-plus`: CompTIA Network+ (N10-009 / V9) 完全ガイド（`networking-concepts-guide`, `network-operations-guide` を含む）。
   - `/app/aws/solutions-architect-associate`: AWS Certified Solutions Architect – Associate (SAA-C03) 完全対策ガイド（`domain1` を含む）。
-- `/app/constants.ts`: 試験データ正本（EXAMS / STATS）。`provider: 'GCP' | 'AWS' | 'Cisco' | 'CompTIA'` で分類され、`toNavTree` が自動グルーピング。
+  - `/app/recommended-books/accelerate`: 『Accelerate』LeanとDevOpsの科学 完全ガイド（DORA 5指標、24の能力、Westrum組織文化モデル、AI支援開発時代の最新知見）。
+  - `/app/recommended-books/site-reliability-engineering`: 『Site Reliability Engineering』Googleのプロダクション運用 完全ガイド（原則・実践・マネジメント、SLI/SLO/SLA、エラーバジェット、トイル撲滅、AI時代のSRE最新動向）。
+  - `/app/recommended-books/the-devops-handbook`: 『The DevOps Handbook』DevOpsバイブル 完全ガイド（全23章・6パート構成、3つの道、技術的実践、シフトレフトセキュリティ、2026年AI時代のDORA・プラットフォームエンジニアリング最新知見）。
+  - `/app/recommended-books/release-it`: 『Release It!』本番対応ソフトウェア設計・デプロイ 完全ガイド（初版・第2版対応、4部17章構成、サーキットブレーカー・バルクヘッド・タイムアウト等12パターン/12アンチパターン、ゼロダウンタイムデプロイ、カオスエンジニアリング、Mermaid 14図）。
+  - `/app/recommended-books/infrastructure-as-code`: 『Infrastructure as Code』実践ガイド（Kief Morris 原著、5部22章構成、クラウドインフラ原則・CUPID設計・スタック分離・テストピラミッド・GitOps・Policy as Code・2026年最新エコシステム、Mermaid 26図）。
+- `/app/constants.ts`: 試験データ正本（`ALL_EXAMS` / `STATS`）。編集対象は `ALL_EXAMS` で、公開値 `EXAMS` は `HANDS_ON_ENABLED` フラグで `ALL_EXAMS` をフィルタした派生値（直接編集しない）。`provider: 'GCP' | 'AWS' | 'Cisco' | 'CompTIA' | 'Books'` で分類され、`toNavTree` が自動グルーピング。
 - AWS: `app/aws/` 配下（`solutions-architect-associate/page.tsx` 完全対策ガイド、`solutions-architect-associate/domain1/page.tsx` ドメイン1ガイド、`solutions-architect-associate/domain2/page.tsx` ドメイン2ガイド、`solutions-architect-associate/domain3/page.tsx` ドメイン3ガイド、`solutions-architect-associate/domain4/page.tsx` ドメイン4ガイド）
 - Cisco: `app/cisco/` 配下（`ccna/beginner-guide/page.tsx` 完全ガイド、`ccna/automation-software-development-design/page.tsx`、`ccna/automation-application-deployment-security/page.tsx`、`ccna/automation-cisco-platforms-and-development/page.tsx`、`ccna/automation-infrastructure-and-automation/page.tsx`、`ccna/ip-connectivity-guide/page.tsx`、`ccna/ip-services-guide/page.tsx`、`ccna/automation-programmability/page.tsx` 含む）
 - `/components`: 共通コンポーネント（Header: ハンバーガー Drawer ナビ、Footer、DisclaimerBanner など）。
@@ -95,7 +100,7 @@ Updated 2026-08-25
 - **表形式データの構造化**: テキストのスペース揃えで列を表現したデータは、フォント変更による列ズレを防ぐため、必ず `<table>` 要素に変換してください。その際、必ず `<thead>` を含め、見出しセルには `<th scope="col">` を使用してください。
 - **CSS変数・テーマトークンの適用**: `app/globals.css` の3層アーキテクチャ CSS 変数（`--color-background`, `--color-foreground`, `--color-card` など）を厳格に使用すること。テーマトークンと新しいテーマカラーはすべて同ファイルの `@theme` に集約し、ページ固有の CSS Modules は既存の `--color-*` トークンのみを参照する。コンポーネントの CSS 内で新しいカスタムプロパティ (`--*`) を定義したり、テーマごとのCSSファイルを追加・インポートしたりしない。
 - **サイドバーガイドのレイアウト契約**: サイドバーを持つガイド画面は、デスクトップでサイドバーを左端へ固定し幅を `280px` に統一してください。メイン領域は `margin-left: 280px`、`width: calc(100% - 280px)`、`max-width: none` で残り幅をすべて使用し、本文全体を再制限する `content-inner` 等の最大幅は設けません。レスポンシブ規則では `margin-left: 0`、`width: 100%` へ戻します。この契約は `__tests__/guide-content-widths.test.ts` で全24スタイルシートを検証します。
-- **グローバルメニューの運用（データ駆動）**: ナビゲーションは `app/constants.ts` の `EXAMS` を正本とし、`app/navigation.ts` の `toNavTree()` が provider 別グループを自動生成するため **`components/Header.tsx` は直接編集しない**。新試験追加時は `EXAMS` にエントリを追加し（`status: 'coming-soon'` → 完成後に省略）、`app/globals.css` に `icon-theme-<id>` を追加すれば Drawer に自動反映される。
+- **グローバルメニューの運用（データ駆動）**: ナビゲーションは `app/constants.ts` の `ALL_EXAMS` を正本とし（`EXAMS` はそこから派生する公開値）、`app/navigation.ts` の `toNavTree()` が provider 別グループを自動生成するため **`components/Header.tsx` は直接編集しない**。新試験追加時は `ALL_EXAMS` にエントリを追加し（`status: 'coming-soon'` → 完成後に省略）、`app/globals.css` に `icon-theme-<id>` を追加すれば Drawer に自動反映される。
 - ページコンポーネント（`page.tsx`）が巨大化するのを防ぐため、各セクションは必ず `components/sections/` に分割し、スタイリングには CSS Modules (`*.module.css`) を使用してください。セクション間で共通のスタイル（例: `SectionBase.module.css`）を利用する場合は、CSS 内での `@import` を避け、各 TSX ファイルから直接 `import baseStyles from './SectionBase.module.css'` のようにインポートして適用してください。
 - ASCIIダイアグラムの使用を避け、専用の SVG コンポーネント (`DiagramSVG.tsx` 等) に置き換えてください。型の制約（Discriminated Union）により、アクセシビリティを担保するための `ariaLabel="説明文"` または `decorative={true}` の指定が必須となります。
 - アクセシビリティ（`aria-label` 等の付与）を徹底し、コンポーネントやユーティリティ関数には Docstrings (JSDoc) を追加してください。

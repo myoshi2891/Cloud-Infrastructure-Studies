@@ -116,7 +116,7 @@ describe('Header ドロワー: 検索フィルタ', () => {
         const input = within(dialog).getByRole('searchbox', { name: /検索/ });
         await user.type(input, 'zzzzz-no-match-zzzzz');
         const status = within(dialog).getByRole('status');
-        expect(status).toHaveTextContent(/該当する試験はありません/);
+        expect(status).toHaveTextContent(/該当する項目はありません/);
     });
 
     it('検索中は「最近見たページ」セクションを非表示にすること', async () => {

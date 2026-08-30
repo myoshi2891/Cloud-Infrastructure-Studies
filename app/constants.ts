@@ -2,7 +2,7 @@
 
 import { HANDS_ON_ENABLED } from '@/lib/featureFlags';
 
-export type Provider = 'GCP' | 'AWS' | 'Cisco' | 'CompTIA';
+export type Provider = 'GCP' | 'AWS' | 'Cisco' | 'CompTIA' | 'Books';
 
 export interface ExamDomain {
     label: string;
@@ -19,7 +19,12 @@ export type ColorKey =
     | 'card-pca'
     | 'card-aws-saa'
     | 'card-ccna'
-    | 'card-comptia';
+    | 'card-comptia'
+    | 'card-accelerate'
+    | 'card-sre'
+    | 'card-devops-handbook'
+    | 'card-release-it'
+    | 'card-infrastructure-as-code';
 
 export interface Exam {
     id: string;
@@ -50,35 +55,63 @@ export const cardColorMap: Record<ColorKey, string> = {
     'card-ccna': 'card-ccna',
     'card-aws-saa': 'card-aws-saa',
     'card-comptia': 'card-comptia',
+    'card-accelerate': 'card-accelerate',
+    'card-sre': 'card-sre',
+    'card-devops-handbook': 'card-devops-handbook',
+    'card-release-it': 'card-release-it',
+    'card-infrastructure-as-code': 'card-infrastructure-as-code',
 };
 
 export const providerMeta: Record<
     Provider,
-    { label: string; kicker: string; description: string }
+    {
+        label: string;
+        kicker: string;
+        description: string;
+        /** グループ件数の単位（ホーム: 英語 / ナビ: 日本語）。書籍は「試験」で数えない */
+        countUnit: { en: string; ja: string };
+        /** カード CTA の文言 */
+        ctaLabel: string;
+    }
 > = {
     GCP: {
         label: 'Google Cloud',
         kicker: 'Cloud & AI',
         description: 'クラウド基盤、生成AI、Workspaceまでを体系的に学ぶ',
+        countUnit: { en: 'exams', ja: '試験' },
+        ctaLabel: 'この試験を学ぶ',
     },
     AWS: {
         label: 'Amazon Web Services',
         kicker: 'Cloud Architecture',
         description: '可用性・セキュリティ・コストを意識した設計力を磨く',
+        countUnit: { en: 'exams', ja: '試験' },
+        ctaLabel: 'この試験を学ぶ',
     },
     Cisco: {
         label: 'Cisco',
         kicker: 'Network & Automation',
         description: 'ネットワーク基礎から設計、自動化、DevNetまでを深掘りする',
+        countUnit: { en: 'exams', ja: '試験' },
+        ctaLabel: 'この試験を学ぶ',
     },
     CompTIA: {
         label: 'CompTIA',
         kicker: 'Infrastructure & Security',
         description: 'ベンダーニュートラルなITインフラ・ネットワーク・セキュリティ標準を学ぶ',
+        countUnit: { en: 'exams', ja: '試験' },
+        ctaLabel: 'この試験を学ぶ',
+    },
+    Books: {
+        label: 'Recommended Books',
+        kicker: 'Engineering & DevOps',
+        description: '名著から学ぶエンジニアリング・DevOps・アーキテクチャの本質',
+        countUnit: { en: 'books', ja: '冊' },
+        ctaLabel: 'この書籍を読む',
     },
 };
 
-export const providerOrder: Provider[] = ['GCP', 'AWS', 'Cisco', 'CompTIA'];
+export const providerOrder: Provider[] = ['GCP', 'AWS', 'Cisco', 'CompTIA', 'Books'];
 
 const ALL_EXAMS: Exam[] = [
     {
@@ -591,6 +624,111 @@ const ALL_EXAMS: Exam[] = [
         icon: '⚡',
         provider: 'CompTIA',
     },
+    {
+        id: 'accelerate',
+        label: 'Accelerate',
+        abbr: 'Accelerate',
+        level: 'DevOps & Lean',
+        score: 'DORA 5指標 / 24能力',
+        color: 'card-accelerate',
+        href: '/recommended-books/accelerate',
+        description:
+            'LeanとDevOpsの科学。DORAメトリクス、24の能力、Westrum組織文化モデル、AI支援開発時代の最新知見までを体系的に解説する完全ガイド。',
+        domains: [
+            {
+                label: '完全解説ガイド',
+                href: '/recommended-books/accelerate',
+                pct: '完全解説',
+            },
+        ],
+        badge: '名著ガイド',
+        icon: '📚',
+        provider: 'Books',
+    },
+    {
+        id: 'sre',
+        label: 'Site Reliability Engineering',
+        abbr: 'SRE',
+        level: 'SRE & Ops',
+        score: '34章 / 15図解',
+        color: 'card-sre',
+        href: '/recommended-books/site-reliability-engineering',
+        description:
+            'Googleが実践するSite Reliability Engineering（SRE）の原則・実践・マネジメント、SLI/SLO/SLA、エラーバジェット、トイル撲滅、AI時代のSRE最新動向までを体系的に解説する完全ガイド。',
+        domains: [
+            {
+                label: '入門完全ガイド',
+                href: '/recommended-books/site-reliability-engineering',
+                pct: '完全解説',
+            },
+        ],
+        badge: '名著ガイド',
+        icon: '📚',
+        provider: 'Books',
+    },
+    {
+        id: 'the-devops-handbook',
+        label: 'The DevOps Handbook',
+        abbr: 'DevOps HB',
+        level: 'DevOps & Org',
+        score: '23章 / 19図解',
+        color: 'card-devops-handbook',
+        href: '/recommended-books/the-devops-handbook',
+        description:
+            '『The DevOps Handbook』第2版の全23章・6パート構成を初学者向けに解説。3つの道（フロー・フィードバック・継続的学習）、低リスクリリース、テレメトリ、シフトレフトセキュリティ、2026年AI時代のDORAとプラットフォームエンジニアリングまでを体系的に解説する完全ガイド。',
+        domains: [
+            {
+                label: '完全解説ガイド',
+                href: '/recommended-books/the-devops-handbook',
+                pct: '完全解説',
+            },
+        ],
+        badge: '名著ガイド',
+        icon: '📚',
+        provider: 'Books',
+    },
+    {
+        id: 'release-it',
+        label: 'Release It!',
+        abbr: 'Release It!',
+        level: 'Production-Ready & Stability',
+        score: '4部17章 / 14図解',
+        color: 'card-release-it',
+        href: '/recommended-books/release-it',
+        description:
+            '『Release It!: Design and Deploy Production-Ready Software』初版・第2版の完全ガイド。サーキットブレーカー、バルクヘッド、タイムアウト、ゼロダウンタイムデプロイ、カオスエンジニアリングまで、本番対応ソフトウェア設計・運用の勘所を体系的に解説。',
+        domains: [
+            {
+                label: '完全解説ガイド',
+                href: '/recommended-books/release-it',
+                pct: '完全解説',
+            },
+        ],
+        badge: '名著ガイド',
+        icon: '📚',
+        provider: 'Books',
+    },
+    {
+        id: 'infrastructure-as-code',
+        label: 'Infrastructure as Code',
+        abbr: 'IaC',
+        level: 'IaC & Architecture',
+        score: '5部22章 / 26図解',
+        color: 'card-infrastructure-as-code',
+        href: '/recommended-books/infrastructure-as-code',
+        description:
+            'Kief Morris 著『Infrastructure as Code』の考え方を土台に、2026年最新エコシステム（Terraform / OpenTofu / Pulumi / GitOps / Policy as Code）を踏まえて再構成した、初学者向けの実践ガイド。',
+        domains: [
+            {
+                label: '完全解説ガイド',
+                href: '/recommended-books/infrastructure-as-code',
+                pct: '完全解説',
+            },
+        ],
+        badge: '名著ガイド',
+        icon: '📚',
+        provider: 'Books',
+    },
 ];
 
 export const EXAMS: Exam[] = HANDS_ON_ENABLED
@@ -604,7 +742,10 @@ export interface Stat {
 
 export const STATS: Stat[] = [
     {
-        value: String(EXAMS.filter((exam) => exam.status !== 'coming-soon').length),
+        value: String(
+            EXAMS.filter((exam) => exam.status !== 'coming-soon' && exam.provider !== 'Books')
+                .length,
+        ),
         label: '対応試験数',
     },
     { value: '50+', label: '学習チャプター' },
