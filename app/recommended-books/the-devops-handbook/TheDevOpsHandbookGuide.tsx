@@ -29,9 +29,6 @@ const CHECKLIST_ITEMS = [
     'コンウェイの法則を踏まえ、目指すアーキテクチャに合わせた組織設計（逆コンウェイ作戦）を検討したか',
 ];
 
-/**
- * The DevOps Handbook 完全ガイドのメインコンポーネント。
- */
 export const TheDevOpsHandbookGuide: FC = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [checkedItems, setCheckedItems] = useState<Record<number, boolean>>({});

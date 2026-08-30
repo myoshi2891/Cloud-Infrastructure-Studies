@@ -8,9 +8,6 @@ export const metadata: Metadata = {
         'Michael T. Nygard 著『Release It!』の初版・第2版に基づく完全ガイド。サーキットブレーカー、バルクヘッド、タイムアウト、ゼロダウンタイムデプロイ、カオスエンジニアリングまで、本番対応ソフトウェアの設計・運用パターンを体系的に解説。',
 };
 
-/**
- * Release It! 完全ガイドのページエントリーポイント（Server Component）。
- */
 export default function ReleaseItPage() {
     return <ReleaseItGuide />;
 }
