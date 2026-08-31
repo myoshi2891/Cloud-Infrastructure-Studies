@@ -356,7 +356,7 @@ flowchart LR
     class B,G highlightFill
 ```
 
-原著3.3節では、最初のアプリケーションを`kubectl create deployment`で作成し、`kubectl expose`で外部公開し、`kubectl scale`で水平スケールするという一連の流れを体験します。これは第5部（Deployment、Service）で扱う概念の実践的な入り口になっています。
+原著3.3節では、最初のアプリケーションを`kubectl create deployment`で作成し、`kubectl expose`でServiceを作成し、`kubectl scale`で水平スケールするという一連の流れを体験します。`kubectl expose`が行うのはServiceの作成であり、それ自体が自動的に外部公開を行うわけではありません（既定では`ClusterIP`でクラスタ内部からのみ到達可能）。クラスタ外部からアクセスさせたい場合は`--type=NodePort`または`--type=LoadBalancer`を明示的に指定します。これは第5部（Deployment、Service）で扱う概念の実践的な入り口になっています。
 
 **ベストプラクティス**
 - 学習段階ではkindまたはMinikubeでローカルに複数ノードクラスタを再現し、Podのスケジューリングやノード障害時の挙動を安全に試す。
@@ -381,7 +381,7 @@ flowchart TB
     class RECONCILE highlightFill
 ```
 
-すべてのKubernetesオブジェクトのマニフェストは`apiVersion`・`kind`・`metadata`・`spec`（一部`status`）という共通構造を持ちます。`spec`は「あるべき姿」をユーザーが宣言する部分であり、`status`はコントローラが実際の観測結果を書き込む部分です。この分離こそが、Kubernetesの**宣言的（declarative）**なモデルの核心です。
+Kubernetesオブジェクトのマニフェストは`apiVersion`・`kind`・`metadata`を共通で持ち、多くのオブジェクトはこれに加えて`spec`（および`status`）を持ちます。ただし`spec`はすべてのオブジェクトに必須の共通フィールドではありません。例えば`ConfigMap`は`spec`を持たず、`data`・`binaryData`・`immutable`をトップレベルのフィールドとして使います（`Secret`も同様に`data`/`stringData`を使います）。`spec`は「あるべき姿」をユーザーが宣言する部分であり、`status`はコントローラが実際の観測結果を書き込む部分です。この分離こそが、Kubernetesの**宣言的（declarative）**なモデルの核心です。
 
 **Event オブジェクト（原著4.3節）**
 
@@ -1072,7 +1072,7 @@ Kubernetesは年3回（おおむね4ヶ月おき）のマイナーバージョ�
 | バージョン | 状態(2026/8/29時点) | リリース日 | サポート終了予定(EOL) |
 |---|---|---|---|
 | v1.37 (Garhwal) | 最新・サポート中 | 2026-08-26 | 2027-10-28 |
-| v1.36 | サポート中 | 2026年4月 | 未確認（v1.37の3世代前まで公式サポート） |
+| v1.36 | サポート中 | 2026年4月 | 2027-06-28 |
 | v1.35 | サポート中 | 2025年後半 | 2027-02-28 |
 | v1.34 (Of Wind & Will) | メンテナンスモード（標準サポート終了） | 2025-08-27 | 2026-10-27 |
 | v1.33 | サポート終了（EOL済み） | - | 2026-06-28 |
@@ -1156,7 +1156,7 @@ flowchart TB
 Kubernetes公式ブログは、この機能が「6年以上の歳月を経てGAに到達した」重要なマイルストーンであると位置づけています。CPU変更は多くの場合コンテナ再起動なしに反映できる一方、メモリ制限の変更は`resizePolicy`の設定次第でコンテナ再起動を伴う場合がある点に注意が必要です。
 
 **ベストプラクティス**
-- ステートフルなワークロード（データベース、長時間実行バッチジョブ）ほどIn-Place Resizeの恩恵が大きい。VerticalPodAutoscaler（VPA）v1.4以降の`InPlaceOrRecreate`モードと組み合わせ、推奨リソース値を無停止で適用する運用を検討する。
+- ステートフルなワークロード（データベース、長時間実行バッチジョブ）ほどIn-Place Resizeの恩恵が大きい。VerticalPodAutoscaler（VPA）v1.4以降の`InPlaceOrRecreate`モードと組み合わせて推奨リソース値を適用する運用を検討する。ただし無停止が保証されるわけではない：モード名のとおり、In-Placeでの更新に失敗した場合はPodのEvictionと再作成にフォールバックするため、StatefulSetや長時間実行ジョブでは再起動・既存コネクションの切断が起こりうる。PodDisruptionBudgetの設定と再起動耐性の確認を前提に適用する。
 - JVMベースのアプリケーションなど、メモリ上限変更が自動的にヒープサイズへ反映されないランタイムでは、In-Place Resizeだけに頼らずアプリケーション側の設定連携も確認する。
 
 **出典：** Kubernetes公式ブログ「Kubernetes v1.35: In-Place Pod Resize Graduates to Stable」(https://kubernetes.io/blog/2025/12/19/kubernetes-v1-35-in-place-pod-resize-ga)
@@ -1190,7 +1190,7 @@ flowchart TB
 | GKE Gateway / AWS Gateway API Controller / Azure Application Gateway for Containers | 各クラウドのマネージドGateway API実装 |
 
 **ベストプラクティス**
-- 既存クラスタで`kubectl get ingress -A`を実行し、Ingress-NGINXへの依存範囲を棚卸しする。特にNGINX固有アノテーション（`nginx.ingress.kubernetes.io/*`）に依存した設定は、Gateway APIのフィルタ機能への置き換えが必要になる。
+- 既存クラスタでは次の順に棚卸しする。① `kubectl get ingress -A`でIngressリソースの全体像を把握する。② `kubectl get pods -A -l app.kubernetes.io/name=ingress-nginx`（必要に応じて`kubectl get deploy,svc -A -l app.kubernetes.io/name=ingress-nginx`）でIngress-NGINXコントローラPodの有無と稼働している名前空間を特定する。③ `kubectl get ingressclass`で`nginx`のIngressClassが定義・既定化されていないかを確認する。④ `kubectl describe ingress <name> -n <namespace>`で個々のIngressの詳細（ホスト、パス、TLS、アノテーション）を確認する。特にNGINX固有アノテーション（`nginx.ingress.kubernetes.io/*`）に依存した設定は、Gateway APIのフィルタ機能への置き換えが必要になる。
 - 新規クラスタ構築時はIngressを新たに採用せず、最初からGateway API + 実装（Envoy Gateway、Cilium、クラウドマネージド実装等）で構築する。
 - Kubernetesの資格試験（CKA/CKAD）のシラバスにも2026年にGateway APIの出題範囲が追加されている点からも、エンジニアとしての学習優先度が上がっていることがわかる。
 
@@ -1210,7 +1210,15 @@ flowchart LR
     class C highlightFill
 ```
 
-2026年時点で、主要なサービスメッシュ（Istio 1.22以降、Linkerd 2.16以降、Cilium Service Mesh）はいずれもネイティブサイドカーを推奨デプロイモデルとして採用しており、Fluent BitやOpenTelemetry Collectorのようなログ・可観測性エージェントも同様のパターンに追従しています。
+ネイティブサイドカーへの対応状況と推奨デプロイモデルは製品ごとに異なるため、一律に「サービスメッシュはネイティブサイドカー推奨」と捉えないでください。
+
+| 製品 | ネイティブサイドカー対応 | 公式ドキュメントに基づく推奨デプロイモデル |
+|---|---|---|
+| Istio | サイドカーモードで対応（1.22以降、Kubernetes 1.29+が前提） | サイドカーモードとAmbientモード（ztunnel + waypointによるサイドカーレス構成、1.24でGA）の2つを提供し、要件に応じた選択を案内している。サイドカー一択ではない |
+| Linkerd | 対応（2.16以降、Kubernetes 1.29+が前提） | プロキシをネイティブサイドカーとして注入する構成 |
+| Cilium Service Mesh | サイドカーを前提としないため該当しない | eBPFとノード単位のEnvoyによるサイドカーレスモデル |
+
+各製品の対応バージョンとモードは更新が速いため、導入前に必ず公式ドキュメントで最新の記載を確認してください。なお、Fluent BitやOpenTelemetry Collectorのようなログ・可観測性エージェントについては、ネイティブサイドカーとして動かすパターンが一般的になっています。
 
 **従来のサイドカーパターンとの違い**
 
