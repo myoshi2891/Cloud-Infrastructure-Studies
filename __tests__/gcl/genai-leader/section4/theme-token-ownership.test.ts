@@ -55,12 +55,25 @@ describe('Generative AI Leader Section 4 theme token ownership', () => {
         expect(css).not.toMatch(/var\(\s*--(?:serif|mono|body)\s*[,)]/);
     });
 
-    it('keeps page.tsx inline styles on the global theme tokens', () => {
-        const page = read(PAGE_PATH);
-        const localRefs = page.match(
-            /var\(\s*--(?!color-|font-|radius-|header-h|disclaimer-height|fixed-offset)[a-z0-9-]+\s*[,)]/g
+    it('keeps page.tsx inline styles on tokens declared in globals.css', () => {
+        // 接頭辞（--color- / --font- 等）の許可では `--color-genai-s4-ambr` のような
+        // 綴り間違いを検出できないため、globals.css の実宣言集合と突き合わせる。
+        const declared = new Set(
+            Array.from(
+                read('app/globals.css').matchAll(/(?:^|[{;\n])\s*(--[\w-]+)\s*:/g),
+                (match) => match[1]
+            )
         );
+        expect(declared.size).toBeGreaterThan(0);
 
-        expect(localRefs).toBeNull();
+        const referenced = Array.from(
+            read(PAGE_PATH).matchAll(/var\(\s*(--[\w-]+)\s*[,)]/g),
+            (match) => match[1]
+        );
+        const undeclared = [
+            ...new Set(referenced.filter((token) => !declared.has(token))),
+        ];
+
+        expect(undeclared).toEqual([]);
     });
 });
