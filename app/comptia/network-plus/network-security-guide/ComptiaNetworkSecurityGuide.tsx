@@ -886,13 +886,23 @@ export function ComptiaNetworkSecurityGuide() {
                             </thead>
                             <tbody>
                                 {CHECKLIST_ROWS.map((text, idx) => (
-                                    <tr
-                                        key={text}
-                                        onClick={() => toggleCheck(idx)}
-                                        style={{ cursor: 'pointer' }}
-                                    >
-                                        <td>{text}</td>
-                                        <td>{checkedItems[idx] ? '☑' : '☐'}</td>
+                                    <tr key={text}>
+                                        <td id={`checklist-label-${idx}`}>{text}</td>
+                                        <td>
+                                            {/* ネイティブの checkbox を操作主体にし、☐/☑ は装飾として表示する */}
+                                            <label className="checklist-check">
+                                                <input
+                                                    type="checkbox"
+                                                    className="sr-only"
+                                                    checked={checkedItems[idx] ?? false}
+                                                    onChange={() => toggleCheck(idx)}
+                                                    aria-labelledby={`checklist-label-${idx}`}
+                                                />
+                                                <span aria-hidden="true">
+                                                    {checkedItems[idx] ? '☑' : '☐'}
+                                                </span>
+                                            </label>
+                                        </td>
                                     </tr>
                                 ))}
                             </tbody>

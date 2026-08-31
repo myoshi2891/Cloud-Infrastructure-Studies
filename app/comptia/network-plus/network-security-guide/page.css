@@ -296,7 +296,7 @@
 
 .comptia-network-security-page .diagram-wrapper {
     display: flex;
-    justify-content: center;
+    justify-content: safe center;
     margin: 20px 0 28px;
     overflow-x: auto;
     padding: 12px 0;
@@ -306,13 +306,14 @@
 }
 
 .comptia-network-security-page .mermaid-render {
-    width: 100%;
+    /* 図の自然な幅を保ち、収まる場合のみコンテナ幅まで広げる */
+    width: max-content;
+    min-width: 100%;
     display: flex;
     justify-content: center;
 }
 
 .comptia-network-security-page .mermaid-render svg {
-    max-width: 100% !important;
     height: auto !important;
 }
 
@@ -321,6 +322,19 @@
     font-size: 13px;
     color: var(--color-network-foreground-faint);
     margin: -16px 0 24px;
+}
+
+.comptia-network-security-page .checklist-check {
+    display: inline-flex;
+    cursor: pointer;
+    line-height: 1;
+    border-radius: var(--radius-sm, 4px);
+}
+
+/* checkbox 本体は sr-only のため、フォーカスリングは装飾グリフ側に描画する */
+.comptia-network-security-page .checklist-check:has(input:focus-visible) {
+    outline: 2px solid var(--color-network-info);
+    outline-offset: 2px;
 }
 
 .comptia-network-security-page .checklist-table td:first-child {
