@@ -306,7 +306,7 @@ HTTP/2はTCP上で複数のリクエストを1本の接続に多重化するこ�
 
 | プロトコル | トランスポート | 主な利点 | 主な欠点/制約 |
 |---|---|---|---|
-| HTTP/1.1 | TCP | 単純で理解しやすい | 1接続1リクエストのHOLブロッキング |
+| HTTP/1.1 | TCP | 単純で理解しやすい | 持続接続でも1本の接続上でリクエストが順番に処理され、先行応答が遅れると後続が待たされるアプリケーション層のHOLブロッキングが起きる |
 | HTTP/2 | TCP | ストリーム多重化、ヘッダ圧縮(HPACK) | TCPレベルのHOLブロッキングが残る |
 | HTTP/3 | QUIC(UDP) | トランスポート層までHOLブロッキング解消、0-RTT再接続、コネクションマイグレーション | UDPをブロックするファイアウォール環境での互換性課題 |
 
@@ -347,7 +347,8 @@ DNSは名前解決だけでなく、以下のような役割も担っていま�
 | DoT (DNS over TLS) | TLS/853番ポート | OSレベルで全アプリのDNSを一括暗号化しやすい |
 | DoH (DNS over HTTPS) | HTTPS/443番ポート | 通常のWeb通信に紛れるためブロックされにくい。Firefoxは米国ユーザーに対してDoHをデフォルトで有効化している |
 | DoQ (DNS over QUIC) | QUIC/853番ポート | モバイル網での接続切り替えに強く、モバイルOSでの採用が進行中 |
-| ECH (Encrypted Client Hello) | TLS拡張(RFC 9849) | TLSハンドシェイク中のSNI(接続先ホスト名)自体を暗号化 |
+
+**補足: TLS拡張によるSNIの秘匿(ECH)**:ECH(Encrypted Client Hello)はDNSプロトコルではなく、TLS 1.3の拡張(RFC 9849)です。TLSハンドシェイクの冒頭で平文送信されるClientHello、とりわけ接続先ホスト名を示すSNIを暗号化し、経路上の観測者からアクセス先ドメインを隠します。暗号化DNSで名前解決を秘匿しても、続くTLS接続でSNIが平文のままなら接続先は露見するため、ECHは暗号化DNSを補完する別レイヤの仕組みとして理解してください。
 
 ### 2.4 電子メールとソケットプログラミングの基礎
 
@@ -465,7 +466,7 @@ flowchart LR
     TAHOE["TCP Tahoe<br/>(1988年)<br/>損失=輻輳とみなしウィンドウを大幅縮小"] --> RENO["TCP Reno<br/>(1990年)<br/>高速再送・高速回復を追加"]
     RENO --> CUBIC["CUBIC<br/>(2008年〜)<br/>3次関数でウィンドウを調整、<br/>Linuxの長年のデフォルト"]
     CUBIC --> BBR["BBR<br/>(2016年, Google)<br/>損失ではなく帯域・RTTの<br/>実測モデルで制御"]
-    BBR --> BBR3["BBRv3<br/>(2023年〜)<br/>再送率12%削減を実証、<br/>2026年時点でLinuxカーネル<br/>主流化が進行中"]
+    BBR --> BBR3["BBRv3<br/>(2023年〜)<br/>再送率12%削減を実証、<br/>2026年時点でLinuxカーネル<br/>本流への統合を検討中"]
 
     classDef ccFill fill:#132a4a,stroke:#7c9eff,color:#e8eefc
     class TAHOE,RENO,CUBIC,BBR,BBR3 ccFill
@@ -642,7 +643,7 @@ flowchart TB
 flowchart TB
     subgraph LS["リンクステート型(例: OSPF)"]
         direction TB
-        LS1["ネットワーク全体のトポロジー情報を<br/>全ルータがブロードキャストで共有"]
+        LS1["ネットワーク全体のトポロジー情報を<br/>全ルータがフラッディングで共有"]
         LS2["各ルータが独立して<br/>ダイクストラ法で最短経路を計算"]
     end
     subgraph DV["距離ベクトル型(例: RIP)"]
@@ -659,7 +660,7 @@ flowchart TB
 
 | 比較項目 | リンクステート型 | 距離ベクトル型 |
 |---|---|---|
-| 情報共有範囲 | ネットワーク全体をブロードキャスト | 隣接ルータのみと交換 |
+| 情報共有範囲 | ネットワーク全体へフラッディング | 隣接ルータのみと交換 |
 | 収束速度 | 比較的速い | 遅くなりがち(カウント・トゥ・インフィニティ問題) |
 | 計算量 | 各ノードでO(n²)程度のダイクストラ計算 | 反復計算だが1ノードあたりの負荷は軽い |
 | 代表プロトコル | OSPF、IS-IS | RIP(現在はほぼ使われず教育目的が中心) |
@@ -710,7 +711,7 @@ sequenceDiagram
 
     Owner->>Victim: 正規のプレフィックス広告(203.0.113.0/24, origin AS100)
     Attacker->>Victim: 偽装した広告(203.0.113.0/24, origin AS666)
-    Note over Victim: RPKI検証なしの場合、<br/>より詳細/短いパスの広告が<br/>選ばれ通信がハイジャックされる恐れ
+    Note over Victim: RPKI検証なしの場合、<br/>より詳細なプレフィックスは<br/>Longest Prefix Match により転送で優先される。<br/>同一プレフィックス同士では AS_PATH の短さが<br/>BGP経路選択の一要素として働く<br/>(常に最優先の基準ではない)ため<br/>通信がハイジャックされる恐れ
 ```
 
 この問題への対処として普及が進んでいるのがRPKI(Resource Public Key Infrastructure)です。
@@ -800,7 +801,7 @@ flowchart LR
 |---|---|---|
 | 転送の判断基準 | 宛先MACアドレス | 宛先IPアドレス |
 | アドレステーブルの構築方法 | 自己学習(送信元MACを見て自動的に学習) | ルーティングプロトコルによる転送テーブルの構築 |
-| ブロードキャストドメイン | 1つのブロードキャストドメインを構成 | ブロードキャストドメインを分割する |
+| ブロードキャストドメイン | VLAN未分割のスイッチは1つのブロードキャストドメインを構成 | ブロードキャストドメインを分割する |
 | プラグアンドプレイ性 | 高い(設定不要で自己学習) | 相対的に設定が必要 |
 
 ```mermaid
@@ -1176,46 +1177,49 @@ flowchart TD
 
 ### DNS / 暗号化DNS関連
 
-5. Mozilla・業界動向を踏まえたDoH/DoQ/ECH解説記事「Encrypted DNS Reaches a Turning Point as DoQ Adoption Accelerates」— https://pbxscience.com/encrypted-dns-reaches-a-turning-point-as-doq-adoption-accelerates/
+5. RFC 8484「DNS Queries over HTTPS (DoH)」— https://www.rfc-editor.org/rfc/rfc8484
+6. RFC 9250「DNS over Dedicated QUIC Connections (DoQ)」— https://www.rfc-editor.org/rfc/rfc9250
+7. RFC 9849「TLS Encrypted Client Hello (ECH)」— https://www.rfc-editor.org/rfc/rfc9849
+8. PBX Science(一次情報ではなく業界動向を扱う二次情報源)「Encrypted DNS Reaches a Turning Point as DoQ Adoption Accelerates」— https://pbxscience.com/encrypted-dns-reaches-a-turning-point-as-doq-adoption-accelerates/
 
 ### トランスポート層 / 輻輳制御(BBR)関連
 
-6. Google「BBR congestion control」公式リポジトリ(IETF発表資料含む) — https://github.com/google/bbr
-7. IETF Datatracker「BBR Congestion Control」(draft-ietf-ccwg-bbr) — https://datatracker.ietf.org/doc/draft-ietf-ccwg-bbr/
-8. Phoronix「Google's BBRv3 TCP Congestion Control Showing Great Results, Will Be Upstreamed To Linux」— https://www.phoronix.com/news/Google-BBRv3-Linux
+9. Google「BBR congestion control」公式リポジトリ(IETF発表資料含む) — https://github.com/google/bbr
+10. IETF Datatracker「BBR Congestion Control」(draft-ietf-ccwg-bbr) — https://datatracker.ietf.org/doc/draft-ietf-ccwg-bbr/
+11. Phoronix「Google's BBRv3 TCP Congestion Control Showing Great Results, Will Be Upstreamed To Linux」— https://www.phoronix.com/news/Google-BBRv3-Linux
 
 ### ネットワーク層 / IPv6普及動向
 
-9. APNIC Blog「Google hits 50% IPv6」(Geoff Huston系譜のAPNIC Labs分析) — https://blog.apnic.net/2026/04/28/google-hits-50-ipv6/
-10. Internet Society Pulse「18 Years Later, IPv6 Reaches Majority」— https://pulse.internetsociety.org/en/blog/2026/04/18-years-later-ipv6-reaches-majority/
-11. Google公式IPv6統計ページ — https://www.google.com/intl/en/ipv6/statistics.html
+12. APNIC Blog「Google hits 50% IPv6」(Geoff Huston系譜のAPNIC Labs分析) — https://blog.apnic.net/2026/04/28/google-hits-50-ipv6/
+13. Internet Society Pulse「18 Years Later, IPv6 Reaches Majority」— https://pulse.internetsociety.org/en/blog/2026/04/18-years-later-ipv6-reaches-majority/
+14. Google公式IPv6統計ページ — https://www.google.com/intl/en/ipv6/statistics.html
 
 ### コントロールプレーン / BGP・RPKIセキュリティ関連
 
-12. Cloudflare「Is BGP safe yet?」(Job Snijders氏のRPKI 101ウェビナー言及含む) — https://isbgpsafeyet.com/
-13. Cloudflare Blog「Helping build a safer Internet by measuring BGP RPKI Route Origin Validation」— https://blog.cloudflare.com/rpki-updates-data/
-14. IETF Datatracker: Job Snijders氏によるRFC・Internet-Draft一覧 — https://datatracker.ietf.org/person/Job%20Snijders
-15. IPregistry Blog「RPKI Covers 67% of Routes, But Four Attack Classes Slip Right Past It」(RIPE Labs Antonio Prado氏の分析を引用) — https://ipregistry.co/blog/rpki-blind-spots/
+15. Cloudflare「Is BGP safe yet?」(Job Snijders氏のRPKI 101ウェビナー言及含む) — https://isbgpsafeyet.com/
+16. Cloudflare Blog「Helping build a safer Internet by measuring BGP RPKI Route Origin Validation」— https://blog.cloudflare.com/rpki-updates-data/
+17. IETF Datatracker: Job Snijders氏によるRFC・Internet-Draft一覧 — https://datatracker.ietf.org/person/Job%20Snijders
+18. IPregistry Blog「RPKI Covers 67% of Routes, But Four Attack Classes Slip Right Past It」(RIPE Labs Antonio Prado氏の分析を引用) — https://ipregistry.co/blog/rpki-blind-spots/
 
 ### リンク層・無線 / Wi-Fi・6G関連
 
-16. IEEE 802.11be技術論文「Wi-Fi 7: Feature Summary and Performance Evaluation」— https://arxiv.org/pdf/2309.15951
-17. Wireless Broadband Alliance「Wireless Broadband Alliance Reveals its Wi-Fi Predictions for 2026 and Beyond」— https://wballiance.com/wireless-broadband-alliance-reveals-its-wi-fi-predictions-for-2026-and-beyond/
-18. Ericsson公式ブログ「6G standardization milestones and RAN decisions」— https://www.ericsson.com/en/blog/2026/6/6g-standardization-key-milestones-and-ran-decisions
-19. Qualcomm公式ブログ「Building the 6G standard: What 3GPP's June 2026 plenary decisions mean for device makers」— https://www.qualcomm.com/news/onq/2026/06/6g-standardization-release-21-milestones
+19. IEEE 802.11be技術論文「Wi-Fi 7: Feature Summary and Performance Evaluation」— https://arxiv.org/pdf/2309.15951
+20. Wireless Broadband Alliance「Wireless Broadband Alliance Reveals its Wi-Fi Predictions for 2026 and Beyond」— https://wballiance.com/wireless-broadband-alliance-reveals-its-wi-fi-predictions-for-2026-and-beyond/
+21. Ericsson公式ブログ「6G standardization milestones and RAN decisions」— https://www.ericsson.com/en/blog/2026/6/6g-standardization-key-milestones-and-ran-decisions
+22. Qualcomm公式ブログ「Building the 6G standard: What 3GPP's June 2026 plenary decisions mean for device makers」— https://www.qualcomm.com/news/onq/2026/06/6g-standardization-release-21-milestones
 
 ### セキュリティ / 耐量子暗号(PQC)関連
 
-20. Cloudflare Blog「The state of the post-quantum Internet」— https://blog.cloudflare.com/pq-2024/
-21. Cloudflare Blog「State of the post-quantum Internet in 2025」— https://blog.cloudflare.com/pq-2025/
-22. Cloudflare Blog「Conventional cryptography is under threat. Upgrade to post-quantum cryptography with Cloudflare Zero Trust.」— https://blog.cloudflare.com/post-quantum-zero-trust/
-23. Cloudflare Blog「Cloudflare One is the first SASE offering modern post-quantum encryption across the full platform」— https://blog.cloudflare.com/post-quantum-sase/
+23. Cloudflare Blog「The state of the post-quantum Internet」— https://blog.cloudflare.com/pq-2024/
+24. Cloudflare Blog「State of the post-quantum Internet in 2025」— https://blog.cloudflare.com/pq-2025/
+25. Cloudflare Blog「Conventional cryptography is under threat. Upgrade to post-quantum cryptography with Cloudflare Zero Trust.」— https://blog.cloudflare.com/post-quantum-zero-trust/
+26. Cloudflare Blog「Cloudflare One is the first SASE offering modern post-quantum encryption across the full platform」— https://blog.cloudflare.com/post-quantum-sase/
 
 ### セキュリティ / DDoS脅威動向関連
 
-24. Cloudflare Blog「Cloudflare DDoS Threat Report H1 2026」— https://blog.cloudflare.com/ddos-threat-report-2026-h1/
-25. Cloudflare Radar「Reports」(脅威インテリジェンス公開ダッシュボード) — https://radar.cloudflare.com/reports
-26. Cloudflare公式プレスリリース「Cloudflare 2026 Threat Intelligence Report」— https://www.cloudflare.com/press/press-releases/2026/cloudflare-2026-threat-intelligence-report-nation-state-actors-and/
+27. Cloudflare Blog「Cloudflare DDoS Threat Report H1 2026」— https://blog.cloudflare.com/ddos-threat-report-2026-h1/
+28. Cloudflare Radar「Reports」(脅威インテリジェンス公開ダッシュボード) — https://radar.cloudflare.com/reports
+29. Cloudflare公式プレスリリース「Cloudflare 2026 Threat Intelligence Report」— https://www.cloudflare.com/press/press-releases/2026/cloudflare-2026-threat-intelligence-report-nation-state-actors-and/
 
 ---
 
