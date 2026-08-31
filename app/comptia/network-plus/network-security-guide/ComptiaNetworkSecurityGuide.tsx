@@ -317,7 +317,7 @@ export function ComptiaNetworkSecurityGuide() {
                                 <tr>
                                     <td>TACACS+</td>
                                     <td>ネットワーク機器の管理者アクセス制御</td>
-                                    <td>全体を暗号化</td>
+                                    <td>ヘッダーは平文、ボディ全体を暗号化</td>
                                     <td>
                                         Cisco系機器で多用。認証・認可・アカウンティングを分離して制御可能
                                     </td>
