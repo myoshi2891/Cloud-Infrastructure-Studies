@@ -457,7 +457,7 @@ Podには`phase`（大まかな状態）と、より詳細な`conditions`（複�
 stateDiagram-v2
     direction LR
     [*] --> Pending: Pod作成
-    Pending --> Running: 全コンテナ起動開始
+    Pending --> Running: ノードにスケジュール済みで<br/>全コンテナが作成され、少なくとも<br/>1つが実行中/起動中/再起動中
     Running --> Succeeded: 全コンテナが正常終了<br/>(Job等)
     Running --> Failed: いずれかのコンテナが<br/>異常終了(再起動しない設定)
     Running --> Running: liveness失敗時に<br/>自動再起動
@@ -901,15 +901,17 @@ sequenceDiagram
     participant RSOLD as ReplicaSet(v1)
     participant RSNEW as ReplicaSet(v2)
 
-    Note over D: RollingUpdate開始<br/>maxSurge/maxUnavailableに従う
+    Note over D: RollingUpdate開始<br/>maxSurge/maxUnavailableに従う<br/>(以下は maxUnavailable: 0 の場合)
     D->>RSNEW: replicas +1
-    RSNEW-->>D: 新Podがreadyになるまで待機
+    RSNEW-->>D: 新Podがreadyになるまで待機<br/>(maxUnavailable: 0 のため<br/>先に旧を縮小できない)
     D->>RSOLD: replicas -1
     D->>RSNEW: replicas +1
     RSNEW-->>D: readyを確認
     D->>RSOLD: replicas -1
     Note over D: 全Podの入れ替えが完了するまで繰り返す
 ```
+
+> 上図は`maxUnavailable: 0`（可用性最優先）の場合の順序です。`maxUnavailable`が0より大きい場合は、新Podのreadyを待たずに先に旧ReplicaSetを縮小できます。つまり「増やしてから減らす」か「減らしてから増やす」かは`maxSurge`と`maxUnavailable`の設定で変わります（`maxSurge: 0`の場合は縮小が先行します）。
 
 **その他のデプロイ戦略（原著15.3節）**
 
@@ -1313,7 +1315,7 @@ Kubernetes関連の実務スキルを客観的に示す手段として、Linux F
 
 本ガイド全体で紹介したベストプラクティスを、実務で確認しやすいチェックリスト形式にまとめました。
 
-- [ ] コンテナイメージのタグに`latest`を使わず、セマンティックバージョンまたはコミットハッシュで固定している（第0部）
+- [ ] コンテナイメージのタグに`latest`を使わず、本番環境では`image@sha256:<ダイジェスト>`形式のダイジェスト参照でイメージを一意に固定している（タグは付け替え可能なため、それ自体はバージョンを固定しない）。必要に応じてCosign等（Sigstore）による署名検証をデプロイ前のゲートに組み込んでいる（第0部）
 - [ ] コントロールプレーンを冗長化し、`kubectl describe`／`kubectl get events`をトラブルシューティングの第一手として習慣化している（第1部）
 - [ ] `kubectl explain`でリソースの仕様をその場で確認する習慣がある（第1部）
 - [ ] Liveness ProbeとReadiness Probeの役割を分離し、外部依存の障害でLiveness Probeが失敗しないようにしている（第2部）
@@ -1362,7 +1364,7 @@ Kubernetes関連の実務スキルを客観的に示す手段として、Linux F
 | ラベルセレクタ | ラベルの値に基づいてオブジェクトの集合を絞り込む仕組み |
 | Reconciliation Loop（調整ループ） | 望ましい状態(spec)と実際の状態(status)の差分を継続的に監視し、実際の状態を望ましい状態に近づけるコントローラの基本動作原理 |
 | ネイティブサイドカーコンテナ | `initContainers`に`restartPolicy: Always`を指定して実装する、ライフサイクル管理が組み込まれたサイドカーパターン(v1.33でGA) |
-| DRA (Dynamic Resource Allocation) | GPU等の特殊デバイスを`ResourceClaim`経由で柔軟に割り当てる仕組み(v1.34でGA) |
+| DRA (Dynamic Resource Allocation) | GPU等の特殊デバイスを`ResourceClaim`経由で柔軟に割り当てる仕組み。v1.34でGAになったのはコアAPIの`resource.k8s.io/v1`であり、DRA機能セット全体のStable化はv1.35 |
 | In-Place Pod Resize | 実行中のPodのCPU/メモリ割り当てを、Podを再作成せずに変更できる機能(v1.35でGA)。コンテナごとの`resizePolicy`が`RestartContainer`の場合はコンテナ再起動を伴う |
 | Operator | アプリケーション固有の運用知識をコントローラとしてコード化したKubernetes拡張パターン |
 | kubectl | Kubernetesクラスタを操作するための公式コマンドラインツール |
