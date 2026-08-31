@@ -70,11 +70,13 @@
 ---
 
 <a id="part0"></a>
+
 ## 第0部: コンテナ技術の基礎（本書の前提知識）
 
 原著は「読者にDockerやコンテナの経験は不要」と明言していますが（O'Reillyページの About the Reader: *"Written for intermediate software developers. No prior experience with Kubernetes or containers is required."*）、第2章でコンテナの基礎をかなり丁寧に扱っています。本ガイドでもまずコンテナの基礎から入り、Kubernetesの必然性を理解できるようにします。
 
 <a id="0-1"></a>
+
 ### 0.1 コンテナとVMの違い
 
 仮想マシン（VM）はハイパーバイザー上でゲストOS全体を仮想化するのに対し、コンテナはホストOSのカーネル機能（Linux Namespaces・cgroups）を使ってプロセスを隔離する軽量な仮想化技術です。原著2.1.1節「Comparing containers to VMs」で扱われる通り、コンテナはVMに比べて起動が速く、オーバーヘッドが小さいという特徴があります。
@@ -124,6 +126,7 @@ flowchart TB
 - 1コンテナ1プロセス（1責務）を基本原則とし、コンテナ内でinitシステムやSSHデーモンを常駐させない。
 
 <a id="0-2"></a>
+
 ### 0.2 Dockerとコンテナランタイム
 
 原著2.1.2〜2.1.3節では、Dockerを使ってHello, Worldコンテナを起動する体験から始まり、2.2節で本書全体を通して使う実践的な題材アプリケーション「Kiada（Kubernetes in Action Demo Application）」の構築へと進みます。Kiadaは、原著全編を通して機能を段階的に拡張していくNode.jsベースのデモアプリケーションです。
@@ -140,9 +143,10 @@ flowchart LR
 ```
 
 <a id="0-3"></a>
+
 ### 0.3 OCI標準とコンテナ代替ツール
 
-原著2.1.4節では、Docker以外のコンテナツール（Podman、Buildahなど）とOpen Container Initiative（OCI）によるイメージ・ランタイムの標準化について触れています。Kubernetes自体は2020年にDockerを直接のコンテナランタイムとして使うDockershimを廃止しており、containerdやCRI-OなどCRI（Container Runtime Interface）準拠のランタイムを使うのが2026年時点の標準です。
+原著2.1.4節では、Docker以外のコンテナツール（Podman、Buildahなど）とOpen Container Initiative（OCI）によるイメージ・ランタイムの標準化について触れています。Kubernetes自体はDockerを直接のコンテナランタイムとして使うDockershimを2020年12月のv1.20で非推奨化し、2022年5月のv1.24で削除しており、containerdやCRI-OなどCRI（Container Runtime Interface）準拠のランタイムを使うのが2026年時点の標準です。
 
 | ツール | 役割 | 備考 |
 |---|---|---|
@@ -160,9 +164,11 @@ flowchart LR
 ---
 
 <a id="part1"></a>
+
 ## 第1部: Kubernetesを始める（原著Part 1: 第1〜4章）
 
 <a id="1-1"></a>
+
 ### 1.1 Kubernetesとは何か（原著第1章）
 
 **Kubernetes**はギリシャ語で「操舵手（helmsman）」を意味します。原著1章のまとめでも触れられている通り、船長（あなた）がクラスタ全体を統括し、Kubernetesという操舵手が日々の運用（コンテナの再起動、ノード障害時の再配置、負荷分散など）を担うというメタファーです。発音は「クーバネティス」（koo-ber-NET-eez）が一般的で、しばしば「K8s（ケーエイツ）」と略されます（KとSの間の8文字を数字の8に置き換えた略記）。
@@ -232,6 +238,7 @@ flowchart TD
 - 自前でKubernetesクラスタ全体（コントロールプレーンを含む）を運用するのは非常に難易度が高いため、専任のプラットフォームチームなしに選択すべきではない、と原著は繰り返し強調している。
 
 <a id="1-2"></a>
+
 ### 1.2 Kubernetesクラスタのアーキテクチャ（原著第1章・第3章）
 
 Kubernetesクラスタは大きく**コントロールプレーン**と**ワーカーノード（ワークロードプレーン）**の2つの平面に分かれます（原著1.2.3節）。
@@ -319,6 +326,7 @@ sequenceDiagram
 - `kubectl get events`や`kubectl describe`は、宣言と実際の状態のズレをデバッグする際の最初の一手として習慣化する。
 
 <a id="1-3"></a>
+
 ### 1.3 最初のアプリケーションをデプロイする（原著第3章）
 
 原著3章では、ローカル環境（Docker Desktop内蔵Kubernetes、Minikube、kind）からマネージドクラウド（GKE、EKS）、さらには手動構築のマルチノードクラスタまで、複数のクラスタ構築方法を比較しています。
@@ -355,6 +363,7 @@ flowchart LR
 - `kubectl config use-context`でクラスタを切り替える際は、`kubectl config current-context`で必ず現在の接続先を確認してから破壊的な操作を行う（本番クラスタへの誤操作防止）。
 
 <a id="1-4"></a>
+
 ### 1.4 Kubernetes APIとオブジェクトモデル（原著第4章）
 
 原著4章は第2版で大きく拡充されたパートです。Kubernetesを深く理解する上で欠かせない「すべてがAPIオブジェクトである」という設計思想を扱います。
@@ -386,9 +395,11 @@ flowchart TB
 ---
 
 <a id="part2"></a>
+
 ## 第2部: Podでアプリケーションを実行する（原著Part 2: 第5〜7章）
 
 <a id="2-1"></a>
+
 ### 2.1 Podの基本（原著第5章）
 
 **Pod**はKubernetesにおけるデプロイの最小単位です。1つ以上のコンテナのグループであり、同じネットワーク名前空間（同一IPアドレス、`localhost`経由の通信）とストレージボリュームを共有します。
@@ -429,7 +440,7 @@ flowchart TB
     class SIDECAR highlightFill
 ```
 
-原著5.5.4節「Kubernetes native sidecar containers」は、`initContainers`に`restartPolicy: Always`を指定することでサイドカーをネイティブにサポートする仕組みを解説しています（Kubernetes 1.29でアルファ導入、1.33でGA。詳細は[6.5節](#6-5)を参照）。これにより、従来のサイドカーパターンで課題だった「Jobのサイドカーがいつまでも終了せず、Jobの完了判定をブロックしてしまう」問題が解消されました。
+原著5.5.4節「Kubernetes native sidecar containers」は、`initContainers`に`restartPolicy: Always`を指定することでサイドカーをネイティブにサポートする仕組みを解説しています（Kubernetes 1.28でアルファ導入、1.29でデフォルト有効化、1.33で安定版。詳細は[6.5節](#6-5)を参照）。これにより、従来のサイドカーパターンで課題だった「Jobのサイドカーがいつまでも終了せず、Jobの完了判定をブロックしてしまう」問題が解消されました。
 
 **ベストプラクティス（原著5.3〜5.6節）**
 - Pod内のコンテナとやり取りする際は`kubectl exec -it <pod> -- sh`より先に`kubectl logs`で挙動を確認し、本番環境への`exec`は最小限にとどめる。
@@ -437,6 +448,7 @@ flowchart TB
 - `kubectl delete pods --all`のような広範囲削除コマンドは、必ず`-n <namespace>`でスコープを絞ってから実行する。
 
 <a id="2-2"></a>
+
 ### 2.2 Podのライフサイクルとヘルスチェック（原著第6章）
 
 Podには`phase`（大まかな状態）と、より詳細な`conditions`（複数のブール値の集合）があります。
@@ -498,9 +510,10 @@ flowchart LR
 **ベストプラクティス（原著6.2.7節「Creating effective liveness probe handlers」）**
 - Liveness Probeは「アプリが応答するか」だけを軽量にチェックし、データベース接続など外部依存のチェックはReadiness Probeに任せる。Liveness Probeが外部依存の障害で失敗すると、無意味な再起動ループを引き起こす。
 - Startup Probeを使わずに長いLiveness Probeの`initialDelaySeconds`だけに頼ると、起動の遅いアプリと本当にハングしたアプリを区別できない。起動時間が不安定なアプリには必ずStartup Probeを設定する。
-- `preStop`フックでは、ロードバランサーからPodが実際に切り離されるまでの猶予（数秒のsleep等）を入れることで、切り離し前に届いたリクエストの取りこぼしを防ぐ。
+- `preStop`フックの遅延（数秒のsleep等）は、エンドポイントやロードバランサーからPodが切り離されたことを確認するものではない。安全にドレインするには、遅延に加えて（1）遅延とアプリの終了処理を収容できる`terminationGracePeriodSeconds`、（2）新規接続を止めて処理中のリクエストを完了させるアプリ側のグレースフルシャットダウン、（3）利用中のロードバランサー実装ごとの切り離し所要時間の実測と検証、の3点をそろえる必要がある。
 
 <a id="2-3"></a>
+
 ### 2.3 名前空間・ラベル・アノテーションによる整理（原著第7章）
 
 **Namespace**はクラスタ内のリソースを論理的に分割する仕組みです。ただし原著7.1.4節が明確に警告する通り、Namespaceは**ネットワーク的な隔離を提供しません**（NetworkPolicyなど別の仕組みと組み合わせない限り、異なるNamespace間のPodは自由に通信できます）。
@@ -551,9 +564,11 @@ flowchart LR
 ---
 
 <a id="part3"></a>
+
 ## 第3部: アプリケーションの設定とストレージ（原著Part 3: 第8〜10章）
 
 <a id="3-1"></a>
+
 ### 3.1 ConfigMapとSecret（原著第8章）
 
 コンテナイメージから設定を分離する（Twelve-Factor Appの原則）ために、KubernetesはConfigMap（機密でない設定値）とSecret（機密データ）という2種類のオブジェクトを提供します。
@@ -598,6 +613,7 @@ flowchart LR
 - Secretの中身をGitリポジトリに平文でコミットしない。Sealed SecretsやSOPS、External Secrets Operatorなどでの暗号化管理をGitOpsパイプラインに組み込む。
 
 <a id="3-2"></a>
+
 ### 3.2 ボリューム（原著第9章）
 
 Kubernetesの**ボリューム**は、コンテナのファイルシステムより長生きするストレージ（少なくともPodのライフサイクル分）を提供します。
@@ -623,10 +639,11 @@ flowchart TB
 `emptyDir`はPodが削除されると内容も消える一時ボリュームで、コンテナ間のファイル共有（例: メインコンテナが書いたログをサイドカーが読む）によく使われます。一方`hostPath`はノードのローカルディスクに直接アクセスするため、Pod再スケジュール時にデータの整合性が保てず、セキュリティリスクも高いため、原著でも「特別な用途（DaemonSetでノード上のログファイルを読むなど）に限定すべき」と位置づけられています。
 
 **ベストプラクティス**
-- `hostPath`はノード固有のリソース（例: DaemonSetからのDockerソケットアクセス）以外では避け、一般的なアプリケーションの永続化にはPersistentVolume（3.3節）を使う。
+- `hostPath`はノード固有のリソース（例: DaemonSetからホストのログファイルを読み取り専用でマウントする）以外では避け、一般的なアプリケーションの永続化にはPersistentVolume（3.3節）を使う。
 - 複数のConfigMap/Secret/DownwardAPIを1つのマウントポイントに統合したい場合は`projected`ボリュームを使い、Podのボリューム定義をシンプルに保つ。
 
 <a id="3-3"></a>
+
 ### 3.3 PersistentVolumeによる永続化（原著第10章）
 
 Pod自体は使い捨て（ephemeral）ですが、データベースなどのステートフルなワークロードにはPodのライフサイクルを超えて存続するストレージが必要です。Kubernetesはこれを**PersistentVolume（PV）**と**PersistentVolumeClaim（PVC）**という2つのオブジェクトで抽象化します。
@@ -678,16 +695,18 @@ flowchart TB
 
 **ベストプラクティス**
 - 特別な理由がない限り動的プロビジョニング（StorageClass + PVC）を使い、静的プロビジョニングはノードローカルストレージなど特殊なケースに限定する。
-- PVCのリサイズ（原著10.4.1節）に対応したStorageClassを選び、ディスク容量不足時にPodを再作成せずに拡張できるようにしておく。
+- PVCのリサイズ（原著10.4.1節）に対応したStorageClass（`allowVolumeExpansion: true`）を選ぶ。ただしこのフラグは拡張を許可するだけであり、Podを再作成せずにファイルシステムまで広げるには、CSIドライバとファイルシステムの双方がオンライン拡張に対応している必要がある。
 - 定期的なスナップショット（原著10.4.2〜10.4.3節）をVolumeSnapshotリソースで自動化し、災害復旧（DR）計画に組み込む。
 
 
 ---
 
 <a id="part4"></a>
+
 ## 第4部: アプリケーションの接続と公開（原著Part 4: 第11〜13章）
 
 <a id="4-1"></a>
+
 ### 4.1 Service（原著第11章）
 
 Podは再作成されるたびにIPアドレスが変わるため、Podに直接依存した通信は成立しません。**Service**は、ラベルセレクタにマッチするPod群への安定したアクセス経路（仮想IP + DNS名）を提供します。
@@ -735,6 +754,7 @@ flowchart TD
 - `externalTrafficPolicy: Local`を使うとクライアントIPを保持できる反面、ノードによって負荷が偏る可能性があるため、ヘルスチェックの設計とセットで検討する。
 
 <a id="4-2"></a>
+
 ### 4.2 Ingress（原著第12章）
 
 **Ingress**は、複数のServiceへのHTTP/HTTPSルーティングを1つのエントリーポイントに集約するAPIです。LoadBalancer Serviceを個々のマイクロサービスごとに用意するとクラウドの課金・IP管理コストが増大するため、Ingressで一元化するのが一般的です。
@@ -761,6 +781,7 @@ flowchart TB
 - TLS証明書の自動更新にはcert-managerを併用し、証明書の手動更新運用を排除する。
 
 <a id="4-3"></a>
+
 ### 4.3 Gateway API（原著第13章）
 
 **Gateway API**は、Ingressの後継として設計された、より表現力の高いL4/L7トラフィックルーティングAPI群です。原著第2版で新規に追加された第13章がまるまる1章を割いて解説しているのは、Gateway APIが2026年時点のKubernetesネットワーキングにおける事実上の標準になりつつあることの裏返しです。
@@ -780,7 +801,7 @@ flowchart TB
     class GC,GW,HR highlightFill
 ```
 
-Ingressとの決定的な違いは、この**ロールベースの権限分離**です。Ingressでは1つのオブジェクトに全ての設定が混在するため、アプリチームがインフラ設定まで触れてしまう、あるいは逆にインフラチームがボトルネックになるという課題がありました。Gateway APIはGatewayClass（インフラ提供者）・Gateway（クラスタ運用者）・xRoute（アプリチーム）の3層に権限を分割します。
+Ingressとの決定的な違いは、この**ロールベースの権限分離**です。Ingressでは1つのオブジェクトに全ての設定が混在するため、アプリチームがインフラ設定まで触れてしまう、あるいは逆にインフラチームがボトルネックになるという課題がありました。Gateway APIはGatewayClass（インフラ提供者）・Gateway（クラスタ運用者）・Route（HTTPRouteなど、アプリチーム）の3層に権限を分割します。
 
 **IngressとGateway APIの比較**
 
@@ -820,9 +841,11 @@ flowchart LR
 ---
 
 <a id="part5"></a>
+
 ## 第5部: 大規模運用のためのアプリケーション管理（原著Part 5: 第14〜18章）
 
 <a id="5-1"></a>
+
 ### 5.1 ReplicaSet（原著第14章）
 
 **ReplicaSet**は、指定した数のPodレプリカが常に稼働し続けることを保証するコントローラです。原著14.3.1節が説明する**reconciliation control loop（調整ループ）**は、Kubernetes全体を貫く最重要概念の1つです。
@@ -848,6 +871,7 @@ flowchart LR
 - `kubectl delete replicaset --cascade=orphan`を使えば、ReplicaSetだけを削除してPodを残すことができる（原著14.4.2節）。緊急時の切り離し手段として覚えておく。
 
 <a id="5-2"></a>
+
 ### 5.2 Deployment（原著第15章）
 
 **Deployment**はReplicaSetをさらにラップし、宣言的なローリングアップデート・ロールバックを可能にするコントローラです。実務でステートレスアプリケーションをデプロイする際、最も頻繁に使うオブジェクトです。
@@ -911,6 +935,7 @@ flowchart TB
 - `kubectl rollout undo`で即座にロールバックできるよう、`revisionHistoryLimit`で保持するReplicaSet履歴数を意図的に設定しておく。
 
 <a id="5-3"></a>
+
 ### 5.3 StatefulSet（原著第16章）
 
 Deploymentが管理するPodは互換性があり順不同（interchangeable）であるのに対し、**StatefulSet**はデータベースのようにPodごとに固有のアイデンティティ（安定したネットワーク識別子・専用の永続ストレージ）が必要なワークロード向けのコントローラです。
@@ -957,6 +982,7 @@ flowchart LR
 - PVC保持ポリシー（原著16.2.4節、`persistentVolumeClaimRetentionPolicy`）を明示的に設定し、StatefulSet削除時にPVCを残すか削除するかを意図した挙動にする。
 
 <a id="5-4"></a>
+
 ### 5.4 DaemonSet（原著第17章）
 
 **DaemonSet**は、クラスタ内の（条件に合う）全ノードにちょうど1つのPodを配置するコントローラです。ログ収集エージェント、ノードモニタリングエージェント、CNIプラグインなど、ノード単位で常駐すべきインフラコンポーネントに使われます。
@@ -988,6 +1014,7 @@ flowchart TB
 - ノードエージェントに`hostNetwork: true`や特権コンテナ（`privileged: true`）が必要な場合は、その理由をコメントで明記し、Pod Security Admissionのポリシーで許可範囲を最小化する。
 
 <a id="5-5"></a>
+
 ### 5.5 JobとCronJob（原著第18章）
 
 **Job**は「完了」という概念を持つワークロード（バッチ処理、データマイグレーションなど）向けのコントローラです。Deployment/ReplicaSetが「常に一定数のPodを稼働させ続ける」のに対し、Jobは「指定回数の正常終了」を目標にします。
@@ -1023,7 +1050,7 @@ flowchart LR
 原著18.2.5〜18.2.6節では、`startingDeadlineSeconds`（コントロールプレーンの一時停止などでスケジュールを逃した場合の許容遅延）と`concurrencyPolicy`（前回のJobが終わっていない場合の挙動: `Allow`/`Forbid`/`Replace`）という、実運用で必ず遭遇する設定を扱っています。
 
 **ベストプラクティス**
-- 冪等でないバッチ処理（重複実行が許されない処理）には`concurrencyPolicy: Forbid`を設定し、前回のJobが完了する前に新しいJobが起動しないようにする。
+- 冪等でないバッチ処理（重複実行が許されない処理）には`concurrencyPolicy: Forbid`を設定し、前回のJobが完了する前に新しいJobが起動しないようにする。ただし`Forbid`はスケジュール時点の同時実行を抑止するだけで、重複実行を根本的に防ぐものではない（Jobコントローラの再試行やPodの再スケジュールにより、同じ処理が複数回走ることはある）。また実行中のJobがあるとその回のスケジュールはスキップされるため、実行の欠落も起こりうる。重複が許容できない処理は、処理自体を冪等に設計するか、外部ストア上の重複排除キー（実行IDによる排他ロックや一意制約）で二重実行を弾く仕組みを実装する。
 - `activeDeadlineSeconds`でJobの最大実行時間を設定し、ハングしたバッチ処理がリソースを専有し続けるのを防ぐ。
 - `ttlSecondsAfterFinished`（原著18.2.4節）を設定し、完了済みJob/Podがクラスタに溜まり続けてAPIサーバーやetcdの負荷にならないようにする。
 
@@ -1031,11 +1058,13 @@ flowchart LR
 ---
 
 <a id="part6"></a>
+
 ## 第6部: 2026年8月時点の最新動向（原著範囲外・独自追加）
 
 原著『Kubernetes in Action, Second Edition』は2026年3月刊行ですが、Kubernetes自体のリリースサイクルは3〜4ヶ月に1回と非常に速く、書籍が扱いきれない最新動向が常に存在します。本部では、2026年8月29日時点でWeb検索により確認できた最新のエコシステム動向を、著名な国際的発信元を優先して整理します。
 
 <a id="6-1"></a>
+
 ### 6.1 Kubernetes 1.37とリリースサイクル
 
 Kubernetesは年3回（おおむね4ヶ月おき）のマイナーバージョンリリースサイクルを採用しています。2026年8月26日、最新版の**Kubernetes v1.37「Garhwal」**が正式リリースされました。これは2026年で2回目のメジャーリリース（1回目はv1.36、4月リリース）にあたります。
@@ -1045,8 +1074,8 @@ Kubernetesは年3回（おおむね4ヶ月おき）のマイナーバージョ�
 | v1.37 (Garhwal) | 最新・サポート中 | 2026-08-26 | 2027-10-28 |
 | v1.36 | サポート中 | 2026年4月 | 未確認（v1.37の3世代前まで公式サポート） |
 | v1.35 | サポート中 | 2025年後半 | 2027-02-28 |
-| v1.34 (Of Wind & Will) | サポート中 | 2025-08-27 | 2026-10-27 |
-| v1.33 | サポート中（間もなくEOL） | - | 2026-06-28 |
+| v1.34 (Of Wind & Will) | メンテナンスモード（標準サポート終了） | 2025-08-27 | 2026-10-27 |
+| v1.33 | サポート終了（EOL済み） | - | 2026-06-28 |
 
 **出典：** Kubernetes公式リリースページ (https://kubernetes.io/releases/)、Kubernetes v1.37公式リリース情報 (https://kubernetes.io/releases/1.37/)、Network World「Kubernetes 1.37 advances workload-aware scheduling and cluster networking」(https://www.networkworld.com/article/4214824/kubernetes-1-37-advances-workload-aware-scheduling-and-cluster-networking.html)
 
@@ -1071,6 +1100,7 @@ Network World誌の報道によれば、v1.37のリリースリードを務め�
 - `kubectl version`と各マネージドサービス（GKE/EKS/AKS）のサポートバージョン表を定期的に照合し、サポート終了（EOL）前にアップグレード計画を立てる。
 
 <a id="6-2"></a>
+
 ### 6.2 Dynamic Resource Allocation（DRA）とAIワークロード
 
 **Dynamic Resource Allocation（DRA）**は、GPU・FPGA・NICなどの特殊なハードウェアデバイスを`ResourceClaim`という新しいAPIオブジェクトを通じて、柔軟かつ標準化された方法でPodに割り当てる仕組みです。原著18章までのバッチ処理の議論はCPU/メモリを前提としていますが、2026年のKubernetesワークロードの主戦場はAI/MLトレーニング・推論基盤へと大きくシフトしています。
@@ -1101,19 +1131,20 @@ DRAはKubernetes v1.34で**GA（正式版）** に到達しました。The New S
 **出典：** The New Stack「Kubernetes v1.34 Introduces Benefits but Also New Blind Spots」(https://thenewstack.io/kubernetes-v1-34-introduces-benefits-but-also-new-blind-spots/)、Kubernetes v1.34公式リリースブログ (https://kubernetes.io/blog/2025/08/27/kubernetes-v1-34-release/)
 
 <a id="6-3"></a>
+
 ### 6.3 In-Place Pod Resize（無停止リサイズ）
 
 原著15章までのアプリケーション更新の議論は、基本的に「Podを作り直す」ことを前提としています。しかし2027年に向けて重要なのが、**In-Place Pod Resize**（Pod内リソースの無停止変更）機能です。この機能は2023年（Kubernetes 1.27）にアルファとして初登場し、2025年4月のv1.33でベータに、そして2025年12月のv1.35で**GA（安定版）**に到達しました。
 
 ```mermaid
 flowchart TB
-    subgraph BEFORE["v1.34以前: リソース変更には再作成が必須"]
+    subgraph BEFORE["v1.34以前: リソース変更は原則Pod再作成"]
         direction LR
         B1["spec.resources変更"] --> B2["Pod再作成"] --> B3["接続切断・<br/>ステート消失"]
     end
     subgraph AFTER["v1.35以降: In-Place Resize (GA)"]
         direction LR
-        A1["spec.resources変更"] --> A2["kubeletがcgroup設定を<br/>動的に更新"] --> A3["再起動なしで<br/>リソース変更完了"]
+        A1["spec.resources変更"] --> A2["kubeletがcgroup設定を<br/>動的に更新"] --> A3["対応するリソースは<br/>Pod再作成なしで反映<br/>(resizePolicy次第で<br/>コンテナ再起動)"]
     end
 
     classDef highlightFill fill:#1f3a5f,stroke:#7c9eff,color:#e8eefc
@@ -1131,6 +1162,7 @@ Kubernetes公式ブログは、この機能が「6年以上の歳月を経てGA�
 **出典：** Kubernetes公式ブログ「Kubernetes v1.35: In-Place Pod Resize Graduates to Stable」(https://kubernetes.io/blog/2025/12/19/kubernetes-v1-35-in-place-pod-resize-ga)
 
 <a id="6-4"></a>
+
 ### 6.4 Ingress-NGINX終了とGateway API移行
 
 原著第12章はIngressを、第13章はGateway APIを解説していますが、2026年の実務においてこの2つの重要性は大きく逆転しつつあります。Kubernetes SIG NetworkとSecurity Response Committeeは2025年11月11日、コミュニティ版**Ingress-NGINX Controller**（多くのディストリビューションで既定のIngress実装として使われてきたプロジェクト）の**終了（retirement）**を正式にアナウンスしました。ベストエフォートでのメンテナンスは2026年3月31日で終了しています。
@@ -1165,6 +1197,7 @@ flowchart TB
 **出典：** Google Open Source Blog「The End of an Era: Transitioning Away from Ingress NGINX」(https://opensource.googleblog.com/2026/02/the-end-of-an-era-transitioning-away-from-ingress-nginx.html)、Amazon EKS公式ドキュメント「Review release notes for Kubernetes versions」(https://docs.aws.amazon.com/eks/latest/userguide/kubernetes-versions-standard.html)
 
 <a id="6-5"></a>
+
 ### 6.5 ネイティブサイドカーコンテナ
 
 2.1節で触れた**ネイティブサイドカーコンテナ**（`initContainers`に`restartPolicy: Always`を指定するパターン）は、2023年8月のv1.28でアルファ導入されて以降、着実に成熟しています。2025年4月のKubernetes v1.33で**GA（安定版）** に到達し、2026年8月時点でサポートされている全てのマイナーバージョン（v1.34〜v1.37）がこの機能を標準搭載しています。
@@ -1195,6 +1228,7 @@ flowchart LR
 **出典：** Kubernetes公式ドキュメント「Sidecar Containers」(https://kubernetes.io/docs/concepts/workloads/pods/sidecar-containers/)、Kubernetes公式ブログ「Kubernetes v1.28: Introducing native sidecar containers」(https://kubernetes.io/blog/2023/08/25/native-sidecar-containers/)
 
 <a id="6-6"></a>
+
 ### 6.6 CNCF調査に見るKubernetes導入状況
 
 CNCF（Cloud Native Computing Foundation）が2026年1月20日に発表した年次調査（Linux Foundation Researchが2025年9月に628名のIT専門家を対象に実施）は、Kubernetesの成熟度を裏付ける複数の指標を示しています。
@@ -1225,6 +1259,7 @@ CNCF発表資料でLinux Foundation Researchのシニアバイスプレジデン
 ---
 
 <a id="roadmap"></a>
+
 ## 学習ロードマップと認定資格
 
 原著は688ページ・20時間44分（O'Reilly記載）というボリュームがあり、初学者が最初から通読するのは大変です。以下のロードマップは、本ガイドの部構成に沿って無理なく学習を進めるための目安です。
@@ -1258,6 +1293,7 @@ Kubernetes関連の実務スキルを客観的に示す手段として、Linux F
 ---
 
 <a id="checklist"></a>
+
 ## ベストプラクティスチェックリスト
 
 本ガイド全体で紹介したベストプラクティスを、実務で確認しやすいチェックリスト形式にまとめました。
@@ -1285,6 +1321,7 @@ Kubernetes関連の実務スキルを客観的に示す手段として、Linux F
 ---
 
 <a id="glossary"></a>
+
 ## 用語集
 
 | 用語 | 説明 |
@@ -1311,13 +1348,14 @@ Kubernetes関連の実務スキルを客観的に示す手段として、Linux F
 | Reconciliation Loop（調整ループ） | 望ましい状態(spec)と実際の状態(status)の差分を継続的に監視し、実際の状態を望ましい状態に近づけるコントローラの基本動作原理 |
 | ネイティブサイドカーコンテナ | `initContainers`に`restartPolicy: Always`を指定して実装する、ライフサイクル管理が組み込まれたサイドカーパターン(v1.33でGA) |
 | DRA (Dynamic Resource Allocation) | GPU等の特殊デバイスを`ResourceClaim`経由で柔軟に割り当てる仕組み(v1.34でGA) |
-| In-Place Pod Resize | 実行中のPodのCPU/メモリ割り当てを、再起動なしに変更できる機能(v1.35でGA) |
+| In-Place Pod Resize | 実行中のPodのCPU/メモリ割り当てを、Podを再作成せずに変更できる機能(v1.35でGA)。コンテナごとの`resizePolicy`が`RestartContainer`の場合はコンテナ再起動を伴う |
 | Operator | アプリケーション固有の運用知識をコントローラとしてコード化したKubernetes拡張パターン |
 | kubectl | Kubernetesクラスタを操作するための公式コマンドラインツール |
 
 ---
 
 <a id="references"></a>
+
 ## 参考文献
 
 書籍本体および目次の情報源:
