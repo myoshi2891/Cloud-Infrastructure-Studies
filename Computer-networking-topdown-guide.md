@@ -894,7 +894,7 @@ flowchart LR
     class G4,G5,G6 mobFill
 ```
 
-**2026年時点の6G標準化動向**: 2026年6月にシンガポールで開催された3GPPプレナリ会合では、6Gの仕様策定に向けたRelease 21のタイムラインが合意され、無線インターフェースの波形方式やチャネル符号化などの基礎技術に関する決定が行われました。3GPPは最初の6G仕様の完成を2029年前半と見込んでおり、商用化は2030年前後になると見られています。
+**2026年時点の6G標準化動向**: 2026年6月にシンガポールで開催された3GPPプレナリ会合では、6Gの仕様策定に向けたRelease 21のタイムラインが合意され、無線インターフェースの波形方式やチャネル符号化などの基礎技術に関する決定が行われました。3GPPはRelease 21のASN.1/OpenAPI freeze（プロトコル記述の凍結）を2029年3月のマイルストーンとして設定しています。これはITU-Rへのfull system definitionの提出（2030年半ばを予定）とは別の節目であり、2029年3月時点で6G仕様のすべてが完成するわけではない点に注意してください。商用化は2030年前後になると見られています。
 
 ### 7.4 モビリティ管理
 
@@ -1005,11 +1005,12 @@ flowchart LR
 flowchart LR
     INTERNET["インターネット"] --> FW["ファイアウォール<br/>(ステートフルパケットフィルタ)"]
     FW --> IPS["IPS(侵入防御システム)<br/>通信経路上にインラインで設置し<br/>検知した通信を遮断できる"]
-    IPS --> LAN2["社内/家庭内ネットワーク"]
-    FW -.->|ミラーポート/TAPによる複製| IDS["IDS(侵入検知システム)<br/>経路外で複製トラフィックを監視し<br/>検知・アラートのみを行う"]
+    IPS --> SPAN["スイッチのミラーポート(SPAN)<br/>またはネットワークTAP<br/>(キャプチャポイント)"]
+    SPAN --> LAN2["社内/家庭内ネットワーク"]
+    SPAN -.->|複製したトラフィック| IDS["IDS(侵入検知システム)<br/>経路外で複製トラフィックを監視し<br/>検知・アラートのみを行う"]
 
     classDef secFill fill:#132a4a,stroke:#7c9eff,color:#e8eefc
-    class INTERNET,FW,IPS,IDS,LAN2 secFill
+    class INTERNET,FW,IPS,SPAN,IDS,LAN2 secFill
 ```
 
 | 機構 | 役割 |
@@ -1061,7 +1062,7 @@ flowchart TD
     end
     subgraph L_LINK["リンク・無線層"]
         T7["Wi-Fi 7が主流機種に標準搭載"]
-        T8["3GPP Release 21で6G仕様策定が本格化<br/>(完成目標2029年)"]
+        T8["3GPP Release 21で6G仕様策定が本格化<br/>(ASN.1/OpenAPI freeze 2029年3月)"]
     end
     subgraph L_SEC["セキュリティ層"]
         T9["耐量子鍵交換がTLS 1.3ハンドシェイクの相当割合に到達<br/>(比率はCloudflareが観測期間とともに公開)"]
@@ -1080,7 +1081,7 @@ flowchart TD
 | ネットワーク層 | Google経由IPv6アクセス率(世界平均) | 50.10%(2026/3/28) | Google / ISOC Pulse |
 | ネットワーク層 | RPKIカバー経路割合 | 約67% | 参考文献18(RIPE Labs分析の引用) |
 | リンク・無線層 | Wi-Fi 7対応AP年間出荷予測 | 1億1,790万台 | ABI Research/WBA |
-| リンク・無線層 | 6G仕様完成目標 | 2029年前半(Release 21) | 3GPP |
+| リンク・無線層 | Release 21のASN.1/OpenAPI freeze(full system definition提出は2030年半ば) | 2029年3月 | 3GPP |
 | セキュリティ層 | 耐量子鍵交換が成立したTLS 1.3ハンドシェイクの割合(Cloudflare網が分母) | Cloudflare Radar / 年次ブログの公開値を参照 | Cloudflare Radar |
 | セキュリティ層 | 史上最大DDoS攻撃規模 | 31.4 Tbps | Cloudflare 2026脅威レポート |
 
