@@ -957,12 +957,17 @@ sequenceDiagram
     participant C as クライアント
     participant S as サーバ
 
-    C->>S: ① ClientHello(対応する暗号スイート・鍵交換方式の提示)
-    S->>C: ② ServerHello + 証明書 + 鍵交換パラメータ
-    Note over C: 証明書をCA(認証局)の公開鍵で検証
-    C->>S: ③ 鍵交換完了、以降の通信鍵を導出
+    C->>S: ① ClientHello(対応する暗号スイート・key_shareの提示)
+    S->>C: ② ServerHello(key_share) ここでハンドシェイク鍵が確定
+    Note over C,S: 以降のハンドシェイクメッセージは暗号化される
+    S->>C: ③ EncryptedExtensions(暗号化された拡張情報)
+    S->>C: ④ Certificate(サーバ証明書)
+    S->>C: ⑤ CertificateVerify(証明書の秘密鍵による署名)
+    S->>C: ⑥ Finished(ハンドシェイク全体のMAC)
+    Note over C: 証明書をCA(認証局)の公開鍵で検証し<br/>CertificateVerifyとFinishedを照合
+    C->>S: ⑦ Finished(クライアント側の検証完了)
     Note over C,S: TLS 1.3では1-RTTでハンドシェイク完了<br/>(再接続時は0-RTTも可能)
-    C->>S: ④ 暗号化されたアプリケーションデータ(HTTPなど)
+    C->>S: ⑧ 暗号化されたアプリケーションデータ(HTTPなど)
 ```
 
 TLS 1.3(RFC 8446)は、TLS 1.2までと比べてハンドシェイクに必要な往復回数を1-RTTに削減し、非推奨の脆弱な暗号アルゴリズムを整理することでセキュリティと性能の両方を改善しました。
