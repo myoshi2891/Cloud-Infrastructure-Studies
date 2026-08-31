@@ -965,7 +965,7 @@ sequenceDiagram
     S->>C: ④ Certificate(サーバ証明書)
     S->>C: ⑤ CertificateVerify(証明書の秘密鍵による署名)
     S->>C: ⑥ Finished(ハンドシェイク全体のMAC)
-    Note over C: 証明書をCA(認証局)の公開鍵で検証し<br/>CertificateVerifyとFinishedを照合
+    Note over C: 証明書チェーンをCA(認証局)の公開鍵で検証し<br/>CertificateVerifyの署名を証明書の公開鍵で検証し<br/>Finishedのハンドシェイクトランスクリプト上のMACを検証
     C->>S: ⑦ Finished(クライアント側の検証完了)
     Note over C,S: TLS 1.3では1-RTTでハンドシェイク完了<br/>(再接続時は0-RTTも可能)
     C->>S: ⑧ 暗号化されたアプリケーションデータ(HTTPなど)
