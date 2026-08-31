@@ -75,7 +75,8 @@ flowchart TD
 | HTTP/3の利用比率 | Cloudflare網が観測するHTTP(S)リクエストに占める割合としてCloudflare Radarが継続公開(最新値はRadarで確認) | 継続計測 |
 | RPKI(経路正当性検証)でカバーされる経路の割合 | 約67% | 参考文献18(日次変動するため要再確認) |
 | Cloudflareが2025年に緩和したDDoS攻撃件数 | 4,710万件(前年比121%増) | 2026年3月 |
-| 観測史上最大のDDoS攻撃規模 | 31.4 Tbps(Aisuru-Kimwolfボットネット) | 2025年12月 |
+| 観測史上最大のDDoS攻撃規模(帯域) | 31.4 Tbps・約35秒間(Aisuru-Kimwolfボットネット) | 2025年11月(Cloudflare 2025 Q4レポートで公表) |
+| 観測史上最大のDDoS攻撃規模(パケットレート) | 14.1 Bpps・29.7 Tbps(Aisuruボットネット) | Cloudflare 2025 Q3レポート |
 
 これらの数字が示すのは、インターネットが「決まった仕様に従う静的なシステム」ではなく、**日々進化し続ける巨大な分散システム**だということです。だからこそ、個別の技術の暗記ではなく、「なぜこの層が必要なのか」「どんな問題を解決するために設計されたのか」という原理原則を学ぶことが重要になります。
 
@@ -474,7 +475,7 @@ flowchart LR
 
 **損失ベース(Loss-based)輻輳制御の限界**: CUBICのような従来型アルゴリズムは「パケット損失=輻輳のシグナル」とみなしますが、高速・長距離のネットワークや無線網では、輻輳とは無関係な理由でパケットが失われることが増えており、この前提が崩れつつあります。
 
-**モデルベース輻輳制御の登場**: Googleが2016年に発表したBBR(Bottleneck Bandwidth and Round-trip propagation time)は、実際のボトルネック帯域と最小RTTを継続的に推定し、そのモデルに基づいて送信レートを調整するアプローチを取ります。BBRv3は2026年にはLinuxカーネルへの本格的なアップストリーム統合が進んでおり、Google自身の実運用データでは旧バージョン比で再送率が12%減少したことが報告されています(IETF 117 CCWGでの発表)。
+**モデルベース輻輳制御の登場**: Googleが2016年に発表したBBR(Bottleneck Bandwidth and Round-trip propagation time)は、実際のボトルネック帯域と最小RTTを継続的に推定し、そのモデルに基づいて送信レートを調整するアプローチを取ります。BBRv3は2026年時点でもLinuxカーネル本流(mainline)への統合は検討中の段階にとどまりますが、Google自身の実運用データでは旧バージョン比で再送率が12%減少したことが報告されています(2023年7月25日のIETF 117 CCWG発表資料「BBRv3: Algorithm Bug Fixes and Public Internet Deployment」。参考文献9)。
 
 ### 3.6 QUIC: トランスポート層とセキュリティ層の融合
 
@@ -1005,8 +1006,8 @@ flowchart LR
 flowchart LR
     INTERNET["インターネット"] --> FW["ファイアウォール<br/>(ステートフルパケットフィルタ)"]
     FW --> IPS["IPS(侵入防御システム)<br/>通信経路上にインラインで設置し<br/>検知した通信を遮断できる"]
-    IPS --> SPAN["スイッチのミラーポート(SPAN)<br/>またはネットワークTAP<br/>(キャプチャポイント)"]
-    SPAN --> LAN2["社内/家庭内ネットワーク"]
+    IPS --> LAN2["社内/家庭内ネットワーク"]
+    IPS -.->|転送経路から分岐| SPAN["スイッチのミラーポート(SPAN)<br/>またはネットワークTAP<br/>(転送経路外のキャプチャポイント)"]
     SPAN -.->|複製したトラフィック| IDS["IDS(侵入検知システム)<br/>経路外で複製トラフィックを監視し<br/>検知・アラートのみを行う"]
 
     classDef secFill fill:#132a4a,stroke:#7c9eff,color:#e8eefc
@@ -1038,7 +1039,7 @@ flowchart TB
     class TARGET,DOWN tgtFill
 ```
 
-**2026年時点のデータ(Cloudflare)**: 2025年にCloudflareが緩和したDDoS攻撃は4,710万件(前年比121%増)に達し、2025年12月にはAisuru-Kimwolfボットネット(推定100万〜400万台の感染デバイスで構成)による観測史上最大となる31.4Tbps・毎秒141億パケットの攻撃を35秒間にわたり記録しました。2026年上半期(H1)のレポートでは、1Tbpsを超える超大規模(hyper-volumetric)攻撃が第1四半期から第2四半期にかけて519%増加し、DNS/CLDAPリフレクション攻撃が主要な攻撃ベクトルとなっていることが報告されています。一方で、全体の96.62%の攻撃は500Mbps未満・90.60%は10分未満で終了する「短時間・小規模」なものであり、**自動化された迅速な検知・緩和の仕組みが人手による対応能力を上回る規模で求められている**という傾向が示されています。
+**2026年時点のデータ(Cloudflare)**: 2025年にCloudflareが緩和したDDoS攻撃は4,710万件(前年比121%増)に達し、Aisuru系ボットネット(推定100万〜400万台の感染デバイスで構成)による超大規模攻撃が相次ぎました。まず2025年第3四半期には、29.7Tbps・14.1Bpps(毎秒141億パケット)に達するUDPカーペットボンビング攻撃が観測史上最大のパケットレートとして報告されています。次に2025年11月には、Aisuru-Kimwolfによる31.4Tbpsの攻撃を35秒間にわたり緩和し、公開されている中では帯域幅で史上最大の記録となりました。さらに2025年12月19日に始まった一連のキャンペーンでは902件の超大規模攻撃が観測され、そのピークは24Tbps・9Bpps・205Mrps(平均は4Tbps・3Bpps・54Mrps)でした。2026年上半期(H1)のレポートでは、1Tbpsを超える超大規模(hyper-volumetric)攻撃が第1四半期から第2四半期にかけて519%増加し、DNS/CLDAPリフレクション攻撃が主要な攻撃ベクトルとなっていることが報告されています。一方で、全体の96.62%の攻撃は500Mbps未満・90.60%は10分未満で終了する「短時間・小規模」なものであり、**自動化された迅速な検知・緩和の仕組みが人手による対応能力を上回る規模で求められている**という傾向が示されています。
 
 ---
 
@@ -1191,7 +1192,7 @@ flowchart TD
 
 ### トランスポート層 / 輻輳制御(BBR)関連
 
-9. Google「BBR congestion control」公式リポジトリ(IETF発表資料含む) — https://github.com/google/bbr
+9. Google「BBR congestion control」公式リポジトリ — https://github.com/google/bbr / IETF 117 CCWG発表資料「BBRv3: Algorithm Bug Fixes and Public Internet Deployment」(2023年7月25日、再送率12%減少の一次出典) — https://datatracker.ietf.org/doc/slides-117-ccwg-bbrv3-algorithm-bug-fixes-and-public-internet-deployment/
 10. IETF Datatracker「BBR Congestion Control」(draft-ietf-ccwg-bbr) — https://datatracker.ietf.org/doc/draft-ietf-ccwg-bbr/
 11. Phoronix「Google's BBRv3 TCP Congestion Control Showing Great Results, Will Be Upstreamed To Linux」— https://www.phoronix.com/news/Google-BBRv3-Linux
 
