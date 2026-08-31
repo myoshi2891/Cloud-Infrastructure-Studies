@@ -1288,13 +1288,13 @@ flowchart LR
     class Client,Server box
 ```
 
-NFS（**NFSv2/v3**）の設計で特に重要なのが**サーバーステートレス性（server statelessness）**という考え方です。サーバーはクライアントごとの状態を保持しないため、サーバークラッシュ後の復旧が単純になりますが、キャッシュ一貫性の保証は弱くなります（`close-to-open`セマンティクスなどで妥協）。一方**NFSv4はステートフル**で、オープン状態・ロック・セッションをサーバーが管理します。そのため復旧はクライアントとのステート回復手続きを伴い、デリゲーションによる強い一貫性が得られる代わりに、v3のような「再送するだけで済む」単純さは失われます。
+NFS（**NFSv2/v3**）の設計で特に重要なのが**サーバーステートレス性（server statelessness）**という考え方です。サーバーはクライアントごとの状態を保持しないため、サーバークラッシュ後の復旧が単純になりますが、キャッシュ一貫性の保証は弱くなります（`close-to-open`セマンティクスなどで妥協）。一方**NFSv4はステートフル**で、オープン状態・ロック・セッションをサーバーが管理します。そのため復旧はクライアントとのステート回復手続きを伴い、v3のような「再送するだけで済む」単純さは失われます。一貫性については**デリゲーション（delegation）**により強められますが、これはサーバーが任意に付与する省略可能な機能であり、他クライアントからの競合アクセスが発生すればサーバーがリコール（recall）して取り消します。デリゲーションが付与されない場合や取り消された後は、v3と同様にクライアントキャッシュと`close-to-open`セマンティクスに依存します。したがって複数クライアントから直列化されたアクセスが必要なアプリケーションは、プロトコルの一貫性モデルに頼らず、明示的にロックを取得する必要があります。
 
 | 概念 | 内容 |
 |---|---|
 | ステートレスプロトコル（NFSv2/v3） | 各要求が単独で完結し、サーバーはクライアントの状態を記憶しない |
 | ステートフルプロトコル（NFSv4） | オープン・ロック・セッションをサーバーが保持し、復旧時はステート回復手続きを行う |
-| べき等性（idempotency） | 同じ要求を複数回送っても結果が変わらない設計にすることで、再送による不整合を防ぐ（ステートレスなv2/v3の再送戦略の前提） |
+| べき等性（idempotency） | 同じ要求を複数回送っても結果が変わらない設計にすることで、再送による不整合を防ぐ（ステートレスなv2/v3の再送戦略の前提）。ただしv2/v3の全操作がべき等なわけではなく、`CREATE`（排他モード）や`REMOVE`、`RENAME`のような非べき等操作が存在する。安全な再送は、サーバー側の重複要求キャッシュ（DRC: duplicate request cache）による重複検出と、操作ごとのセマンティクスに依存する |
 
 ## 4.14 Andrew File System（第50章 AFS）
 
@@ -1315,11 +1315,12 @@ flowchart TB
 
 AFSは**コールバック（callback）**という仕組みで、サーバーがキャッシュの無効化をクライアントへ能動的に通知します。これにより、NFSよりもサーバー負荷を抑えつつキャッシュ一貫性を高めています。
 
-| 比較軸 | NFS | AFS |
-|---|---|---|
-| 設計思想 | サーバーステートレス | クライアントキャッシュ重視、サーバーはステートを保持 |
-| キャッシュ単位 | ブロック単位（クライアントキャッシュはあるが弱い一貫性） | ファイル全体を丸ごとローカルキャッシュ |
-| スケーラビリティ | サーバー負荷が高くなりがち | コールバックによりサーバー負荷を抑制、大規模環境向け |
+| 比較軸 | NFSv2/v3 | NFSv4 | AFS |
+|---|---|---|---|
+| 設計思想 | サーバーステートレス（ロックはNLMなど別プロトコルが担当） | ステートフル（オープン・ロック・セッションをサーバーが保持） | クライアントキャッシュ重視、サーバーはステートを保持 |
+| キャッシュ単位 | ブロック単位（クライアントキャッシュはあるが弱い一貫性） | ブロック単位。デリゲーション付与時のみ一貫性を強められるが、競合時にはリコールされる | ファイル全体を丸ごとローカルキャッシュ |
+| 障害復旧 | べき等な操作の再送が基本（非べき等操作は重複要求キャッシュで補う） | 猶予期間中にクライアントがオープン・ロックのステートを回復する手続きが必要 | サーバー再起動後にコールバックを張り直す |
+| スケーラビリティ | サーバー負荷が高くなりがち | サーバー負荷はv3同様に高いが、COMPOUND操作でRTTを削減できる | コールバックによりサーバー負荷を抑制、大規模環境向け |
 
 ## 4.15 分散ストレージのまとめ（第51章）
 
@@ -1419,7 +1420,7 @@ flowchart LR
 
 ## 5.5 分散システムのセキュリティ（第57章）
 
-分散環境では、ネットワークの盗聴・改ざん・なりすましといった追加の脅威に対処する必要があります。TLS/SSLによる通信路の暗号化、証明書によるサーバー認証、Kerberosのようなチケットベース認証プロトコルなどが代表例として扱われます。
+分散環境では、ネットワークの盗聴・改ざん・なりすましといった追加の脅威に対処する必要があります。**TLS**による通信路の暗号化、証明書によるサーバー認証、Kerberosのようなチケットベース認証プロトコルなどが代表例として扱われます。なお実装時に使用してよいのは**TLS 1.2以降**であり、**SSLv2・SSLv3・TLS 1.0・TLS 1.1は脆弱性が確認され非推奨化されているため使用してはいけません**。新規構成では**TLS 1.3**の採用を推奨します。
 
 ---
 
@@ -1509,7 +1510,7 @@ flowchart TB
 | 第26〜34章（並行性全般） | Node.js・Nginx・Redisなどのイベントベースアーキテクチャに加え、Linuxの`io_uring`（Jens Axboe氏が開発）が「システムコールのオーバーヘッドを避けつつ真の非同期I/Oを実現する」次世代インターフェースとして普及が進んでいる。第33章の`select`/`poll`/`epoll`の発展形として位置づけて学ぶと理解しやすい |
 | 第37章・第44章（HDD・SSD） | データセンターの主戦場はすでにNVMe接続のSSDへ完全に移行しており、原著が前提とする「回転待ち・シーク時間が支配的」なHDDの特性は、コールドストレージやアーカイブ用途を除き実務での比重が下がっている。とはいえ「シーケンシャルI/O優位」の教訓自体はSSD/NVMeでも（消去単位の制約という形で）形を変えて生き続けている |
 | 第42〜43章（クラッシュ一貫性） | ZFS・Btrfs・(Windows)ReFSのようなチェックサム内蔵型・Copy-on-Writeファイルシステムが一般化し、原著のFSCK/ジャーナリングの議論は「なぜCoW設計が求められるようになったか」の前提知識として活きる |
-| 全体（低レイヤーの実装言語） | 2025年12月のKernel Maintainers Summitで、Linuxカーネルの**Rust for Linux**実験的サポートを巡る議論が続いている。C言語中心だったOS実装の世界にメモリ安全な言語を取り入れる動きは、OSTEPが前提とするC言語ベースの実装モデルへの補完的な視点として押さえておく価値がある |
+| 全体（低レイヤーの実装言語） | Linuxカーネルの**Rust for Linux**は、2025年12月10日の合意によって「実験的（experimental）」という位置づけを終えた。一方で採用範囲の拡大には別の制約が残っており、Rustツールチェーンが対応していないアーキテクチャではRustコードをビルドできないため、対応アーキテクチャとツールチェーンの整備状況が実際の適用範囲を左右する。C言語中心だったOS実装の世界にメモリ安全な言語を取り入れる動きは、OSTEPが前提とするC言語ベースの実装モデルへの補完的な視点として押さえておく価値がある |
 
 ## 7.1 コミュニティでの学習リソース（2026年）
 
@@ -1601,17 +1602,22 @@ flowchart TB
 
 # 参考文献・出典
 
-本ガイドの作成にあたり、2026年8月29日時点で以下の一次情報・信頼できる情報源を参照しました。
+本ガイドの作成にあたり、2026年8月29日時点で以下の情報源を参照しました。技術的な記述の根拠は下記の一次情報源（著者・開発元・公式サイトによる発信）に置いています。二次情報・コミュニティ情報源は文脈や受容のされ方を補足するためのものであり、現時点の技術的事実の裏付けには用いていません。
+
+## 一次情報源（著者・開発元・公式サイト）
 
 1. Operating Systems: Three Easy Pieces（公式サイト、目次・書誌情報・バージョン履歴） — https://pages.cs.wisc.edu/~remzi/OSTEP/
 2. OSTEP: Errata and Book News（バージョン1.10の改訂履歴） — https://pages.cs.wisc.edu/~remzi/OSTEP/combined.html
 3. ostep-projects（Remzi Arpaci-Dusseau、C言語プロジェクト課題） — https://github.com/remzi-arpacidusseau/ostep-projects
-4. Operating Systems: Three Easy Pieces（Amazon書誌情報、著者略歴） — https://www.amazon.com/Operating-Systems-Three-Easy-Pieces/dp/198508659X
-5. Software Internals Book Club: Operating Systems: Three Easy Pieces（Phil Eaton、2026年輪読会スケジュール） — https://eatonphil.com/2026-ostep.html
-6. xv6, a simple Unix-like teaching operating system（MIT PDOS、6.1810 Fall 2026） — https://pdos.csail.mit.edu/6.828/2026/xv6.html
-7. mit-pdos/xv6-riscv（GitHubリポジトリ） — https://github.com/mit-pdos/xv6-riscv
-8. 6.1810 / Operating System Engineering（MIT OpenCourseWare、コース概要） — https://ocw.mit.edu/courses/6-1810-operating-system-engineering-fall-2023
-9. Xv6（Wikipedia、開発者・バージョン情報） — https://en.wikipedia.org/wiki/Xv6
+4. xv6, a simple Unix-like teaching operating system（MIT PDOS、6.1810 Fall 2026） — https://pdos.csail.mit.edu/6.828/2026/xv6.html
+5. mit-pdos/xv6-riscv（GitHubリポジトリ） — https://github.com/mit-pdos/xv6-riscv
+6. 6.1810 / Operating System Engineering（MIT OpenCourseWare、コース概要） — https://ocw.mit.edu/courses/6-1810-operating-system-engineering-fall-2023
+
+## 二次情報・コミュニティ情報源（補足）
+
+7. Operating Systems: Three Easy Pieces（Amazon書誌情報、著者略歴。書誌データの二次的な掲載元） — https://www.amazon.com/Operating-Systems-Three-Easy-Pieces/dp/198508659X
+8. Software Internals Book Club: Operating Systems: Three Easy Pieces（Phil Eaton、2026年輪読会スケジュール。個人主催の輪読会告知） — https://eatonphil.com/2026-ostep.html
+9. Xv6（Wikipedia、開発者・バージョン情報。編集者由来の二次情報） — https://en.wikipedia.org/wiki/Xv6
 10. Operating Systems: Three Easy Pieces（cs.ossu.dev、OSSUカリキュラムでの推薦文） — http://cs.ossu.dev/coursepages/ostep/
 11. Hacker News: "Operating Systems: Three Easy Pieces"（開発者コミュニティでの評価・スケジューリング章への評価コメント） — https://news.ycombinator.com/item?id=18104600
 12. Hacker News: "Operating Systems: Three Easy Pieces"（体験談スレッド） — https://news.ycombinator.com/item?id=30486644
