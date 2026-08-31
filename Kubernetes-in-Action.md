@@ -1138,11 +1138,11 @@ DRAはKubernetes v1.34で**GA（正式版）** に到達しました。The New S
 
 ```mermaid
 flowchart TB
-    subgraph BEFORE["v1.34以前: リソース変更は原則Pod再作成"]
+    subgraph BEFORE["v1.32以前: リソース変更は原則Pod再作成"]
         direction LR
         B1["spec.resources変更"] --> B2["Pod再作成"] --> B3["接続切断・<br/>ステート消失"]
     end
-    subgraph AFTER["v1.35以降: In-Place Resize (GA)"]
+    subgraph AFTER["v1.33以降: In-Place Resize (ベータで既定有効)<br/>v1.35でGA"]
         direction LR
         A1["spec.resources変更"] --> A2["kubeletがcgroup設定を<br/>動的に更新"] --> A3["対応するリソースは<br/>Pod再作成なしで反映<br/>(resizePolicy次第で<br/>コンテナ再起動)"]
     end
@@ -1156,7 +1156,7 @@ flowchart TB
 Kubernetes公式ブログは、この機能が「6年以上の歳月を経てGAに到達した」重要なマイルストーンであると位置づけています。CPU変更は多くの場合コンテナ再起動なしに反映できる一方、メモリ制限の変更は`resizePolicy`の設定次第でコンテナ再起動を伴う場合がある点に注意が必要です。
 
 **ベストプラクティス**
-- ステートフルなワークロード（データベース、長時間実行バッチジョブ）ほどIn-Place Resizeの恩恵が大きい。VerticalPodAutoscaler（VPA）v1.4以降の`InPlaceOrRecreate`モードと組み合わせて推奨リソース値を適用する運用を検討する。ただし無停止が保証されるわけではない：モード名のとおり、In-Placeでの更新に失敗した場合はPodのEvictionと再作成にフォールバックするため、StatefulSetや長時間実行ジョブでは再起動・既存コネクションの切断が起こりうる。PodDisruptionBudgetの設定と再起動耐性の確認を前提に適用する。
+- ステートフルなワークロード（データベース、長時間実行バッチジョブ）ほどIn-Place Resizeの恩恵が大きい。VerticalPodAutoscaler（VPA）の`InPlaceOrRecreate`モードと組み合わせて推奨リソース値を適用する運用を検討する。ただし利用条件はVPAのバージョンで異なり、VPA 1.4では機能ゲートの明示的な有効化とKubernetes 1.33以降が前提、VPA 1.5では当該機能ゲートが既定で有効、VPA 1.6でGAとなった。ただし無停止が保証されるわけではない：モード名のとおり、In-Placeでの更新に失敗した場合はPodのEvictionと再作成にフォールバックするため、StatefulSetや長時間実行ジョブでは再起動・既存コネクションの切断が起こりうる。PodDisruptionBudgetの設定と再起動耐性の確認を前提に適用する。
 - JVMベースのアプリケーションなど、メモリ上限変更が自動的にヒープサイズへ反映されないランタイムでは、In-Place Resizeだけに頼らずアプリケーション側の設定連携も確認する。
 
 **出典：** Kubernetes公式ブログ「Kubernetes v1.35: In-Place Pod Resize Graduates to Stable」(https://kubernetes.io/blog/2025/12/19/kubernetes-v1-35-in-place-pod-resize-ga)
@@ -1214,7 +1214,7 @@ flowchart LR
 
 | 製品 | ネイティブサイドカー対応 | 公式ドキュメントに基づく推奨デプロイモデル |
 |---|---|---|
-| Istio | サイドカーモードで対応（1.22以降、Kubernetes 1.29+が前提） | サイドカーモードとAmbientモード（ztunnel + waypointによるサイドカーレス構成、1.24でGA）の2つを提供し、要件に応じた選択を案内している。サイドカー一択ではない |
+| Istio | ネイティブサイドカーはIstio 1.19でプレリリース版として実証。利用には`ENABLE_NATIVE_SIDECARS`の設定と、クラスタ側のSidecarContainers機能ゲートが有効であることが必要 | サイドカーモードに加え、Ambientモード（ztunnel + waypointによるサイドカーレス構成、1.24でGA）を提供し、要件に応じた選択を案内している。サイドカー一択ではない。なおAmbientモードのバージョン条件はネイティブサイドカーの対応条件とは別物である |
 | Linkerd | 対応（ネイティブサイドカー対応は2.15以降。Kubernetes 1.29+ではデフォルトで有効） | プロキシをネイティブサイドカーとして注入する構成 |
 | Cilium Service Mesh | サイドカーを前提としないため該当しない | eBPFとノード単位のEnvoyによるサイドカーレスモデル |
 
@@ -1222,7 +1222,7 @@ flowchart LR
 
 **従来のサイドカーパターンとの違い**
 
-| 観点 | 従来のサイドカー(通常コンテナとして追加) | ネイティブサイドカー(v1.33+) |
+| 観点 | 従来のサイドカー(通常コンテナとして追加) | ネイティブサイドカー(v1.29以降、v1.33でStable) |
 |---|---|---|
 | 起動順序 | メインコンテナと同時に起動（保証なし） | メインコンテナより先に起動完了 |
 | 終了順序 | メインコンテナと同時にSIGTERM | 全メインコンテナ終了後にSIGTERM |
@@ -1248,7 +1248,7 @@ flowchart TB
         S1["クラウドネイティブ技術の<br/>組織導入率: 98%"]
         S2["コンテナ利用者のうち<br/>本番環境でKubernetesを<br/>稼働: 82%(2023年は66%)"]
         S3["AI導入企業のうち<br/>Kubernetes上で推論<br/>ワークロードを稼働: 66%"]
-        S4["Fortune 100企業のうち<br/>本番稼働: 77%"]
+        S4["AIモデルを毎日<br/>デプロイしている組織:<br/>わずか7%"]
     end
 
     classDef highlightFill fill:#1f3a5f,stroke:#7c9eff,color:#e8eefc
