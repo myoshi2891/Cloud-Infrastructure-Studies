@@ -331,7 +331,7 @@ export function ComptiaNetworkSecurityGuide() {
                                 <tr>
                                     <td>SAML</td>
                                     <td>Webアプリのシングルサインオン</td>
-                                    <td>XMLベースのアサーションを署名・暗号化</td>
+                                    <td>XMLベースのアサーション(プロファイルやバインディングなどの構成に応じて署名・暗号化を適用)</td>
                                     <td>クラウドサービスとの連携(SSO)で多用</td>
                                 </tr>
                             </tbody>
