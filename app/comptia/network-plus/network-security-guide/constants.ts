@@ -86,15 +86,21 @@ export const DIAGRAMS: Record<DiagramId, string> = {
     M --> S["AAAサーバーへ問い合わせ"]
     S --> R["RADIUS"]
     S --> T["TACACS plus"]
-    S --> L["LDAP SAML"]
+    S --> L["LDAP ディレクトリ照会"]
     R --> Z["認可 Authorization"]
     T --> Z
     L --> Z
+    A1 --> SP["SP サービスプロバイダー SSO利用"]
+    SP --> IDP["IdP アイデンティティプロバイダー"]
+    IDP --> SA["SAML アサーションを SP へ返す"]
+    SA --> Z
     Z --> P["最小権限 RBAC を適用"]
     P --> G["リソースへのアクセス許可"]
     classDef teal fill:#0f2e2b,stroke:#2dd4bf,color:#ccfbf1;
     classDef purple fill:#241f3d,stroke:#8b6cf5,color:#e4defc;
+    classDef coral fill:#3a2420,stroke:#fb7862,color:#ffd9cf;
     class R,T,L teal;
+    class SP,IDP,SA coral;
     class Z,P purple;`,
 
     'diag-cia-triad': `flowchart TB
