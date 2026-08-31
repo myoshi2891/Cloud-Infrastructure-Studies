@@ -833,7 +833,7 @@ flowchart LR
 **ベストプラクティス**
 - 新規にKubernetesクラスタでHTTPルーティングを構築する場合は、原著13.1.3節が例示するIstioに限らず、Envoy Gateway・Cilium・クラウドマネージドのGateway API実装（GKE Gateway、AWS Gateway API Controllerなど）の中から要件に合うものを選び、最初からGateway APIで構築する。
 - 既存のIngressからの移行は、`ingress2gateway`のような変換ツールで叩き台を生成した上で、アノテーションに依存していた挙動を手動で`HTTPRoute`のフィルタ機能に置き換える。
-- GatewayとHTTPRouteをNamespaceで分離する運用（原著13.6節）を活用し、インフラチームがGatewayのTLS設定を管理しつつ、アプリチームは自Namespace内のHTTPRouteだけを変更できるようにする。
+- GatewayとHTTPRouteをNamespaceで分離する運用（原著13.6節）を活用し、インフラチームがGatewayのTLS設定を管理しつつ、アプリチームは自Namespace内のHTTPRouteだけを変更できるようにする。Namespace分離は書き込み権限の分離とセットで設計する。すなわち、`gateways`リソースへの`create`/`update`/`patch`/`delete`はインフラチーム向けのClusterRole（またはGateway用Namespaceに限定したRole）にのみ与え、アプリチームには自Namespaceの`httproutes`に対する権限だけを与えるRole/RoleBindingを各アプリNamespaceに作成する。さらにGateway側の`listeners[].allowedRoutes`（`namespaces.from: Selector`＋ラベルセレクタなど）で接続を許可するNamespaceを明示的に絞り込み、クロスNamespace参照（別NamespaceのSecretやBackendを指すケース）は、対象のKind・Name・送信元Namespaceを限定した`ReferenceGrant`を参照先Namespaceに置いた場合にのみ許可する。
 
 **出典：** Kubernetes SIG Network公式アナウンス「Ingress-NGINX Controller」終了に関するGoogle Open Source Blog (https://opensource.googleblog.com/2026/02/the-end-of-an-era-transitioning-away-from-ingress-nginx.html)、Gateway API公式リポジトリ (https://github.com/kubernetes-sigs/gateway-api)
 
@@ -1093,7 +1093,7 @@ flowchart LR
     class D highlightFill
 ```
 
-Network World誌の報道によれば、v1.37のリリースリードを務めたDipesh Rawat氏は、開発・テスト期間を確保するため、リリース間の準備期間を短縮する運用変更を行ったと説明しています。v1.37の主な特徴は、kube-proxyの**IPVSモードからnftablesモードへの移行**の継続、そしてワークロードスケジューリングの強化です。この「移行」は2つの独立した時系列に分けて理解する必要があります。**nftablesモードの導入はv1.29**(アルファ機能として登場、v1.31でベータ、v1.33でGA)であり、**IPVSモードの非推奨化(deprecation)の開始はv1.35**です。つまり新モードの提供開始と旧モードの非推奨化は同時ではなく、v1.35以降は「nftablesが既定の推奨、IPVSは非推奨」という段階に入っています。
+Network World誌の報道によれば、v1.37のリリースリードを務めたDipesh Rawat氏は、開発・テスト期間を確保するため、リリース間の準備期間を短縮する運用変更を行ったと説明しています。v1.37の主な特徴は、kube-proxyの**IPVSモードからnftablesモードへの移行**の継続、そしてワークロードスケジューリングの強化です。この「移行」は2つの独立した時系列に分けて理解する必要があります。**nftablesモードの導入はv1.29**(アルファ機能として登場、v1.31でベータ、v1.33でGA)であり、**IPVSモードの非推奨化(deprecation)の開始はv1.35**です。つまり新モードの提供開始と旧モードの非推奨化は同時ではなく、v1.35以降は「nftablesが推奨される移行先、IPVSは非推奨」という段階に入っています。なお、v1.37時点でもkube-proxyの**既定モードはiptables**のままであり、既定をnftablesへ切り替えることは将来の予定です。nftablesモードを使う場合は`--proxy-mode=nftables`（またはKubeProxyConfigurationの`mode: nftables`）を明示的に指定する必要があります。
 
 **ベストプラクティス**
 - 公式・大手クラウドベンダーは「最新から1〜2バージョン前（N-1〜N-2）」の追従を推奨している。最新バージョンへの飛びつきよりも、エコシステム（CNI、CSI、サービスメッシュ等）の対応状況を見極めてから段階的にアップグレードする。
@@ -1294,8 +1294,8 @@ Kubernetes関連の実務スキルを客観的に示す手段として、Linux F
 
 | 資格 | 略称 | 対象レベル | 2026年時点の傾向 |
 |---|---|---|---|
-| Certified Kubernetes Application Developer | CKAD | アプリ開発者 | 出題範囲にGateway APIが追加(2026年半ば) |
-| Certified Kubernetes Administrator | CKA | クラスタ管理者 | 出題範囲にGateway APIが追加(2026年初頭) |
+| Certified Kubernetes Application Developer | CKAD | アプリ開発者 | アプリのデプロイ・設定・可観測性・トラブルシューティングが中心 |
+| Certified Kubernetes Administrator | CKA | クラスタ管理者 | 出題範囲にGateway APIが追加(2025年2月18日) |
 | Certified Kubernetes Security Specialist | CKS | セキュリティ担当 | CKA取得が前提要件 |
 
 本ガイドの第1〜5部は主にCKAD、第1部後半〜第5部の運用寄りの内容はCKAの学習範囲と重なります。
