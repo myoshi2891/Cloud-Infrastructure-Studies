@@ -183,3 +183,24 @@ export const DIAGRAMS: Record<DiagramId, string> = {
     class Web,DNSsv,Mail warning;
     class LAN,DB success;`,
 };
+
+/** 4.0 Network Security 理解度チェックリスト */
+export const CHECKLIST_ROWS: readonly string[] = [
+    '暗号化(in transit / at rest)の違いを説明できる',
+    'PKI・証明書の役割を説明できる',
+    'RADIUS / TACACS+ / LDAP / SAML の違いを説明できる',
+    'MFA・SSO・最小権限・RBACの意味を説明できる',
+    'ハニーポットとハニーネットの違いを説明できる',
+    'Risk / Vulnerability / Exploit / Threat の関係を説明できる',
+    'CIA Triad の3要素を説明できる',
+    'PCI DSS と GDPR の違いを説明できる',
+    'IoT/OT/Guest/BYODをなぜ分離するか説明できる',
+    'DoS/DDoS、VLANホッピング、MACフラッディングの違いを説明できる',
+    'ARP poisoning/spoofing と DNS poisoning/spoofing の違いを説明できる',
+    'Evil twin と on-path attack の関係を説明できる',
+    '代表的なソーシャルエンジニアリングの手口を4つ挙げられる',
+    'デバイスハードニングの基本2点を説明できる',
+    'Port security / 802.1X / MAC filtering の違いを説明できる',
+    'ACL・URLフィルタリング・コンテンツフィルタリングの違いを説明できる',
+    'Screened subnet(旧DMZ)の役割を説明できる',
+];
