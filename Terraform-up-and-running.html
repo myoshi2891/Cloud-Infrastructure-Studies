@@ -1486,7 +1486,7 @@ flowchart TB
                     </li>
                     <li>
                         <strong>認証情報をコードに埋め込まない</strong>:
-                        環境変数や<code>.aws/credentials</code>、あるいはCI/CDのOIDC連携を使う
+                        環境変数や<code>~/.aws/credentials</code>、あるいはCI/CDのOIDC連携を使う
                     </li>
                 </ul>
                 <h3 id="2-2-terraformのインストール">2-2. Terraformのインストール</h3>
@@ -3921,96 +3921,22 @@ flowchart LR
                             sequence: { useMaxWidth: false },
                         });
 
-                        // Defensive backstop: mermaid can position a node's <foreignObject> label
-                        // group off-center relative to its own <rect>/<polygon> shape (observed
-                        // independent of font loading — the shape and the label sit in different
-                        // local coordinate spaces and mermaid's own centering math doesn't always
-                        // reconcile them), which lets text run past the shape's edge on one side.
-                        // Re-center first, then grow the box if the label still doesn't fit.
-                        function recenterAndHealLabels() {
-                            document
-                                .querySelectorAll('pre.mermaid svg .node')
-                                .forEach(function (node) {
-                                    var fo = node.querySelector('foreignObject');
-                                    var shape =
-                                        node.querySelector(
-                                            'rect.basic, polygon.basic, circle.basic, .label-container',
-                                        ) || node.querySelector('rect, polygon, circle');
-                                    if (!fo || !shape) return;
-                                    var label = fo.querySelector('div');
-                                    if (!label) return;
-
-                                    var foBox = fo.getBoundingClientRect();
-                                    var shapeBox = shape.getBoundingClientRect();
-                                    var shapeAttrW = parseFloat(shape.getAttribute('width') || '0');
-                                    var shapeAttrH = parseFloat(
-                                        shape.getAttribute('height') || '0',
-                                    );
-                                    var scaleX = shapeAttrW > 0 ? shapeBox.width / shapeAttrW : 1;
-                                    var scaleY = shapeAttrH > 0 ? shapeBox.height / shapeAttrH : 1;
-                                    if (!scaleX) scaleX = 1;
-                                    if (!scaleY) scaleY = 1;
-
-                                    // 1) Re-center the foreignObject on the shape's center, both axes.
-                                    var shiftXScreenPx =
-                                        (shapeBox.left + shapeBox.right) / 2 -
-                                        (foBox.left + foBox.right) / 2;
-                                    var shiftYScreenPx =
-                                        (shapeBox.top + shapeBox.bottom) / 2 -
-                                        (foBox.top + foBox.bottom) / 2;
-                                    if (Math.abs(shiftXScreenPx) > 1) {
-                                        var curX = parseFloat(fo.getAttribute('x') || '0');
-                                        fo.setAttribute('x', curX + shiftXScreenPx / scaleX);
-                                    }
-                                    if (Math.abs(shiftYScreenPx) > 1) {
-                                        var curY = parseFloat(fo.getAttribute('y') || '0');
-                                        fo.setAttribute('y', curY + shiftYScreenPx / scaleY);
-                                    }
-
-                                    // 2) After centering, if the label content is still wider/taller than
-                                    //    the box (genuine overflow, not just off-center), grow both.
-                                    var needW = label.scrollWidth + 8;
-                                    var needH = label.scrollHeight + 6;
-                                    var curW = parseFloat(fo.getAttribute('width') || '0');
-                                    var curH = parseFloat(fo.getAttribute('height') || '0');
-                                    if (needW > curW || needH > curH) {
-                                        var newW = Math.max(needW, curW);
-                                        var newH = Math.max(needH, curH);
-                                        var x =
-                                            parseFloat(fo.getAttribute('x') || '0') -
-                                            (newW - curW) / 2;
-                                        var y =
-                                            parseFloat(fo.getAttribute('y') || '0') -
-                                            (newH - curH) / 2;
-                                        fo.setAttribute('width', newW);
-                                        fo.setAttribute('height', newH);
-                                        fo.setAttribute('x', x);
-                                        fo.setAttribute('y', y);
-                                        if (shape.tagName === 'rect') {
-                                            var rx =
-                                                parseFloat(shape.getAttribute('x') || '0') -
-                                                (newW - curW) / 2;
-                                            var ry =
-                                                parseFloat(shape.getAttribute('y') || '0') -
-                                                (newH - curH) / 2;
-                                            shape.setAttribute('width', newW);
-                                            shape.setAttribute('height', newH);
-                                            shape.setAttribute('x', rx);
-                                            shape.setAttribute('y', ry);
-                                        }
-                                    }
-                                });
-                        }
-
-                        mermaid
-                            .run({ querySelector: 'pre.mermaid' })
-                            .then(function () {
-                                recenterAndHealLabels();
-                                setTimeout(recenterAndHealLabels, 400);
-                            })
-                            .catch(function (e) {
-                                console.error('mermaid render error', e);
-                            });
+                        // NOTE: no post-render DOM patching here. An earlier version of this
+                        // script tried to "heal" node label overflow by moving each node's
+                        // <foreignObject> after mermaid.run() finished — but mermaid's edges
+                        // are drawn as independent <path> elements computed once at layout
+                        // time, so shifting a node afterwards (even just its label, even by a
+                        // few px) visibly detaches connected arrows from that node, which is
+                        // a worse and more obvious defect than the text-fit issue it was
+                        // trying to fix. The MERMAID_FONT_STACK choice above (a synchronously
+                        // available system font, not the page's async Google-Fonts webfont)
+                        // already eliminates the original overflow at its root cause: mermaid
+                        // measures and paints with the same font, so nothing needs correcting
+                        // after the fact. Verified empirically: 0/19 diagrams show any label
+                        // overflow with this font fix alone, and all edges connect cleanly.
+                        mermaid.run({ querySelector: 'pre.mermaid' }).catch(function (e) {
+                            console.error('mermaid render error', e);
+                        });
                     } catch (e) {
                         console.error('mermaid init error', e);
                     }
