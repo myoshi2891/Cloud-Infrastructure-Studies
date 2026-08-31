@@ -158,7 +158,7 @@ flowchart LR
 
 **ベストプラクティス**
 - ローカル開発ではDocker Desktop／Podman Desktopのどちらでも良いが、本番クラスタのノードランタイムはcontainerdかCRI-Oに統一する。
-- イメージはOCIイメージ仕様に準拠したレジストリ（Docker Hub、GitHub Container Registry、Amazon ECR、Google Artifact Registryなど）で管理し、タグに`latest`を使わずセマンティックバージョンまたはコミットハッシュで固定する。
+- イメージはOCIイメージ仕様に準拠したレジストリ（Docker Hub、GitHub Container Registry、Amazon ECR、Google Artifact Registryなど）で管理し、タグに`latest`を使わずセマンティックバージョンまたはコミットハッシュを付与する。ただしタグは後から別のイメージへ付け替えられる可変の参照であり、それ自体はバージョンを固定しない。本番環境では`image@sha256:<ダイジェスト>`形式のダイジェスト参照でイメージを一意に固定し、あわせてCosign等による署名検証（Sigstore）をデプロイ前のゲートに組み込む。
 
 
 ---
@@ -1142,16 +1142,21 @@ DRAの成熟度は、バージョンごとに対象範囲が異なる点に注�
 flowchart TB
     subgraph BEFORE["v1.32以前: リソース変更は原則Pod再作成"]
         direction LR
-        B1["spec.resources変更"] --> B2["Pod再作成"] --> B3["接続切断・<br/>ステート消失"]
+        B1["spec.containers[*].resources<br/>変更"] --> B2["Pod再作成"] --> B3["接続切断・<br/>ステート消失"]
     end
-    subgraph AFTER["v1.33以降: In-Place Resize (ベータで既定有効)<br/>v1.35でGA"]
+    subgraph AFTER["v1.33以降: コンテナ単位のIn-Place Resize<br/>(ベータで既定有効)・v1.35でGA"]
         direction LR
-        A1["spec.resources変更"] --> A2["kubeletがcgroup設定を<br/>動的に更新"] --> A3["対応するリソースは<br/>Pod再作成なしで反映<br/>(resizePolicy次第で<br/>コンテナ再起動)"]
+        A1["spec.containers[*].resources<br/>変更"] --> A2["kubeletがcgroup設定を<br/>動的に更新"] --> A3["対応するリソースは<br/>Pod再作成なしで反映<br/>(resizePolicy次第で<br/>コンテナ再起動)"]
+    end
+    subgraph PODLEVEL["v1.36: Pod-level resources の<br/>インプレース変更 (ベータ・別機能)"]
+        direction LR
+        P1["spec.resources<br/>(Pod単位)変更"] --> P2["Pod全体のcgroup上限を<br/>インプレースで更新"]
     end
 
     classDef highlightFill fill:#1f3a5f,stroke:#7c9eff,color:#e8eefc
     classDef dangerFill fill:#3a1420,stroke:#c05a6e,color:#f5d8de
     class A2,A3 highlightFill
+    class P2 highlightFill
     class B2,B3 dangerFill
 ```
 
@@ -1194,7 +1199,7 @@ flowchart TB
 **ベストプラクティス**
 - 既存クラスタでは次の順に棚卸しする。① `kubectl get ingress -A`でIngressリソースの全体像を把握する。② `kubectl get pods -A -l app.kubernetes.io/name=ingress-nginx`（必要に応じて`kubectl get deploy,svc -A -l app.kubernetes.io/name=ingress-nginx`）でIngress-NGINXコントローラPodの有無と稼働している名前空間を特定する。③ `kubectl get ingressclass`で`nginx`のIngressClassが定義・既定化されていないかを確認する。④ `kubectl describe ingress <name> -n <namespace>`で個々のIngressの詳細（ホスト、パス、TLS、アノテーション）を確認する。特にNGINX固有アノテーション（`nginx.ingress.kubernetes.io/*`）に依存した設定は、Gateway APIのフィルタ機能への置き換えが必要になる。
 - 新規クラスタ構築時はIngressを新たに採用せず、最初からGateway API + 実装（Envoy Gateway、Cilium、クラウドマネージド実装等）で構築する。
-- Kubernetesの資格試験（CKA/CKAD）のシラバスにも2026年にGateway APIの出題範囲が追加されている点からも、エンジニアとしての学習優先度が上がっていることがわかる。
+- Kubernetesの資格試験のうちCKAのシラバスには2025年2月18日にGateway APIが出題範囲として追加されている点からも、エンジニアとしての学習優先度が上がっていることがわかる。
 
 **出典：** Google Open Source Blog「The End of an Era: Transitioning Away from Ingress NGINX」(https://opensource.googleblog.com/2026/02/the-end-of-an-era-transitioning-away-from-ingress-nginx.html)、Amazon EKS公式ドキュメント「Review release notes for Kubernetes versions」(https://docs.aws.amazon.com/eks/latest/userguide/kubernetes-versions-standard.html)
 
@@ -1216,7 +1221,7 @@ flowchart LR
 
 | 製品 | ネイティブサイドカー対応 | 公式ドキュメントに基づく推奨デプロイモデル |
 |---|---|---|
-| Istio | ネイティブサイドカーはIstio 1.19でプレリリース版として実証。利用には`ENABLE_NATIVE_SIDECARS`の設定と、クラスタ側のSidecarContainers機能ゲートが有効であることが必要 | サイドカーモードに加え、Ambientモード（ztunnel + waypointによるサイドカーレス構成、1.24でGA）を提供し、要件に応じた選択を案内している。サイドカー一択ではない。なおAmbientモードのバージョン条件はネイティブサイドカーの対応条件とは別物である |
+| Istio | ネイティブサイドカーはIstio 1.19でプレリリース版として実証。`ENABLE_NATIVE_SIDECARS`の既定値は`auto`で、要件を満たすクラスタでは自動的にネイティブサイドカーが有効になる（`true`／`false`は明示的なオーバーライド）。いずれの場合もクラスタ側のSidecarContainers機能ゲートが有効であることが前提 | サイドカーモードに加え、Ambientモード（ztunnel + waypointによるサイドカーレス構成、1.24でGA）を提供し、要件に応じた選択を案内している。サイドカー一択ではない。なおAmbientモードのバージョン条件はネイティブサイドカーの対応条件とは別物である |
 | Linkerd | 対応。ただしバージョン条件は3つに分かれる。① Linkerdがネイティブサイドカーに対応したのは**2.15**以降。② 前提となるKubernetes側の`SidecarContainers`機能は**1.29**からデフォルト有効（1.28でアルファ導入）。③ Linkerd自身の**デフォルトの注入方式**がネイティブサイドカーになるのは**2.20**以降 | プロキシを`restartPolicy: Always`のinitコンテナ（ネイティブサイドカー）として注入する構成。2.20より前のバージョンでは通常コンテナとしての注入がデフォルトのため、明示的に有効化する |
 | Cilium Service Mesh | サイドカーを前提としないため該当しない | eBPFとノード単位のEnvoyによるサイドカーレスモデル |
 
@@ -1249,7 +1254,7 @@ flowchart TB
         direction TB
         S1["クラウドネイティブ技術の<br/>組織導入率: 98%"]
         S2["コンテナ利用者のうち<br/>本番環境でKubernetesを<br/>稼働: 82%(2023年は66%)"]
-        S3["AI導入企業のうち<br/>Kubernetes上で推論<br/>ワークロードを稼働: 66%"]
+        S3["生成AIモデルをホストする<br/>組織のうちKubernetes上で<br/>推論ワークロードを稼働: 66%"]
         S4["AIモデルを毎日<br/>デプロイしている組織:<br/>わずか7%"]
     end
 
