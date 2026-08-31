@@ -154,10 +154,10 @@ export const DIAGRAMS: Record<DiagramId, string> = {
     participant SW as スイッチ オーセンティケーター
     participant AAA as RADIUSサーバー
     PC->>SW: 接続要求 ポートはまだ未認証状態
-    SW->>PC: EAPで認証情報を要求
-    PC->>SW: 証明書やIDなど認証情報を送信
-    SW->>AAA: 認証情報を転送 802.1X
-    AAA->>SW: 認証結果と割り当てVLANを返す
+    SW->>PC: 802.1X/EAPOL でEAP-Identityを要求
+    PC->>SW: 802.1X/EAPOL で証明書やIDなど認証情報を送信
+    SW->>AAA: RADIUS Access-Request でEAPメッセージを転送
+    AAA->>SW: RADIUS Access-Accept と割り当てVLAN属性を返す
     SW->>PC: ポートを許可状態にしアクセスを開放`,
 
     'diag-zone-design': `flowchart LR
