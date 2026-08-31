@@ -28,7 +28,9 @@ describe('Generative AI Leader Section 4 theme token ownership', () => {
     });
 
     it('declares no page-local custom properties in the page stylesheet', () => {
-        expect(read(CSS_PATH)).not.toMatch(/^\s*--[\w-]+\s*:/m);
+        // セレクタ・インデント・インライン記述（`.s4-page { --x: 1 }`）のいずれでも
+        // カスタムプロパティ宣言を検出する。宣言は行頭・`{`・`;` のいずれかに続く。
+        expect(read(CSS_PATH)).not.toMatch(/(?:^|[{;\n])\s*--[\w-]+\s*:/);
     });
 
     it('never shadows the globally shared un-prefixed tokens', () => {
@@ -39,7 +41,7 @@ describe('Generative AI Leader Section 4 theme token ownership', () => {
         for (const source of [read(CSS_PATH), read(PAGE_PATH)]) {
             for (const token of shared) {
                 expect(source).not.toMatch(
-                    new RegExp(`var\\(--${token}[,)]`)
+                    new RegExp(`var\\(\\s*--${token}\\s*[,)]`)
                 );
             }
         }
@@ -50,12 +52,14 @@ describe('Generative AI Leader Section 4 theme token ownership', () => {
 
         expect(css).toContain('var(--font-playfair-display)');
         expect(css).toContain('var(--font-dm-mono)');
-        expect(css).not.toMatch(/var\(--(?:serif|mono|body)[,)]/);
+        expect(css).not.toMatch(/var\(\s*--(?:serif|mono|body)\s*[,)]/);
     });
 
     it('keeps page.tsx inline styles on the global theme tokens', () => {
         const page = read(PAGE_PATH);
-        const localRefs = page.match(/var\(--(?!color-|font-|radius-|header-h|disclaimer-height|fixed-offset)[a-z0-9-]+\)/g);
+        const localRefs = page.match(
+            /var\(\s*--(?!color-|font-|radius-|header-h|disclaimer-height|fixed-offset)[a-z0-9-]+\s*[,)]/g
+        );
 
         expect(localRefs).toBeNull();
     });
