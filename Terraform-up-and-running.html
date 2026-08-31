@@ -248,6 +248,47 @@
                 white-space: pre;
             }
 
+            /* Prism.js token colors (dark navy palette) */
+            .token.comment,
+            .token.prolog,
+            .token.doctype,
+            .token.cdata {
+                color: var(--text-dimmer);
+                font-style: italic;
+            }
+            .token.keyword,
+            .token.builtin,
+            .token.boolean,
+            .token.important,
+            .token.atrule {
+                color: var(--accent);
+            }
+            .token.string,
+            .token.heredoc,
+            .token.char,
+            .token.attr-value {
+                color: #ffd479;
+            }
+            .token.type,
+            .token.class-name,
+            .token.function {
+                color: var(--accent-2);
+            }
+            .token.number {
+                color: #f0a868;
+            }
+            .token.punctuation,
+            .token.operator {
+                color: var(--text-dim);
+            }
+            .token.variable,
+            .token.property {
+                color: var(--text);
+            }
+            .token.regex {
+                color: #ffd479;
+            }
+
             /* Mermaid */
             pre.mermaid {
                 width: 100%;
@@ -1449,7 +1490,7 @@ flowchart TB
                     </li>
                 </ul>
                 <h3 id="2-2-terraformのインストール">2-2. Terraformのインストール</h3>
-                <pre class="bash code-block"><code class="lang-bash"># macOS (Homebrew)
+                <pre class="bash code-block"><code class="language-bash"># macOS (Homebrew)
 brew tap hashicorp/tap
 brew install hashicorp/tap/terraform
 
@@ -1458,12 +1499,12 @@ terraform version</code></pre>
                 <p>
                     複数バージョンを切り替える場合は<code>tfenv</code>や<code>asdf</code>のようなバージョンマネージャの利用が推奨されます。プロジェクトごとにバージョンを固定するため、<code>required_version</code>をコード側にも明示します。
                 </p>
-                <pre class="hcl code-block"><code class="lang-hcl">terraform {
+                <pre class="hcl code-block"><code class="language-hcl">terraform {
   required_version = "&gt;= 1.16.0, &lt; 2.0.0"
 }</code></pre>
                 <h3 id="2-3-単一サーバーのデプロイ">2-3. 単一サーバーのデプロイ</h3>
                 <p>Terraformの最小構成は「provider」と「resource」の2ブロックです。</p>
-                <pre class="hcl code-block"><code class="lang-hcl">provider "aws" {
+                <pre class="hcl code-block"><code class="language-hcl">provider "aws" {
   region = "us-east-2"
 }
 
@@ -1488,7 +1529,7 @@ resource "aws_instance" "example" {
                         </p>
                     </div>
                 </div>
-                <pre class="hcl code-block"><code class="lang-hcl">data "aws_ami" "ubuntu" {
+                <pre class="hcl code-block"><code class="language-hcl">data "aws_ami" "ubuntu" {
   most_recent = true
   owners      = ["099720109477"] # Canonical
 
@@ -1541,7 +1582,7 @@ flowchart LR
                 </p>
                 <pre
                     class="hcl code-block"
-                ><code class="lang-hcl">resource "aws_security_group" "instance" {
+                ><code class="language-hcl">resource "aws_security_group" "instance" {
   name = "terraform-example-instance"
 
   ingress {
@@ -1579,14 +1620,14 @@ resource "aws_instance" "example" {
                 <p>
                     ハードコードを避けるため<code>variable</code>ブロックで入力値を外出しします。変数を定義しただけでは何も変わらないため、2-4でポート番号を直書きしていた箇所（セキュリティグループの<code>ingress</code>と<code>user_data</code>）を必ず<code>var.server_port</code>への参照に置き換えます。
                 </p>
-                <pre class="hcl code-block"><code class="lang-hcl">variable "server_port" {
+                <pre class="hcl code-block"><code class="language-hcl">variable "server_port" {
   description = "The port the server will use for HTTP requests"
   type        = number
   default     = 8080
 }</code></pre>
                 <pre
                     class="hcl code-block"
-                ><code class="lang-hcl">resource "aws_security_group" "instance" {
+                ><code class="language-hcl">resource "aws_security_group" "instance" {
   name = "terraform-example-instance"
 
   ingress {
@@ -1643,7 +1684,7 @@ output "public_ip" {
                 </p>
                 <pre
                     class="hcl code-block"
-                ><code class="lang-hcl">resource "aws_launch_template" "example" {
+                ><code class="language-hcl">resource "aws_launch_template" "example" {
   image_id      = "ami-0fb653ca2d3203ac1"
   instance_type = "t2.micro"
 
@@ -1723,7 +1764,7 @@ flowchart TB
 
                 <pre
                     class="hcl code-block"
-                ><code class="lang-hcl">resource "aws_db_instance" "production" {
+                ><code class="language-hcl">resource "aws_db_instance" "production" {
   # ...
 
   lifecycle {
@@ -1748,7 +1789,7 @@ flowchart TB
                     Storage・HCP
                     Terraformのようなリモートバックエンドで共有・排他制御するのが必須のベストプラクティスです。
                 </p>
-                <pre class="hcl code-block"><code class="lang-hcl">terraform {
+                <pre class="hcl code-block"><code class="language-hcl">terraform {
   backend "s3" {
     bucket       = "my-company-terraform-state"
     key          = "global/services/webserver-cluster/terraform.tfstate"
@@ -1917,7 +1958,7 @@ flowchart TB
                 </p>
                 <pre
                     class="hcl code-block"
-                ><code class="lang-hcl">data "terraform_remote_state" "vpc" {
+                ><code class="language-hcl">data "terraform_remote_state" "vpc" {
   backend = "s3"
 
   config = {
@@ -1970,7 +2011,7 @@ resource "aws_instance" "example" {
                 <p>
                     モジュールとは、<code>.tf</code>ファイル群をまとめたディレクトリのことです。ルートモジュール（実行の起点）から子モジュールを<code>module</code>ブロックで呼び出します。
                 </p>
-                <pre class="hcl code-block"><code class="lang-hcl">module "webserver_cluster" {
+                <pre class="hcl code-block"><code class="language-hcl">module "webserver_cluster" {
   source = "../../modules/services/webserver-cluster"
 
   cluster_name  = "webservers-stage"
@@ -1999,7 +2040,7 @@ flowchart TB
                 <p>
                     呼び出し元から値を注入するためのインターフェースです。<code>default</code>を持たない変数は必須パラメータになります。
                 </p>
-                <pre class="hcl code-block"><code class="lang-hcl">variable "cluster_name" {
+                <pre class="hcl code-block"><code class="language-hcl">variable "cluster_name" {
   description = "The name to use for all the cluster resources"
   type        = string
 }
@@ -2020,7 +2061,7 @@ variable "instance_type" {
                 <p>
                     繰り返し使う計算式や、外部に公開する必要のない中間値は<code>locals</code>にまとめます。
                 </p>
-                <pre class="hcl code-block"><code class="lang-hcl">locals {
+                <pre class="hcl code-block"><code class="language-hcl">locals {
   http_port    = 80
   any_port     = 0
   any_protocol = "-1"
@@ -2030,7 +2071,7 @@ variable "instance_type" {
                     4-4. モジュール出力値（Module Outputs）
                 </h3>
                 <p>呼び出し元やCLIから参照できる戻り値です。</p>
-                <pre class="hcl code-block"><code class="lang-hcl">output "asg_name" {
+                <pre class="hcl code-block"><code class="language-hcl">output "asg_name" {
   value       = aws_autoscaling_group.example.name
   description = "The name of the Auto Scaling Group"
 }
@@ -2084,7 +2125,7 @@ output "alb_dns_name" {
                 </div>
                 <pre
                     class="hcl code-block"
-                ><code class="lang-hcl"># path.moduleの利用例（落とし穴の対処）
+                ><code class="language-hcl"># path.moduleの利用例（落とし穴の対処）
 resource "aws_instance" "example" {
   user_data = file("${path.module}/user-data.sh")
 }</code></pre>
@@ -2092,7 +2133,7 @@ resource "aws_instance" "example" {
                 <p>
                     Gitリポジトリやレジストリの参照時に<code>ref</code>やバージョン制約を明示し、意図しない破壊的変更の巻き込みを防ぎます。
                 </p>
-                <pre class="hcl code-block"><code class="lang-hcl">module "webserver_cluster" {
+                <pre class="hcl code-block"><code class="language-hcl">module "webserver_cluster" {
   source  = "github.com/foo/modules//services/webserver-cluster?ref=v0.1.4"
 
   cluster_name  = "webservers-stage"
@@ -2168,7 +2209,7 @@ module "vpc" {
                 </div>
                 <pre
                     class="hcl code-block"
-                ><code class="lang-hcl"># 以下の例が参照する入力変数。宣言がないと undeclared variable エラーになる
+                ><code class="language-hcl"># 以下の例が参照する入力変数。宣言がないと undeclared variable エラーになる
 variable "names" {
   description = "for式で大文字化する名前のリスト"
   type        = list(string)
@@ -2220,7 +2261,9 @@ locals {
                 <p>
                     Terraformには<code>if</code>文はありませんが、三項演算子と<code>count</code>/<code>for_each</code>を組み合わせて条件付きリソース作成を表現します。
                 </p>
-                <pre class="hcl code-block"><code class="lang-hcl">variable "enable_autoscaling" {
+                <pre
+                    class="hcl code-block"
+                ><code class="language-hcl">variable "enable_autoscaling" {
   description = "スケジュールベースのオートスケーリングを有効にするか"
   type        = bool
   default     = false
@@ -2287,7 +2330,7 @@ sequenceDiagram
                 >
                 <pre
                     class="hcl code-block"
-                ><code class="lang-hcl">resource "aws_launch_template" "example" {
+                ><code class="language-hcl">resource "aws_launch_template" "example" {
   # ...
   lifecycle {
     create_before_destroy = true
@@ -2399,7 +2442,7 @@ resource "aws_autoscaling_group" "example" {
                 </div>
                 <pre
                     class="hcl code-block"
-                ><code class="lang-hcl"># リソース名変更時の安全な移行(movedブロック)
+                ><code class="language-hcl"># リソース名変更時の安全な移行(movedブロック)
 moved {
   from = aws_instance.old_name
   to   = aws_instance.new_name
@@ -2478,7 +2521,7 @@ moved {
                         fileには平文（またはそれに近い形）でシークレットが記録されてしまう</strong
                     >という長年の課題がありました。
                 </p>
-                <pre class="hcl code-block"><code class="lang-hcl">variable "db_password" {
+                <pre class="hcl code-block"><code class="language-hcl">variable "db_password" {
   description = "The password for the database"
   type        = string
   sensitive   = true
@@ -2532,7 +2575,7 @@ sequenceDiagram
                 >
                 <pre
                     class="hcl code-block"
-                ><code class="lang-hcl">ephemeral "random_password" "db_password" {
+                ><code class="language-hcl">ephemeral "random_password" "db_password" {
   length           = 16
   override_special = "!#$%&amp;*()-_=+[]{}&lt;&gt;:?"
 }
@@ -2642,7 +2685,7 @@ resource "aws_db_instance" "example" {
                 <p>
                     プロバイダーは<code>required_providers</code>ブロックでソースとバージョンを明示します。
                 </p>
-                <pre class="hcl code-block"><code class="lang-hcl">terraform {
+                <pre class="hcl code-block"><code class="language-hcl">terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -2657,7 +2700,7 @@ resource "aws_db_instance" "example" {
                     <code>alias</code
                     >を使うことで、1つのTerraformコード内から複数リージョン・複数AWSアカウントを扱えます。
                 </p>
-                <pre class="hcl code-block"><code class="lang-hcl">provider "aws" {
+                <pre class="hcl code-block"><code class="language-hcl">provider "aws" {
   region = "us-east-2"
 }
 
@@ -2691,7 +2734,7 @@ flowchart TB
                 <p>
                     モジュールを複数プロバイダーで再利用可能にするには、<code>configuration_aliases</code>でエイリアスの受け渡しを明示します。
                 </p>
-                <pre class="hcl code-block"><code class="lang-hcl">terraform {
+                <pre class="hcl code-block"><code class="language-hcl">terraform {
   required_providers {
     aws = {
       source                = "hashicorp/aws"
@@ -2726,7 +2769,7 @@ flowchart TB
                 </p>
                 <pre
                     class="hcl code-block"
-                ><code class="lang-hcl"># root module A（例: live/eks-cluster）: aws プロバイダーでクラスタ本体だけを管理する
+                ><code class="language-hcl"># root module A（例: live/eks-cluster）: aws プロバイダーでクラスタ本体だけを管理する
 
 # クラスタが参照する前提を同じroot module内で宣言しておく
 variable "subnet_ids" {
@@ -2779,7 +2822,7 @@ output "cluster_name" {
                 </p>
                 <pre
                     class="hcl code-block"
-                ><code class="lang-hcl"># root module B（例: live/eks-workloads）: kubernetes プロバイダーでクラスタ内リソースを管理する
+                ><code class="language-hcl"># root module B（例: live/eks-workloads）: kubernetes プロバイダーでクラスタ内リソースを管理する
 variable "cluster_name" {
   description = "root module A の cluster_name 出力（terraform_remote_state 等で受け取る）"
   type        = string
@@ -3014,7 +3057,7 @@ flowchart TB
                     >＋モック、実クラウド確認が必要な深いテストはTerratest」という併用が一般的なベストプラクティスです。
                 </p>
                 <p><code>tests/webserver_cluster.tftest.hcl</code>の例:</p>
-                <pre class="hcl code-block"><code class="lang-hcl">mock_provider "aws" {}
+                <pre class="hcl code-block"><code class="language-hcl">mock_provider "aws" {}
 
 run "validate_cluster_size" {
   command = plan
@@ -3049,7 +3092,7 @@ run "reject_invalid_instance_type" {
                     <code>expect_failures</code
                     >は「そのオブジェクトの検証が失敗すること」を期待するテストです。したがって<code>var.instance_type</code>を指定する場合、<strong>変数側に<code>validation</code>ブロックが定義されていることが前提</strong>になります。上の<code>reject_invalid_instance_type</code>が意図どおり動くのは、第4部で<code>instance_type</code>に空文字を拒否する<code>validation</code>を書いてあるからです。<code>validation</code>のない変数に<code>expect_failures</code>を指定すると、失敗が発生せずテスト自体が失敗します。
                 </p>
-                <pre class="bash code-block"><code class="lang-bash">terraform test</code></pre>
+                <pre class="bash code-block"><code class="language-bash">terraform test</code></pre>
                 <h3 id="9-4-mock_providerによる高速ユニットテスト">
                     9-4. <code>mock_provider</code>による高速ユニットテスト
                 </h3>
@@ -3088,7 +3131,7 @@ flowchart LR
                     SDK呼び出しで検証後に自動破棄する手法です。<code>terraform test</code
                     >では表現しづらい複雑な検証ロジック（外部APIとの結合確認等）に向いています。
                 </p>
-                <pre class="go code-block"><code class="lang-go">package test
+                <pre class="go code-block"><code class="language-go">package test
 
 import (
     "testing"
@@ -3783,9 +3826,64 @@ flowchart LR
             integrity="sha384-EOXBFmc3gx5mb+vn0vPvvGqACToJD24hhacX5Yx+8NUUQrHIle/Qi5Bg9o3zKwW2"
             crossorigin="anonymous"
         ></script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-core.min.js"
+            integrity="sha384-zLRFO4dwowZvh8kzutOb5AWhH7f39HeJp+N7PtHF1SQtTBnifRx0AtmvTYs3F4YV"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-clike.min.js"
+            integrity="sha384-7LHwxHIDSHTBleLmgDWZbC/IMJsfYfFVOihKhvsrxYW4j47YQcRwZja4ToFE3bA8"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-bash.min.js"
+            integrity="sha384-9WmlN8ABpoFSSHvBGGjhvB3E/D8UkNB9HpLJjBQFC2VSQsM1odiQDv4NbEo+7l15"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-hcl.min.js"
+            integrity="sha384-0y5/QqNYmb5MZoz6vFxQrt5eW0QK+bSYT7E62/nolopV1eoc1hjZtTFWShRJmme9"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-go.min.js"
+            integrity="sha384-YxCco6ByOY5rJ3jD18514fa8w5so07zigIyV6tZa3CWSE5vYrbDSuFkZ5zOknnZ6"
+            crossorigin="anonymous"
+        ></script>
         <script>
-            // ---------- Mermaid init (isolated, guarded) ----------
+            // ---------- Prism syntax highlighting (isolated, guarded) ----------
             (function () {
+                function initPrism() {
+                    if (typeof Prism === 'undefined') {
+                        console.warn('Prism failed to load from CDN');
+                        return;
+                    }
+                    try {
+                        Prism.highlightAll();
+                    } catch (e) {
+                        console.error('Prism highlight error', e);
+                    }
+                }
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', initPrism);
+                } else {
+                    initPrism();
+                }
+            })();
+
+            // ---------- Mermaid init (isolated, guarded) ----------
+            // NOTE: fontFamily is intentionally a synchronously-available OS/system font
+            // stack, NOT the page's Google-Fonts webfont (Noto Sans JP). Mermaid measures
+            // each node's box size against whatever font is active at render time; if that
+            // font is still being fetched (webfont swap), the measured size and the final
+            // painted glyphs can disagree and text visibly spills outside its node box.
+            // Using a system font that's already resident eliminates that race entirely,
+            // rather than trying to patch it after the fact.
+            (function () {
+                var MERMAID_FONT_STACK =
+                    "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Yu Gothic', Meiryo, sans-serif";
+
                 function initMermaid() {
                     if (typeof mermaid === 'undefined') {
                         console.warn('mermaid failed to load from CDN');
@@ -3796,9 +3894,10 @@ flowchart LR
                             startOnLoad: false,
                             theme: 'dark',
                             securityLevel: 'loose',
-                            fontFamily: "'Noto Sans JP', sans-serif",
+                            fontFamily: MERMAID_FONT_STACK,
                             themeVariables: {
                                 fontSize: '16px',
+                                fontFamily: MERMAID_FONT_STACK,
                                 primaryColor: '#132540',
                                 primaryTextColor: '#eaf1ff',
                                 primaryBorderColor: '#7c9eff',
@@ -3822,15 +3921,54 @@ flowchart LR
                             sequence: { useMaxWidth: false },
                         });
 
-                        function healOverflowingLabels() {
+                        // Defensive backstop: mermaid can position a node's <foreignObject> label
+                        // group off-center relative to its own <rect>/<polygon> shape (observed
+                        // independent of font loading — the shape and the label sit in different
+                        // local coordinate spaces and mermaid's own centering math doesn't always
+                        // reconcile them), which lets text run past the shape's edge on one side.
+                        // Re-center first, then grow the box if the label still doesn't fit.
+                        function recenterAndHealLabels() {
                             document
                                 .querySelectorAll('pre.mermaid svg .node')
                                 .forEach(function (node) {
                                     var fo = node.querySelector('foreignObject');
-                                    var rect = node.querySelector('rect');
-                                    if (!fo || !rect) return;
+                                    var shape =
+                                        node.querySelector(
+                                            'rect.basic, polygon.basic, circle.basic, .label-container',
+                                        ) || node.querySelector('rect, polygon, circle');
+                                    if (!fo || !shape) return;
                                     var label = fo.querySelector('div');
                                     if (!label) return;
+
+                                    var foBox = fo.getBoundingClientRect();
+                                    var shapeBox = shape.getBoundingClientRect();
+                                    var shapeAttrW = parseFloat(shape.getAttribute('width') || '0');
+                                    var shapeAttrH = parseFloat(
+                                        shape.getAttribute('height') || '0',
+                                    );
+                                    var scaleX = shapeAttrW > 0 ? shapeBox.width / shapeAttrW : 1;
+                                    var scaleY = shapeAttrH > 0 ? shapeBox.height / shapeAttrH : 1;
+                                    if (!scaleX) scaleX = 1;
+                                    if (!scaleY) scaleY = 1;
+
+                                    // 1) Re-center the foreignObject on the shape's center, both axes.
+                                    var shiftXScreenPx =
+                                        (shapeBox.left + shapeBox.right) / 2 -
+                                        (foBox.left + foBox.right) / 2;
+                                    var shiftYScreenPx =
+                                        (shapeBox.top + shapeBox.bottom) / 2 -
+                                        (foBox.top + foBox.bottom) / 2;
+                                    if (Math.abs(shiftXScreenPx) > 1) {
+                                        var curX = parseFloat(fo.getAttribute('x') || '0');
+                                        fo.setAttribute('x', curX + shiftXScreenPx / scaleX);
+                                    }
+                                    if (Math.abs(shiftYScreenPx) > 1) {
+                                        var curY = parseFloat(fo.getAttribute('y') || '0');
+                                        fo.setAttribute('y', curY + shiftYScreenPx / scaleY);
+                                    }
+
+                                    // 2) After centering, if the label content is still wider/taller than
+                                    //    the box (genuine overflow, not just off-center), grow both.
                                     var needW = label.scrollWidth + 8;
                                     var needH = label.scrollHeight + 6;
                                     var curW = parseFloat(fo.getAttribute('width') || '0');
@@ -3848,41 +3986,30 @@ flowchart LR
                                         fo.setAttribute('height', newH);
                                         fo.setAttribute('x', x);
                                         fo.setAttribute('y', y);
-                                        var rx =
-                                            parseFloat(rect.getAttribute('x') || '0') -
-                                            (newW - curW) / 2;
-                                        var ry =
-                                            parseFloat(rect.getAttribute('y') || '0') -
-                                            (newH - curH) / 2;
-                                        rect.setAttribute('width', newW);
-                                        rect.setAttribute('height', newH);
-                                        rect.setAttribute('x', rx);
-                                        rect.setAttribute('y', ry);
+                                        if (shape.tagName === 'rect') {
+                                            var rx =
+                                                parseFloat(shape.getAttribute('x') || '0') -
+                                                (newW - curW) / 2;
+                                            var ry =
+                                                parseFloat(shape.getAttribute('y') || '0') -
+                                                (newH - curH) / 2;
+                                            shape.setAttribute('width', newW);
+                                            shape.setAttribute('height', newH);
+                                            shape.setAttribute('x', rx);
+                                            shape.setAttribute('y', ry);
+                                        }
                                     }
                                 });
                         }
 
-                        var sampleText = '日本語サンプルAa0123ephemeral';
-                        var fontChecks = [
-                            document.fonts.load('400 16px "Noto Sans JP"', sampleText),
-                            document.fonts.load('700 16px "Noto Sans JP"', sampleText),
-                            document.fonts.load('500 16px "Noto Sans JP"', sampleText),
-                        ];
-                        Promise.all(fontChecks)
+                        mermaid
+                            .run({ querySelector: 'pre.mermaid' })
                             .then(function () {
-                                return document.fonts.ready;
+                                recenterAndHealLabels();
+                                setTimeout(recenterAndHealLabels, 400);
                             })
-                            .catch(function () {})
-                            .then(function () {
-                                mermaid
-                                    .run({ querySelector: 'pre.mermaid' })
-                                    .then(function () {
-                                        healOverflowingLabels();
-                                        setTimeout(healOverflowingLabels, 600);
-                                    })
-                                    .catch(function (e) {
-                                        console.error('mermaid render error', e);
-                                    });
+                            .catch(function (e) {
+                                console.error('mermaid render error', e);
                             });
                     } catch (e) {
                         console.error('mermaid init error', e);
