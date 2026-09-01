@@ -40,8 +40,16 @@ describe('Generative AI Leader Section 4 theme token ownership', () => {
         const shared = ['ink', 'amber', 'border', 'text', 'muted', 'bright'];
         for (const source of [read(CSS_PATH), read(PAGE_PATH)]) {
             for (const token of shared) {
+                // 参照（var(--amber)）だけでなく宣言も検出する。シャドウイングは
+                // 宣言側で起きるため、CSS 記法（`--amber:`）と page.tsx の
+                // インラインスタイルキー（`'--amber':`）の両方を禁止する。
                 expect(source).not.toMatch(
                     new RegExp(`var\\(\\s*--${token}\\s*[,)]`)
+                );
+                expect(source).not.toMatch(
+                    new RegExp(
+                        `(?:^|[{;\\n])\\s*--${token}\\s*:|['"\`]--${token}['"\`]\\s*:`
+                    )
                 );
             }
         }
