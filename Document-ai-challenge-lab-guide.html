@@ -803,10 +803,14 @@ bq mk --table \
                             <p>
                                 <strong
                                     >バケットのロケーションと BigQuery
-                                    データセットのロケーションを一致させる</strong
-                                >: 今回はどちらも
+                                    データセットのロケーションを揃える</strong
+                                >: 今回のラボでは 3 つの Cloud Storage バケットが
+                                <code>us-central1</code>（リージョン）、BigQuery データセットが
                                 <code>US</code
-                                >（マルチリージョン）ですが、リージョンをまたぐデータ移動はレイテンシとコストの両面で不利になるため、設計段階で揃えておきます。
+                                >（マルチリージョン）で、両者は一致していません。<code>US</code>
+                                マルチリージョンは
+                                <code>us-central1</code>
+                                を包含するため読み書き自体は成立しますが、本番設計ではリージョンをまたぐデータ移動がレイテンシとコストの両面で不利になるため、ロケーションは設計段階で揃えておきます。
                             </p>
                             <p>
                                 <strong>命名規則を最初に決める</strong>:
@@ -1170,9 +1174,34 @@ bq mk --table \
                                 <strong>Logs</strong> から進行状況を確認します。
                             </li>
                             <li>
-                                タイムアウトなど、処理結果に大きな影響を与えないエラーが一時的に出ることもあります。BigQuery
-                                にデータが書き込まれない場合は、まず環境変数（特に
-                                <code>PARSER_LOCATION</code> の大文字小文字）を再確認してください。
+                                <strong
+                                    >タイムアウト（HTTP 504）を「無害なエラー」として読み飛ばさないでください。</strong
+                                >
+                                Cloud Run が処理途中で打ち切られていると、Document AI
+                                の解析が完了せず、Eventarc も配信失敗として扱います。504
+                                を見つけたら、次を順に確認してから先へ進みます。
+                                <ol>
+                                    <li>
+                                        <strong>Eventarc の配信ステータス</strong>:
+                                        対象トリガーの配信が成功しているか（失敗ならリトライ・デッドレターの状況）を確認します。
+                                    </li>
+                                    <li>
+                                        <strong>アーカイブ出力</strong>:
+                                        <code>${PROJECT_ID}-archive-invoices</code>
+                                        バケットに処理済みファイルが出力されているか確認します。
+                                    </li>
+                                    <li>
+                                        <strong>BigQuery の行数</strong>:
+                                        <code>invoice_parser_results</code>
+                                        のテーブルに想定件数の行が入っているか
+                                        <code>bq query</code> 等で確認します。
+                                    </li>
+                                </ol>
+                            </li>
+                            <li>
+                                上記のいずれかが欠けている場合は再処理が必要です。BigQuery
+                                にデータが書き込まれない場合は、あわせて環境変数（特に
+                                <code>PARSER_LOCATION</code> の大文字小文字）も再確認してください。
                             </li>
                             <li>
                                 イベント一覧は自動更新されないため、手動でリロードする必要がある点に注意してください。
