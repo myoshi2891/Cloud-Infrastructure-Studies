@@ -67,6 +67,7 @@ flowchart TD
 まず Cloud Document AI API を有効化し、Cloud Shell にソースコード一式を取得します。
 
 ```bash
+gcloud services enable documentai.googleapis.com
 mkdir ./document-ai-challenge
 gcloud storage cp -r gs://spls/gsp367/* ./document-ai-challenge/
 ```
@@ -75,7 +76,7 @@ gcloud storage cp -r gs://spls/gsp367/* ./document-ai-challenge/
 
 ### ベストプラクティス
 
-- **API有効化はコードでも行える**: コンソールからの有効化だけでなく、`gcloud services enable documentai.googleapis.com` のようにコマンド化しておくと、Terraform や CI/CD パイプラインに組み込みやすくなります。
+- **API有効化はコードで行う**: コンソールのUI操作ではなく、上記のように `gcloud services enable` でコマンド化しておくと、Terraform や CI/CD パイプラインに組み込みやすく、再現性も担保できます。
 - **環境変数を先に確定させる**: 後続タスクのコマンド例には `${PROJECT_ID}` や `${REGION}` といった変数が登場しますが、ラボ本文では明示的な定義箇所が省略されがちです。作業前に以下を実行し、変数を固定しておくと事故（意図しないリージョンへのデプロイなど）を防げます。
 
 ```bash
@@ -224,7 +225,16 @@ gcloud functions deploy process-invoices \
   --set-env-vars="PROJECT_ID=${PROJECT_ID},GCP_PROJECT=${PROJECT_ID},PROCESSOR_ID=<YOUR_PROCESSOR_ID>,PARSER_LOCATION=us,TIMEOUT=400" \
   --trigger-resource=${PROJECT_ID}-input-invoices \
   --trigger-event=google.storage.object.finalize \
-  --allow-unauthenticated
+  --no-allow-unauthenticated
+```
+
+この関数は Cloud Storage イベントで起動されるため、HTTP エンドポイントを公開する必要はありません。`--no-allow-unauthenticated` で未認証呼び出しを閉じたうえで、Eventarc トリガーが使うサービスアカウントにだけ `roles/run.invoker` を付与します。
+
+```bash
+gcloud run services add-iam-policy-binding process-invoices \
+  --region=${REGION} \
+  --member="serviceAccount:${PROJECT_NUMBER}-compute@developer.gserviceaccount.com" \
+  --role="roles/run.invoker"
 ```
 
 主要フラグの意味を整理します。
@@ -238,7 +248,7 @@ gcloud functions deploy process-invoices \
 | `--timeout=400` | 関数の最大実行時間（秒）。Document AI の同期処理は時間がかかる場合があるため長めに設定 |
 | `--set-env-vars` | `PROCESSOR_ID` と `PARSER_LOCATION` を渡すことで、コードから特定のプロセッサを指定できるようにする |
 | `--trigger-resource` / `--trigger-event` | Cloud Storage の `object.finalize`（アップロード完了）イベントをトリガーに指定する、互換性維持のための記法 |
-| `--allow-unauthenticated` | HTTP経由の未認証呼び出しを許可する |
+| `--no-allow-unauthenticated` | HTTP経由の未認証呼び出しを禁止する。起動経路は Eventarc（`roles/run.invoker` を付与したサービスアカウント）だけに限定される |
 
 > **注意**: `--trigger-resource` / `--trigger-event` は歴史的経緯のある指定方法で、Cloud Functions が内部で Eventarc トリガーへ変換してくれます。SDK のバージョンによっては、より明示的な `--trigger-event-filters="type=google.cloud.storage.object.v1.finalized"` 形式が案内されることもあるため、`gcloud functions deploy --help` で手元の SDK が対応しているフラグを確認する習慣をつけましょう[^17]。
 
@@ -255,7 +265,7 @@ gcloud functions deploy process-invoices \
   | BigQueryへの書き込み | `roles/bigquery.dataEditor` + `roles/bigquery.jobUser` |
   | Eventarcイベントの受信 | `roles/eventarc.eventReceiver` |
 
-- **`--allow-unauthenticated` は用途を限定する**: ラボでは検証のしやすさを優先して未認証呼び出しを許可していますが、実運用でイベント駆動の関数を公開する場合、Eventarc からの呼び出しのみに制限する（＝未認証を許可しない）設計のほうが安全です[^14]。
+- **イベント駆動の関数は未認証呼び出しを許可しない**: ラボ手順では検証のしやすさから `--allow-unauthenticated` が案内されることがありますが、Cloud Storage イベントで起動する関数に公開HTTPエンドポイントは不要です。`--no-allow-unauthenticated` で閉じ、Eventarc のサービスアカウントに `roles/run.invoker` を付与して呼び出し元を限定します[^14]。
 - **ランタイムサービスアカウントは専用に切り出す**: Compute Engine のデフォルトSAは他の多くのワークロードと共有されがちです。関数専用のサービスアカウント（例: `process-invoices-sa@...`）を作成し、そこに必要最小限のロールだけを付与する設計にすると、影響範囲（blast radius）を絞り込めます[^16]。
 
 ---
@@ -291,7 +301,7 @@ flowchart TD
 | 観点 | ラボでの実装 | 本番運用での推奨アプローチ |
 |---|---|---|
 | IAM | Compute Engine SAに `roles/owner` を付与 | サービス単位の事前定義ロールを個別付与し、最小権限を徹底する[^18][^19] |
-| 認証 | `--allow-unauthenticated` でHTTPを公開 | Eventarc経由のみに制限し、未認証呼び出しは許可しない |
+| 認証 | ラボ手順では `--allow-unauthenticated` でHTTPを公開しがち | `--no-allow-unauthenticated` で閉じ、Eventarcのサービスアカウントに `roles/run.invoker` を付与して呼び出し元を限定する |
 | シークレット管理 | `PROCESSOR_ID` を環境変数に直書き | Secret Manager 経由で注入し、コードリポジトリに残さない |
 | ストレージのアクセス制御 | Uniform bucket-level access を有効化 | 同左（ACLとIAMの併用を避け、IAMに一本化する）[^6] |
 | BigQueryスキーマ | JSONファイルで事前定義 | 同左。REPEATED/RECORD構造にも対応できるため推奨[^7][^8] |

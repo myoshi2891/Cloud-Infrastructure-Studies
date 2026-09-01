@@ -557,7 +557,8 @@
                             にソースコード一式を取得します。
                         </p>
 
-                        <pre><code class="language-bash">mkdir ./document-ai-challenge
+                        <pre><code class="language-bash">gcloud services enable documentai.googleapis.com
+mkdir ./document-ai-challenge
 gcloud storage cp -r gs://spls/gsp367/* ./document-ai-challenge/</code></pre>
 
                         <p>
@@ -572,12 +573,12 @@ gcloud storage cp -r gs://spls/gsp367/* ./document-ai-challenge/</code></pre>
                                 <i class="ti ti-bulb"></i>ベストプラクティス
                             </div>
                             <p>
-                                <strong>API有効化はコードでも行える</strong>:
-                                コンソールからの有効化だけでなく、<code
-                                    >gcloud services enable documentai.googleapis.com</code
+                                <strong>API有効化はコードで行う</strong>:
+                                コンソールのUI操作ではなく、上記のように <code
+                                    >gcloud services enable</code
                                 >
-                                のようにコマンド化しておくと、Terraform や CI/CD
-                                パイプラインに組み込みやすくなります。
+                                でコマンド化しておくと、Terraform や CI/CD
+                                パイプラインに組み込みやすく、再現性も担保できます。
                             </p>
                             <p>
                                 <strong>環境変数を先に確定させる</strong>:
@@ -935,7 +936,22 @@ bq mk --table \
   --set-env-vars="PROJECT_ID=${PROJECT_ID},GCP_PROJECT=${PROJECT_ID},PROCESSOR_ID=&lt;YOUR_PROCESSOR_ID&gt;,PARSER_LOCATION=us,TIMEOUT=400" \
   --trigger-resource=${PROJECT_ID}-input-invoices \
   --trigger-event=google.storage.object.finalize \
-  --allow-unauthenticated</code></pre>
+  --no-allow-unauthenticated</code></pre>
+
+                        <p>
+                            この関数は Cloud Storage
+                            イベントで起動されるため、HTTP エンドポイントを公開する必要はありません。<code
+                                >--no-allow-unauthenticated</code
+                            >
+                            で未認証呼び出しを閉じたうえで、Eventarc
+                            トリガーが使うサービスアカウントにだけ
+                            <code>roles/run.invoker</code> を付与します。
+                        </p>
+
+                        <pre><code class="language-bash">gcloud run services add-iam-policy-binding process-invoices \
+  --region=${REGION} \
+  --member="serviceAccount:${PROJECT_NUMBER}-compute@developer.gserviceaccount.com" \
+  --role="roles/run.invoker"</code></pre>
 
                         <p>主要フラグの意味を整理します。</p>
 
@@ -1011,8 +1027,12 @@ bq mk --table \
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td><code>--allow-unauthenticated</code></td>
-                                    <td>HTTP経由の未認証呼び出しを許可する</td>
+                                    <td><code>--no-allow-unauthenticated</code></td>
+                                    <td>
+                                        HTTP経由の未認証呼び出しを禁止する。起動経路は
+                                        Eventarc（<code>roles/run.invoker</code>
+                                        を付与したサービスアカウント）だけに限定される
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -1094,11 +1114,16 @@ bq mk --table \
                                 </tbody>
                             </table>
                             <p>
-                                <strong
-                                    ><code>--allow-unauthenticated</code> は用途を限定する</strong
-                                >:
-                                ラボでは検証のしやすさを優先して未認証呼び出しを許可していますが、実運用でイベント駆動の関数を公開する場合、Eventarc
-                                からの呼び出しのみに制限する（＝未認証を許可しない）設計のほうが安全です。<a
+                                <strong>イベント駆動の関数は未認証呼び出しを許可しない</strong>:
+                                ラボ手順では検証のしやすさから
+                                <code>--allow-unauthenticated</code>
+                                が案内されることがありますが、Cloud Storage
+                                イベントで起動する関数に公開HTTPエンドポイントは不要です。<code
+                                    >--no-allow-unauthenticated</code
+                                >
+                                で閉じ、Eventarc のサービスアカウントに
+                                <code>roles/run.invoker</code>
+                                を付与して呼び出し元を限定します。<a
                                     href="#ref14"
                                     class="footnote"
                                     >[14]</a
@@ -1180,8 +1205,16 @@ bq mk --table \
                                 </tr>
                                 <tr>
                                     <td>認証</td>
-                                    <td><code>--allow-unauthenticated</code> でHTTPを公開</td>
-                                    <td>Eventarc経由のみに制限し、未認証呼び出しは許可しない</td>
+                                    <td>
+                                        ラボ手順では <code>--allow-unauthenticated</code>
+                                        でHTTPを公開しがち
+                                    </td>
+                                    <td>
+                                        <code>--no-allow-unauthenticated</code>
+                                        で閉じ、Eventarcのサービスアカウントに
+                                        <code>roles/run.invoker</code>
+                                        を付与して呼び出し元を限定する
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>シークレット管理</td>
