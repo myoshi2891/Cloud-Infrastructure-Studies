@@ -27,8 +27,8 @@
     position: absolute;
     inset: 0;
     background:
-        radial-gradient(ellipse 70% 50% at 50% 0%, rgba(200, 150, 10, 0.15) 0%, transparent 65%),
-        radial-gradient(ellipse 40% 30% at 20% 60%, rgba(245, 183, 49, 0.06) 0%, transparent 55%);
+        radial-gradient(ellipse 70% 50% at 50% 0%, color-mix(in srgb, var(--color-genai-s4-gold) 15%, transparent) 0%, transparent 65%),
+        radial-gradient(ellipse 40% 30% at 20% 60%, color-mix(in srgb, var(--color-genai-s4-amber) 6%, transparent) 0%, transparent 55%);
     pointer-events: none;
 }
 
@@ -37,7 +37,7 @@
     position: absolute;
     width: 40px;
     height: 40px;
-    border-color: rgba(200, 150, 10, 0.25);
+    border-color: color-mix(in srgb, var(--color-genai-s4-gold) 25%, transparent);
     border-style: solid;
 }
 
@@ -49,7 +49,7 @@
     top: 60px;
     width: 1px;
     height: 80px;
-    background: linear-gradient(180deg, rgba(200,150,10,0.3), transparent);
+    background: linear-gradient(180deg, color-mix(in srgb, var(--color-genai-s4-gold) 30%, transparent), transparent);
 }
 
 .s4-page .ornament-line.l { left: 44px; }
@@ -115,8 +115,8 @@
     display: inline-flex;
     align-items: center;
     gap: 16px;
-    background: rgba(200, 150, 10, 0.05);
-    border: 1px solid rgba(200, 150, 10, 0.25);
+    background: color-mix(in srgb, var(--color-genai-s4-gold) 5%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color-genai-s4-gold) 25%, transparent);
     border-radius: 20px;
     padding: 16px 28px;
     margin-bottom: 28px;
@@ -161,9 +161,9 @@
     font-size: 11px;
     padding: 6px 14px;
     border-radius: 3px;
-    border: 1px solid rgba(200, 150, 10, 0.25);
+    border: 1px solid color-mix(in srgb, var(--color-genai-s4-gold) 25%, transparent);
     color: var(--color-genai-s4-sand);
-    background: rgba(200, 150, 10, 0.04);
+    background: color-mix(in srgb, var(--color-genai-s4-gold) 4%, transparent);
 }
 
 /* ── NAV ── */
@@ -171,7 +171,7 @@
     position: sticky;
     top: 0;
     z-index: 100;
-    background: rgba(10, 8, 4, 0.92);
+    background: color-mix(in srgb, var(--color-genai-s4-ink) 92%, transparent);
     -webkit-backdrop-filter: blur(16px);
     backdrop-filter: blur(16px);
     border-bottom: 1px solid var(--color-genai-s4-border);
@@ -206,9 +206,9 @@
     border-radius: 3px;
 }
 
-.s4-page .nn1 { background: rgba(245,183,49,0.12); color: var(--color-genai-s4-amber); }
-.s4-page .nn2 { background: rgba(212,112,106,0.12); color: var(--color-genai-s4-rose); }
-.s4-page .nn3 { background: rgba(122,173,138,0.12); color: var(--color-genai-s4-sage); }
+.s4-page .nn1 { background: color-mix(in srgb, var(--color-genai-s4-amber) 12%, transparent); color: var(--color-genai-s4-amber); }
+.s4-page .nn2 { background: color-mix(in srgb, var(--color-genai-s4-rose) 12%, transparent); color: var(--color-genai-s4-rose); }
+.s4-page .nn3 { background: color-mix(in srgb, var(--color-genai-s4-sage) 12%, transparent); color: var(--color-genai-s4-sage); }
 
 /* ── LAYOUT ── */
 .s4-page .wrap {
@@ -283,9 +283,9 @@
     flex-shrink: 0;
 }
 
-.s4-page .sb-amber { background: rgba(245,183,49,0.1); color: var(--color-genai-s4-amber); border: 1px solid rgba(245,183,49,0.3); }
-.s4-page .sb-rose { background: rgba(212,112,106,0.1); color: var(--color-genai-s4-rose); border: 1px solid rgba(212,112,106,0.3); }
-.s4-page .sb-sage { background: rgba(122,173,138,0.1); color: var(--color-genai-s4-sage); border: 1px solid rgba(122,173,138,0.3); }
+.s4-page .sb-amber { background: color-mix(in srgb, var(--color-genai-s4-amber) 10%, transparent); color: var(--color-genai-s4-amber); border: 1px solid color-mix(in srgb, var(--color-genai-s4-amber) 30%, transparent); }
+.s4-page .sb-rose { background: color-mix(in srgb, var(--color-genai-s4-rose) 10%, transparent); color: var(--color-genai-s4-rose); border: 1px solid color-mix(in srgb, var(--color-genai-s4-rose) 30%, transparent); }
+.s4-page .sb-sage { background: color-mix(in srgb, var(--color-genai-s4-sage) 10%, transparent); color: var(--color-genai-s4-sage); border: 1px solid color-mix(in srgb, var(--color-genai-s4-sage) 30%, transparent); }
 
 /* ── CARD ── */
 .s4-page .card {
@@ -388,8 +388,8 @@
     width: 48px;
     height: 48px;
     border-radius: 50%;
-    background: rgba(200, 150, 10, 0.08);
-    border: 1px solid rgba(200, 150, 10, 0.3);
+    background: color-mix(in srgb, var(--color-genai-s4-gold) 8%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color-genai-s4-gold) 30%, transparent);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -455,8 +455,8 @@
 
 /* ── BEST PRACTICE / WARNING ── */
 .s4-page .bp {
-    background: rgba(122, 173, 138, 0.04);
-    border: 1px solid rgba(122, 173, 138, 0.2);
+    background: color-mix(in srgb, var(--color-genai-s4-sage) 4%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color-genai-s4-sage) 20%, transparent);
     border-left: 3px solid var(--color-genai-s4-sage);
     border-radius: 8px;
     padding: 16px 20px;
@@ -493,8 +493,8 @@
 }
 
 .s4-page .warn {
-    background: rgba(212, 112, 106, 0.04);
-    border: 1px solid rgba(212, 112, 106, 0.2);
+    background: color-mix(in srgb, var(--color-genai-s4-rose) 4%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color-genai-s4-rose) 20%, transparent);
     border-left: 3px solid var(--color-genai-s4-rose);
     border-radius: 8px;
     padding: 14px 18px;

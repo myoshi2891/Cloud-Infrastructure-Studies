@@ -55,6 +55,26 @@ describe('Generative AI Leader Section 4 theme token ownership', () => {
         }
     });
 
+    it('derives translucent theme colors from tokens instead of rgba literals', () => {
+        // globals.css の --color-genai-s4-* と同じ RGB を rgba() で literal 複製すると、
+        // トークン側の色を変えたときにページだけ取り残される。透過が必要な箇所は
+        // color-mix(in srgb, var(--token) N%, transparent) でトークンから導出する。
+        const themeRgb = [
+            [245, 183, 49], // amber #f5b731
+            [212, 112, 106], // rose  #d4706a
+            [122, 173, 138], // sage  #7aad8a
+            [200, 150, 10], // gold  #c8960a
+            [10, 8, 4], // ink   #0a0804
+        ];
+        const css = read(CSS_PATH);
+
+        for (const [r, g, b] of themeRgb) {
+            expect(css).not.toMatch(
+                new RegExp(`rgba\\(\\s*${r}\\s*,\\s*${g}\\s*,\\s*${b}\\s*,`)
+            );
+        }
+    });
+
     it('references the shared font tokens instead of page-local aliases', () => {
         const css = read(CSS_PATH);
 
