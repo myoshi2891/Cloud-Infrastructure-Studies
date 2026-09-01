@@ -586,6 +586,7 @@ gcloud storage cp -r gs://spls/gsp367/* ./document-ai-challenge/</code></pre>
                                 といった変数が登場しますが、ラボ本文では明示的な定義箇所が省略されがちです。作業前に以下を実行し、変数を固定しておくと事故（意図しないリージョンへのデプロイなど）を防げます。
                             </p>
                             <pre><code class="language-bash">export PROJECT_ID=$(gcloud config get-value project)
+export PROJECT_NUMBER=$(gcloud projects describe ${PROJECT_ID} --format='value(projectNumber)')
 export REGION=us-central1</code></pre>
                         </div>
                     </section>
@@ -929,10 +930,10 @@ bq mk --table \
   --entry-point=process_invoice \
   --runtime=python313 \
   --service-account=${PROJECT_NUMBER}-compute@developer.gserviceaccount.com \
-  --source=cloud-functions/process-invoices \
+  --source=./document-ai-challenge/cloud-functions/process-invoices \
   --timeout=400 \
   --set-env-vars="PROJECT_ID=${PROJECT_ID},GCP_PROJECT=${PROJECT_ID},PROCESSOR_ID=&lt;YOUR_PROCESSOR_ID&gt;,PARSER_LOCATION=us,TIMEOUT=400" \
-  --trigger-resource=gs://${PROJECT_ID}-input-invoices \
+  --trigger-resource=${PROJECT_ID}-input-invoices \
   --trigger-event=google.storage.object.finalize \
   --allow-unauthenticated</code></pre>
 

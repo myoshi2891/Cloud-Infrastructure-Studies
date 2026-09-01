@@ -1,5 +1,6 @@
 # Document AI Challenge Lab（GSP367）攻略ガイド
-### ― 初学者のためのステップバイステップ ベストプラクティス解説
+
+― 初学者のためのステップバイステップ ベストプラクティス解説
 
 > 対象ラボ: *Automate Data Capture at Scale with Document AI: Challenge Lab*
 > ラボURL: https://www.skills.google/course_templates/674/labs/616166
@@ -79,6 +80,7 @@ gcloud storage cp -r gs://spls/gsp367/* ./document-ai-challenge/
 
 ```bash
 export PROJECT_ID=$(gcloud config get-value project)
+export PROJECT_NUMBER=$(gcloud projects describe ${PROJECT_ID} --format='value(projectNumber)')
 export REGION=us-central1   # プロセッサのPARSER_LOCATION（us）と混同しないよう注意
 ```
 
@@ -217,10 +219,10 @@ gcloud functions deploy process-invoices \
   --entry-point=process_invoice \
   --runtime=python313 \
   --service-account=${PROJECT_NUMBER}-compute@developer.gserviceaccount.com \
-  --source=cloud-functions/process-invoices \
+  --source=./document-ai-challenge/cloud-functions/process-invoices \
   --timeout=400 \
   --set-env-vars="PROJECT_ID=${PROJECT_ID},GCP_PROJECT=${PROJECT_ID},PROCESSOR_ID=<YOUR_PROCESSOR_ID>,PARSER_LOCATION=us,TIMEOUT=400" \
-  --trigger-resource=gs://${PROJECT_ID}-input-invoices \
+  --trigger-resource=${PROJECT_ID}-input-invoices \
   --trigger-event=google.storage.object.finalize \
   --allow-unauthenticated
 ```
