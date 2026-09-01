@@ -56,7 +56,7 @@ Updated 2026-08-29
   - `/app/cisco/ccna/automation-programmability`: CCNA 200-301 6.0 自動化とプログラマビリティ 完全ガイド。
   - `/app/cisco/ccna/security-fundamentals`: CCNA 200-301 Security Fundamentals 完全ガイド。
   - `/app/cisco/ccna/network-fundamentals-guide`: CCNA 200-301 Network Fundamentals ネットワークの基礎 入門ガイド。
-  - `/app/comptia/network-plus`: CompTIA Network+ (N10-009 / V9) 完全ガイド（`networking-concepts-guide`, `network-operations-guide` を含む）。
+  - `/app/comptia/network-plus`: CompTIA Network+ (N10-009 / V9) 完全ガイド（`networking-concepts-guide`, `network-operations-guide`, `network-security-guide` を含む）。
   - `/app/aws/solutions-architect-associate`: AWS Certified Solutions Architect – Associate (SAA-C03) 完全対策ガイド（`domain1` を含む）。
   - `/app/recommended-books/accelerate`: 『Accelerate』LeanとDevOpsの科学 完全ガイド（DORA 5指標、24の能力、Westrum組織文化モデル、AI支援開発時代の最新知見）。
   - `/app/recommended-books/site-reliability-engineering`: 『Site Reliability Engineering』Googleのプロダクション運用 完全ガイド（原則・実践・マネジメント、SLI/SLO/SLA、エラーバジェット、トイル撲滅、AI時代のSRE最新動向）。

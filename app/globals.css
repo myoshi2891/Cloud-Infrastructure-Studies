@@ -386,6 +386,23 @@
     --color-pcne-s6-source: #8fa8ff;
     --color-pcne-s6-source-soft: rgba(143, 168, 255, 0.08);
 
+    /* Generative AI Leader Section 4 guide — Executive / Art Deco Gold */
+    --color-genai-s4-ink: #0a0804;
+    --color-genai-s4-bg-1: #100d08;
+    --color-genai-s4-bg-2: #171209;
+    --color-genai-s4-bg-4: #27200f;
+    --color-genai-s4-border: #2e2213;
+    --color-genai-s4-border-strong: #3d2e18;
+    --color-genai-s4-gold: #c8960a;
+    --color-genai-s4-amber: #f5b731;
+    --color-genai-s4-cream: #f0e6c8;
+    --color-genai-s4-sage: #7aad8a;
+    --color-genai-s4-rose: #d4706a;
+    --color-genai-s4-sand: #c4a882;
+    --color-genai-s4-text: #c9b99a;
+    --color-genai-s4-muted: #cabeaa;
+    --color-genai-s4-bright: #f5ead8;
+
 
     /* Cisco guide page themes */
     --color-ccna-fundamentals-elevated: #0d1a2e;

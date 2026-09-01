@@ -1,7 +1,7 @@
 export const codeBlockSelector = 'pre:not(.mermaid), .code-block';
 
 export const diagramSelector =
-    '[data-testid="mermaid-diagram"], .mermaid, [id^="diag-"], .diagram-container';
+    '[data-testid="mermaid-diagram"], .mermaid, [id^="diag-"], .diagram-container, .diagram-wrapper';
 
 export const normalize = (value) => value.replace(/\s+/g, ' ').trim();
 

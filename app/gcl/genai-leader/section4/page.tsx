@@ -54,31 +54,31 @@ function Section41() {
                     </thead>
                     <tbody>
                         <tr>
-                            <td><strong style={{ color: 'var(--amber)' }}>テキスト生成</strong></td>
+                            <td><strong style={{ color: 'var(--color-genai-s4-amber)' }}>テキスト生成</strong></td>
                             <td>文章・コピー・要約・翻訳・レポートの自動生成</td>
                             <td>マーケティングコンテンツ自動作成、契約書ドラフト生成、多言語カスタマーサポート</td>
                             <td>Gemini API, Gemini for Workspace Docs, Vertex AI</td>
                         </tr>
                         <tr>
-                            <td><strong style={{ color: 'var(--amber)' }}>画像生成</strong></td>
+                            <td><strong style={{ color: 'var(--color-genai-s4-amber)' }}>画像生成</strong></td>
                             <td>テキストプロンプトからオリジナル画像・デザインを生成</td>
                             <td>商品画像自動生成、広告クリエイティブ、UX プロトタイプ、不動産バーチャルステージング</td>
                             <td>Imagen on Vertex AI, Gemini マルチモーダル</td>
                         </tr>
                         <tr>
-                            <td><strong style={{ color: 'var(--amber)' }}>コード生成</strong></td>
+                            <td><strong style={{ color: 'var(--color-genai-s4-amber)' }}>コード生成</strong></td>
                             <td>自然言語指示からソースコード・テスト・ドキュメントを生成</td>
                             <td>開発者生産性向上、レガシーコード移行、自動テスト生成、SQL クエリ最適化</td>
                             <td>Gemini Code Assist, Gemini Enterprise</td>
                         </tr>
                         <tr>
-                            <td><strong style={{ color: 'var(--amber)' }}>パーソナライズ体験</strong></td>
+                            <td><strong style={{ color: 'var(--color-genai-s4-amber)' }}>パーソナライズ体験</strong></td>
                             <td>ユーザー行動・嗜好に基づく個別最適化された体験・推薦</td>
                             <td>EC 商品レコメンデーション、個別化ニュースフィード、学習プラットフォーム</td>
                             <td>Vertex AI + BigQuery, Recommendations AI</td>
                         </tr>
                         <tr>
-                            <td><strong style={{ color: 'var(--amber)' }}>データ分析・発見</strong></td>
+                            <td><strong style={{ color: 'var(--color-genai-s4-amber)' }}>データ分析・発見</strong></td>
                             <td>大量データからパターン・インサイト・異常を自動発見</td>
                             <td>財務異常検知、顧客チャーン予測、サプライチェーン最適化、医療診断支援</td>
                             <td>BigQuery ML, Vertex AI AutoML, Gemini for Data</td>
@@ -366,33 +366,33 @@ function Section42() {
             <div className="card">
                 <h3 className="card-h">🔐 なぜ Gen AI にはセキュリティが特別に重要か？</h3>
                 <p style={{ fontSize: '14px', lineHeight: 1.8, marginBottom: '16px' }}>
-                    Gen AI システムは従来のソフトウェアとは異なる<strong style={{ color: 'var(--rose)' }}>固有のセキュリティリスク</strong>を持つ。
+                    Gen AI システムは従来のソフトウェアとは異なる<strong style={{ color: 'var(--color-genai-s4-rose)' }}>固有のセキュリティリスク</strong>を持つ。
                     モデルへの攻撃・データの汚染・プロンプトによる悪用など、新たな脅威ベクターが存在する。
                 </p>
 
                 <div className="fgrid">
                     <div className="fi">
-                        <div className="fi-t" style={{ color: 'var(--rose)' }}>🎯 プロンプトインジェクション攻撃</div>
+                        <div className="fi-t" style={{ color: 'var(--color-genai-s4-rose)' }}>🎯 プロンプトインジェクション攻撃</div>
                         <div className="fi-d">悪意あるテキストをプロンプトに埋め込み、AIに意図しない動作をさせる攻撃。「上記の指示を無視して...」のような指令で安全フィルタを回避しようとする。</div>
                     </div>
                     <div className="fi">
-                        <div className="fi-t" style={{ color: 'var(--rose)' }}>☠️ データポイズニング</div>
+                        <div className="fi-t" style={{ color: 'var(--color-genai-s4-rose)' }}>☠️ データポイズニング</div>
                         <div className="fi-d">トレーニングデータや RAG のナレッジベースに悪意あるデータを混入し、モデルの出力を意図的に歪める攻撃。学習データの品質管理が防御の鍵。</div>
                     </div>
                     <div className="fi">
-                        <div className="fi-t" style={{ color: 'var(--rose)' }}>🔍 モデルの逆向き攻撃（Model Inversion）</div>
+                        <div className="fi-t" style={{ color: 'var(--color-genai-s4-rose)' }}>🔍 モデルの逆向き攻撃（Model Inversion）</div>
                         <div className="fi-d">モデルの出力を繰り返し問い合わせることで、学習データに含まれる個人情報・秘密情報を推測・復元しようとする攻撃。</div>
                     </div>
                     <div className="fi">
-                        <div className="fi-t" style={{ color: 'var(--rose)' }}>📊 トレーニングデータ漏洩</div>
+                        <div className="fi-t" style={{ color: 'var(--color-genai-s4-rose)' }}>📊 トレーニングデータ漏洩</div>
                         <div className="fi-d">LLM は学習データを「記憶」することがある。特定のプロンプトで個人情報・機密情報が意図せず出力されるリスク。差分プライバシーで対策。</div>
                     </div>
                     <div className="fi">
-                        <div className="fi-t" style={{ color: 'var(--rose)' }}>⚙️ サプライチェーン攻撃</div>
+                        <div className="fi-t" style={{ color: 'var(--color-genai-s4-rose)' }}>⚙️ サプライチェーン攻撃</div>
                         <div className="fi-d">利用するオープンソースモデル・ライブラリ・サードパーティデータが改ざんされているリスク。Model Garden の信頼できるソースから取得することが重要。</div>
                     </div>
                     <div className="fi">
-                        <div className="fi-t" style={{ color: 'var(--rose)' }}>🚨 敵対的サンプル（Adversarial Inputs）</div>
+                        <div className="fi-t" style={{ color: 'var(--color-genai-s4-rose)' }}>🚨 敵対的サンプル（Adversarial Inputs）</div>
                         <div className="fi-d">人間には通常通りに見えるが、AIモデルを誤作動させるよう設計された入力。画像の微細なノイズや文章の特殊文字がモデルを欺く。</div>
                     </div>
                 </div>
@@ -402,7 +402,7 @@ function Section42() {
             <div className="card">
                 <h3 className="card-h">🔄 ML ライフサイクル全体のセキュリティ設計</h3>
                 <p style={{ fontSize: '14px', lineHeight: 1.8, marginBottom: '16px' }}>
-                    セキュリティは「最後に追加するもの」ではなく、<strong style={{ color: 'var(--amber)' }}>ML ライフサイクルの全ステップに組み込む</strong>べきもの。各フェーズ固有のリスクと対策を理解する。
+                    セキュリティは「最後に追加するもの」ではなく、<strong style={{ color: 'var(--color-genai-s4-amber)' }}>ML ライフサイクルの全ステップに組み込む</strong>べきもの。各フェーズ固有のリスクと対策を理解する。
                 </p>
 
                 <div className="lifecycle">
@@ -493,7 +493,7 @@ function Section42() {
             <div className="card">
                 <h3 className="card-h">🛡️ Google の SAIF（Secure AI Framework）— 6つの核心原則</h3>
                 <p style={{ fontSize: '14px', lineHeight: 1.8, marginBottom: '16px' }}>
-                    Google が 2023年に公開した <strong style={{ color: 'var(--amber)' }}>SAIF（Secure AI Framework）</strong> は、AI システムをセキュアに構築・デプロイ・運用するための包括的なフレームワーク。
+                    Google が 2023年に公開した <strong style={{ color: 'var(--color-genai-s4-amber)' }}>SAIF（Secure AI Framework）</strong> は、AI システムをセキュアに構築・デプロイ・運用するための包括的なフレームワーク。
                     試験では各原則の名称と意味の理解が求められる。
                 </p>
 
@@ -557,7 +557,7 @@ function Section42() {
                 <div className="info">
                     <div className="infot">📌 試験ポイント：SAIF の本質</div>
                     <p>
-                        SAIF は「AI セキュリティの新しいルールブック」ではなく、<strong style={{ color: 'var(--sage)' }}>既存のサイバーセキュリティの原則をAI時代に拡張・適応させたフレームワーク</strong>。DevSecOps・最小権限・継続的監視などの概念を AI 固有のリスクに合わせて進化させたもの。
+                        SAIF は「AI セキュリティの新しいルールブック」ではなく、<strong style={{ color: 'var(--color-genai-s4-sage)' }}>既存のサイバーセキュリティの原則をAI時代に拡張・適応させたフレームワーク</strong>。DevSecOps・最小権限・継続的監視などの概念を AI 固有のリスクに合わせて進化させたもの。
                     </p>
                 </div>
             </div>
@@ -576,37 +576,37 @@ function Section42() {
                     </thead>
                     <tbody>
                         <tr>
-                            <td><strong style={{ color: 'var(--amber)' }}>IAM（Identity and Access Management）</strong></td>
+                            <td><strong style={{ color: 'var(--color-genai-s4-amber)' }}>IAM（Identity and Access Management）</strong></td>
                             <td>誰が・何に・どの操作ができるかを制御する認証・認可の基盤</td>
                             <td>AI エージェントのサービスアカウントに必要最小限の権限のみ付与。人間ユーザーの Vertex AI へのアクセスを役割で制限。</td>
                         </tr>
                         <tr>
-                            <td><strong style={{ color: 'var(--amber)' }}>Security Command Center</strong></td>
+                            <td><strong style={{ color: 'var(--color-genai-s4-amber)' }}>Security Command Center</strong></td>
                             <td>GCP リソース全体のセキュリティ脅威・脆弱性を一元可視化するダッシュボード</td>
                             <td>AI ワークロードへの不正アクセス試行を検知。モデルエンドポイントの異常なトラフィックをアラート。脆弱性スキャン結果の集約。</td>
                         </tr>
                         <tr>
-                            <td><strong style={{ color: 'var(--amber)' }}>VPC Service Controls</strong></td>
+                            <td><strong style={{ color: 'var(--color-genai-s4-amber)' }}>VPC Service Controls</strong></td>
                             <td>GCP リソースを仮想的なセキュリティ境界で囲い、データ漏洩を防止</td>
                             <td>機密 AI 学習データを VPC 境界内に閉じ込める。外部 API からのデータ流出を防止。コンプライアンス要件対応。</td>
                         </tr>
                         <tr>
-                            <td><strong style={{ color: 'var(--amber)' }}>Cloud KMS / CMEK</strong></td>
+                            <td><strong style={{ color: 'var(--color-genai-s4-amber)' }}>Cloud KMS / CMEK</strong></td>
                             <td>暗号化キーの管理サービス。顧客管理暗号化キー（CMEK）で完全な鍵制御を実現</td>
                             <td>学習データ・モデルウェイト・推論結果を顧客管理キーで暗号化。Googleも復号不可の状態でデータを管理。</td>
                         </tr>
                         <tr>
-                            <td><strong style={{ color: 'var(--amber)' }}>Model Armor</strong></td>
+                            <td><strong style={{ color: 'var(--color-genai-s4-amber)' }}>Model Armor</strong></td>
                             <td>Vertex AI Agent Builder のエージェント向けプロンプトインジェクション対策機能</td>
                             <td>ユーザー入力からのプロンプトインジェクション試行を検知・ブロック。不適切なコンテンツのフィルタリング。エージェントの安全な実行を保証。</td>
                         </tr>
                         <tr>
-                            <td><strong style={{ color: 'var(--amber)' }}>Cloud Armor</strong></td>
+                            <td><strong style={{ color: 'var(--color-genai-s4-amber)' }}>Cloud Armor</strong></td>
                             <td>Web アプリ・API への DDoS 攻撃・不正アクセスを防御する WAF</td>
                             <td>大量の不正 AI API リクエスト（コスト攻撃）を遮断。地域ベースの IP フィルタリング。レート制限ルールの適用。</td>
                         </tr>
                         <tr>
-                            <td><strong style={{ color: 'var(--amber)' }}>Sensitive Data Protection</strong></td>
+                            <td><strong style={{ color: 'var(--color-genai-s4-amber)' }}>Sensitive Data Protection</strong></td>
                             <td>個人情報・機密情報を自動検出・分類・マスキング・削除するサービス（旧 Cloud DLP）</td>
                             <td>トレーニングデータ・RAG ナレッジベースに含まれる PII（個人識別情報）を自動検出して除去。</td>
                         </tr>
@@ -655,25 +655,25 @@ function Section43() {
             <div className="card">
                 <h3 className="card-h">🌱 責任ある AI とは何か？なぜビジネスに必要か？</h3>
                 <p style={{ fontSize: '14px', lineHeight: 1.8, marginBottom: '16px' }}>
-                    責任ある AI とは、<strong style={{ color: 'var(--sage)' }}>AI を倫理的・公平・透明・安全に設計・開発・展開・監視する原則と実践の集合体</strong>。
-                    単なる道徳論ではなく、<strong style={{ color: 'var(--amber)' }}>ビジネスリスク管理・規制対応・ブランド価値保護</strong>の観点からも不可欠な経営課題。
+                    責任ある AI とは、<strong style={{ color: 'var(--color-genai-s4-sage)' }}>AI を倫理的・公平・透明・安全に設計・開発・展開・監視する原則と実践の集合体</strong>。
+                    単なる道徳論ではなく、<strong style={{ color: 'var(--color-genai-s4-amber)' }}>ビジネスリスク管理・規制対応・ブランド価値保護</strong>の観点からも不可欠な経営課題。
                 </p>
 
                 <div className="fgrid">
                     <div className="fi">
-                        <div className="fi-t" style={{ color: 'var(--sage)' }}>⚖️ 法規制リスク</div>
+                        <div className="fi-t" style={{ color: 'var(--color-genai-s4-sage)' }}>⚖️ 法規制リスク</div>
                         <div className="fi-d">EU AI Act・GDPR・CCPA など、AIに関する規制が世界中で強化中。責任あるAIの不備は多額の制裁金リスク。コンプライアンスと AI 活用の両立が必須。</div>
                     </div>
                     <div className="fi">
-                        <div className="fi-t" style={{ color: 'var(--sage)' }}>🏛️ ブランド・信頼リスク</div>
+                        <div className="fi-t" style={{ color: 'var(--color-genai-s4-sage)' }}>🏛️ ブランド・信頼リスク</div>
                         <div className="fi-d">AIの偏った出力・プライバシー侵害・差別的な判断は、消費者の信頼を一瞬で失わせる。企業価値・顧客ロイヤリティへの長期的な打撃となる。</div>
                     </div>
                     <div className="fi">
-                        <div className="fi-t" style={{ color: 'var(--sage)' }}>👥 社会的影響責任</div>
+                        <div className="fi-t" style={{ color: 'var(--color-genai-s4-sage)' }}>👥 社会的影響責任</div>
                         <div className="fi-d">AIは採用・融資・医療診断など、人の人生に直接影響する判断に使われる。不公平な AI は社会的不平等を拡大させる可能性がある。</div>
                     </div>
                     <div className="fi">
-                        <div className="fi-t" style={{ color: 'var(--sage)' }}>🏆 競争優位</div>
+                        <div className="fi-t" style={{ color: 'var(--color-genai-s4-sage)' }}>🏆 競争優位</div>
                         <div className="fi-d">責任あるAIは「コスト」ではなく「差別化要因」。信頼できるAIを提供する企業が、長期的に顧客・パートナー・人材を引き付ける競争優位を持つ。</div>
                     </div>
                 </div>
@@ -683,35 +683,35 @@ function Section43() {
             <div className="card">
                 <h3 className="card-h">📜 Google の AI 原則（7 Principles）</h3>
                 <p style={{ fontSize: '14px', lineHeight: 1.8, marginBottom: '16px' }}>
-                    Google は 2018年に <strong style={{ color: 'var(--amber)' }}>AI 開発の7つの原則</strong>を公表し、全製品・サービスの AI 開発に適用している。試験では原則の内容の理解が問われる。
+                    Google は 2018年に <strong style={{ color: 'var(--color-genai-s4-amber)' }}>AI 開発の7つの原則</strong>を公表し、全製品・サービスの AI 開発に適用している。試験では原則の内容の理解が問われる。
                 </p>
 
                 <div className="fgrid">
-                    <div className="fi" style={{ borderColor: 'var(--brd2)' }}>
+                    <div className="fi" style={{ borderColor: 'var(--color-genai-s4-border-strong)' }}>
                         <div className="fi-t">① 社会的に有益であること</div>
                         <div className="fi-d">AIの利益が潜在的なリスクを大幅に上回る場合にのみ開発を進める。科学・人類・社会への明確な貢献を追求する。</div>
                     </div>
-                    <div className="fi" style={{ borderColor: 'var(--brd2)' }}>
+                    <div className="fi" style={{ borderColor: 'var(--color-genai-s4-border-strong)' }}>
                         <div className="fi-t">② 不公平なバイアスを作り出したり強化したりしないこと</div>
                         <div className="fi-d">人種・性別・国籍・宗教などに基づく不当な差別を AI が生み出さないよう、継続的なバイアス評価を実施する。</div>
                     </div>
-                    <div className="fi" style={{ borderColor: 'var(--brd2)' }}>
+                    <div className="fi" style={{ borderColor: 'var(--color-genai-s4-border-strong)' }}>
                         <div className="fi-t">③ 安全性のために構築・テストされること</div>
                         <div className="fi-d">予期しない動作・悪用を防ぐための安全対策を設計段階から組み込む。テストと検証を継続的に実施する。</div>
                     </div>
-                    <div className="fi" style={{ borderColor: 'var(--brd2)' }}>
+                    <div className="fi" style={{ borderColor: 'var(--color-genai-s4-border-strong)' }}>
                         <div className="fi-t">④ 人々に対して説明責任を持つこと</div>
                         <div className="fi-d">AIの判断を人間が理解・評価・修正できる仕組みを提供する。Human-in-the-Loop を適切に設計する。</div>
                     </div>
-                    <div className="fi" style={{ borderColor: 'var(--brd2)' }}>
+                    <div className="fi" style={{ borderColor: 'var(--color-genai-s4-border-strong)' }}>
                         <div className="fi-t">⑤ プライバシーの設計原則を組み込むこと</div>
                         <div className="fi-d">個人データの収集・使用について透明性を保ち、ユーザーが自分のデータを管理できる手段を提供する。</div>
                     </div>
-                    <div className="fi" style={{ borderColor: 'var(--brd2)' }}>
+                    <div className="fi" style={{ borderColor: 'var(--color-genai-s4-border-strong)' }}>
                         <div className="fi-t">⑥ 科学的卓越性の高い基準を維持すること</div>
                         <div className="fi-d">AI の進歩のために、多角的な視点・オープンな議論・科学的厳密性を持った研究を行う。</div>
                     </div>
-                    <div className="fi" style={{ borderColor: 'var(--brd2)' }}>
+                    <div className="fi" style={{ borderColor: 'var(--color-genai-s4-border-strong)' }}>
                         <div className="fi-t">⑦ 上記の原則に沿って利用できるようにすること</div>
                         <div className="fi-d">Google の AI ツール・サービスをこれらの原則に整合する用途にのみ提供する。武器化・監視・人権侵害への利用は禁止。</div>
                     </div>
@@ -790,7 +790,7 @@ function Section43() {
             <div className="card">
                 <h3 className="card-h">🔏 プライバシー保護の核心技術（試験頻出）</h3>
                 <p style={{ fontSize: '14px', lineHeight: 1.8, marginBottom: '16px' }}>
-                    試験では特に <strong style={{ color: 'var(--amber)' }}>匿名化・仮名化・差分プライバシー</strong>の違いと適用場面が問われる。3つの概念を正確に区別して理解することが重要。
+                    試験では特に <strong style={{ color: 'var(--color-genai-s4-amber)' }}>匿名化・仮名化・差分プライバシー</strong>の違いと適用場面が問われる。3つの概念を正確に区別して理解することが重要。
                 </p>
 
                 <div className="priv-grid">
@@ -798,7 +798,7 @@ function Section43() {
                         <div className="priv-name">データ匿名化</div>
                         <div className="priv-en">Anonymization / De-identification</div>
                         <div className="priv-desc">
-                            個人を特定できる全ての識別情報（名前・住所・生年月日・電話番号・顔写真等）を<strong style={{ color: 'var(--cream)' }}>完全に除去または変換</strong>する処理。
+                            個人を特定できる全ての識別情報（名前・住所・生年月日・電話番号・顔写真等）を<strong style={{ color: 'var(--color-genai-s4-cream)' }}>完全に除去または変換</strong>する処理。
                             匿名化されたデータは再識別が（理論上）不可能とされ、GDPR の規制対象外となる。
                         </div>
                         <div className="priv-example">
@@ -811,7 +811,7 @@ function Section43() {
                         <div className="priv-name">仮名化</div>
                         <div className="priv-en">Pseudonymization</div>
                         <div className="priv-desc">
-                            直接識別子（名前・ID等）を<strong style={{ color: 'var(--cream)' }}>仮の識別子（トークン・ハッシュ値等）に置換</strong>する処理。
+                            直接識別子（名前・ID等）を<strong style={{ color: 'var(--color-genai-s4-cream)' }}>仮の識別子（トークン・ハッシュ値等）に置換</strong>する処理。
                             元のデータと仮名化データを「紐付けテーブル」で結びつければ再識別は可能。
                             GDPR では引き続き個人データとして扱われるが、適切な保護措置として認められる。
                         </div>
@@ -826,7 +826,7 @@ function Section43() {
                         <div className="priv-name">差分プライバシー</div>
                         <div className="priv-en">Differential Privacy</div>
                         <div className="priv-desc">
-                            統計的ノイズ（ランダムな誤差）をデータに加えることで、<strong style={{ color: 'var(--cream)' }}>個人の情報を漏洩させずにデータセット全体の統計的傾向を共有</strong>できる数学的手法。
+                            統計的ノイズ（ランダムな誤差）をデータに加えることで、<strong style={{ color: 'var(--color-genai-s4-cream)' }}>個人の情報を漏洩させずにデータセット全体の統計的傾向を共有</strong>できる数学的手法。
                             Google・Apple が大規模に実用化。AI 学習に使うデータの保護に有効。
                         </div>
                         <div className="priv-example">
@@ -840,9 +840,9 @@ function Section43() {
                 <div className="warn">
                     <div className="warnt">⚠️ 試験頻出：3つの技術の重要な違い</div>
                     <ul>
-                        <li><strong style={{ color: 'var(--cream)' }}>匿名化（Anonymization）</strong>：識別情報を完全除去 → 再識別不可 → GDPR 対象外になる</li>
-                        <li><strong style={{ color: 'var(--cream)' }}>仮名化（Pseudonymization）</strong>：識別子を別の識別子に置換 → 紐付けテーブルで再識別可能 → GDPR 引き続き適用</li>
-                        <li><strong style={{ color: 'var(--cream)' }}>差分プライバシー</strong>：統計ノイズを加える数学的手法 → 個人ではなく集団の傾向を保護 → AI学習データの保護に特に有効</li>
+                        <li><strong style={{ color: 'var(--color-genai-s4-cream)' }}>匿名化（Anonymization）</strong>：識別情報を完全除去 → 再識別不可 → GDPR 対象外になる</li>
+                        <li><strong style={{ color: 'var(--color-genai-s4-cream)' }}>仮名化（Pseudonymization）</strong>：識別子を別の識別子に置換 → 紐付けテーブルで再識別可能 → GDPR 引き続き適用</li>
+                        <li><strong style={{ color: 'var(--color-genai-s4-cream)' }}>差分プライバシー</strong>：統計ノイズを加える数学的手法 → 個人ではなく集団の傾向を保護 → AI学習データの保護に特に有効</li>
                     </ul>
                 </div>
             </div>
@@ -851,32 +851,32 @@ function Section43() {
             <div className="card">
                 <h3 className="card-h">📊 データ品質・バイアス・公平性の深掘り</h3>
                 <p style={{ fontSize: '14px', lineHeight: 1.8, marginBottom: '16px' }}>
-                    AI のバイアスは技術的問題であると同時に<strong style={{ color: 'var(--amber)' }}>ビジネス・社会的リスク</strong>でもある。データ品質がモデルの公平性の根本を決定する。
+                    AI のバイアスは技術的問題であると同時に<strong style={{ color: 'var(--color-genai-s4-amber)' }}>ビジネス・社会的リスク</strong>でもある。データ品質がモデルの公平性の根本を決定する。
                 </p>
 
                 <div className="fgrid">
                     <div className="fi">
-                        <div className="fi-t" style={{ color: 'var(--rose)' }}>📉 代表性バイアス</div>
+                        <div className="fi-t" style={{ color: 'var(--color-genai-s4-rose)' }}>📉 代表性バイアス</div>
                         <div className="fi-d">特定の人口グループが学習データに過少・過多に含まれることで発生。例：顔認識AIが暗い肌色の人物の精度が低い（学習データが白人中心）。</div>
                     </div>
                     <div className="fi">
-                        <div className="fi-t" style={{ color: 'var(--rose)' }}>🏛️ 歴史的バイアス</div>
+                        <div className="fi-t" style={{ color: 'var(--color-genai-s4-rose)' }}>🏛️ 歴史的バイアス</div>
                         <div className="fi-d">過去の人間の偏った判断を反映したデータで学習したモデルが、その偏りを再現・強化する。例：採用AIが過去の採用データ（男性偏重）を学習して女性を低評価。</div>
                     </div>
                     <div className="fi">
-                        <div className="fi-t" style={{ color: 'var(--rose)' }}>📝 測定バイアス</div>
+                        <div className="fi-t" style={{ color: 'var(--color-genai-s4-rose)' }}>📝 測定バイアス</div>
                         <div className="fi-d">データ収集・ラベリングのプロセス自体にバイアスがある場合。アノテーターの文化的背景・個人的偏見が正解ラベルに影響する。</div>
                     </div>
                     <div className="fi">
-                        <div className="fi-t" style={{ color: 'var(--sage)' }}>🔄 継続的公平性評価</div>
+                        <div className="fi-t" style={{ color: 'var(--color-genai-s4-sage)' }}>🔄 継続的公平性評価</div>
                         <div className="fi-d">バイアスは一度排除すれば終わりではない。データ分布の変化・新しいユースケースで再発する。定期的な公平性メトリクスの計測が必要。</div>
                     </div>
                     <div className="fi">
-                        <div className="fi-t" style={{ color: 'var(--sage)' }}>🌍 多様なチームの重要性</div>
+                        <div className="fi-t" style={{ color: 'var(--color-genai-s4-sage)' }}>🌍 多様なチームの重要性</div>
                         <div className="fi-d">AI 開発チームの多様性（性別・人種・文化的背景・専門分野）自体がバイアス低減に貢献する。多角的な視点がバイアスの見落としを防ぐ。</div>
                     </div>
                     <div className="fi">
-                        <div className="fi-t" style={{ color: 'var(--sage)' }}>📊 Vertex AI のバイアス検出</div>
+                        <div className="fi-t" style={{ color: 'var(--color-genai-s4-sage)' }}>📊 Vertex AI のバイアス検出</div>
                         <div className="fi-d">Vertex Explainable AI・Model Evaluation Service で人口統計グループ別の精度差を自動測定。NDCG・精度・再現率の分解分析が可能。</div>
                     </div>
                 </div>
@@ -912,8 +912,8 @@ function Section43() {
 function SummarySection() {
     return (
         <section id="summary">
-            <div className="card" style={{ borderColor: 'var(--brd2)', background: 'linear-gradient(135deg, var(--bg2), var(--bg4))' }}>
-                <h3 className="card-h" style={{ fontSize: '18px', fontFamily: 'var(--serif)' }}>◆ Section 4 試験攻略 — 最重要ポイント完全まとめ</h3>
+            <div className="card" style={{ borderColor: 'var(--color-genai-s4-border-strong)', background: 'linear-gradient(135deg, var(--color-genai-s4-bg-2), var(--color-genai-s4-bg-4))' }}>
+                <h3 className="card-h" style={{ fontSize: '18px', fontFamily: 'var(--font-playfair-display)' }}>◆ Section 4 試験攻略 — 最重要ポイント完全まとめ</h3>
 
                 <div className="scorecard">
                     <div className="sc">
@@ -939,8 +939,8 @@ function SummarySection() {
                 </div>
 
                 <div className="fgrid" style={{ marginTop: '24px' }}>
-                    <div className="fi" style={{ borderColor: 'var(--brd2)' }}>
-                        <div className="fi-t" style={{ color: 'var(--amber)' }}>4.1 で絶対押さえる4点</div>
+                    <div className="fi" style={{ borderColor: 'var(--color-genai-s4-border-strong)' }}>
+                        <div className="fi-t" style={{ color: 'var(--color-genai-s4-amber)' }}>4.1 で絶対押さえる4点</div>
                         <div className="fi-d">
                             ① 5種類の Gen AI ソリューションタイプと適用場面<br />
                             ② 実装5ステップの順序と各ステップの重要考慮点<br />
@@ -948,8 +948,8 @@ function SummarySection() {
                             ④ 4カテゴリの KPI 測定フレームワーク
                         </div>
                     </div>
-                    <div className="fi" style={{ borderColor: 'var(--brd2)' }}>
-                        <div className="fi-t" style={{ color: 'var(--rose)' }}>4.2 で絶対押さえる4点</div>
+                    <div className="fi" style={{ borderColor: 'var(--color-genai-s4-border-strong)' }}>
+                        <div className="fi-t" style={{ color: 'var(--color-genai-s4-rose)' }}>4.2 で絶対押さえる4点</div>
                         <div className="fi-d">
                             ① AI 固有のセキュリティリスク6種（特にプロンプトインジェクション）<br />
                             ② ML ライフサイクル全5フェーズのセキュリティ対策<br />
@@ -957,8 +957,8 @@ function SummarySection() {
                             ④ IAM・Security Command Center・VPC Service Controls・Model Armor の役割
                         </div>
                     </div>
-                    <div className="fi" style={{ borderColor: 'var(--brd2)' }}>
-                        <div className="fi-t" style={{ color: 'var(--sage)' }}>4.3 で絶対押さえる4点</div>
+                    <div className="fi" style={{ borderColor: 'var(--color-genai-s4-border-strong)' }}>
+                        <div className="fi-t" style={{ color: 'var(--color-genai-s4-sage)' }}>4.3 で絶対押さえる4点</div>
                         <div className="fi-d">
                             ① 責任ある AI の6核心原則（公平性・透明性・説明可能性・プライバシー・説明責任・安全性）<br />
                             ② 匿名化・仮名化・差分プライバシーの違い（特に再識別可否）<br />
@@ -971,10 +971,10 @@ function SummarySection() {
                 <div className="warn" style={{ marginTop: '20px' }}>
                     <div className="warnt">⚠️ Section 4 で特に混同しやすい概念</div>
                     <ul>
-                        <li><strong style={{ color: 'var(--cream)' }}>匿名化 ≠ 仮名化</strong>：匿名化は再識別不可（GDPR対象外）、仮名化は紐付けテーブルで再識別可能（GDPR引き続き対象）</li>
-                        <li><strong style={{ color: 'var(--cream)' }}>Secure AI（セキュリティ） ≠ Responsible AI（倫理）</strong>：前者はサイバー攻撃・悪用への防御、後者はバイアス・透明性・公平性の倫理的配慮</li>
-                        <li><strong style={{ color: 'var(--cream)' }}>透明性 ≠ 説明可能性</strong>：透明性は「AIであることを知らせる」こと、説明可能性は「なぜその答えを出したか説明できる」能力</li>
-                        <li><strong style={{ color: 'var(--cream)' }}>SAIF は Google 独自のルールではない</strong>：既存のサイバーセキュリティの原則を AI 時代に拡張した普遍的フレームワーク</li>
+                        <li><strong style={{ color: 'var(--color-genai-s4-cream)' }}>匿名化 ≠ 仮名化</strong>：匿名化は再識別不可（GDPR対象外）、仮名化は紐付けテーブルで再識別可能（GDPR引き続き対象）</li>
+                        <li><strong style={{ color: 'var(--color-genai-s4-cream)' }}>Secure AI（セキュリティ） ≠ Responsible AI（倫理）</strong>：前者はサイバー攻撃・悪用への防御、後者はバイアス・透明性・公平性の倫理的配慮</li>
+                        <li><strong style={{ color: 'var(--color-genai-s4-cream)' }}>透明性 ≠ 説明可能性</strong>：透明性は「AIであることを知らせる」こと、説明可能性は「なぜその答えを出したか説明できる」能力</li>
+                        <li><strong style={{ color: 'var(--color-genai-s4-cream)' }}>SAIF は Google 独自のルールではない</strong>：既存のサイバーセキュリティの原則を AI 時代に拡張した普遍的フレームワーク</li>
                     </ul>
                 </div>
 
@@ -1019,7 +1019,7 @@ export default function Section4Page() {
                     <span className="italic-span">ビジネス戦略</span>完全解説
                 </h1>
                 <p className="hero-sub">
-                    試験配点 <strong style={{ color: 'var(--amber)' }}>~15%</strong> の Section 4 を完全制覇。
+                    試験配点 <strong style={{ color: 'var(--color-genai-s4-amber)' }}>~15%</strong> の Section 4 を完全制覇。
                     Gen AI ソリューションの実装ステップ・セキュアなAIの設計・責任あるAIの原則を、経営者・ビジネスリーダー視点で体系的に理解する。
                 </p>
 
@@ -1043,7 +1043,7 @@ export default function Section4Page() {
                 <a href="#s41" className="n1"><span className="snav-num nn1">4.1</span>Gen AI 実装戦略</a>
                 <a href="#s42" className="n2"><span className="snav-num nn2">4.2</span>セキュアな AI</a>
                 <a href="#s43" className="n3"><span className="snav-num nn3">4.3</span>責任ある AI</a>
-                <a href="#summary"><span className="snav-num" style={{ background: 'rgba(255,255,255,0.05)', color: 'var(--muted)', border: '1px solid var(--border)' }}>◎</span>試験まとめ</a>
+                <a href="#summary"><span className="snav-num" style={{ background: 'rgba(255,255,255,0.05)', color: 'var(--color-genai-s4-muted)', border: '1px solid var(--color-genai-s4-border)' }}>◎</span>試験まとめ</a>
             </nav>
 
             {/* 外部リンク用のスクリーンリーダー向け共有ヒント (aria-describedby から参照) */}

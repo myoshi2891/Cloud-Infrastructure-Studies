@@ -619,6 +619,11 @@ const ALL_EXAMS: Exam[] = [
                 href: '/comptia/network-plus/network-operations-guide',
                 pct: '19%',
             },
+            {
+                label: 'Domain 4.0 Network Security 完全ガイド',
+                href: '/comptia/network-plus/network-security-guide',
+                pct: '14%',
+            },
         ],
         badge: 'ネットワーク基礎',
         icon: '⚡',
