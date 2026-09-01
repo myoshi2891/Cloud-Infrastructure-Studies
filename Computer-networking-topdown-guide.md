@@ -74,9 +74,9 @@ flowchart TD
 | APNIC計測によるIPv6対応ユーザー比率(IPv6 capability) | 約42〜43% | 2026年4月 |
 | HTTP/3の利用比率 | Cloudflare網が観測するHTTP(S)リクエストに占める割合としてCloudflare Radarが継続公開(最新値はRadarで確認) | 継続計測 |
 | RPKI(経路正当性検証)でカバーされる経路の割合 | 約67% | 参考文献18(日次変動するため要再確認) |
-| Cloudflareが2025年に緩和したDDoS攻撃件数 | 4,710万件(前年比121%増) | 2026年3月 |
-| 観測史上最大のDDoS攻撃規模(帯域) | 31.4 Tbps・約35秒間(Aisuru-Kimwolfボットネット) | 2025年11月(Cloudflare 2025 Q4レポートで公表) |
-| 観測史上最大のDDoS攻撃規模(パケットレート) | 14.1 Bpps・29.7 Tbps(Aisuruボットネット) | Cloudflare 2025 Q3レポート |
+| Cloudflareが2025年に緩和したDDoS攻撃件数 | 4,710万件(前年比121%増) | 2026年3月(参考文献29) |
+| 観測史上最大のDDoS攻撃規模(帯域) | 31.4 Tbps・約35秒間(Aisuru-Kimwolfボットネット) | 2025年11月(Cloudflare 2025 Q4レポートで公表。参考文献29) |
+| 観測史上最大のDDoS攻撃規模(パケットレート) | 14.1 Bpps(Aisuruボットネット。29.7 Tbpsの帯域記録とは別個の攻撃) | Cloudflare 2025 Q3レポート(参考文献28) |
 
 これらの数字が示すのは、インターネットが「決まった仕様に従う静的なシステム」ではなく、**日々進化し続ける巨大な分散システム**だということです。だからこそ、個別の技術の暗記ではなく、「なぜこの層が必要なのか」「どんな問題を解決するために設計されたのか」という原理原則を学ぶことが重要になります。
 
@@ -888,7 +888,7 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    G4["4G LTE<br/>OFDMA、パケット交換に統一"] --> G5["5G NR<br/>ネットワークスライシング、<br/>超低遅延(URLLC)"]
+    G4["4G LTE<br/>下りOFDMA・上りSC-FDMA、<br/>パケット交換に統一"] --> G5["5G NR<br/>ネットワークスライシング、<br/>超低遅延(URLLC)"]
     G5 --> G6["6G(標準化中)<br/>3GPP Release 21で<br/>仕様策定が進行中"]
 
     classDef mobFill fill:#132a4a,stroke:#7c9eff,color:#e8eefc
@@ -1039,7 +1039,7 @@ flowchart TB
     class TARGET,DOWN tgtFill
 ```
 
-**2026年時点のデータ(Cloudflare)**: 2025年にCloudflareが緩和したDDoS攻撃は4,710万件(前年比121%増)に達し、Aisuru系ボットネット(推定100万〜400万台の感染デバイスで構成)による超大規模攻撃が相次ぎました。まず2025年第3四半期には、29.7Tbps・14.1Bpps(毎秒141億パケット)に達するUDPカーペットボンビング攻撃が観測史上最大のパケットレートとして報告されています。次に2025年11月には、Aisuru-Kimwolfによる31.4Tbpsの攻撃を35秒間にわたり緩和し、公開されている中では帯域幅で史上最大の記録となりました。さらに2025年12月19日に始まった一連のキャンペーンでは902件の超大規模攻撃が観測され、そのピークは24Tbps・9Bpps・205Mrps(平均は4Tbps・3Bpps・54Mrps)でした。2026年上半期(H1)のレポートでは、1Tbpsを超える超大規模(hyper-volumetric)攻撃が第1四半期から第2四半期にかけて519%増加し、DNSベース攻撃とCLDAPリフレクション攻撃が主要な攻撃ベクトルとなっていることが報告されています。一方で、ネットワーク層攻撃の96.62%は500Mbps未満・90.60%は10分未満で終了する「短時間・小規模」なものであり、**自動化された迅速な検知・緩和の仕組みが人手による対応能力を上回る規模で求められている**という傾向が示されています。
+**2026年時点のデータ(Cloudflare)**: 2025年にCloudflareが緩和したDDoS攻撃は4,710万件(前年比121%増)に達し、Aisuru系ボットネット(推定100万〜400万台の感染デバイスで構成)による超大規模攻撃が相次ぎました。まず2025年第3四半期には、Aisuruによる2つの別個の記録的攻撃が報告されています。ひとつは**29.7Tbps・約69秒間のUDPカーペットボンビング攻撃**(毎秒平均約1万5千の宛先ポートを狙い撃つ形式)で、当時の帯域幅の最大記録となりました。もうひとつは**14.1Bpps(毎秒141億パケット)に達する別の攻撃**で、こちらはパケットレートの観測史上最大記録です(参考文献28)。次に2025年11月には、Aisuru-Kimwolfによる31.4Tbpsの攻撃を35秒間にわたり緩和し、公開されている中では帯域幅で史上最大の記録となりました(参考文献29)。さらに2025年12月19日に始まった一連のキャンペーンでは902件の超大規模攻撃が観測され、そのピークは24Tbps・9Bpps・205Mrps(平均は4Tbps・3Bpps・54Mrps)でした。2026年上半期(H1)のレポートでは、1Tbpsを超える超大規模(hyper-volumetric)攻撃が第1四半期から第2四半期にかけて519%増加し、DNSベース攻撃とCLDAPリフレクション攻撃が主要な攻撃ベクトルとなっていることが報告されています。一方で、ネットワーク層攻撃の96.62%は500Mbps未満・90.60%は10分未満で終了する「短時間・小規模」なものであり、**自動化された迅速な検知・緩和の仕組みが人手による対応能力を上回る規模で求められている**という傾向が示されています。
 
 ---
 
@@ -1226,9 +1226,11 @@ flowchart TD
 
 ### セキュリティ / DDoS脅威動向関連
 
-28. Cloudflare Blog「Cloudflare DDoS Threat Report H1 2026」— https://blog.cloudflare.com/ddos-threat-report-2026-h1/
-29. Cloudflare Radar「Reports」(脅威インテリジェンス公開ダッシュボード) — https://radar.cloudflare.com/reports
-30. Cloudflare公式プレスリリース「Cloudflare 2026 Threat Intelligence Report」— https://www.cloudflare.com/press/press-releases/2026/cloudflare-2026-threat-intelligence-report-nation-state-actors-and/
+28. Cloudflare Blog「DDoS threat report for 2025 Q3」— https://blog.cloudflare.com/ddos-threat-report-2025-q3/
+29. Cloudflare Blog「DDoS threat report for 2025 Q4」— https://blog.cloudflare.com/ddos-threat-report-2025-q4/
+30. Cloudflare Blog「Cloudflare DDoS Threat Report H1 2026」— https://blog.cloudflare.com/ddos-threat-report-2026-h1/
+31. Cloudflare Radar「Reports」(脅威インテリジェンス公開ダッシュボード) — https://radar.cloudflare.com/reports
+32. Cloudflare公式プレスリリース「Cloudflare 2026 Threat Intelligence Report」— https://www.cloudflare.com/press/press-releases/2026/cloudflare-2026-threat-intelligence-report-nation-state-actors-and/
 
 ---
 
