@@ -191,7 +191,7 @@ flowchart LR
 ```mermaid
 flowchart TD
     APP["アプリケーション層<br/>HTTP・DNS・SMTPなど / メッセージ(message)"]
-    TRANS["トランスポート層<br/>TCP・UDP / セグメント(segment)"]
+    TRANS["トランスポート層<br/>TCP・UDP / TCPセグメント(segment)・UDPデータグラム(datagram)"]
     NET["ネットワーク層<br/>IP・ルーティング / データグラム(datagram)"]
     LINK["リンク層<br/>Ethernet・Wi-Fi / フレーム(frame)"]
     PHY["物理層<br/>ビット列の伝送 / bit"]
@@ -205,7 +205,7 @@ flowchart TD
 | 層 | 役割 | データ単位 | 処理する機器の例 |
 |---|---|---|---|
 | アプリケーション層 | ネットワークアプリケーションのためのプロトコル(HTTP、DNS、SMTP) | メッセージ | ホストのみ |
-| トランスポート層 | プロセス間の論理的な通信(TCP/UDP) | セグメント | ホストのみ |
+| トランスポート層 | プロセス間の論理的な通信(TCP/UDP) | TCPセグメント / UDPデータグラム | ホストのみ |
 | ネットワーク層 | 送信元から宛先へのデータグラム経路制御 | データグラム | ホスト・ルータ |
 | リンク層 | 隣接ノード間でのフレーム転送 | フレーム | ホスト・ルータ・スイッチ |
 | 物理層 | フレーム内の個々のビットの伝送 | ビット | ホスト・ルータ・スイッチ |
@@ -217,8 +217,8 @@ flowchart TD
 
 ```mermaid
 flowchart LR
-    M["メッセージ<br/>(アプリケーション層データ)"] --> S["セグメント<br/>= トランスポートヘッダ + M"]
-    S --> D["データグラム<br/>= ネットワークヘッダ + セグメント"]
+    M["メッセージ<br/>(アプリケーション層データ)"] --> S["トランスポート層PDU<br/>= トランスポートヘッダ + M"]
+    S --> D["データグラム<br/>= ネットワークヘッダ + トランスポート層PDU"]
     D --> F["フレーム<br/>= リンクヘッダ + データグラム"]
 
     classDef encapFill fill:#132a4a,stroke:#7c9eff,color:#e8eefc
@@ -384,7 +384,7 @@ flowchart LR
 
 ### 3.1 UDPとTCP: 2つの対照的な選択肢
 
-トランスポート層の最も重要な役割は、ネットワーク層が提供する「ホスト間通信」を「プロセス間通信」へと拡張することです。インターネットには性格の異なる2つのトランスポートプロトコルが存在します。
+トランスポート層の最も重要な役割は、ネットワーク層が提供する「ホスト間通信」を「プロセス間通信」へと拡張することです。インターネットではSCTPやDCCP、QUIC(UDP上に構築される)など複数のトランスポートプロトコルが使われていますが、本ガイドではまず代表的な2つ、性格の対照的なTCPとUDPを比較します。
 
 ```mermaid
 flowchart TB
@@ -731,7 +731,7 @@ flowchart LR
 
 **2026年時点の普及状況**: 参考文献18(RIPE LabsのAntonio Prado氏による分析を引用したIPregistryの記事)によると、RPKIのROAでカバーされる経路の割合はグローバルで約67%に達しています。日次で変動する指標のため、最新値はNLnet LabsのRPKI Analyticsやhttps://bgp.he.net などのダッシュボードで観測日とあわせて確認してください。Sparkle(AS6762)のような大手Tier-1トランジット事業者も、2026年2月3日からRPKI無効経路を拒否する側へ移行しました(参考文献15。Cloudflareの「Is BGP safe yet?」が同社を無効経路を拒否する事業者として掲載)。
 
-一方で、2026年7月にRIPE Labsが公開したAntonio Prado氏の分析では、経路原点検証(ROV)は「経路操作」「経路一貫性」「ポリシー違反」「セッションベース攻撃」という4つの攻撃カテゴリのうち一部にしか対応できないことが指摘されており、**RPKIは万能ではなく、より広範な監視と組み合わせる必要がある**という認識が広がっています。
+一方で、2026年7月21日にRIPE Labsが公開したAntonio Prado氏の分析(参考文献19)では、経路原点検証(ROV)は「経路操作」「経路一貫性」「ポリシー違反」「セッションベース攻撃」という4つの攻撃カテゴリのうち一部にしか対応できないことが指摘されており、**RPKIは万能ではなく、より広範な監視と組み合わせる必要がある**という認識が広がっています。
 
 ### 5.4 SDNのコントロールプレーン
 
@@ -1039,7 +1039,7 @@ flowchart TB
     class TARGET,DOWN tgtFill
 ```
 
-**2026年時点のデータ(Cloudflare)**: 2025年にCloudflareが緩和したDDoS攻撃は4,710万件(前年比121%増)に達し、Aisuru系ボットネット(推定100万〜400万台の感染デバイスで構成)による超大規模攻撃が相次ぎました。まず2025年第3四半期には、29.7Tbps・14.1Bpps(毎秒141億パケット)に達するUDPカーペットボンビング攻撃が観測史上最大のパケットレートとして報告されています。次に2025年11月には、Aisuru-Kimwolfによる31.4Tbpsの攻撃を35秒間にわたり緩和し、公開されている中では帯域幅で史上最大の記録となりました。さらに2025年12月19日に始まった一連のキャンペーンでは902件の超大規模攻撃が観測され、そのピークは24Tbps・9Bpps・205Mrps(平均は4Tbps・3Bpps・54Mrps)でした。2026年上半期(H1)のレポートでは、1Tbpsを超える超大規模(hyper-volumetric)攻撃が第1四半期から第2四半期にかけて519%増加し、DNS/CLDAPリフレクション攻撃が主要な攻撃ベクトルとなっていることが報告されています。一方で、全体の96.62%の攻撃は500Mbps未満・90.60%は10分未満で終了する「短時間・小規模」なものであり、**自動化された迅速な検知・緩和の仕組みが人手による対応能力を上回る規模で求められている**という傾向が示されています。
+**2026年時点のデータ(Cloudflare)**: 2025年にCloudflareが緩和したDDoS攻撃は4,710万件(前年比121%増)に達し、Aisuru系ボットネット(推定100万〜400万台の感染デバイスで構成)による超大規模攻撃が相次ぎました。まず2025年第3四半期には、29.7Tbps・14.1Bpps(毎秒141億パケット)に達するUDPカーペットボンビング攻撃が観測史上最大のパケットレートとして報告されています。次に2025年11月には、Aisuru-Kimwolfによる31.4Tbpsの攻撃を35秒間にわたり緩和し、公開されている中では帯域幅で史上最大の記録となりました。さらに2025年12月19日に始まった一連のキャンペーンでは902件の超大規模攻撃が観測され、そのピークは24Tbps・9Bpps・205Mrps(平均は4Tbps・3Bpps・54Mrps)でした。2026年上半期(H1)のレポートでは、1Tbpsを超える超大規模(hyper-volumetric)攻撃が第1四半期から第2四半期にかけて519%増加し、DNSベース攻撃とCLDAPリフレクション攻撃が主要な攻撃ベクトルとなっていることが報告されています。一方で、ネットワーク層攻撃の96.62%は500Mbps未満・90.60%は10分未満で終了する「短時間・小規模」なものであり、**自動化された迅速な検知・緩和の仕組みが人手による対応能力を上回る規模で求められている**という傾向が示されています。
 
 ---
 
@@ -1208,26 +1208,27 @@ flowchart TD
 16. Cloudflare Blog「Helping build a safer Internet by measuring BGP RPKI Route Origin Validation」— https://blog.cloudflare.com/rpki-updates-data/
 17. IETF Datatracker: Job Snijders氏によるRFC・Internet-Draft一覧 — https://datatracker.ietf.org/person/Job%20Snijders
 18. IPregistry Blog「RPKI Covers 67% of Routes, But Four Attack Classes Slip Right Past It」(RIPE Labs Antonio Prado氏の分析を引用) — https://ipregistry.co/blog/rpki-blind-spots/
+19. RIPE Labs, Antonio Prado「Beyond Origin Validation: Four Classes of Routing Attack Nobody Is Validating」(2026年7月21日、4つの攻撃カテゴリの一次出典) — https://labs.ripe.net/author/antonio-prado/beyond-origin-validation-four-classes-of-routing-attack-nobody-is-validating/
 
 ### リンク層・無線 / Wi-Fi・6G関連
 
-19. IEEE 802.11be技術論文「Wi-Fi 7: Feature Summary and Performance Evaluation」— https://arxiv.org/pdf/2309.15951
-20. Wireless Broadband Alliance「Wireless Broadband Alliance Reveals its Wi-Fi Predictions for 2026 and Beyond」— https://wballiance.com/wireless-broadband-alliance-reveals-its-wi-fi-predictions-for-2026-and-beyond/
-21. Ericsson公式ブログ「6G standardization milestones and RAN decisions」— https://www.ericsson.com/en/blog/2026/6/6g-standardization-key-milestones-and-ran-decisions
-22. Qualcomm公式ブログ「Building the 6G standard: What 3GPP's June 2026 plenary decisions mean for device makers」— https://www.qualcomm.com/news/onq/2026/06/6g-standardization-release-21-milestones
+20. IEEE 802.11be技術論文「Wi-Fi 7: Feature Summary and Performance Evaluation」— https://arxiv.org/pdf/2309.15951
+21. Wireless Broadband Alliance「Wireless Broadband Alliance Reveals its Wi-Fi Predictions for 2026 and Beyond」— https://wballiance.com/wireless-broadband-alliance-reveals-its-wi-fi-predictions-for-2026-and-beyond/
+22. Ericsson公式ブログ「6G standardization milestones and RAN decisions」— https://www.ericsson.com/en/blog/2026/6/6g-standardization-key-milestones-and-ran-decisions
+23. Qualcomm公式ブログ「Building the 6G standard: What 3GPP's June 2026 plenary decisions mean for device makers」— https://www.qualcomm.com/news/onq/2026/06/6g-standardization-release-21-milestones
 
 ### セキュリティ / 耐量子暗号(PQC)関連
 
-23. Cloudflare Blog「The state of the post-quantum Internet」— https://blog.cloudflare.com/pq-2024/
-24. Cloudflare Blog「State of the post-quantum Internet in 2025」— https://blog.cloudflare.com/pq-2025/
-25. Cloudflare Blog「Conventional cryptography is under threat. Upgrade to post-quantum cryptography with Cloudflare Zero Trust.」— https://blog.cloudflare.com/post-quantum-zero-trust/
-26. Cloudflare Blog「Cloudflare One is the first SASE offering modern post-quantum encryption across the full platform」— https://blog.cloudflare.com/post-quantum-sase/
+24. Cloudflare Blog「The state of the post-quantum Internet」— https://blog.cloudflare.com/pq-2024/
+25. Cloudflare Blog「State of the post-quantum Internet in 2025」— https://blog.cloudflare.com/pq-2025/
+26. Cloudflare Blog「Conventional cryptography is under threat. Upgrade to post-quantum cryptography with Cloudflare Zero Trust.」— https://blog.cloudflare.com/post-quantum-zero-trust/
+27. Cloudflare Blog「Cloudflare One is the first SASE offering modern post-quantum encryption across the full platform」— https://blog.cloudflare.com/post-quantum-sase/
 
 ### セキュリティ / DDoS脅威動向関連
 
-27. Cloudflare Blog「Cloudflare DDoS Threat Report H1 2026」— https://blog.cloudflare.com/ddos-threat-report-2026-h1/
-28. Cloudflare Radar「Reports」(脅威インテリジェンス公開ダッシュボード) — https://radar.cloudflare.com/reports
-29. Cloudflare公式プレスリリース「Cloudflare 2026 Threat Intelligence Report」— https://www.cloudflare.com/press/press-releases/2026/cloudflare-2026-threat-intelligence-report-nation-state-actors-and/
+28. Cloudflare Blog「Cloudflare DDoS Threat Report H1 2026」— https://blog.cloudflare.com/ddos-threat-report-2026-h1/
+29. Cloudflare Radar「Reports」(脅威インテリジェンス公開ダッシュボード) — https://radar.cloudflare.com/reports
+30. Cloudflare公式プレスリリース「Cloudflare 2026 Threat Intelligence Report」— https://www.cloudflare.com/press/press-releases/2026/cloudflare-2026-threat-intelligence-report-nation-state-actors-and/
 
 ---
 
