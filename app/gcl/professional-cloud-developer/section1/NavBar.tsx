@@ -3,9 +3,6 @@
 import { useCallback, useEffect, useState, type MouseEvent } from 'react';
 import { NAV_ITEMS, type NavItem } from './constants';
 
-/**
- * Professional Cloud Developer (PCD) Section 1 ガイド用サイドバー目次ナビゲーション
- */
 export function NavBar() {
     const [activeId, setActiveId] = useState<string>(NAV_ITEMS[0]?.id ?? '');
     const [isOpen, setIsOpen] = useState<boolean>(false);
