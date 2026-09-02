@@ -129,7 +129,7 @@ describe('professional-cloud-developer section1 NavBar', () => {
 
         expect(event.defaultPrevented).toBe(true);
         expect(target.scrollIntoView).toHaveBeenCalled();
-        expect(window.location.hash).toBe(`#${NAV_ITEMS[1]!.id}`);
+        expect(decodeURIComponent(window.location.hash)).toBe(`#${NAV_ITEMS[1]!.id}`);
         expect(document.activeElement).toBe(target);
         expect(linkFor(NAV_ITEMS[1]!.id)).toHaveAttribute('aria-current', 'location');
     });
