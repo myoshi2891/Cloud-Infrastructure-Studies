@@ -346,6 +346,12 @@ app/
         NavBar.tsx                  # サイドバーナビ (IntersectionObserver)
         constants.ts                # Mermaid 図定義 (14図)
         page.css                    # ページ固有スタイル
+    professional-cloud-developer/
+      page.tsx                      # Professional Cloud Developer（PCD）認定試験 完全対策ガイド (Server)
+      ProfessionalCloudDeveloperGuide.tsx # 本文＋インタラクション (Client。全4セクション、13 Mermaid図、19テーブル等)
+      NavBar.tsx                    # サイドバーナビ (IntersectionObserver)
+      constants.ts                  # Mermaid 図定義 (13図)
+      page.css                      # ページ固有スタイル
   cisco/
     devnet-professional/
       page.tsx                      # Cisco Certified DevNet Professional 認定 徹底解説ガイド（Server）

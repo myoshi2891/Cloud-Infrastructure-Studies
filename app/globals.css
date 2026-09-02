@@ -48,6 +48,8 @@
 
     --color-theme-pca-bg: hsl(215 65% 55% / 0.25);
     --color-theme-pca-fg: hsl(215 100% 75%);
+    --color-theme-pcd-bg: hsl(225 65% 55% / 0.25);
+    --color-theme-pcd-fg: hsl(225 100% 75%);
     /* アクセント面に乗せる文字・記号の色（親ページと Section 1 で共有） */
     --color-pca-on-accent: #0b1220;
     --color-pca-hero-grad-end: #9db8ff;
@@ -676,6 +678,7 @@ body {
 .card-agwa { --card-accent: var(--color-theme-agwa-fg); }
 .card-pcne { --card-accent: var(--color-theme-pcne-fg); }
 .card-pca { --card-accent: var(--color-theme-pca-fg); }
+.card-pcd { --card-accent: var(--color-theme-pcd-fg); }
 .card-ccna { --card-accent: var(--color-theme-cisco-fg); }
 .card-aws-saa { --card-accent: var(--color-theme-aws-fg); }
 .card-comptia { --card-accent: var(--color-theme-comptia-fg); }
@@ -720,6 +723,11 @@ body {
 @utility icon-theme-pcne {
     background: var(--color-theme-pcne-bg);
     color: var(--color-theme-pcne-fg);
+}
+
+@utility icon-theme-pcd {
+    background: var(--color-theme-pcd-bg);
+    color: var(--color-theme-pcd-fg);
 }
 
 @utility icon-theme-aws-saa {
