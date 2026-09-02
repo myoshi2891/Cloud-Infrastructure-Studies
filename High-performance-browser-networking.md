@@ -1116,7 +1116,7 @@ Googleは2024年3月、応答性指標をFID（First Input Delay、最初の入�
 | INP（Interaction to Next Paint） | 操作から次の描画までの応答性 | 200ms以下 | Good閾値は200ms以下のまま変更なし |
 | CLS（Cumulative Layout Shift） | 累積レイアウトシフト量 | 0.1以下 | Chrome以外のブラウザへの対応拡大が検討中 |
 
-2026年6月公開のCrUX（Chrome UX Report）データでは、計測対象オリジンのうち3指標すべてで合格したのは55.9%にとどまり、個別にはLCP約68.6%、CLS約81.3%、INP約86.6%が合格しています（出典10）。
+CrUX（Chrome UX Report）の2026年5月データセット（2026年6月9日公開）では、計測対象オリジンのうち3指標すべてで合格したのは55.9%にとどまり、個別にはLCP約68.6%、CLS約81.3%、INP約86.6%が合格しています（出典10）。
 
 **ベストプラクティス**
 - Core Web Vitalsは実ユーザー計測（フィールドデータ）に基づくため、ラボ計測の結果だけで判断せず、定期的にPageSpeed InsightsやSearch ConsoleのCore Web Vitalsレポートを再確認する
