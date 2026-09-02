@@ -342,7 +342,7 @@ const ALL_EXAMS: Exam[] = [
         domains: [
             {
                 label: 'Section 1: 高可用性・セキュアなアプリ設計',
-                href: '/gcl/professional-cloud-developer#section1',
+                href: '/gcl/professional-cloud-developer/section1',
                 pct: '33%',
             },
             {

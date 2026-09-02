@@ -289,7 +289,7 @@ describe('toNavTree', () => {
             expect(gcp).toBeDefined();
             if (!gcp) return;
             const ids = gcp.exams.map((e) => e.id).sort();
-            expect(ids).toEqual(['ace', 'agwa', 'cdl', 'genai', 'hands-on', 'pca', 'pcne']);
+            expect(ids).toEqual(['ace', 'agwa', 'cdl', 'genai', 'hands-on', 'pca', 'pcd', 'pcne']);
         });
 
         it('AWS グループに公開済み試験が含まれる', () => {
