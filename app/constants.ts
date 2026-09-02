@@ -347,7 +347,7 @@ const ALL_EXAMS: Exam[] = [
             },
             {
                 label: 'Section 2: アプリケーションのビルドとテスト',
-                href: '/gcl/professional-cloud-developer#section2',
+                href: '/gcl/professional-cloud-developer/section2',
                 pct: '26%',
             },
             {
