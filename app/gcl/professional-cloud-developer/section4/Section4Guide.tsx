@@ -44,7 +44,7 @@ export function Section4Guide() {
                         </div>
                     </header>
 
-                    <h2 id="この章について">この章について</h2>
+                    <h2 id="この章について" tabIndex={-1}>この章について</h2>
                     <p>
                         本ガイドは、Google Cloud Professional Cloud Developer（PCD）認定試験の公式Exam Guideに定義される「Section 4: Integrating applications with Google Cloud services（Google Cloudサービスとのアプリケーション統合）」を、初学者にもわかりやすいようステップバイステップで解説するものです。Section 4は試験全体のおよそ21%を占め、以下の3つのサブセクション・合計11の出題項目で構成されています。
                     </p>
@@ -66,7 +66,7 @@ export function Section4Guide() {
                         本文中の図解はすべてMermaid記法で記述し、ASCIIアートによる図解は一切使用していません。すべての技術的主張には、Google Cloud公式ドキュメントを中心とした出典を明記しています。
                     </p>
 
-                    <h2 id="section-4-全体像">Section 4 全体像</h2>
+                    <h2 id="section-4-全体像" tabIndex={-1}>Section 4 全体像</h2>
                     <p>
                         Section 4の3つのサブセクションは独立したテーマに見えますが、実際には「データを読み書きし（4.1）」「APIを正しく呼び出し（4.2）」「その挙動を観測・診断する（4.3）」という、1つのリクエストがアプリケーションを流れる際に必ず通過する3つのレイヤーに対応しています。
                     </p>
@@ -82,11 +82,11 @@ export function Section4Guide() {
 
                     <hr />
 
-                    <h2 id="41-データストレージサービスとのアプリケーション統合">
+                    <h2 id="41-データストレージサービスとのアプリケーション統合" tabIndex={-1}>
                         4.1 データ/ストレージサービスとのアプリケーション統合
                     </h2>
 
-                    <h3 id="411-さまざまなgoogle-cloudデータストアへの接続管理">
+                    <h3 id="411-さまざまなgoogle-cloudデータストアへの接続管理" tabIndex={-1}>
                         4.1.1 さまざまなGoogle Cloudデータストアへの接続管理
                     </h3>
                     <h4>概要</h4>
@@ -246,7 +246,7 @@ export function Section4Guide() {
 
                     <hr />
 
-                    <h3 id="412-さまざまなgoogle-cloudデータソースへのデータの読み書き">
+                    <h3 id="412-さまざまなgoogle-cloudデータソースへのデータの読み書き" tabIndex={-1}>
                         4.1.2 さまざまなGoogle Cloudデータソースへのデータの読み書き
                     </h3>
                     <h4>概要</h4>
@@ -337,7 +337,7 @@ export function Section4Guide() {
 
                     <hr />
 
-                    <h3 id="413-メッセージングサービスを使ったデータの発行消費アプリケーションの作成">
+                    <h3 id="413-メッセージングサービスを使ったデータの発行消費アプリケーションの作成" tabIndex={-1}>
                         4.1.3 メッセージングサービスを使ったデータの発行・消費アプリケーションの作成
                     </h3>
                     <h4>概要</h4>
@@ -479,9 +479,9 @@ export function Section4Guide() {
 
                     <hr />
 
-                    <h2 id="42-google-cloud-apiの利用">4.2 Google Cloud APIの利用</h2>
+                    <h2 id="42-google-cloud-apiの利用" tabIndex={-1}>4.2 Google Cloud APIの利用</h2>
 
-                    <h3 id="421-google-cloudサービスの有効化">4.2.1 Google Cloudサービスの有効化</h3>
+                    <h3 id="421-google-cloudサービスの有効化" tabIndex={-1}>4.2.1 Google Cloudサービスの有効化</h3>
                     <h4>概要</h4>
                     <p>
                         Google Cloudのほとんどのサービス（BigQuery、Pub/Sub、Cloud SQL Admin APIなど）は、プロジェクトごとに明示的に「有効化（Enable）」しないと呼び出せません。これはコスト管理・セキュリティ・監査のための設計であり、開発者がAPIを利用する最初のステップとして必ず理解しておく必要があります。
@@ -570,7 +570,7 @@ export function Section4Guide() {
 
                     <hr />
 
-                    <h3 id="422-サポートされているオプションを使ったapi呼び出し">
+                    <h3 id="422-サポートされているオプションを使ったapi呼び出し" tabIndex={-1}>
                         4.2.2 サポートされているオプションを使ったAPI呼び出し
                     </h3>
                     <h4>概要</h4>
@@ -792,7 +792,7 @@ export function Section4Guide() {
 
                     <hr />
 
-                    <h3 id="423-サービスアカウントを使ったcloud-api呼び出し">
+                    <h3 id="423-サービスアカウントを使ったcloud-api呼び出し" tabIndex={-1}>
                         4.2.3 サービスアカウントを使ったCloud API呼び出し
                     </h3>
                     <h4>概要</h4>
@@ -918,11 +918,11 @@ export function Section4Guide() {
 
                     <hr />
 
-                    <h2 id="43-トラブルシューティングとオブザーバビリティ">
+                    <h2 id="43-トラブルシューティングとオブザーバビリティ" tabIndex={-1}>
                         4.3 トラブルシューティングとオブザーバビリティ
                     </h2>
 
-                    <h3 id="431-メトリクスログトレースによるコードのインスツルメンテーション">
+                    <h3 id="431-メトリクスログトレースによるコードのインスツルメンテーション" tabIndex={-1}>
                         4.3.1 メトリクス・ログ・トレースによるコードのインスツルメンテーション
                     </h3>
                     <h4>概要</h4>
@@ -1004,7 +1004,7 @@ export function Section4Guide() {
 
                     <hr />
 
-                    <h3 id="432-google-cloud-observabilityを使った問題の特定と解決">
+                    <h3 id="432-google-cloud-observabilityを使った問題の特定と解決" tabIndex={-1}>
                         4.3.2 Google Cloud Observabilityを使った問題の特定と解決
                     </h3>
                     <h4>概要</h4>
@@ -1109,7 +1109,7 @@ export function Section4Guide() {
 
                     <hr />
 
-                    <h3 id="433-error-reportingによるアプリケーション問題の管理">
+                    <h3 id="433-error-reportingによるアプリケーション問題の管理" tabIndex={-1}>
                         4.3.3 Error Reportingによるアプリケーション問題の管理
                     </h3>
                     <h4>概要</h4>
@@ -1196,7 +1196,7 @@ export function Section4Guide() {
 
                     <hr />
 
-                    <h3 id="434-トレースidを使ったサービス間のトレーススパンの相関">
+                    <h3 id="434-トレースidを使ったサービス間のトレーススパンの相関" tabIndex={-1}>
                         4.3.4 トレースIDを使ったサービス間のトレーススパンの相関
                     </h3>
                     <h4>概要</h4>
@@ -1281,7 +1281,7 @@ export function Section4Guide() {
 
                     <hr />
 
-                    <h3 id="435-ai支援オブザーバビリティの活用">
+                    <h3 id="435-ai支援オブザーバビリティの活用" tabIndex={-1}>
                         4.3.5 AI支援オブザーバビリティの活用
                     </h3>
                     <h4>概要</h4>
@@ -1401,7 +1401,7 @@ export function Section4Guide() {
 
                     <hr />
 
-                    <h2 id="section-4-まとめ-試験対策チェックリスト">
+                    <h2 id="section-4-まとめ-試験対策チェックリスト" tabIndex={-1}>
                         Section 4 まとめ: 試験対策チェックリスト
                     </h2>
                     <p>
@@ -1499,7 +1499,7 @@ export function Section4Guide() {
 
                     <hr />
 
-                    <h2 id="参考文献">参考文献</h2>
+                    <h2 id="参考文献" tabIndex={-1}>参考文献</h2>
                     <p>
                         本ガイドの記述は、以下の公式ドキュメントおよび一次情報源に基づいています（2026年8月時点の内容を反映）。
                     </p>
