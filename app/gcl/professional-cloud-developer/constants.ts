@@ -82,9 +82,9 @@ export const DIAGRAMS: Record<DiagramId, string> = {
     'diag-binary-auth': `flowchart LR
     Src["ソースコード"] --> Build["Cloud Build"]
     Build -- "ビルド来歴を生成" --> Prov["SLSA Provenance"]
-    Build --> Sign["署名者が検証・アテステーション作成"]
-    Sign --> AR["Artifact Registry<br/>（イメージ + アテステーション）"]
-    AR --> Deploy{"デプロイ時に<br/>Binary Authorization<br/>が検証"}
+    Build -- "イメージをpush" --> AR["Artifact Registry<br/>（コンテナイメージを保管）"]
+    AR --> Sign["署名者が検証・<br/>イメージダイジェストに対する<br/>アテステーションを作成"]
+    Sign --> Deploy{"デプロイ時に<br/>Binary Authorization<br/>が検証"}
     Deploy -- "アテステーションが<br/>ポリシーを満たす" --> OK["GKE / Cloud Run に<br/>デプロイ許可"]
     Deploy -- "満たさない" --> Deny["デプロイ拒否"]
 

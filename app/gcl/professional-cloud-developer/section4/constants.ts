@@ -139,15 +139,19 @@ export const DIAGRAMS: Record<DiagramId, string> = {
 
     'diag-2': `flowchart TD
     Start(["どのようなデータを扱うか？"]) --> Q1{"強い整合性を持つ<br/>トランザクション処理か？"}
-    Q1 -->|"Yes（在庫・決済・会員情報など）"| SQL["Cloud SQL<br/>（MySQL/PostgreSQL/SQL Server）"]
+    Q1 -->|"Yes（在庫・決済・会員情報など）"| Q1a{"グローバル規模の強整合性と<br/>無制限の水平スケールが必要か？"}
+    Q1a -->|"Yes"| Spanner["Spanner<br/>（グローバル分散・強整合性）"]
+    Q1a -->|"No"| Q1b{"高性能なPostgreSQL互換の<br/>OLTPが必要か？"}
+    Q1b -->|"Yes"| AlloyDB["AlloyDB for PostgreSQL"]
+    Q1b -->|"No（標準的なリージョナルOLTP）"| SQL["Cloud SQL<br/>（MySQL/PostgreSQL/SQL Server）"]
     Q1 -->|"No"| Q2{"柔軟なスキーマの<br/>ドキュメント/コレクション構造で、<br/>モバイル/Webとのリアルタイム同期が必要か？"}
     Q2 -->|"Yes"| FS["Firestore<br/>（Native mode）"]
     Q2 -->|"No"| Q3{"バイナリファイル・画像・動画・<br/>バックアップなどの非構造化データか？"}
     Q3 -->|"Yes"| GCS["Cloud Storage<br/>（オブジェクトストレージ）"]
-    Q3 -->|"No（超大規模の時系列/ワイドカラム、<br/>グローバル分散トランザクションなど）"| Other["Bigtable / Spanner / AlloyDB<br/>（詳細はSection 1.3を参照）"]
+    Q3 -->|"No（超大規模の時系列/<br/>ワイドカラムデータなど）"| Other["Bigtable<br/>（詳細はSection 1.3を参照）"]
 
     classDef highlightFill fill:#1a3a5c,stroke:#4a90d9,color:#ffffff;
-    class Start,SQL,FS,GCS highlightFill;`,
+    class Start,Spanner,AlloyDB,SQL,FS,GCS highlightFill;`,
 
     'diag-3': `sequenceDiagram
     participant App as アプリケーション
@@ -362,7 +366,7 @@ export const DIAGRAMS: Record<DiagramId, string> = {
     'diag-15': `flowchart TD
     A["1. 問題の兆候が発生<br/>（アラート発火、エラー急増、<br/>パフォーマンス低下）"] --> B{"調査（Investigation）の<br/>起動方法"}
     B -->|"手動"| C["エラー画面/ログエントリ/<br/>コンソール右上のInvestigationsアイコン<br/>から起動"]
-    B -->|"自動<br/>（バックグラウンド）"| D["バックグラウンド監視エージェントが<br/>対応アラート（メトリクスベースの<br/>アラートポリシー等）を検知して<br/>自動的に調査を開始<br/>※ログベースのアラートは対象外"]
+    B -->|"自動<br/>（バックグラウンド）"| D["バックグラウンド監視エージェントが<br/>対応アラート（メトリクスベースの<br/>アラートポリシー等）を検知して<br/>自動的に調査を開始<br/>※ログベースのアラートは対象外<br/>※Proactive ModeはPrivate Preview提供で<br/>Premium Support顧客が対象<br/>※事前にProactive Modeの有効化と<br/>agent identityへの必要なIAMロール付与が必要"]
     C --> E1["2a. 手動調査：<br/>調査を実行した<br/>エンドユーザーのIDで<br/>関連データへアクセス<br/>（IAM付与先・監査ログの<br/>プリンシパル＝そのユーザー）"]
     D --> E2["2b. 自動調査：<br/>プロジェクト固有の<br/>エージェントIDで<br/>関連データへアクセス<br/>（IAM付与先・監査ログの<br/>プリンシパル＝エージェントID）"]
     E1 --> F["3. ログ・メトリクス・トレース・<br/>設定変更履歴・トラブルシューティング<br/>runbookを横断的に相関分析"]

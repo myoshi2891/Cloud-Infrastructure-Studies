@@ -78,7 +78,7 @@ export type DiagramId =
 
 export const DIAGRAMS: Record<DiagramId, string> = {
     'diag-1': `flowchart TB
-    A["セクション2<br/>アプリケーションのビルドとテスト<br/>(配点 約23%)"] --> B["2.1 開発環境のセットアップ"]
+    A["セクション2<br/>アプリケーションのビルドとテスト<br/>(配点 約26%)"] --> B["2.1 開発環境のセットアップ"]
     A --> C["2.2 ビルド"]
     A --> D["2.3 テスト"]
     B --> B1["ローカルエミュレーション"]
@@ -99,10 +99,10 @@ export const DIAGRAMS: Record<DiagramId, string> = {
     participant App as アプリケーションコード
     participant Test as 単体テスト
 
-    Dev->>CLI: gcloud emulators pubsub start
+    Dev->>CLI: gcloud beta emulators pubsub start
     CLI->>Emu: エミュレータプロセスを起動
     Emu-->>Dev: ホスト:ポートを出力
-    Dev->>CLI: env-init で接続情報を取得
+    Dev->>CLI: gcloud beta emulators pubsub env-init で接続情報を取得
     CLI-->>Dev: PUBSUB_EMULATOR_HOST を返す
     Dev->>App: 環境変数をエクスポートして起動
     App->>Emu: クライアントライブラリ経由でAPI呼び出し
