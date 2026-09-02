@@ -352,7 +352,7 @@ const ALL_EXAMS: Exam[] = [
             },
             {
                 label: 'Section 3: デプロイのためのアプリ構成',
-                href: '/gcl/professional-cloud-developer#section3',
+                href: '/gcl/professional-cloud-developer/section3',
                 pct: '19%',
             },
             {
