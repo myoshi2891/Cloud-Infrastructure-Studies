@@ -557,11 +557,17 @@
 @media (max-width: 980px) {
     .pcd-guide-page .sidebar {
         transform: translateX(-100%);
-        transition: transform 0.25s ease;
+        transition: transform 0.25s ease, visibility 0s linear 0.25s;
         box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+        /* 閉状態はタブ順・アクセシビリティツリーから除外する */
+        visibility: hidden;
+        pointer-events: none;
     }
     .pcd-guide-page .sidebar.open {
         transform: translateX(0);
+        transition: transform 0.25s ease, visibility 0s linear 0s;
+        visibility: visible;
+        pointer-events: auto;
     }
     .pcd-guide-page .main {
         margin-left: 0;

@@ -402,9 +402,9 @@ export const DIAGRAMS: Record<DiagramId, string> = {
 
     'diag-15': `flowchart TB
     Code["ソースコードが<br/>ソースリポジトリへpush"] --> CI["Cloud Build<br/>(CIパイプライン)<br/>ビルド・テスト"]
-    CI --> Sign["署名者(Signer)が<br/>イメージ記述子に署名<br/>= アテステーション作成"]
-    Sign --> AR2["Artifact Registry<br/>へイメージ格納"]
-    AR2 --> Deploy["デプロイリクエスト<br/>(GKE/Cloud Run)"]
+    CI --> AR2["Artifact Registry<br/>へイメージ格納"]
+    AR2 --> Sign["署名者(Signer)が<br/>イメージ記述子に署名<br/>= アテステーション作成"]
+    Sign --> Deploy["デプロイリクエスト<br/>(GKE/Cloud Run)"]
     Deploy --> BinAuthz["Binary Authorization<br/>ポリシー評価"]
     BinAuthz --> Verify{"アテスターが<br/>公開鍵で<br/>アテステーション<br/>を検証"}
     Verify -->|"検証成功"| Allow["デプロイ許可"]
