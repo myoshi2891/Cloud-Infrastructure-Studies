@@ -239,11 +239,26 @@
     color: var(--color-pca-s1-foreground, #dbe4f3);
 }
 
-.pcd-section1-page .main ul,
-.pcd-section1-page .main ol {
+.pcd-section1-page .main ul {
+    list-style-type: disc;
     margin: 0 0 18px;
     padding-left: 1.4em;
     color: var(--color-pca-s1-foreground, #dbe4f3);
+}
+
+.pcd-section1-page .main ol {
+    list-style-type: decimal;
+    margin: 0 0 18px;
+    padding-left: 1.4em;
+    color: var(--color-pca-s1-foreground, #dbe4f3);
+}
+
+.pcd-section1-page .main ol ol {
+    list-style-type: lower-alpha;
+}
+
+.pcd-section1-page .main ul ul {
+    list-style-type: circle;
 }
 
 .pcd-section1-page .main li {

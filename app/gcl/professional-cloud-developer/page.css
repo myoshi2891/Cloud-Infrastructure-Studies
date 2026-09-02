@@ -248,11 +248,26 @@
     color: var(--color-foreground, #dbe4f3);
 }
 
-.pcd-guide-page .main ul,
-.pcd-guide-page .main ol {
+.pcd-guide-page .main ul {
+    list-style-type: disc;
     margin: 0 0 18px;
     padding-left: 1.4em;
     color: var(--color-foreground, #dbe4f3);
+}
+
+.pcd-guide-page .main ol {
+    list-style-type: decimal;
+    margin: 0 0 18px;
+    padding-left: 1.4em;
+    color: var(--color-foreground, #dbe4f3);
+}
+
+.pcd-guide-page .main ol ol {
+    list-style-type: lower-alpha;
+}
+
+.pcd-guide-page .main ul ul {
+    list-style-type: circle;
 }
 
 .pcd-guide-page .main li {
