@@ -1,6 +1,35 @@
 # 移行作業進捗管理ドキュメント (Migration Progress)
 
-(最終更新日: 2026-08-31)
+(最終更新日: 2026-09-02)
+
+---
+
+## 2026-09-02: Google Cloud Professional Cloud Developer（PCD）認定試験 学習ガイド 100%全量移行 (完了)
+
+### 目的
+
+`Gcp-pcd-professional-cloud-developer.html` を、Next.js App Router 5ファイル構成 (`page.tsx`, `ProfessionalCloudDeveloperGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/gcl/professional-cloud-developer` ルートへ移行。グローバルナビゲーションの「GCP」に追加。見出し(h1:1, h2:8, h3:21, h4:45)、全19個のテーブル、13個のMermaid図解、全リスト(51件)、全外部リンク(36件)・全本文・コールアウト注記(14件)・実践チェックリスト(27件)・参考文献一覧(53件)を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for professional-cloud-developer` (`e0b2d25b`)
+- [x] **Step 1 (Red)**: `test(gcl): add failing tests for professional-cloud-developer` (`cf09b85a`)
+- [x] **Step 2 (Green)**: `feat(gcl): implement professional-cloud-developer to pass tests` (`a596e320`)
+- [x] **Step 3 (Refactor)**: `refactor(gcl): integrate professional-cloud-developer into routing and update docs` (`d459a4a3`)
+- [x] **Step 4 (Archive & Sync)**: `chore(docs): update MIGRATION_PROGRESS.md — migrate professional-cloud-developer`
+
+### 関連ファイル
+
+- [app/gcl/professional-cloud-developer/page.tsx](app/gcl/professional-cloud-developer/page.tsx)
+- [app/gcl/professional-cloud-developer/ProfessionalCloudDeveloperGuide.tsx](app/gcl/professional-cloud-developer/ProfessionalCloudDeveloperGuide.tsx)
+- [app/gcl/professional-cloud-developer/NavBar.tsx](app/gcl/professional-cloud-developer/NavBar.tsx)
+- [app/gcl/professional-cloud-developer/constants.ts](app/gcl/professional-cloud-developer/constants.ts)
+- [app/gcl/professional-cloud-developer/page.css](app/gcl/professional-cloud-developer/page.css)
+- [`__tests__/gcl/professional-cloud-developer/page.test.tsx`](__tests__/gcl/professional-cloud-developer/page.test.tsx)
+- [`__tests__/gcl/professional-cloud-developer/NavBar.test.tsx`](__tests__/gcl/professional-cloud-developer/NavBar.test.tsx)
+- [docs/migration-inventory/professional-cloud-developer.json](docs/migration-inventory/professional-cloud-developer.json)
+- [archive/Gcl/Professional-Cloud-Developer/html/Gcp-pcd-professional-cloud-developer.html](archive/Gcl/Professional-Cloud-Developer/html/Gcp-pcd-professional-cloud-developer.html)
+- [archive/Gcl/Professional-Cloud-Developer/md/Gcp-professional-cloud-developer-guide.md](archive/Gcl/Professional-Cloud-Developer/md/Gcp-professional-cloud-developer-guide.md)
 
 ---
 
