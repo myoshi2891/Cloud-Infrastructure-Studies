@@ -24,7 +24,8 @@ export type ColorKey =
     | 'card-sre'
     | 'card-devops-handbook'
     | 'card-release-it'
-    | 'card-infrastructure-as-code';
+    | 'card-infrastructure-as-code'
+    | 'card-pcd';
 
 export interface Exam {
     id: string;
@@ -60,6 +61,7 @@ export const cardColorMap: Record<ColorKey, string> = {
     'card-devops-handbook': 'card-devops-handbook',
     'card-release-it': 'card-release-it',
     'card-infrastructure-as-code': 'card-infrastructure-as-code',
+    'card-pcd': 'card-pcd',
 };
 
 export const providerMeta: Record<
