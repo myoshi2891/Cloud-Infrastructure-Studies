@@ -2,6 +2,33 @@
 
 (最終更新日: 2026-09-02)
 
+## 2026-09-02: Google Cloud Professional Cloud Developer（PCD）Section 1「高可用性・セキュア・信頼性の高いクラウドネイティブアプリケーションの設計」学習ガイド 100%全量移行 (完了)
+
+### 目的
+
+`Gcp-professional-cloud-developer-section1-guide.html` を、Next.js App Router 5ファイル構成 (`page.tsx`, `Section1Guide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/gcl/professional-cloud-developer/section1` ルートへ移行。グローバルナビゲーションの「GCP」PCD配下に追加。見出し(h1:1, h2:4, h3:28, h4:12)、全10個のテーブル、19個のMermaid図解、全リスト(8件)、全外部リンク(19件)・全本文・コールアウト注記(27件)・実践チェックリスト(25件)・参考文献一覧(17件)を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for professional-cloud-developer-section1` (`ab357c06`)
+- [x] **Step 1 (Red)**: `test(gcl): add failing tests for professional-cloud-developer-section1` (`0ac2cf83`)
+- [x] **Step 2 (Green)**: `feat(gcl): implement professional-cloud-developer-section1 to pass tests` (`917e4936`)
+- [x] **Step 3 (Refactor)**: `refactor(gcl): integrate professional-cloud-developer-section1 into routing and constants` (`b56c4236`)
+- [x] **Step 4 (Archive & Sync)**: `docs(migration): archive source files and update migration progress`
+
+### 関連ファイル
+
+- [app/gcl/professional-cloud-developer/section1/page.tsx](app/gcl/professional-cloud-developer/section1/page.tsx)
+- [app/gcl/professional-cloud-developer/section1/Section1Guide.tsx](app/gcl/professional-cloud-developer/section1/Section1Guide.tsx)
+- [app/gcl/professional-cloud-developer/section1/NavBar.tsx](app/gcl/professional-cloud-developer/section1/NavBar.tsx)
+- [app/gcl/professional-cloud-developer/section1/constants.ts](app/gcl/professional-cloud-developer/section1/constants.ts)
+- [app/gcl/professional-cloud-developer/section1/page.css](app/gcl/professional-cloud-developer/section1/page.css)
+- [`__tests__/gcl/professional-cloud-developer/section1/page.test.tsx`](__tests__/gcl/professional-cloud-developer/section1/page.test.tsx)
+- [`__tests__/gcl/professional-cloud-developer/section1/NavBar.test.tsx`](__tests__/gcl/professional-cloud-developer/section1/NavBar.test.tsx)
+- [docs/migration-inventory/professional-cloud-developer-section1.json](docs/migration-inventory/professional-cloud-developer-section1.json)
+- [archive/Gcl/Professional-Cloud-Developer/html/Gcp-professional-cloud-developer-section1-guide.html](archive/Gcl/Professional-Cloud-Developer/html/Gcp-professional-cloud-developer-section1-guide.html)
+- [archive/Gcl/Professional-Cloud-Developer/md/Gcp-professional-cloud-developer-section1-guide.md](archive/Gcl/Professional-Cloud-Developer/md/Gcp-professional-cloud-developer-section1-guide.md)
+
 ---
 
 ## 2026-09-02: Google Cloud Professional Cloud Developer（PCD）認定試験 学習ガイド 100%全量移行 (完了)
