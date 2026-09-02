@@ -357,7 +357,7 @@ const ALL_EXAMS: Exam[] = [
             },
             {
                 label: 'Section 4: Google Cloud サービス統合',
-                href: '/gcl/professional-cloud-developer#section4',
+                href: '/gcl/professional-cloud-developer/section4',
                 pct: '22%',
             },
         ],

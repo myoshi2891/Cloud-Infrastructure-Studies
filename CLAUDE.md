@@ -370,6 +370,12 @@ app/
         NavBar.tsx                  # サイドバーナビ (IntersectionObserver)
         constants.ts                # Mermaid 図定義 (8図)
         page.css                    # ページ固有スタイル
+      section4/
+        page.tsx                    # PCD Section 4: Google Cloudサービスとのアプリケーション統合 (Server)
+        Section4Guide.tsx           # 本文＋インタラクション (Client。全3サブセクション・11トピック、15 Mermaid図、7テーブル等)
+        NavBar.tsx                  # サイドバーナビ (IntersectionObserver)
+        constants.ts                # Mermaid 図定義 (15図)
+        page.css                    # ページ固有スタイル
   cisco/
     devnet-professional/
       page.tsx                      # Cisco Certified DevNet Professional 認定 徹底解説ガイド（Server）
