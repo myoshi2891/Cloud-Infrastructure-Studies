@@ -3,7 +3,6 @@
 **〜初学者のためのステップバイステップ・ベストプラクティス〜**
 
 > **対象ラボ**: Explore Generative AI with the Gemini API in Agent Platform: Challenge Lab
-> **ラボURL**: https://www.skills.google/course_templates/959/labs/592560
 > **想定読者**: Vertex AI / Gemini API に初めて触れるエンジニア・QAエンジニア
 
 ---
