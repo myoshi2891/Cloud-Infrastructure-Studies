@@ -222,7 +222,8 @@ export const DIAGRAMS: Record<DiagramId, string> = {
         ZoneB["ゾーン b"]
         ZoneC["ゾーン c"]
     end
-    User["ユーザー"] -->|"最も近いリージョンへ<br/>Anycast IP経由で到達"| Region
+    User["ユーザー"] -->|"Anycast IP で最寄りの<br/>エッジロケーションに到達"| GFE["Google Front End (GFE)<br/>グローバル外部ロードバランサ"]
+    GFE -->|"Google のバックボーン経由で<br/>最適なリージョンへ転送"| Region
     Region -.->|"リージョン内レプリケーション<br/>(低レイテンシ)"| Region
 
     classDef highlightFill fill:#1a3a5c,stroke:#4a90d9,color:#ffffff;
@@ -339,13 +340,16 @@ export const DIAGRAMS: Record<DiagramId, string> = {
     'diag-11': `flowchart LR
     Push["イメージを<br/>Artifact Registry へ push"] --> AutoScan["自動脆弱性スキャン<br/>(Artifact Analysis)"]
     AutoScan --> SCC["Security Command Center<br/>(検出結果の集約)"]
-    SCC --> Gate{"重大な脆弱性<br/>あり？"}
-    Gate -->|"あり"| Block["Artifact Guard により<br/>デプロイをブロック"]
-    Gate -->|"なし"| Deploy["Cloud Run / GKE へ<br/>デプロイ許可"]
-    SCC -.->|"継続的な監視"| Runtime["実行時スキャン<br/>(ランタイム脆弱性検出)"]
+    SCC --> Gate{"GKE へのデプロイ時<br/>重大な脆弱性あり？<br/>(Artifact Guard ポリシー)"}
+    Gate -->|"あり"| Block["Binary Authorization が<br/>GKE へのデプロイをブロック"]
+    Gate -->|"なし"| GKEDeploy["GKE へ<br/>デプロイ許可"]
+    AutoScan --> RunDeploy["Cloud Run へデプロイ<br/>(Artifact Guard の適用対象外。<br/>別途 Binary Authorization 等が必要)"]
+    SCC -.->|"継続的な監視"| Runtime["実行時スキャン<br/>(GKE クラスタのランタイム監視)"]
 
     classDef dangerFill fill:#5c1a1a,stroke:#d94a4a,color:#ffffff;
-    class Block dangerFill`,
+    classDef warnFill fill:#5c3a1a,stroke:#d9904a,color:#ffffff;
+    class Block dangerFill
+    class RunDeploy warnFill`,
 
     'diag-12': `flowchart TB
     subgraph External["Google Cloud 外部<br/>(オンプレ/他クラウド/GitHub Actions等)"]
