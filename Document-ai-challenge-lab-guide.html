@@ -468,16 +468,6 @@
                         初学者のためのステップバイステップ ベストプラクティス解説
                     </h1>
                     <p class="hero-meta">
-                        対象ラボ: Automate Data Capture at Scale with Document AI: Challenge Lab<br />
-                        ラボURL:
-                        <a
-                            href="https://www.skills.google/course_templates/674/labs/616166"
-                            target="_blank"
-                            rel="noopener"
-                            >https://www.skills.google/course_templates/674/labs/616166</a
-                        >
-                    </p>
-                    <p class="hero-meta">
                         このガイドは、ラボの手順を単に「なぞる」のではなく、<strong>なぜそのコマンド・設定が必要なのか</strong>を、Google
                         Cloud
                         のプロダクションベストプラクティスの観点から解説することを目的としています。
@@ -574,9 +564,8 @@ gcloud storage cp -r gs://spls/gsp367/* ./document-ai-challenge/</code></pre>
                             </div>
                             <p>
                                 <strong>API有効化はコードで行う</strong>:
-                                コンソールのUI操作ではなく、上記のように <code
-                                    >gcloud services enable</code
-                                >
+                                コンソールのUI操作ではなく、上記のように
+                                <code>gcloud services enable</code>
                                 でコマンド化しておくと、Terraform や CI/CD
                                 パイプラインに組み込みやすく、再現性も担保できます。
                             </p>
@@ -806,8 +795,9 @@ bq mk --table \
                                     データセットのロケーションを揃える</strong
                                 >: 今回のラボでは 3 つの Cloud Storage バケットが
                                 <code>us-central1</code>（リージョン）、BigQuery データセットが
-                                <code>US</code
-                                >（マルチリージョン）で、両者は一致していません。<code>US</code>
+                                <code>US</code>（マルチリージョン）で、両者は一致していません。<code
+                                    >US</code
+                                >
                                 マルチリージョンは
                                 <code>us-central1</code>
                                 を包含するため読み書き自体は成立しますが、本番設計ではリージョンをまたぐデータ移動がレイテンシとコストの両面で不利になるため、ロケーションは設計段階で揃えておきます。
@@ -943,8 +933,8 @@ bq mk --table \
   --no-allow-unauthenticated</code></pre>
 
                         <p>
-                            この関数は Cloud Storage
-                            イベントで起動されるため、HTTP エンドポイントを公開する必要はありません。<code
+                            この関数は Cloud Storage イベントで起動されるため、HTTP
+                            エンドポイントを公開する必要はありません。<code
                                 >--no-allow-unauthenticated</code
                             >
                             で未認証呼び出しを閉じたうえで、Eventarc
@@ -1127,9 +1117,7 @@ bq mk --table \
                                 >
                                 で閉じ、Eventarc のサービスアカウントに
                                 <code>roles/run.invoker</code>
-                                を付与して呼び出し元を限定します。<a
-                                    href="#ref14"
-                                    class="footnote"
+                                を付与して呼び出し元を限定します。<a href="#ref14" class="footnote"
                                     >[14]</a
                                 >
                             </p>
@@ -1175,7 +1163,8 @@ bq mk --table \
                             </li>
                             <li>
                                 <strong
-                                    >タイムアウト（HTTP 504）を「無害なエラー」として読み飛ばさないでください。</strong
+                                    >タイムアウト（HTTP
+                                    504）を「無害なエラー」として読み飛ばさないでください。</strong
                                 >
                                 Cloud Run が処理途中で打ち切られていると、Document AI
                                 の解析が完了せず、Eventarc も配信失敗として扱います。504
