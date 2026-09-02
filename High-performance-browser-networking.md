@@ -3,7 +3,7 @@
 **原著**: *High Performance Browser Networking*（Ilya Grigorik著、O'Reilly Media、2013年9月刊、398ページ）
 **原著者について**: Ilya Grigorik氏はGoogleでWebパフォーマンスエンジニアを務めた人物で、本書は「ブラウザとネットワークの間で実際に何が起きているか」をTCP/UDP/TLSという低レイヤーから、HTTP、そしてXHR・SSE・WebSocket・WebRTCといったブラウザAPIまで一気通貫で解説した、Web パフォーマンス分野の定番書です。
 
-> 本ガイドは原著の目次構成（全4部・全18章）に忠実に沿いながら、初学者向けに独自の解説・図解・表で再構成したものです。原文の複製・転載は一切行っていません。また、原著刊行（2013年）以降に登場したHTTP/3・QUIC・TLS 1.3・BBRv3・WebTransport・Core Web Vitalsなど2026年9月時点の最新動向を独自にWeb検索で調査し、第9部として追加しています。
+> 本ガイドは原著の目次構成（全4部・全18章）に忠実に沿いながら、初学者向けに独自の解説・図解・表で再構成したものです。原文の複製・転載は一切行っていません。また、原著刊行（2013年）以降に登場したHTTP/3・QUIC・TLS 1.3・BBRv3・WebTransport・Core Web Vitalsなど2026年9月時点の最新動向を独自にWeb検索で調査し、第5部として追加しています。
 >
 > **図解ポリシー**: ASCIIアート（罫線・箱文字）は一切使用せず、フローチャート・シーケンス図はすべてMermaidで、比較表はすべてMarkdownテーブルで表現しています。
 
@@ -78,7 +78,7 @@ flowchart TB
 
 #### 1.1 なぜ「帯域幅」より「レイテンシ」が重要なのか
 
-多くの人は「回線が遅い＝帯域幅（bandwidth）が足りない」と考えがちですが、Webページの体感速度を決めているのは主に**レイテンシ（latency）**、つまり1バイトが送信されてから届くまでの時間です。特に小さなリクエストが何度も往復するWebの通信パターンでは、帯域幅を2倍にしても体感速度はほとんど変わらない一方、レイテンシを半分にすると劇的に速く感じられます。
+多くの人は「回線が遅い＝帯域幅（bandwidth）が足りない」と考えがちですが、Webページの体感速度を決めているのは主に**レイテンシ（latency）**、つまりデータが送信元から宛先へ届くまでに要する時間（エンドツーエンドのネットワーク遅延）です。より厳密には、送信元から宛先までの一方向の遅延を**片道遅延（one-way delay）**、そこから応答が返ってくるまでを**RTT（Round-Trip Time、往復遅延）**と呼び分けます。また、パケット全体を回線に送り出すのに要する**伝送遅延（transmission delay）**はレイテンシを構成する一要素であって、レイテンシそのものではありません（次節参照）。特に小さなリクエストが何度も往復するWebの通信パターンでは、帯域幅を2倍にしても体感速度はほとんど変わらない一方、RTTを半分にすると劇的に速く感じられます。
 
 #### 1.2 レイテンシを構成する4つの要素
 
@@ -102,7 +102,7 @@ flowchart LR
 
 #### 1.3 光速と「ラストマイル」の現実
 
-光ファイバー中の光の伝搬速度は真空中光速の約2/3（約20万km/秒）です。理論上、地球を半周（約20,000km）する信号でも往復100ms程度で済む計算になりますが、現実のインターネットはルーターを何十ホップも経由し、さらに家庭やスマートフォンから最寄りのISP設備までの「ラストマイル」区間で追加の遅延が発生します。ラストマイルは技術（DSL・ケーブル・光・モバイル）によって遅延特性が大きく異なり、多くの場合ここが体感速度のボトルネックになります。
+光ファイバー中の光の伝搬速度は真空中光速の約2/3（約20万km/秒）です。理論上、地球を半周する約20,000kmの距離であれば片道で約100ms、往復（RTT）では約200msという計算になりますが、現実のインターネットはルーターを何十ホップも経由し、さらに家庭やスマートフォンから最寄りのISP設備までの「ラストマイル」区間で追加の遅延が発生します。ラストマイルは技術（DSL・ケーブル・光・モバイル）によって遅延特性が大きく異なり、多くの場合ここが体感速度のボトルネックになります。
 
 #### 1.4 コアネットワークとエッジの帯域幅格差
 
@@ -446,7 +446,7 @@ flowchart LR
     class G5,G6 highlightFill
 ```
 
-#### 7.2 RRC（Radio Resource Controller）状態遷移とパフォーマンスへの影響
+#### 7.2 RRC（Radio Resource Control）状態遷移とパフォーマンスへの影響
 
 モバイル端末の無線チップは、常に電波を送受信し続けているわけではありません。バッテリー消費を抑えるため、通信の有無に応じてRRC（無線リソース制御）状態を遷移させます。この状態遷移こそが、モバイルネットワーク特有の「見えない遅延」の正体です。
 
@@ -755,7 +755,13 @@ flowchart TB
 
 #### 14.2 ネットワークセキュリティとサンドボックス
 
-ブラウザは、悪意あるスクリプトが任意のサーバーへ勝手にデータを送ったり、他サイトの機密情報を読み取ったりできないよう、同一オリジンポリシー（Same-Origin Policy）を基本としたサンドボックスモデルで動作します。異なるオリジン間で通信を許可する場合は、CORS（Cross-Origin Resource Sharing）という明示的な許可の仕組みが必要です（第15章で詳述）。
+ブラウザは、悪意あるスクリプトが他サイトの機密情報を勝手に読み取れないよう、同一オリジンポリシー（Same-Origin Policy）を基本としたサンドボックスモデルで動作します。
+
+ここで初学者が最も誤解しやすいのが CORS（Cross-Origin Resource Sharing）の役割です。CORSが制御するのは主に「**クロスオリジンのレスポンスをスクリプトに読み取らせるかどうか**」であって、「リクエストを送信させるかどうか」ではありません。GETや`application/x-www-form-urlencoded`のPOSTなど**シンプルリクエスト**の条件を満たす場合、リクエストはプリフライトなしでそのまま相手サーバーへ届きます。サーバーが`Access-Control-Allow-Origin`を返さなければ、ブラウザは「すでに送信され処理されたレスポンスをスクリプトに渡さない」という形で保護するにすぎません。
+
+一方、カスタムヘッダや`application/json`を伴う**非シンプルリクエスト**では、実リクエストの前に**プリフライト（OPTIONSリクエスト）**でサーバーの許可を検証し、許可が得られなければ実リクエストは送信されません。つまりCORSには「レスポンス共有の制御」と「プリフライトによる事前検証」という2つの側面があります。
+
+そして、副作用を伴うリクエストが他サイトから勝手に送られること自体を防ぐのはCORSの責務ではなく、CSRF対策（SameSite Cookie・CSRFトークン等）の責務です（第15章で詳述）。
 
 #### 14.3 リソース・クライアント状態キャッシング
 
@@ -795,7 +801,9 @@ sequenceDiagram
 
 #### 15.3 ダウンロード・アップロードの進捗監視とストリーミング
 
-XHRは`progress`イベントによってダウンロード・アップロードの進捗を監視でき、また`responseType`を活用することでレスポンスをストリーミング的に処理することも可能です。
+XHRは`progress`イベントによってダウンロード・アップロードの進捗を監視できます。
+
+なお`responseType`（`''`/`text`・`json`・`blob`・`arraybuffer`・`document`）は、あくまで**レスポンスを最終的にどの形式で受け取るか**を選択するものであり、それ自体がストリーミング処理を有効にするわけではありません。XHRでレスポンスを逐次処理できるのは`responseType`が`''`（空文字）または`text`の場合に限られ、`readyState`が`LOADING`（3）の間に`responseText`を繰り返し読み進める形になります。バイナリを含む本格的なストリーミング受信が必要な場合は、XHRではなくFetch APIのストリーム（`Response.body`が返す`ReadableStream`）を用います。
 
 #### 15.4 ポーリングとロングポーリング
 
@@ -1025,11 +1033,12 @@ TLS 1.3以降でもClientHelloに含まれるSNI（第4章参照）は平文で�
 
 #### 耐量子（Post-Quantum）鍵交換の実運用化
 
-「今収集しておいて将来の量子コンピュータで復号する」というハーベスト・ナウ・デクリプト・レイター攻撃に備え、X25519とML-KEM-768を組み合わせたハイブリッド鍵交換（X25519MLKEM768）が急速に普及しています。Cloudflare Radarの計測では、クライアント〜エッジ間の耐量子鍵交換の利用率は2026年7月時点で55.77%に達し、前年同月の29.64%からほぼ倍増しました（出典4）。Chromeはデスクトップ版でバージョン124（2024年4月）以降デフォルト有効化しており、OpenSSL 3.5（2025年4月リリース）はプロバイダプラグインなしでML-KEM/ML-DSAをネイティブサポートしています（出典5）。
+「今収集しておいて将来の量子コンピュータで復号する」というハーベスト・ナウ・デクリプト・レイター攻撃に備え、X25519とML-KEM-768を組み合わせたハイブリッド鍵交換（X25519MLKEM768）が急速に普及しています。Cloudflare Radarの計測では、クライアント〜エッジ間の耐量子鍵交換の利用率は2026年7月時点で55.77%に達し、前年同月の29.64%からほぼ倍増しました（出典4）。Chromeのデスクトップ版では、まず標準化前のドラフト方式である**X25519Kyber768**（`X25519Kyber768Draft00`）がバージョン124（2024年4月）でデフォルト有効化され、その後NISTによるML-KEM標準化を受けて、標準方式である**X25519MLKEM768**がバージョン130で導入され、バージョン131（2024年11月）からデフォルトの鍵共有方式となりました（ドラフト方式のX25519Kyber768はその後廃止されています）。OpenSSL 3.5（2025年4月リリース）はプロバイダプラグインなしでML-KEM/ML-DSAをネイティブサポートしています（出典5）。
 
 | 項目 | 状況（2026年時点） |
 |---|---|
-| ハイブリッド鍵交換（X25519MLKEM768） | Chrome/Firefox/Cloudflareで既定有効、TLS 1.3ハンドシェイクの過半数に到達 |
+| ハイブリッド鍵交換（X25519Kyber768、ドラフト方式） | 標準化前の暫定方式。Chrome 124（2024年4月）で既定有効化されたが、標準方式への移行に伴い現在は廃止済み |
+| ハイブリッド鍵交換（X25519MLKEM768、標準方式） | Chrome 130で導入・131（2024年11月）から既定有効。Firefox/Cloudflareでも既定有効で、TLS 1.3ハンドシェイクの過半数に到達 |
 | 耐量子証明書（ML-DSA） | プライベートPKIでは利用可能（AWS Private CA等）、パブリックPKIはCA/Browser Forumのベースライン要件改定待ち |
 | ECH | Cloudflare/Firefoxで本番運用済み、Chromeはロールアウト中 |
 
@@ -1063,10 +1072,11 @@ flowchart LR
     class ModelBased highlightFill
 ```
 
-最新のBBRv3は、Linuxカーネル6.x系に統合され、無線区間など非輻輳性のパケットロス（第6章のWiFi特有ロス問題）が発生する環境でも不必要な送信レート低下を避けられる点が評価されています。QUIC実装（Googleのquiche等）でもBBR系アルゴリズムが標準的な選択肢の一つとして採用されています（出典6）。
+最新のBBRv3は、無線区間など非輻輳性のパケットロス（第6章のWiFi特有ロス問題）が発生する環境でも不必要な送信レート低下を避けられる点が評価されています。ただし注意が必要なのは、**Linuxカーネルのmainlineに含まれる`tcp_bbr`モジュールは現在もBBRv1の実装である**という点です。輻輳制御に`bbr`を指定できても、それが自動的にBBRv3になるわけではありません。BBRv3を利用するには、Googleが公開するBBRv3パッチ（`google/bbr`）を適用したカーネル、またはそれを取り込んだベンダーカーネル（クラウド事業者が提供するカスタムカーネル等）が必要です。QUIC実装（Googleのquiche等）でもBBR系アルゴリズムが標準的な選択肢の一つとして採用されています（出典6）。
 
 **ベストプラクティス**
-- 自社管理下のLinuxサーバー・CDNオリジンでは、カーネルバージョンがBBRv3対応（6.1以降が目安）かを確認し、輻輳制御アルゴリズムの選定を輻輳制御に詳しいインフラ担当者と検討する
+- 自社管理下のLinuxサーバー・CDNオリジンでは、まず`sysctl net.ipv4.tcp_congestion_control`（現在有効なアルゴリズム）と`sysctl net.ipv4.tcp_available_congestion_control`（利用可能なアルゴリズム一覧）で実行環境の輻輳制御を確認する。`bbr`と表示されても、mainlineカーネルであればその実体はBBRv1である点に注意する
+- BBRv3を採用したい場合は、`google/bbr`のBBRv3パッチを適用したカーネルか、それを取り込んだベンダーカーネルが必要になるため、導入可否と運用コストを輻輳制御に詳しいインフラ担当者と検討する
 - WiFi・モバイル回線などパケットロスが輻輳以外の理由（電波干渉等）でも発生しやすい経路をターゲットにするサービスでは、BBR系アルゴリズムの導入効果を測定する
 
 ---
@@ -1077,12 +1087,12 @@ WebTransportは、第17章のWebSocketが持つ「単一の順序保証付きス
 
 | 項目 | WebSocket | WebTransport |
 |---|---|---|
-| 下位トランスポート | TCP（HTTP/1由来） | QUIC（HTTP/3） |
+| 下位トランスポート | TCP。HTTP/1.1のUpgradeに加え、HTTP/2の拡張CONNECT（RFC 8441）・HTTP/3（RFC 9220）上でも確立可能 | 既定はHTTP/3・QUIC。仕様上はHTTP/2（TCP）上へのフォールバックも定義されている |
 | ストリーム数 | 1本の順序付きストリームのみ | 複数の独立したストリームを多重化可能 |
-| 非信頼配送（データグラム） | 非対応 | QUICデータグラムとして対応 |
+| 非信頼配送（データグラム） | 非対応 | QUICデータグラムとして対応。ただしHTTP/2（TCP）へフォールバックした場合はデータグラムを利用できない |
 | コネクションマイグレーション | 非対応（TCPベースのため） | 対応（QUICの特性を継承） |
 
-2026年3月にSafari 26.4がWebTransportを実装したことで、主要ブラウザ全てが対応する「Baseline」status に到達しました（出典7）。ただし、W3C仕様自体はまだWorking Draft段階であり、破壊的変更が入る可能性がある点には注意が必要です（出典8）。WebTransportの上に構築される高レベルなメディア配信プロトコルとして、Media over QUIC（MOQ）の標準化も進行中です。
+2026年3月にSafari 26.4がWebTransportを実装したことで、主要ブラウザ全てが対応する「Baseline」status に到達しました（出典7）。W3C仕様自体も2026年7月30日に**Candidate Recommendation Snapshot**として公開され、実装経験を収集する段階に入りました（2026年9月2日確認）。ただし勧告（Recommendation）到達には複数実装による相互運用性の確認が残っているため、細部の変更可能性には引き続き注意が必要です（出典8）。WebTransportの上に構築される高レベルなメディア配信プロトコルとして、Media over QUIC（MOQ）の標準化も進行中です。
 
 **ベストプラクティス**
 - 低遅延な一方向ライブ配信や、パケットロスを許容できるリアルタイムデータ（ゲームの状態同期等）にはWebTransportのデータグラムモードを検討する
@@ -1090,20 +1100,20 @@ WebTransportは、第17章のWebSocketが持つ「単一の順序保証付きス
 
 ---
 
-### 19.5 Core Web Vitals：INP・LCP・CLSと2026年の計測手法変更
+### 19.5 Core Web Vitals：INP・LCP・CLSの現在地
 
-Googleは2024年3月、応答性指標をFID（First Input Delay、最初の入力のみを計測）からINP（Interaction to Next Paint、セッション全体の応答性を計測）へ置き換えました。2026年5月にはINPの計測方法論がさらに調整され、持続的な入力遅延（sustained interaction latency）をより重く評価するようになり、旧来の平均化方式で「Good」判定だったサイトが再測定で悪化するケースが報告されています（出典9）。
+Googleは2024年3月、応答性指標をFID（First Input Delay、最初の入力のみを計測）からINP（Interaction to Next Paint、セッション全体の応答性を計測）へ置き換えました。INPはページ上で発生した各インタラクションについて「操作から次の描画が完了するまで」を計測し、その中で代表的に遅い値を採用することで、FIDでは捉えられなかった操作全体の応答性を評価します（出典9）。
 
 | 指標 | 意味 | Good閾値 | 2026年の動き |
 |---|---|---|---|
 | LCP（Largest Contentful Paint） | 最大コンテンツの表示完了までの時間 | 2.5秒以下 | 閾値自体は変更なし |
-| INP（Interaction to Next Paint） | 操作から次の描画までの応答性 | 200ms以下 | 計測方法論を刷新、持続的遅延をより重視 |
+| INP（Interaction to Next Paint） | 操作から次の描画までの応答性 | 200ms以下 | Good閾値は200ms以下のまま変更なし |
 | CLS（Cumulative Layout Shift） | 累積レイアウトシフト量 | 0.1以下 | Chrome以外のブラウザへの対応拡大が検討中 |
 
 2026年6月公開のCrUX（Chrome UX Report）データでは、計測対象オリジンのうち3指標すべてで合格したのは55.9%にとどまり、個別にはLCP約68.6%、CLS約81.3%、INP約86.6%が合格しています（出典10）。
 
 **ベストプラクティス**
-- INPの計測方法論変更により、これまで合格していたページが不合格に転じる可能性があるため、定期的にPageSpeed InsightsやSearch ConsoleのCore Web Vitalsレポートを再確認する
+- Core Web Vitalsは実ユーザー計測（フィールドデータ）に基づくため、ラボ計測の結果だけで判断せず、定期的にPageSpeed InsightsやSearch ConsoleのCore Web Vitalsレポートを再確認する
 - `scheduler.yield()`や長時間実行イベントハンドラの分割など、メインスレッドを長時間占有しない実装パターンでINPを改善する
 - LCPはTTFB（Time To First Byte）が下限になるため、サーバー応答速度自体の改善（本ガイドのTCP/TLS/HTTP最適化）がLCP改善に直結することを理解する
 
@@ -1200,7 +1210,7 @@ flowchart TB
 | 前方秘匿性（Forward Secrecy） | セッション鍵が漏洩しても過去の通信内容が復号されない性質 |
 | SNI（Server Name Indication） | TLSハンドシェイクで接続先ドメイン名を伝えるTLS拡張 |
 | ALPN（Application-Layer Protocol Negotiation） | TLSハンドシェイク中にアプリケーション層プロトコルを事前合意する仕組み |
-| RRC（Radio Resource Controller） | モバイル端末の無線リソースの状態（Idle/Connected等）を制御する仕組み |
+| RRC（Radio Resource Control） | モバイル端末の無線リソースの状態（Idle/Connected等）を制御する仕組み |
 | HPACK | HTTP/2のヘッダ圧縮方式 |
 | CORS（Cross-Origin Resource Sharing） | 異なるオリジン間の通信をブラウザが安全に許可するための仕組み |
 | ICE（Interactive Connectivity Establishment） | STUN/TURNを組み合わせてP2P接続経路を確立するフレームワーク |
@@ -1225,7 +1235,7 @@ flowchart TB
 6. Google / GitHub「google/bbr」BBRv3リリースノートおよびIETF CCWG発表資料 — https://github.com/google/bbr
 7. WebRTC.ventures「WebTransport Is Now Baseline」（Safari 26.4対応、2026年3月） — https://webrtc.ventures/2026/04/webtransport-is-now-baseline-what-it-means-for-real-time-media/
 8. Fora Soft「WebTransport and WHIP-over-WebTransport」（W3C仕様の状況） — https://www.forasoft.com/learn/video-streaming/articles-streaming/webtransport-whip
-9. MonsterMegs「Core Web Vitals Update Explained For 2026」（INP計測方法論の変更） — https://monstermegs.com/blog/core-web-vitals-update/
+9. web.dev「Interaction to Next Paint (INP)」（INP指標の定義・計測方法・閾値） — https://web.dev/articles/inp
 10. Launchcodex「Core Web Vitals guide: LCP, INP, and CLS explained (2026)」（Addy Osmani氏のコメント、Interop 2025） — https://launchcodex.com/blog/web-digital-infrastructure/core-web-vitals-guide/
 11. ATIS / 3GPP「3GPP Release 20 Webinar」（Puneet Jain氏、3GPP SA Chair、2026年4月） — https://cdn.atis.org/atis.org/2026/04/16110914/Combined-Slides_3GPP-Webinar-R20_2026.pdf
 12. CafeTele「What Is 6G? The 3GPP Release 20 Study and the Road to 2030」 — https://www.cafetele.com/articles/article-what-is-6g-3gpp-release-20.html
