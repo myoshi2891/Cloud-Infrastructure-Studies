@@ -99,7 +99,7 @@ export function NavBar() {
         if (target) {
             target.scrollIntoView({ behavior: 'smooth' });
             window.history.pushState(null, '', `#${id}`);
-            target.focus();
+            target.focus({ preventScroll: true });
         }
     };
 
