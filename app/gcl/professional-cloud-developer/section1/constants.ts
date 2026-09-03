@@ -462,11 +462,13 @@ export const DIAGRAMS: Record<DiagramId, string> = {
 
     User->>App: 1. アップロード/ダウンロード<br/>リクエスト
     App->>App: 2. アプリケーション固有の<br/>認可ロジックで検証
-    App->>IAM: 3. 署名リクエスト<br/>(V4署名プロセス)
-    IAM-->>App: 4. 署名付きURLを生成<br/>(有効期限付き)
-    App-->>User: 5. 署名付きURLを返却
-    User->>GCS: 6. 署名付きURLで<br/>直接アクセス (GET/PUT)
-    GCS-->>User: 7. オブジェクトの<br/>読み書き結果`,
+    App->>App: 3. V4正規リクエストを組み立て<br/>(バケット/オブジェクト・メソッド・<br/>有効期限などの署名対象)
+    App->>IAM: 4. signBlobで署名対象の<br/>ハッシュに署名を要求
+    IAM-->>App: 5. signedBlob（署名）を返却<br/>※URLそのものではない
+    App->>App: 6. 署名とリクエスト情報から<br/>V4署名付きURLを構築<br/>(X-Goog-Signature等を付与)
+    App-->>User: 7. 署名付きURLを返却
+    User->>GCS: 8. 署名付きURLで<br/>直接アクセス (GET/PUT)
+    GCS-->>User: 9. オブジェクトの<br/>読み書き結果`,
 
     'diag-19': `flowchart TB
     subgraph Sources["データソース"]

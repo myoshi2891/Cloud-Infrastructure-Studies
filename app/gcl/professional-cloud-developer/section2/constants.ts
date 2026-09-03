@@ -146,7 +146,7 @@ export const DIAGRAMS: Record<DiagramId, string> = {
     Dev->>IDE: 提案をレビューし適用`,
 
     'diag-5': `flowchart LR
-    Src["ソースコード<br/>(Cloud Source Repositories /<br/>GitHub / GitLab)"] -->|"push / PR"| Trig["Cloud Build<br/>トリガー"]
+    Src["ソースコード<br/>(GitHub / GitLab /<br/>Cloud Source Repositories<br/>※既存顧客のみ利用可)"] -->|"push / PR"| Trig["Cloud Build<br/>トリガー"]
     Trig --> Step1["ステップ1<br/>依存関係取得 / Lint"]
     Step1 --> Step2["ステップ2<br/>単体テスト実行"]
     Step2 --> Step3["ステップ3<br/>コンテナイメージビルド<br/>(Docker / Kaniko / Buildpacks)"]

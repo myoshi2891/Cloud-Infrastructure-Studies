@@ -109,7 +109,7 @@ export type DiagramId =
 
 export const DIAGRAMS: Record<DiagramId, string> = {
     'diag-1': `flowchart TD
-    Title["Section 4: Google Cloudサービスとのアプリケーション統合<br/>（試験全体の約21%）"]
+    Title["Section 4: Google Cloudサービスとのアプリケーション統合<br/>（試験全体の約22%）"]
 
     Title --> S41["4.1 データ/ストレージサービスとの統合"]
     Title --> S42["4.2 Google Cloud APIの利用"]

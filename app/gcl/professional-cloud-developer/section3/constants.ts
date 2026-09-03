@@ -147,7 +147,7 @@ export const DIAGRAMS: Record<DiagramId, string> = {
     ILB --> SNEG["サーバーレスNEG"]
     SNEG --> RUN["Cloud Runサービス<br/>（バックエンドAPI）"]
 
-    RUN -->|"roles/run.invokerで<br/>許可されたSAのみ呼び出し可能"| APIGEE`,
+    APIGEE -.->|"roles/run.invokerで<br/>許可されたSAのみ呼び出し可能"| RUN`,
 
     'diag-6': `flowchart TB
     SRC["アプリケーションの<br/>ソースコード + Dockerfile"] --> BUILD["Cloud Buildなどで<br/>コンテナイメージをビルド"]
