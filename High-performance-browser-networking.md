@@ -932,7 +932,7 @@ WebRTCの接続が確立すると、実際のデータは複数のサブプロ�
 
 ```mermaid
 flowchart TB
-    ICE[ICEで確立されたUDP経路] --> DTLS[DTLS<br/>Datagram TLS<br/>鍵交換と暗号化]
+    ICE[ICEで確立された伝送経路<br/>UDP / TCP / TURN中継<br/>TCP・TLS over TCP] --> DTLS[DTLS<br/>Datagram TLS<br/>鍵交換と暗号化]
     DTLS --> SRTP[SRTP/SRTCP<br/>暗号化された音声/映像ストリーム]
     DTLS --> SCTP[SCTP over DTLS<br/>DataChannel<br/>任意のアプリケーションデータ]
 
