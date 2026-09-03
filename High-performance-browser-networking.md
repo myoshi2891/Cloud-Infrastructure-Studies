@@ -440,10 +440,11 @@ flowchart LR
     G2 --> G3[3G<br/>パケット交換データ<br/>UMTS/CDMA2000]
     G3 --> G4[4G LTE<br/>オールIP<br/>フラットなRAN構造]
     G4 --> G5[5G<br/>超低遅延+超高速+<br/>大量接続 mMTC/URLLC]
-    G5 --> G6[5G-Advanced/6G<br/>2026年時点は<br/>研究・標準化段階]
+    G5 --> G5A[5G-Advanced<br/>Release 19 が中心<br/>Release 20 でも継続]
+    G5A --> G6[6G<br/>Release 20 で<br/>研究（スタディ）段階]
 
     classDef highlightFill fill:#1a2f52,stroke:#7c9eff,color:#eaf0ff
-    class G5,G6 highlightFill
+    class G5,G5A,G6 highlightFill
 ```
 
 #### 7.2 RRC（Radio Resource Control）状態遷移とパフォーマンスへの影響
@@ -856,7 +857,7 @@ SSEはHTTP上に構築されているため、既存のHTTPインフラ（プロ
 
 #### 17.1 WebSocketプロトコルの概要
 
-WebSocketは、HTTPの`Upgrade`メカニズムを使ってHTTP接続を**全二重（双方向・同時送受信可能）**な独自プロトコルにアップグレードする仕組みです。一度アップグレードが完了すると、HTTPのリクエスト/レスポンスという構造から離れ、両者が自由なタイミングでフレームを送り合える低オーバーヘッドな通信路になります。
+WebSocketは、HTTP接続を**全二重（双方向・同時送受信可能）**な独自プロトコルへ切り替える仕組みです。切り替えの手順はHTTPのバージョンによって異なり、HTTP/1.1では`Upgrade`ヘッダによるハンドシェイク（101 Switching Protocols）を使いますが、HTTP/2では拡張CONNECT（RFC 8441）、HTTP/3では同じ拡張CONNECTをQUIC上で用いる方式（RFC 9220）で、1本のストリーム上に確立します（第19章の比較表も参照）。一度アップグレードが完了すると、HTTPのリクエスト/レスポンスという構造から離れ、両者が自由なタイミングでフレームを送り合える低オーバーヘッドな通信路になります。
 
 ```mermaid
 sequenceDiagram
