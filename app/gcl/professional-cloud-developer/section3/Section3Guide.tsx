@@ -1026,8 +1026,7 @@ export function Section3Guide() {
                             <strong>
                                 機微なデータはインターネットを経由させない
                             </strong>
-                            ：可能であればCloud
-                            InterconnectなどによるVPCピアリングを利用し、Apigeeとバックエンドの通信をプライベートネットワーク内に閉じます。
+                            ：ApigeeランタイムからCloud Runへの通信をプライベートに閉じるには、エンドポイントアタッチメント→PSCサービスアタッチメント→内部Application Load Balancer→サーバーレスNEG→Cloud Runサービスという1本のPSC経路を構成し、あわせてCloud Run側の受信制御を--ingress=internalなどで内部に限定します。VPCピアリングやCloud Interconnectは他のネットワークとの接続の土台であり、それ単体ではCloud Runへの直接経路になりません。
                         </li>
                         <li>
                             <strong>APIプロキシの変更もバージョン管理する</strong>

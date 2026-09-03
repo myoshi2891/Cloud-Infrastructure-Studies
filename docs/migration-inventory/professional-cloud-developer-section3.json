@@ -249,7 +249,7 @@
     "バックエンドのCloud Runサービスは常に認証必須にする：Apigeeを前段に置く意味は「バックエンドへの直接アクセスを防ぐ」ことにあるため、Cloud Run側でも未認証アクセスを許可しないことが前提になります。",
     "サービスアカウントは最小権限で運用する：Apigeeが使うサービスアカウントには、呼び出し先のCloud Runサービス単位でroles/run.invokerのような最小限のロールのみを付与します。Cloud RunのIAMはサービス単位で評価されるため、HTTPパス（ルート）単位の認可をIAMで表現することはできません。パスごとのアクセス制御は、Apigeeのフローやポリシー側で実装・管理します。",
     "シークレットは定期的にローテーションする：Secret Managerや CI/CDパイプラインを通じて、認証情報を四半期ごとなど定期的にローテーションする運用を組み込みます。",
-    "機微なデータはインターネットを経由させない：可能であればCloud InterconnectなどによるVPCピアリングを利用し、Apigeeとバックエンドの通信をプライベートネットワーク内に閉じます。",
+    "機微なデータはインターネットを経由させない：ApigeeランタイムからCloud Runへの通信をプライベートに閉じるには、エンドポイントアタッチメント→PSCサービスアタッチメント→内部Application Load Balancer→サーバーレスNEG→Cloud Runサービスという1本のPSC経路を構成し、あわせてCloud Run側の受信制御を--ingress=internalなどで内部に限定します。VPCピアリングやCloud Interconnectは他のネットワークとの接続の土台であり、それ単体ではCloud Runへの直接経路になりません。",
     "APIプロキシの変更もバージョン管理する：1つのプロキシリビジョンの誤りが多数のサービスに影響しうるため、プロキシ設定自体をソースコードと同様にバージョン管理下に置きます。",
     "Best practices for securing your applications and APIs using Apigee | Cloud Architecture Center",
     "Advanced API Security best practices | Apigee",

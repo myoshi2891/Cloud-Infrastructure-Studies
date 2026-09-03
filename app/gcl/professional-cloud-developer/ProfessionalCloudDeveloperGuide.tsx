@@ -277,7 +277,7 @@ export function ProfessionalCloudDeveloperGuide() {
 
                     <h2 id="section1" tabIndex={-1}>
                         1. セクション1:
-                        高可用性、セキュア、信頼性の高いクラウドネイティブアプリケーションの設計（約33%）
+                        高可用性、セキュア、信頼性の高いクラウドネイティブアプリケーションの設計（約32%）
                     </h2>
 
                     <h3 id="11-高性能アプリケーションとapiの設計" tabIndex={-1}>
@@ -1379,7 +1379,7 @@ export function ProfessionalCloudDeveloperGuide() {
                     <hr />
 
                     <h2 id="section2" tabIndex={-1}>
-                        2. セクション2: アプリケーションのビルドとテスト（約26%）
+                        2. セクション2: アプリケーションのビルドとテスト（約23%）
                     </h2>
 
                     <h3 id="21-開発環境のセットアップ" tabIndex={-1}>
@@ -1602,7 +1602,7 @@ export function ProfessionalCloudDeveloperGuide() {
                     <hr />
 
                     <h2 id="section3" tabIndex={-1}>
-                        3. セクション3: デプロイのためのクラウドネイティブアプリケーション構成（約19%）
+                        3. セクション3: デプロイのためのクラウドネイティブアプリケーション構成（約24%）
                     </h2>
 
                     <h3 id="31-cloud-runへのアプリケーションデプロイ" tabIndex={-1}>
@@ -1793,7 +1793,7 @@ export function ProfessionalCloudDeveloperGuide() {
                     <hr />
 
                     <h2 id="section4" tabIndex={-1}>
-                        4. セクション4: Google Cloudサービスとのアプリケーション統合（約22%）
+                        4. セクション4: Google Cloudサービスとのアプリケーション統合（約21%）
                     </h2>
 
                     <h3 id="41-データストレージサービスとの統合" tabIndex={-1}>

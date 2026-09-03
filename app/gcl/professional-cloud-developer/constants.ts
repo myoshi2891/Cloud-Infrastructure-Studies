@@ -20,10 +20,10 @@ export type DiagramId =
 
 export const DIAGRAMS: Record<DiagramId, string> = {
     'diag-exam-scope': `flowchart TD
-    A[Professional Cloud Developer 試験] --> B["セクション1<br/>高可用性・セキュア・信頼性の高い<br/>クラウドネイティブアプリケーションの設計（約33%）"]
-    A --> C["セクション2<br/>アプリケーションのビルドとテスト（約26%）"]
-    A --> D["セクション3<br/>デプロイのための<br/>クラウドネイティブアプリケーション構成（約19%）"]
-    A --> E["セクション4<br/>Google Cloudサービスとの<br/>アプリケーション統合（約22%）"]`,
+    A[Professional Cloud Developer 試験] --> B["セクション1<br/>高可用性・セキュア・信頼性の高い<br/>クラウドネイティブアプリケーションの設計（約32%）"]
+    A --> C["セクション2<br/>アプリケーションのビルドとテスト（約23%）"]
+    A --> D["セクション3<br/>デプロイのための<br/>クラウドネイティブアプリケーション構成（約24%）"]
+    A --> E["セクション4<br/>Google Cloudサービスとの<br/>アプリケーション統合（約21%）"]`,
 
     'diag-compute-choice': `flowchart TD
     Start["ワークロードの<br/>要件を確認"] --> Q1{"OSカーネル・ライセンス・<br/>特定ハードウェアへの<br/>直接アクセスが必要？"}
@@ -184,27 +184,27 @@ export const NAV_ITEMS: NavItem[] = [
     { id: '出題範囲4セクション', label: '出題範囲（4セクション）', lvl3: true },
     {
         id: 'section1',
-        label: '1. セクション1: 高可用性、セキュア、信頼性の高いクラウドネイティブアプリケーションの設計（約33%）',
+        label: '1. セクション1: 高可用性、セキュア、信頼性の高いクラウドネイティブアプリケーションの設計（約32%）',
     },
     { id: '11-高性能アプリケーションとapiの設計', label: '1.1 高性能アプリケーションとAPIの設計', lvl3: true },
     { id: '12-セキュアなアプリケーションの設計', label: '1.2 セキュアなアプリケーションの設計', lvl3: true },
     { id: '13-データの保存とアクセス', label: '1.3 データの保存とアクセス', lvl3: true },
     {
         id: 'section2',
-        label: '2. セクション2: アプリケーションのビルドとテスト（約26%）',
+        label: '2. セクション2: アプリケーションのビルドとテスト（約23%）',
     },
     { id: '21-開発環境のセットアップ', label: '2.1 開発環境のセットアップ', lvl3: true },
     { id: '22-ビルド', label: '2.2 ビルド', lvl3: true },
     { id: '23-テスト', label: '2.3 テスト', lvl3: true },
     {
         id: 'section3',
-        label: '3. セクション3: デプロイのためのクラウドネイティブアプリケーション構成（約19%）',
+        label: '3. セクション3: デプロイのためのクラウドネイティブアプリケーション構成（約24%）',
     },
     { id: '31-cloud-runへのアプリケーションデプロイ', label: '3.1 Cloud Runへのアプリケーションデプロイ', lvl3: true },
     { id: '32-gkeへのコンテナデプロイ', label: '3.2 GKEへのコンテナデプロイ', lvl3: true },
     {
         id: 'section4',
-        label: '4. セクション4: Google Cloudサービスとのアプリケーション統合（約22%）',
+        label: '4. セクション4: Google Cloudサービスとのアプリケーション統合（約21%）',
     },
     { id: '41-データストレージサービスとの統合', label: '4.1 データ・ストレージサービスとの統合', lvl3: true },
     { id: '42-google-cloud-apiの利用', label: '4.2 Google Cloud APIの利用', lvl3: true },
