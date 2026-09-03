@@ -107,8 +107,7 @@ pip install --upgrade google-genai --quiet
 
 | プレースホルダー | 該当する実際のモデルID | ステータス | ソース |
 |---|---|---|---|
-| `flash-image-model-id` | `gemini-2.5-flash-image` | GA（本番運用可） | https://developers.googleblog.com/en/gemini-2-5-flash-image-now-ready-for-production-with-new-aspect-ratios/ |
-| 同上（プレビュー版） | `gemini-2.5-flash-image-preview` | プレビュー | https://developers.googleblog.com/introducing-gemini-2-5-flash-image/ |
+| `flash-image-model-id` | `gemini-2.5-flash-image` | GA（本番運用可）。ただし **2026年10月2日に提供終了予定**のため、新規実装では後継の `gemini-3.1-flash-image-preview` 系列を確認すること | https://developers.googleblog.com/en/gemini-2-5-flash-image-now-ready-for-production-with-new-aspect-ratios/ |
 
 > **ベストプラクティス**: モデルIDはハードコードせず、Vertex AI Model Garden（コンソール上のモデルカタログ）または `docs.cloud.google.com/vertex-ai/generative-ai/docs/models` で最新の利用可能モデルを都度確認してください。Gemini系モデルは世代交代が速く、Lab実施時点でさらに新しい世代（例: `gemini-3.x-flash-image` 系列）が既定になっている可能性があります。
 > ソース: https://docs.cloud.google.com/vertex-ai/generative-ai/docs/multimodal/image-generation

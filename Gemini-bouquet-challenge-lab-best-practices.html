@@ -703,23 +703,14 @@
                                 <tr>
                                     <td><code>flash-image-model-id</code></td>
                                     <td><code>gemini-2.5-flash-image</code></td>
-                                    <td>GA（本番運用可）</td>
+                                    <td>
+                                        GA（本番運用可）。ただし
+                                        <strong>2026年10月2日に提供終了予定</strong>のため、新規実装では後継の
+                                        <code>gemini-3.1-flash-image-preview</code> 系列を確認すること
+                                    </td>
                                     <td>
                                         <a
                                             href="https://developers.googleblog.com/en/gemini-2-5-flash-image-now-ready-for-production-with-new-aspect-ratios/"
-                                            target="_blank"
-                                            rel="noopener"
-                                            >Google Developers Blog</a
-                                        >
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>同上（プレビュー版）</td>
-                                    <td><code>gemini-2.5-flash-image-preview</code></td>
-                                    <td>プレビュー</td>
-                                    <td>
-                                        <a
-                                            href="https://developers.googleblog.com/introducing-gemini-2-5-flash-image/"
                                             target="_blank"
                                             rel="noopener"
                                             >Google Developers Blog</a
@@ -1561,10 +1552,10 @@
             </main>
         </div>
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.12.0/mermaid.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.12.0/mermaid.min.js" integrity="sha512-5TKaYvhenABhlGIKSxAWLFJBZCSQw7HTV7aL1dJcBokM/+3PNtfgJFlv8E6Us/B1VMlQ4u8sPzjudL9TEQ06ww==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js" integrity="sha512-wW8K3TEH5ZViD4aMPzwPdhXKs/Kb5MAm7qLRd3QliYlHy0u9utSKZsZzqlZAgJ9xxXp81acwnrZVZ8oTfoLG1g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js" integrity="sha512-i0JFeiLhgBAMGfIEVqMQwALhhse1orgl34XyotSUNiNbDIB1qS9IK53sDochCIrwvj4nJ51CsDSOqhGyhZITGg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script>
             function dedent(str) {
                 const lines = str.replace(/\t/g, '    ').split('\n');
