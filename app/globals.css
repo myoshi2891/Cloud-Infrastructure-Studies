@@ -569,6 +569,17 @@
     --color-gcp-border-bright: rgba(var(--color-google-blue-rgb), 0.5);
     --color-gcp-accent-glow: rgba(var(--color-google-blue-rgb), 0.15);
 
+    /* Layer 3: Professional Cloud Developer (PCD) guide theme tokens */
+    --color-pcd-accent-rgb: 124, 158, 255;
+    --color-pcd-accent: #7c9eff;
+    --color-pcd-accent-bg: rgba(var(--color-pcd-accent-rgb), 0.08);
+    --color-pcd-border-soft: rgba(var(--color-pcd-accent-rgb), 0.12);
+    --color-pcd-success-rgb: 127, 224, 168;
+    --color-pcd-success: #7fe0a8;
+    --color-pcd-success-bg: rgba(var(--color-pcd-success-rgb), 0.08);
+    --color-pcd-success-border: #1d5a3a;
+    --color-pcd-card-bg-2: #101f33;
+
     /* Callout & Status Themes */
     --color-warning: #fb923c;
     --color-warning-bg: #fef3e8;
