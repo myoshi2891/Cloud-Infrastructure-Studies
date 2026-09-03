@@ -197,7 +197,7 @@ export const DIAGRAMS: Record<DiagramId, string> = {
     Q3 -->|"はい"| GKEStd["GKE Standard"]
     Q3 -->|"いいえ<br/>(Podのみ管理)"| GKEAuto["GKE Autopilot"]
     Q2 -->|"不要<br/>(ステートレスHTTP/gRPC/イベント駆動)"| Q4{"WebSocket/gRPC<br/>ストリーミング等が<br/>必要か？"}
-    Q4 -->|"はい"| CloudRun["Cloud Run<br/>(サービス/ジョブ/ワーカープール)"]
+    Q4 -->|"はい"| CloudRun["Cloud Run サービス<br/>(リクエスト駆動の HTTP/gRPC)"]
     Q4 -->|"シンプルなHTTPのみ"| CloudRun
 
     classDef highlightFill fill:#1a3a5c,stroke:#4a90d9,color:#ffffff;
@@ -210,7 +210,7 @@ export const DIAGRAMS: Record<DiagramId, string> = {
     Build --> AR["Artifact Registry<br/>(コンテナイメージ保存)"]
     AR --> Deploy1["Cloud Run<br/>(gcloud run deploy)"]
     AR --> Deploy2["GKE<br/>(kubectl apply / Skaffold)"]
-    Src -.->|"ソースから直接デプロイ"| Deploy1
+    Src -.->|"gcloud run deploy --source<br/>(内部で Cloud Build を実行)"| Deploy1
 
     classDef highlightFill fill:#1a3a5c,stroke:#4a90d9,color:#ffffff;
     class AR highlightFill`,

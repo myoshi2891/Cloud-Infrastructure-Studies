@@ -32,7 +32,7 @@ export function Section2Guide() {
                         </h1>
                         <div className="meta-row">
                             <span className="pill">
-                                配点 <strong>約23%</strong>
+                                配点 <strong>約26%</strong>
                             </span>
                             <span className="pill">
                                 対象 <strong>初学者向け</strong>
@@ -61,7 +61,7 @@ export function Section2Guide() {
                         <strong>
                             セクション2「Building and testing applications（アプリケーションのビルドとテスト）」
                         </strong>
-                        （配点 約23%）を初学者向けにステップバイステップで解説するものです。
+                        （配点 約26%）を初学者向けにステップバイステップで解説するものです。
                     </p>
 
                     <p>
