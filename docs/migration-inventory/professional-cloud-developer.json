@@ -332,7 +332,7 @@
     "Web Security Scanner: App Engine・GKE・Compute Engine上のWebアプリに対してXSS、Flash Injection、混合コンテンツなどの一般的な脆弱性をスキャンする。",
     "Artifact Analysis: Artifact Registry / Container Registry内のコンテナイメージをスキャンし、既知の脆弱性（CVE）を検出する。Cloud Buildのビルド来歴（provenance）情報もここに保存される。",
     "Security Command Center（SCC）: Security Health AnalyticsやWeb Security Scannerが検出した脆弱性ファインディングを一元的に可視化するダッシュボード。組織全体のセキュリティ体制を横断的に把握できる。",
-    "サービスアカウントキーのエクスポートは避け、GKEやCompute Engineでは組み込みのWorkload Identity、他クラウド/オンプレミスではWorkload Identity Federationを使う（管理すべきシークレットの数を減らせる）。",
+    "サービスアカウントキーのエクスポートは避け、GKEではWorkload Identity Federation for GKE、Compute Engineでは最小権限のユーザー管理サービスアカウントをVMにアタッチしてADC（アプリケーションのデフォルト認証情報）で認証し、他クラウド/オンプレミスなどの外部ワークロードにはWorkload Identity Federationを使う（管理すべきシークレットの数を減らせる）。",
     "Secret Managerではシークレットを latest エイリアスではなく特定のバージョン番号で参照し、既存のリリースプロセスでバージョンを更新する。",
     "シークレットをファイルシステムや環境変数経由でアプリに渡すのは避け、Secret Managerのクライアントライブラリで直接取得する。",
     "サービスやユースケースごとに専用のサービスアカウントを作成し、必要なリソースへのアクセスのみを付与する（最小権限の原則）。",
@@ -954,7 +954,7 @@
     },
     {
       "kind": "annotation",
-      "text": "✓ ベストプラクティス サービスアカウントキーのエクスポートは避け、GKEやCompute Engineでは組み込みのWorkload Identity、他クラウド/オンプレミスではWorkload Identity Federationを使う（管理すべきシークレットの数を減らせる）。 Secret Managerではシークレットを latest エイリアスではなく特定のバージョン番号で参照し、既存のリリースプロセスでバージョンを更新する。 シークレットをファイルシステムや環境変数経由でアプリに渡すのは避け、Secret Managerのクライアントライブラリで直接取得する。"
+      "text": "✓ ベストプラクティス サービスアカウントキーのエクスポートは避け、GKEではWorkload Identity Federation for GKE、Compute Engineでは最小権限のユーザー管理サービスアカウントをVMにアタッチしてADC（アプリケーションのデフォルト認証情報）で認証し、他クラウド/オンプレミスなどの外部ワークロードにはWorkload Identity Federationを使う（管理すべきシークレットの数を減らせる）。 Secret Managerではシークレットを latest エイリアスではなく特定のバージョン番号で参照し、既存のリリースプロセスでバージョンを更新する。 シークレットをファイルシステムや環境変数経由でアプリに渡すのは避け、Secret Managerのクライアントライブラリで直接取得する。"
     },
     {
       "kind": "paragraph",

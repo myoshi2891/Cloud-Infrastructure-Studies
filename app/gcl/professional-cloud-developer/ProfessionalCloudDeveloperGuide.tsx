@@ -877,10 +877,7 @@ export function ProfessionalCloudDeveloperGuide() {
                             {' '}
                             <ul>
                                 <li>
-                                    サービスアカウントキーのエクスポートは避け、GKEやCompute
-                                    Engineでは組み込みのWorkload
-                                    Identity、他クラウド/オンプレミスではWorkload Identity
-                                    Federationを使う（管理すべきシークレットの数を減らせる）。
+                                    サービスアカウントキーのエクスポートは避け、GKEではWorkload Identity Federation for GKE、Compute Engineでは最小権限のユーザー管理サービスアカウントをVMにアタッチしてADC（アプリケーションのデフォルト認証情報）で認証し、他クラウド/オンプレミスなどの外部ワークロードにはWorkload Identity Federationを使う（管理すべきシークレットの数を減らせる）。
                                 </li>
                                 {' '}
                                 <li>

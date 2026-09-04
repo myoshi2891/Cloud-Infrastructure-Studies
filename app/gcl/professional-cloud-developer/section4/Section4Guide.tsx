@@ -1143,7 +1143,7 @@ export function Section4Guide() {
                             <strong>サービスエラー（Service Errors）も併せて確認する</strong>: アプリケーションコード起因のエラーだけでなく、利用しているGoogle Cloudサービス自体が記録するエラーもError Reportingで一元的に確認します。
                         </li>
                         <li>
-                            <strong>APIキーではなくサービスアカウントで認証する</strong>: Error Reporting APIを直接呼び出す場合、APIキーは認証メカニズムとして使わず、サービスアカウントを使用します。
+                            <strong>Error Reporting APIの認証方式を正しく選ぶ</strong>: projects.events.reportはOAuthトークンとAPIキーのどちらでも呼び出せますが、APIキーは呼び出し元を識別するだけで権限を制御できないため、IAMでスコープを絞れるサービスアカウントのOAuth認証を推奨します。
                         </li>
                         <li>
                             <strong>CMEK（顧客管理暗号鍵）とError Reportingの制約を理解する</strong>: CMEKを有効化したログバケットに保存されたログエントリはError Reportingで解析できないため、要件に応じて設計時に考慮します。

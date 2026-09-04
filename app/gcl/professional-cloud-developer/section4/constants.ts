@@ -175,11 +175,11 @@ export const DIAGRAMS: Record<DiagramId, string> = {
     App->>Pool: コネクションをプールに返却`,
 
     'diag-4': `flowchart LR
-    Op(["Firestoreへの書き込み操作"]) --> Q1{"複数ドキュメントに<br/>またがるか？"}
-    Q1 -->|"No（単一ドキュメント）"| Single["set() / update()<br/>を直接呼び出す"]
-    Q1 -->|"Yes"| Q2{"読み取った値を基準に<br/>条件付きで更新するか？"}
-    Q2 -->|"Yes（例: 在庫の増減）"| Txn["runTransaction()で<br/>読み取り→検証→書き込みを<br/>アトミックに実行"]
-    Q2 -->|"No（単純な一括書き込み）"| Batch["WriteBatch（バッチ書き込み）<br/>で最大500件をまとめて送信"]
+    Op(["Firestoreへの書き込み操作"]) --> Q1{"読み取った値を基準に<br/>条件付きで更新するか？"}
+    Q1 -->|"Yes（例: 在庫の増減・カウンタ加算）"| Txn["runTransaction()で<br/>読み取り→検証→書き込みを<br/>アトミックに実行"]
+    Q1 -->|"No（無条件の書き込み）"| Q2{"複数ドキュメントに<br/>またがるか？"}
+    Q2 -->|"No（単一ドキュメント）"| Single["set() / update()<br/>を直接呼び出す"]
+    Q2 -->|"Yes（単純な一括書き込み）"| Batch["WriteBatch（バッチ書き込み）<br/>で最大500件をまとめて送信"]
 
     classDef highlightFill fill:#1a3a5c,stroke:#4a90d9,color:#ffffff;
     class Op,Txn,Batch,Single highlightFill;`,
