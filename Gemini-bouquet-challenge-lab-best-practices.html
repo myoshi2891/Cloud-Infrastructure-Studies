@@ -1129,9 +1129,26 @@
                     </div>
                     <script type="text/plain" data-target="code-full">
                         import mimetypes
+                        import os
+                        import tempfile
+                        import time
 
                         from google import genai
-                        from google.genai import types
+                        from google.genai import errors, types
+
+
+                        def call_with_backoff(func, *args, max_retries: int = 5, **kwargs):
+                            """429 (RESOURCE_EXHAUSTED) 発生時に指数バックオフでリトライする。"""
+                            for attempt in range(max_retries):
+                                try:
+                                    return func(*args, **kwargs)
+                                except errors.ClientError as e:
+                                    if getattr(e, "code", None) == 429 and attempt < max_retries - 1:
+                                        wait_seconds = 2 ** attempt
+                                        print(f"429エラー検出。{wait_seconds}秒待機してリトライします...")
+                                        time.sleep(wait_seconds)
+                                        continue
+                                    raise
 
 
                         def generate_bouquet_image(
@@ -1172,21 +1189,36 @@
                                 "この花束の画像からインスピレーションを得て、"
                                 "温かみのある誕生日メッセージを作成してください。"
                             )
-                            response_text = ""
-                            stream = client.models.generate_content_stream(
-                                model=model_id, contents=[prompt, image_part]
-                            )
-                            with open(output_txt_path, "w", encoding="utf-8") as f:
-                                for chunk in stream:
-                                    if chunk.text:
-                                        response_text += chunk.text
-                                        f.write(chunk.text)
-                            return response_text
+                        
+                            def _run() -> str:
+                                """1回分の試行。完走した内容だけを os.replace で公開する。"""
+                                text = ""
+                                output_dir = os.path.dirname(os.path.abspath(output_txt_path))
+                                # 同一ディレクトリに一時ファイルを作り、rename をアトミックにする
+                                fd, tmp_path = tempfile.mkstemp(dir=output_dir, suffix=".tmp")
+                                try:
+                                    # 429 はイテレーション中に送出されるため、消費も _run の内側に置く
+                                    stream = client.models.generate_content_stream(
+                                        model=model_id, contents=[prompt, image_part]
+                                    )
+                                    with os.fdopen(fd, "w", encoding="utf-8") as f:
+                                        for chunk in stream:
+                                            if chunk.text:
+                                                text += chunk.text
+                                                f.write(chunk.text)
+                                        f.flush()
+                                        os.fsync(f.fileno())
+                                except BaseException:
+                                    # 失敗・中断時は一時ファイルを破棄し、既存の出力を汚さない
+                                    os.unlink(tmp_path)
+                                    raise
+                                os.replace(tmp_path, output_txt_path)
+                                return text
+
+                            return call_with_backoff(_run)
 
 
                         if __name__ == "__main__":
-                            import os
-
                             PROJECT_ID = os.environ["PROJECT_ID"]
                             REGION = os.environ.get("REGION", "us-central1")
 
