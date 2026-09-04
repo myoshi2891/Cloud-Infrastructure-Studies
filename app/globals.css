@@ -579,6 +579,17 @@
     --color-pcd-success-bg: rgba(var(--color-pcd-success-rgb), 0.08);
     --color-pcd-success-border: #1d5a3a;
     --color-pcd-card-bg-2: #101f33;
+    --color-pcd-sidebar-bg: #060d17;
+    --color-pcd-sidebar-shadow: rgba(0, 0, 0, 0.5);
+    --color-pcd-hero-grad-a: #dbe4f3;
+    --color-pcd-strong: #f0f4fc;
+    --color-pcd-code-text: #ffd08a;
+    --color-pcd-foreground-faint: #6a7d9c;
+    --color-pcd-divider: #152438;
+    --color-pcd-row-hover: rgba(var(--color-pcd-accent-rgb), 0.04);
+    --color-pcd-item-hover: rgba(var(--color-pcd-accent-rgb), 0.05);
+    --color-pcd-on-accent: #08101f;
+    --color-pcd-on-success: #08150e;
 
     /* Callout & Status Themes */
     --color-warning: #fb923c;

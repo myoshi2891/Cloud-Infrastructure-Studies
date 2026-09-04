@@ -4,8 +4,8 @@
    ========================================================================== */
 
 .pcd-guide-page {
-    background: var(--color-background, #07111e);
-    color: var(--color-foreground, #dbe4f3);
+    background: var(--color-background);
+    color: var(--color-foreground);
     min-height: 100vh;
     font-family: var(--font-body);
     font-size: 16px;
@@ -41,7 +41,7 @@
     left: 0;
     bottom: 0;
     width: 280px;
-    background: #060d17;
+    background: var(--color-pcd-sidebar-bg);
     border-right: 1px solid var(--color-pcd-border-soft);
     overflow-y: auto;
     padding: 28px 0 40px;
@@ -66,7 +66,7 @@
 .pcd-guide-page .sidebar-header h2 {
     font-size: 15px;
     margin: 6px 0 0;
-    color: var(--color-foreground, #dbe4f3);
+    color: var(--color-foreground);
     line-height: 1.45;
     font-weight: 700;
     border-top: none;
@@ -93,7 +93,7 @@
     padding: 8px 12px;
     border-radius: 8px;
     font-size: 13px;
-    color: var(--color-muted-foreground, #8fa2c0);
+    color: var(--color-muted-foreground);
     line-height: 1.45;
     margin-bottom: 2px;
     transition: background 0.15s, color 0.15s;
@@ -102,7 +102,7 @@
 
 .pcd-guide-page .sidebar nav a:hover {
     background: var(--color-pcd-accent-bg);
-    color: var(--color-foreground, #dbe4f3);
+    color: var(--color-foreground);
 }
 
 .pcd-guide-page .sidebar nav a.active {
@@ -125,9 +125,9 @@
     width: 42px;
     height: 42px;
     border-radius: 10px;
-    background: var(--color-card, #0d1a2b);
-    border: 1px solid var(--color-border, #1d3350);
-    color: var(--color-foreground, #dbe4f3);
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    color: var(--color-foreground);
     font-size: 18px;
     align-items: center;
     justify-content: center;
@@ -159,7 +159,7 @@
     font-size: clamp(26px, 3.4vw, 40px);
     line-height: 1.35;
     margin: 0 0 16px;
-    background: linear-gradient(135deg, #dbe4f3 0%, #7c9eff 100%);
+    background: linear-gradient(135deg, var(--color-pcd-hero-grad-a) 0%, var(--color-pcd-accent) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -179,14 +179,14 @@
     gap: 6px;
     padding: 6px 14px;
     border-radius: 999px;
-    background: var(--color-card, #0d1a2b);
-    border: 1px solid var(--color-border, #1d3350);
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
     font-size: 12.5px;
-    color: var(--color-muted-foreground, #8fa2c0);
+    color: var(--color-muted-foreground);
 }
 
 .pcd-guide-page .pill strong {
-    color: var(--color-foreground, #dbe4f3);
+    color: var(--color-foreground);
 }
 
 .pcd-guide-page .main h2 {
@@ -194,7 +194,7 @@
     margin: 52px 0 20px;
     padding-top: 12px;
     border-top: 1px solid var(--color-pcd-border-soft);
-    color: var(--color-foreground, #dbe4f3);
+    color: var(--color-foreground);
     font-weight: 800;
     letter-spacing: -0.01em;
     scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 20px);
@@ -210,7 +210,7 @@
 .pcd-guide-page .main h3 {
     font-size: 19px;
     margin: 36px 0 16px;
-    color: var(--color-foreground, #dbe4f3);
+    color: var(--color-foreground);
     font-weight: 700;
     scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 20px);
 }
@@ -229,28 +229,28 @@
 .pcd-guide-page .main h4 {
     font-size: 16px;
     margin: 28px 0 12px;
-    color: var(--color-foreground, #dbe4f3);
+    color: var(--color-foreground);
     font-weight: 700;
     scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 20px);
 }
 
 .pcd-guide-page .main p {
     margin: 0 0 18px;
-    color: var(--color-foreground, #dbe4f3);
+    color: var(--color-foreground);
 }
 
 .pcd-guide-page .main ul {
     list-style-type: disc;
     margin: 0 0 18px;
     padding-left: 1.4em;
-    color: var(--color-foreground, #dbe4f3);
+    color: var(--color-foreground);
 }
 
 .pcd-guide-page .main ol {
     list-style-type: decimal;
     margin: 0 0 18px;
     padding-left: 1.4em;
-    color: var(--color-foreground, #dbe4f3);
+    color: var(--color-foreground);
 }
 
 .pcd-guide-page .main ol ol {
@@ -272,17 +272,17 @@
 }
 
 .pcd-guide-page .main strong {
-    color: #f0f4fc;
+    color: var(--color-pcd-strong);
     font-weight: 700;
 }
 
 .pcd-guide-page .main code:not(pre code) {
     background: var(--color-pcd-card-bg-2);
-    border: 1px solid var(--color-border, #1d3350);
+    border: 1px solid var(--color-border);
     border-radius: 5px;
     padding: 1px 6px;
     font-size: 0.9em;
-    color: #ffd08a;
+    color: var(--color-pcd-code-text);
     overflow-wrap: anywhere;
 }
 
@@ -290,9 +290,9 @@
 .pcd-guide-page .table-scroll {
     overflow-x: auto;
     margin: 0 0 26px;
-    border: 1px solid var(--color-border, #1d3350);
+    border: 1px solid var(--color-border);
     border-radius: 12px;
-    background: var(--color-card, #0d1a2b);
+    background: var(--color-card);
 }
 
 .pcd-guide-page table {
@@ -303,18 +303,18 @@
 
 .pcd-guide-page thead th {
     background: var(--color-pcd-accent-bg);
-    color: var(--color-foreground, #dbe4f3);
+    color: var(--color-foreground);
     text-align: left;
     padding: 12px 16px;
     font-weight: 700;
-    border-bottom: 1px solid var(--color-border, #1d3350);
+    border-bottom: 1px solid var(--color-border);
     white-space: nowrap;
 }
 
 .pcd-guide-page tbody td {
     padding: 12px 16px;
     border-bottom: 1px solid var(--color-pcd-border-soft);
-    color: var(--color-muted-foreground, #8fa2c0);
+    color: var(--color-muted-foreground);
     vertical-align: top;
 }
 
@@ -323,7 +323,7 @@
 }
 
 .pcd-guide-page tbody tr:hover td {
-    background: rgba(124, 158, 255, 0.04);
+    background: var(--color-pcd-row-hover);
 }
 
 /* Mermaid Wrapper */
@@ -331,8 +331,8 @@
     display: flex;
     justify-content: safe center;
     overflow-x: auto;
-    background: var(--color-card, #0d1a2b);
-    border: 1px solid var(--color-border, #1d3350);
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
     border-radius: 14px;
     padding: 24px 16px;
     margin: 0 0 28px;
@@ -363,7 +363,7 @@
     height: 26px;
     border-radius: 7px;
     background: var(--color-pcd-success);
-    color: #08150e;
+    color: var(--color-pcd-on-success);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -372,7 +372,7 @@
 }
 
 .pcd-guide-page .callout-practice .body {
-    color: var(--color-foreground, #dbe4f3);
+    color: var(--color-foreground);
 }
 
 .pcd-guide-page .callout-practice .label {
@@ -386,7 +386,7 @@
 
 .pcd-guide-page .callout-practice p {
     margin: 0;
-    color: var(--color-foreground, #dbe4f3);
+    color: var(--color-foreground);
 }
 
 .pcd-guide-page .callout-practice ul {
@@ -413,8 +413,8 @@
 .pcd-guide-page .ref-card {
     display: flex;
     gap: 12px;
-    background: var(--color-card, #0d1a2b);
-    border: 1px solid var(--color-border, #1d3350);
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
     border-radius: 10px;
     padding: 14px 16px;
     min-width: 0;
@@ -436,7 +436,7 @@
 
 .pcd-guide-page .ref-card .txt {
     font-size: 13px;
-    color: var(--color-muted-foreground, #8fa2c0);
+    color: var(--color-muted-foreground);
     min-width: 0;
     overflow-wrap: anywhere;
 }
@@ -448,8 +448,8 @@
 
 /* Checklist */
 .pcd-guide-page .checklist-card {
-    background: var(--color-card, #0d1a2b);
-    border: 1px solid var(--color-border, #1d3350);
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
     border-radius: 14px;
     padding: 8px 22px 12px;
     margin: 0 0 30px;
@@ -466,7 +466,7 @@
 
 .pcd-guide-page .checklist-header .title {
     font-weight: 700;
-    color: var(--color-foreground, #dbe4f3);
+    color: var(--color-foreground);
     font-size: 14.5px;
 }
 
@@ -493,7 +493,7 @@
 }
 
 .pcd-guide-page .checklist-card li:hover {
-    background: rgba(124, 158, 255, 0.05);
+    background: var(--color-pcd-item-hover);
 }
 
 .pcd-guide-page .checklist-card input[type='checkbox'] {
@@ -503,7 +503,7 @@
     height: 19px;
     flex-shrink: 0;
     margin-top: 2px;
-    border: 1.5px solid var(--color-border, #1d3350);
+    border: 1.5px solid var(--color-border);
     border-radius: 5px;
     background: var(--color-pcd-card-bg-2);
     cursor: pointer;
@@ -522,13 +522,13 @@
     top: 1px;
     width: 5px;
     height: 10px;
-    border: solid #08101f;
+    border: solid var(--color-pcd-on-accent);
     border-width: 0 2px 2px 0;
     transform: rotate(40deg);
 }
 
 .pcd-guide-page .checklist-card label {
-    color: var(--color-foreground, #dbe4f3);
+    color: var(--color-foreground);
     font-size: 14.5px;
     cursor: pointer;
     line-height: 1.6;
@@ -536,7 +536,7 @@
 
 .pcd-guide-page .checklist-card li.checked label {
     text-decoration: line-through;
-    color: var(--color-muted-foreground, #6a7d9c);
+    color: var(--color-muted-foreground);
 }
 
 /* Footnotes (pandoc) */
@@ -549,7 +549,7 @@
     .pcd-guide-page .sidebar {
         transform: translateX(-100%);
         transition: transform 0.25s ease, visibility 0s linear 0.25s;
-        box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+        box-shadow: 0 0 40px var(--color-pcd-sidebar-shadow);
         /* 閉状態はタブ順・アクセシビリティツリーから除外する */
         visibility: hidden;
         pointer-events: none;
