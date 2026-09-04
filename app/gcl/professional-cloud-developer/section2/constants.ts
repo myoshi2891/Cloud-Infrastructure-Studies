@@ -162,7 +162,7 @@ export const DIAGRAMS: Record<DiagramId, string> = {
     'diag-6': `flowchart TB
     Build["Cloud Buildが<br/>コンテナイメージをビルド"] --> Opt{"options.requestedVerifyOption<br/>の設定は？"}
     Opt -->|"VERIFIED"| Prov["SLSA準拠のビルドprovenanceを<br/>自動生成・署名"]
-    Opt -->|"NOT_VERIFIED（既定）"| NoProv["provenanceは生成されない"]
+    Opt -->|"NOT_VERIFIED（既定）"| NoProv["provenanceの生成は<br/>保証されない"]
     Prov --> Push["Artifact Registryへpush<br/>(provenanceも保存)"]
     NoProv --> Push
     Push --> Deploy{"Cloud Run / GKEへ<br/>デプロイ要求"}
@@ -195,15 +195,18 @@ export const DIAGRAMS: Record<DiagramId, string> = {
     Unit --> BuildImg["コンテナイメージビルド"]
     BuildImg --> Env["テスト環境を起動<br/>(エミュレータ / docker-compose /<br/>一時GKEクラスタ)"]
     Env --> Integ["自動統合テストを実行"]
-    Integ -->|"成功"| Prov["Provenance生成 +<br/>Artifact Registryへpush"]
+    Integ -->|"成功"| Verify{"options.requestedVerifyOption<br/>の設定は？"}
     Integ -->|"失敗"| Fail["ビルド失敗を通知"]
+    Verify -->|"VERIFIED"| Prov["Provenance生成 +<br/>Artifact Registryへpush"]
+    Verify -->|"NOT_VERIFIED（既定）"| NoProv["Artifact Registryへpush<br/>(provenanceの生成は保証されない)"]
     Prov --> Gate["Binary Authorization<br/>ゲート"]
+    NoProv --> Gate
     Gate --> Deploy["Cloud Run / GKEへデプロイ"]
 
     classDef highlightFill fill:#1a3a5c,stroke:#4a90d9,color:#ffffff;
     classDef dangerFill fill:#5c1a1a,stroke:#d94a4a,color:#ffffff;
     classDef successFill fill:#1a4a2a,stroke:#4ad97a,color:#ffffff;
-    class Prov,Gate highlightFill
-    class Fail dangerFill
+    class Prov,Gate,Verify highlightFill
+    class Fail,NoProv dangerFill
     class Deploy successFill`,
 };
