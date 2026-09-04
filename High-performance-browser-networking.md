@@ -167,7 +167,7 @@ flowchart TB
 
 #### 2.5 帯域遅延積（Bandwidth-Delay Product, BDP）
 
-BDP = 帯域幅 × RTT で計算され、「経路上に存在しうる未確認データ量（in-flight data）の理論上限」を表します。TCPのウィンドウサイズがBDPより小さいと、帯域幅を使い切れずに回線が遊んでしまいます。高帯域幅・高遅延（衛星回線や大陸間通信など）の経路では、この問題が顕著になり、TCPウィンドウスケーリング（RFC 1323）などの拡張が必要になります。
+BDP = 帯域幅 × RTT で計算され、「経路上に存在しうる未確認データ量（in-flight data）の理論上限」を表します。TCPのウィンドウサイズがBDPより小さいと、帯域幅を使い切れずに回線が遊んでしまいます。高帯域幅・高遅延（衛星回線や大陸間通信など）の経路では、この問題が顕著になり、TCPウィンドウスケーリング（RFC 7323）などの拡張が必要になります。
 
 #### 2.6 HOL（Head-of-Line）ブロッキング
 
@@ -382,7 +382,7 @@ flowchart LR
 
 **ベストプラクティス**
 - 無線環境の性能は固定的なものではなく、電波状況・干渉・距離によって秒単位で変動することを前提にアプリケーションを設計する
-- ネットワーク種別（WiFi/セルラー）や信号強度をJavaScriptから取得できるAPI（Network Information APIなど）がある場合は活用し、低速時には画質やペイロードを動的に下げる
+- ネットワーク種別（WiFi/セルラー）や実効的な回線品質をJavaScriptから取得できるAPI（Network Information APIなど）がある場合は活用し、低速時には画質やペイロードを動的に下げる。ただし信号強度そのものは取得できず、利用できるのは`effectiveType`（`slow-2g`/`2g`/`3g`/`4g`）・推定帯域幅（`downlink`）・推定RTT（`rtt`）といった指標である
 
 ---
 
@@ -461,7 +461,7 @@ stateDiagram-v2
     RRC_INACTIVE --> RRC_IDLE: さらに長い無通信で<br/>コンテキスト解放
     RRC_CONNECTED --> RRC_IDLE: 一定時間（数秒〜数十秒）<br/>通信がないとタイムアウト
     RRC_CONNECTED --> RRC_CONNECTED: データ送受信中<br/>最も高速だがバッテリー消費大
-    RRC_IDLE --> RRC_IDLE: 待機中<br/>バッテリー消費最小、通信不可
+    RRC_IDLE --> RRC_IDLE: 待機中<br/>バッテリー消費最小、接続未確立
 ```
 
 5G NRでは、RRC_IDLE・RRC_CONNECTEDに加えて**RRC_INACTIVE**が独立した第3の状態として定義されています。RRC_INACTIVEは端末とネットワークの双方がRRCコンテキスト（セキュリティ設定やベアラ情報）を保持したまま無線を休止する状態で、再開時は完全な接続確立手順ではなく**RRCResume**手順で済むため、RRC_IDLEからの昇格（数百ms〜数秒）に比べて**数十ms程度**と大幅に低遅延です。周期的に小さなデータを送るアプリケーションの遅延・電力特性は、端末がRRC_IDLEとRRC_INACTIVEのどちらに落ちているかで大きく変わります。
@@ -512,7 +512,7 @@ flowchart TB
 
 | パターン | 内容 |
 |---|---|
-| バースト転送してアイドルに戻る（Burst and go idle） | データをまとめて一度に送受信し、その後は無線を休止させてRRC状態をIdleに戻す。細切れの通信を避ける |
+| バースト転送してアイドルに戻る（Burst and go idle） | データをまとめて一度に送受信し、その後は通信を行わない時間をまとめて作る。無線の使用時間が減り、ネットワーク側のタイマーによるRRC_IDLE／RRC_INACTIVEへの遷移が起きやすくなる（RRC状態を遷移させるのはネットワークであり、アプリケーションが直接Idleに戻すわけではない）。細切れの通信を避ける |
 | キープアライブの削減 | アプリケーションが頻繁に送る死活確認パケットは、その都度RRC状態を昇格させバッテリーを消耗させる。間隔を長くするか、プッシュ通知など効率的な代替手段に置き換える |
 | ネットワーク可用性の変化に対応した設計 | モバイル環境ではネットワークが瞬断・切替（WiFi⇔セルラー）することを前提に、再試行・オフラインキューイングを実装する |
 | プロトコル・アプリケーションのベストプラクティス適用 | 圧縮、キャッシュ、リクエスト数削減など、第13章で扱う汎用的な最適化と組み合わせる |
@@ -873,7 +873,7 @@ sequenceDiagram
 
 #### 17.2 WebSocketのバイナリフレーミングとサブプロトコルネゴシエーション
 
-WebSocketもHTTP/2と同様に独自のバイナリフレーミング層を持ちます。また、`Sec-WebSocket-Protocol`ヘッダにより、アプリケーション固有のサブプロトコル（例: `chat.v2`）をネゴシエーションできます。拡張機能（`permessage-deflate`など、フレームごとの圧縮）もヘッダベースでネゴシエーション可能です。
+WebSocketもHTTP/2と同様に独自のバイナリフレーミング層を持ちます。また、`Sec-WebSocket-Protocol`ヘッダにより、アプリケーション固有のサブプロトコル（例: `chat.v2`）をネゴシエーションできます。拡張機能（`permessage-deflate`など、メッセージ全体のペイロードを圧縮するメッセージ単位の圧縮）もヘッダベースでネゴシエーション可能です。
 
 #### 17.3 メッセージオーバーヘッドとデータ効率
 
@@ -998,11 +998,11 @@ QUICは接続確立時に暗号化（TLS 1.3ベース）を統合しているた
 
 #### 2026年時点のHTTP/3普及状況
 
-Cloudflare Radarの計測によれば、2026年7月時点でHTTP/3のグローバルなリクエストシェアは約19.8%で、前年同月（21.64%）からやや減少しHTTP/2（52.27%）が依然として主流という状況が続いています（出典1）。一方、観測手法（likely-human requestベースかFirefoxのトップレベルナビゲーションベースかなど）によって10〜40%台まで幅があり、「シェア」の定義自体が議論の対象になっています（出典2）。QUICv2（RFC 9369、アンチオシフィケーション目的の追加バージョン）は実装はされつつあるものの実運用でのデプロイはごく僅かにとどまっています（出典2）。
+Cloudflare Radar集計を引用した二次資料によれば、2026年7月の1か月間にCloudflareネットワークが観測したグローバルのHTTPリクエスト（likely-humanリクエストを分母とする）のうち、HTTP/3が約19.8%、HTTP/2が52.27%、HTTP/1.xが残りを占め、HTTP/3は前年同月（21.64%）からやや減少しています（出典1。一次情報はCloudflare Radar本体で確認すること）。この数値は「Cloudflareを通過したリクエスト数」の比率であり、後述するCrUXの「オリジン単位の合格率」とは分母も測定対象も異なるため、直接比較してはいけません。また観測手法（likely-humanリクエストベースか、Firefoxのトップレベルナビゲーションベースかなど）によって10〜40%台まで幅があり、「シェア」の定義自体が議論の対象になっています（出典2）。QUICv2（RFC 9369、アンチオシフィケーション目的の追加バージョン）は実装はされつつあるものの実運用でのデプロイはごく僅かにとどまっています（出典2）。
 
 ```mermaid
 flowchart LR
-    A[HTTP/1.x] -->|2026年7月 Cloudflare計測| B["約28%"]
+    A[HTTP/1.x] -->|2026年7月 Cloudflare Radar<br/>グローバルHTTPリクエスト比| B["約28%"]
     C[HTTP/2] -->|同上| D["約52%"]
     E[HTTP/3] -->|同上| F["約20%"]
 
@@ -1028,7 +1028,9 @@ sequenceDiagram
     participant S as サーバー
     Note over C,S: TLS 1.3 フルハンドシェイク（1-RTT）
     C->>S: ClientHello + 鍵共有（Key Share）
-    S->>C: ServerHello + 鍵共有 + 証明書 + Finished（暗号化済み）
+    S->>C: ServerHello + 鍵共有（平文）
+    Note over C,S: 双方が鍵共有からハンドシェイク鍵を導出
+    S->>C: EncryptedExtensions + 証明書 + CertificateVerify + Finished<br/>（ハンドシェイク鍵で暗号化。ServerHelloと同一フライトで送信）
     Note over C,S: 1RTTで暗号化ハンドシェイク完了
     C->>S: 暗号化されたアプリケーションデータ
 ```
@@ -1039,7 +1041,7 @@ TLS 1.3以降でもClientHelloに含まれるSNI（第4章参照）は平文で�
 
 #### 耐量子（Post-Quantum）鍵交換の実運用化
 
-「今収集しておいて将来の量子コンピュータで復号する」というハーベスト・ナウ・デクリプト・レイター攻撃に備え、X25519とML-KEM-768を組み合わせたハイブリッド鍵交換（X25519MLKEM768）が急速に普及しています。Cloudflare Radarの計測では、クライアント〜エッジ間の耐量子鍵交換の利用率は2026年7月時点で55.77%に達し、前年同月の29.64%からほぼ倍増しました（出典4）。Chromeのデスクトップ版では、まず標準化前のドラフト方式である**X25519Kyber768**（`X25519Kyber768Draft00`）がバージョン124（2024年4月）でデフォルト有効化され、その後NISTによるML-KEM標準化を受けて、標準方式である**X25519MLKEM768**がバージョン130で導入され、バージョン131（2024年11月）からデフォルトの鍵共有方式となりました（ドラフト方式のX25519Kyber768はChromeの既定の鍵共有方式からは外れましたが、BoringSSLには実装が残っています）。OpenSSL 3.5（2025年4月リリース）はプロバイダプラグインなしでML-KEM/ML-DSAをネイティブサポートしています（出典5）。
+「今収集しておいて将来の量子コンピュータで復号する」というハーベスト・ナウ・デクリプト・レイター攻撃に備え、X25519とML-KEM-768を組み合わせたハイブリッド鍵交換（X25519MLKEM768）が急速に普及しています。Cloudflare Radar集計を引用した二次資料によれば、2026年7月の1か月間にCloudflareエッジが終端したクライアント〜エッジ間のTLSリクエストを分母として、耐量子鍵交換を用いた割合は55.77%に達し、前年同月の29.64%からほぼ倍増しました（出典4。一次情報はCloudflare Radar本体で確認すること）。Chromeのデスクトップ版では、まず標準化前のドラフト方式である**X25519Kyber768**（`X25519Kyber768Draft00`）がバージョン124（2024年4月）でデフォルト有効化され、その後NISTによるML-KEM標準化を受けて、標準方式である**X25519MLKEM768**がバージョン130で導入され、バージョン131（2024年11月）からデフォルトの鍵共有方式となりました（ドラフト方式のX25519Kyber768はChromeの既定の鍵共有方式からは外れましたが、BoringSSLには実装が残っています）。OpenSSL 3.5（2025年4月リリース）はプロバイダプラグインなしでML-KEM/ML-DSAをネイティブサポートしています（出典5）。
 
 | 項目 | 状況（2026年時点） |
 |---|---|
@@ -1117,7 +1119,7 @@ Googleは2024年3月、応答性指標をFID（First Input Delay、最初の入�
 | INP（Interaction to Next Paint） | 操作から次の描画までの応答性 | 200ms以下 | Good閾値は200ms以下のまま変更なし |
 | CLS（Cumulative Layout Shift） | 累積レイアウトシフト量 | 0.1以下 | Chrome以外のブラウザへの対応拡大が検討中 |
 
-CrUX（Chrome UX Report）の2026年5月データセット（2026年6月9日公開）では、計測対象オリジンのうち3指標すべてで合格したのは55.9%にとどまり、個別にはLCP約68.6%、CLS約81.3%、INP約86.6%が合格しています（出典10）。
+CrUX（Chrome UX Report）の2026年5月データセット（2026年6月9日公開）を引用した二次資料によれば、同データセットに含まれるオリジンを分母として、3指標すべてが「良好」だったオリジンは55.9%にとどまり、個別にはLCP約68.6%、CLS約81.3%、INP約86.6%が良好でした（出典10。一次情報はCrUXの公式データセット／CrUX Dashboardで確認すること）。CrUXの分母はChromeユーザーの実測データが十分に集まった**オリジン**であり、前述のCloudflare Radarの**リクエスト**シェアとは指標も測定範囲も異なります。
 
 **ベストプラクティス**
 - Core Web Vitalsは実ユーザー計測（フィールドデータ）に基づくため、ラボ計測の結果だけで判断せず、定期的にPageSpeed InsightsやSearch ConsoleのCore Web Vitalsレポートを再確認する
@@ -1235,16 +1237,16 @@ flowchart TB
 
 本ガイドの2026年最新動向（第5部）の記述にあたり、以下の情報源を参照しました（著名な国際的組織・開発者の一次情報を優先）。
 
-1. Cloudflare Radar / technologychecker.io「Web Traffic Statistics 2026」（HTTP/3シェア19.84%、2026年7月時点） — https://technologychecker.io/blog/web-traffic-statistics
+1. technologychecker.io「Web Traffic Statistics 2026」（**二次資料**。Cloudflare Radarのグローバルなリクエストシェア集計の引用。HTTP/3シェア19.84%、2026年7月時点） — https://technologychecker.io/blog/web-traffic-statistics ／ 一次情報: Cloudflare Radar Adoption & Usage — https://radar.cloudflare.com/adoption-and-usage
 2. Max Inden（Mozilla）「Evolving HTTP/3 & QUIC beyond 30%?」HTTP Workshop 2026 — https://mxinden-bot.github.io/slides/04-quic-discussion/
 3. Cloudflare Developers Docs「HTTP/3 (with QUIC)」 — https://developers.cloudflare.com/speed/optimization/protocol/http3/
-4. technologychecker.io「HTTP Protocol Adoption 2026」（耐量子鍵交換55.77%、Cloudflare Radar集計） — https://technologychecker.io/blog/http-protocol-adoption
+4. technologychecker.io「HTTP Protocol Adoption 2026」（**二次資料**。Cloudflare Radarの集計の引用。クライアント〜エッジ間の耐量子鍵交換55.77%、2026年7月時点） — https://technologychecker.io/blog/http-protocol-adoption ／ 一次情報: Cloudflare Radar Adoption & Usage — https://radar.cloudflare.com/adoption-and-usage
 5. EverTrust「Hybrid Post-Quantum Certificates」（Chrome/Firefoxのハイブリッド鍵交換対応状況） — https://evertrust.io/blog/hybrid-post-quantum-certificates/
 6. Google / GitHub「google/bbr」BBRv3リリースノートおよびIETF CCWG発表資料 — https://github.com/google/bbr
 7. WebRTC.ventures「WebTransport Is Now Baseline」（Safari 26.4対応、2026年3月） — https://webrtc.ventures/2026/04/webtransport-is-now-baseline-what-it-means-for-real-time-media/
 8. Fora Soft「WebTransport and WHIP-over-WebTransport」（W3C仕様の状況） — https://www.forasoft.com/learn/video-streaming/articles-streaming/webtransport-whip
 9. web.dev「Interaction to Next Paint (INP)」（INP指標の定義・計測方法・閾値） — https://web.dev/articles/inp
-10. Launchcodex「Core Web Vitals guide: LCP, INP, and CLS explained (2026)」（Addy Osmani氏のコメント、Interop 2025） — https://launchcodex.com/blog/web-digital-infrastructure/core-web-vitals-guide/
+10. Launchcodex「Core Web Vitals guide: LCP, INP, and CLS explained (2026)」（**二次資料**。CrUX 2026年5月データセットのオリジン単位合格率の引用、およびAddy Osmani氏のコメント、Interop 2025） — https://launchcodex.com/blog/web-digital-infrastructure/core-web-vitals-guide/ ／ 一次情報: Chrome UX Report 公式ドキュメント — https://developer.chrome.com/docs/crux
 11. ATIS / 3GPP「3GPP Release 20 Webinar」（Puneet Jain氏、3GPP SA Chair、2026年4月） — https://cdn.atis.org/atis.org/2026/04/16110914/Combined-Slides_3GPP-Webinar-R20_2026.pdf
 12. CafeTele「What Is 6G? The 3GPP Release 20 Study and the Road to 2030」 — https://www.cafetele.com/articles/article-what-is-6g-3gpp-release-20.html
 13. O'Reilly Media「High Performance Browser Networking」書籍公式ページ（目次確認元） — https://www.oreilly.com/library/view/high-performance-browser/9781449344757/
