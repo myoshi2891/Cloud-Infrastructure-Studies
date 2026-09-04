@@ -159,7 +159,7 @@ export function ProfessionalCloudDeveloperGuide() {
                         <h1>Google Cloud Professional Cloud Developer（PCD）認定試験 学習ガイド</h1>
                         <div className="meta-row">
                             <span className="pill">
-                                配点 <strong>4セクション（33% / 26% / 19% / 22%）</strong>
+                                配点 <strong>4セクション（32% / 23% / 24% / 21%）</strong>
                             </span>
                             <span className="pill">
                                 対象 <strong>初学者〜中級者</strong>
@@ -1615,7 +1615,8 @@ export function ProfessionalCloudDeveloperGuide() {
 
                     <p>
                         <code>gcloud run deploy --source .</code>
-                        {' '}を使うと、Dockerfileの有無に関わらずCloud Native
+                        {' '}を使うと、Dockerfileがある場合はそのDockerfileから、Dockerfileがない場合はCloud
+                        Native
                         Buildpacksでソースコードから直接コンテナイメージがビルド・デプロイされます。裏側ではCloud
                         Buildが呼び出されます。
                     </p>

@@ -345,22 +345,22 @@ const ALL_EXAMS: Exam[] = [
             {
                 label: 'Section 1: 高可用性・セキュアなアプリ設計',
                 href: '/gcl/professional-cloud-developer/section1',
-                pct: '33%',
+                pct: '32%',
             },
             {
                 label: 'Section 2: アプリケーションのビルドとテスト',
                 href: '/gcl/professional-cloud-developer/section2',
-                pct: '26%',
+                pct: '23%',
             },
             {
                 label: 'Section 3: デプロイのためのアプリ構成',
                 href: '/gcl/professional-cloud-developer/section3',
-                pct: '19%',
+                pct: '24%',
             },
             {
                 label: 'Section 4: Google Cloud サービス統合',
                 href: '/gcl/professional-cloud-developer/section4',
-                pct: '22%',
+                pct: '21%',
             },
         ],
         badge: '開発者向け',

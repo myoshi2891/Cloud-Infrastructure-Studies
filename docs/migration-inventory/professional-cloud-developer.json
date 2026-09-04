@@ -1062,7 +1062,7 @@
     },
     {
       "kind": "paragraph",
-      "text": "gcloud run deploy --source . を使うと、Dockerfileの有無に関わらずCloud Native Buildpacksでソースコードから直接コンテナイメージがビルド・デプロイされます。裏側ではCloud Buildが呼び出されます。"
+      "text": "gcloud run deploy --source . を使うと、Dockerfileがある場合はそのDockerfileから、Dockerfileがない場合はCloud Native Buildpacksでソースコードから直接コンテナイメージがビルド・デプロイされます。裏側ではCloud Buildが呼び出されます。"
     },
     {
       "kind": "paragraph",

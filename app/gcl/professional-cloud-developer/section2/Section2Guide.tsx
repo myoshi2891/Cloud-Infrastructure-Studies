@@ -46,7 +46,7 @@ export function Section2Guide() {
                         </div>
                     </div>
 
-                    <h2 id="セクション2の全体像">セクション2の全体像</h2>
+                    <h2 id="セクション2の全体像" tabIndex={-1}>セクション2の全体像</h2>
 
                     <p>
                         本ガイドは、Google Cloud公式の
@@ -112,7 +112,7 @@ export function Section2Guide() {
 
                     <hr />
 
-                    <h2 id="21-開発環境のセットアップ">2.1 開発環境のセットアップ</h2>
+                    <h2 id="21-開発環境のセットアップ" tabIndex={-1}>2.1 開発環境のセットアップ</h2>
 
                     <p>Exam Guideは2.1として次の3点を挙げています。</p>
 
@@ -128,7 +128,7 @@ export function Section2Guide() {
                         </li>
                     </ul>
 
-                    <h3 id="211-gcloud-cliによるgoogle-cloudサービスのローカルエミュレーション">
+                    <h3 id="211-gcloud-cliによるgoogle-cloudサービスのローカルエミュレーション" tabIndex={-1}>
                         2.1.1 gcloud CLIによるGoogle Cloudサービスのローカルエミュレーション
                     </h3>
 
@@ -271,7 +271,7 @@ export function Section2Guide() {
                         </a>
                     </p>
 
-                    <h3 id="212-google-cloud-consolecloud-sdkcloud-codegemini-cloud-assistcloud-shellcloud-workstations">
+                    <h3 id="212-google-cloud-consolecloud-sdkcloud-codegemini-cloud-assistcloud-shellcloud-workstations" tabIndex={-1}>
                         2.1.2 Google Cloud Console・Cloud SDK・Cloud Code・Gemini Cloud Assist・Cloud Shell・Cloud Workstations
                     </h3>
 
@@ -459,7 +459,7 @@ export function Section2Guide() {
                         </a>
                     </p>
 
-                    <h3 id="213-ideの構成cloud-sdkaiツールmcpサーバー">
+                    <h3 id="213-ideの構成cloud-sdkaiツールmcpサーバー" tabIndex={-1}>
                         2.1.3 IDEの構成（Cloud SDK・AIツール・MCPサーバー）
                     </h3>
 
@@ -640,7 +640,7 @@ export function Section2Guide() {
 
                     <hr />
 
-                    <h2 id="22-ビルド">2.2 ビルド</h2>
+                    <h2 id="22-ビルド" tabIndex={-1}>2.2 ビルド</h2>
 
                     <p>Exam Guideは2.2として次の2点を挙げています。</p>
 
@@ -651,7 +651,7 @@ export function Section2Guide() {
                         <li>Cloud Buildでprovenance（Binary Authorizationなど）を構成する</li>
                     </ul>
 
-                    <h3 id="221-cloud-buildとartifact-registryによるコンテナのビルドと保存">
+                    <h3 id="221-cloud-buildとartifact-registryによるコンテナのビルドと保存" tabIndex={-1}>
                         2.2.1 Cloud BuildとArtifact Registryによるコンテナのビルドと保存
                     </h3>
 
@@ -834,7 +834,7 @@ export function Section2Guide() {
 
                     <hr />
 
-                    <h3 id="222-cloud-buildにおけるprovenanceの構成binary-authorization">
+                    <h3 id="222-cloud-buildにおけるprovenanceの構成binary-authorization" tabIndex={-1}>
                         2.2.2 Cloud Buildにおけるprovenanceの構成（Binary Authorization）
                     </h3>
 
@@ -981,7 +981,7 @@ export function Section2Guide() {
 
                     <hr />
 
-                    <h2 id="23-テスト">2.3 テスト</h2>
+                    <h2 id="23-テスト" tabIndex={-1}>2.3 テスト</h2>
 
                     <p>Exam Guideは2.3として次の2点を挙げています。</p>
 
@@ -990,7 +990,7 @@ export function Section2Guide() {
                         <li>Cloud Buildで自動統合テストを実行する</li>
                     </ul>
 
-                    <h3 id="231-aiコーディングアシスタントを活用した単体テストの作成">
+                    <h3 id="231-aiコーディングアシスタントを活用した単体テストの作成" tabIndex={-1}>
                         2.3.1 AIコーディングアシスタントを活用した単体テストの作成
                     </h3>
 
@@ -1071,7 +1071,7 @@ export function Section2Guide() {
 
                     <hr />
 
-                    <h3 id="232-cloud-buildでの自動統合テストの実行">
+                    <h3 id="232-cloud-buildでの自動統合テストの実行" tabIndex={-1}>
                         2.3.2 Cloud Buildでの自動統合テストの実行
                     </h3>
 
@@ -1218,7 +1218,7 @@ export function Section2Guide() {
 
                     <hr />
 
-                    <h2 id="まとめセクション2の全体マップ">まとめ：セクション2の全体マップ</h2>
+                    <h2 id="まとめセクション2の全体マップ" tabIndex={-1}>まとめ：セクション2の全体マップ</h2>
 
                     <div className="table-scroll">
                         <table>
@@ -1265,7 +1265,7 @@ export function Section2Guide() {
 
                     <hr />
 
-                    <h2 id="参考文献">参考文献</h2>
+                    <h2 id="参考文献" tabIndex={-1}>参考文献</h2>
 
                     <div className="ref-grid" id="referenceGrid">
                         <div className="ref-card" id="ref1">
