@@ -160,8 +160,11 @@ export const DIAGRAMS: Record<DiagramId, string> = {
     class Scan warnFill`,
 
     'diag-6': `flowchart TB
-    Build["Cloud Buildが<br/>コンテナイメージをビルド"] --> Prov["SLSA準拠のビルドprovenanceを<br/>自動生成・署名"]
+    Build["Cloud Buildが<br/>コンテナイメージをビルド"] --> Opt{"options.requestedVerifyOption<br/>の設定は？"}
+    Opt -->|"VERIFIED"| Prov["SLSA準拠のビルドprovenanceを<br/>自動生成・署名"]
+    Opt -->|"NOT_VERIFIED（既定）"| NoProv["provenanceは生成されない"]
     Prov --> Push["Artifact Registryへpush<br/>(provenanceも保存)"]
+    NoProv --> Push
     Push --> Deploy{"Cloud Run / GKEへ<br/>デプロイ要求"}
     Deploy --> BinAuthz["Binary Authorizationが<br/>ポリシーを評価"]
     BinAuthz -->|"Cloud Build生成のprovenance/<br/>Attestationが要件を満たす"| Allow["デプロイ許可"]
@@ -170,9 +173,9 @@ export const DIAGRAMS: Record<DiagramId, string> = {
     classDef highlightFill fill:#1a3a5c,stroke:#4a90d9,color:#ffffff;
     classDef successFill fill:#1a4a2a,stroke:#4ad97a,color:#ffffff;
     classDef dangerFill fill:#5c1a1a,stroke:#d94a4a,color:#ffffff;
-    class Deploy,BinAuthz highlightFill
+    class Deploy,BinAuthz,Opt highlightFill
     class Allow successFill
-    class Deny dangerFill`,
+    class Deny,NoProv dangerFill`,
 
     'diag-7': `flowchart LR
     Code["対象コードを選択"] --> Prompt["AIコーディングアシスタントに依頼<br/>(例:「Generate unit tests」)"]

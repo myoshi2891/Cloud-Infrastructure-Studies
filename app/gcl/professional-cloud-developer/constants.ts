@@ -110,7 +110,7 @@ export const DIAGRAMS: Record<DiagramId, string> = {
     Q6 -- いいえ --> Memstore["Memorystore<br/>（キャッシュ・セッション）"]`,
 
     'diag-build-pipeline': `flowchart LR
-    Repo["ソースリポジトリ<br/>（GitHub/Cloud Source Repositories）"] -- "トリガー" --> CB["Cloud Build"]
+    Repo["ソースリポジトリ<br/>（GitHub/GitLab/Secure Source Manager）"] -- "トリガー" --> CB["Cloud Build"]
     CB -- "コンテナイメージをビルド" --> Img["コンテナイメージ"]
     CB -- "SLSA Provenanceを生成" --> Prov2["ビルド来歴（Provenance）"]
     Img --> AR2["Artifact Registry"]
