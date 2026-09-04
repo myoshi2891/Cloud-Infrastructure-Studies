@@ -67,9 +67,19 @@ flowchart TB
 Cloud Shell / Lab 提供の IDE には `gcloud` SDK が事前設定されています。ハードコーディングを避け、環境から動的に取得するのがベストプラクティスです。
 
 ```bash
-export PROJECT_ID=$(gcloud config get-value project)
-REGION=$(gcloud config get-value compute/region 2>/dev/null)
+PROJECT_ID=$(gcloud config get-value project 2>/dev/null)
 # gcloud は未設定時に終了コード 0 のまま "(unset)" を出力するため、|| では捕捉できない
+case "$PROJECT_ID" in
+  ''|'(unset)')
+    echo "エラー: プロジェクトが未設定です。gcloud config set project <PROJECT_ID> を実行してください。" >&2
+    unset PROJECT_ID
+    ;;
+  *)
+    export PROJECT_ID
+    ;;
+esac
+
+REGION=$(gcloud config get-value compute/region 2>/dev/null)
 case "$REGION" in ''|'(unset)') REGION="us-central1" ;; esac
 export REGION
 echo "PROJECT_ID=${PROJECT_ID}, REGION=${REGION}"
@@ -186,13 +196,19 @@ sequenceDiagram
 Vertex AI 上で `generate_content` / `generate_content_stream` に画像を渡す際は、`types.Part.from_bytes()` でバイト列とMIMEタイプを明示するのが最も確実な方法です（`Part.from_file` は旧SDKのみに存在するメソッドで、`google-genai` には存在しないため注意が必要です）。
 
 ```python
+import mimetypes
+
 from google.genai import types
+
 
 def _load_image_part(image_path: str) -> types.Part:
     """ローカル画像ファイルを Gemini API 用の Part に変換する。"""
+    mime_type, _ = mimetypes.guess_type(image_path)
+    if mime_type is None or not mime_type.startswith("image/"):
+        raise ValueError(f"画像のMIMEタイプを判定できません: {image_path}")
     with open(image_path, "rb") as f:
         image_bytes = f.read()
-    return types.Part.from_bytes(data=image_bytes, mime_type="image/png")
+    return types.Part.from_bytes(data=image_bytes, mime_type=mime_type)
 ```
 
 > **既知の落とし穴**: 旧SDK（`vertexai.generative_models`）のコード例をそのまま `google-genai` に流用すると `AttributeError: type object 'Part' has no attribute 'from_file'` が発生します。これは2つのSDKでAPI設計が異なるためで、`google-genai` では常に `types.Part.from_bytes()` または `types.Part.from_uri()`（Cloud Storage上の画像向け）を使用してください。
@@ -305,7 +321,29 @@ def call_with_backoff(func, *args, max_retries: int = 5, **kwargs):
                 time.sleep(wait_seconds)
                 continue
             raise
+
+
+def analyze_with_retry(client, model_id, contents, output_txt_path: str) -> str:
+    """ストリームの生成と消費をまとめて callable に閉じ込め、リトライ対象にする。"""
+
+    def _run() -> str:
+        text = ""
+        stream = client.models.generate_content_stream(
+            model=model_id, contents=contents
+        )
+        # 429 はイテレーション中に送出されるため、for ループも callable の内側に置く
+        with open(output_txt_path, "w", encoding="utf-8") as f:
+            for chunk in stream:
+                if chunk.text:
+                    text += chunk.text
+                    f.write(chunk.text)
+        return text
+
+    # リトライ時は "w" で開き直すので、途中まで書かれた内容は破棄される
+    return call_with_backoff(_run)
 ```
+
+> **重要**: `generate_content_stream` はイテレータを返すため、`429` は関数呼び出しの時点ではなく**チャンクを取り出している最中**に送出されます。ストリームの生成だけを `call_with_backoff` でラップしてもリトライは発動しないため、`for chunk in stream` の消費までを callable の内側に入れてください。
 
 ソース（`google.genai.errors` の例外構造）: https://discuss.ai.google.dev/t/error-400-invalid-argument-when-using-gemini-2-5-flash-with-generate-content-stream/97626
 
@@ -314,6 +352,8 @@ def call_with_backoff(func, *args, max_retries: int = 5, **kwargs):
 ## 完成コード（フル実装）
 
 ```python
+import mimetypes
+
 from google import genai
 from google.genai import types
 
@@ -337,9 +377,12 @@ def generate_bouquet_image(
 
 
 def _load_image_part(image_path: str) -> types.Part:
+    mime_type, _ = mimetypes.guess_type(image_path)
+    if mime_type is None or not mime_type.startswith("image/"):
+        raise ValueError(f"画像のMIMEタイプを判定できません: {image_path}")
     with open(image_path, "rb") as f:
         image_bytes = f.read()
-    return types.Part.from_bytes(data=image_bytes, mime_type="image/png")
+    return types.Part.from_bytes(data=image_bytes, mime_type=mime_type)
 
 
 def analyze_bouquet_image(

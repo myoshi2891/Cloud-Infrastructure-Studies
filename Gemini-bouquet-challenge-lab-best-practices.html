@@ -569,9 +569,19 @@
                         <pre><code class="language-bash" id="code-env"></code></pre>
                     </div>
                     <script type="text/plain" data-target="code-env">
-                        export PROJECT_ID=$(gcloud config get-value project)
-                        REGION=$(gcloud config get-value compute/region 2>/dev/null)
+                        PROJECT_ID=$(gcloud config get-value project 2>/dev/null)
                         # gcloud は未設定時に終了コード 0 のまま "(unset)" を出力するため、|| では捕捉できない
+                        case "$PROJECT_ID" in
+                          ''|'(unset)')
+                            echo "エラー: プロジェクトが未設定です。gcloud config set project <PROJECT_ID> を実行してください。" >&2
+                            unset PROJECT_ID
+                            ;;
+                          *)
+                            export PROJECT_ID
+                            ;;
+                        esac
+
+                        REGION=$(gcloud config get-value compute/region 2>/dev/null)
                         case "$REGION" in ''|'(unset)') REGION="us-central1" ;; esac
                         export REGION
                         echo "PROJECT_ID=${PROJECT_ID}, REGION=${REGION}"
@@ -836,14 +846,19 @@
                         <pre><code class="language-python" id="code-part"></code></pre>
                     </div>
                     <script type="text/plain" data-target="code-part">
+                        import mimetypes
+
                         from google.genai import types
 
 
                         def _load_image_part(image_path: str) -> types.Part:
                             """ローカル画像ファイルを Gemini API 用の Part に変換する。"""
+                            mime_type, _ = mimetypes.guess_type(image_path)
+                            if mime_type is None or not mime_type.startswith("image/"):
+                                raise ValueError(f"画像のMIMEタイプを判定できません: {image_path}")
                             with open(image_path, "rb") as f:
                                 image_bytes = f.read()
-                            return types.Part.from_bytes(data=image_bytes, mime_type="image/png")
+                            return types.Part.from_bytes(data=image_bytes, mime_type=mime_type)
                     </script>
 
                     <div class="callout callout-danger">
@@ -1059,7 +1074,39 @@
                                         time.sleep(wait_seconds)
                                         continue
                                     raise
+
+
+                        def analyze_with_retry(client, model_id, contents, output_txt_path: str) -> str:
+                            """ストリームの生成と消費をまとめて callable に閉じ込め、リトライ対象にする。"""
+
+                            def _run() -> str:
+                                text = ""
+                                stream = client.models.generate_content_stream(
+                                    model=model_id, contents=contents
+                                )
+                                # 429 はイテレーション中に送出されるため、for ループも callable の内側に置く
+                                with open(output_txt_path, "w", encoding="utf-8") as f:
+                                    for chunk in stream:
+                                        if chunk.text:
+                                            text += chunk.text
+                                            f.write(chunk.text)
+                                return text
+
+                            # リトライ時は "w" で開き直すので、途中まで書かれた内容は破棄される
+                            return call_with_backoff(_run)
                     </script>
+                    <div class="callout callout-warning">
+                        <div class="callout-mark">!</div>
+                        <div>
+                            <strong>重要</strong>: <code>generate_content_stream</code>
+                            はイテレータを返すため、<code>429</code>
+                            は関数呼び出しの時点ではなく<strong>チャンクを取り出している最中</strong>に送出されます。ストリームの生成だけを
+                            <code>call_with_backoff</code> でラップしてもリトライは発動しないため、<code
+                                >for chunk in stream</code
+                            >
+                            の消費までを callable の内側に入れてください。
+                        </div>
+                    </div>
                     <p>
                         ソース（<code>google.genai.errors</code> の例外構造）:
                         <a
@@ -1080,6 +1127,8 @@
                         <pre><code class="language-python" id="code-full"></code></pre>
                     </div>
                     <script type="text/plain" data-target="code-full">
+                        import mimetypes
+
                         from google import genai
                         from google.genai import types
 
@@ -1103,9 +1152,12 @@
 
 
                         def _load_image_part(image_path: str) -> types.Part:
+                            mime_type, _ = mimetypes.guess_type(image_path)
+                            if mime_type is None or not mime_type.startswith("image/"):
+                                raise ValueError(f"画像のMIMEタイプを判定できません: {image_path}")
                             with open(image_path, "rb") as f:
                                 image_bytes = f.read()
-                            return types.Part.from_bytes(data=image_bytes, mime_type="image/png")
+                            return types.Part.from_bytes(data=image_bytes, mime_type=mime_type)
 
 
                         def analyze_bouquet_image(
