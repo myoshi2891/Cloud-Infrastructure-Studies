@@ -72,7 +72,8 @@ PROJECT_ID=$(gcloud config get-value project 2>/dev/null)
 case "$PROJECT_ID" in
   ''|'(unset)')
     echo "エラー: プロジェクトが未設定です。gcloud config set project <PROJECT_ID> を実行してください。" >&2
-    unset PROJECT_ID
+    # 未設定のまま後続手順へ進ませない（sourced なら return、実行スクリプトなら exit）
+    return 1 2>/dev/null || exit 1
     ;;
   *)
     export PROJECT_ID
