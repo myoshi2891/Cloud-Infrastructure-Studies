@@ -146,7 +146,7 @@ flowchart TD
     G --> H
 ```
 
-**なぜ `global` で失敗するのか:** `location=global` の場合、Agent Platform は空いているキャパシティを動的に探索しますが、Geminiワークロードへの需要が高いとタイムアウトすることがあります。ラボ環境のように短時間で確実に結果が欲しい場合は、**明示的にリージョンを指定する**ほうが安定します。これは「グローバルロードバランシング vs リージョン固定」というプロダクション設計でも共通する考え方です。
+**なぜ `global` で失敗するのか:** Vertex AI のリージョンエンドポイントは `REGION-aiplatform.googleapis.com` という形式ですが、`global` だけは例外で `global-aiplatform.googleapis.com` ではなく `aiplatform.googleapis.com` を使います。`location` の値をそのままホスト名へ埋め込む実装では、`location=global` のときに存在しないエンドポイントを組み立ててしまい、その結果 `404` が返ります。これはキャパシティ不足やタイムアウトではなく、**エンドポイント形式の不一致**です。ラボ環境のように短時間で確実に結果が欲しい場合は、**明示的にリージョンを指定する**ほうが安定します。
 
 > **参考ソース:**
 > - Vertex AI Gemini クイックスタート（generateContentのcurl例）: https://cloud.google.com/vertex-ai/generative-ai/docs/start/quickstart
@@ -327,6 +327,22 @@ gcloud run deploy $SERVICE_NAME \
   --platform=managed \
   --project=$PROJECT \
   --set-env-vars=PROJECT=$PROJECT,REGION=$REGION
+```
+
+> **`--allow-unauthenticated` はラボ限定の一時設定:** `--allow-unauthenticated` は、採点に必要な「認証なしで開ける公開URL」を得るためにこのラボでのみ使う設定です。付与すると `roles/run.invoker` が `allUsers` に与えられ、URLを知っている誰でもアプリを実行できる（= あなたのプロジェクトのGeminiクォータと課金を消費できる）状態になります。**本番用途では使用せず**、認証付き呼び出し（IAMで個別のサービスアカウント／ユーザーに `roles/run.invoker` を付与）や IAP の利用を前提に設計してください。
+>
+> ラボ終了後は、公開状態を放置しないよう次の手順でリソースを削除します。合わせて、想定外の課金を防ぐために[予算アラート（Budgets & alerts）](https://cloud.google.com/billing/docs/how-to/budgets)で上限額と通知を設定しておくことを推奨します。
+
+```bash
+# Cloud Run サービスを削除（公開URLを無効化）
+gcloud run services delete $SERVICE_NAME --region=$REGION --project=$PROJECT --quiet
+
+# Artifact Registry リポジトリを削除（イメージの保管料を停止）
+gcloud artifacts repositories delete $AR_REPO --location=$REGION --project=$PROJECT --quiet
+
+# 採点用にファイルをアップロードしたGCSバケットが不要になったら中身を削除
+# BUCKET_NAME はラボの指示で指定されたバケット名に置き換える
+gcloud storage rm --recursive gs://BUCKET_NAME --project=$PROJECT
 ```
 
 ### 9.2 パラメータの意味

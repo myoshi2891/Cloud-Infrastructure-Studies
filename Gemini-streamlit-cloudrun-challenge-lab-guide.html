@@ -682,10 +682,17 @@ export REGION=&lt;ラボ指定のリージョン&gt;</code></pre>
                     <div class="diagram-wrap"><div id="diagram-task1trouble"></div></div>
                     <div class="prose">
                         <p>
-                            <strong>なぜ <code>global</code> で失敗するのか:</strong>
-                            <code>location=global</code> の場合、Agent Platform
-                            は空いているキャパシティを動的に探索しますが、Geminiワークロードへの需要が高いとタイムアウトすることがあります。ラボ環境のように短時間で確実に結果が欲しい場合は、明示的にリージョンを指定するほうが安定します。これは「グローバルロードバランシング
-                            vs リージョン固定」というプロダクション設計でも共通する考え方です。
+                            <strong>なぜ <code>global</code> で失敗するのか:</strong> Vertex AI
+                            のリージョンエンドポイントは
+                            <code>REGION-aiplatform.googleapis.com</code>
+                            という形式ですが、<code>global</code> だけは例外で
+                            <code>global-aiplatform.googleapis.com</code> ではなく
+                            <code>aiplatform.googleapis.com</code>
+                            を使います。<code>location</code>
+                            の値をそのままホスト名へ埋め込む実装では、<code>location=global</code>
+                            のときに存在しないエンドポイントを組み立ててしまい、その結果
+                            <code>404</code>
+                            が返ります。これはキャパシティ不足やタイムアウトではなく、<strong>エンドポイント形式の不一致</strong>です。ラボ環境のように短時間で確実に結果が欲しい場合は、明示的にリージョンを指定するほうが安定します。
                         </p>
                     </div>
                     <div class="callout source">
@@ -1074,6 +1081,37 @@ gcloud builds submit \
   --platform=managed \
   --project=$PROJECT \
   --set-env-vars=PROJECT=$PROJECT,REGION=$REGION</code></pre>
+                    <div class="callout warning">
+                        <p class="callout-label">--allow-unauthenticated はラボ限定の一時設定</p>
+                        <p>
+                            <code>--allow-unauthenticated</code>
+                            は、採点に必要な「認証なしで開ける公開URL」を得るためにこのラボでのみ使う設定です。付与すると
+                            <code>roles/run.invoker</code> が <code>allUsers</code>
+                            に与えられ、URLを知っている誰でもアプリを実行できる（=
+                            あなたのプロジェクトのGeminiクォータと課金を消費できる）状態になります。<strong>本番用途では使用せず</strong>、認証付き呼び出し（IAMで個別のサービスアカウント／ユーザーに
+                            <code>roles/run.invoker</code> を付与）や IAP
+                            の利用を前提に設計してください。
+                        </p>
+                        <p>
+                            ラボ終了後は、公開状態を放置しないよう次の手順でリソースを削除します。合わせて、想定外の課金を防ぐために
+                            <a
+                                href="https://cloud.google.com/billing/docs/how-to/budgets"
+                                target="_blank"
+                                rel="noopener"
+                                >予算アラート（Budgets &amp; alerts）</a
+                            >
+                            で上限額と通知を設定しておくことを推奨します。
+                        </p>
+                        <pre><code class="language-bash"># Cloud Run サービスを削除（公開URLを無効化）
+gcloud run services delete $SERVICE_NAME --region=$REGION --project=$PROJECT --quiet
+
+# Artifact Registry リポジトリを削除（イメージの保管料を停止）
+gcloud artifacts repositories delete $AR_REPO --location=$REGION --project=$PROJECT --quiet
+
+# 採点用にファイルをアップロードしたGCSバケットが不要になったら中身を削除
+# BUCKET_NAME はラボの指示で指定されたバケット名に置き換える
+gcloud storage rm --recursive gs://BUCKET_NAME --project=$PROJECT</code></pre>
+                    </div>
                     <h3>パラメータの意味</h3>
                     <div class="table-wrap">
                         <table>
