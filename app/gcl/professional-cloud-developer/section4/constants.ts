@@ -365,7 +365,7 @@ export const DIAGRAMS: Record<DiagramId, string> = {
 
     'diag-15': `flowchart TD
     A["1. 問題の兆候が発生<br/>（アラート発火、エラー急増、<br/>パフォーマンス低下）"] --> B{"調査（Investigation）の<br/>起動方法"}
-    B -->|"手動"| C["エラー画面/ログエントリ/<br/>コンソール右上のInvestigationsアイコン<br/>から起動"]
+    B -->|"手動"| C["エラー画面/ログエントリ/<br/>コンソール右上のInvestigationsアイコン<br/>から起動<br/>※調査の作成・実行には<br/>Premium Support契約、または<br/>アカウントチーム経由のアクセス承認が必要<br/>※実行するエンドユーザーのIDに<br/>必要な閲覧用IAMロールの付与が必要"]
     B -->|"自動<br/>（バックグラウンド）"| D["バックグラウンド監視エージェントが<br/>対応アラート（メトリクスベースの<br/>アラートポリシー等）を検知して<br/>自動的に調査を開始<br/>※ログベースのアラートは対象外<br/>※Proactive ModeはPrivate Preview提供で<br/>Premium Support顧客が対象<br/>※事前にProactive Modeの有効化と<br/>agent identityへの必要なIAMロール付与が必要"]
     C --> E1["2a. 手動調査：<br/>調査を実行した<br/>エンドユーザーのIDで<br/>関連データへアクセス<br/>（IAM付与先・監査ログの<br/>プリンシパル＝そのユーザー）"]
     D --> E2["2b. 自動調査：<br/>プロジェクト固有の<br/>エージェントIDで<br/>関連データへアクセス<br/>（IAM付与先・監査ログの<br/>プリンシパル＝エージェントID）"]
