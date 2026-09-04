@@ -210,4 +210,18 @@ describe('professional-cloud-developer section4 NavBar', () => {
 
         expect(linkFor(NAV_ITEMS[0]!.id)).toHaveAttribute('aria-current', 'location');
     });
+
+    it('ハッシュが空になる履歴遷移で active を先頭項目へ戻す', () => {
+        window.history.replaceState(null, '', `#${NAV_ITEMS[2]!.id}`);
+
+        render(<NavBar />);
+        expect(linkFor(NAV_ITEMS[2]!.id)).toHaveAttribute('aria-current', 'location');
+
+        act(() => {
+            window.history.replaceState(null, '', window.location.pathname);
+            window.dispatchEvent(new PopStateEvent('popstate'));
+        });
+
+        expect(linkFor(NAV_ITEMS[0]!.id)).toHaveAttribute('aria-current', 'location');
+    });
 });
