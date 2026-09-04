@@ -341,7 +341,7 @@
 
 .pcd-section1-page .mermaid-wrap svg {
     flex-shrink: 0;
-    max-width: none;
+    max-width: none !important;
     height: auto !important;
 }
 
