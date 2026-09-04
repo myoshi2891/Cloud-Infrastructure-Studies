@@ -530,9 +530,12 @@ export function Section3Guide() {
                         <li>
                             <strong>リトライの既定値を確認する</strong>
                             ：リトライの既定動作は作成方法によって異なります。
-                            <code>gcloud eventarc triggers create</code>には
-                            <code>--max-retry-attempts</code>
-                            のようなリトライ用フラグはなく、gcloud
+                            <code>gcloud eventarc triggers create</code>では
+                            <code>--max-retry-attempts=1</code>
+                            （有効値は<code>1</code>
+                            のみ）を指定すると、Cloud Run宛の配信を
+                            <strong>リトライなしの1回だけ</strong>
+                            にできます。このフラグを省略した場合は標準のリトライ動作が適用され、gcloud
                             CLIおよびコンソールのEventarcページで作成したトリガーは
                             <strong>リトライが有効</strong>
                             な状態になります。一方、Cloud
