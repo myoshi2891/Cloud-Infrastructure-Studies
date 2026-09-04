@@ -198,6 +198,8 @@ Vertex AI 上で `generate_content` / `generate_content_stream` に画像を渡�
 
 ```python
 import mimetypes
+import os
+import tempfile
 
 from google.genai import types
 
@@ -241,21 +243,37 @@ def analyze_bouquet_image(
         "温かみのある誕生日メッセージを作成してください。"
     )
 
-    response_text = ""
+    def _run() -> str:
+        """ストリームの生成と全チャンクの消費を1回のリトライ単位にまとめる。"""
+        text = ""
+        out_dir = os.path.dirname(os.path.abspath(output_txt_path))
+        fd, tmp_path = tempfile.mkstemp(dir=out_dir, suffix=".part")
+        try:
+            stream = client.models.generate_content_stream(
+                model=model_id,
+                contents=[prompt, image_part],
+            )
+            with os.fdopen(fd, "w", encoding="utf-8") as f:
+                # 429 はイテレーション中に送出されるため、消費もこの中で完結させる
+                for chunk in stream:
+                    if chunk.text:
+                        print(chunk.text, end="", flush=True)
+                        text += chunk.text
+                        f.write(chunk.text)
+            # 全チャンクを取り切ってから原子的に公開する
+            os.replace(tmp_path, output_txt_path)
+        except BaseException:
+            try:
+                os.unlink(tmp_path)
+            except OSError:
+                # 後片付けの失敗で本来の例外を隠さない
+                pass
+            raise
+        return text
+
     print("バースデーメッセージを生成中...\n")
-
-    stream = client.models.generate_content_stream(
-        model=model_id,
-        contents=[prompt, image_part],
-    )
-
-    with open(output_txt_path, "w", encoding="utf-8") as f:
-        for chunk in stream:
-            if chunk.text:
-                print(chunk.text, end="", flush=True)
-                response_text += chunk.text
-                f.write(chunk.text)
-                f.flush()
+    # call_with_backoff は後述の「429エラーへの対応」節で定義する
+    response_text = call_with_backoff(_run)
 
     print(f"\n\nメッセージを保存しました: {output_txt_path}")
     return response_text
@@ -307,7 +325,10 @@ sequenceDiagram
 課題文の注記どおり「429エラーが出た場合は1分待って再実行」で対処できますが、実務では**指数バックオフ付きの自動リトライ**を実装するのがベストプラクティスです。
 
 ```python
+import os
+import tempfile
 import time
+
 from google.genai import errors
 
 def call_with_backoff(func, *args, max_retries: int = 5, **kwargs):
@@ -329,18 +350,29 @@ def analyze_with_retry(client, model_id, contents, output_txt_path: str) -> str:
 
     def _run() -> str:
         text = ""
-        stream = client.models.generate_content_stream(
-            model=model_id, contents=contents
-        )
-        # 429 はイテレーション中に送出されるため、for ループも callable の内側に置く
-        with open(output_txt_path, "w", encoding="utf-8") as f:
-            for chunk in stream:
-                if chunk.text:
-                    text += chunk.text
-                    f.write(chunk.text)
+        out_dir = os.path.dirname(os.path.abspath(output_txt_path))
+        fd, tmp_path = tempfile.mkstemp(dir=out_dir, suffix=".part")
+        try:
+            stream = client.models.generate_content_stream(
+                model=model_id, contents=contents
+            )
+            # 429 はイテレーション中に送出されるため、for ループも callable の内側に置く
+            with os.fdopen(fd, "w", encoding="utf-8") as f:
+                for chunk in stream:
+                    if chunk.text:
+                        text += chunk.text
+                        f.write(chunk.text)
+            os.replace(tmp_path, output_txt_path)
+        except BaseException:
+            try:
+                os.unlink(tmp_path)
+            except OSError:
+                pass
+            raise
         return text
 
-    # リトライ時は "w" で開き直すので、途中まで書かれた内容は破棄される
+    # 一時ファイルへ書き、成功時のみ os.replace で公開するため、
+    # 途中で失敗した試行の内容が output_txt_path に残ることはない
     return call_with_backoff(_run)
 ```
 
@@ -354,9 +386,24 @@ def analyze_with_retry(client, model_id, contents, output_txt_path: str) -> str:
 
 ```python
 import mimetypes
+import os
+import tempfile
+import time
 
 from google import genai
-from google.genai import types
+from google.genai import errors, types
+
+
+def call_with_backoff(func, *args, max_retries: int = 5, **kwargs):
+    """429 (RESOURCE_EXHAUSTED) 発生時に指数バックオフでリトライする。"""
+    for attempt in range(max_retries):
+        try:
+            return func(*args, **kwargs)
+        except errors.ClientError as e:
+            if getattr(e, "code", None) == 429 and attempt < max_retries - 1:
+                time.sleep(2 ** attempt)
+                continue
+            raise
 
 
 def generate_bouquet_image(
@@ -397,21 +444,35 @@ def analyze_bouquet_image(
         "この花束の画像からインスピレーションを得て、"
         "温かみのある誕生日メッセージを作成してください。"
     )
-    response_text = ""
-    stream = client.models.generate_content_stream(
-        model=model_id, contents=[prompt, image_part]
-    )
-    with open(output_txt_path, "w", encoding="utf-8") as f:
-        for chunk in stream:
-            if chunk.text:
-                response_text += chunk.text
-                f.write(chunk.text)
-    return response_text
+
+    def _run() -> str:
+        text = ""
+        out_dir = os.path.dirname(os.path.abspath(output_txt_path))
+        fd, tmp_path = tempfile.mkstemp(dir=out_dir, suffix=".part")
+        try:
+            # ストリーム生成と全チャンク消費をまとめてリトライ対象にする
+            stream = client.models.generate_content_stream(
+                model=model_id, contents=[prompt, image_part]
+            )
+            with os.fdopen(fd, "w", encoding="utf-8") as f:
+                for chunk in stream:
+                    if chunk.text:
+                        text += chunk.text
+                        f.write(chunk.text)
+            # 完走した内容だけを原子的に公開する
+            os.replace(tmp_path, output_txt_path)
+        except BaseException:
+            try:
+                os.unlink(tmp_path)
+            except OSError:
+                pass
+            raise
+        return text
+
+    return call_with_backoff(_run)
 
 
 if __name__ == "__main__":
-    import os
-
     PROJECT_ID = os.environ["PROJECT_ID"]
     REGION = os.environ.get("REGION", "us-central1")
 
