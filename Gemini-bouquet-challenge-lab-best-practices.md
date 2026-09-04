@@ -207,8 +207,10 @@ from google.genai import types
 def _load_image_part(image_path: str) -> types.Part:
     """ローカル画像ファイルを Gemini API 用の Part に変換する。"""
     mime_type, _ = mimetypes.guess_type(image_path)
-    if mime_type is None or not mime_type.startswith("image/"):
-        raise ValueError(f"画像のMIMEタイプを判定できません: {image_path}")
+    # Gemini API が受け付ける画像 MIME タイプのみを許可する（拡張子推測の誤検出を防ぐ）
+    allowed_mime_types = {"image/png", "image/jpeg", "image/webp", "image/heic", "image/heif"}
+    if mime_type not in allowed_mime_types:
+        raise ValueError(f"サポートされていない画像のMIMEタイプです: {image_path} ({mime_type})")
     with open(image_path, "rb") as f:
         image_bytes = f.read()
     return types.Part.from_bytes(data=image_bytes, mime_type=mime_type)
@@ -426,8 +428,10 @@ def generate_bouquet_image(
 
 def _load_image_part(image_path: str) -> types.Part:
     mime_type, _ = mimetypes.guess_type(image_path)
-    if mime_type is None or not mime_type.startswith("image/"):
-        raise ValueError(f"画像のMIMEタイプを判定できません: {image_path}")
+    # Gemini API が受け付ける画像 MIME タイプのみを許可する（拡張子推測の誤検出を防ぐ）
+    allowed_mime_types = {"image/png", "image/jpeg", "image/webp", "image/heic", "image/heif"}
+    if mime_type not in allowed_mime_types:
+        raise ValueError(f"サポートされていない画像のMIMEタイプです: {image_path} ({mime_type})")
     with open(image_path, "rb") as f:
         image_bytes = f.read()
     return types.Part.from_bytes(data=image_bytes, mime_type=mime_type)
