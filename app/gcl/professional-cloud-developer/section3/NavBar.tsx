@@ -3,11 +3,12 @@
 import { useCallback, useEffect, useState } from 'react';
 import { type NavItem, NAV_ITEMS } from './constants';
 
-const sanitizeHash = (hash: string): string => {
+const sanitizeHash = (hash: string): string | null => {
     try {
         return decodeURIComponent(hash.replace(/^#/, ''));
     } catch {
-        return '';
+        // 不正なパーセントエスケープは判定不能として null を返し、active を据え置く
+        return null;
     }
 };
 
@@ -21,7 +22,13 @@ export function NavBar() {
     useEffect(() => {
         const updateFromHash = () => {
             const id = sanitizeHash(window.location.hash);
-            if (id && NAV_ITEMS.some((item) => item.id === id)) {
+            if (id === null) return;
+            // ハッシュ無しの URL へ戻った場合は先頭項目へリセットする
+            if (id === '') {
+                setActiveId(NAV_ITEMS[0]?.id ?? '');
+                return;
+            }
+            if (NAV_ITEMS.some((item) => item.id === id)) {
                 setActiveId(id);
             }
         };

@@ -21,14 +21,20 @@ export function NavBar() {
     // 初期表示時 & ハッシュ変更時の同期
     useEffect(() => {
         const syncHash = () => {
+            let decoded: string;
             try {
-                const hash = window.location.hash.slice(1);
-                const decoded = decodeURIComponent(hash);
-                if (decoded && NAV_ITEMS.some((item) => item.id === decoded)) {
-                    setActiveId(decoded);
-                }
+                decoded = decodeURIComponent(window.location.hash.slice(1));
             } catch {
-                // 不正なパーセントエスケープ等は無視
+                // 不正なパーセントエスケープ等は無視し、active を据え置く
+                return;
+            }
+            // ハッシュ無しの URL へ戻った場合は先頭項目へリセットする
+            if (decoded === '') {
+                setActiveId(NAV_ITEMS[0]?.id ?? '');
+                return;
+            }
+            if (NAV_ITEMS.some((item) => item.id === decoded)) {
+                setActiveId(decoded);
             }
         };
 
