@@ -848,6 +848,8 @@
                     </div>
                     <script type="text/plain" data-target="code-part">
                         import mimetypes
+                        import os
+                        import tempfile
 
                         from google.genai import types
 
@@ -922,21 +924,37 @@
                                 "温かみのある誕生日メッセージを作成してください。"
                             )
 
-                            response_text = ""
+                            def _run() -> str:
+                                """ストリームの生成と全チャンクの消費を1回のリトライ単位にまとめる。"""
+                                text = ""
+                                out_dir = os.path.dirname(os.path.abspath(output_txt_path))
+                                fd, tmp_path = tempfile.mkstemp(dir=out_dir, suffix=".part")
+                                try:
+                                    stream = client.models.generate_content_stream(
+                                        model=model_id,
+                                        contents=[prompt, image_part],
+                                    )
+                                    with os.fdopen(fd, "w", encoding="utf-8") as f:
+                                        # 429 はイテレーション中に送出されるため、消費もこの中で完結させる
+                                        for chunk in stream:
+                                            if chunk.text:
+                                                print(chunk.text, end="", flush=True)
+                                                text += chunk.text
+                                                f.write(chunk.text)
+                                    # 全チャンクを取り切ってから原子的に公開する
+                                    os.replace(tmp_path, output_txt_path)
+                                except BaseException:
+                                    try:
+                                        os.unlink(tmp_path)
+                                    except OSError:
+                                        # 後片付けの失敗で本来の例外を隠さない
+                                        pass
+                                    raise
+                                return text
+
                             print("バースデーメッセージを生成中...\n")
-
-                            stream = client.models.generate_content_stream(
-                                model=model_id,
-                                contents=[prompt, image_part],
-                            )
-
-                            with open(output_txt_path, "w", encoding="utf-8") as f:
-                                for chunk in stream:
-                                    if chunk.text:
-                                        print(chunk.text, end="", flush=True)
-                                        response_text += chunk.text
-                                        f.write(chunk.text)
-                                        f.flush()
+                            # call_with_backoff は後述の「429エラーへの対応」節で定義する
+                            response_text = call_with_backoff(_run)
 
                             print(f"\n\nメッセージを保存しました: {output_txt_path}")
                             return response_text
@@ -1058,6 +1076,8 @@
                         <pre><code class="language-python" id="code-backoff"></code></pre>
                     </div>
                     <script type="text/plain" data-target="code-backoff">
+                        import os
+                        import tempfile
                         import time
 
                         from google.genai import errors
@@ -1082,18 +1102,29 @@
 
                             def _run() -> str:
                                 text = ""
-                                stream = client.models.generate_content_stream(
-                                    model=model_id, contents=contents
-                                )
-                                # 429 はイテレーション中に送出されるため、for ループも callable の内側に置く
-                                with open(output_txt_path, "w", encoding="utf-8") as f:
-                                    for chunk in stream:
-                                        if chunk.text:
-                                            text += chunk.text
-                                            f.write(chunk.text)
+                                out_dir = os.path.dirname(os.path.abspath(output_txt_path))
+                                fd, tmp_path = tempfile.mkstemp(dir=out_dir, suffix=".part")
+                                try:
+                                    stream = client.models.generate_content_stream(
+                                        model=model_id, contents=contents
+                                    )
+                                    # 429 はイテレーション中に送出されるため、for ループも callable の内側に置く
+                                    with os.fdopen(fd, "w", encoding="utf-8") as f:
+                                        for chunk in stream:
+                                            if chunk.text:
+                                                text += chunk.text
+                                                f.write(chunk.text)
+                                    os.replace(tmp_path, output_txt_path)
+                                except BaseException:
+                                    try:
+                                        os.unlink(tmp_path)
+                                    except OSError:
+                                        pass
+                                    raise
                                 return text
 
-                            # リトライ時は "w" で開き直すので、途中まで書かれた内容は破棄される
+                            # 一時ファイルへ書き、成功時のみ os.replace で公開するため、
+                            # 途中で失敗した試行の内容が output_txt_path に残ることはない
                             return call_with_backoff(_run)
                     </script>
                     <div class="callout callout-warning">
