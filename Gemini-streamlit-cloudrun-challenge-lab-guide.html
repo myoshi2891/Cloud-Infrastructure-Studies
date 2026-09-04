@@ -673,10 +673,12 @@ export REGION=&lt;ラボ指定のリージョン&gt;</code></pre>
   -H "Content-Type: application/json" \
   "https://${REGION}-aiplatform.googleapis.com/v1/projects/${PROJECT}/locations/${REGION}/publishers/google/models/${MODEL_ID}:generateContent" \
   -d '{
-        "contents": {
-          "role": "user",
-          "parts": { "text": "&lt;ここにプロンプト&gt;" }
-        }
+        "contents": [
+          {
+            "role": "user",
+            "parts": [ { "text": "&lt;ここにプロンプト&gt;" } ]
+          }
+        ]
       }'</code></pre>
                     <h3>よくあるエラーと対処</h3>
                     <div class="diagram-wrap"><div id="diagram-task1trouble"></div></div>

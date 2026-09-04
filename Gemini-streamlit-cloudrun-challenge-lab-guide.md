@@ -124,10 +124,12 @@ curl -X POST \
   -H "Content-Type: application/json" \
   "https://${REGION}-aiplatform.googleapis.com/v1/projects/${PROJECT}/locations/${REGION}/publishers/google/models/${MODEL_ID}:generateContent" \
   -d '{
-        "contents": {
-          "role": "user",
-          "parts": { "text": "<ここにプロンプト>" }
-        }
+        "contents": [
+          {
+            "role": "user",
+            "parts": [ { "text": "<ここにプロンプト>" } ]
+          }
+        ]
       }'
 ```
 
