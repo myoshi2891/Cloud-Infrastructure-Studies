@@ -68,7 +68,10 @@ Cloud Shell / Lab 提供の IDE には `gcloud` SDK が事前設定されてい�
 
 ```bash
 export PROJECT_ID=$(gcloud config get-value project)
-export REGION=$(gcloud config get-value compute/region 2>/dev/null || echo "us-central1")
+REGION=$(gcloud config get-value compute/region 2>/dev/null)
+# gcloud は未設定時に終了コード 0 のまま "(unset)" を出力するため、|| では捕捉できない
+case "$REGION" in ''|'(unset)') REGION="us-central1" ;; esac
+export REGION
 echo "PROJECT_ID=${PROJECT_ID}, REGION=${REGION}"
 ```
 
