@@ -1,5 +1,6 @@
 # Gemini × Streamlit × Cloud Run チャレンジラボ攻略ガイド
-### 初学者向けステップバイステップ解説 & ベストプラクティス
+
+**初学者向けステップバイステップ解説 & ベストプラクティス**
 
 > 対象ラボ: **Develop Gen AI Apps with Gemini and Streamlit: Challenge Lab**（Google Cloud Skills Boost / GEARプログラム）
 > ソース: https://www.skills.google/course_templates/978/labs/647543
@@ -9,16 +10,19 @@
 ## 1. このガイドについて
 
 ### 1.1 対象読者
+
 - Google Cloud を触り始めたばかりのインフラ / アプリケーションエンジニア
 - Gemini（Vertex AI の生成AIモデル）を使ったアプリ開発が初めての方
 - Cloud Run / Artifact Registry / Cloud Build の基本的なCI/CDフローを学びたい方
 
 ### 1.2 前提知識
+
 - Linuxシェルの基本操作（`cd`、`git clone` など）
 - Pythonの基本文法
 - Dockerの概念（イメージ、コンテナ、Dockerfile）を薄く知っていると理解が早い
 
 ### 1.3 このラボのゴール
+
 Cymbal Health（架空のヘルスケア企業）向けに、食事制限・アレルギー・冷蔵庫の在庫からレシピを提案する **AI Chef アプリ** のPoC（Proof of Concept）を、Gemini + Streamlit + Cloud Run で構築し、実際に公開するところまでを一気通貫で体験します。
 
 ---
@@ -83,7 +87,8 @@ flowchart TD
 
 ```bash
 export PROJECT=$(gcloud config get-value project)
-export REGION=<ラボ指定のリージョン>
+# REGION はラボの指示で指定されたリージョンに置き換える
+export REGION="us-central1"
 ```
 
 | 変数名 | 用途 | 使われる場面 |
@@ -100,6 +105,7 @@ export REGION=<ラボ指定のリージョン>
 ## 5. Task 1: cURLでGemini APIとの疎通確認
 
 ### 5.1 やること
+
 1. Agent Platform（Vertex AI）の Workbench から JupyterLab を開く
 2. `prompt.ipynb` を開き、指定のプロンプトをセル5に設定
 3. 全セルを実行し、Gemini からのレスポンスを確認
@@ -116,6 +122,7 @@ export REGION=<ラボ指定のリージョン>
 | 6 | 全セル実行 → 保存 | 結果の確認と再現性の確保 |
 
 ### 5.3 cURLの中身（概念）
+
 `generateContent` APIは、モデルにロール付きのメッセージ（`contents`）を送信し、テキスト応答を受け取るシンプルなREST APIです。
 
 ```bash
@@ -159,17 +166,25 @@ flowchart TD
 ## 6. Task 2: Streamlit UI と Gemini プロンプトを chef.py に実装
 
 ### 6.1 やること
+
 1. Cloud Shell でサンプルリポジトリを clone
 2. `requirements.txt` に依存関係を追記
 3. `chef.py` をダウンロードして編集（ワイン選択のUI追加 + プロンプト実装）
 4. 編集後のファイルをGCSバケットへアップロード（採点用）
 
 ```bash
-git clone https://github.com/GoogleCloudPlatform/generative-ai.git
-cd generative-ai/gemini/sample-apps/gemini-streamlit-cloudrun
+# 作業ディレクトリを作成して移動
+mkdir -p ~/chef-app && cd ~/chef-app
+
+# ラボが指定したバケットから chef.py などの雛形ファイル一式を取得する
+# BUCKET_NAME はラボの指示で指定されたバケット名に置き換える
+gcloud storage cp gs://BUCKET_NAME/* .
+ls
 ```
 
-> **重要:** 作業はこのディレクトリ配下で完結させます。別の場所で `chef.py` を編集すると、Streamlitのフレームワークコード（`cuisine` / `dietary_preference` / `allergy` などのUI変数）にアクセスできず、Task 3以降がすべて失敗します。
+> **重要:** 以降の作業はこのディレクトリ配下で完結させます。`chef.py` にはラボ側が用意した Streamlit のフレームワークコード（`cuisine` / `dietary_preference` / `allergy` などのUI変数）が含まれており、別の場所で書き起こしたファイルに差し替えるとTask 3以降がすべて失敗します。
+>
+> **注意（サンプルリポジトリとの混同を避ける）:** 公開サンプル `GoogleCloudPlatform/generative-ai` の `gemini/sample-apps/gemini-streamlit-cloudrun` は **参考実装であり、このラボの `chef.py` ではありません**。当該ディレクトリに含まれるのは `app.py` で、UI項目もシェフ向けではなく、環境変数の契約も `GOOGLE_CLOUD_PROJECT` / `GOOGLE_CLOUD_REGION` と本ガイドの `PROJECT` / `REGION` とは異なります。clone して差し替えると採点も動作も通りません。
 
 ### 6.2 UIウィジェット（ワイン選択）の追加
 
@@ -215,7 +230,7 @@ and the nutritional facts.
 > **ベストプラクティス（本番運用を見据えて）:** このラボでは `GCP_PROJECT_ID` や `GEMINI_FLASH_MODEL_ID` をコード内の文字列として直接置換しますが、実プロダクトでは環境変数（`os.environ`）やSecret Managerから読み込むのが望ましい設計です。Task 5で実際に `--set-env-vars PROJECT=$PROJECT,REGION=$REGION` として環境変数注入を行うのは、この考え方の実践です。
 
 > **参考ソース:**
-> - サンプルアプリのソース一式（gemini-streamlit-cloudrun）: https://github.com/GoogleCloudPlatform/generative-ai/tree/main/gemini/sample-apps/gemini-streamlit-cloudrun
+> - 参考実装（`app.py`。ラボの `chef.py` とは別物）: https://github.com/GoogleCloudPlatform/generative-ai/tree/main/gemini/sample-apps/gemini-streamlit-cloudrun
 > - Streamlit 公式ドキュメント（CLI / run コマンド）: https://docs.streamlit.io/develop/api-reference/cli/run
 
 ---
@@ -241,8 +256,9 @@ python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 
-export PROJECT=<プロジェクトID>
-export REGION=<リージョン>
+# PROJECT / REGION は「4. 事前準備」で export 済みの値をそのまま再利用する
+# Cloud Shell のセッションが切れた場合のみ、事前準備のexportを再実行する
+echo "PROJECT=$PROJECT / REGION=$REGION"
 
 streamlit run chef.py
 ```
@@ -262,6 +278,7 @@ streamlit run chef.py
 ## 8. Task 4: Dockerfileの修正 & Artifact Registryへのpush
 
 ### 8.1 やること
+
 1. `Dockerfile` のエントリーポイントを `chef.py` に向ける
 2. Artifact Registry に Docker形式のリポジトリを作成
 3. Cloud Build でイメージをビルドし、Artifact Registryへ自動push
@@ -372,6 +389,7 @@ flowchart TD
 ```
 
 ### 9.4 デプロイ後の確認
+
 1. コマンド完了後に表示されるURLをブラウザで開く
 2. Streamlit UI上で cuisine / dietary_preference / allergy / ingredients / wine を入力
 3. Gemini からレシピ提案が返ってくることを確認

@@ -551,7 +551,8 @@
                         </p>
                     </div>
                     <pre><code class="language-bash">export PROJECT=$(gcloud config get-value project)
-export REGION=&lt;ラボ指定のリージョン&gt;</code></pre>
+# REGION はラボの指示で指定されたリージョンに置き換える
+export REGION="us-central1"</code></pre>
                     <div class="table-wrap">
                         <table>
                             <thead>
@@ -739,17 +740,36 @@ export REGION=&lt;ラボ指定のリージョン&gt;</code></pre>
                             <li>編集後のファイルをGCSバケットへアップロード（採点用）</li>
                         </ol>
                     </div>
-                    <pre><code class="language-bash">git clone https://github.com/GoogleCloudPlatform/generative-ai.git
-cd generative-ai/gemini/sample-apps/gemini-streamlit-cloudrun</code></pre>
+                    <pre><code class="language-bash"># 作業ディレクトリを作成して移動
+mkdir -p ~/chef-app &amp;&amp; cd ~/chef-app
+
+# ラボが指定したバケットから chef.py などの雛形ファイル一式を取得する
+# BUCKET_NAME はラボの指示で指定されたバケット名に置き換える
+gcloud storage cp gs://BUCKET_NAME/* .
+ls</code></pre>
                     <div class="callout warning">
                         <p class="callout-label">重要</p>
                         <p>
-                            作業はこのディレクトリ配下で完結させます。別の場所で
-                            <code>chef.py</code>
-                            を編集すると、Streamlitのフレームワークコード（<code>cuisine</code> /
+                            以降の作業はこのディレクトリ配下で完結させます。<code>chef.py</code>
+                            にはラボ側が用意したStreamlitのフレームワークコード（<code>cuisine</code> /
                             <code>dietary_preference</code> /
-                            <code>allergy</code> などのUI変数）にアクセスできず、Task
+                            <code>allergy</code> などのUI変数）が含まれており、別の場所で書き起こしたファイルに差し替えるとTask
                             3以降がすべて失敗します。
+                        </p>
+                    </div>
+                    <div class="callout warning">
+                        <p class="callout-label">注意（サンプルリポジトリとの混同を避ける）</p>
+                        <p>
+                            公開サンプル
+                            <code>GoogleCloudPlatform/generative-ai</code> の
+                            <code>gemini/sample-apps/gemini-streamlit-cloudrun</code> は
+                            <strong>参考実装であり、このラボの <code>chef.py</code> ではありません</strong>。当該ディレクトリに含まれるのは
+                            <code>app.py</code>
+                            で、UI項目もシェフ向けではなく、環境変数の契約も
+                            <code>GOOGLE_CLOUD_PROJECT</code> /
+                            <code>GOOGLE_CLOUD_REGION</code> と本ガイドの <code>PROJECT</code> /
+                            <code>REGION</code> とは異なります。clone
+                            して差し替えると採点も動作も通りません。
                         </p>
                     </div>
                     <h3>UIウィジェット（ワイン選択）の追加</h3>
@@ -836,7 +856,7 @@ and the nutritional facts.
                         <p class="callout-label">参考ソース</p>
                         <ul>
                             <li>
-                                サンプルアプリのソース一式（gemini-streamlit-cloudrun）:
+                                参考実装（<code>app.py</code>。ラボの <code>chef.py</code> とは別物）:
                                 <a
                                     href="https://github.com/GoogleCloudPlatform/generative-ai/tree/main/gemini/sample-apps/gemini-streamlit-cloudrun"
                                     target="_blank"
@@ -875,8 +895,9 @@ and the nutritional facts.
 source venv/bin/activate
 pip install -r requirements.txt
 
-export PROJECT=&lt;プロジェクトID&gt;
-export REGION=&lt;リージョン&gt;
+# PROJECT / REGION は「4. 事前準備」で export 済みの値をそのまま再利用する
+# Cloud Shell のセッションが切れた場合のみ、事前準備のexportを再実行する
+echo "PROJECT=$PROJECT / REGION=$REGION"
 
 streamlit run chef.py</code></pre>
                     <div class="table-wrap">
@@ -1345,7 +1366,7 @@ gcloud storage rm --recursive gs://BUCKET_NAME --project=$PROJECT</code></pre>
                             <span class="ref-num">02</span>
                             <div>
                                 <span class="ref-title"
-                                    >GitHub: gemini-streamlit-cloudrun サンプルアプリ</span
+                                    >GitHub: gemini-streamlit-cloudrun 参考実装（app.py / ラボの chef.py とは別物）</span
                                 ><a
                                     class="ref-url"
                                     href="https://github.com/GoogleCloudPlatform/generative-ai/tree/main/gemini/sample-apps/gemini-streamlit-cloudrun"
@@ -1510,10 +1531,10 @@ gcloud storage rm --recursive gs://BUCKET_NAME --project=$PROJECT</code></pre>
             </main>
         </div>
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/mermaid@11.12.0/dist/mermaid.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js" integrity="sha512-wW8K3TEH5ZViD4aMPzwPdhXKs/Kb5MAm7qLRd3QliYlHy0u9utSKZsZzqlZAgJ9xxXp81acwnrZVZ8oTfoLG1g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js" integrity="sha512-i0JFeiLhgBAMGfIEVqMQwALhhse1orgl34XyotSUNiNbDIB1qS9IK53sDochCIrwvj4nJ51CsDSOqhGyhZITGg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.12.0/mermaid.min.js" integrity="sha512-5TKaYvhenABhlGIKSxAWLFJBZCSQw7HTV7aL1dJcBokM/+3PNtfgJFlv8E6Us/B1VMlQ4u8sPzjudL9TEQ06ww==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 if (window.hljs) {
