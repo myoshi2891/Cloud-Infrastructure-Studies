@@ -25,7 +25,9 @@ export type ColorKey =
     | 'card-devops-handbook'
     | 'card-release-it'
     | 'card-infrastructure-as-code'
-    | 'card-pcd';
+    | 'card-pcd'
+    | 'card-understanding-the-linux-kernel'
+    | 'card-unix-linux-sysadmin-handbook';
 
 export interface Exam {
     id: string;
@@ -62,6 +64,8 @@ export const cardColorMap: Record<ColorKey, string> = {
     'card-release-it': 'card-release-it',
     'card-infrastructure-as-code': 'card-infrastructure-as-code',
     'card-pcd': 'card-pcd',
+    'card-understanding-the-linux-kernel': 'card-understanding-the-linux-kernel',
+    'card-unix-linux-sysadmin-handbook': 'card-unix-linux-sysadmin-handbook',
 };
 
 export const providerMeta: Record<
