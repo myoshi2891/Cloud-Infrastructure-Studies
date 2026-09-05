@@ -1273,7 +1273,7 @@ export const DIAGRAMS: Record<DiagramId, string> = {
     class Cmd,Load,Init2,Register,Unload,Cleanup,Unreg highlightFill`,
 
     'diag-42': `flowchart LR
-    A["2022年 (Linux 6.1)<br/>Rustサポートを実験的に導入"] --> B["2023年 (Linux 6.8)<br/>最初のRust製ドライバがマージ"]
+    A["2022年 (Linux 6.1)<br/>Rustサポートを実験的に導入"] --> B["2024年 (Linux 6.8)<br/>最初のRust製ドライバがマージ"]
     B --> C["2025年12月<br/>Kernel Maintainers Summitで<br/>「実験」終了を正式宣言"]
     C --> D["2026年<br/>Android 16 (6.12カーネル)で<br/>Rust製ashmemモジュールが<br/>実機に大量出荷"]
 

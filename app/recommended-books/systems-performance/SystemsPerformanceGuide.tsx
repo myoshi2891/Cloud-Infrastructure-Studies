@@ -381,7 +381,7 @@ export function SystemsPerformanceGuide() {
                 </p>
                 <p>
                     <strong>注記</strong>：トレースポイントは kprobe
-                    と比べれば安定していますが、<strong>保証されたABIではありません</strong>。イベント名・引数フィールドの構成・そもそもの提供有無は、カーネルのアップデートに伴って変更・削除されることがあります。利用可能なイベントとフィールドは、実行環境ごとに{' '}<code>bpftrace -l 'tracepoint:*'</code> や{' '}<code
+                    と比べれば安定していますが、<strong>保証されたABIではありません</strong>。イベント名・引数フィールドの構成・そもそもの提供有無は、カーネルのアップデートに伴って変更・削除されることがあります。利用可能なイベントとフィールドは、実行環境ごとに{' '}<code>bpftrace -l &apos;tracepoint:*&apos;</code> や{' '}<code
                         >/sys/kernel/debug/tracing/events/&lt;subsystem&gt;/&lt;event&gt;/format</code
                     >{' '}で確認する運用にしてください。
                 </p>
@@ -423,7 +423,7 @@ export function SystemsPerformanceGuide() {
                     <li><code>perf script &gt; out.perf-script</code></li>
                     <li>
                         Step3: bpftraceでオンCPUサンプルの出現回数をカーネルスタック別に集計<br /><code
-                            >bpftrace -e 'profile:hz:99 &#123; @[kstack] = count(); &#125;'</code
+                            >bpftrace -e &apos;profile:hz:99 &#123; @[kstack] = count(); &#125;&apos;</code
                         >
                     </li>
                 </ul>
@@ -474,7 +474,7 @@ export function SystemsPerformanceGuide() {
                                 </td>
                                 <td>
                                     <code>cpu.max</code>（<code
-                                        >"&lt;quota&gt; &lt;period&gt;"</code
+                                        >&quot;&lt;quota&gt; &lt;period&gt;&quot;</code
                                     >
                                     を1ファイルで指定。無制限は <code>max</code>）
                                 </td>
@@ -633,12 +633,12 @@ export function SystemsPerformanceGuide() {
                     <li>NIC使用率（帯域に対する割合）<br /><code>nicstat 1</code></li>
                     <li>
                         パケットキャプチャ（フィルタ＋件数上限で保存量を抑える）<br /><code
-                            >tcpdump -i eth0 'tcp port 443' -c 10000 -w out.pcap</code
+                            >tcpdump -i eth0 &apos;tcp port 443&apos; -c 10000 -w out.pcap</code
                         >
                     </li>
                     <li>
                         長時間採取時はローテーション（100MB × 5ファイルで上限）<br /><code
-                            >tcpdump -i eth0 'tcp port 443' -C 100 -W 5 -w out.pcap</code
+                            >tcpdump -i eth0 &apos;tcp port 443&apos; -C 100 -W 5 -w out.pcap</code
                         >
                     </li>
                     <li>
@@ -807,14 +807,14 @@ export function SystemsPerformanceGuide() {
                 <ul>
                     <li>
                         execveによるプログラム実行をリアルタイムに表示（実行されるファイル名を表示）<br /><code
-                            >bpftrace -e 'tracepoint:syscalls:sys_enter_execve &#123; printf("%s\n",
-                            str(args.filename)); &#125;'</code
+                            >bpftrace -e &apos;tracepoint:syscalls:sys_enter_execve &#123; printf(&quot;%s\n&quot;,
+                            str(args.filename)); &#125;&apos;</code
                         >
                     </li>
                     <li>
                         システムコールの発行回数をプロセス名ごとに集計<br /><code
-                            >bpftrace -e 'tracepoint:raw_syscalls:sys_enter &#123; @[comm] = count();
-                            &#125;'</code
+                            >bpftrace -e &apos;tracepoint:raw_syscalls:sys_enter &#123; @[comm] = count();
+                            &#125;&apos;</code
                         >
                     </li>
                     <li>
@@ -837,7 +837,7 @@ export function SystemsPerformanceGuide() {
                 </p>
                 <p>
                     なお<code>kprobe:blk_account_io_start</code>のようなカーネル内部関数へのkprobeは、インライン化や関数名の変更でカーネルバージョンごとに使えなくなることがあります。自作する場合は比較的安定した<code>tracepoint:block:*</code>を優先し、利用可能なプローブは<code
-                        >bpftrace -l 'tracepoint:block:*'</code
+                        >bpftrace -l &apos;tracepoint:block:*&apos;</code
                     >で事前に確認してください。
                 </p>
                 <hr />
@@ -959,7 +959,7 @@ export function SystemsPerformanceGuide() {
                     <div className="ref-card" id="ref2">
                         <div className="num">2</div>
                         <div className="txt">
-                            Brendan Gregg, "The USE Method".
+                            Brendan Gregg, &quot;The USE Method&quot;.
                             <a href="https://www.brendangregg.com/usemethod.html"
                                 >https://www.brendangregg.com/usemethod.html</a
                             >
@@ -968,7 +968,7 @@ export function SystemsPerformanceGuide() {
                     <div className="ref-card" id="ref3">
                         <div className="num">3</div>
                         <div className="txt">
-                            Brendan Gregg, "USE Method: Linux Performance Checklist".
+                            Brendan Gregg, &quot;USE Method: Linux Performance Checklist&quot;.
                             <a href="https://www.brendangregg.com/USEmethod/use-linux.html"
                                 >https://www.brendangregg.com/USEmethod/use-linux.html</a
                             >
@@ -977,7 +977,7 @@ export function SystemsPerformanceGuide() {
                     <div className="ref-card" id="ref4">
                         <div className="num">4</div>
                         <div className="txt">
-                            Brendan Gregg, "Thinking Methodically About Performance", Communications
+                            Brendan Gregg, &quot;Thinking Methodically About Performance&quot;, Communications
                             of the ACM.
                             <a
                                 href="https://cacm.acm.org/practice/thinking-methodically-about-performance/"
@@ -988,7 +988,7 @@ export function SystemsPerformanceGuide() {
                     <div className="ref-card" id="ref5">
                         <div className="num">5</div>
                         <div className="txt">
-                            Wikipedia, "Brendan Gregg".
+                            Wikipedia, &quot;Brendan Gregg&quot;.
                             <a href="https://en.wikipedia.org/wiki/Brendan_Gregg"
                                 >https://en.wikipedia.org/wiki/Brendan_Gregg</a
                             >
@@ -997,7 +997,7 @@ export function SystemsPerformanceGuide() {
                     <div className="ref-card" id="ref6">
                         <div className="num">6</div>
                         <div className="txt">
-                            Brendan Gregg, "BPF Performance Tools" 書籍公式ページ.
+                            Brendan Gregg, &quot;BPF Performance Tools&quot; 書籍公式ページ.
                             <a href="https://www.brendangregg.com/bpf-performance-tools-book.html"
                                 >https://www.brendangregg.com/bpf-performance-tools-book.html</a
                             >
@@ -1006,7 +1006,7 @@ export function SystemsPerformanceGuide() {
                     <div className="ref-card" id="ref7">
                         <div className="num">7</div>
                         <div className="txt">
-                            GitHub, "brendangregg/bpf-perf-tools-book" 公式リポジトリ.
+                            GitHub, &quot;brendangregg/bpf-perf-tools-book&quot; 公式リポジトリ.
                             <a href="https://github.com/brendangregg/bpf-perf-tools-book"
                                 >https://github.com/brendangregg/bpf-perf-tools-book</a
                             >
@@ -1015,7 +1015,7 @@ export function SystemsPerformanceGuide() {
                     <div className="ref-card" id="ref8">
                         <div className="num">8</div>
                         <div className="txt">
-                            Brendan Gregg, "CPU Flame Graphs".
+                            Brendan Gregg, &quot;CPU Flame Graphs&quot;.
                             <a href="https://www.brendangregg.com/FlameGraphs/cpuflamegraphs.html"
                                 >https://www.brendangregg.com/FlameGraphs/cpuflamegraphs.html</a
                             >
@@ -1024,7 +1024,7 @@ export function SystemsPerformanceGuide() {
                     <div className="ref-card" id="ref9">
                         <div className="num">9</div>
                         <div className="txt">
-                            Wikipedia, "Flame graph".
+                            Wikipedia, &quot;Flame graph&quot;.
                             <a href="https://en.wikipedia.org/wiki/Flame_graph"
                                 >https://en.wikipedia.org/wiki/Flame_graph</a
                             >
@@ -1033,7 +1033,7 @@ export function SystemsPerformanceGuide() {
                     <div className="ref-card" id="ref10">
                         <div className="num">10</div>
                         <div className="txt">
-                            USENIX ATC'17, "Visualizing Performance with Flame Graphs".
+                            USENIX ATC&apos;17, &quot;Visualizing Performance with Flame Graphs&quot;.
                             <a
                                 href="https://www.usenix.org/conference/atc17/program/presentation/gregg-flame"
                                 >https://www.usenix.org/conference/atc17/program/presentation/gregg-flame</a
@@ -1043,7 +1043,7 @@ export function SystemsPerformanceGuide() {
                     <div className="ref-card" id="ref11">
                         <div className="num">11</div>
                         <div className="txt">
-                            Brendan Gregg, "Linux Performance" ツールマップ.
+                            Brendan Gregg, &quot;Linux Performance&quot; ツールマップ.
                             <a href="https://www.brendangregg.com/linuxperf.html"
                                 >https://www.brendangregg.com/linuxperf.html</a
                             >
@@ -1052,7 +1052,7 @@ export function SystemsPerformanceGuide() {
                     <div className="ref-card" id="ref12">
                         <div className="num">12</div>
                         <div className="txt">
-                            Brendan Gregg, "Cloud Performance Root Cause Analysis at Netflix"
+                            Brendan Gregg, &quot;Cloud Performance Root Cause Analysis at Netflix&quot;
                             (YOW2018スライド).
                             <a
                                 href="https://www.brendangregg.com/Slides/YOW2018_CloudPerfRCANetflix/"
@@ -1063,7 +1063,7 @@ export function SystemsPerformanceGuide() {
                     <div className="ref-card" id="ref13">
                         <div className="num">13</div>
                         <div className="txt">
-                            Netflix Technology Blog, "Noisy Neighbor Detection with eBPF".
+                            Netflix Technology Blog, &quot;Noisy Neighbor Detection with eBPF&quot;.
                             <a
                                 href="https://netflixtechblog.com/noisy-neighbor-detection-with-ebpf-64b1f4b3bbdd"
                                 >https://netflixtechblog.com/noisy-neighbor-detection-with-ebpf-64b1f4b3bbdd</a
@@ -1073,8 +1073,8 @@ export function SystemsPerformanceGuide() {
                     <div className="ref-card" id="ref14">
                         <div className="num">14</div>
                         <div className="txt">
-                            Netflix Technology Blog, "Announcing bpftop: Streamlining eBPF
-                            performance optimization".
+                            Netflix Technology Blog, &quot;Announcing bpftop: Streamlining eBPF
+                            performance optimization&quot;.
                             <a
                                 href="https://netflixtechblog.com/announcing-bpftop-streamlining-ebpf-performance-optimization-6a727c1ae2e5"
                                 >https://netflixtechblog.com/announcing-bpftop-streamlining-ebpf-performance-optimization-6a727c1ae2e5</a
@@ -1084,8 +1084,8 @@ export function SystemsPerformanceGuide() {
                     <div className="ref-card" id="ref15">
                         <div className="num">15</div>
                         <div className="txt">
-                            Netflix Technology Blog, "How Netflix uses eBPF flow logs at scale for
-                            network insight".
+                            Netflix Technology Blog, &quot;How Netflix uses eBPF flow logs at scale for
+                            network insight&quot;.
                             <a
                                 href="https://netflixtechblog.com/how-netflix-uses-ebpf-flow-logs-at-scale-for-network-insight-e3ea997dca96"
                                 >https://netflixtechblog.com/how-netflix-uses-ebpf-flow-logs-at-scale-for-network-insight-e3ea997dca96</a
@@ -1095,8 +1095,8 @@ export function SystemsPerformanceGuide() {
                     <div className="ref-card" id="ref16">
                         <div className="num">16</div>
                         <div className="txt">
-                            InfoQ, "Netflix Uncovers Kernel-Level Bottlenecks While Scaling
-                            Containers on Modern CPUs" (2026).
+                            InfoQ, &quot;Netflix Uncovers Kernel-Level Bottlenecks While Scaling
+                            Containers on Modern CPUs&quot; (2026).
                             <a
                                 href="https://infoq.com/news/2026/03/netflix-kernel-scaling-container/"
                                 >https://infoq.com/news/2026/03/netflix-kernel-scaling-container/</a
@@ -1106,7 +1106,7 @@ export function SystemsPerformanceGuide() {
                     <div className="ref-card" id="ref17">
                         <div className="num">17</div>
                         <div className="txt">
-                            Grafana Labs, "The RED Method: How to Instrument Your Services" (Tom
+                            Grafana Labs, &quot;The RED Method: How to Instrument Your Services&quot; (Tom
                             Wilkie).
                             <a
                                 href="https://grafana.com/blog/the-red-method-how-to-instrument-your-services/"
@@ -1117,8 +1117,8 @@ export function SystemsPerformanceGuide() {
                     <div className="ref-card" id="ref18">
                         <div className="num">18</div>
                         <div className="txt">
-                            The New Stack, "The RED Method: A New Approach to Monitoring
-                            Microservices".
+                            The New Stack, &quot;The RED Method: A New Approach to Monitoring
+                            Microservices&quot;.
                             <a href="https://thenewstack.io/monitoring-microservices-red-method/"
                                 >https://thenewstack.io/monitoring-microservices-red-method/</a
                             >
@@ -1136,7 +1136,7 @@ export function SystemsPerformanceGuide() {
                     <div className="ref-card" id="ref20">
                         <div className="num">20</div>
                         <div className="txt">
-                            AWS, "The Security Design of the AWS Nitro System" ホワイトペーパー.
+                            AWS, &quot;The Security Design of the AWS Nitro System&quot; ホワイトペーパー.
                             <a
                                 href="https://docs.aws.amazon.com/whitepapers/latest/security-design-of-aws-nitro-system/the-ec2-approach-to-preventing-side-channels.html"
                                 >https://docs.aws.amazon.com/whitepapers/latest/security-design-of-aws-nitro-system/the-ec2-approach-to-preventing-side-channels.html</a
@@ -1146,8 +1146,8 @@ export function SystemsPerformanceGuide() {
                     <div className="ref-card" id="ref21">
                         <div className="num">21</div>
                         <div className="txt">
-                            AWS Open Source Blog, "Announcing the Firecracker Open Source
-                            Technology".
+                            AWS Open Source Blog, &quot;Announcing the Firecracker Open Source
+                            Technology&quot;.
                             <a
                                 href="https://aws.amazon.com/blogs/opensource/firecracker-open-source-secure-fast-microvm-serverless/"
                                 >https://aws.amazon.com/blogs/opensource/firecracker-open-source-secure-fast-microvm-serverless/</a
@@ -1157,7 +1157,7 @@ export function SystemsPerformanceGuide() {
                     <div className="ref-card" id="ref22">
                         <div className="num">22</div>
                         <div className="txt">
-                            Brendan Gregg, "Systems Performance 2nd Edition"
+                            Brendan Gregg, &quot;Systems Performance 2nd Edition&quot;
                             書籍公式ページ（近況含む）.
                             <a
                                 href="https://www.brendangregg.com/systems-performance-2nd-edition-book.html"

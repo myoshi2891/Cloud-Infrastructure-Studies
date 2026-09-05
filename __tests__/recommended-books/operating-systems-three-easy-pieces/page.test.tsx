@@ -93,8 +93,12 @@ describe('Operating Systems: Three Easy Pieces 初学者向け学習ガイド �
         expect(pageCss).toMatch(/list-style-position:\s*outside\s*!important/);
 
         // Mermaid ノード文字色の高コントラスト保証（暗色背景での黒文字化防止）
-        expect(pageCss).toMatch(/\.ostep-page\s+\.mermaid-wrap\s+:global\(\.node\s+\.nodeLabel\)/);
-        expect(pageCss).toMatch(/color:\s*#eaf2ff\s*!important/);
+        // page.css は CSS Modules ではないため :global() は使わず素のセレクタで記述する
+        expect(pageCss).toMatch(/\.ostep-page\s+\.mermaid-wrap\s+\.node\s+\.nodeLabel\b/);
+        expect(pageCss).not.toContain(':global(');
+        expect(pageCss).toMatch(
+            /color:\s*var\(--color-pca-s4-mermaid-label\)\s*!important/,
+        );
     });
 
     it('components/MermaidDiagram.module.css 内で Accelerate の classDef box ルールが他ページへ波及しないようスコープされている', async () => {

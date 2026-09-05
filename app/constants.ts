@@ -28,7 +28,8 @@ export type ColorKey =
     | 'card-pcd'
     | 'card-understanding-the-linux-kernel'
     | 'card-unix-linux-sysadmin-handbook'
-    | 'card-systems-performance';
+    | 'card-systems-performance'
+    | 'card-operating-systems-three-easy-pieces';
 
 export interface Exam {
     id: string;
@@ -68,6 +69,7 @@ export const cardColorMap: Record<ColorKey, string> = {
     'card-understanding-the-linux-kernel': 'card-understanding-the-linux-kernel',
     'card-unix-linux-sysadmin-handbook': 'card-unix-linux-sysadmin-handbook',
     'card-systems-performance': 'card-systems-performance',
+    'card-operating-systems-three-easy-pieces': 'card-operating-systems-three-easy-pieces',
 };
 
 export const providerMeta: Record<

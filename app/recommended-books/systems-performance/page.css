@@ -1,26 +1,8 @@
 /* app/recommended-books/systems-performance/page.css */
 
 .systems-performance-page {
-    --bg: #07111e;
-    --bg-card: #0d1a2b;
-    --bg-card-2: #101f33;
-    --border: #1d3350;
-    --border-soft: #16283f;
-    --text: #dbe4f3;
-    --text-dim: #8fa2c0;
-    --text-faint: #6a7d9c;
-    --accent: #7c9eff;
-    --accent-soft: #3a4f80;
-    --accent-bg: #15233d;
-    --danger: #ff8fa3;
-    --danger-bg: #3a1420;
-    --warn: #ffbd6e;
-    --warn-bg: #3a2810;
-    --success: #7fe0a8;
-    --success-bg: #0f2c1e;
-    --sidebar-w: 280px;
-    background: var(--bg);
-    color: var(--text);
+    background: var(--color-pca-s4-background);
+    color: var(--color-pca-s4-foreground);
     min-height: 100vh;
 }
 
@@ -35,8 +17,8 @@
     left: 0;
     bottom: 0;
     width: 280px;
-    background: #060d17;
-    border-right: 1px solid var(--border-soft);
+    background: var(--color-pca-s4-sidebar-bg);
+    border-right: 1px solid var(--color-pca-s4-border-soft);
     overflow-y: auto;
     padding: 24px 0 40px;
     z-index: 40;
@@ -44,14 +26,14 @@
 
 .systems-performance-page .sidebar-header {
     padding: 0 20px 16px;
-    border-bottom: 1px solid var(--border-soft);
+    border-bottom: 1px solid var(--color-pca-s4-border-soft);
     margin-bottom: 14px;
 }
 
 .systems-performance-page .sidebar-header .kicker {
     font-size: 11.5px;
     letter-spacing: 0.08em;
-    color: var(--accent);
+    color: var(--color-pca-s4-accent);
     font-weight: 700;
     text-transform: uppercase;
 }
@@ -59,7 +41,7 @@
 .systems-performance-page .sidebar-header h2 {
     font-size: 15px;
     margin: 6px 0 0;
-    color: var(--text);
+    color: var(--color-pca-s4-foreground);
     line-height: 1.45;
     font-weight: 700;
 }
@@ -73,7 +55,7 @@
     padding: 8px 12px;
     border-radius: 8px;
     font-size: 13px;
-    color: var(--text-dim);
+    color: var(--color-pca-s4-foreground-dim);
     line-height: 1.45;
     margin-bottom: 2px;
     text-decoration: none;
@@ -83,14 +65,14 @@
 }
 
 .systems-performance-page .sidebar nav a:hover {
-    background: var(--accent-bg);
-    color: var(--text);
+    background: var(--color-pca-s4-accent-bg);
+    color: var(--color-pca-s4-foreground);
     text-decoration: none;
 }
 
 .systems-performance-page .sidebar nav a.active {
-    background: var(--accent-bg);
-    color: var(--accent);
+    background: var(--color-pca-s4-accent-bg);
+    color: var(--color-pca-s4-accent);
     font-weight: 700;
 }
 
@@ -108,9 +90,9 @@
     width: 40px;
     height: 40px;
     border-radius: 8px;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    color: var(--text);
+    background: var(--color-pca-s4-surface-1);
+    border: 1px solid var(--color-pca-s4-border);
+    color: var(--color-pca-s4-foreground);
     font-size: 18px;
     align-items: center;
     justify-content: center;
@@ -135,7 +117,7 @@
     font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--accent);
+    color: var(--color-pca-s4-accent);
     margin-bottom: 12px;
 }
 
@@ -143,7 +125,7 @@
     font-size: clamp(26px, 3.2vw, 38px);
     line-height: 1.35;
     margin: 0 0 16px;
-    background: linear-gradient(135deg, #dbe4f3 0%, #7c9eff 100%);
+    background: linear-gradient(135deg, var(--color-pca-s4-foreground) 0%, var(--color-pca-s4-accent) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -163,22 +145,22 @@
     gap: 6px;
     padding: 5px 12px;
     border-radius: 999px;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
+    background: var(--color-pca-s4-surface-1);
+    border: 1px solid var(--color-pca-s4-border);
     font-size: 12px;
-    color: var(--text-dim);
+    color: var(--color-pca-s4-foreground-dim);
 }
 
 .systems-performance-page .pill strong {
-    color: var(--text);
+    color: var(--color-pca-s4-foreground);
 }
 
 .systems-performance-page .main h2 {
     font-size: 24px;
     margin: 48px 0 18px;
     padding-top: 12px;
-    border-top: 1px solid var(--border-soft);
-    color: var(--text);
+    border-top: 1px solid var(--color-pca-s4-border-soft);
+    color: var(--color-pca-s4-foreground);
     font-weight: 800;
     letter-spacing: -0.01em;
     scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 24px);
@@ -193,7 +175,7 @@
 .systems-performance-page .main h3 {
     font-size: 19px;
     margin: 34px 0 14px;
-    color: var(--text);
+    color: var(--color-pca-s4-foreground);
     font-weight: 700;
     scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 24px);
 }
@@ -203,7 +185,7 @@
     display: inline-block;
     width: 4px;
     height: 16px;
-    background: var(--accent);
+    background: var(--color-pca-s4-accent);
     border-radius: 2px;
     margin-right: 8px;
     vertical-align: -2px;
@@ -211,7 +193,7 @@
 
 .systems-performance-page .main p {
     margin: 0 0 16px;
-    color: var(--text);
+    color: var(--color-pca-s4-foreground);
     line-height: 1.85;
 }
 
@@ -219,7 +201,7 @@
 .systems-performance-page .main ol {
     margin: 0 0 16px;
     padding-left: 1.4em;
-    color: var(--text);
+    color: var(--color-pca-s4-foreground);
 }
 
 .systems-performance-page .main li {
@@ -229,17 +211,17 @@
 
 .systems-performance-page .main hr {
     border: none;
-    border-top: 1px solid var(--border-soft);
+    border-top: 1px solid var(--color-pca-s4-border-soft);
     margin: 36px 0;
 }
 
 .systems-performance-page .main strong {
-    color: #f0f4fc;
+    color: var(--color-pca-s4-strong);
     font-weight: 700;
 }
 
 .systems-performance-page .main a {
-    color: var(--accent);
+    color: var(--color-pca-s4-accent);
     text-decoration: none;
 }
 
@@ -248,23 +230,22 @@
 }
 
 .systems-performance-page .main code:not(pre code) {
-    background: var(--bg-card-2);
-    border: 1px solid var(--border);
+    background: var(--color-pca-s4-surface-2);
+    border: 1px solid var(--color-pca-s4-border);
     border-radius: 5px;
     padding: 1px 6px;
     font-size: 0.9em;
-    color: #ffd08a;
+    color: var(--color-pca-s4-code-text);
     overflow-wrap: break-word;
-    word-break: break-word;
 }
 
 /* Tables */
 .systems-performance-page .table-scroll {
     overflow-x: auto;
     margin: 0 0 24px;
-    border: 1px solid var(--border);
+    border: 1px solid var(--color-pca-s4-border);
     border-radius: 10px;
-    background: var(--bg-card);
+    background: var(--color-pca-s4-surface-1);
 }
 
 .systems-performance-page table {
@@ -274,19 +255,19 @@
 }
 
 .systems-performance-page thead th {
-    background: var(--accent-bg);
-    color: var(--text);
+    background: var(--color-pca-s4-accent-bg);
+    color: var(--color-pca-s4-foreground);
     text-align: left;
     padding: 10px 14px;
     font-weight: 700;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--color-pca-s4-border);
     white-space: nowrap;
 }
 
 .systems-performance-page tbody td {
     padding: 10px 14px;
-    border-bottom: 1px solid var(--border-soft);
-    color: var(--text-dim);
+    border-bottom: 1px solid var(--color-pca-s4-border-soft);
+    color: var(--color-pca-s4-foreground-dim);
     vertical-align: top;
 }
 
@@ -295,7 +276,7 @@
 }
 
 .systems-performance-page tbody tr:hover td {
-    background: rgba(124, 158, 255, 0.04);
+    background: var(--color-pca-s4-row-hover);
 }
 
 /* Mermaid Diagrams */
@@ -304,8 +285,8 @@
     margin: 1.5rem auto 2rem;
     display: flex;
     justify-content: center;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
+    background: var(--color-pca-s4-surface-1);
+    border: 1px solid var(--color-pca-s4-border);
     border-radius: 12px;
     padding: 24px 16px;
     overflow-x: auto;
@@ -316,9 +297,9 @@
 .systems-performance-page .callout-practice {
     display: flex;
     gap: 14px;
-    background: var(--success-bg);
-    border: 1px solid #1d5a3a;
-    border-left: 4px solid var(--success);
+    background: var(--color-pca-s4-success-bg);
+    border: 1px solid var(--color-pca-s4-success-border);
+    border-left: 4px solid var(--color-pca-s4-success);
     border-radius: 10px;
     padding: 18px 20px;
     margin: 0 0 24px;
@@ -329,8 +310,8 @@
     width: 24px;
     height: 24px;
     border-radius: 6px;
-    background: var(--success);
-    color: #08150e;
+    background: var(--color-pca-s4-success);
+    color: var(--color-pca-s4-success-icon-fg);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -339,21 +320,21 @@
 }
 
 .systems-performance-page .callout-practice .body {
-    color: var(--text);
+    color: var(--color-pca-s4-foreground);
 }
 
 .systems-performance-page .callout-practice .label {
     font-size: 11px;
     font-weight: 800;
     letter-spacing: 0.06em;
-    color: var(--success);
+    color: var(--color-pca-s4-success);
     text-transform: uppercase;
     margin-bottom: 4px;
 }
 
 .systems-performance-page .callout-practice p {
     margin: 0;
-    color: var(--text);
+    color: var(--color-pca-s4-foreground);
 }
 
 .systems-performance-page .practice-label {
@@ -363,7 +344,7 @@
     font-size: 12px;
     font-weight: 800;
     letter-spacing: 0.06em;
-    color: var(--success);
+    color: var(--color-pca-s4-success);
     text-transform: uppercase;
     margin: 0 0 10px;
 }
@@ -384,8 +365,8 @@
 .systems-performance-page .ref-card {
     display: flex;
     gap: 12px;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
+    background: var(--color-pca-s4-surface-1);
+    border: 1px solid var(--color-pca-s4-border);
     border-radius: 8px;
     padding: 12px 14px;
     min-width: 0;
@@ -396,8 +377,8 @@
     width: 24px;
     height: 24px;
     border-radius: 6px;
-    background: var(--accent-bg);
-    color: var(--accent);
+    background: var(--color-pca-s4-accent-bg);
+    color: var(--color-pca-s4-accent);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -407,14 +388,13 @@
 
 .systems-performance-page .ref-card .txt {
     font-size: 12.5px;
-    color: var(--text-dim);
+    color: var(--color-pca-s4-foreground-dim);
     min-width: 0;
     overflow-wrap: break-word;
-    word-break: break-word;
 }
 
 .systems-performance-page .ref-card .txt a {
-    color: var(--accent);
+    color: var(--color-pca-s4-accent);
     font-weight: 600;
 }
 
@@ -422,12 +402,14 @@
 @media (max-width: 980px) {
     .systems-performance-page .sidebar {
         transform: translateX(-100%);
-        transition: transform 0.25s ease;
-        box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+        transition: transform 0.25s ease, visibility 0.25s ease;
+        visibility: hidden;
+        box-shadow: 0 0 40px var(--color-pca-s4-sidebar-shadow);
     }
 
     .systems-performance-page .sidebar.open {
         transform: translateX(0);
+        visibility: visible;
     }
 
     .systems-performance-page .main {
