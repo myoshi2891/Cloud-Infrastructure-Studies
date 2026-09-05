@@ -531,6 +531,12 @@ app/
       NavBar.tsx                    # サイドバーナビ (IntersectionObserver)
       constants.ts                  # Mermaid 図定義（45図）
       page.css                      # ページ固有スタイル
+    unix-linux-sysadmin-handbook/
+      page.tsx                      # 『UNIX and Linux System Administration Handbook』完全解説ガイド (Server)
+      UnixLinuxSysadminHandbookGuide.tsx # 本文＋インタラクション (Client。5部30章、Mermaid 29図、チェックリスト等)
+      NavBar.tsx                    # サイドバーナビ (IntersectionObserver)
+      constants.ts                  # Mermaid 図定義（29図）
+      page.css                      # ページ固有スタイル
 
 
 components/

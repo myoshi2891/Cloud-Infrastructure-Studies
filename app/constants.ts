@@ -793,6 +793,27 @@ const ALL_EXAMS: Exam[] = [
         icon: '📚',
         provider: 'Books',
     },
+    {
+        id: 'unix-linux-sysadmin-handbook',
+        label: 'UNIX and Linux System Administration Handbook',
+        abbr: 'SysAdmin Handbook',
+        level: 'System Administration',
+        score: '4部31章 / 29図解',
+        color: 'card-unix-linux-sysadmin-handbook',
+        href: '/recommended-books/unix-linux-sysadmin-handbook',
+        description:
+            '『UNIX and Linux System Administration Handbook, 5th Edition』の原著4パート・31章構成を土台に、2026年最新動向までを網羅した初学者のための完全実践ガイド。',
+        domains: [
+            {
+                label: '完全実践ガイド',
+                href: '/recommended-books/unix-linux-sysadmin-handbook',
+                pct: '完全解説',
+            },
+        ],
+        badge: '名著ガイド',
+        icon: '📚',
+        provider: 'Books',
+    },
 ];
 
 export const EXAMS: Exam[] = HANDS_ON_ENABLED

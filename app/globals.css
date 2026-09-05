@@ -547,6 +547,9 @@
     --color-theme-understanding-the-linux-kernel-bg: hsl(220 55% 40% / 0.25);
     --color-theme-understanding-the-linux-kernel-fg: hsl(220 90% 74%);
 
+    --color-theme-unix-linux-sysadmin-handbook-bg: hsl(220 55% 40% / 0.25);
+    --color-theme-unix-linux-sysadmin-handbook-fg: hsl(220 90% 74%);
+
     --navy: #0a2e4d;
     --navy-mid: #123a57;
     --amber: #e8a33d;
@@ -713,6 +716,7 @@ body {
 .card-release-it { --card-accent: var(--color-theme-release-it-fg); }
 .card-infrastructure-as-code { --card-accent: var(--color-theme-infrastructure-as-code-fg); }
 .card-understanding-the-linux-kernel { --card-accent: var(--color-theme-understanding-the-linux-kernel-fg); }
+.card-unix-linux-sysadmin-handbook { --card-accent: var(--color-theme-unix-linux-sysadmin-handbook-fg); }
 
 @utility text-gradient-aurora {
     background: linear-gradient(135deg, var(--color-brand-text-start), var(--color-brand-text-end));
@@ -819,6 +823,11 @@ body {
 @utility icon-theme-understanding-the-linux-kernel {
     background: var(--color-theme-understanding-the-linux-kernel-bg);
     color: var(--color-theme-understanding-the-linux-kernel-fg);
+}
+
+@utility icon-theme-unix-linux-sysadmin-handbook {
+    background: var(--color-theme-unix-linux-sysadmin-handbook-bg);
+    color: var(--color-theme-unix-linux-sysadmin-handbook-fg);
 }
 
 /* Provider identity marks: メニューとホームで同じ視覚言語を共有する。 */

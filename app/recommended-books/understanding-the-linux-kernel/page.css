@@ -122,6 +122,7 @@
     margin-left: 280px;
     width: calc(100% - 280px);
     max-width: none;
+    box-sizing: border-box;
     padding: 48px 48px 120px;
 }
 
@@ -552,6 +553,7 @@
     .understanding-the-linux-kernel-page .main {
         margin-left: 0;
         width: 100%;
+        max-width: none;
         padding: 80px 20px 100px;
     }
 
