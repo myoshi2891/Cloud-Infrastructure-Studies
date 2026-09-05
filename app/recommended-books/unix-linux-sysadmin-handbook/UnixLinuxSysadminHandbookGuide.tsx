@@ -58,7 +58,8 @@ export function UnixLinuxSysadminHandbookGuide() {
                             {' '}
                             本ガイドは、Evi Nemeth・Garth Snyder・Trent R. Hein・Ben Whaley・Dan
                             Mackin著『UNIX and Linux System Administration Handbook, 5th
-                            Edition』（O&apos;Reilly / Addison-Wesley Professional, 2017年刊, ISBN-13:
+                            Edition』（O&apos;Reilly / Addison-Wesley Professional, 2017年刊,
+                            ISBN-13:
                             978-0-13-427755-4）の全31章構成に沿って、2026年8月時点の最新プラクティスを補いながら再構成した学習用ドキュメントです。原著は1232ページに及ぶ「システム管理者のバイブル」と呼ばれる書籍で、Tim
                             O&apos;Reilly（O&apos;Reilly
                             Media創業者）が「自分たちの物差しにした数少ない本の一つ」と評したことでも知られています。{' '}
@@ -82,13 +83,6 @@ export function UnixLinuxSysadminHandbookGuide() {
                             各章は「① 何のための章か」「② 初学者向けの基礎解説」「③
                             ベストプラクティス」「④
                             コマンド／設定リファレンス」の順で構成しています。{' '}
-                        </li>{' '}
-                        <li>
-                            {' '}
-                            フローチャートはすべて{' '}
-                            <strong>Mermaid</strong>{' '}
-                            記法で記述しています（ASCIIアートは一切使用していません）。GitHubやVS
-                            Code、Obsidianなど主要なMarkdownビューアでそのまま描画できます。{' '}
                         </li>{' '}
                         <li>
                             {' '}
@@ -1272,7 +1266,8 @@ export function UnixLinuxSysadminHandbookGuide() {
                                 </li>{' '}
                                 <li>
                                     {' '}
-                                    変数展開は常にダブルクォートで囲む（<code>&quot;$var&quot;</code>
+                                    変数展開は常にダブルクォートで囲む（
+                                    <code>&quot;$var&quot;</code>
                                     ）。スペースを含むファイル名でのワードスプリッティング事故を防ぐ。{' '}
                                 </li>{' '}
                                 <li>
@@ -2465,7 +2460,8 @@ export function UnixLinuxSysadminHandbookGuide() {
                     <Diagram id="diag-18" />{' '}
                     <p>
                         {' '}
-                        TLS証明書は現在、Let&apos;s Encryptに代表される無料の自動発行認証局が普及し、
+                        TLS証明書は現在、Let&apos;s
+                        Encryptに代表される無料の自動発行認証局が普及し、
                         <code>certbot</code> や <code>acme.sh</code>{' '}
                         によるACMEプロトコル自動更新が標準的です。{' '}
                     </p>{' '}
@@ -3102,7 +3098,8 @@ export function UnixLinuxSysadminHandbookGuide() {
                             <a href="https://spacelift.io/blog/ansible-infrastructure-as-code">
                                 https://spacelift.io/blog/ansible-infrastructure-as-code
                             </a>{' '}
-                            ／ OneUptime「How to Fix &apos;Changed Status&apos; Idempotency Issues」（
+                            ／ OneUptime「How to Fix &apos;Changed Status&apos; Idempotency
+                            Issues」（
                             <code>command</code>/<code>shell</code>モジュールの冪等性問題と対処） —{' '}
                             <a href="https://oneuptime.com/blog/post/2026-01-24-ansible-changed-status-idempotency/view">
                                 https://oneuptime.com/blog/post/2026-01-24-ansible-changed-status-idempotency/view
@@ -3824,8 +3821,10 @@ export function UnixLinuxSysadminHandbookGuide() {
                                     Milliseconds」として体系化した手法）。<code>uptime</code>
                                     （負荷平均）→ <code>dmesg</code>（直近のカーネルエラー）→{' '}
                                     <code>vmstat</code>（CPU/メモリ概況）→ <code>mpstat</code>
-                                    （コア別使用率）→ <code>pidstat</code>（プロセス別リソース）→{' '}
-                                    <code>iostat</code>（ディスクI/O）→ <code>sar</code>
+                                    （コア別使用率）→ <code>
+                                        pidstat
+                                    </code>（プロセス別リソース）→ <code>iostat</code>
+                                    （ディスクI/O）→ <code>sar</code>
                                     （ネットワーク統計）の順に俯瞰し、当たりをつけてから深掘りツールに進む。{' '}
                                 </li>{' '}
                                 <li>
@@ -4302,7 +4301,8 @@ export function UnixLinuxSysadminHandbookGuide() {
                             <div className="num">17</div>{' '}
                             <div className="txt">
                                 {' '}
-                                OneUptime「How to Fix &apos;Changed Status&apos; Idempotency Issues」 —{' '}
+                                OneUptime「How to Fix &apos;Changed Status&apos; Idempotency
+                                Issues」 —{' '}
                                 <a href="https://oneuptime.com/blog/post/2026-01-24-ansible-changed-status-idempotency/view">
                                     https://oneuptime.com/blog/post/2026-01-24-ansible-changed-status-idempotency/view
                                 </a>{' '}
