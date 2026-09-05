@@ -946,7 +946,7 @@ export function OperatingSystemsThreeEasyPiecesGuide() {
                         </thead>
                         <tbody>
                             <tr className="odd">
-                                <td>Beladyの異常（Belady's Anomaly）</td>
+                                <td>Beladyの異常（Belady&apos;s Anomaly）</td>
                                 <td>
                                     FIFOではキャッシュ（メモリ）を増やしたのにミス率が悪化する場合がある現象
                                 </td>
@@ -2459,15 +2459,15 @@ export function OperatingSystemsThreeEasyPiecesGuide() {
                     <div className="ref-card" id="ref11">
                         <div className="num">11</div>
                         <div className="txt">
-                            Hacker News: "Operating Systems: Three Easy
-                            Pieces"（開発者コミュニティでの評価・スケジューリング章への評価コメント）.
+                            Hacker News: &quot;Operating Systems: Three Easy
+                            Pieces&quot;（開発者コミュニティでの評価・スケジューリング章への評価コメント）.
                             <a href="https://news.ycombinator.com/item?id=18104600">https://news.ycombinator.com/item?id=18104600</a>
                         </div>
                     </div>
                     <div className="ref-card" id="ref12">
                         <div className="num">12</div>
                         <div className="txt">
-                            Hacker News: "Operating Systems: Three Easy Pieces"（体験談スレッド）.
+                            Hacker News: &quot;Operating Systems: Three Easy Pieces&quot;（体験談スレッド）.
                             <a href="https://news.ycombinator.com/item?id=30486644">https://news.ycombinator.com/item?id=30486644</a>
                         </div>
                     </div>

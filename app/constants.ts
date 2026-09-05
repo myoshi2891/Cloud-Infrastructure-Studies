@@ -841,6 +841,27 @@ const ALL_EXAMS: Exam[] = [
         icon: '📚',
         provider: 'Books',
     },
+    {
+        id: 'operating-systems-three-easy-pieces',
+        label: 'Operating Systems: Three Easy Pieces (OSTEP)',
+        abbr: 'OSTEP',
+        level: 'Operating Systems',
+        score: '57章+付録 / 56図解',
+        color: 'card-operating-systems-three-easy-pieces',
+        href: '/recommended-books/operating-systems-three-easy-pieces',
+        description:
+            'Remzi H. Arpaci-Dusseau, Andrea C. Arpaci-Dusseau 著『Operating Systems: Three Easy Pieces（OSTEP）』を軸に、仮想化・並行性・永続性の3大テーマを初学者向けに体系的に解説した完全学習ガイド。',
+        domains: [
+            {
+                label: '初学者向け学習ガイド',
+                href: '/recommended-books/operating-systems-three-easy-pieces',
+                pct: '完全解説',
+            },
+        ],
+        badge: '名著ガイド',
+        icon: '📚',
+        provider: 'Books',
+    },
 ];
 
 export const EXAMS: Exam[] = HANDS_ON_ENABLED

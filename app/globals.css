@@ -553,6 +553,9 @@
     --color-theme-systems-performance-bg: hsl(220 55% 40% / 0.25);
     --color-theme-systems-performance-fg: hsl(220 90% 74%);
 
+    --color-theme-operating-systems-three-easy-pieces-bg: hsl(220 55% 40% / 0.25);
+    --color-theme-operating-systems-three-easy-pieces-fg: hsl(220 90% 74%);
+
     --navy: #0a2e4d;
     --navy-mid: #123a57;
     --amber: #e8a33d;
@@ -721,6 +724,7 @@ body {
 .card-understanding-the-linux-kernel { --card-accent: var(--color-theme-understanding-the-linux-kernel-fg); }
 .card-unix-linux-sysadmin-handbook { --card-accent: var(--color-theme-unix-linux-sysadmin-handbook-fg); }
 .card-systems-performance { --card-accent: var(--color-theme-systems-performance-fg); }
+.card-operating-systems-three-easy-pieces { --card-accent: var(--color-theme-operating-systems-three-easy-pieces-fg); }
 
 @utility text-gradient-aurora {
     background: linear-gradient(135deg, var(--color-brand-text-start), var(--color-brand-text-end));
@@ -837,6 +841,11 @@ body {
 @utility icon-theme-systems-performance {
     background: var(--color-theme-systems-performance-bg);
     color: var(--color-theme-systems-performance-fg);
+}
+
+@utility icon-theme-operating-systems-three-easy-pieces {
+    background: var(--color-theme-operating-systems-three-easy-pieces-bg);
+    color: var(--color-theme-operating-systems-three-easy-pieces-fg);
 }
 
 /* Provider identity marks: メニューとホームで同じ視覚言語を共有する。 */
