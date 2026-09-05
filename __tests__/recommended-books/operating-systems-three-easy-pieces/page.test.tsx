@@ -75,4 +75,43 @@ describe('Operating Systems: Three Easy Pieces 初学者向け学習ガイド �
             expect(colThs.length).toBeGreaterThan(0);
         });
     });
+
+    it('page.css 内でリストマーカーおよび Mermaid ノード文字色の明示指定が保持されている', async () => {
+        const { readFileSync } = await import('node:fs');
+        const { join } = await import('node:path');
+        const pageCss = readFileSync(
+            join(
+                process.cwd(),
+                'app/recommended-books/operating-systems-three-easy-pieces/page.css',
+            ),
+            'utf8',
+        );
+
+        // リストの点（黒丸）と番号の Preflight リセット防止
+        expect(pageCss).toMatch(/list-style-type:\s*disc\s*!important/);
+        expect(pageCss).toMatch(/list-style-type:\s*decimal\s*!important/);
+        expect(pageCss).toMatch(/list-style-position:\s*outside\s*!important/);
+
+        // Mermaid ノード文字色の高コントラスト保証（暗色背景での黒文字化防止）
+        expect(pageCss).toMatch(/\.ostep-page\s+\.mermaid-wrap\s+:global\(\.node\s+\.nodeLabel\)/);
+        expect(pageCss).toMatch(/color:\s*#eaf2ff\s*!important/);
+    });
+
+    it('components/MermaidDiagram.module.css 内で Accelerate の classDef box ルールが他ページへ波及しないようスコープされている', async () => {
+        const { readFileSync } = await import('node:fs');
+        const { join } = await import('node:path');
+        const mermaidCss = readFileSync(
+            join(process.cwd(), 'components/MermaidDiagram.module.css'),
+            'utf8',
+        );
+
+        // .box がグローバルに黒文字化されておらず、.accelerate-page にスコープされていること
+        expect(mermaidCss).not.toMatch(
+            /^\.mermaidTarget\s+:global\(\.box\s+\.nodeLabel\)/m,
+        );
+        expect(mermaidCss).toMatch(
+            /:global\(\.accelerate-page\)\s+\.mermaidTarget\s+:global\(\.box\s+\.nodeLabel\)/,
+        );
+    });
 });
+
