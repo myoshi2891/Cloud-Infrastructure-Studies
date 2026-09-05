@@ -94,6 +94,11 @@ models/
 *.gif
 *.mp4
 *.avi
+
+# PWA アイコンは manifest.ts が参照するため追跡対象にする（上の *.png より後で否定）
+!public/icons/
+!public/icons/*.png
+
 !e2e/**/*.png
 
 # 環境ファイル
