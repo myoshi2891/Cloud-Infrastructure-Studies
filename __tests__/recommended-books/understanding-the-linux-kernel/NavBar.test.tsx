@@ -82,7 +82,7 @@ describe('understanding-the-linux-kernel NavBar', () => {
 
         expect(link.classList.contains('active')).toBe(true);
         expect(focusSpy).toHaveBeenCalled();
-        expect(window.location.hash).toBe(`#${targetItem.id}`);
+        expect(decodeURIComponent(window.location.hash)).toBe(`#${targetItem.id}`);
     });
 
     it('IntersectionObserver のコールバックで最も画面上部に近い交差要素が active になる', () => {
