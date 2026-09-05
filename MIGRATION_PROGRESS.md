@@ -1,6 +1,35 @@
 # 移行作業進捗管理ドキュメント (Migration Progress)
 
-(最終更新日: 2026-09-02)
+(最終更新日: 2026-09-05)
+
+## 2026-09-05: 推薦図書『Understanding the Linux Kernel』完全解説ガイド 100%全量移行 (完了)
+
+### 目的
+
+`Understanding-linux-kernel-guide.html` を、Next.js App Router 5ファイル構成 (`page.tsx`, `UnderstandingTheLinuxKernelGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/recommended-books/understanding-the-linux-kernel` ルートへ移行。グローバルナビゲーションの「Books」配下に追加。見出し(h1:1, h2:31, h3:96)、全17個のテーブル、45個のMermaid図解、全リスト(72件)、全外部リンク・全本文・実践チェックリスト(19件)・参考文献一覧を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for understanding-the-linux-kernel` (`8a6138ef`)
+- [x] **Step 1 (Red)**: `test(books): add failing tests for understanding-the-linux-kernel` (`645467f4`)
+- [x] **Step 2 (Green)**: `feat(books): implement understanding-the-linux-kernel to pass tests` (`43e0526f`)
+- [x] **Step 3 (Refactor)**: `refactor(books): integrate understanding-the-linux-kernel into routing and update docs` (`309d03ec`)
+- [x] **Step 4 (Archive & Sync)**: `chore(docs): update MIGRATION_PROGRESS.md and archive understanding-linux-kernel sources`
+
+### 関連ファイル
+
+- [app/recommended-books/understanding-the-linux-kernel/page.tsx](app/recommended-books/understanding-the-linux-kernel/page.tsx)
+- [app/recommended-books/understanding-the-linux-kernel/UnderstandingTheLinuxKernelGuide.tsx](app/recommended-books/understanding-the-linux-kernel/UnderstandingTheLinuxKernelGuide.tsx)
+- [app/recommended-books/understanding-the-linux-kernel/NavBar.tsx](app/recommended-books/understanding-the-linux-kernel/NavBar.tsx)
+- [app/recommended-books/understanding-the-linux-kernel/constants.ts](app/recommended-books/understanding-the-linux-kernel/constants.ts)
+- [app/recommended-books/understanding-the-linux-kernel/page.css](app/recommended-books/understanding-the-linux-kernel/page.css)
+- [`__tests__/recommended-books/understanding-the-linux-kernel/page.test.tsx`](__tests__/recommended-books/understanding-the-linux-kernel/page.test.tsx)
+- [`__tests__/recommended-books/understanding-the-linux-kernel/NavBar.test.tsx`](__tests__/recommended-books/understanding-the-linux-kernel/NavBar.test.tsx)
+- [docs/migration-inventory/understanding-the-linux-kernel.json](docs/migration-inventory/understanding-the-linux-kernel.json)
+- [archive/Books/html/Understanding-linux-kernel-guide.html](archive/Books/html/Understanding-linux-kernel-guide.html)
+- [archive/Books/md/Understanding-linux-kernel-guide.md](archive/Books/md/Understanding-linux-kernel-guide.md)
+
+---
 
 ## 2026-09-02: Google Cloud Professional Cloud Developer（PCD）Section 4「Google Cloudサービスとのアプリケーション統合」学習ガイド 100%全量移行 (完了)
 
