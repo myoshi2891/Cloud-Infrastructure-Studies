@@ -525,6 +525,12 @@ app/
       NavBar.tsx                    # サイドバーナビ (IntersectionObserver)
       constants.ts                  # Mermaid 図定義（26図）
       page.css                      # ページ固有スタイル
+    understanding-the-linux-kernel/
+      page.tsx                      # 『Understanding the Linux Kernel』完全解説ガイド (Server)
+      UnderstandingTheLinuxKernelGuide.tsx # 本文＋インタラクション (Client。22部、Mermaid 45図、チェックリスト等)
+      NavBar.tsx                    # サイドバーナビ (IntersectionObserver)
+      constants.ts                  # Mermaid 図定義（45図）
+      page.css                      # ページ固有スタイル
 
 
 components/

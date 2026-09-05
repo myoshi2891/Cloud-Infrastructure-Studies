@@ -772,6 +772,27 @@ const ALL_EXAMS: Exam[] = [
         icon: '📚',
         provider: 'Books',
     },
+    {
+        id: 'understanding-the-linux-kernel',
+        label: 'Understanding the Linux Kernel',
+        abbr: 'Linux Kernel',
+        level: 'OS & Kernel Internals',
+        score: '22部 / 45図解',
+        color: 'card-understanding-the-linux-kernel',
+        href: '/recommended-books/understanding-the-linux-kernel',
+        description:
+            '『Understanding the Linux Kernel, 3rd Edition』の目次構成・章立てを土台にしつつ、初学者向けに再構成し、2026年最新カーネル動向（EEVDF、io_uring、eBPF、Rust for Linux 等）までを体系的に解説する完全ガイド。',
+        domains: [
+            {
+                label: '完全解説ガイド',
+                href: '/recommended-books/understanding-the-linux-kernel',
+                pct: '完全解説',
+            },
+        ],
+        badge: '名著ガイド',
+        icon: '📚',
+        provider: 'Books',
+    },
 ];
 
 export const EXAMS: Exam[] = HANDS_ON_ENABLED
