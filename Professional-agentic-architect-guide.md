@@ -45,7 +45,7 @@ pie
 flowchart TB
     subgraph Build["Build: 構築"]
         ADK["Agent Development Kit（ADK）"]
-        AgentStudio["Agent Studio / Agent Designer<br/>CX Agent Studio"]
+        AgentStudio["Workflow Builder（旧 Agent Designer）<br/>CX Agent Studio"]
         ModelGarden["Model Garden"]
         RAGEngine["RAG Engine"]
     end
@@ -103,11 +103,11 @@ flowchart TB
 
 ### 1.1 ローコードツールを使用したエージェントワークフローと動作の設定
 
-#### Agent Designer と CX Agent Studio
+#### Workflow Builder（旧 Agent Designer）と CX Agent Studio
 
 Gemini Enterprise には、目的の異なる2つのローコード構築ツールがあります。
 
-- **Agent Designer**：Gemini Enterprise アプリ内に統合された、no-code／low-codeのプラットフォームです。自然言語プロンプトによるエージェントの作成・プレビュー、インタラクティブなフローキャンバスでのワークフロー編集、サブエージェントを使った複数ステップタスクのオーケストレーション、Gmail・Google Drive・Jiraなど社内外のデータソース／ツールとの接続、定期実行スケジューリングまでを担います[^4][^89]。従業員が自分の業務知識をノーコードで「AIヘルパー」に変換するための入口として位置づけられています[^93]。
+- **Workflow Builder（旧 Agent Designer）**：Gemini Enterprise アプリ内に統合された、no-code／low-codeのプラットフォームです。自然言語プロンプトによるエージェントの作成・プレビュー、インタラクティブなフローキャンバスでのワークフロー編集、サブエージェントを使った複数ステップタスクのオーケストレーション、Gmail・Google Drive・Jiraなど社内外のデータソース／ツールとの接続、定期実行スケジューリングまでを担います[^4][^89]。従業員が自分の業務知識をノーコードで「AIヘルパー」に変換するための入口として位置づけられています[^93]。
 - **CX Agent Studio（Customer Experience Agent Studio）**：会話型AIエージェントに特化した、Gemini搭載のミニマルコード構築ツールです。バックエンドのツール呼び出し中も自然な会話フローを維持する非同期処理、双方向ストリーミングによる低遅延な音声対話、変更履歴・ワンクリックロールバックなどのチーム開発向けバージョン管理機能を備えています[^5][^92]。
 
 両者とも「状態ベースのワークフロー（state-based workflow）」という考え方を採用しています。これは、会話や処理の流れを**ページ（状態）**、**遷移ルート（transition route）**、**イベントハンドラ**の3要素でモデル化する設計手法です。
@@ -125,7 +125,7 @@ stateDiagram-v2
     有人対応ページ --> [*]: エスカレーション
 ```
 
-各ページには、few-shotプロンプトやChain-of-Thought（CoT）プロンプトを使った**システムインストラクション**と**コンソール内プロンプトテンプレート**を設定し、エージェントの振る舞いを誘導します。Agent DesignerのチャットペインはNo-code志向のユーザーが自然言語でエージェントを調整するのに向いており、Flowキャンバスはより精密な制御を行いたい場合に使います[^4]。
+各ページには、few-shotプロンプトやChain-of-Thought（CoT）プロンプトを使った**システムインストラクション**と**コンソール内プロンプトテンプレート**を設定し、エージェントの振る舞いを誘導します。Workflow BuilderのチャットペインはNo-code志向のユーザーが自然言語でエージェントを調整するのに向いており、Flowキャンバスはより精密な制御を行いたい場合に使います[^4]。
 
 > **ベストプラクティス**
 > - 状態（ページ）は単一責任を持たせて細かく分割し、1ページに複数の意図を詰め込まない。意図分類は専用のルーティングページに集約する。
@@ -135,7 +135,7 @@ stateDiagram-v2
 
 ### 1.2 Gemini Enterpriseへのエンタープライズデータ接続
 
-Agent Designerや検索体験にエンタープライズ固有データを接続する際は、**Agent Search**（旧Vertex AI Search）をはじめとするGemini Enterpriseのデータコネクタ機能を使用します[^97]。ここで扱う考慮事項は大きく2つです。
+Workflow Builderや検索体験にエンタープライズ固有データを接続する際は、**Agent Search**（旧Vertex AI Search）をはじめとするGemini Enterpriseのデータコネクタ機能を使用します[^97]。ここで扱う考慮事項は大きく2つです。
 
 1. **プロプライエタリなデータソースへの安全な接続とクエリ**：Gemini Enterprise / Agent Searchを使い、社内文書・データベース・SaaSアプリケーションなどのエンタープライズ固有データソースに安全に接続し、検索クエリを実行できるように設定します。
 2. **非構造化マルチモーダルデータの取り込みと処理**：動画・音声・画像などの非構造化データをエージェントワークフローに取り込み、処理できるようにします。
@@ -320,13 +320,13 @@ flowchart LR
 会話状態を保持するには**Agent Platform Sessions**、長期記憶（ユーザーの好み・過去の経緯）を扱うには**Agent Platform Memory Bank**を使用します。
 
 - **Sessions**：ユーザーとエージェント間のやり取りの履歴（イベント）を時系列に保持する仕組みです。ADKエージェントをAgent Runtimeにデプロイすると、セッション管理は自動的に有効になります[^125]。
-- **Memory Bank**：セッション終了時にイベント群を送信すると、内容がインテリジェントに処理され「メモリ」として永続化されます。エージェントは過去の会話をまたいでこのメモリを検索し、パーソナライズされた応答を生成できます[^121]。ローカル開発時はインメモリ実装が使われ、Agent Runtimeへのデプロイ後は自動的にMemory Bankへ切り替わります[^123]。
+- **Memory Bank**：セッションのイベント群を送信すると、内容がインテリジェントに処理され「メモリ」として永続化されます。エージェントは過去の会話をまたいでこのメモリを検索し、パーソナライズされた応答を生成できます[^121]。`AdkApp` が使うメモリサービスの既定値は実行環境で切り替わり、ローカル開発では `InMemoryMemoryService`、Agent Runtime 上では `VertexAiMemoryBankService` になります[^123]。ただし切り替わるのは既定の実装だけで、**Memory Bank インスタンスの作成と呼び出し側への権限付与は別途必要な前提条件**です。またメモリは自動的に生成されるわけではなく、`add_session_to_memory`（セッション全体の取り込み）、`generate`（メモリ生成の明示実行）、`IngestEvents`（イベント単位の取り込み）といった該当するトリガーを呼び出したときにのみ生成されます。
 
 ```mermaid
 flowchart TB
     User["ユーザー"] <--> Agent["ADKエージェント"]
     Agent --> Session["Agent Platform Sessions<br/>（短期・会話内の状態）"]
-    Session -->|会話終了時にイベント送信| MemGen["メモリ生成処理"]
+    Session -->|"add_session_to_memory / generate / IngestEvents"| MemGen["メモリ生成処理"]
     MemGen --> MemoryBank["Agent Platform Memory Bank<br/>（長期記憶）"]
     MemoryBank -->|次回セッションで検索| Agent
 ```
@@ -442,12 +442,12 @@ flowchart TB
     end
 
     AgentA -->|A2A: タスク委譲| AgentB
-    A2AClient -->|AgentCard取得<br/>/.well-known/agent.json| A2AServer
+    A2AClient -->|AgentCard取得<br/>/.well-known/agent-card.json| A2AServer
     MCPHost -->|MCP: ツール呼び出し| MCPServer1
     MCPHost -->|MCP: ツール呼び出し| MCPServer2
 ```
 
-A2Aの主要概念として、エージェントの名称・URL・バージョン・スキルを記載したJSONマニフェストである**AgentCard**（`/.well-known/agent.json`で公開）、構造化されたタスクのライフサイクル管理、双方向のメッセージベース連携、型付きデータをやり取りする**Artifact Handling**があります[^72][^73]。
+A2Aの主要概念として、エージェントの名称・URL・バージョン・スキルを記載したJSONマニフェストである**AgentCard**（`/.well-known/agent-card.json`で公開）、構造化されたタスクのライフサイクル管理、双方向のメッセージベース連携、型付きデータをやり取りする**Artifact Handling**があります[^72][^73]。
 
 #### マルチエージェントのハンドオフとワークフローの選定
 
@@ -729,7 +729,7 @@ flowchart TB
 
 | カテゴリ | ツール・サービス |
 |---|---|
-| ローコード構築 | Agent Designer、CX Agent Studio、Agent Search（Gemini Enterprise データコネクタ） |
+| ローコード構築 | Workflow Builder（旧 Agent Designer）、CX Agent Studio、Agent Search（Gemini Enterprise データコネクタ） |
 | コーディングエージェント | Antigravity、Claude Code on Google Cloud、Agents CLI |
 | セキュアサンドボックス | GKE、Cloud Workstations |
 | カスタム開発フレームワーク | Agent Development Kit（ADK）、Model Garden |
@@ -746,7 +746,7 @@ flowchart TB
 
 ## 学習チェックリスト
 
-- [ ] Agent DesignerとCX Agent Studioの違いと、それぞれの状態ベースワークフロー（ページ／遷移ルート／イベントハンドラ）の設定方法を説明できる
+- [ ] Workflow Builder（旧 Agent Designer）とCX Agent Studioの違いと、それぞれの状態ベースワークフロー（ページ／遷移ルート／イベントハンドラ）の設定方法を説明できる
 - [ ] Gemini Enterpriseへのエンタープライズデータ接続と、非構造化マルチモーダルデータの取り込みの考慮点を説明できる
 - [ ] MCPサーバー・カスタムスキル・セキュアサンドボックス（GKE／Cloud Workstations）を使ったコーディングエージェントの構成を説明できる
 - [ ] Antigravityにおけるスキル・プラグイン・拡張フック・ルール・サブエージェントの役割を説明できる

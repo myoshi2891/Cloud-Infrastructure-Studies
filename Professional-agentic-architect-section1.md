@@ -12,7 +12,7 @@
 
 - [1. セクション1の全体像](#1-セクション1の全体像)
 - [2. 1.1 ローコードツールを使ったエージェントワークフロー・動作の設定](#2-11-ローコードツールを使ったエージェントワークフロー動作の設定)
-  - [2.1 Gemini Enterprise のローコードビルダー全体像：Agent Designer と CX Agent Studio](#21-gemini-enterprise-のローコードビルダー全体像agent-designer-と-cx-agent-studio)
+  - [2.1 Gemini Enterprise のローコードビルダー全体像：Workflow Builder（旧 Agent Designer）と CX Agent Studio](#21-gemini-enterprise-のローコードビルダー全体像workflow-builder旧-agent-designerと-cx-agent-studio)
   - [2.2 状態ベースワークフロー：ページ・遷移ルート・イベントハンドラ](#22-状態ベースワークフローページ遷移ルートイベントハンドラ)
   - [2.3 システムインストラクションとインコンソール・プロンプトテンプレート（Few-shot / Chain-of-Thought）](#23-システムインストラクションとインコンソールプロンプトテンプレートfew-shot--chain-of-thought)
 - [3. 1.2 Gemini Enterprise へのエンタープライズデータ接続](#3-12-gemini-enterprise-へのエンタープライズデータ接続)
@@ -32,7 +32,7 @@ Professional Agentic Architect 試験は5つのセクションで構成されて
 flowchart TD
     A["セクション1: ローコードツールでのエージェント構築(配点 約13%)"] --> B["1.1 エージェントのワークフロー/動作の設定"]
     A --> C["1.2 エンタープライズデータの接続"]
-    B --> B1["Agent DesignerとCX Agent Studioの使い分け"]
+    B --> B1["Workflow Builder（旧 Agent Designer）とCX Agent Studioの使い分け"]
     B --> B2["状態ベースワークフロー(ページ/遷移ルート/イベントハンドラ)"]
     B --> B3["システムインストラクション/プロンプトテンプレート(Few-shot, CoT)"]
     C --> C1["Agent Searchによるデータ接続"]
@@ -41,7 +41,7 @@ flowchart TD
 
 出題範囲に明示されているツール名は次の2つです。
 
-- **Gemini Enterprise Agent Designer**（2026年8月に正式名称が「Workflow Builder」へ移行、詳細は後述）[^6]
+- **Gemini Enterprise Workflow Builder**（旧 Agent Designer。2026年8月に現行名称へ移行、詳細は後述）[^6]
 - **Customer Experience Agent Studio（CX Agent Studio）**[^8]
 
 両者はいずれも Gemini Enterprise Agent Platform の一部ですが[^7]、対象とするユースケースが異なります。次章から順に見ていきましょう。
@@ -50,9 +50,9 @@ flowchart TD
 
 ## 2. 1.1 ローコードツールを使ったエージェントワークフロー・動作の設定
 
-### 2.1 Gemini Enterprise のローコードビルダー全体像：Agent Designer と CX Agent Studio
+### 2.1 Gemini Enterprise のローコードビルダー全体像：Workflow Builder（旧 Agent Designer）と CX Agent Studio
 
-**Agent Designer**（Gemini Enterprise アプリ内蔵のビルダー）は、自然言語のチャット操作、またはビジュアルな Flow キャンバスによって、単一ステップ〜複数ステップのエージェントを作成・管理・公開できる、インタラクティブなノーコード／ローコード・プラットフォームです[^4]。画面は次の4つのタブで構成されます。
+**Workflow Builder（旧 Agent Designer）**（Gemini Enterprise アプリ内蔵のビルダー）は、自然言語のチャット操作、またはビジュアルな Flow キャンバスによって、単一ステップ〜複数ステップのエージェントを作成・管理・公開できる、インタラクティブなノーコード／ローコード・プラットフォームです[^4]。画面は次の4つのタブで構成されます。
 
 | タブ | 役割 |
 |---|---|
@@ -74,12 +74,12 @@ flowchart TD
 - 双方向ストリーミングによる超低遅延な音声対話
 - チームでの共同編集を支援する変更履歴・ワンクリックロールバック・競合警告などの統合コラボレーション機能
 
-つまり、**「社内向けの汎用タスク自動化・マルチステップワークフロー」には Agent Designer（Workflow Builder）**、**「顧客対応・コンタクトセンター向けの高度な会話型エージェント」には CX Agent Studio** という使い分けが基本となります。
+つまり、**「社内向けの汎用タスク自動化・マルチステップワークフロー」には Workflow Builder（旧 Agent Designer）**、**「顧客対応・コンタクトセンター向けの高度な会話型エージェント」には CX Agent Studio** という使い分けが基本となります。
 
 ```mermaid
 flowchart TD
     Start["どのような業務を自動化したいか"] --> Q1{"社内向けの汎用タスク自動化か？(例: メール要約, 承認フロー, レポート生成)"}
-    Q1 -->|"はい"| AD["Gemini Enterprise Agent Designer(Workflow Builder)を使用"]
+    Q1 -->|"はい"| AD["Gemini Enterprise Workflow Builder(旧 Agent Designer)を使用"]
     Q1 -->|"いいえ"| Q2{"顧客対応/コンタクトセンター向けの会話型エージェントか？"}
     Q2 -->|"はい"| CXAS["Customer Experience Agent Studio(CX Agent Studio)を使用"]
     Q2 -->|"いいえ"| Q3{"高度なカスタムロジックやコード制御が必要か？"}
@@ -89,7 +89,7 @@ flowchart TD
 
 両ツールの主な違いを整理すると次のとおりです。
 
-| 観点 | Gemini Enterprise Agent Designer（Workflow Builder） | Customer Experience Agent Studio |
+| 観点 | Gemini Enterprise Workflow Builder（旧 Agent Designer） | Customer Experience Agent Studio |
 |---|---|---|
 | 主な用途 | 社内向け業務自動化・マルチステップワークフロー | 顧客対応・コンタクトセンター向け会話型エージェント |
 | 構築方法 | 自然言語チャット + ビジュアル Flow キャンバス（no-code / low-code） | AI ガイド付きビジュアルビルダー（minimal-code） |
@@ -98,10 +98,10 @@ flowchart TD
 | 状態管理の考え方 | タスク指向の Flow（手順の可視化） | エージェント指向。決定的ロジックが必要な場合は旧 Dialogflow CX フローを「Flow-based エージェント」として取り込み可能 |
 | 主な接続先の例 | Gmail、Google Drive、Jira 等のエンタープライズコネクタ | データストア、File Search、Salesforce、ServiceNow、MCP 等の各種ツール |
 | 実行トリガー | スケジュール実行、チャット内 `@メンション` | チャット／音声／Webウィジェット等のマルチチャネル |
-| 前身・位置づけ | 2026年8月に GA 化、名称が Workflow Builder に変更 | Dialogflow CX の進化形 |
+| 前身・位置づけ | 旧称 Agent Designer。2026年8月に GA 化し Workflow Builder へ改称 | Dialogflow CX の進化形 |
 
 > **ベストプラクティス**
-> - まず「エージェントが対話する相手が社内の従業員か、社外の顧客か」で一次判断を行う。前者に寄るタスク（社内ワークフロー・レポーティング・チーム間連携）は Agent Designer、後者に寄るタスク（カスタマーサポート・音声IVR）は CX Agent Studio が第一候補になる。
+> - まず「エージェントが対話する相手が社内の従業員か、社外の顧客か」で一次判断を行う。前者に寄るタスク（社内ワークフロー・レポーティング・チーム間連携）は Workflow Builder、後者に寄るタスク（カスタマーサポート・音声IVR）は CX Agent Studio が第一候補になる。
 > - 「決定的（deterministic）」な業務ロジックが必要な部分（本人確認、規定に沿った段階的なデータ収集など）と、「生成的（generative）」な自由対応が必要な部分を切り分けて設計することが、両ツール共通の設計原則である。
 > - 試験では正式名称の変遷（Agent Designer → Workflow Builder）を問われる可能性があるため、出題文中の「Agent Designer」は最新のドキュメント上では「Workflow Builder」に対応する場合がある点を押さえておく。
 
@@ -216,7 +216,7 @@ flowchart TD
 | `action` | `step` が発火した際にエージェントが取るべき行動 |
 | `examples` | 特定シナリオ向けの Few-shot サンプルを格納する |
 
-この `taskflow → subtask → step（trigger／action）` という階層構造こそが、CX Agent Studio における実質的な **Chain-of-Thought（思考の連鎖）の実装パターン** です。すなわち、「複雑な会話タスクを、条件（trigger）と行動（action）が明示された小さなステップに分解して積み上げる」という設計そのものが、モデルに段階的な推論を促す仕組みになっています。抽象的な1文の指示（例：「ユーザーの意図を判断して適切に対応して」）ではなく、`trigger` ごとに条件を明示し、`action` ごとに取るべき行動を具体化することで、モデルの解釈揺れを減らせます。
+この `taskflow → subtask → step（trigger／action）` という階層構造は、CX Agent Studio における **構造化されたタスク分解と指示設計** の枠組みです。「複雑な会話タスクを、条件（trigger）と行動（action）が明示された小さなステップに分解して積み上げる」という設計は、あくまで開発者が記述する制御構造であり、モデル内部の推論過程そのものではない点に注意してください。抽象的な1文の指示（例：「ユーザーの意図を判断して適切に対応して」）ではなく、`trigger` ごとに条件を明示し、`action` ごとに取るべき行動を具体化することで、モデルの解釈揺れを減らせます。
 
 #### インライン Few-shot サンプル
 
@@ -290,8 +290,9 @@ Agent Search は、Gemini Enterprise Agent Platform の**拡張機能（extensio
 
 | 種別 | 説明 | 例 |
 |---|---|---|
-| データコネクタ | 対象アプリケーションへ**読み取り専用**でアクセスし、データを取り込む。定期的に同期される | Jira、Confluence、Salesforce |
-| Agent Platform 拡張機能 | データの取り込みに加え、**ユーザーに代わってアクション（取引等）を実行**できる | メール送信、チケット作成等 |
+| データコネクタ（取り込み用） | Agent Search が対象アプリケーションのデータをインデックスへ取り込むための接続。多くは**読み取り専用**で、定期的に同期される | Jira、Confluence、Salesforce |
+| 接続アプリ（Workflow Builder） | 取り込みだけでなく、設定に応じて対象アプリの**検索やデータ更新のアクション**を実行できる | Google Workspace、Slack、Jira、ServiceNow |
+| Agent Platform 拡張機能 | **ユーザーに代わって外部システムのアクション（取引等）を実行**できる | メール送信、チケット作成等 |
 
 出題ガイドの試験対象ツール一覧にも記載されている **Agent Search** と **Agent Registry・MCPサーバー** の連携についても触れておくと、Agent Search のデータストアは Model Context Protocol（MCP）サーバーとしても公開できるため、ADK エージェントや CX Agent Studio、その他 MCP 対応クライアントから「1つのツール」として呼び出すことができます[^24]。CX Agent Studio 側にも、データストアを直接ツールとして追加する仕組みが用意されています（Data store tools、Website data store tools、Cloud storage data store tools、File Search tools など）[^8]。
 
@@ -308,7 +309,7 @@ flowchart LR
     Ext --> DS
     DS --> Index["検索インデックス(意味検索+キーワード検索)"]
     Index --> Ground["Geminiによるグラウンディング/引用付き回答生成"]
-    Ground --> Agent["Gemini Enterpriseエージェント(Agent Designer / CX Agent Studio)"]
+    Ground --> Agent["Gemini Enterpriseエージェント(Workflow Builder / CX Agent Studio)"]
     Index --> MCP["MCPサーバーとしてツール公開"]
     MCP --> Agent
 ```
@@ -330,7 +331,7 @@ Gemini モデルは、テキストと同じリクエスト内で動画・音声�
 
 #### Gemini Embedding 2 による統一マルチモーダル埋め込み
 
-複数モダリティのデータを横断的に検索・検索拡張生成（RAG）に活用するための基盤が **Gemini Embedding 2** です。これは Gemini API で最初に、テキスト・画像・動画・音声・ドキュメントを**単一の埋め込み空間**にマッピングするモデルであり、100以上の言語に対応しています[^17][^18]。1回の呼び出しで扱える入力量の目安は、テキスト最大8,192トークン、画像6枚、動画120秒、音声180秒、PDF6ページです[^18]。
+複数モダリティのデータを横断的に検索・検索拡張生成（RAG）に活用するための基盤が **Gemini Embedding 2** です。これは Gemini API で最初に、テキスト・画像・動画・音声・ドキュメントを**単一の埋め込み空間**にマッピングするモデルであり、100以上の言語に対応しています[^17][^18]。1回の呼び出しで扱える入力量の目安は、テキスト最大8,192トークン、画像6枚、音声180秒、PDF6ページです[^18]。動画の最大時間は音声抽出設定によって変わり、`audio_track_extraction` が無効な場合はデフォルトの1 FPSで最大120秒、有効な場合は動画と音声が同じ8,192トークンの上限を共有するため、同条件で最大およそ81秒となります[^18]。
 
 Gemini Embedding 2 は Matryoshka Representation Learning（MRL）に対応しており、精度をあまり落とさずに出力次元数を切り詰められます[^32]。
 
@@ -341,7 +342,9 @@ Gemini Embedding 2 は Matryoshka Representation Learning（MRL）に対応し�
 | 768 | 軽量。モバイル／エッジ向け |
 | 256 | 超小型。超高スループットが求められるシステム向け |
 
-さらに、埋め込み対象を最適化するための**カスタムタスク指示**（例：`task:code retrieval` や `task:search result` など）を指定できます[^17]。代表的なタスクタイプは次のとおりです。
+さらに、埋め込み対象を最適化するための**カスタムタスク指示**を指定できます[^17]。Gemini Embedding 2 では `task_type` の列挙値ではなく、入力テキストの先頭にタスクを記述するプロンプト形式（例：`task: search result | query: {content}`、`task: code retrieval | query: {content}`）でタスクを指定します。
+
+一方、従来のテキスト埋め込み API では、次のような `task_type` の列挙値でタスクを指定します。
 
 | タスクタイプ | 用途 |
 |---|---|
@@ -390,7 +393,7 @@ flowchart TD
 
 ## 5. 学習チェックリスト
 
-- [ ] Agent Designer（Workflow Builder）と CX Agent Studio の違いと使い分け基準を説明できる
+- [ ] Workflow Builder（旧 Agent Designer）と CX Agent Studio の違いと使い分け基準を説明できる
 - [ ] Workflow Builder の主要タブ（Chat／Flow／Schedule／Preview）の役割を説明できる
 - [ ] ページ、インテントルート、条件ルート、イベントハンドラの違いを説明できる
 - [ ] 状態ハンドラの「スコープ」と評価順序の基本を理解している
@@ -417,7 +420,7 @@ flowchart TD
 [^1]: [Professional Agentic Architect Certification exam guide (PDF)](https://services.google.com/fh/files/misc/professional_agentic_architect_exam_guide_english.pdf) — Google Cloud
 [^2]: [Professional Agentic Architect | Google Cloud Learn](https://cloud.google.com/learn/certification/agentic-architect) — 認定資格の公式概要ページ
 
-### Gemini Enterprise / Agent Designer（Workflow Builder）
+### Gemini Enterprise / Workflow Builder（旧 Agent Designer）
 
 [^3]: [What's new in Gemini Enterprise | Google Cloud Blog](https://cloud.google.com/blog/products/ai-machine-learning/whats-new-in-gemini-enterprise)
 [^4]: [Agent Designer overview | Gemini Enterprise Documentation](https://docs.cloud.google.com/gemini/enterprise/docs/agent-designer)
