@@ -2,6 +2,35 @@
 
 (最終更新日: 2026-09-05)
 
+## 2026-09-05: 推薦図書『Systems Performance: Enterprise and the Cloud』実践ガイド 100%全量移行 (完了)
+
+### 目的
+
+`Systems-performance-guide.html` を、Next.js App Router 5ファイル構成 (`page.tsx`, `SystemsPerformanceGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/recommended-books/systems-performance` ルートへ移行。グローバルナビゲーションの「Books」配下に追加。見出し(h1:1, h2:17, h3:24)、全9個のテーブル、18個のMermaid図解、全リスト(13箇所/49件)、全外部リンク(22件)・全本文(56段落)・参考文献カード(22件)を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for systems-performance` (`c028168e`)
+- [x] **Step 1 (Red)**: `test(books): add failing tests for systems-performance` (`61439ea4`)
+- [x] **Step 2 (Green)**: `feat(books): implement systems-performance to pass tests` (`98df147b`)
+- [x] **Step 3 (Refactor)**: `refactor(books): integrate systems-performance into routing and update docs` (`1ee70136`)
+- [x] **Step 4 (Archive & Sync)**: `chore(docs): update MIGRATION_PROGRESS.md and archive systems-performance sources`
+
+### 関連ファイル
+
+- [app/recommended-books/systems-performance/page.tsx](app/recommended-books/systems-performance/page.tsx)
+- [app/recommended-books/systems-performance/SystemsPerformanceGuide.tsx](app/recommended-books/systems-performance/SystemsPerformanceGuide.tsx)
+- [app/recommended-books/systems-performance/NavBar.tsx](app/recommended-books/systems-performance/NavBar.tsx)
+- [app/recommended-books/systems-performance/constants.ts](app/recommended-books/systems-performance/constants.ts)
+- [app/recommended-books/systems-performance/page.css](app/recommended-books/systems-performance/page.css)
+- [`__tests__/recommended-books/systems-performance/page.test.tsx`](__tests__/recommended-books/systems-performance/page.test.tsx)
+- [`__tests__/recommended-books/systems-performance/NavBar.test.tsx`](__tests__/recommended-books/systems-performance/NavBar.test.tsx)
+- [docs/migration-inventory/systems-performance.json](docs/migration-inventory/systems-performance.json)
+- [archive/Books/html/Systems-performance-guide.html](archive/Books/html/Systems-performance-guide.html)
+- [archive/Books/md/Systems-performance-guide.md](archive/Books/md/Systems-performance-guide.md)
+
+---
+
 ## 2026-09-05: 推薦図書『UNIX and Linux System Administration Handbook』完全解説ガイド 100%全量移行 (完了)
 
 ### 目的
