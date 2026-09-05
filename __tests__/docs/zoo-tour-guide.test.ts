@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 
-const guide = readFileSync('Zoo-tour-guide-mcp-adk-challenge-lab-guide.md', 'utf8');
+const guide = readFileSync('Challenge-Lab/Zoo-tour-guide-mcp-adk-challenge-lab-guide.md', 'utf8');
 
 /**
  * ガイド内の開始見出し `heading` から終了見出し `nextHeading` までの本文を返す。
