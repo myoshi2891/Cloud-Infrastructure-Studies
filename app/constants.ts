@@ -24,7 +24,8 @@ export type ColorKey =
     | 'card-sre'
     | 'card-devops-handbook'
     | 'card-release-it'
-    | 'card-infrastructure-as-code';
+    | 'card-infrastructure-as-code'
+    | 'card-pcd';
 
 export interface Exam {
     id: string;
@@ -60,6 +61,7 @@ export const cardColorMap: Record<ColorKey, string> = {
     'card-devops-handbook': 'card-devops-handbook',
     'card-release-it': 'card-release-it',
     'card-infrastructure-as-code': 'card-infrastructure-as-code',
+    'card-pcd': 'card-pcd',
 };
 
 export const providerMeta: Record<
@@ -327,6 +329,42 @@ const ALL_EXAMS: Exam[] = [
         ],
         badge: '最上位アーキテクト',
         icon: '🏛️',
+        provider: 'GCP',
+    },
+    {
+        id: 'pcd',
+        label: 'Professional Cloud Developer',
+        abbr: 'PCD',
+        level: 'Professional',
+        score: '50〜60問 / 120分',
+        color: 'card-pcd',
+        href: '/gcl/professional-cloud-developer',
+        description:
+            'Google Cloud でのスケーラブルかつセキュアなアプリケーション設計・ビルド・テスト・デプロイ・統合を網羅した認定試験完全ガイド。',
+        domains: [
+            {
+                label: 'Section 1: 高可用性・セキュアなアプリ設計',
+                href: '/gcl/professional-cloud-developer/section1',
+                pct: '32%',
+            },
+            {
+                label: 'Section 2: アプリケーションのビルドとテスト',
+                href: '/gcl/professional-cloud-developer/section2',
+                pct: '23%',
+            },
+            {
+                label: 'Section 3: デプロイのためのアプリ構成',
+                href: '/gcl/professional-cloud-developer/section3',
+                pct: '24%',
+            },
+            {
+                label: 'Section 4: Google Cloud サービス統合',
+                href: '/gcl/professional-cloud-developer/section4',
+                pct: '21%',
+            },
+        ],
+        badge: '開発者向け',
+        icon: '💻',
         provider: 'GCP',
     },
     {

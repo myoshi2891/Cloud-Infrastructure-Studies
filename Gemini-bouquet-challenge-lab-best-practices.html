@@ -1,0 +1,1850 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>
+            Gemini API (google-genai SDK) 実装ガイド — AIブーケデザインアプリ Challenge Lab
+        </title>
+        <style>
+            :root {
+                --color-background-primary: #07111e;
+                --color-background-secondary: #0d1a2b;
+                --color-background-tertiary: #13233a;
+                --color-background-info: #12233c;
+                --color-background-danger: #2b1417;
+                --color-background-success: #0f2419;
+                --color-background-warning: #2a2210;
+                --color-text-primary: #e8edf5;
+                --color-text-secondary: #9fb0c7;
+                --color-text-tertiary: #6b7d97;
+                --color-text-info: #8fbaff;
+                --color-text-danger: #ff9c9c;
+                --color-text-success: #7fd9a8;
+                --color-text-warning: #f0c674;
+                --color-border-tertiary: #182740;
+                --color-border-secondary: #1d2f47;
+                --color-border-primary: #2c4363;
+                --accent: #7c9eff;
+                --font-sans:
+                    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Kaku Gothic ProN',
+                    'Noto Sans JP', 'Yu Gothic', sans-serif;
+                --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+                --radius-md: 8px;
+                --radius-lg: 12px;
+                --radius-xl: 16px;
+                --sidebar-width: 280px;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            html {
+                scroll-behavior: smooth;
+            }
+
+            body {
+                margin: 0;
+                background: var(--color-background-primary);
+                color: var(--color-text-primary);
+                font-family: var(--font-sans);
+                font-size: 16px;
+                line-height: 1.7;
+                font-weight: 400;
+            }
+
+            .layout {
+                display: block;
+            }
+
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: var(--sidebar-width);
+                height: 100vh;
+                overflow-y: auto;
+                border-right: 1px solid var(--color-border-tertiary);
+                background: var(--color-background-secondary);
+                padding: 28px 20px 40px;
+            }
+
+            .sidebar-brand {
+                font-size: 15px;
+                font-weight: 500;
+                color: var(--color-text-primary);
+                margin-bottom: 4px;
+            }
+
+            .sidebar-sub {
+                font-size: 13px;
+                color: var(--color-text-tertiary);
+                margin-bottom: 28px;
+            }
+
+            .sidebar nav ul {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+
+            .sidebar nav li {
+                margin-bottom: 2px;
+            }
+
+            .sidebar nav a {
+                display: block;
+                padding: 8px 12px;
+                border-radius: var(--radius-md);
+                color: var(--color-text-secondary);
+                text-decoration: none;
+                font-size: 14px;
+                border-left: 2px solid transparent;
+                transition: none;
+            }
+
+            .sidebar nav a:hover {
+                color: var(--color-text-primary);
+                background: var(--color-background-tertiary);
+            }
+
+            .sidebar nav a.active {
+                color: var(--color-text-primary);
+                background: var(--color-background-tertiary);
+                border-left: 2px solid var(--accent);
+                font-weight: 500;
+            }
+
+            .main {
+                margin-left: var(--sidebar-width);
+                padding: 56px 64px 96px;
+            }
+
+            .hero {
+                border-bottom: 1px solid var(--color-border-tertiary);
+                padding-bottom: 32px;
+                margin-bottom: 40px;
+            }
+
+            .hero-kicker {
+                color: var(--color-text-tertiary);
+                font-size: 14px;
+                margin-bottom: 12px;
+            }
+
+            .hero-kicker a {
+                color: var(--color-text-secondary);
+            }
+
+            .hero h1 {
+                font-size: 26px;
+                line-height: 1.35;
+                font-weight: 500;
+                margin: 0 0 16px;
+            }
+
+            .hero p {
+                color: var(--color-text-secondary);
+                font-size: 16px;
+                max-width: 76ch;
+                margin: 0;
+            }
+
+            .section {
+                margin: 56px 0;
+                scroll-margin-top: 24px;
+            }
+
+            .section h2 {
+                font-size: 18px;
+                font-weight: 500;
+                margin: 0 0 20px;
+                padding-bottom: 12px;
+                border-bottom: 1px solid var(--color-border-tertiary);
+            }
+
+            .section h3 {
+                font-size: 16px;
+                font-weight: 500;
+                margin: 32px 0 12px;
+                color: var(--color-text-primary);
+            }
+
+            .section p {
+                color: var(--color-text-secondary);
+                margin: 12px 0;
+            }
+
+            .section ul,
+            .section ol {
+                color: var(--color-text-secondary);
+                padding-left: 22px;
+            }
+            .section li {
+                margin: 6px 0;
+            }
+
+            code {
+                font-family: var(--font-mono);
+                font-size: 15px;
+                background: var(--color-background-tertiary);
+                border: 1px solid var(--color-border-tertiary);
+                border-radius: 4px;
+                padding: 1px 6px;
+                color: var(--color-text-primary);
+            }
+
+            .code-block {
+                margin: 20px 0;
+                border: 1px solid var(--color-border-secondary);
+                border-radius: var(--radius-lg);
+                overflow: hidden;
+                background: var(--color-background-secondary);
+            }
+
+            .code-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px 16px;
+                font-size: 13px;
+                color: var(--color-text-tertiary);
+                border-bottom: 1px solid var(--color-border-tertiary);
+                font-family: var(--font-mono);
+            }
+
+            .code-block pre {
+                margin: 0;
+                padding: 20px;
+                overflow-x: auto;
+            }
+
+            .code-block pre code {
+                background: none;
+                border: none;
+                padding: 0;
+                font-size: 15px;
+                line-height: 1.6;
+                white-space: pre;
+            }
+
+            .diagram-block {
+                margin: 24px 0;
+                border: 1px solid var(--color-border-secondary);
+                border-radius: var(--radius-lg);
+                background: var(--color-background-secondary);
+                padding: 24px 16px;
+            }
+
+            .diagram-target {
+                display: flex;
+                justify-content: center;
+                overflow-x: auto;
+            }
+
+            .diagram-caption {
+                text-align: center;
+                color: var(--color-text-tertiary);
+                font-size: 13px;
+                margin-top: 12px;
+            }
+
+            .diagram-error {
+                color: var(--color-text-danger);
+                text-align: center;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 20px 0;
+                font-size: 15px;
+            }
+
+            table caption {
+                text-align: left;
+                color: var(--color-text-tertiary);
+                font-size: 13px;
+                margin-bottom: 8px;
+            }
+
+            th,
+            td {
+                text-align: left;
+                padding: 12px 14px;
+                border-bottom: 1px solid var(--color-border-tertiary);
+                vertical-align: top;
+            }
+
+            th {
+                color: var(--color-text-secondary);
+                font-weight: 500;
+                background: var(--color-background-secondary);
+                border-bottom: 1px solid var(--color-border-secondary);
+            }
+
+            td {
+                color: var(--color-text-secondary);
+            }
+            td code,
+            th code {
+                white-space: nowrap;
+            }
+
+            tr:last-child td {
+                border-bottom: none;
+            }
+
+            .table-wrap {
+                overflow-x: auto;
+                border: 1px solid var(--color-border-secondary);
+                border-radius: var(--radius-lg);
+            }
+            .table-wrap table {
+                margin: 0;
+            }
+            .table-wrap th:first-child,
+            .table-wrap td:first-child {
+                padding-left: 18px;
+            }
+
+            .callout {
+                display: flex;
+                gap: 14px;
+                border-radius: var(--radius-lg);
+                border: 1px solid var(--color-border-secondary);
+                padding: 16px 18px;
+                margin: 20px 0;
+            }
+
+            .callout-mark {
+                flex-shrink: 0;
+                width: 22px;
+                height: 22px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 13px;
+                font-weight: 500;
+                margin-top: 1px;
+            }
+
+            .callout p,
+            .callout div {
+                margin: 0;
+                color: var(--color-text-secondary);
+                font-size: 15px;
+            }
+            .callout p + p {
+                margin-top: 8px;
+            }
+
+            .callout-note {
+                background: var(--color-background-info);
+                border-color: #23406e;
+            }
+            .callout-note .callout-mark {
+                background: #1c3969;
+                color: var(--color-text-info);
+            }
+
+            .callout-tip {
+                background: var(--color-background-success);
+                border-color: #1f4a35;
+            }
+            .callout-tip .callout-mark {
+                background: #1a3d2b;
+                color: var(--color-text-success);
+            }
+
+            .callout-warning {
+                background: var(--color-background-warning);
+                border-color: #4a3c14;
+            }
+            .callout-warning .callout-mark {
+                background: #3d3212;
+                color: var(--color-text-warning);
+            }
+
+            .callout-danger {
+                background: var(--color-background-danger);
+                border-color: #542024;
+            }
+            .callout-danger .callout-mark {
+                background: #45191d;
+                color: var(--color-text-danger);
+            }
+
+            .callout-label {
+                font-weight: 500;
+                color: var(--color-text-primary);
+                margin-bottom: 4px !important;
+            }
+
+            .ref-list {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .ref-item {
+                display: flex;
+                gap: 16px;
+                align-items: baseline;
+                border: 1px solid var(--color-border-secondary);
+                border-radius: var(--radius-lg);
+                padding: 14px 18px;
+                background: var(--color-background-secondary);
+            }
+
+            .ref-index {
+                color: var(--color-text-tertiary);
+                font-family: var(--font-mono);
+                font-size: 13px;
+                flex-shrink: 0;
+                width: 22px;
+            }
+
+            .ref-body {
+                flex: 1;
+            }
+
+            .ref-title {
+                color: var(--color-text-primary);
+                font-size: 15px;
+                margin-bottom: 2px;
+            }
+
+            .ref-url {
+                font-size: 13px;
+                word-break: break-all;
+            }
+            .ref-url a {
+                color: var(--color-text-info);
+                text-decoration: none;
+            }
+            .ref-url a:hover {
+                text-decoration: underline;
+            }
+
+            .footer {
+                border-top: 1px solid var(--color-border-tertiary);
+                padding-top: 24px;
+                margin-top: 72px;
+                color: var(--color-text-tertiary);
+                font-size: 13px;
+            }
+
+            @media (max-width: 900px) {
+                .sidebar {
+                    display: none;
+                }
+                .main {
+                    margin-left: 0;
+                    padding: 32px 20px 64px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="layout">
+            <nav class="sidebar">
+                <div class="sidebar-brand">Multi-Modal GenAI Challenge Lab</div>
+                <div class="sidebar-sub">google-genai SDK 実装ガイド</div>
+                <nav>
+                    <ul>
+                        <li><a href="#overview">このガイドについて</a></li>
+                        <li><a href="#architecture">全体アーキテクチャ</a></li>
+                        <li><a href="#prep">事前準備</a></li>
+                        <li><a href="#task1">Task 1 画像生成</a></li>
+                        <li><a href="#task2">Task 2 ストリーミング解析</a></li>
+                        <li><a href="#fullcode">完成コード</a></li>
+                        <li><a href="#troubleshooting">トラブルシューティング</a></li>
+                        <li><a href="#bestpractices">ベストプラクティス</a></li>
+                        <li><a href="#scoring">自動採点について</a></li>
+                        <li><a href="#references">参考文献・ソース</a></li>
+                    </ul>
+                </nav>
+            </nav>
+
+            <main class="main">
+                <header class="hero">
+                    <div class="hero-kicker">
+                        対象Lab: Build a Multi-Modal GenAI Application — Challenge Lab ／
+                        <a
+                            href="https://www.skills.google/course_templates/1076/labs/648466"
+                            target="_blank"
+                            rel="noopener"
+                            >skills.google で開く</a
+                        >
+                    </div>
+                    <h1>
+                        Gemini API（google-genai SDK）で実装する<br />「AIブーケデザインアプリ」ステップバイステップ解説
+                    </h1>
+                    <p>
+                        インフラエンジニア／Google Cloud
+                        スペシャリストの視点から、画像生成とストリーミング画像解析という2つのTaskを、初学者でも迷わず実装できるようベストプラクティスとともに解説します。すべての判断根拠には公式ソースのURLを付記しています。
+                    </p>
+                </header>
+
+                <section id="overview" class="section">
+                    <h2>このガイドについて</h2>
+                    <p>
+                        この課題は、ブーケ（花束）デザイン会社のシステムを想定し、以下の2つのPython関数を実装するものです。
+                    </p>
+                    <ul>
+                        <li>
+                            <strong>Task 1</strong>:
+                            <code>genai.Client()</code>
+                            を使い、テキストプロンプトから画像を生成してローカルに保存する
+                        </li>
+                        <li>
+                            <strong>Task 2</strong>:
+                            <code>analyze_bouquet_image(image_path)</code>
+                            関数を実装し、生成した画像を<strong>ストリーミング</strong>でマルチモーダルモデルに送信し、バースデーメッセージを
+                            <code>.txt</code> ファイルへ保存する
+                        </li>
+                    </ul>
+                    <p>
+                        課題文中に登場する <code>flash-image-model-id</code> と
+                        <code>model-id</code>
+                        は、Lab説明文における<strong>プレースホルダー（実際の値に置き換えるべき箇所）</strong>です。Googleのモデルは頻繁にアップデートされるため、本ガイドでは「なぜそのモデルを選ぶのか」という判断基準と、現時点（2026年9月）で公式に案内されている具体的なモデルIDの両方を解説します。
+                    </p>
+
+                    <div class="callout callout-note">
+                        <div class="callout-mark">i</div>
+                        <div>
+                            <p class="callout-label">統一SDKについて</p>
+                            <p>
+                                <code>google.genai</code>（<code>pip install google-genai</code
+                                >）は、旧来の <code>vertexai.generative_models</code> や
+                                <code>vertexai.preview.vision_models</code>
+                                を統合した新しい統一SDKです。Vertex AIとGemini Developer
+                                APIの両方を同一の
+                                <code>genai.Client()</code> インターフェースで扱えます。
+                            </p>
+                            <p class="ref-url">
+                                <a
+                                    href="https://ai.google.dev/gemini-api/docs/migrate"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >https://ai.google.dev/gemini-api/docs/migrate</a
+                                >
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="architecture" class="section">
+                    <h2>課題の全体像とアーキテクチャ</h2>
+                    <p>
+                        まず全体のデータフローを俯瞰します。Task 1（画像生成）とTask
+                        2（画像解析）が同じ
+                        <code>genai.Client()</code>
+                        インスタンスを共有できる点がポイントです。これにより、認証・プロジェクト設定・リージョン設定を1箇所に集約でき、コードの重複と設定ミスを防げます（DRY原則）。
+                    </p>
+                    <div class="diagram-block">
+                        <div class="diagram-target" data-diagram="architecture"></div>
+                        <div class="diagram-caption">図1: アプリケーション全体のデータフロー</div>
+                    </div>
+                </section>
+
+                <section id="prep" class="section">
+                    <h2>事前準備</h2>
+
+                    <h3>ステップ1: プロジェクトとリージョンの取得</h3>
+                    <p>
+                        Cloud Shell／Lab提供のIDEには
+                        <code>gcloud</code>
+                        SDKが事前設定されています。ハードコーディングを避け、環境から動的に取得するのがベストプラクティスです。
+                    </p>
+
+                    <div class="code-block">
+                        <div class="code-header"><span>terminal</span><span>bash</span></div>
+                        <pre><code class="language-bash" id="code-env"></code></pre>
+                    </div>
+                    <script type="text/plain" data-target="code-env">
+                        PROJECT_ID=$(gcloud config get-value project 2>/dev/null)
+                        # gcloud は未設定時に終了コード 0 のまま "(unset)" を出力するため、|| では捕捉できない
+                        case "$PROJECT_ID" in
+                          ''|'(unset)')
+                            echo "エラー: プロジェクトが未設定です。gcloud config set project <PROJECT_ID> を実行してください。" >&2
+                            # 未設定のまま後続手順へ進ませない（sourced なら return、実行スクリプトなら exit）
+                            return 1 2>/dev/null || exit 1
+                            ;;
+                          *)
+                            export PROJECT_ID
+                            ;;
+                        esac
+
+                        REGION=$(gcloud config get-value compute/region 2>/dev/null)
+                        case "$REGION" in ''|'(unset)') REGION="us-central1" ;; esac
+                        export REGION
+                        echo "PROJECT_ID=${PROJECT_ID}, REGION=${REGION}"
+                    </script>
+
+                    <div class="callout callout-warning">
+                        <div class="callout-mark">!</div>
+                        <div>
+                            <p>
+                                プロジェクトIDやリージョンをコード中に直接書き込むと、他の環境（別プロジェクト・別リージョン）への移植性が失われます。環境変数または
+                                <code>gcloud</code> コマンドから動的取得するのがGoogle
+                                Cloudの標準的な推奨事項です。
+                            </p>
+                            <p class="ref-url">
+                                <a
+                                    href="https://cloud.google.com/docs/authentication/application-default-credentials"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >https://cloud.google.com/docs/authentication/application-default-credentials</a
+                                >
+                            </p>
+                        </div>
+                    </div>
+
+                    <h3>ステップ2: SDKのインストール／アップグレード</h3>
+                    <div class="code-block">
+                        <div class="code-header"><span>terminal</span><span>bash</span></div>
+                        <pre><code class="language-bash" id="code-install"></code></pre>
+                    </div>
+                    <script type="text/plain" data-target="code-install">
+                        pip install --upgrade google-genai --quiet
+                    </script>
+                    <p>
+                        課題文の「Python version
+                        dependenciesに関するwarningは無視してよい」という注記は、Cloud
+                        Shellにプリインストールされた <code>protobuf</code> や
+                        <code>grpcio</code> 等の依存パッケージと、新しくインストールする
+                        <code>google-genai</code>
+                        の要求バージョンとの間でpipの依存関係リゾルバが警告を出すことを指しています。Lab環境では無視して問題ありませんが、本番運用では仮想環境（<code
+                            >venv</code
+                        >
+                        や <code>uv</code>）を使ってパッケージを分離するのがベストプラクティスです。
+                    </p>
+
+                    <h3>ステップ3: クライアントの初期化パターンを理解する</h3>
+                    <p>
+                        <code>genai.Client()</code>
+                        は、引数の与え方によって接続先バックエンドが変わります。
+                    </p>
+
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>初期化方法</th>
+                                    <th>接続先</th>
+                                    <th>認証方式</th>
+                                    <th>主な用途</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <code
+                                            >genai.Client(vertexai=True, project=PROJECT_ID,
+                                            location=REGION)</code
+                                        >
+                                    </td>
+                                    <td>Vertex AI</td>
+                                    <td>Application Default Credentials（ADC）</td>
+                                    <td>本課題（Google Cloud環境）</td>
+                                </tr>
+                                <tr>
+                                    <td><code>genai.Client(api_key="...")</code></td>
+                                    <td>Gemini Developer API（AI Studio）</td>
+                                    <td>APIキー</td>
+                                    <td>個人開発・プロトタイピング</td>
+                                </tr>
+                                <tr>
+                                    <td><code>genai.Client()</code>（引数なし）</td>
+                                    <td>環境変数から自動判定</td>
+                                    <td>環境依存</td>
+                                    <td>CI/CDなど環境変数で制御したい場合</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>
+                        ソース:
+                        <a
+                            href="https://googleapis.github.io/python-genai/"
+                            target="_blank"
+                            rel="noopener"
+                            >googleapis.github.io/python-genai</a
+                        >
+                        ／
+                        <a
+                            href="https://ai.google.dev/gemini-api/docs/migrate"
+                            target="_blank"
+                            rel="noopener"
+                            >ai.google.dev/gemini-api/docs/migrate</a
+                        >
+                    </p>
+                    <p>
+                        本Labは Google Cloud プロジェクト内で完結するため、<strong
+                            >明示的に <code>vertexai=True</code> を指定する方法</strong
+                        >を採用します（暗黙的な環境変数依存よりも意図が明確でデバッグしやすいため）。
+                    </p>
+                </section>
+
+                <section id="task1" class="section">
+                    <h2>Task 1: genai.Client() による画像生成</h2>
+
+                    <h3>ステップ1: モデルIDを選定する</h3>
+                    <p>
+                        課題文の
+                        <code>flash-image-model-id</code>
+                        は「flash系の画像生成モデル」を指します。2026年9月時点でGoogleが公式に案内している該当モデルは以下の通りです。
+                    </p>
+
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>プレースホルダー</th>
+                                    <th>該当する実際のモデルID</th>
+                                    <th>ステータス</th>
+                                    <th>ソース</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>flash-image-model-id</code></td>
+                                    <td><code>gemini-2.5-flash-image</code></td>
+                                    <td>
+                                        GA（本番運用可）。ただし
+                                        <strong>2026年10月2日に提供終了予定</strong>のため、新規実装では後継の
+                                        <code>gemini-3.1-flash-image</code> 系列を確認すること
+                                    </td>
+                                    <td>
+                                        <a
+                                            href="https://developers.googleblog.com/en/gemini-2-5-flash-image-now-ready-for-production-with-new-aspect-ratios/"
+                                            target="_blank"
+                                            rel="noopener"
+                                            >Google Developers Blog</a
+                                        >
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="callout callout-tip">
+                        <div class="callout-mark">✓</div>
+                        <div>
+                            <p class="callout-label">ベストプラクティス</p>
+                            <p>
+                                モデルIDはハードコードせず、Vertex AI Model
+                                Garden（コンソール上のモデルカタログ）または公式モデル一覧ページで最新の利用可能モデルを都度確認してください。Gemini系モデルは世代交代が速く、Lab実施時点でさらに新しい世代が既定になっている可能性があります。
+                            </p>
+                            <p class="ref-url">
+                                <a
+                                    href="https://docs.cloud.google.com/vertex-ai/generative-ai/docs/multimodal/image-generation"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >https://docs.cloud.google.com/vertex-ai/generative-ai/docs/multimodal/image-generation</a
+                                >
+                            </p>
+                        </div>
+                    </div>
+
+                    <h3>ステップ2: generate_content() で画像を生成する</h3>
+                    <p>
+                        課題文が「<code>generate_images()</code> ではなく
+                        <code>genai.Client()</code> が supplied
+                        <strong>content</strong>
+                        をinvokeする」と表現している点に注目してください。これは
+                        <code>generate_images()</code>（Imagen専用の画像生成API）ではなく、<strong
+                            ><code>generate_content()</code></strong
+                        >
+                        メソッドを使うことを示唆しています。<code>generate_content()</code> は
+                        <code>response_modalities</code>
+                        を指定することで、テキストと同じ入出力インターフェースのまま画像を生成できます。
+                    </p>
+
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span>generate_bouquet_image.py</span><span>python</span>
+                        </div>
+                        <pre><code class="language-python" id="code-task1"></code></pre>
+                    </div>
+                    <script type="text/plain" data-target="code-task1">
+                        from google import genai
+                        from google.genai import types
+
+
+                        def generate_bouquet_image(
+                            client: genai.Client,
+                            model_id: str,
+                            prompt: str,
+                            output_path: str = "image.png",
+                        ) -> str:
+                            """テキストプロンプトから画像を生成し、ローカルに保存する。
+
+                            Args:
+                                client: 初期化済みの genai.Client インスタンス。
+                                model_id: 使用する flash-image 系モデルのID。
+                                prompt: 画像生成用のテキストプロンプト。
+                                output_path: 保存先のローカルファイルパス。
+
+                            Returns:
+                                保存した画像ファイルのパス。
+                            """
+                            response = client.models.generate_content(
+                                model=model_id,
+                                contents=prompt,
+                                config=types.GenerateContentConfig(
+                                    response_modalities=["IMAGE"],
+                                ),
+                            )
+
+                            for part in response.parts:
+                                if part.inline_data is not None:
+                                    generated_image = part.as_image()
+                                    generated_image.save(output_path)
+                                    print(f"画像を保存しました: {output_path}")
+                                    return output_path
+
+                            raise RuntimeError("レスポンスに画像データが含まれていませんでした。")
+                    </script>
+                    <p>
+                        ソース:
+                        <a
+                            href="https://googleapis.github.io/python-genai/"
+                            target="_blank"
+                            rel="noopener"
+                            >googleapis.github.io/python-genai</a
+                        >（<code>part.as_image()</code> の使用例）
+                    </p>
+
+                    <h3>Task 1 のシーケンス</h3>
+                    <div class="diagram-block">
+                        <div class="diagram-target" data-diagram="task1seq"></div>
+                        <div class="diagram-caption">図2: Task 1 のリクエストフロー</div>
+                    </div>
+                </section>
+
+                <section id="task2" class="section">
+                    <h2>Task 2: ストリーミングによる画像解析とテキスト生成</h2>
+
+                    <h3>ステップ1: 画像をPart化する</h3>
+                    <p>
+                        Vertex AI上で <code>generate_content</code> /
+                        <code>generate_content_stream</code> に画像を渡す際は、<code
+                            >types.Part.from_bytes()</code
+                        >
+                        でバイト列とMIMEタイプを明示するのが最も確実な方法です。
+                    </p>
+
+                    <div class="code-block">
+                        <div class="code-header"><span>image_part.py</span><span>python</span></div>
+                        <pre><code class="language-python" id="code-part"></code></pre>
+                    </div>
+                    <script type="text/plain" data-target="code-part">
+                        import mimetypes
+                        import os
+                        import tempfile
+
+                        from google.genai import types
+
+
+                        def _load_image_part(image_path: str) -> types.Part:
+                            """ローカル画像ファイルを Gemini API 用の Part に変換する。"""
+                            mime_type, _ = mimetypes.guess_type(image_path)
+                            # Gemini API が受け付ける画像 MIME タイプのみを許可する（拡張子推測の誤検出を防ぐ）
+                            allowed_mime_types = {"image/png", "image/jpeg", "image/webp", "image/heic", "image/heif"}
+                            if mime_type not in allowed_mime_types:
+                                raise ValueError(f"サポートされていない画像のMIMEタイプです: {image_path} ({mime_type})")
+                            with open(image_path, "rb") as f:
+                                image_bytes = f.read()
+                            return types.Part.from_bytes(data=image_bytes, mime_type=mime_type)
+                    </script>
+
+                    <div class="callout callout-danger">
+                        <div class="callout-mark">×</div>
+                        <div>
+                            <p class="callout-label">既知の落とし穴</p>
+                            <p>
+                                旧SDK（<code>vertexai.generative_models</code>）のコード例をそのまま
+                                <code>google-genai</code> に流用すると
+                                <code
+                                    >AttributeError: type object 'Part' has no attribute
+                                    'from_file'</code
+                                >
+                                が発生します。これは2つのSDKでAPI設計が異なるためで、<code
+                                    >google-genai</code
+                                >
+                                では常に <code>types.Part.from_bytes()</code> または
+                                <code>types.Part.from_uri()</code>（Cloud
+                                Storage上の画像向け）を使用してください。
+                            </p>
+                            <p class="ref-url">
+                                <a
+                                    href="https://googleapis.github.io/python-genai/"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >https://googleapis.github.io/python-genai/</a
+                                >
+                            </p>
+                        </div>
+                    </div>
+
+                    <h3>ステップ2: ストリーミングでテキストを生成する</h3>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span>analyze_bouquet_image.py</span><span>python</span>
+                        </div>
+                        <pre><code class="language-python" id="code-task2"></code></pre>
+                    </div>
+                    <script type="text/plain" data-target="code-task2">
+                        def analyze_bouquet_image(
+                            client: genai.Client,
+                            model_id: str,
+                            image_path: str,
+                            output_txt_path: str = "birthday_wishes.txt",
+                        ) -> str:
+                            """画像を解析し、ストリーミングでバースデーメッセージを生成してtxtに保存する。
+
+                            Args:
+                                client: 初期化済みの genai.Client インスタンス。
+                                model_id: マルチモーダル対応のモデルID。
+                                image_path: 解析対象の画像ファイルパス。
+                                output_txt_path: 生成メッセージの保存先パス。
+
+                            Returns:
+                                生成されたバースデーメッセージ全文。
+                            """
+                            image_part = _load_image_part(image_path)
+                            prompt = (
+                                "この花束の画像からインスピレーションを得て、"
+                                "温かみのある誕生日メッセージを作成してください。"
+                            )
+
+                            def _run() -> str:
+                                """ストリームの生成と全チャンクの消費を1回のリトライ単位にまとめる。"""
+                                text = ""
+                                out_dir = os.path.dirname(os.path.abspath(output_txt_path))
+                                fd, tmp_path = tempfile.mkstemp(dir=out_dir, suffix=".part")
+                                try:
+                                    stream = client.models.generate_content_stream(
+                                        model=model_id,
+                                        contents=[prompt, image_part],
+                                    )
+                                    with os.fdopen(fd, "w", encoding="utf-8") as f:
+                                        # 429 はイテレーション中に送出されるため、消費もこの中で完結させる
+                                        for chunk in stream:
+                                            if chunk.text:
+                                                print(chunk.text, end="", flush=True)
+                                                text += chunk.text
+                                                f.write(chunk.text)
+                                    # 全チャンクを取り切ってから原子的に公開する
+                                    os.replace(tmp_path, output_txt_path)
+                                except BaseException:
+                                    try:
+                                        os.unlink(tmp_path)
+                                    except OSError:
+                                        # 後片付けの失敗で本来の例外を隠さない
+                                        pass
+                                    raise
+                                return text
+
+                            print("バースデーメッセージを生成中...\n")
+                            # call_with_backoff は後述の「429エラーへの対応」節で定義する
+                            response_text = call_with_backoff(_run)
+
+                            print(f"\n\nメッセージを保存しました: {output_txt_path}")
+                            return response_text
+                    </script>
+                    <p>
+                        ソース（<code>generate_content_stream</code> のストリーミングパターン）:
+                        <a
+                            href="https://googleapis.github.io/python-genai/"
+                            target="_blank"
+                            rel="noopener"
+                            >googleapis.github.io/python-genai</a
+                        >
+                    </p>
+
+                    <h3>モデルIDの選定（Task 2）</h3>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>プレースホルダー</th>
+                                    <th>該当する実際のモデルID</th>
+                                    <th>選定理由</th>
+                                    <th>ソース</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>model-id</code></td>
+                                    <td><code>gemini-2.5-flash</code></td>
+                                    <td>
+                                        画像＋テキストのマルチモーダル入力とストリーミング出力の両方を公式にサポートする安定版モデル
+                                    </td>
+                                    <td>
+                                        <a
+                                            href="https://docs.cloud.google.com/gemini-enterprise-agent-platform/reference/models/inference"
+                                            target="_blank"
+                                            rel="noopener"
+                                            >Vertex AI reference</a
+                                        >
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>
+                        Lab環境によっては、より新しい世代（<code>gemini-3.x-flash</code>
+                        系列）が利用可能な場合があります。<code>gemini-2.5-flash</code>
+                        はストリーミングとマルチモーダル入力の組み合わせで広く実績があるため、本ガイドの基準モデルとしています。
+                    </p>
+
+                    <h3>generate_content と generate_content_stream の使い分け</h3>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>項目</th>
+                                    <th>generate_content（Task 1で使用）</th>
+                                    <th>generate_content_stream（Task 2で使用）</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>レスポンスの受け取り方</td>
+                                    <td>完全なレスポンスを一括取得</td>
+                                    <td>チャンク（断片）を逐次取得するイテレータ</td>
+                                </tr>
+                                <tr>
+                                    <td>適した用途</td>
+                                    <td>画像生成など「完成品」が必要な処理</td>
+                                    <td>
+                                        チャットUIなど、生成中の様子をリアルタイム表示したい処理
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>コードパターン</td>
+                                    <td>
+                                        <code>response = client.models.generate_content(...)</code>
+                                    </td>
+                                    <td>
+                                        <code
+                                            >for chunk in
+                                            client.models.generate_content_stream(...):</code
+                                        >
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>非同期版</td>
+                                    <td><code>client.aio.models.generate_content(...)</code></td>
+                                    <td>
+                                        <code>client.aio.models.generate_content_stream(...)</code>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>
+                        ソース:
+                        <a
+                            href="https://github.com/googleapis/python-genai"
+                            target="_blank"
+                            rel="noopener"
+                            >github.com/googleapis/python-genai</a
+                        >
+                    </p>
+
+                    <h3>Task 2 のシーケンス</h3>
+                    <div class="diagram-block">
+                        <div class="diagram-target" data-diagram="task2seq"></div>
+                        <div class="diagram-caption">図3: Task 2 のストリーミングフロー</div>
+                    </div>
+
+                    <h3>429エラーへの対応（リトライ戦略）</h3>
+                    <p>
+                        課題文の注記どおり「429エラーが出た場合は1分待って再実行」で対処できますが、実務では<strong>指数バックオフ付きの自動リトライ</strong>を実装するのがベストプラクティスです。
+                    </p>
+
+                    <div class="code-block">
+                        <div class="code-header"><span>backoff.py</span><span>python</span></div>
+                        <pre><code class="language-python" id="code-backoff"></code></pre>
+                    </div>
+                    <script type="text/plain" data-target="code-backoff">
+                        import os
+                        import tempfile
+                        import time
+
+                        from google.genai import errors
+
+
+                        def call_with_backoff(func, *args, max_retries: int = 5, **kwargs):
+                            """429 (RESOURCE_EXHAUSTED) 発生時に指数バックオフでリトライする。"""
+                            for attempt in range(max_retries):
+                                try:
+                                    return func(*args, **kwargs)
+                                except errors.ClientError as e:
+                                    if getattr(e, "code", None) == 429 and attempt < max_retries - 1:
+                                        wait_seconds = 2 ** attempt
+                                        print(f"429エラー検出。{wait_seconds}秒待機してリトライします...")
+                                        time.sleep(wait_seconds)
+                                        continue
+                                    raise
+
+
+                        def analyze_with_retry(client, model_id, contents, output_txt_path: str) -> str:
+                            """ストリームの生成と消費をまとめて callable に閉じ込め、リトライ対象にする。"""
+
+                            def _run() -> str:
+                                text = ""
+                                out_dir = os.path.dirname(os.path.abspath(output_txt_path))
+                                fd, tmp_path = tempfile.mkstemp(dir=out_dir, suffix=".part")
+                                try:
+                                    stream = client.models.generate_content_stream(
+                                        model=model_id, contents=contents
+                                    )
+                                    # 429 はイテレーション中に送出されるため、for ループも callable の内側に置く
+                                    with os.fdopen(fd, "w", encoding="utf-8") as f:
+                                        for chunk in stream:
+                                            if chunk.text:
+                                                text += chunk.text
+                                                f.write(chunk.text)
+                                    os.replace(tmp_path, output_txt_path)
+                                except BaseException:
+                                    try:
+                                        os.unlink(tmp_path)
+                                    except OSError:
+                                        pass
+                                    raise
+                                return text
+
+                            # 一時ファイルへ書き、成功時のみ os.replace で公開するため、
+                            # 途中で失敗した試行の内容が output_txt_path に残ることはない
+                            return call_with_backoff(_run)
+                    </script>
+                    <div class="callout callout-warning">
+                        <div class="callout-mark">!</div>
+                        <div>
+                            <strong>重要</strong>: <code>generate_content_stream</code>
+                            はイテレータを返すため、<code>429</code>
+                            は関数呼び出しの時点ではなく<strong>チャンクを取り出している最中</strong>に送出されます。ストリームの生成だけを
+                            <code>call_with_backoff</code> でラップしてもリトライは発動しないため、<code
+                                >for chunk in stream</code
+                            >
+                            の消費までを callable の内側に入れてください。
+                        </div>
+                    </div>
+                    <p>
+                        ソース（<code>google.genai.errors</code> の例外構造）:
+                        <a
+                            href="https://discuss.ai.google.dev/t/error-400-invalid-argument-when-using-gemini-2-5-flash-with-generate-content-stream/97626"
+                            target="_blank"
+                            rel="noopener"
+                            >discuss.ai.google.dev</a
+                        >
+                    </p>
+                </section>
+
+                <section id="fullcode" class="section">
+                    <h2>完成コード（フル実装）</h2>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span>bouquet_app.py</span><span>python</span>
+                        </div>
+                        <pre><code class="language-python" id="code-full"></code></pre>
+                    </div>
+                    <script type="text/plain" data-target="code-full">
+                        import mimetypes
+                        import os
+                        import tempfile
+                        import time
+
+                        from google import genai
+                        from google.genai import errors, types
+
+
+                        def call_with_backoff(func, *args, max_retries: int = 5, **kwargs):
+                            """429 (RESOURCE_EXHAUSTED) 発生時に指数バックオフでリトライする。"""
+                            for attempt in range(max_retries):
+                                try:
+                                    return func(*args, **kwargs)
+                                except errors.ClientError as e:
+                                    if getattr(e, "code", None) == 429 and attempt < max_retries - 1:
+                                        wait_seconds = 2 ** attempt
+                                        print(f"429エラー検出。{wait_seconds}秒待機してリトライします...")
+                                        time.sleep(wait_seconds)
+                                        continue
+                                    raise
+
+
+                        def generate_bouquet_image(
+                            client: genai.Client,
+                            model_id: str,
+                            prompt: str,
+                            output_path: str = "image.png",
+                        ) -> str:
+                            response = client.models.generate_content(
+                                model=model_id,
+                                contents=prompt,
+                                config=types.GenerateContentConfig(response_modalities=["IMAGE"]),
+                            )
+                            for part in response.parts:
+                                if part.inline_data is not None:
+                                    part.as_image().save(output_path)
+                                    return output_path
+                            raise RuntimeError("レスポンスに画像データが含まれていませんでした。")
+
+
+                        def _load_image_part(image_path: str) -> types.Part:
+                            mime_type, _ = mimetypes.guess_type(image_path)
+                            # Gemini API が受け付ける画像 MIME タイプのみを許可する（拡張子推測の誤検出を防ぐ）
+                            allowed_mime_types = {"image/png", "image/jpeg", "image/webp", "image/heic", "image/heif"}
+                            if mime_type not in allowed_mime_types:
+                                raise ValueError(f"サポートされていない画像のMIMEタイプです: {image_path} ({mime_type})")
+                            with open(image_path, "rb") as f:
+                                image_bytes = f.read()
+                            return types.Part.from_bytes(data=image_bytes, mime_type=mime_type)
+
+
+                        def analyze_bouquet_image(
+                            client: genai.Client,
+                            model_id: str,
+                            image_path: str,
+                            output_txt_path: str = "birthday_wishes.txt",
+                        ) -> str:
+                            image_part = _load_image_part(image_path)
+                            prompt = (
+                                "この花束の画像からインスピレーションを得て、"
+                                "温かみのある誕生日メッセージを作成してください。"
+                            )
+                        
+                            def _run() -> str:
+                                """1回分の試行。完走した内容だけを os.replace で公開する。"""
+                                text = ""
+                                output_dir = os.path.dirname(os.path.abspath(output_txt_path))
+                                # 同一ディレクトリに一時ファイルを作り、rename をアトミックにする
+                                fd, tmp_path = tempfile.mkstemp(dir=output_dir, suffix=".tmp")
+                                try:
+                                    # 429 はイテレーション中に送出されるため、消費も _run の内側に置く
+                                    stream = client.models.generate_content_stream(
+                                        model=model_id, contents=[prompt, image_part]
+                                    )
+                                    with os.fdopen(fd, "w", encoding="utf-8") as f:
+                                        for chunk in stream:
+                                            if chunk.text:
+                                                text += chunk.text
+                                                f.write(chunk.text)
+                                        f.flush()
+                                        os.fsync(f.fileno())
+                                except BaseException:
+                                    # 失敗・中断時は一時ファイルを破棄し、既存の出力を汚さない
+                                    os.unlink(tmp_path)
+                                    raise
+                                os.replace(tmp_path, output_txt_path)
+                                return text
+
+                            return call_with_backoff(_run)
+
+
+                        if __name__ == "__main__":
+                            PROJECT_ID = os.environ["PROJECT_ID"]
+                            REGION = os.environ.get("REGION", "us-central1")
+
+                            client = genai.Client(vertexai=True, project=PROJECT_ID, location=REGION)
+
+                            IMAGE_MODEL_ID = "gemini-2.5-flash-image"
+                            TEXT_MODEL_ID = "gemini-2.5-flash"
+
+                            image_path = generate_bouquet_image(
+                                client,
+                                IMAGE_MODEL_ID,
+                                prompt="Create an image containing a bouquet of 2 sunflowers and 3 roses",
+                            )
+                            analyze_bouquet_image(client, TEXT_MODEL_ID, image_path)
+                    </script>
+                </section>
+
+                <section id="troubleshooting" class="section">
+                    <h2>トラブルシューティング</h2>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>症状</th>
+                                    <th>原因</th>
+                                    <th>対処法</th>
+                                    <th>ソース</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>pip installで大量のバージョン警告が出る</td>
+                                    <td>
+                                        Cloud Shellにプリインストール済みのパッケージと google-genai
+                                        の依存要求のバージョン差異
+                                    </td>
+                                    <td>
+                                        課題の指示どおり無視してよい。本番では venv
+                                        等で依存関係を分離する
+                                    </td>
+                                    <td>
+                                        <a
+                                            href="https://ai.google.dev/gemini-api/docs/migrate"
+                                            target="_blank"
+                                            rel="noopener"
+                                            >ai.google.dev</a
+                                        >
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><code>429 RESOURCE_EXHAUSTED</code></td>
+                                    <td>
+                                        プロジェクトのクォータ（1分あたりのリクエスト数上限）に到達
+                                    </td>
+                                    <td>1分待って再実行、または指数バックオフを実装する</td>
+                                    <td>
+                                        <a
+                                            href="https://discuss.ai.google.dev/t/error-400-invalid-argument-when-using-gemini-2-5-flash-with-generate-content-stream/97626"
+                                            target="_blank"
+                                            rel="noopener"
+                                            >discuss.ai.google.dev</a
+                                        >
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <code
+                                            >AttributeError: type object 'Part' has no attribute
+                                            'from_file'</code
+                                        >
+                                    </td>
+                                    <td>
+                                        旧SDK（vertexai.generative_models）と新SDK（google-genai）のAPI差異
+                                    </td>
+                                    <td>
+                                        <code>types.Part.from_bytes()</code> または
+                                        <code>types.Part.from_uri()</code> を使用する
+                                    </td>
+                                    <td>
+                                        <a
+                                            href="https://googleapis.github.io/python-genai/"
+                                            target="_blank"
+                                            rel="noopener"
+                                            >googleapis.github.io</a
+                                        >
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>画像生成レスポンスに inline_data が含まれない</td>
+                                    <td>
+                                        response_modalities未指定によりテキストのみが返る、またはプロンプトが安全フィルタでブロックされた
+                                    </td>
+                                    <td>
+                                        <code
+                                            >config=types.GenerateContentConfig(response_modalities=["IMAGE"])</code
+                                        >
+                                        を明示する
+                                    </td>
+                                    <td>
+                                        <a
+                                            href="https://developers.googleblog.com/en/gemini-2-5-flash-image-now-ready-for-production-with-new-aspect-ratios/"
+                                            target="_blank"
+                                            rel="noopener"
+                                            >developers.googleblog.com</a
+                                        >
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>ストリーミング中にファイルへの書き込みが不完全</td>
+                                    <td>
+                                        ファイルハンドルを with 文の外で閉じている、または flush
+                                        していない
+                                    </td>
+                                    <td>
+                                        <code>with open(...) as f:</code>
+                                        のブロック内でチャンクごとに書き込む
+                                    </td>
+                                    <td>
+                                        <a
+                                            href="https://googleapis.github.io/python-genai/"
+                                            target="_blank"
+                                            rel="noopener"
+                                            >googleapis.github.io</a
+                                        >
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section id="bestpractices" class="section">
+                    <h2>ベストプラクティス総括表</h2>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>項目</th>
+                                    <th>推奨プラクティス</th>
+                                    <th>理由</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>クライアント初期化</td>
+                                    <td>
+                                        genai.Client()
+                                        は関数ごとに作り直さず、1インスタンスを使い回す
+                                    </td>
+                                    <td>認証情報の再取得コストを避け、コードの一貫性を保つため</td>
+                                </tr>
+                                <tr>
+                                    <td>モデルID管理</td>
+                                    <td>定数（IMAGE_MODEL_ID、TEXT_MODEL_ID）として一箇所に集約</td>
+                                    <td>モデル世代交代時の変更箇所を最小化するため</td>
+                                </tr>
+                                <tr>
+                                    <td>プロジェクト／リージョン</td>
+                                    <td>
+                                        環境変数または gcloud
+                                        コマンドから動的取得し、ハードコードしない
+                                    </td>
+                                    <td>環境間の移植性とセキュリティを両立するため</td>
+                                </tr>
+                                <tr>
+                                    <td>画像パート生成</td>
+                                    <td>types.Part.from_bytes() でMIMEタイプを明示する</td>
+                                    <td>旧SDKとの混同によるAttributeErrorを防ぐため</td>
+                                </tr>
+                                <tr>
+                                    <td>ストリーミング書き込み</td>
+                                    <td>with open(...) as f: ブロック内でチャンクごとに書き込む</td>
+                                    <td>ファイルの取りこぼしと未クローズを防ぐため</td>
+                                </tr>
+                                <tr>
+                                    <td>エラーハンドリング</td>
+                                    <td>429エラーに対して指数バックオフでリトライする</td>
+                                    <td>クォータ制限に対する堅牢性を高めるため</td>
+                                </tr>
+                                <tr>
+                                    <td>出力の検証</td>
+                                    <td>
+                                        画像ファイルと.txtファイルの両方の存在・非ゼロサイズをコード内でアサートする
+                                    </td>
+                                    <td>自動採点前に自己診断できるようにするため</td>
+                                </tr>
+                                <tr>
+                                    <td>認証情報</td>
+                                    <td>
+                                        APIキーをコードにハードコードせず、Vertex
+                                        AI利用時はADCを使う
+                                    </td>
+                                    <td>認証情報の漏えいリスクを避けるため</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>
+                        ソース（ADCに関するベストプラクティス）:
+                        <a
+                            href="https://cloud.google.com/docs/authentication/application-default-credentials"
+                            target="_blank"
+                            rel="noopener"
+                            >cloud.google.com</a
+                        >
+                    </p>
+                </section>
+
+                <section id="scoring" class="section">
+                    <h2>自動採点（Check my progress）の仕組みについて</h2>
+                    <p>
+                        Google Cloud Skills Boost / Google Skills のChallenge Labにおける「Check my
+                        progress」は、一般的に以下のいずれか（または組み合わせ）で採点されます。
+                    </p>
+                    <ul>
+                        <li>
+                            対象APIメソッド（例: Vertex AI Gemini APIへの
+                            <code>generateContent</code> /
+                            <code>streamGenerateContent</code> 呼び出し）が Cloud Audit Logs
+                            に記録されているかを確認する
+                        </li>
+                        <li>
+                            指定されたリソース（この課題では生成された画像ファイルや.txtファイル）が想定どおり作成されているかを確認する
+                        </li>
+                    </ul>
+                    <div class="callout callout-warning">
+                        <div class="callout-mark">!</div>
+                        <div>
+                            <p>
+                                そのため、「動くコード」であることに加えて、<strong
+                                    >正しいAPIメソッド（generate_content /
+                                    generate_content_stream）と正しい呼び出し形式で実行されていること</strong
+                                >が採点上重要になります。ローカルのシミュレーションやモック実装では加点されない点に注意してください。
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="references" class="section">
+                    <h2>参考文献・ソース一覧</h2>
+                    <ul class="ref-list">
+                        <li class="ref-item">
+                            <span class="ref-index">01</span>
+                            <div class="ref-body">
+                                <div class="ref-title">
+                                    Migrate to the Google GenAI SDK（公式移行ガイド）
+                                </div>
+                                <div class="ref-url">
+                                    <a
+                                        href="https://ai.google.dev/gemini-api/docs/migrate"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >https://ai.google.dev/gemini-api/docs/migrate</a
+                                    >
+                                </div>
+                            </div>
+                        </li>
+                        <li class="ref-item">
+                            <span class="ref-index">02</span>
+                            <div class="ref-body">
+                                <div class="ref-title">
+                                    Google Gen AI SDK for Python 公式ドキュメント
+                                </div>
+                                <div class="ref-url">
+                                    <a
+                                        href="https://googleapis.github.io/python-genai/"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >https://googleapis.github.io/python-genai/</a
+                                    >
+                                </div>
+                            </div>
+                        </li>
+                        <li class="ref-item">
+                            <span class="ref-index">03</span>
+                            <div class="ref-body">
+                                <div class="ref-title">
+                                    google-genai GitHub リポジトリ（Streaming / Async 実装例）
+                                </div>
+                                <div class="ref-url">
+                                    <a
+                                        href="https://github.com/googleapis/python-genai"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >https://github.com/googleapis/python-genai</a
+                                    >
+                                </div>
+                            </div>
+                        </li>
+                        <li class="ref-item">
+                            <span class="ref-index">04</span>
+                            <div class="ref-body">
+                                <div class="ref-title">
+                                    Introducing Gemini 2.5 Flash Image（公式ブログ）
+                                </div>
+                                <div class="ref-url">
+                                    <a
+                                        href="https://developers.googleblog.com/introducing-gemini-2-5-flash-image/"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >https://developers.googleblog.com/introducing-gemini-2-5-flash-image/</a
+                                    >
+                                </div>
+                            </div>
+                        </li>
+                        <li class="ref-item">
+                            <span class="ref-index">05</span>
+                            <div class="ref-body">
+                                <div class="ref-title">
+                                    Gemini 2.5 Flash Image now ready for production（GA発表）
+                                </div>
+                                <div class="ref-url">
+                                    <a
+                                        href="https://developers.googleblog.com/en/gemini-2-5-flash-image-now-ready-for-production-with-new-aspect-ratios/"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >https://developers.googleblog.com/en/gemini-2-5-flash-image-now-ready-for-production-with-new-aspect-ratios/</a
+                                    >
+                                </div>
+                            </div>
+                        </li>
+                        <li class="ref-item">
+                            <span class="ref-index">06</span>
+                            <div class="ref-body">
+                                <div class="ref-title">Vertex AI 画像生成モデル ドキュメント</div>
+                                <div class="ref-url">
+                                    <a
+                                        href="https://docs.cloud.google.com/vertex-ai/generative-ai/docs/multimodal/image-generation"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >https://docs.cloud.google.com/vertex-ai/generative-ai/docs/multimodal/image-generation</a
+                                    >
+                                </div>
+                            </div>
+                        </li>
+                        <li class="ref-item">
+                            <span class="ref-index">07</span>
+                            <div class="ref-body">
+                                <div class="ref-title">
+                                    Generate content with the Gemini API（ストリーミング例）
+                                </div>
+                                <div class="ref-url">
+                                    <a
+                                        href="https://docs.cloud.google.com/gemini-enterprise-agent-platform/reference/models/inference"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >https://docs.cloud.google.com/gemini-enterprise-agent-platform/reference/models/inference</a
+                                    >
+                                </div>
+                            </div>
+                        </li>
+                        <li class="ref-item">
+                            <span class="ref-index">08</span>
+                            <div class="ref-body">
+                                <div class="ref-title">Generating content（API リファレンス）</div>
+                                <div class="ref-url">
+                                    <a
+                                        href="https://ai.google.dev/api/generate-content"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >https://ai.google.dev/api/generate-content</a
+                                    >
+                                </div>
+                            </div>
+                        </li>
+                        <li class="ref-item">
+                            <span class="ref-index">09</span>
+                            <div class="ref-body">
+                                <div class="ref-title">
+                                    Application Default Credentials（ADC）公式ガイド
+                                </div>
+                                <div class="ref-url">
+                                    <a
+                                        href="https://cloud.google.com/docs/authentication/application-default-credentials"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >https://cloud.google.com/docs/authentication/application-default-credentials</a
+                                    >
+                                </div>
+                            </div>
+                        </li>
+                        <li class="ref-item">
+                            <span class="ref-index">10</span>
+                            <div class="ref-body">
+                                <div class="ref-title">
+                                    429エラーに関するコミュニティ議論（google-genai issue tracker）
+                                </div>
+                                <div class="ref-url">
+                                    <a
+                                        href="https://discuss.ai.google.dev/t/error-400-invalid-argument-when-using-gemini-2-5-flash-with-generate-content-stream/97626"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >https://discuss.ai.google.dev/t/error-400-invalid-argument-when-using-gemini-2-5-flash-with-generate-content-stream/97626</a
+                                    >
+                                </div>
+                            </div>
+                        </li>
+                        <li class="ref-item">
+                            <span class="ref-index">11</span>
+                            <div class="ref-body">
+                                <div class="ref-title">Challenge Lab 元ページ（要ログイン）</div>
+                                <div class="ref-url">
+                                    <a
+                                        href="https://www.skills.google/course_templates/1076/labs/648466"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >https://www.skills.google/course_templates/1076/labs/648466</a
+                                    >
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </section>
+
+                <footer class="footer">
+                    免責事項:
+                    Gemini関連のモデルIDおよびAPI仕様は更新頻度が高いため、実装前に必ず公式ドキュメント（特に#1・#2・#6）で最新の状態を確認してください。本ガイドは2026年9月時点の公開情報に基づいています。
+                </footer>
+            </main>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.12.0/mermaid.min.js" integrity="sha512-5TKaYvhenABhlGIKSxAWLFJBZCSQw7HTV7aL1dJcBokM/+3PNtfgJFlv8E6Us/B1VMlQ4u8sPzjudL9TEQ06ww==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js" integrity="sha512-wW8K3TEH5ZViD4aMPzwPdhXKs/Kb5MAm7qLRd3QliYlHy0u9utSKZsZzqlZAgJ9xxXp81acwnrZVZ8oTfoLG1g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js" integrity="sha512-i0JFeiLhgBAMGfIEVqMQwALhhse1orgl34XyotSUNiNbDIB1qS9IK53sDochCIrwvj4nJ51CsDSOqhGyhZITGg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script>
+            function dedent(str) {
+                const lines = str.replace(/\t/g, '    ').split('\n');
+                while (lines.length && lines[0].trim() === '') lines.shift();
+                while (lines.length && lines[lines.length - 1].trim() === '') lines.pop();
+                const indents = lines
+                    .filter((l) => l.trim() !== '')
+                    .map((l) => (l.match(/^ */) || [''])[0].length);
+                const minIndent = indents.length ? Math.min(...indents) : 0;
+                return lines.map((l) => l.slice(minIndent)).join('\n');
+            }
+
+            const DIAGRAMS = {
+                architecture: `flowchart TB
+A["ユーザーがブーケの説明プロンプトを入力"] --> B["Task1 generate_bouquet_image 関数"]
+B --> C["genai.Client を初期化"]
+C --> D["client.models.generate_content を呼び出し"]
+D --> E["Gemini Flash Image モデル"]
+E --> F["レスポンス内の inline_data 画像バイト列"]
+F --> G["ローカルに image.png として保存"]
+G --> H["Task2 analyze_bouquet_image 関数"]
+H --> I["保存済み画像を Part として読み込み"]
+I --> J["client.models.generate_content_stream を呼び出し"]
+J --> K["Gemini Flash モデル マルチモーダル対応"]
+K --> L["チャンク単位でテキストを逐次受信"]
+L --> M["受信済みチャンクを文字列として連結"]
+M --> N["birthday_wishes.txt へ保存"]`,
+                task1seq: `sequenceDiagram
+participant Dev as "開発者スクリプト"
+participant SDK as "google-genai SDK"
+participant API as "Vertex AI Gemini API"
+participant FS as "ローカルファイルシステム"
+Dev->>SDK: genai.Client vertexai project location
+Dev->>SDK: client.models.generate_content 呼び出し
+SDK->>API: 画像生成リクエスト
+API-->>SDK: GenerateContentResponse inline_data
+SDK-->>Dev: response.parts
+Dev->>FS: image.png として書き込み`,
+                task2seq: `sequenceDiagram
+participant Dev as "開発者スクリプト"
+participant SDK as "google-genai SDK"
+participant API as "Vertex AI Gemini API"
+participant FS as "ローカルファイルシステム"
+Dev->>SDK: 画像を Part 化し contents へ格納
+Dev->>SDK: generate_content_stream を呼び出し
+SDK->>API: マルチモーダルリクエスト 画像とプロンプト
+loop チャンクが届くたびに繰り返し
+API-->>SDK: テキストチャンク
+SDK-->>Dev: chunk.text
+Dev->>FS: チャンクを追記書き込み
+end
+Dev->>Dev: 全チャンクを連結し完成メッセージを保持`,
+            };
+
+            async function renderDiagrams() {
+                if (!window.mermaid) return;
+                await (document.fonts ? document.fonts.ready : Promise.resolve());
+
+                mermaid.initialize({
+                    startOnLoad: false,
+                    theme: 'dark',
+                    securityLevel: 'loose',
+                    fontFamily: 'inherit',
+                    flowchart: { useMaxWidth: false, nodeSpacing: 45, rankSpacing: 50 },
+                    sequence: { useMaxWidth: false, actorMargin: 60, messageMargin: 40 },
+                    themeVariables: {
+                        background: '#07111e',
+                        primaryColor: '#13233a',
+                        primaryTextColor: '#e8edf5',
+                        primaryBorderColor: '#7c9eff',
+                        lineColor: '#3d5a80',
+                        secondaryColor: '#1d2f47',
+                        tertiaryColor: '#0d1a2b',
+                        actorBkg: '#13233a',
+                        actorBorder: '#7c9eff',
+                        actorTextColor: '#e8edf5',
+                        actorLineColor: '#3d5a80',
+                        signalColor: '#9fb0c7',
+                        signalTextColor: '#e8edf5',
+                        labelBoxBkgColor: '#13233a',
+                        labelBoxBorderColor: '#7c9eff',
+                        labelTextColor: '#e8edf5',
+                        loopTextColor: '#e8edf5',
+                        noteBkgColor: '#1d2f47',
+                        noteTextColor: '#e8edf5',
+                        noteBorderColor: '#263c58',
+                        fontSize: '16px',
+                    },
+                });
+
+                const targets = document.querySelectorAll('.diagram-target');
+                for (const target of targets) {
+                    const key = target.dataset.diagram;
+                    const src = DIAGRAMS[key];
+                    if (!src) continue;
+                    const id = 'mmd-' + key;
+                    try {
+                        const { svg } = await mermaid.render(id, src);
+                        target.innerHTML = svg;
+                        const svgEl = target.querySelector('svg');
+                        if (svgEl) {
+                            const viewBox = svgEl.getAttribute('viewBox');
+                            svgEl.removeAttribute('width');
+                            svgEl.removeAttribute('height');
+                            svgEl.style.maxWidth = '100%';
+                            svgEl.style.height = 'auto';
+                            svgEl.style.overflow = 'visible';
+                            if (viewBox) {
+                                const parts = viewBox.split(/\s+/).map(Number);
+                                const isSeq = /^\s*sequenceDiagram/.test(src);
+                                parts[3] = parts[3] + (isSeq ? 110 : 15);
+                                svgEl.setAttribute('viewBox', parts.join(' '));
+                                svgEl.style.width = parts[2] + 'px';
+                            }
+                        }
+                    } catch (err) {
+                        target.innerHTML = '<p class="diagram-error">図の描画に失敗しました。</p>';
+                        console.error('Mermaid render error:', key, err);
+                    }
+                }
+            }
+
+            function renderCodeBlocks() {
+                document
+                    .querySelectorAll('script[type="text/plain"][data-target]')
+                    .forEach((el) => {
+                        const target = document.getElementById(el.dataset.target);
+                        if (target) target.textContent = dedent(el.textContent);
+                    });
+                if (window.hljs) {
+                    document
+                        .querySelectorAll('pre code')
+                        .forEach((block) => hljs.highlightElement(block));
+                }
+            }
+
+            function setupActiveNav() {
+                const links = Array.from(document.querySelectorAll('.sidebar nav a'));
+                const sections = links
+                    .map((a) => document.querySelector(a.getAttribute('href')))
+                    .filter(Boolean);
+
+                const observer = new IntersectionObserver(
+                    (entries) => {
+                        entries.forEach((entry) => {
+                            const link = links.find(
+                                (a) => a.getAttribute('href') === '#' + entry.target.id,
+                            );
+                            if (!link) return;
+                            if (entry.isIntersecting) {
+                                links.forEach((a) => a.classList.remove('active'));
+                                link.classList.add('active');
+                            }
+                        });
+                    },
+                    { rootMargin: '-20% 0px -70% 0px' },
+                );
+
+                sections.forEach((s) => observer.observe(s));
+            }
+
+            window.addEventListener('DOMContentLoaded', () => {
+                renderCodeBlocks();
+                renderDiagrams();
+                setupActiveNav();
+            });
+        </script>
+    </body>
+</html>

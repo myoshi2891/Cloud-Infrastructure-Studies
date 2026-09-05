@@ -1,6 +1,149 @@
 # 移行作業進捗管理ドキュメント (Migration Progress)
 
-(最終更新日: 2026-08-31)
+(最終更新日: 2026-09-02)
+
+## 2026-09-02: Google Cloud Professional Cloud Developer（PCD）Section 4「Google Cloudサービスとのアプリケーション統合」学習ガイド 100%全量移行 (完了)
+
+### 目的
+
+`Gcp-professional-cloud-developer-section4.html` を、Next.js App Router 5ファイル構成 (`page.tsx`, `Section4Guide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/gcl/professional-cloud-developer/section4` ルートへ移行。グローバルナビゲーションの「GCP」PCD配下に追加。見出し(h1:1, h2:8, h3:11, h4:35)、全7個のテーブル、15個のMermaid図解、全リスト(12件)、全外部リンク(31件/59箇所)・全本文・実践チェックリスト(11件)・参考文献一覧(7件)を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for professional-cloud-developer-section4` (`83ebdcb8`)
+- [x] **Step 1 (Red)**: `test(gcl): add failing tests for professional-cloud-developer section4` (`8542ef38`)
+- [x] **Step 2 (Green)**: `feat(gcl): implement professional-cloud-developer section4 to pass tests` (`cfe96359`)
+- [x] **Step 3 (Refactor)**: `refactor(gcl): integrate professional-cloud-developer section4 into routing and update docs` (`599ebe1c`)
+- [x] **Step 4 (Archive & Sync)**: `chore(docs): update MIGRATION_PROGRESS.md and archive section4 html`
+
+### 関連ファイル
+
+- [app/gcl/professional-cloud-developer/section4/page.tsx](app/gcl/professional-cloud-developer/section4/page.tsx)
+- [app/gcl/professional-cloud-developer/section4/Section4Guide.tsx](app/gcl/professional-cloud-developer/section4/Section4Guide.tsx)
+- [app/gcl/professional-cloud-developer/section4/NavBar.tsx](app/gcl/professional-cloud-developer/section4/NavBar.tsx)
+- [app/gcl/professional-cloud-developer/section4/constants.ts](app/gcl/professional-cloud-developer/section4/constants.ts)
+- [app/gcl/professional-cloud-developer/section4/page.css](app/gcl/professional-cloud-developer/section4/page.css)
+- [`__tests__/gcl/professional-cloud-developer/section4/page.test.tsx`](__tests__/gcl/professional-cloud-developer/section4/page.test.tsx)
+- [`__tests__/gcl/professional-cloud-developer/section4/NavBar.test.tsx`](__tests__/gcl/professional-cloud-developer/section4/NavBar.test.tsx)
+- [docs/migration-inventory/professional-cloud-developer-section4.json](docs/migration-inventory/professional-cloud-developer-section4.json)
+- [archive/Gcl/Professional-Cloud-Developer/html/Gcp-professional-cloud-developer-section4.html](archive/Gcl/Professional-Cloud-Developer/html/Gcp-professional-cloud-developer-section4.html)
+- [archive/Gcl/Professional-Cloud-Developer/md/Gcp-professional-cloud-developer-section4.md](archive/Gcl/Professional-Cloud-Developer/md/Gcp-professional-cloud-developer-section4.md)
+
+---
+
+## 2026-09-02: Google Cloud Professional Cloud Developer（PCD）Section 3「デプロイのためのクラウドネイティブアプリケーション構成」学習ガイド 100%全量移行 (完了)
+
+### 目的
+
+`Gcp-professional-cloud-developer-section3.html` を、Next.js App Router 5ファイル構成 (`page.tsx`, `Section3Guide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/gcl/professional-cloud-developer/section3` ルートへ移行。グローバルナビゲーションの「GCP」PCD配下に追加。見出し(h1:1, h2:6, h3:7, h4:17)、全5個のテーブル、8個のMermaid図解、全リスト(16件)、全外部リンク(18件/49箇所)・全本文・実践チェックリスト(17件)・参考文献一覧(7件)を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for professional-cloud-developer-section3` (`478b0b2c`)
+- [x] **Step 1 (Red)**: `test(pcd): add failing tests for professional-cloud-developer-section3` (`23b31cb8`)
+- [x] **Step 2 (Green)**: `feat(pcd): implement professional-cloud-developer-section3 to pass tests` (`9a87c6da`)
+- [x] **Step 3 (Refactor)**: `refactor(pcd): integrate section3 into routing and update docs` (`115b5bab`)
+- [x] **Step 4 (Archive & Sync)**: `chore(docs): update MIGRATION_PROGRESS.md — migrate pcd section3 and archive sources`
+
+### 関連ファイル
+
+- [app/gcl/professional-cloud-developer/section3/page.tsx](app/gcl/professional-cloud-developer/section3/page.tsx)
+- [app/gcl/professional-cloud-developer/section3/Section3Guide.tsx](app/gcl/professional-cloud-developer/section3/Section3Guide.tsx)
+- [app/gcl/professional-cloud-developer/section3/NavBar.tsx](app/gcl/professional-cloud-developer/section3/NavBar.tsx)
+- [app/gcl/professional-cloud-developer/section3/constants.ts](app/gcl/professional-cloud-developer/section3/constants.ts)
+- [app/gcl/professional-cloud-developer/section3/page.css](app/gcl/professional-cloud-developer/section3/page.css)
+- [`__tests__/gcl/professional-cloud-developer/section3/page.test.tsx`](__tests__/gcl/professional-cloud-developer/section3/page.test.tsx)
+- [`__tests__/gcl/professional-cloud-developer/section3/NavBar.test.tsx`](__tests__/gcl/professional-cloud-developer/section3/NavBar.test.tsx)
+- [docs/migration-inventory/professional-cloud-developer-section3.json](docs/migration-inventory/professional-cloud-developer-section3.json)
+- [archive/Gcl/Professional-Cloud-Developer/html/Gcp-professional-cloud-developer-section3.html](archive/Gcl/Professional-Cloud-Developer/html/Gcp-professional-cloud-developer-section3.html)
+- [archive/Gcl/Professional-Cloud-Developer/md/Gcp-professional-cloud-developer-section3.md](archive/Gcl/Professional-Cloud-Developer/md/Gcp-professional-cloud-developer-section3.md)
+
+---
+
+## 2026-09-02: Google Cloud Professional Cloud Developer（PCD）Section 2「アプリケーションのビルドとテスト」学習ガイド 100%全量移行 (完了)
+
+### 目的
+
+`Gcp-professional-cloud-developer-section2.html` を、Next.js App Router 5ファイル構成 (`page.tsx`, `Section2Guide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/gcl/professional-cloud-developer/section2` ルートへ移行。グローバルナビゲーションの「GCP」PCD配下に追加。見出し(h1:1, h2:7, h3:7, h4:28)、全7個のテーブル、8個のMermaid図解、全リスト(17件)、全外部リンク(23件)・全本文・コールアウト注記(9件)・参考文献一覧(4件)を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for professional-cloud-developer-section2` (`e1948c1c`)
+- [x] **Step 1 (Red)**: `test(pcd): add failing tests for professional-cloud-developer section2` (`8204bfff`)
+- [x] **Step 2 (Green)**: `feat(pcd): implement professional-cloud-developer section2 to pass tests` (`901c2651`)
+- [x] **Step 3 (Refactor)**: `refactor(pcd): integrate section2 into routing and update docs` (`2303aae3`)
+- [x] **Step 4 (Archive & Sync)**: `chore(docs): update MIGRATION_PROGRESS.md and archive source files`
+
+### 関連ファイル
+
+- [app/gcl/professional-cloud-developer/section2/page.tsx](app/gcl/professional-cloud-developer/section2/page.tsx)
+- [app/gcl/professional-cloud-developer/section2/Section2Guide.tsx](app/gcl/professional-cloud-developer/section2/Section2Guide.tsx)
+- [app/gcl/professional-cloud-developer/section2/NavBar.tsx](app/gcl/professional-cloud-developer/section2/NavBar.tsx)
+- [app/gcl/professional-cloud-developer/section2/constants.ts](app/gcl/professional-cloud-developer/section2/constants.ts)
+- [app/gcl/professional-cloud-developer/section2/page.css](app/gcl/professional-cloud-developer/section2/page.css)
+- [`__tests__/gcl/professional-cloud-developer/section2/page.test.tsx`](__tests__/gcl/professional-cloud-developer/section2/page.test.tsx)
+- [`__tests__/gcl/professional-cloud-developer/section2/NavBar.test.tsx`](__tests__/gcl/professional-cloud-developer/section2/NavBar.test.tsx)
+- [docs/migration-inventory/professional-cloud-developer-section2.json](docs/migration-inventory/professional-cloud-developer-section2.json)
+- [archive/Gcl/Professional-Cloud-Developer/html/Gcp-professional-cloud-developer-section2.html](archive/Gcl/Professional-Cloud-Developer/html/Gcp-professional-cloud-developer-section2.html)
+- [archive/Gcl/Professional-Cloud-Developer/md/Gcp-professional-cloud-developer-section2.md](archive/Gcl/Professional-Cloud-Developer/md/Gcp-professional-cloud-developer-section2.md)
+
+---
+
+## 2026-09-02: Google Cloud Professional Cloud Developer（PCD）Section 1「高可用性・セキュア・信頼性の高いクラウドネイティブアプリケーションの設計」学習ガイド 100%全量移行 (完了)
+
+### 目的
+
+`Gcp-professional-cloud-developer-section1-guide.html` を、Next.js App Router 5ファイル構成 (`page.tsx`, `Section1Guide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/gcl/professional-cloud-developer/section1` ルートへ移行。グローバルナビゲーションの「GCP」PCD配下に追加。見出し(h1:1, h2:4, h3:28, h4:12)、全10個のテーブル、19個のMermaid図解、全リスト(8件)、全外部リンク(19件)・全本文・コールアウト注記(27件)・実践チェックリスト(25件)・参考文献一覧(17件)を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for professional-cloud-developer-section1` (`ab357c06`)
+- [x] **Step 1 (Red)**: `test(gcl): add failing tests for professional-cloud-developer-section1` (`0ac2cf83`)
+- [x] **Step 2 (Green)**: `feat(gcl): implement professional-cloud-developer-section1 to pass tests` (`917e4936`)
+- [x] **Step 3 (Refactor)**: `refactor(gcl): integrate professional-cloud-developer-section1 into routing and constants` (`b56c4236`)
+- [x] **Step 4 (Archive & Sync)**: `docs(migration): archive source files and update migration progress`
+
+### 関連ファイル
+
+- [app/gcl/professional-cloud-developer/section1/page.tsx](app/gcl/professional-cloud-developer/section1/page.tsx)
+- [app/gcl/professional-cloud-developer/section1/Section1Guide.tsx](app/gcl/professional-cloud-developer/section1/Section1Guide.tsx)
+- [app/gcl/professional-cloud-developer/section1/NavBar.tsx](app/gcl/professional-cloud-developer/section1/NavBar.tsx)
+- [app/gcl/professional-cloud-developer/section1/constants.ts](app/gcl/professional-cloud-developer/section1/constants.ts)
+- [app/gcl/professional-cloud-developer/section1/page.css](app/gcl/professional-cloud-developer/section1/page.css)
+- [`__tests__/gcl/professional-cloud-developer/section1/page.test.tsx`](__tests__/gcl/professional-cloud-developer/section1/page.test.tsx)
+- [`__tests__/gcl/professional-cloud-developer/section1/NavBar.test.tsx`](__tests__/gcl/professional-cloud-developer/section1/NavBar.test.tsx)
+- [docs/migration-inventory/professional-cloud-developer-section1.json](docs/migration-inventory/professional-cloud-developer-section1.json)
+- [archive/Gcl/Professional-Cloud-Developer/html/Gcp-professional-cloud-developer-section1-guide.html](archive/Gcl/Professional-Cloud-Developer/html/Gcp-professional-cloud-developer-section1-guide.html)
+- [archive/Gcl/Professional-Cloud-Developer/md/Gcp-professional-cloud-developer-section1-guide.md](archive/Gcl/Professional-Cloud-Developer/md/Gcp-professional-cloud-developer-section1-guide.md)
+
+---
+
+## 2026-09-02: Google Cloud Professional Cloud Developer（PCD）認定試験 学習ガイド 100%全量移行 (完了)
+
+### 目的
+
+`Gcp-pcd-professional-cloud-developer.html` を、Next.js App Router 5ファイル構成 (`page.tsx`, `ProfessionalCloudDeveloperGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/gcl/professional-cloud-developer` ルートへ移行。グローバルナビゲーションの「GCP」に追加。見出し(h1:1, h2:8, h3:21, h4:45)、全19個のテーブル、13個のMermaid図解、全リスト(51件)、全外部リンク(36件)・全本文・コールアウト注記(14件)・実践チェックリスト(27件)・参考文献一覧(53件)を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for professional-cloud-developer` (`e0b2d25b`)
+- [x] **Step 1 (Red)**: `test(gcl): add failing tests for professional-cloud-developer` (`cf09b85a`)
+- [x] **Step 2 (Green)**: `feat(gcl): implement professional-cloud-developer to pass tests` (`a596e320`)
+- [x] **Step 3 (Refactor)**: `refactor(gcl): integrate professional-cloud-developer into routing and update docs` (`d459a4a3`)
+- [x] **Step 4 (Archive & Sync)**: `chore(docs): update MIGRATION_PROGRESS.md — migrate professional-cloud-developer`
+
+### 関連ファイル
+
+- [app/gcl/professional-cloud-developer/page.tsx](app/gcl/professional-cloud-developer/page.tsx)
+- [app/gcl/professional-cloud-developer/ProfessionalCloudDeveloperGuide.tsx](app/gcl/professional-cloud-developer/ProfessionalCloudDeveloperGuide.tsx)
+- [app/gcl/professional-cloud-developer/NavBar.tsx](app/gcl/professional-cloud-developer/NavBar.tsx)
+- [app/gcl/professional-cloud-developer/constants.ts](app/gcl/professional-cloud-developer/constants.ts)
+- [app/gcl/professional-cloud-developer/page.css](app/gcl/professional-cloud-developer/page.css)
+- [`__tests__/gcl/professional-cloud-developer/page.test.tsx`](__tests__/gcl/professional-cloud-developer/page.test.tsx)
+- [`__tests__/gcl/professional-cloud-developer/NavBar.test.tsx`](__tests__/gcl/professional-cloud-developer/NavBar.test.tsx)
+- [docs/migration-inventory/professional-cloud-developer.json](docs/migration-inventory/professional-cloud-developer.json)
+- [archive/Gcl/Professional-Cloud-Developer/html/Gcp-pcd-professional-cloud-developer.html](archive/Gcl/Professional-Cloud-Developer/html/Gcp-pcd-professional-cloud-developer.html)
+- [archive/Gcl/Professional-Cloud-Developer/md/Gcp-professional-cloud-developer-guide.md](archive/Gcl/Professional-Cloud-Developer/md/Gcp-professional-cloud-developer-guide.md)
 
 ---
 

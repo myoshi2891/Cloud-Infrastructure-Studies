@@ -1,0 +1,1737 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Gemini x Streamlit x Cloud Run チャレンジラボ攻略ガイド</title>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"
+        />
+        <style>
+            :root {
+                --color-background-primary: #07111e;
+                --color-background-secondary: #0d1a2e;
+                --color-background-tertiary: #13233d;
+                --color-background-info: #12253f;
+                --color-background-danger: #2e1418;
+                --color-background-success: #0f2a20;
+                --color-background-warning: #2c2210;
+
+                --color-text-primary: #eef2fb;
+                --color-text-secondary: #a9b7d1;
+                --color-text-tertiary: #6f7f9c;
+                --color-text-info: #8fadff;
+                --color-text-danger: #ff9a9a;
+                --color-text-success: #6fe0b8;
+                --color-text-warning: #f4c667;
+
+                --color-border-primary: #1d3253;
+                --color-border-secondary: #16283f;
+                --color-border-tertiary: #101d33;
+
+                --font-sans:
+                    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans',
+                    'Noto Sans JP', sans-serif;
+                --font-mono: 'JetBrains Mono', 'Fira Code', SFMono-Regular, Consolas, monospace;
+
+                --border-radius-md: 8px;
+                --border-radius-lg: 12px;
+                --border-radius-xl: 16px;
+
+                --accent: #7c9eff;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            html {
+                scroll-behavior: smooth;
+            }
+
+            body {
+                margin: 0;
+                background: var(--color-background-primary);
+                color: var(--color-text-primary);
+                font-family: var(--font-sans);
+                font-size: 16px;
+                line-height: 1.7;
+            }
+
+            .layout {
+                display: block;
+            }
+
+            /* ---------- Sidebar ---------- */
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 288px;
+                height: 100vh;
+                overflow-y: auto;
+                background: var(--color-background-secondary);
+                border-right: 1px solid var(--color-border-primary);
+                padding: 32px 22px 60px;
+            }
+
+            .sidebar .brand {
+                font-size: 15px;
+                font-weight: 500;
+                color: var(--color-text-secondary);
+                margin-bottom: 4px;
+            }
+
+            .sidebar .brand-title {
+                font-size: 18px;
+                font-weight: 500;
+                color: var(--color-text-primary);
+                margin: 0 0 28px;
+            }
+
+            .sidebar nav {
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+            }
+
+            .sidebar nav a {
+                display: block;
+                padding: 9px 12px;
+                border-radius: var(--border-radius-md);
+                color: var(--color-text-secondary);
+                text-decoration: none;
+                font-size: 16px;
+                border-left: 2px solid transparent;
+                transition:
+                    color 0.15s ease,
+                    background-color 0.15s ease;
+            }
+
+            .sidebar nav a:hover {
+                color: var(--color-text-primary);
+                background: var(--color-background-tertiary);
+            }
+
+            .sidebar nav a.active {
+                color: var(--color-text-primary);
+                background: var(--color-background-tertiary);
+                border-left: 2px solid var(--accent);
+                font-weight: 500;
+            }
+
+            .sidebar nav .nav-group-label {
+                font-size: 13px;
+                text-transform: uppercase;
+                letter-spacing: 0.03em;
+                color: var(--color-text-tertiary);
+                margin: 18px 0 6px 12px;
+            }
+
+            .sidebar nav .nav-group-label:first-child {
+                margin-top: 0;
+            }
+
+            /* ---------- Main content ---------- */
+            main {
+                margin-left: 288px;
+                padding: 56px 56px 120px;
+            }
+
+            .hero {
+                border-bottom: 1px solid var(--color-border-primary);
+                padding-bottom: 32px;
+                margin-bottom: 40px;
+            }
+
+            .hero .eyebrow {
+                color: var(--color-text-info);
+                font-size: 16px;
+                margin: 0 0 14px;
+            }
+
+            .hero h1 {
+                font-size: 30px;
+                font-weight: 500;
+                line-height: 1.35;
+                margin: 0 0 12px;
+                color: var(--color-text-primary);
+            }
+
+            .hero .lede {
+                color: var(--color-text-secondary);
+                font-size: 16px;
+                max-width: 760px;
+                margin: 0 0 18px;
+            }
+
+            .hero .source-line {
+                font-size: 16px;
+                color: var(--color-text-tertiary);
+            }
+
+            .hero .source-line a {
+                color: var(--color-text-info);
+            }
+
+            section {
+                margin-bottom: 56px;
+                scroll-margin-top: 24px;
+            }
+
+            section h2 {
+                font-size: 22px;
+                font-weight: 500;
+                color: var(--color-text-primary);
+                margin: 0 0 8px;
+                padding-bottom: 12px;
+                border-bottom: 1px solid var(--color-border-primary);
+            }
+
+            section h3 {
+                font-size: 18px;
+                font-weight: 500;
+                color: var(--color-text-primary);
+                margin: 28px 0 12px;
+            }
+
+            .section-number {
+                color: var(--color-text-tertiary);
+                font-weight: 400;
+                margin-right: 10px;
+            }
+
+            p {
+                color: var(--color-text-secondary);
+                margin: 0 0 16px;
+            }
+
+            .prose {
+                max-width: 820px;
+            }
+
+            strong {
+                color: var(--color-text-primary);
+                font-weight: 500;
+            }
+
+            a {
+                color: var(--color-text-info);
+            }
+
+            ul,
+            ol {
+                color: var(--color-text-secondary);
+                padding-left: 22px;
+                margin: 0 0 16px;
+            }
+            li {
+                margin-bottom: 6px;
+            }
+
+            /* ---------- Tables ---------- */
+            .table-wrap {
+                overflow-x: auto;
+                margin: 0 0 24px;
+                border: 1px solid var(--color-border-primary);
+                border-radius: var(--border-radius-lg);
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 16px;
+            }
+
+            thead th {
+                text-align: left;
+                background: var(--color-background-tertiary);
+                color: var(--color-text-primary);
+                font-weight: 500;
+                padding: 12px 16px;
+                border-bottom: 1px solid var(--color-border-primary);
+                white-space: nowrap;
+            }
+
+            tbody td {
+                padding: 12px 16px;
+                border-bottom: 1px solid var(--color-border-tertiary);
+                color: var(--color-text-secondary);
+                vertical-align: top;
+            }
+
+            tbody tr:last-child td {
+                border-bottom: none;
+            }
+
+            tbody td code,
+            thead th code {
+                font-family: var(--font-mono);
+                font-size: 16px;
+                color: var(--color-text-info);
+                background: var(--color-background-primary);
+                padding: 2px 6px;
+                border-radius: 6px;
+            }
+
+            /* ---------- Code blocks ---------- */
+            pre {
+                background: var(--color-background-secondary);
+                border: 1px solid var(--color-border-primary);
+                border-radius: var(--border-radius-lg);
+                padding: 18px 20px;
+                overflow-x: auto;
+                margin: 0 0 24px;
+            }
+
+            pre code {
+                font-family: var(--font-mono);
+                font-size: 16px;
+                line-height: 1.65;
+                background: none;
+                padding: 0;
+            }
+
+            p code,
+            li code {
+                font-family: var(--font-mono);
+                font-size: 16px;
+                color: var(--color-text-info);
+                background: var(--color-background-tertiary);
+                padding: 2px 6px;
+                border-radius: 6px;
+            }
+
+            /* ---------- Callouts ---------- */
+            .callout {
+                border-radius: var(--border-radius-lg);
+                border: 1px solid var(--color-border-primary);
+                padding: 18px 20px;
+                margin: 0 0 24px;
+            }
+
+            .callout .callout-label {
+                font-size: 16px;
+                font-weight: 500;
+                margin: 0 0 8px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .callout p:last-child {
+                margin-bottom: 0;
+            }
+
+            .callout.practice {
+                background: var(--color-background-info);
+                border-color: var(--color-text-info);
+            }
+            .callout.practice .callout-label {
+                color: var(--color-text-info);
+            }
+
+            .callout.source {
+                background: var(--color-background-success);
+                border-color: var(--color-text-success);
+            }
+            .callout.source .callout-label {
+                color: var(--color-text-success);
+            }
+            .callout.source ul {
+                margin-bottom: 0;
+            }
+            .callout.source a {
+                color: var(--color-text-primary);
+            }
+
+            .callout.warning {
+                background: var(--color-background-warning);
+                border-color: var(--color-text-warning);
+            }
+            .callout.warning .callout-label {
+                color: var(--color-text-warning);
+            }
+
+            /* ---------- Diagrams ---------- */
+            .diagram-wrap {
+                display: flex;
+                justify-content: center;
+                width: 100%;
+                overflow-x: auto;
+                margin: 8px 0 28px;
+                padding: 20px 8px;
+                background: var(--color-background-secondary);
+                border: 1px solid var(--color-border-primary);
+                border-radius: var(--border-radius-lg);
+            }
+
+            .diagram-wrap svg {
+                overflow: visible;
+            }
+
+            .diagram-caption {
+                text-align: center;
+                color: var(--color-text-tertiary);
+                font-size: 16px;
+                margin: -14px 0 24px;
+            }
+
+            /* ---------- References table ---------- */
+            .ref-list {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .ref-item {
+                display: flex;
+                gap: 14px;
+                padding: 12px 16px;
+                border: 1px solid var(--color-border-primary);
+                border-radius: var(--border-radius-md);
+                background: var(--color-background-secondary);
+            }
+
+            .ref-item .ref-num {
+                color: var(--color-text-tertiary);
+                min-width: 22px;
+            }
+
+            .ref-item .ref-title {
+                color: var(--color-text-primary);
+                display: block;
+                margin-bottom: 2px;
+            }
+            .ref-item .ref-url {
+                color: var(--color-text-info);
+                font-size: 16px;
+                word-break: break-all;
+            }
+
+            footer {
+                border-top: 1px solid var(--color-border-primary);
+                padding-top: 24px;
+                color: var(--color-text-tertiary);
+                font-size: 16px;
+            }
+
+            @media (max-width: 900px) {
+                .sidebar {
+                    display: none;
+                }
+                main {
+                    margin-left: 0;
+                    padding: 32px 20px 80px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="layout">
+            <aside class="sidebar">
+                <div class="brand">Google Cloud Skills Boost</div>
+                <p class="brand-title">Gemini x Streamlit x Cloud Run 攻略ガイド</p>
+                <nav>
+                    <a href="#overview">概要</a>
+                    <a href="#architecture">全体アーキテクチャ</a>
+                    <a href="#flow">5つのタスクの流れ</a>
+                    <a href="#prep">事前準備</a>
+                    <div class="nav-group-label">タスク別解説</div>
+                    <a href="#task1">Task 1: API疎通確認</a>
+                    <a href="#task2">Task 2: chef.py実装</a>
+                    <a href="#task3">Task 3: ローカルテスト</a>
+                    <a href="#task4">Task 4: コンテナ化</a>
+                    <a href="#task5">Task 5: Cloud Runデプロイ</a>
+                    <div class="nav-group-label">まとめ</div>
+                    <a href="#troubleshooting">トラブルシューティング</a>
+                    <a href="#summary">ベストプラクティス総括</a>
+                    <a href="#references">参考文献</a>
+                </nav>
+            </aside>
+
+            <main>
+                <div class="hero">
+                    <p class="eyebrow">初学者向けステップバイステップ解説</p>
+                    <h1>
+                        Gemini &times; Streamlit &times; Cloud Run<br />チャレンジラボ攻略ガイド
+                    </h1>
+                    <p class="lede">
+                        Develop Gen AI Apps with Gemini and Streamlit: Challenge Lab（Google Cloud
+                        Skills Boost /
+                        GEARプログラム）の5タスクを、構成図とベストプラクティスつきで初学者向けに解説します。
+                    </p>
+                    <p class="source-line">
+                        対象ラボ:
+                        <a
+                            href="https://www.skills.google/course_templates/978/labs/647543"
+                            target="_blank"
+                            rel="noopener"
+                            >https://www.skills.google/course_templates/978/labs/647543</a
+                        >
+                    </p>
+                </div>
+
+                <section id="overview">
+                    <h2><span class="section-number">01</span>このガイドについて</h2>
+                    <div class="prose">
+                        <h3>対象読者</h3>
+                        <ul>
+                            <li>
+                                Google Cloud を触り始めたばかりのインフラ /
+                                アプリケーションエンジニア
+                            </li>
+                            <li>
+                                Gemini（Vertex AI の生成AIモデル）を使ったアプリ開発が初めての方
+                            </li>
+                            <li>
+                                Cloud Run / Artifact Registry / Cloud Build
+                                の基本的なCI/CDフローを学びたい方
+                            </li>
+                        </ul>
+                        <h3>前提知識</h3>
+                        <ul>
+                            <li>
+                                Linuxシェルの基本操作（<code>cd</code>、<code>git clone</code>
+                                など）
+                            </li>
+                            <li>Pythonの基本文法</li>
+                            <li>
+                                Dockerの概念（イメージ、コンテナ、Dockerfile）を薄く知っていると理解が早い
+                            </li>
+                        </ul>
+                        <h3>このラボのゴール</h3>
+                        <p>
+                            Cymbal
+                            Health（架空のヘルスケア企業）向けに、食事制限・アレルギー・冷蔵庫の在庫からレシピを提案する
+                            AI Chef アプリの PoC（Proof of Concept）を、Gemini + Streamlit + Cloud
+                            Run で構築し、実際に公開するところまでを一気通貫で体験します。
+                        </p>
+                    </div>
+                </section>
+
+                <section id="architecture">
+                    <h2><span class="section-number">02</span>全体アーキテクチャ</h2>
+                    <div class="prose">
+                        <p>このラボで扱うコンポーネントの関係を図にすると次のようになります。</p>
+                    </div>
+                    <div class="diagram-wrap"><div id="diagram-arch"></div></div>
+                    <div class="prose">
+                        <p>
+                            <strong>ポイント:</strong> 開発（Workbench / Cloud
+                            Shell）とビルド（Cloud Build / Artifact Registry）と実行（Cloud
+                            Run）が明確に分離されているのが、Google
+                            Cloud上のコンテナベースGenAIアプリの標準的な構成です。この分離により、ローカルでの試行錯誤とプロダクション環境へのデプロイを安全に切り離せます。
+                        </p>
+                    </div>
+                </section>
+
+                <section id="flow">
+                    <h2><span class="section-number">03</span>5つのタスクの全体フロー</h2>
+                    <div class="diagram-wrap"><div id="diagram-taskflow"></div></div>
+                    <div class="callout practice">
+                        <p class="callout-label">ベストプラクティス</p>
+                        <p>
+                            それぞれのタスクの最後にある「Check my
+                            progress」で必ず検証してから次に進みましょう。後工程（コンテナ化・デプロイ）で問題が起きたとき、原因を「コード」「ビルド」「デプロイ設定」のどこまで遡ればよいかを判断しやすくなります。
+                        </p>
+                    </div>
+                </section>
+
+                <section id="prep">
+                    <h2>
+                        <span class="section-number">04</span>事前準備: 共通環境変数を先に決めておく
+                    </h2>
+                    <div class="prose">
+                        <p>
+                            タスク3以降で <code>PROJECT</code> と
+                            <code>REGION</code>
+                            を繰り返し使います。最初にまとめて設定しておくと、コピー&amp;ペーストミスを防げます。
+                        </p>
+                    </div>
+                    <pre><code class="language-bash">export PROJECT=$(gcloud config get-value project)
+# REGION はラボの指示で指定されたリージョンに置き換える
+export REGION="us-central1"</code></pre>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>変数名</th>
+                                    <th>用途</th>
+                                    <th>使われる場面</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>PROJECT</code></td>
+                                    <td>Google Cloud プロジェクトID</td>
+                                    <td>ビルドタグ、Cloud Runの<code>--project</code>、環境変数</td>
+                                </tr>
+                                <tr>
+                                    <td><code>REGION</code></td>
+                                    <td>Vertex AI / Cloud Run / Artifact Registry のリージョン</td>
+                                    <td>API呼び出し先、リポジトリの場所、デプロイ先</td>
+                                </tr>
+                                <tr>
+                                    <td><code>AR_REPO</code></td>
+                                    <td>
+                                        Artifact Registry のリポジトリ名（例:
+                                        <code>chef-repo</code>）
+                                    </td>
+                                    <td>Task 4</td>
+                                </tr>
+                                <tr>
+                                    <td><code>SERVICE_NAME</code></td>
+                                    <td>
+                                        Cloud Run のサービス名（例:
+                                        <code>chef-streamlit-app</code>）
+                                    </td>
+                                    <td>Task 4, Task 5</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="callout practice">
+                        <p class="callout-label">ベストプラクティス</p>
+                        <p>
+                            ハードコードせず環境変数化することで、同じ手順を別プロジェクト・別リージョンでもそのまま再利用できます。これはIaC（Infrastructure
+                            as Code）的な考え方の第一歩です。
+                        </p>
+                    </div>
+                </section>
+
+                <section id="task1">
+                    <h2>
+                        <span class="section-number">05</span>Task 1: cURLでGemini APIとの疎通確認
+                    </h2>
+                    <div class="prose">
+                        <h3>やること</h3>
+                        <ul>
+                            <li>Agent Platform（Vertex AI）の Workbench から JupyterLab を開く</li>
+                            <li><code>prompt.ipynb</code> を開き、指定のプロンプトをセル5に設定</li>
+                            <li>全セルを実行し、Gemini からのレスポンスを確認</li>
+                        </ul>
+                    </div>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ステップ</th>
+                                    <th>操作</th>
+                                    <th>目的</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>
+                                        Navigation menu → Agent Platform → Notebooks → Workbench
+                                    </td>
+                                    <td>Notebookインスタンスへアクセス</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>インスタンスの「Open JupyterLab」をクリック</td>
+                                    <td>ブラウザベースの開発環境を起動</td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>
+                                        <code>prompt.ipynb</code> を開き
+                                        <code>Python 3 (Local)</code> カーネルを選択
+                                    </td>
+                                    <td>実行環境を確定</td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td>セル3で <code>location</code> 変数を確認</td>
+                                    <td>APIエンドポイントのリージョンを決定</td>
+                                </tr>
+                                <tr>
+                                    <td>5</td>
+                                    <td>セル5のプロンプトを課題文の内容に置き換える</td>
+                                    <td>
+                                        低ナトリウム・和食・ピーナッツアレルギー対応のレシピ生成を依頼
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>6</td>
+                                    <td>全セル実行 → 保存</td>
+                                    <td>結果の確認と再現性の確保</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <h3>cURLの中身（概念）</h3>
+                    <p style="color: var(--color-text-secondary)">
+                        <code>generateContent</code>
+                        APIは、モデルにロール付きのメッセージ（<code>contents</code>）を送信し、テキスト応答を受け取るシンプルなREST
+                        APIです。
+                    </p>
+                    <pre><code class="language-bash">curl -X POST \
+  -H "Authorization: Bearer $(gcloud auth print-access-token)" \
+  -H "Content-Type: application/json" \
+  "https://${REGION}-aiplatform.googleapis.com/v1/projects/${PROJECT}/locations/${REGION}/publishers/google/models/${MODEL_ID}:generateContent" \
+  -d '{
+        "contents": [
+          {
+            "role": "user",
+            "parts": [ { "text": "&lt;ここにプロンプト&gt;" } ]
+          }
+        ]
+      }'</code></pre>
+                    <h3>よくあるエラーと対処</h3>
+                    <div class="diagram-wrap"><div id="diagram-task1trouble"></div></div>
+                    <div class="prose">
+                        <p>
+                            <strong>なぜ <code>global</code> で失敗するのか:</strong> Vertex AI
+                            のリージョンエンドポイントは
+                            <code>REGION-aiplatform.googleapis.com</code>
+                            という形式ですが、<code>global</code> だけは例外で
+                            <code>global-aiplatform.googleapis.com</code> ではなく
+                            <code>aiplatform.googleapis.com</code>
+                            を使います。<code>location</code>
+                            の値をそのままホスト名へ埋め込む実装では、<code>location=global</code>
+                            のときに存在しないエンドポイントを組み立ててしまい、その結果
+                            <code>404</code>
+                            が返ります。これはキャパシティ不足やタイムアウトではなく、<strong>エンドポイント形式の不一致</strong>です。ラボ環境のように短時間で確実に結果が欲しい場合は、明示的にリージョンを指定するほうが安定します。
+                        </p>
+                    </div>
+                    <div class="callout source">
+                        <p class="callout-label">参考ソース</p>
+                        <ul>
+                            <li>
+                                Vertex AI Gemini クイックスタート（generateContentのcurl例）:
+                                <a
+                                    href="https://cloud.google.com/vertex-ai/generative-ai/docs/start/quickstart"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >cloud.google.com/vertex-ai/generative-ai/docs/start/quickstart</a
+                                >
+                            </li>
+                            <li>
+                                generateContent メソッドのリクエスト仕様:
+                                <a
+                                    href="https://cloud.google.com/vertex-ai/generative-ai/docs/model-reference/overview"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >cloud.google.com/vertex-ai/generative-ai/docs/model-reference/overview</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section id="task2">
+                    <h2>
+                        <span class="section-number">06</span>Task 2: Streamlit UI と Gemini
+                        プロンプトを chef.py に実装
+                    </h2>
+                    <div class="prose">
+                        <h3>やること</h3>
+                        <ol>
+                            <li>Cloud Shell でサンプルリポジトリを clone</li>
+                            <li><code>requirements.txt</code> に依存関係を追記</li>
+                            <li>
+                                <code>chef.py</code> をダウンロードして編集（ワイン選択のUI追加 +
+                                プロンプト実装）
+                            </li>
+                            <li>編集後のファイルをGCSバケットへアップロード（採点用）</li>
+                        </ol>
+                    </div>
+                    <pre><code class="language-bash"># 作業ディレクトリを作成して移動
+mkdir -p ~/chef-app &amp;&amp; cd ~/chef-app
+
+# ラボが指定したバケットから chef.py などの雛形ファイル一式を取得する
+# BUCKET_NAME はラボの指示で指定されたバケット名に置き換える
+gcloud storage cp gs://BUCKET_NAME/* .
+ls</code></pre>
+                    <div class="callout warning">
+                        <p class="callout-label">重要</p>
+                        <p>
+                            以降の作業はこのディレクトリ配下で完結させます。<code>chef.py</code>
+                            にはラボ側が用意したStreamlitのフレームワークコード（<code>cuisine</code> /
+                            <code>dietary_preference</code> /
+                            <code>allergy</code> などのUI変数）が含まれており、別の場所で書き起こしたファイルに差し替えるとTask
+                            3以降がすべて失敗します。
+                        </p>
+                    </div>
+                    <div class="callout warning">
+                        <p class="callout-label">注意（サンプルリポジトリとの混同を避ける）</p>
+                        <p>
+                            公開サンプル
+                            <code>GoogleCloudPlatform/generative-ai</code> の
+                            <code>gemini/sample-apps/gemini-streamlit-cloudrun</code> は
+                            <strong>参考実装であり、このラボの <code>chef.py</code> ではありません</strong>。当該ディレクトリに含まれるのは
+                            <code>app.py</code>
+                            で、UI項目もシェフ向けではなく、環境変数の契約も
+                            <code>GOOGLE_CLOUD_PROJECT</code> /
+                            <code>GOOGLE_CLOUD_REGION</code> と本ガイドの <code>PROJECT</code> /
+                            <code>REGION</code> とは異なります。clone
+                            して差し替えると採点も動作も通りません。
+                        </p>
+                    </div>
+                    <h3>UIウィジェット（ワイン選択）の追加</h3>
+                    <pre><code class="language-python">wine = st.radio(
+    "ワインの好み",
+    ["Red", "White", "None"],
+)</code></pre>
+                    <p style="color: var(--color-text-secondary)">
+                        <code>st.radio</code>
+                        は選択肢が3〜5個程度で、かつ「同時に選べるのは1つだけ」という要件にフィットするコンポーネントです。選択肢が多い場合は
+                        <code>st.selectbox</code>、複数選択が必要な場合は
+                        <code>st.multiselect</code> を検討します。
+                    </p>
+                    <h3>プロンプトの実装（変数化）</h3>
+                    <pre><code class="language-python">prompt = f"""I am a Chef.  I need to create {cuisine} \n
+recipes for customers who want {dietary_preference} meals. \n
+However, don't include recipes that use ingredients with the customer's {allergy} allergy. \n
+I have {ingredient_1}, \n
+{ingredient_2}, \n
+and {ingredient_3} \n
+in my kitchen and other ingredients. \n
+The customer's wine preference is {wine} \n
+Please provide some for meal recommendations.
+For each recommendation include preparation instructions,
+time to prepare
+and the recipe title at the beginning of the response.
+Then include the wine paring for each recommendation.
+At the end of the recommendation provide the calories associated with the meal
+and the nutritional facts.
+"""</code></pre>
+                    <h3>プロンプトエンジニアリング設計の意図</h3>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>プロンプト設計要素</th>
+                                    <th>目的</th>
+                                    <th>プロンプトエンジニアリングの観点</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>I am a Chef.</code></td>
+                                    <td>ロール付与</td>
+                                    <td>モデルの出力トーン・専門性を固定する</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <code>{cuisine}</code> / <code>{dietary_preference}</code>
+                                    </td>
+                                    <td>変数によるパーソナライズ</td>
+                                    <td>
+                                        ユーザー入力をそのまま自然文に埋め込みハルシネーションを抑制
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><code>don't include ... {allergy}</code></td>
+                                    <td>制約の明示</td>
+                                    <td>安全性に関わる制約は否定文でも明確に指示する</td>
+                                </tr>
+                                <tr>
+                                    <td><code>For each recommendation include ...</code></td>
+                                    <td>出力フォーマット指定</td>
+                                    <td>
+                                        レシピ名 → 手順 → 時間 → ワイン →
+                                        カロリー、の順序を固定し後続処理をしやすくする
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="callout practice">
+                        <p class="callout-label">ベストプラクティス（本番運用を見据えて）</p>
+                        <p>
+                            このラボでは <code>GCP_PROJECT_ID</code> や
+                            <code>GEMINI_FLASH_MODEL_ID</code>
+                            をコード内の文字列として直接置換しますが、実プロダクトでは環境変数（<code>os.environ</code>）やSecret
+                            Managerから読み込むのが望ましい設計です。Task 5で実際に
+                            <code>--set-env-vars PROJECT=$PROJECT,REGION=$REGION</code>
+                            として環境変数注入を行うのは、この考え方の実践です。
+                        </p>
+                    </div>
+                    <div class="callout source">
+                        <p class="callout-label">参考ソース</p>
+                        <ul>
+                            <li>
+                                参考実装（<code>app.py</code>。ラボの <code>chef.py</code> とは別物）:
+                                <a
+                                    href="https://github.com/GoogleCloudPlatform/generative-ai/tree/main/gemini/sample-apps/gemini-streamlit-cloudrun"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >github.com/GoogleCloudPlatform/generative-ai</a
+                                >
+                            </li>
+                            <li>
+                                Streamlit 公式ドキュメント（CLI / run コマンド）:
+                                <a
+                                    href="https://docs.streamlit.io/develop/api-reference/cli/run"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >docs.streamlit.io/develop/api-reference/cli/run</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section id="task3">
+                    <h2>
+                        <span class="section-number">07</span>Task 3: Cloud
+                        Shellでアプリケーションをテストする
+                    </h2>
+                    <h3>なぜローカル（Cloud Shell）で先にテストするのか</h3>
+                    <div class="diagram-wrap"><div id="diagram-localtest"></div></div>
+                    <div class="prose">
+                        <p>
+                            コンテナ化してからバグに気づくと、「Dockerビルド → push → デプロイ →
+                            動作確認」のサイクル全体（数分〜十数分）を回し直す必要があります。コンテナ化する前にアプリ単体の動作を検証するのは、フィードバックループを最短化するための基本的なプラクティス（シフトレフト・テスティング）です。
+                        </p>
+                    </div>
+                    <h3>手順</h3>
+                    <pre><code class="language-bash">python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+
+# PROJECT / REGION は「4. 事前準備」で export 済みの値をそのまま再利用する
+# Cloud Shell のセッションが切れた場合のみ、事前準備のexportを再実行する
+echo "PROJECT=$PROJECT / REGION=$REGION"
+
+streamlit run chef.py</code></pre>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>コマンド</th>
+                                    <th>役割</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>python3 -m venv venv</code></td>
+                                    <td>
+                                        プロジェクト専用の仮想環境を作成し、グローバルなPython環境の依存関係汚染を防ぐ
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><code>pip install -r requirements.txt</code></td>
+                                    <td>
+                                        <code>google-cloud-logging</code> を含む依存パッケージを導入
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><code>streamlit run chef.py</code></td>
+                                    <td>
+                                        ローカルWebサーバーを起動し、ブラウザプレビューで動作確認
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="callout practice">
+                        <p class="callout-label">ベストプラクティス</p>
+                        <p>
+                            仮想環境（venv）を使うことで、Dockerfile内の
+                            <code>pip install</code>
+                            が失敗する「ローカルでは動くのにコンテナでは動かない」問題（依存関係の暗黙的な差異）を未然に防げます。
+                        </p>
+                    </div>
+                    <div class="callout source">
+                        <p class="callout-label">参考ソース</p>
+                        <ul>
+                            <li>
+                                Streamlit CLIコマンドリファレンス:
+                                <a
+                                    href="https://docs.streamlit.io/develop/api-reference/cli/run"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >docs.streamlit.io/develop/api-reference/cli/run</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section id="task4">
+                    <h2>
+                        <span class="section-number">08</span>Task 4: Dockerfileの修正 &amp;
+                        Artifact Registryへのpush
+                    </h2>
+                    <div class="prose">
+                        <h3>やること</h3>
+                        <ol>
+                            <li>
+                                <code>Dockerfile</code> のエントリーポイントを
+                                <code>chef.py</code> に向ける
+                            </li>
+                            <li>Artifact Registry に Docker形式のリポジトリを作成</li>
+                            <li>Cloud Build でイメージをビルドし、Artifact Registryへ自動push</li>
+                        </ol>
+                    </div>
+                    <h3>コマンドとパラメータ</h3>
+                    <pre><code class="language-bash">export AR_REPO=chef-repo
+export SERVICE_NAME=chef-streamlit-app
+
+gcloud artifacts repositories create $AR_REPO \
+  --location=$REGION \
+  --repository-format=Docker
+
+gcloud builds submit \
+  --tag "$REGION-docker.pkg.dev/$PROJECT/$AR_REPO/$SERVICE_NAME"</code></pre>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>パラメータ</th>
+                                    <th>値</th>
+                                    <th>説明</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>repository create</code> の名前</td>
+                                    <td><code>$AR_REPO</code>（<code>chef-repo</code>）</td>
+                                    <td>プロジェクト内で一意な名前が必要</td>
+                                </tr>
+                                <tr>
+                                    <td><code>--location</code></td>
+                                    <td><code>$REGION</code></td>
+                                    <td>
+                                        Cloud
+                                        Runと同じリージョンに揃えるとレイテンシとコストを最適化できる
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><code>--repository-format</code></td>
+                                    <td><code>Docker</code></td>
+                                    <td>イメージ形式を指定（他にMaven, npm, Go等がある）</td>
+                                </tr>
+                                <tr>
+                                    <td><code>gcloud builds submit --tag</code></td>
+                                    <td>
+                                        <code
+                                            >REGION-docker.pkg.dev/PROJECT/AR_REPO/SERVICE_NAME</code
+                                        >
+                                    </td>
+                                    <td>ビルド後、自動的にこのタグでpushされる</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <h3>ビルド〜push の内部フロー</h3>
+                    <div class="diagram-wrap"><div id="diagram-buildpush"></div></div>
+                    <div class="prose">
+                        <p>
+                            <code>gcloud builds submit --tag</code>
+                            を使うと、ローカルにDockerをインストールしていなくても、Cloud
+                            Build上でビルドとpushを一括実行できます。これはCloud
+                            Shellのような軽量な開発環境と特に相性が良い方法です。
+                        </p>
+                    </div>
+                    <div class="callout practice">
+                        <p class="callout-label">ベストプラクティス</p>
+                        <ul>
+                            <li>
+                                リポジトリ名・サービス名は環境変数化し、複数環境（dev/stg/prod）で使い回せるようにする
+                            </li>
+                            <li>
+                                本番運用では
+                                <code>:latest</code>
+                                のような曖昧なタグに依存せず、コミットハッシュやセマンティックバージョンでタグ付けし、ロールバックを容易にする
+                            </li>
+                            <li>
+                                Artifact Registryは push
+                                時に自動で脆弱性スキャンを行える。継続運用するリポジトリでは有効化を検討する
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="callout source">
+                        <p class="callout-label">参考ソース</p>
+                        <ul>
+                            <li>
+                                Artifact Registry: Dockerイメージの保存クイックスタート:
+                                <a
+                                    href="https://cloud.google.com/artifact-registry/docs/docker/store-docker-container-images"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >cloud.google.com/artifact-registry/docs/docker/store-docker-container-images</a
+                                >
+                            </li>
+                            <li>
+                                <code>gcloud artifacts repositories create</code> リファレンス:
+                                <a
+                                    href="https://cloud.google.com/sdk/gcloud/reference/artifacts/repositories/create"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >cloud.google.com/sdk/gcloud/reference/artifacts/repositories/create</a
+                                >
+                            </li>
+                            <li>
+                                Cloud Build: CLIからのビルド実行:
+                                <a
+                                    href="https://cloud.google.com/build/docs/running-builds/submit-build-via-cli-api"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >cloud.google.com/build/docs/running-builds/submit-build-via-cli-api</a
+                                >
+                            </li>
+                            <li>
+                                <code>gcloud builds submit</code> リファレンス:
+                                <a
+                                    href="https://cloud.google.com/sdk/gcloud/reference/builds/submit"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >cloud.google.com/sdk/gcloud/reference/builds/submit</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section id="task5">
+                    <h2>
+                        <span class="section-number">09</span>Task 5: Cloud
+                        Runへデプロイして最終テスト
+                    </h2>
+                    <h3>デプロイコマンド</h3>
+                    <pre><code class="language-bash">gcloud run deploy $SERVICE_NAME \
+  --port=8080 \
+  --image="$REGION-docker.pkg.dev/$PROJECT/$AR_REPO/$SERVICE_NAME" \
+  --allow-unauthenticated \
+  --region=$REGION \
+  --platform=managed \
+  --project=$PROJECT \
+  --set-env-vars=PROJECT=$PROJECT,REGION=$REGION</code></pre>
+                    <div class="callout warning">
+                        <p class="callout-label">--allow-unauthenticated はラボ限定の一時設定</p>
+                        <p>
+                            <code>--allow-unauthenticated</code>
+                            は、採点に必要な「認証なしで開ける公開URL」を得るためにこのラボでのみ使う設定です。付与すると
+                            <code>roles/run.invoker</code> が <code>allUsers</code>
+                            に与えられ、URLを知っている誰でもアプリを実行できる（=
+                            あなたのプロジェクトのGeminiクォータと課金を消費できる）状態になります。<strong>本番用途では使用せず</strong>、認証付き呼び出し（IAMで個別のサービスアカウント／ユーザーに
+                            <code>roles/run.invoker</code> を付与）や IAP
+                            の利用を前提に設計してください。
+                        </p>
+                        <p>
+                            ラボ終了後は、公開状態を放置しないよう次の手順でリソースを削除します。合わせて、想定外の課金を防ぐために
+                            <a
+                                href="https://cloud.google.com/billing/docs/how-to/budgets"
+                                target="_blank"
+                                rel="noopener"
+                                >予算アラート（Budgets &amp; alerts）</a
+                            >
+                            で上限額と通知を設定しておくことを推奨します。
+                        </p>
+                        <pre><code class="language-bash"># Cloud Run サービスを削除（公開URLを無効化）
+gcloud run services delete $SERVICE_NAME --region=$REGION --project=$PROJECT --quiet
+
+# Artifact Registry リポジトリを削除（イメージの保管料を停止）
+gcloud artifacts repositories delete $AR_REPO --location=$REGION --project=$PROJECT --quiet
+
+# 採点用にファイルをアップロードしたGCSバケットが不要になったら中身を削除
+# BUCKET_NAME はラボの指示で指定されたバケット名に置き換える
+gcloud storage rm --recursive gs://BUCKET_NAME --project=$PROJECT</code></pre>
+                    </div>
+                    <h3>パラメータの意味</h3>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>パラメータ</th>
+                                    <th>値</th>
+                                    <th>意味・注意点</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>--port</code></td>
+                                    <td><code>8080</code></td>
+                                    <td>
+                                        Cloud
+                                        Runがリクエストを転送するポート。コンテナ側もこのポートで<code>0.0.0.0</code>をリッスンする必要がある
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><code>--image</code></td>
+                                    <td>Artifact RegistryのイメージURL</td>
+                                    <td>Task 4でpushしたイメージを指定</td>
+                                </tr>
+                                <tr>
+                                    <td><code>--allow-unauthenticated</code></td>
+                                    <td>フラグ</td>
+                                    <td>
+                                        未認証アクセスを許可（<code>allUsers</code> に Cloud Run
+                                        Invoker ロールを付与するのと同義）
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><code>--platform</code></td>
+                                    <td><code>managed</code></td>
+                                    <td>フルマネージドのCloud Run環境を利用</td>
+                                </tr>
+                                <tr>
+                                    <td><code>--set-env-vars</code></td>
+                                    <td><code>PROJECT=..., REGION=...</code></td>
+                                    <td>
+                                        コンテナ内から<code>os.environ</code>で参照できる環境変数を注入
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <h3>
+                        <code>PORT</code> と <code>--allow-unauthenticated</code> を正しく理解する
+                    </h3>
+                    <div class="prose">
+                        <p>
+                            Cloud Runはコンテナ起動時に
+                            <code>PORT</code> という環境変数を自動的に注入します。アプリケーションは
+                            <strong>0.0.0.0</strong> でこのポートをリッスンする必要があります（<code
+                                >127.0.0.1</code
+                            >
+                            ではリクエストを受け付けられません）。Streamlitはデフォルトで
+                            <code>8501</code> を使うため、Dockerfile側で
+                            <code>--server.port=$PORT</code>（またはCloud
+                            Runの慣例に合わせて<code>8080</code>固定）を指定する必要があります。
+                        </p>
+                        <p>
+                            <code>--allow-unauthenticated</code>
+                            はPoCや検証目的では便利ですが、個人情報や医療情報を扱うCymbal
+                            Healthのようなユースケースでは、本番導入時に見直すべき設定です。実運用では次のような代替が一般的です。
+                        </p>
+                    </div>
+                    <div class="diagram-wrap"><div id="diagram-access"></div></div>
+                    <h3>デプロイ後の確認</h3>
+                    <ol>
+                        <li>コマンド完了後に表示されるURLをブラウザで開く</li>
+                        <li>
+                            Streamlit UI上で cuisine / dietary_preference / allergy / ingredients /
+                            wine を入力
+                        </li>
+                        <li>Gemini からレシピ提案が返ってくることを確認</li>
+                    </ol>
+                    <div class="callout source">
+                        <p class="callout-label">参考ソース</p>
+                        <ul>
+                            <li>
+                                Cloud Run: コンテナイメージのデプロイ:
+                                <a
+                                    href="https://cloud.google.com/run/docs/deploying"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >cloud.google.com/run/docs/deploying</a
+                                >
+                            </li>
+                            <li>
+                                <code>gcloud run deploy</code> リファレンス:
+                                <a
+                                    href="https://cloud.google.com/sdk/gcloud/reference/run/deploy"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >cloud.google.com/sdk/gcloud/reference/run/deploy</a
+                                >
+                            </li>
+                            <li>
+                                Cloud Run コンテナランタイム契約（PORT / 0.0.0.0）:
+                                <a
+                                    href="https://cloud.google.com/run/docs/container-contract"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >cloud.google.com/run/docs/container-contract</a
+                                >
+                            </li>
+                            <li>
+                                Cloud Run 環境変数のベストプラクティス:
+                                <a
+                                    href="https://cloud.google.com/run/docs/configuring/services/environment-variables"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >cloud.google.com/run/docs/configuring/services/environment-variables</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section id="troubleshooting">
+                    <h2><span class="section-number">10</span>トラブルシューティング早見表</h2>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>症状</th>
+                                    <th>主な原因</th>
+                                    <th>対処</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Notebookのセル5で<code>404</code>エラー</td>
+                                    <td><code>location</code> が <code>global</code> のまま</td>
+                                    <td>
+                                        セル3で<code>location</code>をラボ指定のリージョンに変更して再実行
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Streamlitがローカルで起動しない</td>
+                                    <td>依存パッケージ未インストール / venv未有効化</td>
+                                    <td>
+                                        <code>pip install -r requirements.txt</code
+                                        >を再実行し、<code>source venv/bin/activate</code>を確認
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Cloud Run上で<code>Container failed to start</code></td>
+                                    <td>
+                                        アプリが<code>PORT</code>環境変数ではなく固定ポートをリッスン、または<code>127.0.0.1</code>にバインド
+                                    </td>
+                                    <td>
+                                        Dockerfile /
+                                        Streamlit起動オプションで<code>0.0.0.0:$PORT</code>にバインドするよう修正
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><code>gcloud builds submit</code>が権限エラー</td>
+                                    <td>Cloud Build サービスアカウントにロール不足</td>
+                                    <td>
+                                        必要なIAMロール（<code>roles/artifactregistry.writer</code>等）を確認・付与
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>デプロイURLにアクセスしても403</td>
+                                    <td><code>--allow-unauthenticated</code>を付け忘れた</td>
+                                    <td>
+                                        再デプロイ時にフラグを追加するか、IAMでInvokerロールを付与
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section id="summary">
+                    <h2>
+                        <span class="section-number">11</span>まとめ:
+                        このラボで身につくベストプラクティス
+                    </h2>
+                    <ul>
+                        <li>
+                            <strong>環境変数化</strong>して手順を再利用可能にする（<code
+                                >PROJECT</code
+                            >
+                            / <code>REGION</code> / <code>AR_REPO</code> /
+                            <code>SERVICE_NAME</code>）
+                        </li>
+                        <li>
+                            <strong>ローカル検証 → コンテナ化 → デプロイ</strong
+                            >の順に段階を踏み、フィードバックループを短く保つ
+                        </li>
+                        <li>
+                            プロンプトは<strong>ロール付与・制約の明示・出力フォーマット指定</strong>の3点セットで設計する
+                        </li>
+                        <li>
+                            Cloud
+                            Runの<code>PORT</code>は自分で決め打ちせず、コンテナ契約（container
+                            runtime contract）に従う
+                        </li>
+                        <li>
+                            <code>--allow-unauthenticated</code
+                            >はPoC向けの設定であり、本番では公開範囲を再設計する
+                        </li>
+                    </ul>
+                </section>
+
+                <section id="references">
+                    <h2><span class="section-number">12</span>参考文献・ソース一覧</h2>
+                    <div class="ref-list">
+                        <div class="ref-item">
+                            <span class="ref-num">01</span>
+                            <div>
+                                <span class="ref-title"
+                                    >Develop Gen AI Apps with Gemini and Streamlit: Challenge
+                                    Lab</span
+                                ><a
+                                    class="ref-url"
+                                    href="https://www.skills.google/course_templates/978/labs/647543"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >https://www.skills.google/course_templates/978/labs/647543</a
+                                >
+                            </div>
+                        </div>
+                        <div class="ref-item">
+                            <span class="ref-num">02</span>
+                            <div>
+                                <span class="ref-title"
+                                    >GitHub: gemini-streamlit-cloudrun 参考実装（app.py / ラボの chef.py とは別物）</span
+                                ><a
+                                    class="ref-url"
+                                    href="https://github.com/GoogleCloudPlatform/generative-ai/tree/main/gemini/sample-apps/gemini-streamlit-cloudrun"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >https://github.com/GoogleCloudPlatform/generative-ai/tree/main/gemini/sample-apps/gemini-streamlit-cloudrun</a
+                                >
+                            </div>
+                        </div>
+                        <div class="ref-item">
+                            <span class="ref-num">03</span>
+                            <div>
+                                <span class="ref-title"
+                                    >Vertex AI Gemini クイックスタート（generateContent）</span
+                                ><a
+                                    class="ref-url"
+                                    href="https://cloud.google.com/vertex-ai/generative-ai/docs/start/quickstart"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >https://cloud.google.com/vertex-ai/generative-ai/docs/start/quickstart</a
+                                >
+                            </div>
+                        </div>
+                        <div class="ref-item">
+                            <span class="ref-num">04</span>
+                            <div>
+                                <span class="ref-title">generateContent メソッドのリファレンス</span
+                                ><a
+                                    class="ref-url"
+                                    href="https://cloud.google.com/vertex-ai/generative-ai/docs/model-reference/overview"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >https://cloud.google.com/vertex-ai/generative-ai/docs/model-reference/overview</a
+                                >
+                            </div>
+                        </div>
+                        <div class="ref-item">
+                            <span class="ref-num">05</span>
+                            <div>
+                                <span class="ref-title"
+                                    >Artifact Registry: Dockerイメージの保存</span
+                                ><a
+                                    class="ref-url"
+                                    href="https://cloud.google.com/artifact-registry/docs/docker/store-docker-container-images"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >https://cloud.google.com/artifact-registry/docs/docker/store-docker-container-images</a
+                                >
+                            </div>
+                        </div>
+                        <div class="ref-item">
+                            <span class="ref-num">06</span>
+                            <div>
+                                <span class="ref-title"
+                                    >gcloud artifacts repositories create リファレンス</span
+                                ><a
+                                    class="ref-url"
+                                    href="https://cloud.google.com/sdk/gcloud/reference/artifacts/repositories/create"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >https://cloud.google.com/sdk/gcloud/reference/artifacts/repositories/create</a
+                                >
+                            </div>
+                        </div>
+                        <div class="ref-item">
+                            <span class="ref-num">07</span>
+                            <div>
+                                <span class="ref-title">Cloud Build: CLI/APIからのビルド実行</span
+                                ><a
+                                    class="ref-url"
+                                    href="https://cloud.google.com/build/docs/running-builds/submit-build-via-cli-api"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >https://cloud.google.com/build/docs/running-builds/submit-build-via-cli-api</a
+                                >
+                            </div>
+                        </div>
+                        <div class="ref-item">
+                            <span class="ref-num">08</span>
+                            <div>
+                                <span class="ref-title">gcloud builds submit リファレンス</span
+                                ><a
+                                    class="ref-url"
+                                    href="https://cloud.google.com/sdk/gcloud/reference/builds/submit"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >https://cloud.google.com/sdk/gcloud/reference/builds/submit</a
+                                >
+                            </div>
+                        </div>
+                        <div class="ref-item">
+                            <span class="ref-num">09</span>
+                            <div>
+                                <span class="ref-title">Cloud Run: コンテナイメージのデプロイ</span
+                                ><a
+                                    class="ref-url"
+                                    href="https://cloud.google.com/run/docs/deploying"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >https://cloud.google.com/run/docs/deploying</a
+                                >
+                            </div>
+                        </div>
+                        <div class="ref-item">
+                            <span class="ref-num">10</span>
+                            <div>
+                                <span class="ref-title">gcloud run deploy リファレンス</span
+                                ><a
+                                    class="ref-url"
+                                    href="https://cloud.google.com/sdk/gcloud/reference/run/deploy"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >https://cloud.google.com/sdk/gcloud/reference/run/deploy</a
+                                >
+                            </div>
+                        </div>
+                        <div class="ref-item">
+                            <span class="ref-num">11</span>
+                            <div>
+                                <span class="ref-title">Cloud Run コンテナランタイム契約</span
+                                ><a
+                                    class="ref-url"
+                                    href="https://cloud.google.com/run/docs/container-contract"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >https://cloud.google.com/run/docs/container-contract</a
+                                >
+                            </div>
+                        </div>
+                        <div class="ref-item">
+                            <span class="ref-num">12</span>
+                            <div>
+                                <span class="ref-title"
+                                    >Cloud Run 環境変数の設定とベストプラクティス</span
+                                ><a
+                                    class="ref-url"
+                                    href="https://cloud.google.com/run/docs/configuring/services/environment-variables"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >https://cloud.google.com/run/docs/configuring/services/environment-variables</a
+                                >
+                            </div>
+                        </div>
+                        <div class="ref-item">
+                            <span class="ref-num">13</span>
+                            <div>
+                                <span class="ref-title"
+                                    >Streamlit公式ドキュメント: streamlit run CLI</span
+                                ><a
+                                    class="ref-url"
+                                    href="https://docs.streamlit.io/develop/api-reference/cli/run"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >https://docs.streamlit.io/develop/api-reference/cli/run</a
+                                >
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <footer>Gemini x Streamlit x Cloud Run チャレンジラボ攻略ガイド</footer>
+            </main>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js" integrity="sha512-wW8K3TEH5ZViD4aMPzwPdhXKs/Kb5MAm7qLRd3QliYlHy0u9utSKZsZzqlZAgJ9xxXp81acwnrZVZ8oTfoLG1g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js" integrity="sha512-i0JFeiLhgBAMGfIEVqMQwALhhse1orgl34XyotSUNiNbDIB1qS9IK53sDochCIrwvj4nJ51CsDSOqhGyhZITGg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.12.0/mermaid.min.js" integrity="sha512-5TKaYvhenABhlGIKSxAWLFJBZCSQw7HTV7aL1dJcBokM/+3PNtfgJFlv8E6Us/B1VMlQ4u8sPzjudL9TEQ06ww==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                if (window.hljs) {
+                    hljs.highlightAll();
+                }
+            });
+
+            const DIAGRAMS = {
+                arch: `flowchart LR
+subgraph Dev["Development"]
+WB["Workbench Notebook prompt.ipynb"]
+CS["Cloud Shell chef.py"]
+end
+subgraph Build["Build and Distribute"]
+CB["Cloud Build"]
+AR["Artifact Registry Docker image"]
+end
+subgraph Serve["Runtime"]
+CR["Cloud Run chef-streamlit-app"]
+end
+GEM["Vertex AI Gemini API"]
+USER["End User Browser"]
+WB -->|"curl connectivity test"| GEM
+CS -->|"gcloud builds submit"| CB
+CB -->|"push image"| AR
+AR -->|"gcloud run deploy"| CR
+CR -->|"generateContent call"| GEM
+USER -->|"HTTPS request"| CR
+CR -->|"return recipe suggestions"| USER
+classDef box fill:#13233d,stroke:#7c9eff,color:#eef2fb,stroke-width:1px
+classDef highlight fill:#123934,stroke:#5eead4,color:#eef2fb,stroke-width:1px
+class WB,CS,CB,AR,CR box
+class GEM,USER highlight
+`,
+                taskflow: `flowchart TD
+T1["Task 1: cURL API test"]
+T2["Task 2: Implement UI and prompt in chef.py"]
+T3["Task 3: Test app in Cloud Shell"]
+T4["Task 4: Fix Dockerfile and push to Artifact Registry"]
+T5["Task 5: Deploy to Cloud Run and verify"]
+DONE["POC complete"]
+T1 --> T2 --> T3 --> T4 --> T5 --> DONE
+classDef step fill:#13233d,stroke:#7c9eff,color:#eef2fb,stroke-width:1px
+classDef done fill:#123934,stroke:#5eead4,color:#eef2fb,stroke-width:1px
+class T1,T2,T3,T4,T5 step
+class DONE done
+`,
+                task1trouble: `flowchart TD
+A["Run cell 5"]
+B{"404 error appears"}
+C["Check location variable in cell 3"]
+D{"Is location set to global"}
+E["Change to the lab assigned region"]
+F["Check project ID or model ID for typos"]
+G["Re-run cell 5"]
+H["Confirm result and save"]
+A --> B
+B -->|"Yes"| C
+C --> D
+D -->|"Yes"| E
+D -->|"No"| F
+E --> G
+F --> G
+B -->|"No"| H
+G --> H
+classDef normal fill:#13233d,stroke:#7c9eff,color:#eef2fb,stroke-width:1px
+classDef danger fill:#2e1418,stroke:#ff9a9a,color:#eef2fb,stroke-width:1px
+classDef done fill:#123934,stroke:#5eead4,color:#eef2fb,stroke-width:1px
+class A,C,F,G normal
+class B,D danger
+class E danger
+class H done
+`,
+                localtest: `flowchart LR
+A["Write code"]
+B["Run streamlit run in Cloud Shell"]
+C{"Works as expected"}
+D["Proceed to Dockerfile update"]
+A --> B --> C
+C -->|"No"| A
+C -->|"Yes"| D
+classDef normal fill:#13233d,stroke:#7c9eff,color:#eef2fb,stroke-width:1px
+classDef done fill:#123934,stroke:#5eead4,color:#eef2fb,stroke-width:1px
+class A,B normal
+class C normal
+class D done
+`,
+                buildpush: `sequenceDiagram
+participant Dev as Cloud Shell
+participant CB as Cloud Build
+participant AR as Artifact Registry
+Dev->>CB: gcloud builds submit --tag ...
+CB->>CB: Build image from Dockerfile
+CB->>AR: Push built image
+AR-->>Dev: Return SUCCESS status and image URL
+`,
+                access: `flowchart TD
+A["Cloud Run service"]
+B{"Who should access it"}
+C["--allow-unauthenticated open to everyone"]
+D["--no-allow-unauthenticated plus IAM Invoker role"]
+E["Access only via frontend or API Gateway"]
+A --> B
+B -->|"PoC demo internal validation"| C
+B -->|"Production or personal data involved"| D
+D --> E
+classDef normal fill:#13233d,stroke:#7c9eff,color:#eef2fb,stroke-width:1px
+classDef warn fill:#2c2210,stroke:#f4c667,color:#eef2fb,stroke-width:1px
+classDef safe fill:#123934,stroke:#5eead4,color:#eef2fb,stroke-width:1px
+class A,B normal
+class C warn
+class D,E safe
+`,
+            };
+
+            mermaid.initialize({
+                startOnLoad: false,
+                theme: 'dark',
+                securityLevel: 'loose',
+                fontFamily: 'Inter, -apple-system, "Segoe UI", "Noto Sans JP", sans-serif',
+                flowchart: {
+                    useMaxWidth: false,
+                    htmlLabels: true,
+                    nodeSpacing: 45,
+                    rankSpacing: 45,
+                },
+                sequence: { useMaxWidth: false },
+                themeVariables: { fontSize: '16px' },
+            });
+
+            async function renderDiagrams() {
+                if (document.fonts && document.fonts.ready) {
+                    try {
+                        await document.fonts.ready;
+                    } catch (e) {}
+                }
+                for (const [id, src] of Object.entries(DIAGRAMS)) {
+                    const container = document.getElementById('diagram-' + id);
+                    if (!container) continue;
+                    try {
+                        const { svg } = await mermaid.render('svg-' + id, src);
+                        container.innerHTML = svg;
+                        const svgEl = container.querySelector('svg');
+                        if (svgEl) {
+                            svgEl.removeAttribute('width');
+                            svgEl.removeAttribute('height');
+                            const viewBoxAttr = svgEl.getAttribute('viewBox');
+                            if (viewBoxAttr) {
+                                const parts = viewBoxAttr.split(/\s+/).map(Number);
+                                if (parts.length === 4) {
+                                    const isSeq = /sequenceDiagram|stateDiagram/.test(src);
+                                    const extend = isSeq ? 110 : 15;
+                                    parts[3] = parts[3] + extend;
+                                    svgEl.setAttribute('viewBox', parts.join(' '));
+                                    svgEl.style.width = parts[2] + 'px';
+                                }
+                            }
+                            svgEl.style.maxWidth = '100%';
+                            svgEl.style.height = 'auto';
+                            svgEl.style.overflow = 'visible';
+                        }
+                    } catch (err) {
+                        container.innerHTML =
+                            '<p style="color:#ff9a9a;">Diagram render error: ' +
+                            (err && err.message ? err.message : err) +
+                            '</p>';
+                        if (window.console) {
+                            console.error('mermaid render error [' + id + ']', err);
+                        }
+                    }
+                }
+            }
+
+            renderDiagrams();
+
+            const sections = document.querySelectorAll('main section[id]');
+            const navLinks = document.querySelectorAll('.sidebar nav a');
+            if ('IntersectionObserver' in window) {
+                const observer = new IntersectionObserver(
+                    (entries) => {
+                        entries.forEach((entry) => {
+                            if (entry.isIntersecting) {
+                                const id = entry.target.getAttribute('id');
+                                navLinks.forEach((l) => l.classList.remove('active'));
+                                const link = document.querySelector(
+                                    '.sidebar nav a[href="#' + id + '"]',
+                                );
+                                if (link) {
+                                    link.classList.add('active');
+                                }
+                            }
+                        });
+                    },
+                    { rootMargin: '-20% 0px -70% 0px' },
+                );
+                sections.forEach((s) => observer.observe(s));
+            }
+        </script>
+    </body>
+</html>

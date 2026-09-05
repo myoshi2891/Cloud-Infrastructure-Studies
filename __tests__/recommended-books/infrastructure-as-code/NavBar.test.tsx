@@ -16,7 +16,7 @@ const entry = (id: string, top: number, isIntersecting = true): IntersectionObse
         target,
         isIntersecting,
         boundingClientRect: { top } as DOMRectReadOnly,
-    } as IntersectionObserverEntry;
+    } as unknown as IntersectionObserverEntry;
 };
 
 const mountSections = () => {

@@ -1,0 +1,3509 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>
+            Kubernetes in Action, Second Edition 完全解説ガイド ―
+            初学者のためのステップバイステップ入門
+        </title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            :root {
+                --bg: #07111e;
+                --bg-card: #0d1a2b;
+                --bg-card-2: #101f33;
+                --border: #1d3350;
+                --border-soft: #16283f;
+                --text: #dbe4f3;
+                --text-dim: #8fa2c0;
+                --text-faint: #6a7d9c;
+                --accent: #7c9eff;
+                --accent-soft: #3a4f80;
+                --accent-bg: #15233d;
+                --danger: #ff8fa3;
+                --danger-bg: #3a1420;
+                --warn: #ffbd6e;
+                --warn-bg: #3a2810;
+                --success: #7fe0a8;
+                --success-bg: #0f2c1e;
+                --sidebar-w: 300px;
+                --font-jp: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', sans-serif;
+            }
+            * {
+                box-sizing: border-box;
+            }
+            html,
+            body {
+                overflow-x: hidden;
+            }
+            body {
+                margin: 0;
+                background: var(--bg);
+                color: var(--text);
+                font-family: var(--font-jp);
+                font-size: 16px;
+                line-height: 1.85;
+                -webkit-font-smoothing: antialiased;
+            }
+            a {
+                color: var(--accent);
+                text-decoration: none;
+            }
+            a:hover {
+                text-decoration: underline;
+            }
+
+            /* ---------- layout ---------- */
+            .layout {
+                display: block;
+            }
+
+            /* Sidebar */
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                width: var(--sidebar-w);
+                background: #060d17;
+                border-right: 1px solid var(--border-soft);
+                overflow-y: auto;
+                padding: 28px 0 40px;
+                z-index: 50;
+            }
+            .sidebar-header {
+                padding: 0 24px 20px;
+                border-bottom: 1px solid var(--border-soft);
+                margin-bottom: 16px;
+            }
+            .sidebar-header .kicker {
+                font-size: 12px;
+                letter-spacing: 0.08em;
+                color: var(--accent);
+                font-weight: 700;
+                text-transform: uppercase;
+            }
+            .sidebar-header h2 {
+                font-size: 16px;
+                margin: 6px 0 0;
+                color: var(--text);
+                line-height: 1.5;
+                font-weight: 700;
+            }
+            .sidebar nav {
+                padding: 0 12px;
+            }
+            .sidebar nav a {
+                display: block;
+                padding: 9px 12px;
+                border-radius: 8px;
+                font-size: 13.5px;
+                color: var(--text-dim);
+                line-height: 1.5;
+                margin-bottom: 2px;
+                transition:
+                    background 0.15s,
+                    color 0.15s;
+            }
+            .sidebar nav a:hover {
+                background: var(--accent-bg);
+                color: var(--text);
+                text-decoration: none;
+            }
+            .sidebar nav a.active {
+                background: var(--accent-bg);
+                color: var(--accent);
+                font-weight: 700;
+            }
+            .sidebar nav a.lvl3 {
+                padding-left: 28px;
+                font-size: 12.5px;
+            }
+            .sidebar-toggle {
+                display: none;
+                position: fixed;
+                top: 14px;
+                left: 14px;
+                z-index: 60;
+                width: 42px;
+                height: 42px;
+                border-radius: 10px;
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                color: var(--text);
+                font-size: 18px;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+            }
+
+            /* Main content */
+            .main {
+                margin-left: var(--sidebar-w);
+                padding: 56px 64px 120px;
+            }
+            .hero {
+                margin-bottom: 8px;
+            }
+            .hero .kicker {
+                font-size: 13px;
+                font-weight: 700;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+                color: var(--accent);
+                margin-bottom: 14px;
+            }
+            .hero h1 {
+                font-size: clamp(28px, 3.6vw, 42px);
+                line-height: 1.35;
+                margin: 0 0 18px;
+                background: linear-gradient(135deg, #dbe4f3 0%, #7c9eff 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                font-weight: 800;
+            }
+            .hero .meta-row {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+                margin-bottom: 32px;
+            }
+            .pill {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                padding: 6px 14px;
+                border-radius: 999px;
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                font-size: 12.5px;
+                color: var(--text-dim);
+            }
+            .pill strong {
+                color: var(--text);
+            }
+
+            .main h2 {
+                font-size: 26px;
+                margin: 56px 0 20px;
+                padding-top: 8px;
+                border-top: 1px solid var(--border-soft);
+                color: var(--text);
+                font-weight: 800;
+                letter-spacing: -0.01em;
+                scroll-margin-top: 24px;
+            }
+            .main > h2:first-of-type {
+                border-top: none;
+                padding-top: 0;
+                margin-top: 8px;
+            }
+            .main h3 {
+                font-size: 20px;
+                margin: 38px 0 16px;
+                color: var(--text);
+                font-weight: 700;
+                scroll-margin-top: 24px;
+            }
+            .main h3::before {
+                content: '';
+                display: inline-block;
+                width: 5px;
+                height: 18px;
+                background: var(--accent);
+                border-radius: 3px;
+                margin-right: 10px;
+                vertical-align: -2px;
+            }
+            .main p {
+                margin: 0 0 18px;
+                color: var(--text);
+            }
+            .main ul,
+            .main ol {
+                margin: 0 0 18px;
+                padding-left: 1.4em;
+                color: var(--text);
+            }
+            .main li {
+                margin-bottom: 8px;
+            }
+            .main hr {
+                border: none;
+                border-top: 1px solid var(--border-soft);
+                margin: 44px 0;
+            }
+            .main strong {
+                color: #f0f4fc;
+                font-weight: 700;
+            }
+            .footnote-ref {
+                margin-left: 2px;
+            }
+            .footnote-ref sup {
+                font-size: 11px;
+                color: var(--accent);
+                font-weight: 700;
+            }
+            .main code:not(pre code) {
+                background: var(--bg-card-2);
+                border: 1px solid var(--border);
+                border-radius: 5px;
+                padding: 1px 6px;
+                font-size: 0.9em;
+                color: #ffd08a;
+                overflow-wrap: break-word;
+                word-break: break-word;
+            }
+
+            /* Tables */
+            .table-scroll {
+                overflow-x: auto;
+                margin: 0 0 26px;
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                background: var(--bg-card);
+            }
+            table {
+                border-collapse: collapse;
+                width: 100%;
+                font-size: 14.5px;
+            }
+            thead th {
+                background: var(--accent-bg);
+                color: var(--text);
+                text-align: left;
+                padding: 12px 16px;
+                font-weight: 700;
+                border-bottom: 1px solid var(--border);
+                white-space: nowrap;
+            }
+            tbody td {
+                padding: 12px 16px;
+                border-bottom: 1px solid var(--border-soft);
+                color: var(--text-dim);
+                vertical-align: top;
+            }
+            tbody tr:last-child td {
+                border-bottom: none;
+            }
+            tbody tr:hover td {
+                background: rgba(124, 158, 255, 0.04);
+            }
+
+            /* Mermaid */
+            pre.mermaid {
+                width: 100%;
+                display: flex;
+                justify-content: safe center;
+                overflow-x: auto;
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-radius: 14px;
+                padding: 28px 20px;
+                margin: 0 0 30px;
+            }
+            pre.mermaid svg {
+                flex-shrink: 0;
+            }
+            pre.mermaid p {
+                color: inherit;
+                margin: 0;
+            }
+
+            /* Callouts */
+            .callout-practice {
+                display: flex;
+                gap: 14px;
+                background: var(--success-bg);
+                border: 1px solid #1d5a3a;
+                border-left: 4px solid var(--success);
+                border-radius: 12px;
+                padding: 20px 22px;
+                margin: 0 0 26px;
+            }
+            .callout-practice .icon {
+                flex-shrink: 0;
+                width: 26px;
+                height: 26px;
+                border-radius: 7px;
+                background: var(--success);
+                color: #08150e;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 14px;
+                font-weight: 900;
+            }
+            .callout-practice .body {
+                color: var(--text);
+            }
+            .callout-practice .label {
+                font-size: 11.5px;
+                font-weight: 800;
+                letter-spacing: 0.06em;
+                color: var(--success);
+                text-transform: uppercase;
+                margin-bottom: 6px;
+            }
+            .callout-practice p {
+                margin: 0;
+                color: var(--text);
+            }
+
+            .practice-label {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 12px;
+                font-weight: 800;
+                letter-spacing: 0.06em;
+                color: var(--success);
+                text-transform: uppercase;
+                margin: 0 0 10px;
+            }
+            .practice-label::before {
+                content: '✓';
+                font-size: 13px;
+            }
+
+            /* Reference grid */
+            .ref-grid {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 12px;
+                margin: 0 0 30px;
+            }
+            .ref-card {
+                display: flex;
+                gap: 12px;
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                padding: 14px 16px;
+                min-width: 0;
+            }
+            .ref-card .num {
+                flex-shrink: 0;
+                width: 26px;
+                height: 26px;
+                border-radius: 7px;
+                background: var(--accent-bg);
+                color: var(--accent);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 12px;
+                font-weight: 800;
+            }
+            .ref-card .txt {
+                font-size: 13px;
+                color: var(--text-dim);
+                min-width: 0;
+                overflow-wrap: break-word;
+                word-break: break-word;
+            }
+            .ref-card .txt a {
+                color: var(--accent);
+                font-weight: 600;
+            }
+
+            /* Checklist */
+            .checklist-card {
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-radius: 14px;
+                padding: 8px 22px 12px;
+                margin: 0 0 30px;
+            }
+            .checklist-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 14px 0;
+                border-bottom: 1px solid var(--border-soft);
+                margin-bottom: 6px;
+            }
+            .checklist-header .title {
+                font-weight: 700;
+                color: var(--text);
+                font-size: 14.5px;
+            }
+            .checklist-header .count {
+                font-size: 13px;
+                color: var(--accent);
+                font-weight: 700;
+            }
+            .checklist-card ul {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+            .checklist-card li {
+                display: flex;
+                align-items: flex-start;
+                gap: 12px;
+                padding: 11px 4px;
+                border-radius: 8px;
+                margin: 0;
+                transition: background 0.15s;
+            }
+            .checklist-card li:hover {
+                background: rgba(124, 158, 255, 0.05);
+            }
+            .checklist-card input[type='checkbox'] {
+                appearance: none;
+                -webkit-appearance: none;
+                width: 19px;
+                height: 19px;
+                flex-shrink: 0;
+                margin-top: 2px;
+                border: 1.5px solid var(--border);
+                border-radius: 5px;
+                background: var(--bg-card-2);
+                cursor: pointer;
+                position: relative;
+            }
+            .checklist-card input[type='checkbox']:checked {
+                background: var(--accent);
+                border-color: var(--accent);
+            }
+            .checklist-card input[type='checkbox']:checked::after {
+                content: '';
+                position: absolute;
+                left: 5px;
+                top: 1px;
+                width: 5px;
+                height: 10px;
+                border: solid #08101f;
+                border-width: 0 2px 2px 0;
+                transform: rotate(40deg);
+            }
+            .checklist-card label {
+                color: var(--text);
+                font-size: 14.5px;
+                cursor: pointer;
+                line-height: 1.6;
+            }
+            .checklist-card li:has(input:checked) label {
+                text-decoration: line-through;
+                color: var(--text-faint);
+            }
+
+            /* Footnotes (pandoc) */
+            aside.footnotes {
+                display: none;
+            } /* replaced entirely by ref-grid */
+
+            /* Responsive */
+            @media (max-width: 980px) {
+                .sidebar {
+                    transform: translateX(-100%);
+                    transition: transform 0.25s ease;
+                    box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+                }
+                .sidebar.open {
+                    transform: translateX(0);
+                }
+                .main {
+                    margin-left: 0;
+                    padding: 80px 20px 100px;
+                }
+                .sidebar-toggle {
+                    display: flex;
+                }
+                .ref-grid {
+                    grid-template-columns: 1fr;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="layout">
+            <button
+                class="sidebar-toggle"
+                id="sidebarToggle"
+                type="button"
+                aria-label="メニュー"
+                aria-controls="sidebar"
+                aria-expanded="false"
+            >
+                ☰
+            </button>
+            <aside class="sidebar" id="sidebar">
+                <div class="sidebar-header">
+                    <div class="kicker">Kubernetes</div>
+                    <h2>Kubernetes in Action, 第2版 完全解説ガイド</h2>
+                </div>
+                <nav id="sidebarNav">
+                    <a href="#about">この記事について</a>
+                    <a href="#part0">第0部: コンテナ技術の基礎（本書の前提知識）</a>
+                    <a href="#0-1" class="lvl3">0.1 コンテナとVMの違い</a>
+                    <a href="#0-2" class="lvl3">0.2 Dockerとコンテナランタイム</a>
+                    <a href="#0-3" class="lvl3">0.3 OCI標準とコンテナ代替ツール</a>
+                    <a href="#part1">第1部: Kubernetesを始める（原著Part 1: 第1〜4章）</a>
+                    <a href="#1-1" class="lvl3">1.1 Kubernetesとは何か</a>
+                    <a href="#1-2" class="lvl3">1.2 Kubernetesクラスタのアーキテクチャ</a>
+                    <a href="#1-3" class="lvl3">1.3 最初のアプリケーションをデプロイする</a>
+                    <a href="#1-4" class="lvl3">1.4 Kubernetes APIとオブジェクトモデル</a>
+                    <a href="#part2"
+                        >第2部: Podでアプリケーションを実行する（原著Part 2: 第5〜7章）</a
+                    >
+                    <a href="#2-1" class="lvl3">2.1 Podの基本</a>
+                    <a href="#2-2" class="lvl3">2.2 Podのライフサイクルとヘルスチェック</a>
+                    <a href="#2-3" class="lvl3">2.3 名前空間・ラベル・アノテーションによる整理</a>
+                    <a href="#part3"
+                        >第3部: アプリケーションの設定とストレージ（原著Part 3: 第8〜10章）</a
+                    >
+                    <a href="#3-1" class="lvl3">3.1 ConfigMapとSecret</a>
+                    <a href="#3-2" class="lvl3">3.2 ボリューム</a>
+                    <a href="#3-3" class="lvl3">3.3 PersistentVolumeによる永続化</a>
+                    <a href="#part4"
+                        >第4部: アプリケーションの接続と公開（原著Part 4: 第11〜13章）</a
+                    >
+                    <a href="#4-1" class="lvl3">4.1 Service</a>
+                    <a href="#4-2" class="lvl3">4.2 Ingress</a>
+                    <a href="#4-3" class="lvl3">4.3 Gateway API</a>
+                    <a href="#part5"
+                        >第5部: 大規模運用のためのアプリケーション管理（原著Part 5: 第14〜18章）</a
+                    >
+                    <a href="#5-1" class="lvl3">5.1 ReplicaSet</a>
+                    <a href="#5-2" class="lvl3">5.2 Deployment</a>
+                    <a href="#5-3" class="lvl3">5.3 StatefulSet</a>
+                    <a href="#5-4" class="lvl3">5.4 DaemonSet</a>
+                    <a href="#5-5" class="lvl3">5.5 JobとCronJob</a>
+                    <a href="#part6">第6部: 2026年8月時点の最新動向（原著範囲外・独自追加）</a>
+                    <a href="#6-1" class="lvl3">6.1 Kubernetes 1.37とリリースサイクル</a>
+                    <a href="#6-2" class="lvl3"
+                        >6.2 Dynamic Resource Allocation（DRA）とAIワークロード</a
+                    >
+                    <a href="#6-3" class="lvl3">6.3 In-Place Pod Resize（無停止リサイズ）</a>
+                    <a href="#6-4" class="lvl3">6.4 Ingress-NGINX終了とGateway API移行</a>
+                    <a href="#6-5" class="lvl3">6.5 ネイティブサイドカーコンテナ</a>
+                    <a href="#6-6" class="lvl3">6.6 CNCF調査に見るKubernetes導入状況</a>
+                    <a href="#roadmap">学習ロードマップと認定資格</a>
+                    <a href="#checklist">ベストプラクティスチェックリスト</a>
+                    <a href="#glossary">用語集</a>
+                    <a href="#references">参考文献</a>
+                </nav>
+            </aside>
+            <main class="main">
+                <div class="hero">
+                    <div class="kicker">
+                        Kubernetes in Action, Second Edition &middot; 初学者向け解説ガイド
+                    </div>
+                    <h1>
+                        Kubernetes in Action, Second Edition 完全解説ガイド ―
+                        初学者のためのステップバイステップ入門
+                    </h1>
+                    <div class="meta-row">
+                        <span class="pill">対象 <strong>初学者〜中級者</strong></span>
+                        <span class="pill">原著構成 <strong>全5部18章 + 独自追加6部</strong></span>
+                        <span class="pill">図解 <strong>Mermaid 41点</strong></span>
+                        <span class="pill">参考文献 <strong>27件</strong></span>
+                    </div>
+                </div>
+
+                <h2 id="about">この記事について</h2>
+                <p>
+                    <em>Kubernetes in Action, Second Edition</em>（ISBN 9781617297618）は、Red
+                    HatでKubernetesに深く関わってきたMarko LukšaとKevin
+                    Connerによる、Kubernetesの定番入門書です。第1版は全世界で数万人の開発者に読まれ、第2版ではKubernetes
+                    APIそのものの解説やGateway
+                    APIなど、2020年代後半のKubernetesエコシステムに合わせた大幅な刷新が行われています。
+                </p>
+                <p>
+                    原著は以下の5部・18章構成です（O'Reilly公式掲載ページおよびManning公式ページの目次で確認済み）。
+                </p>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>Part</th>
+                                <th>章</th>
+                                <th>タイトル（原題）</th>
+                                <th>本ガイドでの扱い</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>Part 1: Getting started</td>
+                                <td>1〜4</td>
+                                <td>
+                                    Kubernetesの導入、コンテナの理解、初回デプロイ、APIとオブジェクトモデル
+                                </td>
+                                <td>第1部</td>
+                            </tr>
+                            <tr class="even">
+                                <td>Part 2: Running applications in Kubernetes</td>
+                                <td>5〜7</td>
+                                <td>Pod、ライフサイクル、名前空間とラベル</td>
+                                <td>第2部</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>Part 3: Application configuration and storage</td>
+                                <td>8〜10</td>
+                                <td>ConfigMap/Secret、ボリューム、PersistentVolume</td>
+                                <td>第3部</td>
+                            </tr>
+                            <tr class="even">
+                                <td>Part 4: Connecting and exposing applications</td>
+                                <td>11〜13</td>
+                                <td>Service、Ingress、Gateway API</td>
+                                <td>第4部</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>Part 5: Managing applications at scale</td>
+                                <td>14〜18</td>
+                                <td>ReplicaSet、Deployment、StatefulSet、DaemonSet、Job/CronJob</td>
+                                <td>第5部</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>
+                    本ガイドではこれに加えて、原著の範囲外である<strong>2026年8月時点の最新動向</strong>（第6部）、学習ロードマップ、ベストプラクティスチェックリスト、用語集、参考文献を独自に追加しています。原著は688ページ・20時間44分（O'Reilly記載）の分量があるため、本ガイドは各章の要点と実践的な落とし穴を凝縮した「地図」として使い、詳細な検証は原著・公式ドキュメントで補うことを想定しています。
+                </p>
+                <p>
+                    <strong>出典：</strong> O'Reilly公式書籍ページ (<a
+                        href="https://www.oreilly.com/library/view/kubernetes-in-action/9781617297618/"
+                        >https://www.oreilly.com/library/view/kubernetes-in-action/9781617297618/</a
+                    >) および目次ページ (<a
+                        href="https://www.oreilly.com/library/view/kubernetes-in-action/9781617297618/Text/contents.html"
+                        >https://www.oreilly.com/library/view/kubernetes-in-action/9781617297618/Text/contents.html</a
+                    >)、Manning公式書籍ページ (<a
+                        href="https://www.manning.com/books/kubernetes-in-action-second-edition"
+                        >https://www.manning.com/books/kubernetes-in-action-second-edition</a
+                    >)
+                </p>
+                <hr />
+                <h2 id="part0">第0部: コンテナ技術の基礎（本書の前提知識）</h2>
+                <p>
+                    原著は「読者にDockerやコンテナの経験は不要」と明言していますが（O'Reillyページの
+                    About the Reader:
+                    <em
+                        >"Written for intermediate software developers. No prior experience with
+                        Kubernetes or containers is required."</em
+                    >）、第2章でコンテナの基礎をかなり丁寧に扱っています。本ガイドでもまずコンテナの基礎から入り、Kubernetesの必然性を理解できるようにします。
+                </p>
+                <h3 id="0-1">0.1 コンテナとVMの違い</h3>
+                <p>
+                    仮想マシン（VM）はハイパーバイザー上でゲストOS全体を仮想化するのに対し、コンテナはホストOSのカーネル機能（Linux
+                    Namespaces・cgroups）を使ってプロセスを隔離する軽量な仮想化技術です。原著2.1.1節「Comparing
+                    containers to
+                    VMs」で扱われる通り、コンテナはVMに比べて起動が速く、オーバーヘッドが小さいという特徴があります。
+                </p>
+                <pre class="mermaid">
+                flowchart TB
+                    subgraph VM["仮想マシン方式"]
+                        direction TB
+                        HW1[物理ハードウェア]
+                        HV[ハイパーバイザー]
+                        subgraph VMGuest1["ゲストVM 1"]
+                            GOS1[ゲストOS]
+                            APP1[アプリA]
+                        end
+                        subgraph VMGuest2["ゲストVM 2"]
+                            GOS2[ゲストOS]
+                            APP2[アプリB]
+                        end
+                        HW1 --&gt; HV
+                        HV --&gt; VMGuest1
+                        HV --&gt; VMGuest2
+                    end
+
+                    subgraph CT["コンテナ方式"]
+                        direction TB
+                        HW2[物理ハードウェア]
+                        HOS[ホストOS + カーネル]
+                        CE[コンテナランタイム]
+                        subgraph C1["コンテナ1"]
+                            CAPP1[アプリA]
+                        end
+                        subgraph C2["コンテナ2"]
+                            CAPP2[アプリB]
+                        end
+                        HW2 --&gt; HOS
+                        HOS --&gt; CE
+                        CE --&gt; C1
+                        CE --&gt; C2
+                    end
+
+                    classDef highlightFill fill:#1a3a5c,stroke:#4a90d9,color:#ffffff
+                    class CE,HOS highlightFill</pre
+                >
+                <div class="callout-practice">
+                    <div class="icon">&#10003;</div>
+                    <div class="body">
+                        <div class="label">ベストプラクティス（原著2.3節準拠）</div>
+                        <ul>
+                            <li>
+                                コンテナはプロセスの隔離であってVMのような完全な隔離ではないため、マルチテナント環境では追加のセキュリティ境界（gVisor、Kata
+                                Containersなど）の採用を検討する。
+                            </li>
+                            <li>
+                                1コンテナ1プロセス（1責務）を基本原則とし、コンテナ内でinitシステムやSSHデーモンを常駐させない。
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <h3 id="0-2">0.2 Dockerとコンテナランタイム</h3>
+                <p>
+                    原著2.1.2〜2.1.3節では、Dockerを使ってHello,
+                    Worldコンテナを起動する体験から始まり、2.2節で本書全体を通して使う実践的な題材アプリケーション「Kiada（Kubernetes
+                    in Action Demo
+                    Application）」の構築へと進みます。Kiadaは、原著全編を通して機能を段階的に拡張していくNode.jsベースのデモアプリケーションです。
+                </p>
+                <pre class="mermaid">
+                flowchart LR
+                    A[Dockerfile] --&gt;|docker build| B[コンテナイメージ]
+                    B --&gt;|docker push| C[(コンテナレジストリ)]
+                    C --&gt;|docker pull| D[別ホストのDockerデーモン]
+                    D --&gt;|docker run| E[実行中のコンテナ]
+
+                    classDef highlightFill fill:#1a3a5c,stroke:#4a90d9,color:#ffffff
+                    class B,C highlightFill</pre
+                >
+                <h3 id="0-3">0.3 OCI標準とコンテナ代替ツール</h3>
+                <p>
+                    原著2.1.4節では、Docker以外のコンテナツール（Podman、Buildahなど）とOpen
+                    Container
+                    Initiative（OCI）によるイメージ・ランタイムの標準化について触れています。Kubernetes自体はDockerを直接のコンテナランタイムとして使うDockershimを2020年12月のv1.20で非推奨化し、2022年5月のv1.24で削除しており、containerdやCRI-OなどCRI（Container
+                    Runtime Interface）準拠のランタイムを使うのが2026年時点の標準です。
+                </p>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>ツール</th>
+                                <th>役割</th>
+                                <th>備考</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>Docker Engine</td>
+                                <td>イメージビルド・実行</td>
+                                <td>
+                                    <code>docker</code>
+                                    CLIの提供元。Kubernetesのノード上ランタイムとしては非推奨
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>containerd</td>
+                                <td>軽量なコンテナランタイム</td>
+                                <td>多くのマネージドKubernetes（EKS、GKEなど）の既定ランタイム</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>CRI-O</td>
+                                <td>Kubernetes専用ランタイム</td>
+                                <td>Red Hat OpenShiftなどで採用</td>
+                            </tr>
+                            <tr class="even">
+                                <td>Podman</td>
+                                <td>デーモンレスなコンテナ管理CLI</td>
+                                <td>rootlessコンテナに強み</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>Buildah</td>
+                                <td>OCIイメージビルド専用ツール</td>
+                                <td>Dockerfileなしでもビルド可能</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="callout-practice">
+                    <div class="icon">&#10003;</div>
+                    <div class="body">
+                        <div class="label">ベストプラクティス</div>
+                        <ul>
+                            <li>
+                                ローカル開発ではDocker Desktop／Podman
+                                Desktopのどちらでも良いが、本番クラスタのノードランタイムはcontainerdかCRI-Oに統一する。
+                            </li>
+                            <li>
+                                イメージはOCIイメージ仕様に準拠したレジストリ（Docker Hub、GitHub
+                                Container Registry、Amazon ECR、Google Artifact
+                                Registryなど）で管理し、タグに<code>latest</code>を使わずセマンティックバージョンまたはコミットハッシュを付与する。ただしタグは後から別のイメージへ付け替えられる可変の参照であり、それ自体はバージョンを固定しない。本番環境では<code>image@sha256:&lt;ダイジェスト&gt;</code>形式のダイジェスト参照でイメージを一意に固定し、あわせてCosign等による署名検証（Sigstore）をデプロイ前のゲートに組み込む。
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <hr />
+                <h2 id="part1">第1部: Kubernetesを始める（原著Part 1: 第1〜4章）</h2>
+                <h3 id="1-1">1.1 Kubernetesとは何か（原著第1章）</h3>
+                <p>
+                    <strong>Kubernetes</strong
+                    >はギリシャ語で「操舵手（helmsman）」を意味します。原著1章のまとめでも触れられている通り、船長（あなた）がクラスタ全体を統括し、Kubernetesという操舵手が日々の運用（コンテナの再起動、ノード障害時の再配置、負荷分散など）を担うというメタファーです。発音は「クーバネティス」（koo-ber-NET-eez）が一般的で、しばしば「K8s（ケーエイツ）」と略されます（KとSの間の8文字を数字の8に置き換えた略記）。
+                </p>
+                <p>
+                    Kubernetesは、Googleが自社の大規模クラスタ管理システム「Borg」で得た知見をもとに開発し、2014年にオープンソース化したプロジェクトです。現在はCloud
+                    Native Computing
+                    Foundation（CNCF）がホストする最重要プロジェクトの一つとなっています。
+                </p>
+                <pre class="mermaid">
+                flowchart TB
+                    subgraph Before["Kubernetes以前"]
+                        direction TB
+                        SRV1[サーバー1] --- APP_A1[アプリA]
+                        SRV2[サーバー2] --- APP_B1[アプリB]
+                        SRV3[サーバー3] --- APP_C1[アプリC]
+                        NOTE1[["各サーバーを個別に管理・&lt;br/&gt;デプロイ先を手動で決定"]]
+                    end
+
+                    subgraph After["Kubernetes導入後"]
+                        direction TB
+                        CLUSTER[["Kubernetesクラスタ&lt;br/&gt;(統一されたデプロイ領域)"]]
+                        APP_A2[アプリA]
+                        APP_B2[アプリB]
+                        APP_C2[アプリC]
+                        CLUSTER --&gt; APP_A2
+                        CLUSTER --&gt; APP_B2
+                        CLUSTER --&gt; APP_C2
+                        NOTE2[["宣言的なマニフェストを&lt;br/&gt;クラスタに提出するだけ"]]
+                    end
+
+                    classDef highlightFill fill:#1a3a5c,stroke:#4a90d9,color:#ffffff
+                    class CLUSTER highlightFill</pre
+                >
+                <p>
+                    原著1.2.1節が強調するのは、Kubernetesが<strong>個々のマシンではなくクラスタ全体を1つのデプロイ領域として抽象化する</strong>という点です。開発者は「どのサーバーで動かすか」を意識せず、「どういう状態で動いてほしいか」だけを宣言します。
+                </p>
+                <p><strong>Kubernetesを使う主なメリット（原著1.2.2節）</strong></p>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>メリット</th>
+                                <th>内容</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>セルフサービス化</td>
+                                <td>開発者がインフラ管理者の介入なしにアプリをデプロイできる</td>
+                            </tr>
+                            <tr class="even">
+                                <td>コスト削減</td>
+                                <td>
+                                    複数アプリのリソースを効率よくビンパッキングし、ハードウェア利用率を上げる
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>自動スケーリング</td>
+                                <td>負荷に応じてPodやノード数を自動調整する</td>
+                            </tr>
+                            <tr class="even">
+                                <td>自己修復</td>
+                                <td>コンテナクラッシュやノード障害時に自動的に再配置する</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>ポータビリティ</td>
+                                <td>
+                                    オンプレミス・複数クラウド間で同じAPIを使い回せる（ベンダーロックイン低減）
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p><strong>組織導入時の判断基準（原著1.3節）</strong></p>
+                <p>
+                    原著1.3.4節「Should you even use
+                    Kubernetes?」は初学者が見落としがちな重要な問いです。すべてのワークロードにKubernetesが必要なわけではありません。
+                </p>
+                <pre class="mermaid">
+                flowchart TD
+                    START([アプリケーションの複雑度は?]) --&gt; Q1{マイクロサービス数は&lt;br/&gt;多いか?}
+                    Q1 --&gt;|少ない・モノリス中心| SIMPLE[シンプルなPaaS/VMで&lt;br/&gt;十分な可能性が高い]
+                    Q1 --&gt;|多数のサービス群| Q2{自動スケーリング・&lt;br/&gt;自己修復が必要か?}
+                    Q2 --&gt;|不要| SIMPLE
+                    Q2 --&gt;|必要| Q3{運用チームは&lt;br/&gt;Kubernetesを&lt;br/&gt;自前運用できるか?}
+                    Q3 --&gt;|できない・小規模チーム| MANAGED["マネージドKubernetes&lt;br/&gt;(GKE/EKS/AKS)を検討"]
+                    Q3 --&gt;|専任チームがある| SELFHOST[自前運用 or&lt;br/&gt;エンタープライズ&lt;br/&gt;ディストリビューションを検討]
+
+                    classDef highlightFill fill:#1a3a5c,stroke:#4a90d9,color:#ffffff
+                    classDef warnFill fill:#5c3a1a,stroke:#d9904a,color:#ffffff
+                    class MANAGED,SELFHOST highlightFill
+                    class SIMPLE warnFill</pre
+                >
+                <div class="callout-practice">
+                    <div class="icon">&#10003;</div>
+                    <div class="body">
+                        <div class="label">ベストプラクティス</div>
+                        <ul>
+                            <li>
+                                小規模なチームや単一のモノリシックアプリケーションでは、まずマネージドKubernetes（GKE
+                                Autopilot、EKS Fargate、AKSなど）から始め、運用負荷を最小化する。
+                            </li>
+                            <li>
+                                自前でKubernetesクラスタ全体（コントロールプレーンを含む）を運用するのは非常に難易度が高いため、専任のプラットフォームチームなしに選択すべきではない、と原著は繰り返し強調している。
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <h3 id="1-2">1.2 Kubernetesクラスタのアーキテクチャ（原著第1章・第3章）</h3>
+                <p>
+                    Kubernetesクラスタは大きく<strong>コントロールプレーン</strong>と<strong>ワーカーノード（ワークロードプレーン）</strong>の2つの平面に分かれます（原著1.2.3節）。
+                </p>
+                <pre class="mermaid">
+                flowchart TB
+                    subgraph CP["コントロールプレーン"]
+                        direction TB
+                        API[kube-apiserver&lt;br/&gt;APIサーバー]
+                        ETCD[(etcd&lt;br/&gt;分散KVS)]
+                        SCHED[kube-scheduler&lt;br/&gt;スケジューラ]
+                        CM[kube-controller-manager&lt;br/&gt;コントローラ群]
+                        API &lt;--&gt; ETCD
+                        API &lt;--&gt; SCHED
+                        API &lt;--&gt; CM
+                    end
+
+                    subgraph WN1["ワーカーノード 1"]
+                        direction TB
+                        KUBELET1[kubelet]
+                        PROXY1[kube-proxy]
+                        CRI1[コンテナランタイム&lt;br/&gt;containerd等]
+                        POD1A[Pod]
+                        POD1B[Pod]
+                        KUBELET1 --&gt; CRI1
+                        CRI1 --&gt; POD1A
+                        CRI1 --&gt; POD1B
+                    end
+
+                    subgraph WN2["ワーカーノード 2"]
+                        direction TB
+                        KUBELET2[kubelet]
+                        PROXY2[kube-proxy]
+                        CRI2[コンテナランタイム]
+                        POD2A[Pod]
+                        KUBELET2 --&gt; CRI2
+                        CRI2 --&gt; POD2A
+                    end
+
+                    API &lt;--&gt;|状態の報告/受信| KUBELET1
+                    API &lt;--&gt;|状態の報告/受信| KUBELET2
+
+                    classDef highlightFill fill:#1a3a5c,stroke:#4a90d9,color:#ffffff
+                    class API,ETCD highlightFill</pre
+                >
+                <p>各コンポーネントの役割は次の通りです（原著1.2.3節に対応）。</p>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>コンポーネント</th>
+                                <th>配置</th>
+                                <th>役割</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>kube-apiserver</td>
+                                <td>コントロールプレーン</td>
+                                <td>
+                                    クラスタの唯一の入口。REST
+                                    APIを公開し、全ての操作はここを経由する
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>etcd</td>
+                                <td>コントロールプレーン</td>
+                                <td>クラスタ全体の状態を保存する分散キーバリューストア</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>kube-scheduler</td>
+                                <td>コントロールプレーン</td>
+                                <td>未配置のPodを、条件に合うワーカーノードへ割り当てる</td>
+                            </tr>
+                            <tr class="even">
+                                <td>kube-controller-manager</td>
+                                <td>コントロールプレーン</td>
+                                <td>
+                                    ReplicaSetコントローラ等、各種コントローラをまとめて実行する
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>kubelet</td>
+                                <td>ワーカーノード</td>
+                                <td>
+                                    ノード上でPodのライフサイクルを管理し、APIサーバーと通信する
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>kube-proxy</td>
+                                <td>ワーカーノード</td>
+                                <td>Serviceへのトラフィックをノード上でルーティングする</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>コンテナランタイム</td>
+                                <td>ワーカーノード</td>
+                                <td>実際にコンテナを起動・停止する（containerd、CRI-Oなど）</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p><strong>Kubernetesがアプリケーションを実行する流れ（原著1.2.4節）</strong></p>
+                <pre class="mermaid">
+                sequenceDiagram
+                    participant U as 開発者(kubectl)
+                    participant API as kube-apiserver
+                    participant ETCD as etcd
+                    participant SCHED as kube-scheduler
+                    participant KUBELET as kubelet(対象ノード)
+                    participant CRI as コンテナランタイム
+
+                    U-&gt;&gt;API: マニフェストを適用&lt;br/&gt;(kubectl apply -f pod.yaml)
+                    API-&gt;&gt;ETCD: オブジェクトを永続化
+                    API--&gt;&gt;U: 受理レスポンス
+                    SCHED-&gt;&gt;API: 未配置Podを監視(watch)
+                    SCHED-&gt;&gt;API: 最適ノードをバインディング
+                    API-&gt;&gt;ETCD: バインディング結果を保存
+                    KUBELET-&gt;&gt;API: 自ノード宛てのPodを監視(watch)
+                    KUBELET-&gt;&gt;CRI: コンテナ起動を指示
+                    CRI--&gt;&gt;KUBELET: コンテナ起動完了
+                    KUBELET-&gt;&gt;API: Podステータスを報告
+                    API-&gt;&gt;ETCD: 最新状態を保存</pre
+                >
+                <div class="callout-practice">
+                    <div class="icon">&#10003;</div>
+                    <div class="body">
+                        <div class="label">ベストプラクティス</div>
+                        <ul>
+                            <li>
+                                コントロールプレーンは通常、可用性のため奇数（3・5台等）のノードで冗長化し、etcdのリーダー選出クォーラムを確保する。マネージドサービスを使う場合はこの管理をクラウドプロバイダに委任できる。
+                            </li>
+                            <li>
+                                <code>kubectl get events</code>や<code>kubectl describe</code
+                                >は、宣言と実際の状態のズレをデバッグする際の最初の一手として習慣化する。
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <h3 id="1-3">1.3 最初のアプリケーションをデプロイする（原著第3章）</h3>
+                <p>
+                    原著3章では、ローカル環境（Docker
+                    Desktop内蔵Kubernetes、Minikube、kind）からマネージドクラウド（GKE、EKS）、さらには手動構築のマルチノードクラスタまで、複数のクラスタ構築方法を比較しています。
+                </p>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>方法</th>
+                                <th>用途</th>
+                                <th>特徴</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>Docker Desktop内蔵K8s</td>
+                                <td>ローカル学習</td>
+                                <td>GUIから有効化でき最も手軽</td>
+                            </tr>
+                            <tr class="even">
+                                <td>Minikube</td>
+                                <td>ローカル学習・検証</td>
+                                <td>単一VM/コンテナ内に1ノードクラスタを構築、アドオンが豊富</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>kind (Kubernetes in Docker)</td>
+                                <td>ローカル・CI</td>
+                                <td>
+                                    Dockerコンテナをノードに見立てるため多ノードクラスタもCI上で高速に作れる
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>GKE (Google Kubernetes Engine)</td>
+                                <td>本番・学習</td>
+                                <td>
+                                    Googleのマネージドサービス、Autopilotモードでノード管理も不要
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>Amazon EKS</td>
+                                <td>本番</td>
+                                <td>AWSのマネージドコントロールプレーン、ワーカーはEC2/Fargate</td>
+                            </tr>
+                            <tr class="even">
+                                <td>手動構築（kubeadm等）</td>
+                                <td>学習・オンプレミス</td>
+                                <td>全コンポーネントを自分で構築し理解を深めるのに最適</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p><strong>kubectlの基本操作フロー</strong></p>
+                <pre class="mermaid">
+                flowchart LR
+                    A["kubectl config&lt;br/&gt;(kubeconfig設定)"] --&gt; B["kubectl apply -f&lt;br/&gt;マニフェスト適用"]
+                    B --&gt; C["kubectl get&lt;br/&gt;状態確認"]
+                    C --&gt; D["kubectl describe&lt;br/&gt;詳細調査"]
+                    D --&gt; E{問題あり?}
+                    E --&gt;|Yes| F["kubectl logs /&lt;br/&gt;kubectl exec&lt;br/&gt;デバッグ"]
+                    F --&gt; B
+                    E --&gt;|No| G["kubectl expose /&lt;br/&gt;kubectl scale&lt;br/&gt;公開・スケール"]
+
+                    classDef highlightFill fill:#1a3a5c,stroke:#4a90d9,color:#ffffff
+                    class B,G highlightFill</pre
+                >
+                <p>
+                    原著3.3節では、最初のアプリケーションを<code>kubectl create deployment</code
+                    >で作成し、<code>kubectl expose</code>でServiceを作成し、<code
+                        >kubectl scale</code
+                    >で水平スケールするという一連の流れを体験します。<code>kubectl expose</code
+                    >が行うのはServiceの作成であり、それ自体が自動的に外部公開を行うわけではありません（既定では<code>ClusterIP</code>でクラスタ内部からのみ到達可能）。クラスタ外部からアクセスさせたい場合は<code>--type=NodePort</code>または<code>--type=LoadBalancer</code>を明示的に指定します。これは第5部（Deployment、Service）で扱う概念の実践的な入り口になっています。
+                </p>
+                <div class="callout-practice">
+                    <div class="icon">&#10003;</div>
+                    <div class="body">
+                        <div class="label">ベストプラクティス</div>
+                        <ul>
+                            <li>
+                                学習段階ではkindまたはMinikubeでローカルに複数ノードクラスタを再現し、Podのスケジューリングやノード障害時の挙動を安全に試す。
+                            </li>
+                            <li>
+                                <code>kubectl config use-context</code
+                                >でクラスタを切り替える際は、<code
+                                    >kubectl config current-context</code
+                                >で必ず現在の接続先を確認してから破壊的な操作を行う（本番クラスタへの誤操作防止）。
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <h3 id="1-4">1.4 Kubernetes APIとオブジェクトモデル（原著第4章）</h3>
+                <p>
+                    原著4章は第2版で大きく拡充されたパートです。Kubernetesを深く理解する上で欠かせない「すべてがAPIオブジェクトである」という設計思想を扱います。
+                </p>
+                <pre class="mermaid">
+                flowchart TB
+                    MANIFEST["YAML/JSON マニフェスト"] --&gt; META["metadata&lt;br/&gt;(name, namespace, labels,&lt;br/&gt;annotations, uid等)"]
+                    MANIFEST --&gt; SPEC["spec&lt;br/&gt;(望ましい状態を宣言)"]
+                    MANIFEST --&gt; STATUS["status&lt;br/&gt;(実際の状態。&lt;br/&gt;Kubernetesが書き込む)"]
+
+                    SPEC --&gt;|"ユーザーが記述"| RECONCILE{{"コントローラが&lt;br/&gt; reconcile(調整)"}}
+                    RECONCILE --&gt;|"現実を反映"| STATUS
+
+                    classDef highlightFill fill:#1a3a5c,stroke:#4a90d9,color:#ffffff
+                    class RECONCILE highlightFill</pre
+                >
+                <p>
+                    Kubernetesオブジェクトのマニフェストは<code>apiVersion</code>・<code>kind</code>・<code>metadata</code>を共通で持ち、多くのオブジェクトはこれに加えて<code>spec</code>（および<code>status</code>）を持ちます。ただし<code>spec</code>はすべてのオブジェクトに必須の共通フィールドではありません。例えば<code>ConfigMap</code>は<code>spec</code>を持たず、<code>data</code>・<code>binaryData</code>・<code>immutable</code>をトップレベルのフィールドとして使います（<code>Secret</code>も同様に<code>data</code>/<code>stringData</code>を使います）。<code>spec</code>は「あるべき姿」をユーザーが宣言する部分であり、<code>status</code>はコントローラが実際の観測結果を書き込む部分です。この分離こそが、Kubernetesの<strong>宣言的（declarative）</strong>なモデルの核心です。
+                </p>
+                <p><strong>Event オブジェクト（原著4.3節）</strong></p>
+                <p>
+                    クラスタ内で発生したイベント（Podのスケジューリング成功、イメージPull失敗など）は<code>Event</code>オブジェクトとして記録されます。<code
+                        >kubectl describe</code
+                    >コマンドの出力末尾に表示される「Events」セクションは、このEventオブジェクトを整形して表示したものです。
+                </p>
+                <div class="callout-practice">
+                    <div class="icon">&#10003;</div>
+                    <div class="body">
+                        <div class="label">ベストプラクティス</div>
+                        <ul>
+                            <li>
+                                未知のリソース種別に遭遇したら<code
+                                    >kubectl explain &lt;kind&gt;</code
+                                >（例:
+                                <code>kubectl explain pod.spec.containers</code
+                                >）でフィールドの説明とAPIバージョンをその場で確認する習慣をつける。
+                            </li>
+                            <li>
+                                <code>kubectl describe</code>で表示されるstatus
+                                conditions（<code>Ready</code>,
+                                <code>PodScheduled</code
+                                >など）を読み解けるようになると、トラブルシューティングの速度が大きく向上する。
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <hr />
+                <h2 id="part2">第2部: Podでアプリケーションを実行する（原著Part 2: 第5〜7章）</h2>
+                <h3 id="2-1">2.1 Podの基本（原著第5章）</h3>
+                <p>
+                    <strong>Pod</strong
+                    >はKubernetesにおけるデプロイの最小単位です。1つ以上のコンテナのグループであり、同じネットワーク名前空間（同一IPアドレス、<code>localhost</code>経由の通信）とストレージボリュームを共有します。
+                </p>
+                <pre class="mermaid">
+                flowchart TB
+                    subgraph POD["Pod (単一のネットワーク名前空間を共有)"]
+                        direction LR
+                        C1["メインコンテナ&lt;br/&gt;(アプリ本体)"]
+                        C2["サイドカーコンテナ&lt;br/&gt;(例: Envoyプロキシ)"]
+                        VOL[("共有ボリューム")]
+                        C1 &lt;--&gt;|localhost通信| C2
+                        C1 --- VOL
+                        C2 --- VOL
+                    end
+                    IP["Pod IP: 10.244.1.5"] --- POD
+
+                    classDef highlightFill fill:#1a3a5c,stroke:#4a90d9,color:#ffffff
+                    class POD highlightFill</pre
+                >
+                <p>
+                    原著5.1.2節が強調するのは、「複数コンテナを1つのPodに詰め込みすぎない」という原則です。基本は1コンテナ1責務ですが、密結合したヘルパー（ログ収集、プロキシなど）は同じPodに配置します。
+                </p>
+                <p><strong>マルチコンテナPodの構成パターン（原著5.4〜5.5節）</strong></p>
+                <pre class="mermaid">
+                flowchart TB
+                    subgraph LIFECYCLE["Pod起動シーケンス"]
+                        direction TB
+                        INIT1["initContainers&lt;br/&gt;(通常の初期化コンテナ、&lt;br/&gt;順に実行し完了して終了)"]
+                        SIDECAR["initContainers内の&lt;br/&gt;restartPolicy: Always&lt;br/&gt;(ネイティブサイドカー)"]
+                        MAIN["containers&lt;br/&gt;(メインアプリコンテナ、&lt;br/&gt;並行起動)"]
+                        INIT1 --&gt;|完了後| SIDECAR
+                        SIDECAR --&gt;|起動完了後| MAIN
+                    end
+
+                    classDef highlightFill fill:#1a3a5c,stroke:#4a90d9,color:#ffffff
+                    class SIDECAR highlightFill</pre
+                >
+                <p>
+                    原著5.5.4節「Kubernetes native sidecar
+                    containers」は、<code>initContainers</code>に<code>restartPolicy: Always</code
+                    >を指定することでサイドカーをネイティブにサポートする仕組みを解説しています（Kubernetes
+                    1.28でアルファ導入、1.29でデフォルト有効化、1.33で安定版。詳細は<a href="#6-5"
+                        >6.5節</a
+                    >を参照）。これにより、従来のサイドカーパターンで課題だった「Jobのサイドカーがいつまでも終了せず、Jobの完了判定をブロックしてしまう」問題が解消されました。
+                </p>
+                <div class="callout-practice">
+                    <div class="icon">&#10003;</div>
+                    <div class="body">
+                        <div class="label">ベストプラクティス（原著5.3〜5.6節）</div>
+                        <ul>
+                            <li>
+                                Pod内のコンテナとやり取りする際は<code
+                                    >kubectl exec -it &lt;pod&gt; -- sh</code
+                                >より先に<code>kubectl logs</code
+                                >で挙動を確認し、本番環境への<code>exec</code>は最小限にとどめる。
+                            </li>
+                            <li>
+                                デバッグ専用の<code>ephemeralContainers</code>（原著5.3.6節）を使えば、実行中のPodに影響を与えずにデバッグ用ツールコンテナを一時的に注入できる。distrolessイメージなどシェルを含まない本番イメージのデバッグに有効。
+                            </li>
+                            <li>
+                                <code>kubectl delete pods --all</code
+                                >のような広範囲削除コマンドは、必ず<code>-n &lt;namespace&gt;</code
+                                >でスコープを絞ってから実行する。
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <h3 id="2-2">2.2 Podのライフサイクルとヘルスチェック（原著第6章）</h3>
+                <p>
+                    Podには<code>phase</code>（大まかな状態）と、より詳細な<code>conditions</code>（複数のブール値の集合）があります。
+                </p>
+                <pre class="mermaid">
+                stateDiagram-v2
+                    direction LR
+                    [*] --&gt; Pending: Pod作成
+                    Pending --&gt; Running: ノードにスケジュール済みで&lt;br/&gt;全コンテナが作成され、少なくとも&lt;br/&gt;1つが実行中/起動中/再起動中
+                    Running --&gt; Succeeded: 全コンテナが正常終了&lt;br/&gt;(Job等)
+                    Running --&gt; Failed: いずれかのコンテナが&lt;br/&gt;異常終了(再起動しない設定)
+                    Running --&gt; Running: liveness失敗時に&lt;br/&gt;自動再起動
+                    Succeeded --&gt; [*]
+                    Failed --&gt; [*]</pre
+                >
+                <p><strong>3種類のプローブ（原著6.2節）</strong></p>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>プローブ種別</th>
+                                <th>目的</th>
+                                <th>失敗時の挙動</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>Liveness Probe</td>
+                                <td>コンテナが生きているか（デッドロック等の検知）</td>
+                                <td>コンテナを再起動する</td>
+                            </tr>
+                            <tr class="even">
+                                <td>Readiness Probe</td>
+                                <td>リクエストを受け付けられる状態か</td>
+                                <td>Serviceのエンドポイントから除外する（再起動はしない）</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>Startup Probe</td>
+                                <td>起動が遅いアプリの初期化完了を待つ</td>
+                                <td>Liveness/Readinessの評価を遅らせる</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <pre class="mermaid">
+                flowchart TD
+                    START([コンテナ起動]) --&gt; SP{Startup Probe&lt;br/&gt;設定あり?}
+                    SP --&gt;|あり、未成功| WAIT["Liveness/Readinessを&lt;br/&gt;一時停止して待機"]
+                    WAIT --&gt; SP
+                    SP --&gt;|成功 or 未設定| LP["Liveness Probe実行"]
+                    LP --&gt;|失敗| RESTART["コンテナ再起動"]
+                    RESTART --&gt; START
+                    LP --&gt;|成功| RP["Readiness Probe実行"]
+                    RP --&gt;|失敗| NOTREADY["Serviceの&lt;br/&gt;エンドポイントから除外"]
+                    NOTREADY --&gt; LP
+                    RP --&gt;|成功| READY["Serviceの&lt;br/&gt;エンドポイントに含める"]
+                    READY --&gt; LP
+
+                    classDef highlightFill fill:#1a3a5c,stroke:#4a90d9,color:#ffffff
+                    classDef dangerFill fill:#5c1a1a,stroke:#d94a4a,color:#ffffff
+                    class READY highlightFill
+                    class RESTART,NOTREADY dangerFill</pre
+                >
+                <p>
+                    原著6.3節では、<code>postStart</code>フック（コンテナ起動直後に実行）と<code>preStop</code>フック（終了直前に実行）にも触れています。特に<code>preStop</code>はグレースフルシャットダウンの実装に欠かせません。
+                </p>
+                <pre class="mermaid">
+                flowchart LR
+                    A["Pod削除要求&lt;br/&gt;(kubectl delete)"] --&gt; B["preStopフック実行"]
+                    B --&gt; C["SIGTERM送信"]
+                    C --&gt; D{"terminationGracePeriod&lt;br/&gt;Seconds以内に終了?"}
+                    D --&gt;|Yes| E["正常終了"]
+                    D --&gt;|No| F["SIGKILLで強制終了"]
+
+                    classDef dangerFill fill:#5c1a1a,stroke:#d94a4a,color:#ffffff
+                    class F dangerFill</pre
+                >
+                <div class="callout-practice">
+                    <div class="icon">&#10003;</div>
+                    <div class="body">
+                        <div class="label">
+                            ベストプラクティス（原著6.2.7節「Creating effective liveness probe
+                            handlers」）
+                        </div>
+                        <ul>
+                            <li>
+                                Liveness
+                                Probeは「アプリが応答するか」だけを軽量にチェックし、データベース接続など外部依存のチェックはReadiness
+                                Probeに任せる。Liveness
+                                Probeが外部依存の障害で失敗すると、無意味な再起動ループを引き起こす。
+                            </li>
+                            <li>
+                                Startup Probeを使わずに長いLiveness
+                                Probeの<code>initialDelaySeconds</code>だけに頼ると、起動の遅いアプリと本当にハングしたアプリを区別できない。起動時間が不安定なアプリには必ずStartup
+                                Probeを設定する。
+                            </li>
+                            <li>
+                                <code>preStop</code
+                                >フックの遅延（数秒のsleep等）は、エンドポイントやロードバランサーからPodが実際に切り離されるまでの猶予を確認するものではない。安全にドレインするには、遅延に加えて（1）遅延とアプリの終了処理を収容できる<code>terminationGracePeriodSeconds</code>、（2）新規接続を止めて処理中のリクエストを完了させるアプリ側のグレースフルシャットダウン、（3）利用中のロードバランサー実装ごとの切り離し所要時間の実測と検証、の3点をそろえる必要がある。
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <h3 id="2-3">2.3 名前空間・ラベル・アノテーションによる整理（原著第7章）</h3>
+                <p>
+                    <strong>Namespace</strong
+                    >はクラスタ内のリソースを論理的に分割する仕組みです。ただし原著7.1.4節が明確に警告する通り、Namespaceは<strong>ネットワーク的な隔離を提供しません</strong>（NetworkPolicyなど別の仕組みと組み合わせない限り、異なるNamespace間のPodは自由に通信できます）。
+                </p>
+                <pre class="mermaid">
+                flowchart TB
+                    subgraph CLUSTER["クラスタ"]
+                        subgraph NS1["namespace: production"]
+                            P1[Pod A]
+                            P2[Pod B]
+                        end
+                        subgraph NS2["namespace: staging"]
+                            P3[Pod C]
+                        end
+                        subgraph NS3["namespace: kube-system"]
+                            P4[システムPod]
+                        end
+                    end
+                    P1 -.-&gt;|"NetworkPolicy未設定なら&lt;br/&gt;自由に到達可能"| P3
+
+                    classDef dangerFill fill:#5c1a1a,stroke:#d94a4a,color:#ffffff
+                    class P1,P3 dangerFill</pre
+                >
+                <p>
+                    <strong>ラベルとラベルセレクタ（原著7.2〜7.3節）</strong
+                    >は、Kubernetesにおけるオブジェクトのグルーピングの基本メカニズムです。Service、ReplicaSet、Deploymentなど、多くのコントローラがラベルセレクタで「どのPodを対象にするか」を決定します。
+                </p>
+                <pre class="mermaid">
+                flowchart LR
+                    subgraph PODS["複数のPod"]
+                        PA["Pod&lt;br/&gt;app=kiada, env=prod"]
+                        PB["Pod&lt;br/&gt;app=kiada, env=staging"]
+                        PC["Pod&lt;br/&gt;app=other, env=prod"]
+                    end
+                    SEL["ラベルセレクタ&lt;br/&gt;app=kiada,env=prod"] --&gt;|マッチ| PA
+
+                    classDef highlightFill fill:#1a3a5c,stroke:#4a90d9,color:#ffffff
+                    class PA highlightFill</pre
+                >
+                <p>
+                    アノテーション（原著7.5節）はラベルと似ていますが、セレクタの対象にはならず、任意の（非識別用途の）メタデータ（ビルド情報、ツール固有の設定値など）を格納するために使います。
+                </p>
+                <div class="callout-practice">
+                    <div class="icon">&#10003;</div>
+                    <div class="body">
+                        <div class="label">ベストプラクティス</div>
+                        <ul>
+                            <li>
+                                Kubernetes公式が定める<a
+                                    href="https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/"
+                                    >推奨ラベル</a
+                                >（<code>app.kubernetes.io/name</code>、<code>app.kubernetes.io/version</code>など）に準拠し、ツール間の相互運用性を高める。
+                            </li>
+                            <li>
+                                Namespace単位でResourceQuota・LimitRangeを設定し、1チーム／1環境がクラスタ全体のリソースを食い潰さないようにする。
+                            </li>
+                            <li>
+                                機密性の高いワークロード同士は同一Namespaceであっても信頼せず、NetworkPolicyでデフォルト拒否（default-deny）を基本方針にする。
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <hr />
+                <h2 id="part3">
+                    第3部: アプリケーションの設定とストレージ（原著Part 3: 第8〜10章）
+                </h2>
+                <h3 id="3-1">3.1 ConfigMapとSecret（原著第8章）</h3>
+                <p>
+                    コンテナイメージから設定を分離する（Twelve-Factor
+                    Appの原則）ために、KubernetesはConfigMap（機密でない設定値）とSecret（機密データ）という2種類のオブジェクトを提供します。
+                </p>
+                <pre class="mermaid">
+                flowchart TB
+                    CM[("ConfigMap&lt;br/&gt;(平文設定)")]
+                    SEC[("Secret&lt;br/&gt;(base64エンコード)")]
+                    POD["Pod"]
+
+                    CM --&gt;|環境変数として注入| POD
+                    CM --&gt;|ボリュームとしてマウント| POD
+                    SEC --&gt;|環境変数として注入| POD
+                    SEC --&gt;|ボリュームとしてマウント| POD
+
+                    classDef highlightFill fill:#1a3a5c,stroke:#4a90d9,color:#ffffff
+                    classDef dangerFill fill:#5c1a1a,stroke:#d94a4a,color:#ffffff
+                    class CM highlightFill
+                    class SEC dangerFill</pre
+                >
+                <p>
+                    原著8.3.4節「Understanding why Secrets aren't always
+                    secure」は初学者が誤解しがちな重要ポイントです。SecretはデフォルトではBase64エンコードされているだけで<strong>暗号化されていません</strong>。etcdへの保存時に暗号化する（Encryption
+                    at
+                    Rest）よう明示的に設定しない限り、etcdへのアクセス権限があれば誰でも復号できてしまいます。
+                </p>
+                <pre class="mermaid">
+                flowchart LR
+                    A["kubectl apply -f secret.yaml"] --&gt; B["APIサーバーが受理"]
+                    B --&gt; C{"etcd暗号化&lt;br/&gt;(EncryptionConfiguration)&lt;br/&gt;設定済みか?"}
+                    C --&gt;|"未設定(デフォルト)"| D["Base64のまま平文でetcdに保存"]
+                    C --&gt;|設定済み| E["AES-CBC/AES-GCM等で&lt;br/&gt;暗号化してetcdに保存"]
+
+                    classDef dangerFill fill:#5c1a1a,stroke:#d94a4a,color:#ffffff
+                    classDef highlightFill fill:#1a3a5c,stroke:#4a90d9,color:#ffffff
+                    class D dangerFill
+                    class E highlightFill</pre
+                >
+                <p>
+                    <strong>Downward API（原著8.4節）</strong
+                    >は、Pod自身のメタデータ（名前、Namespace、ラベル、リソース制限値など）をコンテナ内の環境変数やファイルとして注入する仕組みです。
+                </p>
+                <div class="callout-practice">
+                    <div class="icon">&#10003;</div>
+                    <div class="body">
+                        <div class="label">ベストプラクティス</div>
+                        <ul>
+                            <li>
+                                SecretはetcdのEncryption at
+                                Restを有効化し、加えて可能であればHashiCorp VaultやAWS Secrets
+                                Manager、External Secrets
+                                Operatorなど外部シークレット管理システムとの連携を検討する。
+                            </li>
+                            <li>
+                                ConfigMap/Secretを更新しても、既に起動済みのPodへの環境変数注入は自動反映されない（再起動が必要）。ボリュームマウントの場合は多くのケースで自動的にファイル内容が更新されるが、アプリ側がファイル変更を検知して再読み込みする実装になっているか確認する。
+                            </li>
+                            <li>
+                                Secretの中身をGitリポジトリに平文でコミットしない。Sealed
+                                SecretsやSOPS、External Secrets
+                                Operatorなどでの暗号化管理をGitOpsパイプラインに組み込む。
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <h3 id="3-2">3.2 ボリューム（原著第9章）</h3>
+                <p>
+                    Kubernetesの<strong>ボリューム</strong>は、コンテナのファイルシステムより長生きするストレージ（少なくともPodのライフサイクル分）を提供します。
+                </p>
+                <pre class="mermaid">
+                flowchart TB
+                    subgraph TYPES["主なボリューム種別（原著9章）"]
+                        direction TB
+                        ED["emptyDir&lt;br/&gt;Podと同じ寿命、&lt;br/&gt;コンテナ間の一時共有領域"]
+                        IMG["image volume&lt;br/&gt;コンテナイメージを&lt;br/&gt;そのままボリューム化(新機能)"]
+                        HP["hostPath&lt;br/&gt;ワーカーノードの&lt;br/&gt;ファイルシステムに直接アクセス"]
+                        CMV["configMap / secret volume&lt;br/&gt;設定値をファイルとして&lt;br/&gt;マウント"]
+                        DAPI["downwardAPI volume&lt;br/&gt;Podメタデータを&lt;br/&gt;ファイルとして公開"]
+                        PROJ["projected volume&lt;br/&gt;複数ボリュームを&lt;br/&gt;1つに統合"]
+                    end
+
+                    classDef highlightFill fill:#1a3a5c,stroke:#4a90d9,color:#ffffff
+                    classDef dangerFill fill:#5c1a1a,stroke:#d94a4a,color:#ffffff
+                    class ED,IMG,CMV,DAPI,PROJ highlightFill
+                    class HP dangerFill</pre
+                >
+                <p>
+                    <code>emptyDir</code
+                    >はPodが削除されると内容も消える一時ボリュームで、コンテナ間のファイル共有（例:
+                    メインコンテナが書いたログをサイドカーが読む）によく使われます。一方<code>hostPath</code>はノードのローカルディスクに直接アクセスするため、Pod再スケジュール時にデータの整合性が保てず、セキュリティリスクも高いため、原著でも「特別な用途（DaemonSetでノード上のログファイルを読むなど）に限定すべき」と位置づけられています。
+                </p>
+                <div class="callout-practice">
+                    <div class="icon">&#10003;</div>
+                    <div class="body">
+                        <div class="label">ベストプラクティス</div>
+                        <ul>
+                            <li>
+                                <code>hostPath</code>はノード固有のリソース（例:
+                                DaemonSetからホストのログファイルを読み取り専用でマウントする）以外では避け、一般的なアプリケーションの永続化にはPersistentVolume（3.3節）を使う。
+                            </li>
+                            <li>
+                                複数のConfigMap/Secret/DownwardAPIを1つのマウントポイントに統合したい場合は<code>projected</code>ボリュームを使い、Podのボリューム定義をシンプルに保つ。
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <h3 id="3-3">3.3 PersistentVolumeによる永続化（原著第10章）</h3>
+                <p>
+                    Pod自体は使い捨て（ephemeral）ですが、データベースなどのステートフルなワークロードにはPodのライフサイクルを超えて存続するストレージが必要です。Kubernetesはこれを<strong>PersistentVolume（PV）</strong>と<strong>PersistentVolumeClaim（PVC）</strong>という2つのオブジェクトで抽象化します。
+                </p>
+                <pre class="mermaid">
+                sequenceDiagram
+                    participant DEV as 開発者
+                    participant PVC as PersistentVolumeClaim
+                    participant SC as StorageClass
+                    participant CSI as CSIドライバ
+                    participant PV as PersistentVolume
+                    participant POD as Pod
+
+                    DEV-&gt;&gt;PVC: PVCを作成(容量・アクセスモードを指定)
+                    PVC-&gt;&gt;SC: 動的プロビジョニングを要求
+                    SC-&gt;&gt;CSI: 対応するストレージを確保するよう要求
+                    CSI-&gt;&gt;PV: PVを自動生成してPVCにバインド
+                    DEV-&gt;&gt;POD: PodのvolumesでPVCを参照
+                    POD-&gt;&gt;PV: PVにマウントして読み書き</pre
+                >
+                <p><strong>アクセスモード（原著10.2.4節）</strong></p>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>アクセスモード</th>
+                                <th>略称</th>
+                                <th>意味</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>ReadWriteOnce</td>
+                                <td>RWO</td>
+                                <td>単一ノードから読み書き可能</td>
+                            </tr>
+                            <tr class="even">
+                                <td>ReadOnlyMany</td>
+                                <td>ROX</td>
+                                <td>複数ノードから読み取り専用でマウント可能</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>ReadWriteMany</td>
+                                <td>RWX</td>
+                                <td>複数ノードから同時に読み書き可能</td>
+                            </tr>
+                            <tr class="even">
+                                <td>ReadWriteOncePod</td>
+                                <td>RWOP</td>
+                                <td>単一Podからのみ読み書き可能（1.29でGA、より厳格な排他制御）</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>
+                    <strong>StorageClassとCSIドライバ（原著10.2.5〜10.2.6節）</strong
+                    >は、クラウドプロバイダやストレージベンダーごとの実装差異を吸収する仕組みです。StorageClassを指定するだけで、背後のCSI（Container
+                    Storage Interface）ドライバが実際のディスクをプロビジョニングします。
+                </p>
+                <p><strong>静的プロビジョニング vs 動的プロビジョニング（原著10.1.2節）</strong></p>
+                <pre class="mermaid">
+                flowchart TB
+                    subgraph DYN["動的プロビジョニング(推奨)"]
+                        direction LR
+                        PVC1["PVC作成"] --&gt; SC1["StorageClassが&lt;br/&gt;自動でPVを生成"]
+                    end
+                    subgraph STATIC["静的プロビジョニング"]
+                        direction LR
+                        ADMIN["管理者が事前に&lt;br/&gt;PVを手動作成"] --&gt; PVC2["PVCがPVに&lt;br/&gt;バインド"]
+                    end
+
+                    classDef highlightFill fill:#1a3a5c,stroke:#4a90d9,color:#ffffff
+                    class DYN highlightFill</pre
+                >
+                <div class="callout-practice">
+                    <div class="icon">&#10003;</div>
+                    <div class="body">
+                        <div class="label">ベストプラクティス</div>
+                        <ul>
+                            <li>
+                                特別な理由がない限り動的プロビジョニング（StorageClass +
+                                PVC）を使い、静的プロビジョニングはノードローカルストレージなど特殊なケースに限定する。
+                            </li>
+                            <li>
+                                PVCのリサイズ（原著10.4.1節）に対応したStorageClass（<code
+                                    >allowVolumeExpansion: true</code
+                                >）を選ぶ。ただしこのフラグは拡張を許可するだけであり、Podを再作成せずにファイルシステムまで広げるには、CSIドライバとファイルシステムの双方がオンライン拡張に対応している必要がある。
+                            </li>
+                            <li>
+                                定期的なスナップショット（原著10.4.2〜10.4.3節）をVolumeSnapshotリソースで自動化し、災害復旧（DR）計画に組み込む。
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <hr />
+                <h2 id="part4">第4部: アプリケーションの接続と公開（原著Part 4: 第11〜13章）</h2>
+                <h3 id="4-1">4.1 Service（原著第11章）</h3>
+                <p>
+                    Podは再作成されるたびにIPアドレスが変わるため、Podに直接依存した通信は成立しません。<strong>Service</strong>は、ラベルセレクタにマッチするPod群への安定したアクセス経路（仮想IP
+                    + DNS名）を提供します。
+                </p>
+                <pre class="mermaid">
+                flowchart TB
+                    SVC["Service&lt;br/&gt;clusterIP: 10.96.0.42&lt;br/&gt;selector: app=kiada"]
+                    subgraph PODS["ラベル app=kiada のPod群"]
+                        P1["Pod A&lt;br/&gt;10.244.1.5"]
+                        P2["Pod B&lt;br/&gt;10.244.2.7"]
+                        P3["Pod C&lt;br/&gt;10.244.3.9"]
+                    end
+                    EP["EndpointSlice&lt;br/&gt;(自動更新される&lt;br/&gt;IPアドレス一覧)"]
+
+                    SVC --&gt; EP
+                    EP --&gt; P1
+                    EP --&gt; P2
+                    EP --&gt; P3
+
+                    classDef highlightFill fill:#1a3a5c,stroke:#4a90d9,color:#ffffff
+                    class SVC,EP highlightFill</pre
+                >
+                <p><strong>Serviceの種類（原著11.1〜11.2節）</strong></p>
+                <pre class="mermaid">
+                flowchart TD
+                    START([外部公開の要件は?]) --&gt; Q1{クラスタ内部のみで&lt;br/&gt;十分か?}
+                    Q1 --&gt;|Yes| CIP["ClusterIP&lt;br/&gt;(既定。クラスタ内DNS経由)"]
+                    Q1 --&gt;|No、外部公開が必要| Q2{クラウドロード&lt;br/&gt;バランサーを使えるか?}
+                    Q2 --&gt;|Yes| LB["LoadBalancer&lt;br/&gt;(クラウドLBを自動プロビジョニング)"]
+                    Q2 --&gt;|No、学習・オンプレミス| NP["NodePort&lt;br/&gt;(全ノードの固定ポートで公開)"]
+
+                    classDef highlightFill fill:#1a3a5c,stroke:#4a90d9,color:#ffffff
+                    class CIP,LB highlightFill</pre
+                >
+                <p>
+                    原著11.4.2節の<strong>ヘッドレスサービス</strong>（<code>clusterIP: None</code
+                    >）は、仮想IPを持たずDNSがPod個々のIPを直接返す特殊なServiceで、StatefulSet（5.3節）と組み合わせて各Podに個別のDNS名を割り当てる際に使われます。
+                </p>
+                <p>
+                    原著11.5節「Configuring services to route traffic to nearby
+                    endpoints」は、大規模クラスタでのレイテンシとコスト最適化に関わる実践的なトピックです。<code
+                        >internalTrafficPolicy: Local</code
+                    >やTopology Aware
+                    Hintsを使うと、可能な限り同一ノード・同一ゾーン内のPodへトラフィックを優先的にルーティングし、ノード間・ゾーン間の通信コストを削減できます。
+                </p>
+                <div class="callout-practice">
+                    <div class="icon">&#10003;</div>
+                    <div class="body">
+                        <div class="label">ベストプラクティス</div>
+                        <ul>
+                            <li>
+                                Readiness
+                                Probe（2.2節）を必ず設定し、起動途中や過負荷のPodがServiceのエンドポイントに含まれないようにする。
+                            </li>
+                            <li>
+                                マルチAZ構成のクラスタでは、Topology Aware Routing（旧称Topology
+                                Aware
+                                Hints）を有効化し、ゾーンをまたぐ不要なトラフィックとコストを削減する。
+                            </li>
+                            <li>
+                                <code>externalTrafficPolicy: Local</code
+                                >を使うとクライアントIPを保持できる反面、ノードによって負荷が偏る可能性があるため、ヘルスチェックの設計とセットで検討する。
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <h3 id="4-2">4.2 Ingress（原著第12章）</h3>
+                <p>
+                    <strong>Ingress</strong
+                    >は、複数のServiceへのHTTP/HTTPSルーティングを1つのエントリーポイントに集約するAPIです。LoadBalancer
+                    Serviceを個々のマイクロサービスごとに用意するとクラウドの課金・IP管理コストが増大するため、Ingressで一元化するのが一般的です。
+                </p>
+                <pre class="mermaid">
+                flowchart TB
+                    CLIENT["クライアント"] --&gt; LB["クラウドロードバランサー"]
+                    LB --&gt; ING_CTRL["Ingressコントローラ&lt;br/&gt;(リバースプロキシ)"]
+                    ING_CTRL --&gt;|"/api/*"| SVC_A["Service: api"]
+                    ING_CTRL --&gt;|"/web/*"| SVC_B["Service: web"]
+                    ING_CTRL --&gt;|"api.example.com"| SVC_A
+                    ING_CTRL --&gt;|"www.example.com"| SVC_B
+
+                    classDef highlightFill fill:#1a3a5c,stroke:#4a90d9,color:#ffffff
+                    class ING_CTRL highlightFill</pre
+                >
+                <p>
+                    重要なのは、原著12.1.2節が明記する通り、<strong>Ingressオブジェクトそのものはルーティングを実行しません</strong>。実際にトラフィックを処理するのは別途デプロイする<strong>Ingressコントローラ</strong>（NGINX
+                    Ingress
+                    Controller、Traefik、HAProxy等）です。Ingressオブジェクトはコントローラに対する「設定の宣言」に過ぎません。
+                </p>
+                <p>
+                    2026年時点で特に重要なのは、コミュニティ版<strong
+                        >Ingress-NGINX Controller</strong
+                    >が終了に向かっているという点です。詳細は<a href="#6-4">6.4節</a
+                    >で扱いますが、原著12章の内容自体は今も有効な一方、これから新規にIngressコントローラを選定する場合はGateway
+                    API（4.3節）への移行を前提に計画することが強く推奨されています。
+                </p>
+                <div class="callout-practice">
+                    <div class="icon">&#10003;</div>
+                    <div class="body">
+                        <div class="label">ベストプラクティス（原著12.4節）</div>
+                        <ul>
+                            <li>
+                                Ingressアノテーションはコントローラ実装ごとに非互換であるため（例:
+                                NGINX用のアノテーションはTraefikでは動かない）、複数コントローラの並行運用や移行を想定する場合は特に注意する。
+                            </li>
+                            <li>
+                                TLS証明書の自動更新にはcert-managerを併用し、証明書の手動更新運用を排除する。
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <h3 id="4-3">4.3 Gateway API（原著第13章）</h3>
+                <p>
+                    <strong>Gateway API</strong
+                    >は、Ingressの後継として設計された、より表現力の高いL4/L7トラフィックルーティングAPI群です。原著第2版で新規に追加された第13章がまるまる1章を割いて解説しているのは、Gateway
+                    APIが2026年時点のKubernetesネットワーキングにおける事実上の標準になりつつあることの裏返しです。
+                </p>
+                <pre class="mermaid">
+                flowchart TB
+                    subgraph ROLES["ロール別のリソース分離(原著13.1節)"]
+                        direction TB
+                        GC["GatewayClass&lt;br/&gt;(インフラ提供者が定義&lt;br/&gt;実装の種類を指定)"]
+                        GW["Gateway&lt;br/&gt;(クラスタ運用者が作成&lt;br/&gt;リスナー・証明書を設定)"]
+                        HR["HTTPRoute / GRPCRoute /&lt;br/&gt;TCPRoute / UDPRoute&lt;br/&gt;(アプリチームが作成&lt;br/&gt;ルーティングルールを定義)"]
+                        GC --&gt; GW
+                        GW --&gt; HR
+                    end
+
+                    classDef highlightFill fill:#1a3a5c,stroke:#4a90d9,color:#ffffff
+                    class GC,GW,HR highlightFill</pre
+                >
+                <p>
+                    Ingressとの決定的な違いは、この<strong>ロールベースの権限分離</strong>です。Ingressでは1つのオブジェクトに全ての設定が混在するため、アプリチームがインフラ設定まで触れてしまう、あるいは逆にインフラチームがボトルネックになるという課題がありました。Gateway
+                    APIはGatewayClass（インフラ提供者）・Gateway（クラスタ運用者）・Route（HTTPRouteなど、アプリチーム）の3層に権限を分割します。
+                </p>
+                <p><strong>IngressとGateway APIの比較</strong></p>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>観点</th>
+                                <th>Ingress</th>
+                                <th>Gateway API</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>設定の分離</td>
+                                <td>1オブジェクトに集約</td>
+                                <td>GatewayClass/Gateway/Routeに分離</td>
+                            </tr>
+                            <tr class="even">
+                                <td>プロトコル対応</td>
+                                <td>実質HTTP/HTTPSのみ</td>
+                                <td>HTTP, gRPC, TCP, UDP, TLS(pass-through)に対応</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>ベンダー拡張の方法</td>
+                                <td>非互換なアノテーション</td>
+                                <td>標準化されたフィルタ・ポリシーアタッチメント</td>
+                            </tr>
+                            <tr class="even">
+                                <td>トラフィック分割</td>
+                                <td>コントローラ依存の独自拡張</td>
+                                <td><code>HTTPRoute</code>のweight指定で標準的にサポート</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>2026年時点の位置づけ</td>
+                                <td>機能凍結（feature-frozen）</td>
+                                <td>積極的に開発が続く標準API</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <pre class="mermaid">
+                flowchart LR
+                    subgraph CANARY["トラフィック分割の例(原著13.3.2節)"]
+                        direction LR
+                        ROUTE["HTTPRoute"]
+                        V1["Service: app-v1&lt;br/&gt;weight: 90"]
+                        V2["Service: app-v2&lt;br/&gt;weight: 10"]
+                        ROUTE --&gt;|90%| V1
+                        ROUTE --&gt;|10%| V2
+                    end
+
+                    classDef highlightFill fill:#1a3a5c,stroke:#4a90d9,color:#ffffff
+                    class ROUTE highlightFill</pre
+                >
+                <p>
+                    原著13.7節「From ingress gateways to service mesh」は、Gateway
+                    APIが単なるIngress後継にとどまらず、サービスメッシュ（東西トラフィック）まで統一的にモデル化しようとする方向性（GAMMA
+                    Initiative）に触れています。
+                </p>
+                <div class="callout-practice">
+                    <div class="icon">&#10003;</div>
+                    <div class="body">
+                        <div class="label">ベストプラクティス</div>
+                        <ul>
+                            <li>
+                                新規にKubernetesクラスタでHTTPルーティングを構築する場合は、原著13.1.3節が例示するIstioに限らず、Envoy
+                                Gateway・Cilium・クラウドマネージドのGateway API実装（GKE
+                                Gateway、AWS Gateway API
+                                Controllerなど）の中から要件に合うものを選び、最初からGateway
+                                APIで構築する。
+                            </li>
+                            <li>
+                                既存のIngressからの移行は、<code>ingress2gateway</code>のような変換ツールで叩き台を生成した上で、アノテーションに依存していた挙動を手動で<code>HTTPRoute</code>のフィルタ機能に置き換える。
+                            </li>
+                            <li>
+                                GatewayとHTTPRouteをNamespaceで分離する運用（原著13.6節）を活用し、インフラチームがGatewayのTLS設定を管理しつつ、アプリチームは自Namespace内のHTTPRouteだけを変更できるようにする。Namespace分離は書き込み権限の分離とセットで設計する。すなわち、<code>gateways</code>リソースへの<code>create</code>/<code>update</code>/<code>patch</code>/<code>delete</code>はインフラチーム向けのClusterRole（またはGateway用Namespaceに限定したRole）にのみ与え、アプリチームには自Namespaceの<code>httproutes</code>に対する権限だけを与えるRole/RoleBindingを各アプリNamespaceに作成する。さらにGateway側の<code>listeners[].allowedRoutes</code>（<code
+                                    >namespaces.from: Selector</code
+                                >＋ラベルセレクタなど）で接続を許可するNamespaceを明示的に絞り込み、クロスNamespace参照（別NamespaceのSecretやBackendを指すケース）は、対象のKind・Name・送信元Namespaceを限定した<code>ReferenceGrant</code>を参照先Namespaceに置いた場合にのみ許可する。
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <p>
+                    <strong>出典：</strong> Kubernetes SIG Network公式アナウンス「Ingress-NGINX
+                    Controller」終了に関するGoogle Open Source Blog (<a
+                        href="https://opensource.googleblog.com/2026/02/the-end-of-an-era-transitioning-away-from-ingress-nginx.html"
+                        >https://opensource.googleblog.com/2026/02/the-end-of-an-era-transitioning-away-from-ingress-nginx.html</a
+                    >)、Gateway API公式リポジトリ (<a
+                        href="https://github.com/kubernetes-sigs/gateway-api"
+                        >https://github.com/kubernetes-sigs/gateway-api</a
+                    >)
+                </p>
+                <hr />
+                <h2 id="part5">
+                    第5部: 大規模運用のためのアプリケーション管理（原著Part 5: 第14〜18章）
+                </h2>
+                <h3 id="5-1">5.1 ReplicaSet（原著第14章）</h3>
+                <p>
+                    <strong>ReplicaSet</strong
+                    >は、指定した数のPodレプリカが常に稼働し続けることを保証するコントローラです。原著14.3.1節が説明する<strong
+                        >reconciliation control loop（調整ループ）</strong
+                    >は、Kubernetes全体を貫く最重要概念の1つです。
+                </p>
+                <pre class="mermaid">
+                flowchart LR
+                    OBSERVE["観測&lt;br/&gt;(現在のPod数を確認)"] --&gt; DIFF{"望ましい状態(replicas)と&lt;br/&gt;差分があるか?"}
+                    DIFF --&gt;|"実際 &lt; 望ましい"| CREATE["不足分のPodを作成"]
+                    DIFF --&gt;|"実際 &gt; 望ましい"| DELETE["超過分のPodを削除"]
+                    DIFF --&gt;|一致| WAIT["待機"]
+                    CREATE --&gt; OBSERVE
+                    DELETE --&gt; OBSERVE
+                    WAIT --&gt; OBSERVE
+
+                    classDef highlightFill fill:#1a3a5c,stroke:#4a90d9,color:#ffffff
+                    class OBSERVE highlightFill</pre
+                >
+                <p>
+                    このループは常時（イベント駆動 +
+                    定期的な再同期）動き続けており、誰かが手動でPodを削除しても、ReplicaSetが即座に代わりのPodを作成します。原著14.1.3節「Understanding
+                    pod
+                    ownership」では、<code>ownerReferences</code>フィールドによってPodがどのReplicaSetに所属するかが管理されている点を解説しています。
+                </p>
+                <div class="callout-practice">
+                    <div class="icon">&#10003;</div>
+                    <div class="body">
+                        <div class="label">ベストプラクティス</div>
+                        <ul>
+                            <li>
+                                通常、ReplicaSetを直接作成することは稀で、後述のDeploymentが内部的にReplicaSetを管理する。ReplicaSetを直接操作するのは、ローリングアップデートの仕組みを理解する学習目的か、非常に特殊な運用ニーズに限られる。
+                            </li>
+                            <li>
+                                <code>kubectl delete replicaset --cascade=orphan</code
+                                >を使えば、ReplicaSetだけを削除してPodを残すことができる（原著14.4.2節）。緊急時の切り離し手段として覚えておく。
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <h3 id="5-2">5.2 Deployment（原著第15章）</h3>
+                <p>
+                    <strong>Deployment</strong
+                    >はReplicaSetをさらにラップし、宣言的なローリングアップデート・ロールバックを可能にするコントローラです。実務でステートレスアプリケーションをデプロイする際、最も頻繁に使うオブジェクトです。
+                </p>
+                <pre class="mermaid">
+                flowchart TB
+                    DEPLOY["Deployment"] --&gt; RS_OLD["ReplicaSet(旧バージョン)&lt;br/&gt;replicas: 0"]
+                    DEPLOY --&gt; RS_NEW["ReplicaSet(新バージョン)&lt;br/&gt;replicas: 3"]
+                    RS_NEW --&gt; P1["Pod v2"]
+                    RS_NEW --&gt; P2["Pod v2"]
+                    RS_NEW --&gt; P3["Pod v2"]
+
+                    classDef highlightFill fill:#1a3a5c,stroke:#4a90d9,color:#ffffff
+                    class DEPLOY,RS_NEW highlightFill</pre
+                >
+                <p><strong>更新戦略（原著15.2節）</strong></p>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>戦略</th>
+                                <th>挙動</th>
+                                <th>ダウンタイム</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>Recreate</td>
+                                <td>旧Podを全て削除してから新Podを作成</td>
+                                <td>あり</td>
+                            </tr>
+                            <tr class="even">
+                                <td>RollingUpdate（既定）</td>
+                                <td>新旧Podを段階的に入れ替える</td>
+                                <td>なし（正しく設定すれば）</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <pre class="mermaid">
+                sequenceDiagram
+                    participant D as Deployment
+                    participant RSOLD as ReplicaSet(v1)
+                    participant RSNEW as ReplicaSet(v2)
+
+                    Note over D: RollingUpdate開始&lt;br/&gt;maxSurge/maxUnavailableに従う&lt;br/&gt;(以下は maxUnavailable: 0 の場合)
+                    D-&gt;&gt;RSNEW: replicas +1
+                    RSNEW--&gt;&gt;D: 新Podがreadyになるまで待機&lt;br/&gt;(maxUnavailable: 0 のため&lt;br/&gt;先に旧を縮小できない)
+                    D-&gt;&gt;RSOLD: replicas -1
+                    D-&gt;&gt;RSNEW: replicas +1
+                    RSNEW--&gt;&gt;D: readyを確認
+                    D-&gt;&gt;RSOLD: replicas -1
+                    Note over D: 全Podの入れ替えが完了するまで繰り返す</pre
+                >
+                <p>
+                    上図は<code>maxUnavailable: 0</code
+                    >（可用性最優先）の場合の順序です。<code>maxUnavailable</code>が0より大きい場合は、新Podのreadyを待たずに先に旧ReplicaSetを縮小できます。つまり「増やしてから減らす」か「減らしてから増やす」かは<code>maxSurge</code>と<code>maxUnavailable</code>の設定で変わります（<code
+                        >maxSurge: 0</code
+                    >の場合は縮小が先行します）。
+                </p>
+                <p><strong>その他のデプロイ戦略（原著15.3節）</strong></p>
+                <p>
+                    原著15.3節は、Deploymentのビルトイン機能を超えた高度なデプロイパターンを紹介しています。これらはDeployment単体では実現できず、Service重みづけやサービスメッシュ、あるいはArgo
+                    RolloutsのようなCRDベースのツールと組み合わせて実現します。
+                </p>
+                <pre class="mermaid">
+                flowchart TB
+                    subgraph STRATS["デプロイ戦略の比較"]
+                        direction TB
+                        CANARY["カナリアリリース&lt;br/&gt;一部のトラフィックだけ&lt;br/&gt;新バージョンへ流す"]
+                        AB["A/Bテスト&lt;br/&gt;ユーザー属性に基づいて&lt;br/&gt;バージョンを振り分ける"]
+                        BG["Blue/Green&lt;br/&gt;新旧環境を並行稼働させ&lt;br/&gt;一斉に切り替える"]
+                        SHADOW["トラフィックシャドウイング&lt;br/&gt;本番トラフィックを複製して&lt;br/&gt;新バージョンへも送るが&lt;br/&gt;応答は使わない"]
+                    end
+
+                    classDef highlightFill fill:#1a3a5c,stroke:#4a90d9,color:#ffffff
+                    class CANARY highlightFill</pre
+                >
+                <div class="callout-practice">
+                    <div class="icon">&#10003;</div>
+                    <div class="body">
+                        <div class="label">ベストプラクティス</div>
+                        <ul>
+                            <li>
+                                <code>maxUnavailable</code
+                                >と<code>maxSurge</code>は、可用性重視なら<code
+                                    >maxUnavailable: 0</code
+                                >、リソース制約が厳しいなら<code>maxSurge: 0</code
+                                >のように、クラスタのリソース余裕とSLAに応じて調整する。
+                            </li>
+                            <li>
+                                Readiness
+                                Probeが正しく設定されていないと、ローリングアップデート中に「まだ準備できていない新Pod」にトラフィックが流れ、実質的なダウンタイムを引き起こす。Deploymentの安全なローリングアップデートはReadiness
+                                Probeとセットで初めて成立する。
+                            </li>
+                            <li>
+                                <code>kubectl rollout undo</code
+                                >で即座にロールバックできるよう、<code>revisionHistoryLimit</code>で保持するReplicaSet履歴数を意図的に設定しておく。
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <h3 id="5-3">5.3 StatefulSet（原著第16章）</h3>
+                <p>
+                    Deploymentが管理するPodは互換性があり順不同（interchangeable）であるのに対し、<strong>StatefulSet</strong>はデータベースのようにPodごとに固有のアイデンティティ（安定したネットワーク識別子・専用の永続ストレージ）が必要なワークロード向けのコントローラです。
+                </p>
+                <pre class="mermaid">
+                flowchart TB
+                    SS["StatefulSet: mongodb"]
+                    HS["ヘッドレスService"]
+                    subgraph PODS["順序付きPod"]
+                        direction LR
+                        P0["mongodb-0&lt;br/&gt;PVC: data-mongodb-0"]
+                        P1["mongodb-1&lt;br/&gt;PVC: data-mongodb-1"]
+                        P2["mongodb-2&lt;br/&gt;PVC: data-mongodb-2"]
+                    end
+                    SS --&gt; HS
+                    HS --&gt; P0
+                    HS --&gt; P1
+                    HS --&gt; P2
+                    P0 -.-&gt;|"mongodb-0.mongodb&lt;br/&gt;固定DNS名"| P1
+
+                    classDef highlightFill fill:#1a3a5c,stroke:#4a90d9,color:#ffffff
+                    class SS,HS highlightFill</pre
+                >
+                <p><strong>StatefulSetの3つの特性（原著16.1.1節）</strong></p>
+                <ol>
+                    <li>
+                        <strong>安定したネットワークID</strong>:
+                        各Podは<code>&lt;statefulset名&gt;-&lt;序数&gt;</code>という固定名を持ち、ヘッドレスServiceを通じて<code>&lt;pod名&gt;.&lt;service名&gt;</code>という固定DNS名でアクセスできる。
+                    </li>
+                    <li>
+                        <strong>安定した永続ストレージ</strong>:
+                        各Podは専用のPVCを持ち、Podが再作成されても同じPVC（＝同じデータ）に再アタッチされる。
+                    </li>
+                    <li>
+                        <strong>順序保証</strong>:
+                        既定では<code>OrderedReady</code>ポリシーにより、Pod-0が起動・Readyになってから
+                        Pod-1が起動する（スケールアップ・ダウンとも順序を守る）。
+                    </li>
+                </ol>
+                <pre class="mermaid">
+                flowchart LR
+                    A["mongodb-0起動"] --&gt;|Ready後| B["mongodb-1起動"]
+                    B --&gt;|Ready後| C["mongodb-2起動"]
+
+                    classDef highlightFill fill:#1a3a5c,stroke:#4a90d9,color:#ffffff
+                    class A highlightFill</pre
+                >
+                <p>
+                    原著16.4節では、MongoDB Community Operatorを例に<strong
+                        >Kubernetes Operator</strong
+                    >パターンを紹介しています。OperatorはStatefulSetをさらに一段抽象化し、「レプリカセットの初期化」「フェイルオーバー」「バックアップ」のようなアプリケーション固有の運用知識をコントローラとしてコード化したものです。
+                </p>
+                <div class="callout-practice">
+                    <div class="icon">&#10003;</div>
+                    <div class="body">
+                        <div class="label">ベストプラクティス</div>
+                        <ul>
+                            <li>
+                                本番のステートフルワークロード（データベース等）は、可能な限り実績のあるOperator（PostgreSQLのCloudNativePG、MongoDBのCommunity/Enterprise
+                                Operatorなど）を使い、StatefulSetを手で運用する範囲を最小化する。
+                            </li>
+                            <li>
+                                PVC保持ポリシー（原著16.2.4節、<code>persistentVolumeClaimRetentionPolicy</code>）を明示的に設定し、StatefulSet削除時にPVCを残すか削除するかを意図した挙動にする。
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <h3 id="5-4">5.4 DaemonSet（原著第17章）</h3>
+                <p>
+                    <strong>DaemonSet</strong
+                    >は、クラスタ内の（条件に合う）全ノードにちょうど1つのPodを配置するコントローラです。ログ収集エージェント、ノードモニタリングエージェント、CNIプラグインなど、ノード単位で常駐すべきインフラコンポーネントに使われます。
+                </p>
+                <pre class="mermaid">
+                flowchart TB
+                    DS["DaemonSet: fluentd"]
+                    subgraph N1["ノード1"]
+                        DP1["fluentd Pod"]
+                    end
+                    subgraph N2["ノード2"]
+                        DP2["fluentd Pod"]
+                    end
+                    subgraph N3["ノード3(新規追加)"]
+                        DP3["fluentd Pod&lt;br/&gt;(自動的に配置される)"]
+                    end
+                    DS --&gt; DP1
+                    DS --&gt; DP2
+                    DS -.-&gt;|"ノード追加時に自動配置"| DP3
+
+                    classDef highlightFill fill:#1a3a5c,stroke:#4a90d9,color:#ffffff
+                    class DS highlightFill</pre
+                >
+                <p>
+                    原著17.2節では、DaemonSetのPodがしばしば必要とする特別な権限（ホストネットワークの利用、ノードファイルシステムへのアクセス、OSカーネルへのアクセス）を扱っています。これらは通常のアプリケーションPodには不要かつ危険な権限であるため、DaemonSet専用の設計判断として明確に区別することが重要です。
+                </p>
+                <div class="callout-practice">
+                    <div class="icon">&#10003;</div>
+                    <div class="body">
+                        <div class="label">ベストプラクティス</div>
+                        <ul>
+                            <li>
+                                DaemonSetは<code>nodeSelector</code>や<code>tolerations</code>と組み合わせ、コントロールプレーンノードを含む全ノードに配置すべきか、特定ラベルを持つノードに限定すべきかを明示的に設計する。
+                            </li>
+                            <li>
+                                ノードエージェントに<code>hostNetwork: true</code
+                                >や特権コンテナ（<code>privileged: true</code
+                                >）が必要な場合は、その理由をコメントで明記し、Pod Security
+                                Admissionのポリシーで許可範囲を最小化する。
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <h3 id="5-5">5.5 JobとCronJob（原著第18章）</h3>
+                <p>
+                    <strong>Job</strong
+                    >は「完了」という概念を持つワークロード（バッチ処理、データマイグレーションなど）向けのコントローラです。Deployment/ReplicaSetが「常に一定数のPodを稼働させ続ける」のに対し、Jobは「指定回数の正常終了」を目標にします。
+                </p>
+                <pre class="mermaid">
+                flowchart TB
+                    JOB["Job: data-migration&lt;br/&gt;completions: 5&lt;br/&gt;parallelism: 2"]
+                    subgraph RUN["実行中"]
+                        direction LR
+                        P1["Pod 1&lt;br/&gt;実行中"]
+                        P2["Pod 2&lt;br/&gt;実行中"]
+                    end
+                    JOB --&gt; RUN
+                    RUN --&gt;|"正常終了(Succeeded)&lt;br/&gt;×5回に達するまで"| DONE["Job完了"]
+
+                    classDef highlightFill fill:#1a3a5c,stroke:#4a90d9,color:#ffffff
+                    class DONE highlightFill</pre
+                >
+                <p>
+                    <strong>CronJob</strong>はJobをスケジュール実行するためのラッパーで、Unix
+                    cron形式のスケジュール文字列（例:
+                    <code>0 2 * * *</code>＝毎日2時）でJobを定期生成します。
+                </p>
+                <pre class="mermaid">
+                flowchart LR
+                    CJ["CronJob&lt;br/&gt;schedule: '0 2 * * *'"] --&gt;|毎日2:00に生成| J1["Job (2026-08-27実行分)"]
+                    CJ --&gt;|翌日2:00に生成| J2["Job (2026-08-28実行分)"]
+                    J1 --&gt; P1["Pod"]
+                    J2 --&gt; P2["Pod"]
+
+                    classDef highlightFill fill:#1a3a5c,stroke:#4a90d9,color:#ffffff
+                    class CJ highlightFill</pre
+                >
+                <p>
+                    原著18.2.5〜18.2.6節では、<code>startingDeadlineSeconds</code>（コントロールプレーンの一時停止などでスケジュールを逃した場合の許容遅延）と<code>concurrencyPolicy</code>（前回のJobが終わっていない場合の挙動:
+                    <code>Allow</code
+                    >/<code>Forbid</code>/<code>Replace</code>）という、実運用で必ず遭遇する設定を扱っています。
+                </p>
+                <div class="callout-practice">
+                    <div class="icon">&#10003;</div>
+                    <div class="body">
+                        <div class="label">ベストプラクティス</div>
+                        <ul>
+                            <li>
+                                冪等でないバッチ処理（重複実行が許されない処理）には<code
+                                    >concurrencyPolicy: Forbid</code
+                                >を設定し、前回のJobが完了する前に新しいJobが起動しないようにする。ただし<code>Forbid</code>はスケジュール時点の同時実行を抑止するだけで、重複実行を根本的に防ぐものではない（Jobコントローラの再試行やPodの再スケジュールにより、同じ処理が複数回走ることはある）。また実行中のJobがあるとその回のスケジュールはスキップされるため、実行の欠落も起こりうる。重複が許容できない処理は、処理自体を冪等に設計するか、外部ストア上の重複排除キー（実行IDによる排他ロックや一意制約）で二重実行を弾く仕組みを実装する。
+                            </li>
+                            <li>
+                                <code>activeDeadlineSeconds</code
+                                >でJobの最大実行時間を設定し、ハングしたバッチ処理がリソースを専有し続けるのを防ぐ。
+                            </li>
+                            <li>
+                                <code>ttlSecondsAfterFinished</code
+                                >（原著18.2.4節）を設定し、完了済みJob/Podがクラスタに溜まり続けてAPIサーバーやetcdの負荷にならないようにする。
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <hr />
+                <h2 id="part6">第6部: 2026年8月時点の最新動向（原著範囲外・独自追加）</h2>
+                <p>
+                    原著『Kubernetes in Action, Second
+                    Edition』は2026年3月刊行ですが、Kubernetes自体のリリースサイクルは3〜4ヶ月に1回と非常に速く、書籍が扱いきれない最新動向が常に存在します。本部では、2026年8月29日時点でWeb検索により確認できた最新のエコシステム動向を、著名な国際的発信元を優先して整理します。
+                </p>
+                <h3 id="6-1">6.1 Kubernetes 1.37とリリースサイクル</h3>
+                <p>
+                    Kubernetesは年3回（おおむね4ヶ月おき）のマイナーバージョンリリースサイクルを採用しています。2026年8月26日、最新版の<strong
+                        >Kubernetes v1.37「Garhwal」</strong
+                    >が正式リリースされました。これは2026年で2回目のマイナーリリース（1回目はv1.36、4月リリース）にあたります。
+                </p>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>バージョン</th>
+                                <th>状態(2026/8/29時点)</th>
+                                <th>リリース日</th>
+                                <th>サポート終了予定(EOL)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>v1.37 (Garhwal)</td>
+                                <td>最新・サポート中</td>
+                                <td>2026-08-26</td>
+                                <td>2027-10-28</td>
+                            </tr>
+                            <tr class="even">
+                                <td>v1.36</td>
+                                <td>サポート中</td>
+                                <td>2026年4月</td>
+                                <td>2027-06-28</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>v1.35</td>
+                                <td>サポート中</td>
+                                <td>2025年後半</td>
+                                <td>2027-02-28</td>
+                            </tr>
+                            <tr class="even">
+                                <td>v1.34 (Of Wind &amp; Will)</td>
+                                <td>メンテナンスモード（標準サポート終了）</td>
+                                <td>2025-08-27</td>
+                                <td>2026-10-27</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>v1.33</td>
+                                <td>サポート終了（EOL済み）</td>
+                                <td>-</td>
+                                <td>2026-06-28</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>
+                    <strong>出典：</strong> Kubernetes公式リリースページ (<a
+                        href="https://kubernetes.io/releases/"
+                        >https://kubernetes.io/releases/</a
+                    >)、Kubernetes v1.37公式リリース情報 (<a
+                        href="https://kubernetes.io/releases/1.37/"
+                        >https://kubernetes.io/releases/1.37/</a
+                    >)、Network World「Kubernetes 1.37 advances workload-aware scheduling and
+                    cluster networking」(<a
+                        href="https://www.networkworld.com/article/4214824/kubernetes-1-37-advances-workload-aware-scheduling-and-cluster-networking.html"
+                        >https://www.networkworld.com/article/4214824/kubernetes-1-37-advances-workload-aware-scheduling-and-cluster-networking.html</a
+                    >)
+                </p>
+                <pre class="mermaid">
+                flowchart LR
+                    subgraph CYCLE["Kubernetesのリリースサイクル(年3回)"]
+                        direction LR
+                        A["拡張機能&lt;br/&gt;フリーズ"] --&gt; B["コード/テスト&lt;br/&gt;フリーズ"]
+                        B --&gt; C["ドキュメント&lt;br/&gt;フリーズ"]
+                        C --&gt; D["GAリリース"]
+                        D --&gt;|約4ヶ月後| A
+                    end
+
+                    classDef highlightFill fill:#1a3a5c,stroke:#4a90d9,color:#ffffff
+                    class D highlightFill</pre
+                >
+                <p>
+                    Network World誌の報道によれば、v1.37のリリースリードを務めたDipesh
+                    Rawat氏は、開発・テスト期間を確保するため、リリース間の準備期間を短縮する運用変更を行ったと説明しています。v1.37の主な特徴は、kube-proxyの<strong>IPVSモードからnftablesモードへの移行</strong>の継続、そしてワークロードスケジューリングの強化です。この「移行」は2つの独立した時系列に分けて理解する必要があります。<strong>nftablesモードの導入はv1.29</strong>(アルファ機能として登場、v1.31でベータ、v1.33でGA)であり、<strong>IPVSモードの非推奨化(deprecation)の開始はv1.35</strong>です。つまり新モードの提供開始と旧モードの非推奨化は同時ではなく、v1.35以降は「nftablesが推奨される移行先、IPVSは非推奨」という段階に入っています。なお、v1.37時点でもkube-proxyの<strong>既定モードはiptables</strong>のままであり、既定をnftablesへ切り替えることは将来の予定です。nftablesモードを使う場合は<code>--proxy-mode=nftables</code>（またはKubeProxyConfigurationの<code
+                        >mode: nftables</code
+                    >）を明示的に指定する必要があります。
+                </p>
+                <div class="callout-practice">
+                    <div class="icon">&#10003;</div>
+                    <div class="body">
+                        <div class="label">ベストプラクティス</div>
+                        <ul>
+                            <li>
+                                公式・大手クラウドベンダーは「最新から1〜2バージョン前（N-1〜N-2）」の追従を推奨している。最新バージョンへの飛びつきよりも、エコシステム（CNI、CSI、サービスメッシュ等）の対応状況を見極めてから段階的にアップグレードする。
+                            </li>
+                            <li>
+                                <code>kubectl version</code
+                                >と各マネージドサービス（GKE/EKS/AKS）のサポートバージョン表を定期的に照合し、サポート終了（EOL）前にアップグレード計画を立てる。
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <h3 id="6-2">6.2 Dynamic Resource Allocation（DRA）とAIワークロード</h3>
+                <p>
+                    <strong>Dynamic Resource Allocation（DRA）</strong
+                    >は、GPU・FPGA・NICなどの特殊なハードウェアデバイスを<code>ResourceClaim</code>という新しいAPIオブジェクトを通じて、柔軟かつ標準化された方法でPodに割り当てる仕組みです。原著18章までのバッチ処理の議論はCPU/メモリを前提としていますが、2026年のKubernetesワークロードの主戦場はAI/MLトレーニング・推論基盤へと大きくシフトしています。
+                </p>
+                <pre class="mermaid">
+                flowchart LR
+                    subgraph OLD["従来のデバイス割り当て(Device Plugin)"]
+                        direction LR
+                        POD_OLD["Pod"] --&gt;|"resources.limits:&lt;br/&gt;nvidia.com/gpu: 1"| DEV_OLD["GPUをそのまま&lt;br/&gt;丸ごと1枚割り当て"]
+                    end
+                    subgraph NEW["DRAによる割り当て"]
+                        direction LR
+                        RC["ResourceClaim&lt;br/&gt;(GPUの種類・共有方法を&lt;br/&gt;柔軟に指定)"]
+                        POD_NEW["Pod"] --&gt; RC
+                        RC --&gt;|"Just-In-Timeで&lt;br/&gt;最適なデバイスを選択"| DEV_NEW["GPU / FPGA / NIC"]
+                    end
+
+                    classDef highlightFill fill:#1a3a5c,stroke:#4a90d9,color:#ffffff
+                    class RC highlightFill</pre
+                >
+                <p>
+                    DRAの成熟度は、バージョンごとに対象範囲が異なる点に注意が必要です。Kubernetes
+                    <strong
+                        >v1.34の「GA（正式版）」は、DRAのコアAPIである<code
+                            >resource.k8s.io/v1</code
+                        ></strong
+                    >（<code>ResourceClaim</code> / <code>ResourceClaimTemplate</code> /
+                    <code>DeviceClass</code> /
+                    <code>ResourceSlice</code
+                    >）が安定版となり既定で有効化されたことを指します。その上で、<strong>DRAという機能セット全体がStable（安定版）として確定したのはv1.35</strong>であり、ここでDRAのフィーチャーゲートが既定で有効かつ無効化不可（ロック）となりました。The
+                    New
+                    Stack誌は「v1.34の最も目立つ変化の1つがDRAのGA化」であると報じ、GPUスケジューリングの柔軟性向上と引き換えに、新たな運用上の「死角（blind
+                    spots）」が生じる可能性にも注意を促しています。
+                </p>
+                <p>
+                    コアAPIの安定化とは別に、DRAの<strong>周辺機能の成熟度は機能ごとに異なります</strong>。v1.37時点では、デバイスレベルのTaint/TolerationはStable（GA）、Derived
+                    AttributesはAlphaという段階にあり、コアが安定版であることをもって周辺機能まで本番利用可能と判断しないでください。
+                </p>
+                <div class="callout-practice">
+                    <div class="icon">&#10003;</div>
+                    <div class="body">
+                        <div class="label">ベストプラクティス</div>
+                        <ul>
+                            <li>
+                                GPU等の高価なリソースをDRAで共有・分割する場合、<code>ResourceClaimTemplate</code>によるPod単位の要求と、クラスタ全体のクォータ管理を組み合わせ、コスト超過を防ぐガードレールを敷く。
+                            </li>
+                            <li>
+                                DRAは比較的新しい機能であるため、本番導入前にステージング環境で十分な負荷試験を行い、ドライバ（vendor提供のDRA
+                                Driver）の対応バージョンを確認する。
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <p>
+                    <strong>出典：</strong> The New Stack「Kubernetes v1.34 Introduces Benefits but
+                    Also New Blind Spots」(<a
+                        href="https://thenewstack.io/kubernetes-v1-34-introduces-benefits-but-also-new-blind-spots/"
+                        >https://thenewstack.io/kubernetes-v1-34-introduces-benefits-but-also-new-blind-spots/</a
+                    >)、Kubernetes v1.34公式リリースブログ (<a
+                        href="https://kubernetes.io/blog/2025/08/27/kubernetes-v1-34-release/"
+                        >https://kubernetes.io/blog/2025/08/27/kubernetes-v1-34-release/</a
+                    >)
+                </p>
+                <h3 id="6-3">6.3 In-Place Pod Resize（無停止リサイズ）</h3>
+                <p>
+                    原著15章までのアプリケーション更新の議論は、基本的に「Podを作り直す」ことを前提としています。しかし2027年に向けて重要なのが、<strong
+                        >In-Place Pod Resize</strong
+                    >（Pod内リソースの無停止変更）機能です。この機能は2023年（Kubernetes
+                    1.27）にアルファとして初登場し、2025年4月のv1.33でベータに、そして2025年12月のv1.35で<strong>GA（安定版）</strong>に到達しました。
+                </p>
+                <pre class="mermaid">
+                flowchart TB
+                    subgraph BEFORE["v1.32以前: リソース変更は原則Pod再作成"]
+                        direction LR
+                        B1["spec.containers[*].resources&lt;br/&gt;変更"] --&gt; B2["Pod再作成"] --&gt; B3["接続切断・&lt;br/&gt;ステート消失"]
+                    end
+                    subgraph AFTER["v1.33以降: コンテナ単位のIn-Place Resize&lt;br/&gt;(ベータで既定有効)・v1.35でGA"]
+                        direction LR
+                        A1["spec.containers[*].resources&lt;br/&gt;変更"] --&gt; A2["kubeletがcgroup設定を&lt;br/&gt;動的に更新"] --&gt; A3["対応するリソースは&lt;br/&gt;Pod再作成なしで反映&lt;br/&gt;(resizePolicy次第で&lt;br/&gt;コンテナ再起動)"]
+                    end
+                    subgraph PODLEVEL["v1.36: Pod-level resources の&lt;br/&gt;インプレース変更 (ベータ・別機能)"]
+                        direction LR
+                        P1["spec.resources&lt;br/&gt;(Pod単位)変更"] --&gt; P2["Pod全体のcgroup上限を&lt;br/&gt;インプレースで更新"]
+                    end
+
+                    classDef highlightFill fill:#1a3a5c,stroke:#4a90d9,color:#ffffff
+                    classDef dangerFill fill:#5c1a1a,stroke:#d94a4a,color:#ffffff
+                    class A2,A3 highlightFill
+                    class P2 highlightFill
+                    class B2,B3 dangerFill</pre
+                >
+                <p>
+                    Kubernetes公式ブログは、この機能が「6年以上の歳月を経てGAに到達した」重要なマイルストーンであると位置づけています。CPU変更は多くの場合コンテナ再起動なしに反映できる一方、メモリ制限の変更は<code>resizePolicy</code>の設定次第でコンテナ再起動を伴う場合がある点に注意が必要です。
+                </p>
+                <div class="callout-practice">
+                    <div class="icon">&#10003;</div>
+                    <div class="body">
+                        <div class="label">ベストプラクティス</div>
+                        <ul>
+                            <li>
+                                ステートフルなワークロード（データベース、長時間実行バッチジョブ）ほどIn-Place
+                                Resizeの恩恵が大きい。VerticalPodAutoscaler（VPA）の<code>InPlaceOrRecreate</code>モードと組み合わせて推奨リソース値を適用する運用を検討する。ただし利用条件はVPAのバージョンで異なり、VPA
+                                1.4では機能ゲートの明示的な有効化とKubernetes 1.33以降が前提、VPA
+                                1.5では当該機能ゲートが既定で有効、VPA
+                                1.6でGAとなった。ただし無停止が保証されるわけではない：モード名のとおり、In-Placeでの更新に失敗した場合はPodのEvictionと再作成にフォールバックするため、StatefulSetや長時間実行ジョブでは再起動・既存コネクションの切断が起こりうる。PodDisruptionBudgetの設定と再起動耐性の確認を前提に適用する。
+                            </li>
+                            <li>
+                                JVMベースのアプリケーションなど、メモリ上限変更が自動的にヒープサイズへ反映されないランタイムでは、In-Place
+                                Resizeだけに頼らずアプリケーション側の設定連携も確認する。
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <p>
+                    <strong>出典：</strong> Kubernetes公式ブログ「Kubernetes v1.35: In-Place Pod
+                    Resize Graduates to Stable」(<a
+                        href="https://kubernetes.io/blog/2025/12/19/kubernetes-v1-35-in-place-pod-resize-ga"
+                        >https://kubernetes.io/blog/2025/12/19/kubernetes-v1-35-in-place-pod-resize-ga</a
+                    >)
+                </p>
+                <h3 id="6-4">6.4 Ingress-NGINX終了とGateway API移行</h3>
+                <p>
+                    原著第12章はIngressを、第13章はGateway
+                    APIを解説していますが、2026年の実務においてこの2つの重要性は大きく逆転しつつあります。Kubernetes
+                    SIG NetworkとSecurity Response Committeeは2025年11月11日、コミュニティ版<strong
+                        >Ingress-NGINX Controller</strong
+                    >（多くのディストリビューションで既定のIngress実装として使われてきたプロジェクト）の<strong>終了（retirement）</strong>を正式にアナウンスしました。ベストエフォートでのメンテナンスは2026年3月31日で終了しています。
+                </p>
+                <pre class="mermaid">
+                flowchart TB
+                    T1["2025年11月11日&lt;br/&gt;SIG Network + Security&lt;br/&gt;Response Committeeが&lt;br/&gt;終了を発表"] --&gt; T2["2026年3月31日&lt;br/&gt;ベストエフォート&lt;br/&gt;メンテナンス終了"]
+                    T2 --&gt; T3["以降: セキュリティパッチ・&lt;br/&gt;バグ修正・新機能提供なし"]
+                    T3 --&gt; T4["既存デプロイは動作継続するが&lt;br/&gt;新規CVEに対して脆弱"]
+
+                    classDef dangerFill fill:#5c1a1a,stroke:#d94a4a,color:#ffffff
+                    class T3,T4 dangerFill</pre
+                >
+                <p>
+                    なお、Kubernetes本体の<strong>Ingress API自体</strong
+                    >（<code>networking.k8s.io/v1</code>）が廃止されたわけではありません。Google
+                    Open Source Blogが明確にしている通り、Ingress
+                    APIは今も利用可能ですが、「feature-frozen（新機能開発の凍結）」状態であり、今後の投資はすべてGateway
+                    APIに向けられています。Amazon EKSの公式ドキュメントも「Gateway
+                    APIまたはサードパーティ製Ingressコントローラへの移行検討」を明示的にユーザーへ呼びかけています。
+                </p>
+                <p>
+                    <strong
+                        >主要Ingressコントローラの対応状況（2026年8月時点の各社ブログ・ドキュメントより）</strong
+                    >
+                </p>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>実装</th>
+                                <th>Gateway API対応</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>Istio</td>
+                                <td>Ambient含め対応済み、GatewayをIstioのIngressとして利用可能</td>
+                            </tr>
+                            <tr class="even">
+                                <td>Envoy Gateway</td>
+                                <td>Gateway APIネイティブ実装</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>Cilium</td>
+                                <td>Gateway API対応済み</td>
+                            </tr>
+                            <tr class="even">
+                                <td>Traefik / Contour / HAProxy</td>
+                                <td>各社対応済み（Kong社ブログ等で確認）</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>
+                                    GKE Gateway / AWS Gateway API Controller / Azure Application
+                                    Gateway for Containers
+                                </td>
+                                <td>各クラウドのマネージドGateway API実装</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="callout-practice">
+                    <div class="icon">&#10003;</div>
+                    <div class="body">
+                        <div class="label">ベストプラクティス</div>
+                        <ul>
+                            <li>
+                                既存クラスタでは次の順に棚卸しする。①
+                                <code>kubectl get ingress -A</code
+                                >でIngressリソースの全体像を把握する。②
+                                <code
+                                    >kubectl get pods -A -l
+                                    app.kubernetes.io/name=ingress-nginx</code
+                                >（必要に応じて<code
+                                    >kubectl get deploy,svc -A -l
+                                    app.kubernetes.io/name=ingress-nginx</code
+                                >）でIngress-NGINXコントローラPodの有無と稼働している名前空間を特定する。③
+                                <code>kubectl get ingressclass</code
+                                >で<code>nginx</code>のIngressClassが定義・既定化されていないかを確認する。④
+                                <code
+                                    >kubectl describe ingress &lt;name&gt; -n
+                                    &lt;namespace&gt;</code
+                                >で個々のIngressの詳細（ホスト、パス、TLS、アノテーション）を確認する。特にNGINX固有アノテーション（<code>nginx.ingress.kubernetes.io/*</code>）に依存した設定は、Gateway
+                                APIのフィルタ機能への置き換えが必要になる。
+                            </li>
+                            <li>
+                                新規クラスタ構築時はIngressを新たに採用せず、最初からGateway API +
+                                実装（Envoy Gateway、Cilium、クラウドマネージド実装等）で構築する。
+                            </li>
+                            <li>
+                                Kubernetesの資格試験のうちCKAのシラバスには2025年2月18日にGateway
+                                APIが出題範囲として追加されている点からも、エンジニアとしての学習優先度が上がっていることがわかる。
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <p>
+                    <strong>出典：</strong> Google Open Source Blog「The End of an Era:
+                    Transitioning Away from Ingress NGINX」(<a
+                        href="https://opensource.googleblog.com/2026/02/the-end-of-an-era-transitioning-away-from-ingress-nginx.html"
+                        >https://opensource.googleblog.com/2026/02/the-end-of-an-era-transitioning-away-from-ingress-nginx.html</a
+                    >)、Amazon EKS公式ドキュメント「Review release notes for Kubernetes
+                    versions」(<a
+                        href="https://docs.aws.amazon.com/eks/latest/userguide/kubernetes-versions-standard.html"
+                        >https://docs.aws.amazon.com/eks/latest/userguide/kubernetes-versions-standard.html</a
+                    >)
+                </p>
+                <h3 id="6-5">6.5 ネイティブサイドカーコンテナ</h3>
+                <p>
+                    2.1節で触れた<strong>ネイティブサイドカーコンテナ</strong>（<code>initContainers</code>に<code
+                        >restartPolicy: Always</code
+                    >を指定するパターン）は、2023年8月のv1.28でアルファ導入されて以降、着実に成熟しています。2025年4月のKubernetes
+                    v1.33で<strong>GA（安定版）</strong>
+                    に到達し、2026年8月時点でサポートされている全てのマイナーバージョン（v1.34〜v1.37）がこの機能を標準搭載しています。
+                </p>
+                <pre class="mermaid">
+                flowchart LR
+                    A["v1.28 (2023/8)&lt;br/&gt;アルファ導入"] --&gt; B["v1.29 (2023/12)&lt;br/&gt;ベータ・既定で有効"] --&gt; C["v1.33 (2025/4)&lt;br/&gt;GA(安定版)"]
+
+                    classDef highlightFill fill:#1a3a5c,stroke:#4a90d9,color:#ffffff
+                    class C highlightFill</pre
+                >
+                <p>
+                    ネイティブサイドカーへの対応状況と推奨デプロイモデルは製品ごとに異なるため、一律に「サービスメッシュはネイティブサイドカー推奨」と捉えないでください。
+                </p>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>製品</th>
+                                <th>ネイティブサイドカー対応</th>
+                                <th>公式ドキュメントに基づく推奨デプロイモデル</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>Istio</td>
+                                <td>
+                                    ネイティブサイドカーはIstio
+                                    1.19でプレリリース版として実証。<code>ENABLE_NATIVE_SIDECARS</code>の既定値は<code>auto</code>で、要件を満たすクラスタでは自動的にネイティブサイドカーが有効になる（<code>true</code>／<code>false</code>は明示的なオーバーライド）。いずれの場合もクラスタ側のSidecarContainers機能ゲートが有効であることが前提
+                                </td>
+                                <td>
+                                    サイドカーモードに加え、Ambientモード（ztunnel +
+                                    waypointによるサイドカーレス構成、1.24でGA）を提供し、要件に応じた選択を案内している。サイドカー一択ではない。なおAmbientモードのバージョン条件はネイティブサイドカーの対応条件とは別物である
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>Linkerd</td>
+                                <td>
+                                    対応。ただしバージョン条件は3つに分かれる。①
+                                    Linkerdがネイティブサイドカーに対応したのは<strong>2.15</strong>以降。②
+                                    前提となるKubernetes側の<code>SidecarContainers</code>機能は<strong>1.29</strong>からデフォルト有効（1.28でアルファ導入）。③
+                                    Linkerd自身の<strong>デフォルトの注入方式</strong>がネイティブサイドカーになるのは<strong>2.20</strong>以降
+                                </td>
+                                <td>
+                                    プロキシを<code>restartPolicy: Always</code
+                                    >のinitコンテナ（ネイティブサイドカー）として注入する構成。2.20より前のバージョンでは通常コンテナとしての注入がデフォルトのため、明示的に有効化する
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>Cilium Service Mesh</td>
+                                <td>サイドカーを前提としないため該当しない</td>
+                                <td>eBPFとノード単位のEnvoyによるサイドカーレスモデル</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>
+                    各製品の対応バージョンとモードは更新が速いため、導入前に必ず公式ドキュメントで最新の記載を確認してください。なお、Fluent
+                    BitやOpenTelemetry
+                    Collectorのようなログ・可観測性エージェントについては、ネイティブサイドカーとして動かすパターンが一般的になっています。
+                </p>
+                <p><strong>従来のサイドカーパターンとの違い</strong></p>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>観点</th>
+                                <th>従来のサイドカー(通常コンテナとして追加)</th>
+                                <th>ネイティブサイドカー(v1.29以降、v1.33でStable)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>起動順序</td>
+                                <td>メインコンテナと同時に起動（保証なし）</td>
+                                <td>メインコンテナより先に起動完了</td>
+                            </tr>
+                            <tr class="even">
+                                <td>終了順序</td>
+                                <td>メインコンテナと同時にSIGTERM</td>
+                                <td>全メインコンテナ終了後にSIGTERM</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>Jobでの挙動</td>
+                                <td>サイドカーが残り続けJobの完了をブロックしうる</td>
+                                <td>メインコンテナ終了で自動的に完了扱い</td>
+                            </tr>
+                            <tr class="even">
+                                <td>ヘルスチェック</td>
+                                <td>通常のコンテナと同様</td>
+                                <td>startup/readiness/livenessすべて対応</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="callout-practice">
+                    <div class="icon">&#10003;</div>
+                    <div class="body">
+                        <div class="label">ベストプラクティス</div>
+                        <ul>
+                            <li>
+                                Kubernetes
+                                1.29以降のクラスタでは、新規に追加するプロキシ・ログ収集系のサイドカーは原則としてネイティブサイドカー（<code
+                                    >initContainers</code
+                                >
+                                + <code>restartPolicy: Always</code>）で実装する。
+                            </li>
+                            <li>
+                                v1.29〜v1.32のクラスタ（ベータ扱い・既に公式サポート外）を使っている場合は、機能自体は使えるがサポート切れのバージョンであるため、優先的にアップグレードを検討する。
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <p>
+                    <strong>出典：</strong> Kubernetes公式ドキュメント「Sidecar Containers」(<a
+                        href="https://kubernetes.io/docs/concepts/workloads/pods/sidecar-containers/"
+                        >https://kubernetes.io/docs/concepts/workloads/pods/sidecar-containers/</a
+                    >)、Kubernetes公式ブログ「Kubernetes v1.28: Introducing native sidecar
+                    containers」(<a
+                        href="https://kubernetes.io/blog/2023/08/25/native-sidecar-containers/"
+                        >https://kubernetes.io/blog/2023/08/25/native-sidecar-containers/</a
+                    >)
+                </p>
+                <h3 id="6-6">6.6 CNCF調査に見るKubernetes導入状況</h3>
+                <p>
+                    CNCF（Cloud Native Computing
+                    Foundation）が2026年1月20日に発表した年次調査（Linux Foundation
+                    Researchが2025年9月に628名のIT専門家を対象に実施）は、Kubernetesの成熟度を裏付ける複数の指標を示しています。
+                </p>
+                <pre class="mermaid">
+                flowchart TB
+                    subgraph STATS["CNCF Annual Cloud Native Survey (2026年1月発表)"]
+                        direction TB
+                        S1["クラウドネイティブ技術の&lt;br/&gt;組織導入率: 98%"]
+                        S2["コンテナ利用者のうち&lt;br/&gt;本番環境でKubernetesを&lt;br/&gt;稼働: 82%(2023年は66%)"]
+                        S3["生成AIモデルをホストする&lt;br/&gt;組織のうちKubernetes上で&lt;br/&gt;推論ワークロードを稼働: 66%"]
+                        S4["AIモデルを毎日&lt;br/&gt;デプロイしている組織:&lt;br/&gt;わずか7%"]
+                    end
+
+                    classDef highlightFill fill:#1a3a5c,stroke:#4a90d9,color:#ffffff
+                    class S2 highlightFill</pre
+                >
+                <p>
+                    CNCF発表資料でLinux Foundation Researchのシニアバイスプレジデント、Hilary
+                    Carter氏は「企業がKubernetesに軸足を置いているのは、それが最新の、AIを含む本番グレードのシステムを大規模にデプロイするための最も効果的で信頼性の高いプラットフォームであると証明されているから」とコメントしています。一方で同調査は、AI活用の実態には温度差があることも示しており、「AIモデルを毎日デプロイしている組織はわずか7%」「半数以上がモデルの訓練自体を行っていない」という数字も報告されています。
+                </p>
+                <div class="callout-practice">
+                    <div class="icon">&#10003;</div>
+                    <div class="body">
+                        <div class="label">ベストプラクティス</div>
+                        <ul>
+                            <li>
+                                Kubernetes導入の意思決定においては、「Kubernetesを使うこと」自体が目的化しないよう、<a
+                                    href="#1-1"
+                                    >1.1節</a
+                                >のフローチャートに立ち返り、自組織のワークロード特性（マイクロサービス数、スケーリング要件、AI/MLワークロードの有無）に照らして投資対効果を評価する。
+                            </li>
+                            <li>
+                                AIワークロードをKubernetes上で稼働させる場合は、DRA（6.2節）やGPUノードプールの専用管理など、CPU/メモリ中心の従来型ワークロードとは異なる運用ノウハウが必要になることを前提に計画する。
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <p>
+                    <strong>出典：</strong> CNCF公式アナウンス「Kubernetes Established as the De
+                    Facto 'Operating System' for AI as Production Use Hits 82% in 2025 CNCF Annual
+                    Cloud Native Survey」(<a
+                        href="https://www.cncf.io/announcements/2026/01/20/kubernetes-established-as-the-de-facto-operating-system-for-ai-as-production-use-hits-82-in-2025-cncf-annual-cloud-native-survey/"
+                        >https://www.cncf.io/announcements/2026/01/20/kubernetes-established-as-the-de-facto-operating-system-for-ai-as-production-use-hits-82-in-2025-cncf-annual-cloud-native-survey/</a
+                    >)、Linux Foundation公式ブログ (<a
+                        href="https://www.linuxfoundation.org/blog/kubernetes-fuels-ai-growth-organizational-culture-remains-the-decisive-factor"
+                        >https://www.linuxfoundation.org/blog/kubernetes-fuels-ai-growth-organizational-culture-remains-the-decisive-factor</a
+                    >)
+                </p>
+                <hr />
+                <h2 id="roadmap">学習ロードマップと認定資格</h2>
+                <p>
+                    原著は688ページ・20時間44分（O'Reilly記載）というボリュームがあり、初学者が最初から通読するのは大変です。以下のロードマップは、本ガイドの部構成に沿って無理なく学習を進めるための目安です。
+                </p>
+                <pre class="mermaid">
+                flowchart TB
+                    STEP0["Step 0: コンテナの基礎&lt;br/&gt;(第0部)&lt;br/&gt;Docker Desktopで&lt;br/&gt;Hello Worldコンテナを起動"] --&gt; STEP1
+                    STEP1["Step 1: クラスタの仕組みを知る&lt;br/&gt;(第1部)&lt;br/&gt;kindでローカルクラスタを構築し&lt;br/&gt;kubectlの基本操作に慣れる"] --&gt; STEP2
+                    STEP2["Step 2: Podを動かす&lt;br/&gt;(第2部)&lt;br/&gt;マルチコンテナPod・&lt;br/&gt;ヘルスチェックを実装する"] --&gt; STEP3
+                    STEP3["Step 3: 設定を外出しする&lt;br/&gt;(第3部)&lt;br/&gt;ConfigMap/Secret/PVCを使って&lt;br/&gt;ステートフルなアプリを構築"] --&gt; STEP4
+                    STEP4["Step 4: 外部公開する&lt;br/&gt;(第4部)&lt;br/&gt;ServiceとGateway APIで&lt;br/&gt;アプリを公開する"] --&gt; STEP5
+                    STEP5["Step 5: 本番運用の型を学ぶ&lt;br/&gt;(第5部)&lt;br/&gt;Deployment/StatefulSetで&lt;br/&gt;ローリングアップデートを体験"] --&gt; STEP6
+                    STEP6["Step 6: 最新動向を追う&lt;br/&gt;(第6部)&lt;br/&gt;DRA・In-Place Resize等&lt;br/&gt;2026年時点の変化を把握"]
+
+                    classDef highlightFill fill:#1a3a5c,stroke:#4a90d9,color:#ffffff
+                    class STEP1,STEP4 highlightFill</pre
+                >
+                <p><strong>認定資格の活用</strong></p>
+                <p>
+                    Kubernetes関連の実務スキルを客観的に示す手段として、Linux Foundation /
+                    CNCFが提供する認定資格があります。
+                </p>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>資格</th>
+                                <th>略称</th>
+                                <th>対象レベル</th>
+                                <th>2026年時点の傾向</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>Certified Kubernetes Application Developer</td>
+                                <td>CKAD</td>
+                                <td>アプリ開発者</td>
+                                <td>
+                                    アプリのデプロイ・設定・可観測性・トラブルシューティングが中心
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>Certified Kubernetes Administrator</td>
+                                <td>CKA</td>
+                                <td>クラスタ管理者</td>
+                                <td>出題範囲にGateway APIが追加(2025年2月18日)</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>Certified Kubernetes Security Specialist</td>
+                                <td>CKS</td>
+                                <td>セキュリティ担当</td>
+                                <td>CKA取得が前提要件</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>
+                    本ガイドの第1〜5部は主にCKAD、第1部後半〜第5部の運用寄りの内容はCKAの学習範囲と重なります。
+                </p>
+                <hr />
+                <h2 id="checklist">ベストプラクティスチェックリスト</h2>
+                <p>
+                    本ガイド全体で紹介したベストプラクティスを、実務で確認しやすいチェックリスト形式にまとめました。
+                </p>
+                <div class="checklist-card">
+                    <div class="checklist-header">
+                        <span class="title">ベストプラクティスチェックリスト</span
+                        ><span class="count">0 / 19 完了</span>
+                    </div>
+                    <ul>
+                        <li>
+                            <input id="chk1" type="checkbox" /><label for="chk1"
+                                >コンテナイメージのタグに<code>latest</code>を使わず、本番環境では<code>image@sha256:&lt;ダイジェスト&gt;</code>形式のダイジェスト参照でイメージを一意に固定している（タグは付け替え可能なため、それ自体はバージョンを固定しない）。必要に応じてCosign等（Sigstore）による署名検証をデプロイ前のゲートに組み込んでいる（第0部）</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk2" type="checkbox" /><label for="chk2"
+                                >コントロールプレーンを冗長化し、<code>kubectl describe</code
+                                >／<code>kubectl get events</code
+                                >をトラブルシューティングの第一手として習慣化している（第1部）</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk3" type="checkbox" /><label for="chk3"
+                                ><code>kubectl explain</code
+                                >でリソースの仕様をその場で確認する習慣がある（第1部）</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk4" type="checkbox" /><label for="chk4"
+                                >Liveness ProbeとReadiness
+                                Probeの役割を分離し、外部依存の障害でLiveness
+                                Probeが失敗しないようにしている（第2部）</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk5" type="checkbox" /><label for="chk5"
+                                >起動が遅いアプリケーションにはStartup
+                                Probeを設定している（第2部）</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk6" type="checkbox" /><label for="chk6"
+                                ><code>preStop</code
+                                >フックでグレースフルシャットダウンの猶予を設けている（第2部）</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk7" type="checkbox" /><label for="chk7"
+                                >NamespaceだけでなくNetworkPolicyでデフォルト拒否のネットワーク境界を敷いている（第2部）</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk8" type="checkbox" /><label for="chk8"
+                                >SecretのEncryption at
+                                Restを有効化し、Gitに平文のSecretをコミットしていない（第3部）</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk9" type="checkbox" /><label for="chk9"
+                                ><code>hostPath</code
+                                >ボリュームの利用を最小限に限定している（第3部）</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk10" type="checkbox" /><label for="chk10"
+                                >PersistentVolumeのスナップショットを定期取得し、DR計画に組み込んでいる（第3部）</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk11" type="checkbox" /><label for="chk11"
+                                >Topology Aware
+                                Routingでゾーンをまたぐ不要な通信を削減している（第4部）</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk12" type="checkbox" /><label for="chk12"
+                                >新規構築するクラスタではIngressではなくGateway
+                                APIを採用している（第4部・第6部）</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk13" type="checkbox" /><label for="chk13"
+                                >Deploymentの<code>maxUnavailable</code>/<code>maxSurge</code>をSLAとリソース制約に応じて調整している（第5部）</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk14" type="checkbox" /><label for="chk14"
+                                >ステートフルワークロードは可能な限り実績のあるOperatorに任せている（第5部）</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk15" type="checkbox" /><label for="chk15"
+                                >DaemonSetの特権設定（<code>hostNetwork</code>、<code>privileged</code>）を必要最小限にし、理由を明記している（第5部）</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk16" type="checkbox" /><label for="chk16"
+                                >冪等でないバッチJobには<code>concurrencyPolicy: Forbid</code
+                                >を設定している（第5部）</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk17" type="checkbox" /><label for="chk17"
+                                >クラスタのKubernetesバージョンをN-1〜N-2で維持し、EOL前にアップグレードを計画している（第6部）</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk18" type="checkbox" /><label for="chk18"
+                                >Ingress-NGINX
+                                Controllerへの依存有無を棚卸しし、移行計画を持っている（第6部）</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk19" type="checkbox" /><label for="chk19"
+                                >新規のプロキシ・ログ収集サイドカーはネイティブサイドカー方式で実装している（第6部）</label
+                            >
+                        </li>
+                    </ul>
+                </div>
+                <hr />
+                <h2 id="glossary">用語集</h2>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>用語</th>
+                                <th>説明</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>Pod</td>
+                                <td>
+                                    Kubernetesにおけるデプロイの最小単位。1つ以上のコンテナがネットワークとストレージを共有するグループ
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>コントロールプレーン</td>
+                                <td>
+                                    APIサーバー・etcd・スケジューラ・コントローラマネージャで構成される、クラスタの「頭脳」
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>kubelet</td>
+                                <td>
+                                    各ワーカーノードで動作し、APIサーバーの指示に基づきコンテナを起動・監視するエージェント
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>ReplicaSet</td>
+                                <td>
+                                    指定した数のPodレプリカが常に稼働することを保証するコントローラ
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>Deployment</td>
+                                <td>
+                                    ReplicaSetをラップし、宣言的なローリングアップデートとロールバックを提供するコントローラ
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>StatefulSet</td>
+                                <td>
+                                    安定したネットワークID・永続ストレージ・起動順序が必要なステートフルワークロード向けコントローラ
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>DaemonSet</td>
+                                <td>
+                                    クラスタ内の全て（または条件に合う）のノードにPodを1つずつ配置するコントローラ
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>Job / CronJob</td>
+                                <td>
+                                    完了を目標とするバッチ処理向けコントローラ。CronJobはこれをスケジュール実行する
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>Service</td>
+                                <td>
+                                    ラベルセレクタにマッチするPod群への安定したアクセス経路（仮想IP
+                                    + DNS名）を提供するオブジェクト
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>Ingress</td>
+                                <td>
+                                    複数のServiceへのHTTP/HTTPSルーティングを集約するAPI（2026年時点でGateway
+                                    APIへ移行推奨）
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>Gateway API</td>
+                                <td>
+                                    Ingressの後継となる、ロールベースで拡張性の高いL4/L7トラフィックルーティングAPI群
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>ConfigMap</td>
+                                <td>
+                                    機密でない設定値をコンテナイメージから分離して管理するオブジェクト
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>Secret</td>
+                                <td>
+                                    機密データ（認証情報等）を管理するオブジェクト。既定ではBase64エンコードのみで暗号化されない
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>PersistentVolume (PV)</td>
+                                <td>クラスタ内の実際のストレージリソースを表すオブジェクト</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>PersistentVolumeClaim (PVC)</td>
+                                <td>
+                                    アプリケーションがストレージを要求するためのオブジェクト。PVにバインドされる
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>StorageClass</td>
+                                <td>
+                                    動的プロビジョニング時に使用するストレージの種類・パラメータを定義するオブジェクト
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>CSI (Container Storage Interface)</td>
+                                <td>
+                                    ストレージベンダーの実装をKubernetesから抽象化する標準インターフェース
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>Namespace</td>
+                                <td>
+                                    クラスタ内のリソースを論理的に分割する仕組み（ネットワーク隔離は提供しない）
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>ラベルセレクタ</td>
+                                <td>ラベルの値に基づいてオブジェクトの集合を絞り込む仕組み</td>
+                            </tr>
+                            <tr class="even">
+                                <td>Reconciliation Loop（調整ループ）</td>
+                                <td>
+                                    望ましい状態(spec)と実際の状態(status)の差分を継続的に監視し、実際の状態を望ましい状態に近づけるコントローラの基本動作原理
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>ネイティブサイドカーコンテナ</td>
+                                <td>
+                                    <code>initContainers</code>に<code>restartPolicy: Always</code
+                                    >を指定して実装する、ライフサイクル管理が組み込まれたサイドカーパターン(v1.33でGA)
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>DRA (Dynamic Resource Allocation)</td>
+                                <td>
+                                    GPU等の特殊デバイスを<code>ResourceClaim</code>経由で柔軟に割り当てる仕組み。v1.34でGAになったのはコアAPIの<code>resource.k8s.io/v1</code>であり、DRA機能セット全体のStable化はv1.35
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>In-Place Pod Resize</td>
+                                <td>
+                                    実行中のPodのCPU/メモリ割り当てを、Podを再作成せずに変更できる機能(v1.35でGA)。コンテナごとの<code>resizePolicy</code>が<code>RestartContainer</code>の場合はコンテナ再起動を伴う
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>Operator</td>
+                                <td>
+                                    アプリケーション固有の運用知識をコントローラとしてコード化したKubernetes拡張パターン
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>kubectl</td>
+                                <td>Kubernetesクラスタを操作するための公式コマンドラインツール</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <hr />
+                <h2 id="references">参考文献</h2>
+                <p><strong>書籍本体および目次の情報源:</strong></p>
+                <div class="ref-grid">
+                    <div class="ref-card" id="ref1">
+                        <div class="num">1</div>
+                        <div class="txt">
+                            O'Reilly Online Learning「Kubernetes in Action, Second
+                            Edition」書籍ページ —
+                            <a
+                                href="https://www.oreilly.com/library/view/kubernetes-in-action/9781617297618/"
+                                >https://www.oreilly.com/library/view/kubernetes-in-action/9781617297618/</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref2">
+                        <div class="num">2</div>
+                        <div class="txt">
+                            O'Reilly Online Learning「Kubernetes in Action, Second
+                            Edition」目次ページ —
+                            <a
+                                href="https://www.oreilly.com/library/view/kubernetes-in-action/9781617297618/Text/contents.html"
+                                >https://www.oreilly.com/library/view/kubernetes-in-action/9781617297618/Text/contents.html</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref3">
+                        <div class="num">3</div>
+                        <div class="txt">
+                            Manning Publications「Kubernetes in Action, Second
+                            Edition」公式書籍ページ —
+                            <a
+                                href="https://www.manning.com/books/kubernetes-in-action-second-edition"
+                                >https://www.manning.com/books/kubernetes-in-action-second-edition</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref4">
+                        <div class="num">4</div>
+                        <div class="txt">
+                            Manning Publications「Kubernetes in Action, Second
+                            Edition」章プレビュー（全章目次・第1章全文） —
+                            <a
+                                href="https://www.manning.com/preview/kubernetes-in-action-second-edition/chapter-1"
+                                >https://www.manning.com/preview/kubernetes-in-action-second-edition/chapter-1</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref5">
+                        <div class="num">5</div>
+                        <div class="txt">
+                            Marko
+                            Lukša（原著者）公式GitHubリポジトリ「kubernetes-in-action-2nd-edition」（サンプルコード）
+                            —
+                            <a href="https://github.com/luksa/kubernetes-in-action-2nd-edition"
+                                >https://github.com/luksa/kubernetes-in-action-2nd-edition</a
+                            >
+                        </div>
+                    </div>
+                </div>
+                <p><strong>Kubernetes公式・CNCF公式の情報源:</strong></p>
+                <div class="ref-grid">
+                    <div class="ref-card" id="ref6">
+                        <div class="num">6</div>
+                        <div class="txt">
+                            Kubernetes公式サイト「Releases」（バージョン一覧・EOL情報） —
+                            <a href="https://kubernetes.io/releases/"
+                                >https://kubernetes.io/releases/</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref7">
+                        <div class="num">7</div>
+                        <div class="txt">
+                            Kubernetes公式サイト「Kubernetes 1.37」リリースページ —
+                            <a href="https://kubernetes.io/releases/1.37/"
+                                >https://kubernetes.io/releases/1.37/</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref8">
+                        <div class="num">8</div>
+                        <div class="txt">
+                            Kubernetes公式サイト「Kubernetes 1.34」リリースページ —
+                            <a href="https://kubernetes.io/releases/1.34"
+                                >https://kubernetes.io/releases/1.34</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref9">
+                        <div class="num">9</div>
+                        <div class="txt">
+                            Kubernetes公式ブログ「Kubernetes v1.34: Of Wind &amp; Will (O' WaW)」 —
+                            <a
+                                href="https://kubernetes.io/blog/2025/08/27/kubernetes-v1-34-release/"
+                                >https://kubernetes.io/blog/2025/08/27/kubernetes-v1-34-release/</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref10">
+                        <div class="num">10</div>
+                        <div class="txt">
+                            Kubernetes公式ブログ「Kubernetes v1.35: In-Place Pod Resize Graduates to
+                            Stable」 —
+                            <a
+                                href="https://kubernetes.io/blog/2025/12/19/kubernetes-v1-35-in-place-pod-resize-ga"
+                                >https://kubernetes.io/blog/2025/12/19/kubernetes-v1-35-in-place-pod-resize-ga</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref11">
+                        <div class="num">11</div>
+                        <div class="txt">
+                            Kubernetes公式ブログ「Kubernetes v1.33: In-Place Pod Resize Graduated to
+                            Beta」 —
+                            <a
+                                href="https://kubernetes.io/blog/2025/05/16/kubernetes-v1-33-in-place-pod-resize-beta/"
+                                >https://kubernetes.io/blog/2025/05/16/kubernetes-v1-33-in-place-pod-resize-beta/</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref12">
+                        <div class="num">12</div>
+                        <div class="txt">
+                            Kubernetes公式ブログ「Kubernetes v1.28: Introducing native sidecar
+                            containers」 —
+                            <a
+                                href="https://kubernetes.io/blog/2023/08/25/native-sidecar-containers/"
+                                >https://kubernetes.io/blog/2023/08/25/native-sidecar-containers/</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref13">
+                        <div class="num">13</div>
+                        <div class="txt">
+                            Kubernetes公式ドキュメント「Sidecar Containers」 —
+                            <a
+                                href="https://kubernetes.io/docs/concepts/workloads/pods/sidecar-containers/"
+                                >https://kubernetes.io/docs/concepts/workloads/pods/sidecar-containers/</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref14">
+                        <div class="num">14</div>
+                        <div class="txt">
+                            Kubernetes Contributors公式サイト「Kubernetes v1.37 Release
+                            Information」（リリーススケジュール、リリースリードDipesh
+                            Rawat氏の情報） —
+                            <a href="https://www.kubernetes.dev/resources/release/"
+                                >https://www.kubernetes.dev/resources/release/</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref15">
+                        <div class="num">15</div>
+                        <div class="txt">
+                            kubernetes/sig-release公式GitHubリポジトリ「release-1.37」 —
+                            <a
+                                href="https://github.com/kubernetes/sig-release/tree/master/releases/release-1.37"
+                                >https://github.com/kubernetes/sig-release/tree/master/releases/release-1.37</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref16">
+                        <div class="num">16</div>
+                        <div class="txt">
+                            kubernetes-sigs/gateway-api公式GitHubリポジトリ（Releases） —
+                            <a href="https://github.com/kubernetes-sigs/gateway-api/releases"
+                                >https://github.com/kubernetes-sigs/gateway-api/releases</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref17">
+                        <div class="num">17</div>
+                        <div class="txt">
+                            CNCF公式アナウンス「Kubernetes Established as the De Facto 'Operating
+                            System' for AI as Production Use Hits 82% in 2025 CNCF Annual Cloud
+                            Native Survey」 —
+                            <a
+                                href="https://www.cncf.io/announcements/2026/01/20/kubernetes-established-as-the-de-facto-operating-system-for-ai-as-production-use-hits-82-in-2025-cncf-annual-cloud-native-survey/"
+                                >https://www.cncf.io/announcements/2026/01/20/kubernetes-established-as-the-de-facto-operating-system-for-ai-as-production-use-hits-82-in-2025-cncf-annual-cloud-native-survey/</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref18">
+                        <div class="num">18</div>
+                        <div class="txt">
+                            Linux Foundation公式ブログ「Kubernetes Fuels AI Growth; Organizational
+                            Culture Remains the Decisive Factor」 —
+                            <a
+                                href="https://www.linuxfoundation.org/blog/kubernetes-fuels-ai-growth-organizational-culture-remains-the-decisive-factor"
+                                >https://www.linuxfoundation.org/blog/kubernetes-fuels-ai-growth-organizational-culture-remains-the-decisive-factor</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref19">
+                        <div class="num">19</div>
+                        <div class="txt">
+                            Google Open Source Blog「The End of an Era: Transitioning Away from
+                            Ingress NGINX」 —
+                            <a
+                                href="https://opensource.googleblog.com/2026/02/the-end-of-an-era-transitioning-away-from-ingress-nginx.html"
+                                >https://opensource.googleblog.com/2026/02/the-end-of-an-era-transitioning-away-from-ingress-nginx.html</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref20">
+                        <div class="num">20</div>
+                        <div class="txt">
+                            Amazon Web Services公式EKSドキュメント「Review release notes for
+                            Kubernetes versions on standard support」 —
+                            <a
+                                href="https://docs.aws.amazon.com/eks/latest/userguide/kubernetes-versions-standard.html"
+                                >https://docs.aws.amazon.com/eks/latest/userguide/kubernetes-versions-standard.html</a
+                            >
+                        </div>
+                    </div>
+                </div>
+                <p><strong>業界メディア・専門家による分析記事:</strong></p>
+                <div class="ref-grid">
+                    <div class="ref-card" id="ref21">
+                        <div class="num">21</div>
+                        <div class="txt">
+                            Network World「Kubernetes 1.37 advances workload-aware scheduling and
+                            cluster networking」（Kubernetes 1.37リリースリードDipesh
+                            Rawat氏へのインタビューを含む） —
+                            <a
+                                href="https://www.networkworld.com/article/4214824/kubernetes-1-37-advances-workload-aware-scheduling-and-cluster-networking.html"
+                                >https://www.networkworld.com/article/4214824/kubernetes-1-37-advances-workload-aware-scheduling-and-cluster-networking.html</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref22">
+                        <div class="num">22</div>
+                        <div class="txt">
+                            The New Stack「Kubernetes v1.34 Introduces Benefits but Also New Blind
+                            Spots」（Darryl K. Taft記者） —
+                            <a
+                                href="https://thenewstack.io/kubernetes-v1-34-introduces-benefits-but-also-new-blind-spots/"
+                                >https://thenewstack.io/kubernetes-v1-34-introduces-benefits-but-also-new-blind-spots/</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref23">
+                        <div class="num">23</div>
+                        <div class="txt">
+                            Cloudsmith「Kubernetes 1.37: What You Need to Know」 —
+                            <a
+                                href="https://cloudsmith.com/blog/kubernetes-1-37-what-you-need-to-know"
+                                >https://cloudsmith.com/blog/kubernetes-1-37-what-you-need-to-know</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref24">
+                        <div class="num">24</div>
+                        <div class="txt">
+                            Fairwinds「Kubernetes 1.34 Released: What's New and When to Upgrade」 —
+                            <a
+                                href="https://www.fairwinds.com/blog/kubernetes-1.34-released-whats-new-upgrade"
+                                >https://www.fairwinds.com/blog/kubernetes-1.34-released-whats-new-upgrade</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref25">
+                        <div class="num">25</div>
+                        <div class="txt">
+                            Kong Inc.公式ブログ「Gateway API vs Ingress: The Future of Kubernetes
+                            Networking」 —
+                            <a href="https://konghq.com/blog/engineering/gateway-api-vs-ingress"
+                                >https://konghq.com/blog/engineering/gateway-api-vs-ingress</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref26">
+                        <div class="num">26</div>
+                        <div class="txt">
+                            Palark Tech Blog「In-place Pod resizing in Kubernetes: How it works and
+                            how to use it」 —
+                            <a href="https://palark.com/blog/in-place-pod-resizing-kubernetes/"
+                                >https://palark.com/blog/in-place-pod-resizing-kubernetes/</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref27">
+                        <div class="num">27</div>
+                        <div class="txt">
+                            Palark Tech Blog「Kubernetes 1.37: Deep dive into new alpha features」 —
+                            <a href="https://palark.com/blog/kubernetes-1-37-release-features/"
+                                >https://palark.com/blog/kubernetes-1-37-release-features/</a
+                            >
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <p>
+                    <em
+                        >本ガイドは2026年8月29日時点のWeb検索結果に基づいて作成されています。Kubernetesはリリースサイクルが速いプロジェクトのため、特に第6部の内容は今後のバージョンアップで更新される可能性があります。最新情報は必ず<a
+                            href="https://kubernetes.io/docs/"
+                            >kubernetes.io公式ドキュメント</a
+                        >を参照してください。</em
+                    >
+                </p>
+            </main>
+        </div>
+        <script
+            src="https://cdn.jsdelivr.net/npm/mermaid@11.13.0/dist/mermaid.min.js"
+            integrity="sha384-tI0sDqjGJcqrQ8e/XKiQGS+ee11v5knTNWx2goxMBxe4DO9U0uKlfxJtYB9ILZ4j"
+            crossorigin="anonymous"
+        ></script>
+        <script>
+            (function () {
+                'use strict';
+
+                // ---------- Mermaid init + render ----------
+                function initMermaid() {
+                    if (typeof mermaid === 'undefined') {
+                        console.warn('mermaid not loaded');
+                        return;
+                    }
+                    mermaid.initialize({
+                        startOnLoad: false,
+                        theme: 'base',
+                        securityLevel: 'loose',
+                        fontFamily:
+                            '-apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif',
+                        themeVariables: {
+                            fontSize: '16px',
+                            background: '#0d1a2b',
+                            primaryColor: '#12233b',
+                            primaryTextColor: '#dbe4f3',
+                            primaryBorderColor: '#2c4770',
+                            lineColor: '#4a6390',
+                            secondaryColor: '#101f33',
+                            tertiaryColor: '#101f33',
+                            edgeLabelBackground: '#0d1a2b',
+                            clusterBkg: '#0d1a2b',
+                            clusterBorder: '#2c4770',
+                            nodeTextColor: '#dbe4f3',
+                        },
+                        flowchart: {
+                            useMaxWidth: false,
+                            htmlLabels: true,
+                            subGraphTitleMargin: { top: 12, bottom: 18 },
+                            nodeSpacing: 70,
+                            rankSpacing: 60,
+                            curve: 'basis',
+                        },
+                    });
+
+                    try {
+                        mermaid.run({ querySelector: 'pre.mermaid' }).catch(function (err) {
+                            console.error('mermaid render error', err);
+                        });
+                    } catch (e) {
+                        console.error('mermaid run failed', e);
+                    }
+                }
+
+                try {
+                    initMermaid();
+                } catch (e) {
+                    console.error('mermaid init failed', e);
+                }
+
+                // ---------- Sidebar toggle (mobile) ----------
+                var sidebar = document.getElementById('sidebar');
+                var toggle = document.getElementById('sidebarToggle');
+                function syncToggleState() {
+                    if (!toggle || !sidebar) return;
+                    toggle.setAttribute(
+                        'aria-expanded',
+                        sidebar.classList.contains('open') ? 'true' : 'false',
+                    );
+                }
+                if (toggle) {
+                    toggle.addEventListener('click', function () {
+                        sidebar.classList.toggle('open');
+                        syncToggleState();
+                    });
+                }
+                document.querySelectorAll('#sidebarNav a').forEach(function (a) {
+                    a.addEventListener('click', function () {
+                        sidebar.classList.remove('open');
+                        syncToggleState();
+                    });
+                });
+                syncToggleState();
+
+                // ---------- Scroll-spy ----------
+                var navLinks = Array.from(document.querySelectorAll('#sidebarNav a'));
+                var linkMap = new Map();
+                navLinks.forEach(function (a) {
+                    var id = decodeURIComponent(a.getAttribute('href').slice(1));
+                    linkMap.set(id, a);
+                });
+
+                var headings = Array.from(linkMap.keys())
+                    .map(function (id) {
+                        return document.getElementById(id);
+                    })
+                    .filter(Boolean);
+
+                var spyObserver = new IntersectionObserver(
+                    function (entries) {
+                        entries.forEach(function (entry) {
+                            var link = linkMap.get(entry.target.id);
+                            if (!link) return;
+                            if (entry.isIntersecting) {
+                                navLinks.forEach(function (a) {
+                                    a.classList.remove('active');
+                                });
+                                link.classList.add('active');
+                            }
+                        });
+                    },
+                    { rootMargin: '-15% 0px -75% 0px', threshold: 0 },
+                );
+
+                headings.forEach(function (h) {
+                    spyObserver.observe(h);
+                });
+
+                // ---------- Checklist progress ----------
+                document.querySelectorAll('.checklist-card').forEach(function (card) {
+                    var boxes = card.querySelectorAll('input[type="checkbox"]');
+                    var counter = card.querySelector('.count');
+                    function update() {
+                        var checked = card.querySelectorAll(
+                            'input[type="checkbox"]:checked',
+                        ).length;
+                        if (counter) counter.textContent = checked + ' / ' + boxes.length + ' 完了';
+                    }
+                    boxes.forEach(function (b) {
+                        b.addEventListener('change', update);
+                    });
+                    update();
+                });
+            })();
+        </script>
+    </body>
+</html>

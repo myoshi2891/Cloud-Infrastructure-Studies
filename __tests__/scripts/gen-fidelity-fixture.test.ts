@@ -20,7 +20,7 @@ const TAMPERED_HTML = '<html><body>'
 describe('gen-fidelity-fixture / 固定リビジョンからの読み出し', () => {
     // 最小の設定（introduction + mermaidCharts）を持つページで代表させる。
     const slug = 'comptia-network-plus-guide';
-    const config = FIDELITY_PAGES[slug];
+    const config = FIDELITY_PAGES[slug]!;
 
     it('should ignore a tampered working-tree copy and regenerate from sourceCommit', () => {
         const committedFixture = readFileSync(resolve(FIXTURE_DIR, `${slug}.fidelity.json`), 'utf8');

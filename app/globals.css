@@ -48,6 +48,8 @@
 
     --color-theme-pca-bg: hsl(215 65% 55% / 0.25);
     --color-theme-pca-fg: hsl(215 100% 75%);
+    --color-theme-pcd-bg: hsl(225 65% 55% / 0.25);
+    --color-theme-pcd-fg: hsl(225 100% 75%);
     /* アクセント面に乗せる文字・記号の色（親ページと Section 1 で共有） */
     --color-pca-on-accent: #0b1220;
     --color-pca-hero-grad-end: #9db8ff;
@@ -567,6 +569,28 @@
     --color-gcp-border-bright: rgba(var(--color-google-blue-rgb), 0.5);
     --color-gcp-accent-glow: rgba(var(--color-google-blue-rgb), 0.15);
 
+    /* Layer 3: Professional Cloud Developer (PCD) guide theme tokens */
+    --color-pcd-accent-rgb: 124, 158, 255;
+    --color-pcd-accent: #7c9eff;
+    --color-pcd-accent-bg: rgba(var(--color-pcd-accent-rgb), 0.08);
+    --color-pcd-border-soft: rgba(var(--color-pcd-accent-rgb), 0.12);
+    --color-pcd-success-rgb: 127, 224, 168;
+    --color-pcd-success: #7fe0a8;
+    --color-pcd-success-bg: rgba(var(--color-pcd-success-rgb), 0.08);
+    --color-pcd-success-border: #1d5a3a;
+    --color-pcd-card-bg-2: #101f33;
+    --color-pcd-sidebar-bg: #060d17;
+    --color-pcd-sidebar-shadow: rgba(0, 0, 0, 0.5);
+    --color-pcd-hero-grad-a: #dbe4f3;
+    --color-pcd-strong: #f0f4fc;
+    --color-pcd-code-text: #ffd08a;
+    --color-pcd-foreground-faint: #6a7d9c;
+    --color-pcd-divider: #152438;
+    --color-pcd-row-hover: rgba(var(--color-pcd-accent-rgb), 0.04);
+    --color-pcd-item-hover: rgba(var(--color-pcd-accent-rgb), 0.05);
+    --color-pcd-on-accent: #08101f;
+    --color-pcd-on-success: #08150e;
+
     /* Callout & Status Themes */
     --color-warning: #fb923c;
     --color-warning-bg: #fef3e8;
@@ -676,6 +700,7 @@ body {
 .card-agwa { --card-accent: var(--color-theme-agwa-fg); }
 .card-pcne { --card-accent: var(--color-theme-pcne-fg); }
 .card-pca { --card-accent: var(--color-theme-pca-fg); }
+.card-pcd { --card-accent: var(--color-theme-pcd-fg); }
 .card-ccna { --card-accent: var(--color-theme-cisco-fg); }
 .card-aws-saa { --card-accent: var(--color-theme-aws-fg); }
 .card-comptia { --card-accent: var(--color-theme-comptia-fg); }
@@ -720,6 +745,11 @@ body {
 @utility icon-theme-pcne {
     background: var(--color-theme-pcne-bg);
     color: var(--color-theme-pcne-fg);
+}
+
+@utility icon-theme-pcd {
+    background: var(--color-theme-pcd-bg);
+    color: var(--color-theme-pcd-fg);
 }
 
 @utility icon-theme-aws-saa {

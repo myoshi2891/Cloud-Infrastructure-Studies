@@ -3,7 +3,6 @@
 ― 初学者のためのステップバイステップ ベストプラクティス解説
 
 > 対象ラボ: *Automate Data Capture at Scale with Document AI: Challenge Lab*
-> ラボURL: https://www.skills.google/course_templates/674/labs/616166
 > このガイドは、ラボの手順を単に「なぞる」のではなく、**なぜそのコマンド・設定が必要なのか**を、Google Cloud のプロダクションベストプラクティスの観点から解説することを目的としています。
 
 ---
