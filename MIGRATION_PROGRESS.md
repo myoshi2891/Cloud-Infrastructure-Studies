@@ -2,6 +2,35 @@
 
 (最終更新日: 2026-09-05)
 
+## 2026-09-05: 推薦図書『Operating Systems: Three Easy Pieces（OSTEP）』完全学習ガイド 100%全量移行 (完了)
+
+### 目的
+
+`Operating-Systems-Three-Easy-Pieces.html` を、Next.js App Router 5ファイル構成 (`page.tsx`, `OperatingSystemsThreeEasyPiecesGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/recommended-books/operating-systems-three-easy-pieces` ルートへ移行。グローバルナビゲーションの「Books」配下に追加。見出し(h1:1, h2:18, h3:58, h4:1)、全39個のテーブル、56個のMermaid図解、全リスト(19箇所/50件)、全外部リンク(12件)・全本文(119件)・学習チェックリスト(17件)・参考文献カード(12件)を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for operating-systems-three-easy-pieces` (`80a1888b`)
+- [x] **Step 1 (Red)**: `test(books): add failing tests for operating-systems-three-easy-pieces` (`0a385000`)
+- [x] **Step 2 (Green)**: `feat(books): implement operating-systems-three-easy-pieces to pass tests` (`00239270`)
+- [x] **Step 3 (Refactor)**: `refactor(books): integrate operating-systems-three-easy-pieces into routing and update docs` (`f1b5d0d3`)
+- [x] **Step 4 (Archive & Sync)**: `chore(docs): update MIGRATION_PROGRESS.md and archive operating-systems-three-easy-pieces sources`
+
+### 関連ファイル
+
+- [app/recommended-books/operating-systems-three-easy-pieces/page.tsx](app/recommended-books/operating-systems-three-easy-pieces/page.tsx)
+- [app/recommended-books/operating-systems-three-easy-pieces/OperatingSystemsThreeEasyPiecesGuide.tsx](app/recommended-books/operating-systems-three-easy-pieces/OperatingSystemsThreeEasyPiecesGuide.tsx)
+- [app/recommended-books/operating-systems-three-easy-pieces/NavBar.tsx](app/recommended-books/operating-systems-three-easy-pieces/NavBar.tsx)
+- [app/recommended-books/operating-systems-three-easy-pieces/constants.ts](app/recommended-books/operating-systems-three-easy-pieces/constants.ts)
+- [app/recommended-books/operating-systems-three-easy-pieces/page.css](app/recommended-books/operating-systems-three-easy-pieces/page.css)
+- [`__tests__/recommended-books/operating-systems-three-easy-pieces/page.test.tsx`](__tests__/recommended-books/operating-systems-three-easy-pieces/page.test.tsx)
+- [`__tests__/recommended-books/operating-systems-three-easy-pieces/NavBar.test.tsx`](__tests__/recommended-books/operating-systems-three-easy-pieces/NavBar.test.tsx)
+- [docs/migration-inventory/operating-systems-three-easy-pieces.json](docs/migration-inventory/operating-systems-three-easy-pieces.json)
+- [archive/Books/html/Operating-Systems-Three-Easy-Pieces.html](archive/Books/html/Operating-Systems-Three-Easy-Pieces.html)
+- [archive/Books/md/Operating-Systems-Three-Easy-Pieces.md](archive/Books/md/Operating-Systems-Three-Easy-Pieces.md)
+
+---
+
 ## 2026-09-05: 推薦図書『Systems Performance: Enterprise and the Cloud』実践ガイド 100%全量移行 (完了)
 
 ### 目的
