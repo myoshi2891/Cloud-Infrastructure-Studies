@@ -299,9 +299,11 @@ flowchart TD
     Start2["送信データが発生"] --> Sense2["回線が空いているか<br/>キャリアセンス"]
     Sense2 -->|使用中| Defer["送信を保留し待機"]
     Defer --> Sense2
-    Sense2 -->|一定時間空いている| RTS["必要に応じてRTS<br/>送信要求フレームを送出"]
+    Sense2 -->|一定時間空いている| UseRts{"RTS/CTSを<br/>使用するか"}
+    UseRts -->|使用する| RTS["RTS<br/>送信要求フレームを送出"]
     RTS --> CTS["受信側からCTS<br/>送信許可フレームを受信"]
     CTS --> Send2["データフレームを送信"]
+    UseRts -->|使用しない| Send2
     Send2 --> ACK{"受信側からACKが<br/>返ってきたか"}
     ACK -->|"ACKなし(衝突・干渉など)"| Backoff2["ランダムバックオフ後に再送"]
     Backoff2 --> Sense2
@@ -371,7 +373,7 @@ IPv4のアドレス枯渇に対応するため、128ビットのアドレス空�
 
 | 分類 | 代表プロトコル | 動作の考え方 | 特徴 |
 |---|---|---|---|
-| 距離ベクトル型(Distance Vector) | RIP、(BGPは経路ベクトル型) | 隣接ルータと「宛先までの距離(コスト)」を交換し合う | 実装は単純だが収束が遅く、ループが起きやすい |
+| 距離ベクトル型(Distance Vector) | RIP | 隣接ルータと「宛先までの距離(コスト)」を交換し合う | 実装は単純だが収束が遅く、ループが起きやすい |
 | リンクステート型(Link State) | OSPF、IS-IS | 各ルータがネットワーク全体のトポロジ情報を持ち、最短経路を自力計算(ダイクストラ法) | 収束が速いが計算・メモリ負荷が高い |
 | 経路ベクトル型(Path Vector) | BGP(Border Gateway Protocol) | 経由するAS番号の列(ASパス)を交換し、ポリシーに基づき経路選択 | インターネット全体の経路制御(EGP)に使用 |
 
@@ -781,7 +783,7 @@ flowchart TD
 | DNS(Domain Name System) | ドメイン名とIPアドレスを対応付ける分散データベースシステム |
 | ICMP(Internet Control Message Protocol) | IPの制御・エラー通知プロトコル。ping/tracerouteの基盤 |
 | MAC アドレス | データリンク層で機器を識別する48ビットの物理アドレス |
-| MTU(Maximum Transmission Unit) | リンク上で一度に転送できるフレーム(パケット)の最大サイズ |
+| MTU(Maximum Transmission Unit) | 次のネットワークへ送出できるIPデータグラム(ネットワーク層パケット)の最大サイズ。L2ヘッダやFCSを含むフレーム全体のサイズとは区別する |
 | NAT(Network Address Translation) | プライベートIPアドレスとグローバルIPアドレスを変換する仕組み |
 | QUIC | UDP上に構築された、信頼性・輻輳制御・暗号化を統合した新しい輸送プロトコル。HTTP/3の基盤 |
 | RPKI(Resource Public Key Infrastructure) | BGP経路とAS番号の正当性を暗号署名で検証する仕組み |
