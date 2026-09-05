@@ -50,7 +50,7 @@ pie showData
 | Skill Registry | スキルを一元管理・検証・配布するセキュアなリポジトリ[^30] | 2.2.1, 2.2.2 |
 | Agent Registry | エージェント・MCPサーバー・スキル・エンドポイントを登録・発見・ガバナンスする統合カタログ[^28] | 2.2.2 |
 | Cloud Run | Agents CLIのデフォルトのデプロイターゲットの1つ[^24] | 2.2.2 |
-| Google Cloud Observability (Cloud Logging / Cloud Trace) | Agents CLIでデプロイしたエージェントに対して自動的に有効化されるトレース・ログ基盤[^24] | 2.2.2 |
+| Google Cloud Observability (Cloud Logging / Cloud Trace) | **Cloud Trace** はデプロイしたエージェントに対して常時有効。一方、**プロンプト／レスポンスのログ**は既定では有効化されず、素の `agents-cli deploy` は保存先のCloud StorageバケットやBigQueryデータセットを作成しない（Terraform等で別途プロビジョニングした場合に利用可能になる）[^24] | 2.2.2 |
 
 ---
 
@@ -111,7 +111,7 @@ GKE Agent Sandboxは、この上に3つのKubernetesプリミティブを提供�
 - **SandboxTemplate**: セキュリティ設計図（どのランタイム・ネットワークポリシーを使うか）
 - **SandboxClaim**: ADKやLangChainなど上位フレームワークから実行環境をトランザクショナルに要求するためのリソース
 
-ウォームプール（事前起動済みPodのプール）により、コールドスタート遅延を1秒未満に抑えられます[^13]。またAgent SandboxはgVisorに加えKata Containersのようなオープンソースのサンドボックスもプラガブルなインターフェースとしてサポートしており、デフォルト拒否のKubernetesネットワークポリシーも標準機能として組み込まれています[^15]。またADKには`GkeCodeExecutor`という統合機能があり、コード実行リクエストのたびにConfigMap作成→gVisor有効なハードニング済みPodとしてのKubernetes Job作成→実行、という流れを自動化します[^16]。
+ウォームプール（事前起動済みPodのプール）により、コールドスタート遅延を1秒未満に抑えられます[^13]。またAgent SandboxはgVisorに加えKata Containersのようなオープンソースのサンドボックスもプラガブルなインターフェースとしてサポートしています。ネットワーク面では、マネージドな既定ポスチャとして **Sandbox Router 以外からのingressを拒否し、RFC1918のプライベートIP空間・CoreDNS・メタデータサーバーへのegressを拒否**するKubernetesネットワークポリシーが組み込まれています[^15]。ただしこれは「すべてを拒否する」設定ではなく、**public Internetへのegressは既定で許可**される点に注意が必要です。外部への通信も遮断したい場合は、カスタムポリシーやair-gapped構成を別途適用します。またADKには`GkeCodeExecutor`という統合機能があり、コード実行リクエストのたびにConfigMap作成→gVisor有効なハードニング済みPodとしてのKubernetes Job作成→実行、という流れを自動化します[^16]。
 
 **Cloud Workstations**は、Googleが提供するマネージド型のセキュアなリモート開発環境です。コミュニティの実践例では、Cloud Workstationsのコンテナイメージ上にAntigravity本体をインストールし、Chrome Remote DesktopやVNC経由でブラウザからリモート操作することで、ローカルマシンに何もインストールせずに高い隔離性を持つAntigravity環境を実現する手法が紹介されています[^18][^19]。また、Data Agent Kit拡張機能（VS Code向け）はCloud Workstationsにデフォルトでインストールされており、Google Cloudのデータ資産に対する統一されたビューを標準の開発環境として提供します[^20]。
 
@@ -148,7 +148,7 @@ flowchart LR
 
 #### ベストプラクティス
 
-- 「LLMが生成したコードは常に未信頼」という前提に立ち、デフォルト拒否のネットワークポリシーと最小権限のWorkload Identityを組み合わせる[^13][^17]。
+- 「LLMが生成したコードは常に未信頼」という前提に立ち、既定のネットワークポスチャ（Sandbox Router以外からのingress拒否／RFC1918・CoreDNS・メタデータサーバーへのegress拒否）に加え、**既定では許可されるpublic Internetへのegress**をカスタムポリシーやair-gapped構成で絞り込み、最小権限のWorkload Identityと組み合わせる[^13][^17]。
 - 独自にPodを組むのではなく、ADKの`GkeCodeExecutor`のようなマネージド統合を利用し、ハードニング済み設定をゼロから実装しない[^16]。
 - ウォームプールでコールドスタートを抑えつつ、アイドル状態のサンドボックスは積極的にサスペンド・削除してコストを最適化する[^13]。
 - 監査要件がある組織では、個人のローカル実行に頼らずCloud Workstations上にAntigravityを集約し、セッションを一元的に管理する[^18][^20]。
@@ -246,7 +246,7 @@ npx skills add google/agents-cli
 
 セットアップ後は、開発者はCLIの個別コマンドを覚える必要がなく、コーディングエージェントに自然言語で指示するだけで済みます（例:「agents-cliを使って、冗長な文章を要約するエージェントを作って」）[^24][^26]。
 
-agents-cliは公式ドキュメントによれば合計7種類のスキルをADKのライフサイクル全体にわたって提供するとされていますが、本ガイド執筆時点で名称が確認できたのは次の5種類です[^24]。
+agents-cliは、ADKのライフサイクル全体にわたって次の7種類のスキルを提供します[^24]。
 
 | スキル名 | コーディングエージェントが習得する内容 |
 |---|---|
@@ -255,6 +255,8 @@ agents-cliは公式ドキュメントによれば合計7種類のスキルをADK
 | `google-agents-cli-scaffold` | プロジェクトの雛形生成（新規作成／機能追加／アップグレード） |
 | `google-agents-cli-eval` | 評価手法（メトリクス、evalset、LLM-as-judge、トラジェクトリスコアリング） |
 | `google-agents-cli-deploy` | デプロイ（Agent Runtime、Cloud Run、GKE、CI/CD、シークレット管理） |
+| `google-agents-cli-publish` | Gemini Enterpriseへのエージェント公開 |
+| `google-agents-cli-observability` | デプロイ後の可観測性設定 |
 
 典型的な開発フローは、(1) スキャフォールディングでプロジェクトを生成し、(2) `agents-cli eval run` による評価を反復して品質を高め、(3) デプロイ設定を追加してCloud Run等にデプロイし、(4) デプロイ後は自動的にCloud Traceが有効化される、という流れです[^26]。さらに開発者が「監視基盤をセットアップして」と指示すれば、コーディングエージェントがサービスアカウント・Cloud Storageバケット・BigQueryデータセットを自動的にプロビジョニングし、より詳細な観測性を実現します[^26]。
 

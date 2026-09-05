@@ -303,15 +303,18 @@ flowchart LR
         S2["SaaS(Jira/Confluence/Salesforce/ServiceNow/SharePoint)"]
         S3["Cloud Storage / BigQuery / Webサイト"]
     end
-    Sources --> Conn["データコネクタ(読み取り専用/ACL準拠/定期同期)"]
-    Sources --> Ext["Agent Platform拡張機能(読み書き/アクション実行)"]
+    Sources --> Conn["データコネクタ(取り込み用/読み取り専用/ACL準拠/定期同期)"]
+    Sources --> ConnApp["接続アプリ(Workflow Builder)<br/>取り込み+検索/データ更新アクション"]
+    Sources --> Ext["Agent Platform拡張機能<br/>ユーザーに代わる外部アクション実行"]
     Conn --> DS["Agent Searchデータストア(構造化/非構造化/Webサイト)"]
-    Ext --> DS
+    ConnApp --> DS
     DS --> Index["検索インデックス(意味検索+キーワード検索)"]
     Index --> Ground["Geminiによるグラウンディング/引用付き回答生成"]
     Ground --> Agent["Gemini Enterpriseエージェント(Workflow Builder / CX Agent Studio)"]
     Index --> MCP["MCPサーバーとしてツール公開"]
     MCP --> Agent
+    Agent --> ConnApp
+    Agent --> Ext
 ```
 
 なお、Agent Search は2026年4月の Google Cloud Next で Vertex AI Search から改称されたブランドですが、Google Cloud コンソールのUI表示は当面「Vertex AI Search and AI Applications」のままであり、APIも引き続き Discovery Engine API のエンドポイントを使用します。改称後もプロダクトの機能自体は変わっていない点に注意してください[^13][^26]。
@@ -400,7 +403,7 @@ flowchart TD
 - [ ] CX Agent Studio の Flow-based エージェントで既存 Dialogflow CX フローを移行する際の「ブラックボックス原則」を説明できる
 - [ ] システムインストラクションでの変数・ツール・サブエージェント参照構文（`{var}`、`{@TOOL:}`、`{@AGENT:}`）を使える
 - [ ] Restructure instructions が生成するXML構造（role／persona／constraints／taskflow／examples等）の各タグの役割を説明できる
-- [ ] taskflow → subtask → step（trigger／action）の階層構造がChain-of-Thought的な設計原則である理由を説明できる
+- [ ] taskflow → subtask → step（trigger／action）の階層構造が、構造化されたタスク分解・指示設計として有効である理由を説明できる
 - [ ] Few-shotサンプルの4要素（`[user]`／`[model]`／`tool_code`／`tool_outputs`）を使ってサンプルを書ける
 - [ ] Few-shotサンプルを使うべき場面と、過学習（overfit）のリスクを説明できる
 - [ ] グローバルインストラクションとエージェント個別インストラクションの違いと使い分けを説明できる
