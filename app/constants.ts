@@ -27,7 +27,8 @@ export type ColorKey =
     | 'card-infrastructure-as-code'
     | 'card-pcd'
     | 'card-understanding-the-linux-kernel'
-    | 'card-unix-linux-sysadmin-handbook';
+    | 'card-unix-linux-sysadmin-handbook'
+    | 'card-systems-performance';
 
 export interface Exam {
     id: string;
@@ -66,6 +67,7 @@ export const cardColorMap: Record<ColorKey, string> = {
     'card-pcd': 'card-pcd',
     'card-understanding-the-linux-kernel': 'card-understanding-the-linux-kernel',
     'card-unix-linux-sysadmin-handbook': 'card-unix-linux-sysadmin-handbook',
+    'card-systems-performance': 'card-systems-performance',
 };
 
 export const providerMeta: Record<
@@ -811,6 +813,27 @@ const ALL_EXAMS: Exam[] = [
             {
                 label: '完全実践ガイド',
                 href: '/recommended-books/unix-linux-sysadmin-handbook',
+                pct: '完全解説',
+            },
+        ],
+        badge: '名著ガイド',
+        icon: '📚',
+        provider: 'Books',
+    },
+    {
+        id: 'systems-performance',
+        label: 'Systems Performance: Enterprise and the Cloud',
+        abbr: 'Systems Performance',
+        level: 'Performance Engineering',
+        score: '16章+付録 / 18図解',
+        color: 'card-systems-performance',
+        href: '/recommended-books/systems-performance',
+        description:
+            'Brendan Gregg 著『Systems Performance: Enterprise and the Cloud, 2nd Edition』（詳解 システム・パフォーマンス 第2版）を軸に、メソドロジ・ツール・OS・クラウド特有の論点を整理した完全実践ガイド。',
+        domains: [
+            {
+                label: '完全実践ガイド',
+                href: '/recommended-books/systems-performance',
                 pct: '完全解説',
             },
         ],
