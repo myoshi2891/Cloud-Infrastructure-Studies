@@ -31,6 +31,13 @@ const mountSections = () => {
 const linkFor = (id: string): HTMLAnchorElement =>
     document.querySelector(`nav a[href="#${id}"]`) as HTMLAnchorElement;
 
+/** noUncheckedIndexedAccess 下で NAV_ITEMS の添字アクセスを安全に絞り込む */
+const navItemAt = (index: number) => {
+    const item = NAV_ITEMS[index];
+    if (!item) throw new Error(`NAV_ITEMS[${index}] が存在しません`);
+    return item;
+};
+
 beforeEach(() => {
     observerCallback = null;
     vi.stubGlobal(
@@ -60,7 +67,7 @@ afterEach(() => {
 describe('understanding-the-linux-kernel NavBar', () => {
     it('初期状態で NAV_ITEMS[0] が active になる', () => {
         render(<NavBar />);
-        const first = linkFor(NAV_ITEMS[0].id);
+        const first = linkFor(navItemAt(0).id);
         expect(first).not.toBeNull();
         expect(first.classList.contains('active')).toBe(true);
     });
@@ -73,7 +80,7 @@ describe('understanding-the-linux-kernel NavBar', () => {
 
     it('リンククリックで active が切り替わり、対象要素にフォーカスが移動する', () => {
         render(<NavBar />);
-        const targetItem = NAV_ITEMS[2];
+        const targetItem = navItemAt(2);
         const link = linkFor(targetItem.id);
         const section = document.getElementById(targetItem.id) as HTMLElement;
         const focusSpy = vi.spyOn(section, 'focus');
@@ -91,12 +98,12 @@ describe('understanding-the-linux-kernel NavBar', () => {
 
         act(() => {
             observerCallback!([
-                entry(NAV_ITEMS[1].id, 120),
-                entry(NAV_ITEMS[3].id, 40),
+                entry(navItemAt(1).id, 120),
+                entry(navItemAt(3).id, 40),
             ]);
         });
 
-        const activeLink = linkFor(NAV_ITEMS[3].id);
+        const activeLink = linkFor(navItemAt(3).id);
         expect(activeLink.classList.contains('active')).toBe(true);
     });
 
