@@ -199,14 +199,15 @@ export const DIAGRAMS: Record<DiagramId, string> = {
     Integ -->|"失敗"| Fail["ビルド失敗を通知"]
     Verify -->|"VERIFIED"| Prov["Provenance生成 +<br/>Artifact Registryへpush"]
     Verify -->|"NOT_VERIFIED（既定）"| NoProv["Artifact Registryへpush<br/>(provenanceの生成は保証されない)"]
-    Prov --> Gate["Binary Authorization<br/>ゲート"]
+    Prov --> Gate{"Binary Authorization<br/>ポリシー評価<br/>(必要なアテステーションはあるか？)"}
     NoProv --> Gate
-    Gate --> Deploy["Cloud Run / GKEへデプロイ"]
+    Gate -->|"アテステーションあり<br/>（承認済み）"| Deploy["Cloud Run / GKEへデプロイ"]
+    Gate -->|"アテステーションなし / 未承認"| Blocked["デプロイを拒否<br/>(admissionでブロック)"]
 
     classDef highlightFill fill:#1a3a5c,stroke:#4a90d9,color:#ffffff;
     classDef dangerFill fill:#5c1a1a,stroke:#d94a4a,color:#ffffff;
     classDef successFill fill:#1a4a2a,stroke:#4ad97a,color:#ffffff;
     class Prov,Gate,Verify highlightFill
-    class Fail,NoProv dangerFill
+    class Fail,NoProv,Blocked dangerFill
     class Deploy successFill`,
 };
