@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 // フォントは @fontsource で自己ホストする（ビルド時に Google Fonts へ取得しない）。
 // ファミリ名は globals.css の @theme の --font-* トークン側で解決する。
 import '@fontsource-variable/noto-sans-jp/index.css';
@@ -16,6 +16,11 @@ export const metadata: Metadata = {
         template: '%s | Cloud Infrastructure Studies',
     },
     description: 'Google Cloud 認定試験学習ガイド',
+};
+
+// ブラウザ UI の配色を暗色テーマに合わせる（値は globals.css の --color-background と同値）。
+export const viewport: Viewport = {
+    themeColor: '#08090f',
 };
 
 /**
