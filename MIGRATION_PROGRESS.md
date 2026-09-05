@@ -2,6 +2,35 @@
 
 (最終更新日: 2026-09-05)
 
+## 2026-09-05: 推薦図書『UNIX and Linux System Administration Handbook』完全解説ガイド 100%全量移行 (完了)
+
+### 目的
+
+`Unix-linux-sysadmin-handbook-guide.html` を、Next.js App Router 5ファイル構成 (`page.tsx`, `UnixLinuxSysadminHandbookGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/recommended-books/unix-linux-sysadmin-handbook` ルートへ移行。グローバルナビゲーションの「Books」配下に追加。見出し(h1:1, h2:9, h3:41, h4:115)、全39個のテーブル、29個のMermaid図解、全リスト(140件)、全外部リンク(64件)・全本文(121段落)・実践チェックリスト・参考文献一覧を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for unix-linux-sysadmin-handbook` (`d0ba3849`)
+- [x] **Step 1 (Red)**: `test(books): add failing tests for unix-linux-sysadmin-handbook` (`fc5fb69c`)
+- [x] **Step 2 (Green)**: `feat(books): implement unix-linux-sysadmin-handbook to pass tests` (`dc9c72cf`)
+- [x] **Step 3 (Refactor)**: `refactor(books): integrate unix-linux-sysadmin-handbook into routing and update docs` (`df35b68e`)
+- [x] **Step 4 (Archive & Sync)**: `chore(docs): update MIGRATION_PROGRESS.md and archive unix-linux-sysadmin-handbook sources`
+
+### 関連ファイル
+
+- [app/recommended-books/unix-linux-sysadmin-handbook/page.tsx](app/recommended-books/unix-linux-sysadmin-handbook/page.tsx)
+- [app/recommended-books/unix-linux-sysadmin-handbook/UnixLinuxSysadminHandbookGuide.tsx](app/recommended-books/unix-linux-sysadmin-handbook/UnixLinuxSysadminHandbookGuide.tsx)
+- [app/recommended-books/unix-linux-sysadmin-handbook/NavBar.tsx](app/recommended-books/unix-linux-sysadmin-handbook/NavBar.tsx)
+- [app/recommended-books/unix-linux-sysadmin-handbook/constants.ts](app/recommended-books/unix-linux-sysadmin-handbook/constants.ts)
+- [app/recommended-books/unix-linux-sysadmin-handbook/page.css](app/recommended-books/unix-linux-sysadmin-handbook/page.css)
+- [`__tests__/recommended-books/unix-linux-sysadmin-handbook/page.test.tsx`](__tests__/recommended-books/unix-linux-sysadmin-handbook/page.test.tsx)
+- [`__tests__/recommended-books/unix-linux-sysadmin-handbook/NavBar.test.tsx`](__tests__/recommended-books/unix-linux-sysadmin-handbook/NavBar.test.tsx)
+- [docs/migration-inventory/unix-linux-sysadmin-handbook.json](docs/migration-inventory/unix-linux-sysadmin-handbook.json)
+- [archive/Books/html/Unix-linux-sysadmin-handbook-guide.html](archive/Books/html/Unix-linux-sysadmin-handbook-guide.html)
+- [archive/Books/md/Unix-linux-sysadmin-handbook-guide.md](archive/Books/md/Unix-linux-sysadmin-handbook-guide.md)
+
+---
+
 ## 2026-09-05: 推薦図書『Understanding the Linux Kernel』完全解説ガイド 100%全量移行 (完了)
 
 ### 目的
