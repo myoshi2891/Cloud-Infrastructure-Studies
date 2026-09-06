@@ -121,7 +121,7 @@ flowchart LR
 | 広告向けキャッチフレーズ | 「この画像から、SNS広告で使える短いキャッチコピーを3案出して」 | 中程度（0.6〜0.8） |
 | 詩的な描写 | 「この画像が呼び起こす自然の中での感情を、詩的な短い文章で表現して」 | やや高め（0.8〜1.0） |
 
-temperature の考え方の根拠は 3.6 節・5.4 節でまとめて解説します（出典は[^7][^8]）。
+temperature の考え方の根拠は 5.5 節でまとめて解説します（出典は[^7][^8]）。
 
 ---
 
@@ -262,8 +262,7 @@ Agent Studio が生成するコードには、まれに `generate_content_config
 from google.genai import types
 
 generate_content_config = types.GenerateContentConfig(
-    temperature=1.3,   # 高めに設定して独創性を狙う
-    top_p=0.97,
+    temperature=1.3,   # 高めに設定して独創性を狙う（top_p は同時に動かさない）
     max_output_tokens=64,  # 短い出力を想定して余裕を持たせつつ制限
 )
 ```
