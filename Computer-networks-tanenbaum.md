@@ -555,7 +555,7 @@ sequenceDiagram
         Browser->>Server: TCP 3ウェイハンドシェイク
         Browser->>Server: TLSハンドシェイク(HTTPSの場合)
     else HTTP/3 (QUIC over UDP)
-        Browser->>Server: QUICハンドシェイク<br/>(TLS 1.3を統合、1-RTT/0-RTTで確立)
+        Browser->>Server: QUICハンドシェイク<br/>(TLS 1.3を統合、新規接続は1-RTTで確立)<br/>0-RTTは再開時のみ利用可<br/>(リプレイ安全な冪等リクエストに限定)
     end
     Browser->>Server: HTTP GETリクエスト
     Note over Server: リクエストを処理し<br/>レスポンスを生成
