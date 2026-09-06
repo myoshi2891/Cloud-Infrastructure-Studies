@@ -1100,9 +1100,11 @@ generate_content_config = types.GenerateContentConfig(
 
                     <h3>6.3 検証ポイント</h3>
                     <p>
-                        セルを再実行し、生成されたタグラインの文中に
+                        セルを再実行し、生成されたタグラインの文中にリテラル文字列
                         <code>nature</code>
-                        という単語（または明確にその概念を表す語）が含まれているかを確認します。含まれていなければ、Input
+                        が含まれているかを確認します。自然を連想させる別の語（<code>natural</code>、<code>outdoors</code>
+                        など）では合格とみなさず、<code>nature</code>
+                        そのものが出力される必要があります。含まれていなければ、Input
                         文言をより明示的にする、あるいは Example
                         側のトーンとの整合を取るなど、プロンプトを再調整します。最後にノートブックを保存します。
                     </p>
@@ -1173,8 +1175,9 @@ generate_content_config = types.GenerateContentConfig(
                                         <code>temperature</code>等のサンプリングパラメータが低いまま
                                     </td>
                                     <td>
-                                        <code>temperature</code
-                                        >・<code>top_p</code>を引き上げる（モデルが対応している場合）
+                                        <code>temperature</code> か
+                                        <code>top_p</code>
+                                        のどちらか一方を引き上げる（両方を同時に上げない。モデルが対応している場合）
                                     </td>
                                     <td>[7][8]</td>
                                 </tr>
