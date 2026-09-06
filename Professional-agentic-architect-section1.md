@@ -291,8 +291,8 @@ Agent Search は、Gemini Enterprise Agent Platform の**拡張機能（extensio
 | 種別 | 説明 | 例 |
 |---|---|---|
 | データコネクタ（取り込み用） | Agent Search が対象アプリケーションのデータをインデックスへ取り込むための接続。多くは**読み取り専用**で、定期的に同期される | Jira、Confluence、Salesforce |
-| 接続アプリ（Workflow Builder） | 取り込みだけでなく、設定に応じて対象アプリの**検索やデータ更新のアクション**を実行できる | Google Workspace、Slack、Jira、ServiceNow |
-| Agent Platform 拡張機能 | **ユーザーに代わって外部システムのアクション（取引等）を実行**できる | メール送信、チケット作成等 |
+| 接続アプリ（Workflow Builder） | インデックスへの取り込みではなく、**実行時に対象アプリへ問い合わせて検索・データ更新のアクション**を行う接続。Workflow Builder のエージェントが呼び出す | Google Workspace、Slack、Jira、ServiceNow |
+| Agent Platform 拡張機能 | **ユーザーに代わって外部システムのアクション（取引等）を実行**できる。Workflow Builder の接続アプリと同じく実行時にライブの外部システムを呼ぶ経路であり、取り込みとは別系統 | メール送信、チケット作成等 |
 
 出題ガイドの試験対象ツール一覧にも記載されている **Agent Search** と **Agent Registry・MCPサーバー** の連携についても触れておくと、Agent Search のデータストアは Model Context Protocol（MCP）サーバーとしても公開できるため、ADK エージェントや CX Agent Studio、その他 MCP 対応クライアントから「1つのツール」として呼び出すことができます[^24]。CX Agent Studio 側にも、データストアを直接ツールとして追加する仕組みが用意されています（Data store tools、Website data store tools、Cloud storage data store tools、File Search tools など）[^8]。
 
@@ -304,11 +304,10 @@ flowchart LR
         S3["Cloud Storage / BigQuery / Webサイト"]
     end
     Sources --> Conn["データコネクタ(取り込み用/読み取り専用/定期同期)<br/>ACL対応コネクタ+ソース側ACL+権限/スコープ+identity syncを<br/>すべて構成した場合にユーザー単位ACLが適用"]
-    Sources --> ConnApp["接続アプリ(Workflow Builder)<br/>取り込み+検索/データ更新アクション"]
+    Sources --> ConnApp["接続アプリ(Workflow Builder)<br/>実行時の検索/データ更新アクション(取り込みではない)"]
     Sources --> Ext["Agent Platform拡張機能<br/>ユーザーに代わる外部アクション実行"]
     Conn --> DS["Agent Searchデータストア(構造化/非構造化/Webサイト)"]
-    ConnApp -- "取り込み" --> DS
-    ConnApp -- "検索/データ更新アクション" --> Sources
+    ConnApp -- "実行時の検索/データ更新アクション" --> Sources
     DS --> Index["検索インデックス(意味検索+キーワード検索)"]
     Index --> Ground["Geminiによるグラウンディング/引用付き回答生成"]
     Ground --> Agent["Gemini Enterpriseエージェント(Workflow Builder / CX Agent Studio)"]
@@ -323,7 +322,7 @@ flowchart LR
 > **ベストプラクティス**
 > - データストアと、その上に構築する検索アプリ（あるいはエージェントのツール）は**疎結合**である。1つのデータストアを複数の検索アプリで再利用したり、逆に複数のデータストアを1つのアプリで横断検索したりできるため、「検索ウィジェット」から「エージェントのツール」へ用途を変えたい場合でも、データの再取り込みは不要である。
 > - データコネクタは同期対象アプリケーションの**アクセス制御（ACL）を尊重**できる。ただしユーザー単位のACLが実際に適用されるのは、①ACL対応のコネクタを使用し、②データソース側でACLが設定されており、③同期に必要な権限・スコープが付与され、④identity sync（IDプロバイダとのID紐付け）が構成されている、という条件がすべて満たされた場合に限る。これらが未構成の場合はACLは適用されないため、設計時に4条件の充足を必ず確認する。
-> - 「読み取りだけで十分か」「エージェントに書き込み・取引の実行までさせたいか」で、データコネクタと拡張機能のどちらを使うかを判断する。
+> - 「インデックス済みの読み取りだけで十分か」なら**データコネクタ**（取り込み＋定期同期）、「常に最新の値を実行時に取りに行きたい、あるいは対象アプリへ書き込ませたい」なら**Workflow Builder の接続アプリ**、「ユーザーに代わって外部システムで取引などのアクションを完了させたい」なら**Agent Platform 拡張機能**を選ぶ。接続アプリと拡張機能は取り込み経路ではなく実行時の検索・書き込み経路である点を、データコネクタと明確に区別する。
 
 ### 3.2 非構造化マルチモーダルデータ（動画・音声・画像）の取り込みと処理
 

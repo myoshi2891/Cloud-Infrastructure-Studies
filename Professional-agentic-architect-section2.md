@@ -50,7 +50,7 @@ pie showData
 | Skill Registry | スキルを一元管理・検証・配布するセキュアなリポジトリ[^30] | 2.2.1, 2.2.2 |
 | Agent Registry | エージェント・MCPサーバー・スキル・エンドポイントを登録・発見・ガバナンスする統合カタログ[^28] | 2.2.2 |
 | Cloud Run | Agents CLIのデフォルトのデプロイターゲットの1つ[^24] | 2.2.2 |
-| Google Cloud Observability (Cloud Logging / Cloud Trace) | **Cloud Trace** はデプロイしたエージェントに対して常時有効。一方、**プロンプト／レスポンスのログ**は既定では有効化されず、素の `agents-cli deploy` は保存先のCloud StorageバケットやBigQueryデータセットを作成しない（Terraform等で別途プロビジョニングした場合に利用可能になる）[^24] | 2.2.2 |
+| Google Cloud Observability (Cloud Logging / Cloud Trace) | 3系統を区別する。①**Cloud Trace のスパン**（レイテンシ・呼び出し階層）はデプロイしたエージェントに対して既定で有効。②**メッセージ本文（プロンプト／レスポンス）の記録**は `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT` が既定 `NO_CONTENT` のため記録されず、この1つの環境変数が Trace のスパン属性と Cloud Logging のイベントログの**双方**の本文出力を制御する。③**Cloud Storage／BigQuery へのログ出力**はさらに別条件で、素の `agents-cli deploy` は保存先バケット／データセットを作成しないため、Terraform 等でプロビジョニングしたうえでアップロード先の設定を行って初めて利用可能になる[^24] | 2.2.2 |
 
 ---
 
@@ -269,7 +269,8 @@ sequenceDiagram
     participant CLI as agents-cli
     participant Cloud as Cloud Run／GKE／Agent Runtime
     participant Obs as Cloud Trace／Cloud Logging
-    participant Reg as Agent Registry／Skill Registry
+    participant AReg as Agent Registry
+    participant SReg as Skill Registry
 
     Dev->>Agent: 自然言語でエージェント構築を指示
     Agent->>CLI: agents-cli scaffold
@@ -283,7 +284,9 @@ sequenceDiagram
     Cloud-->>Obs: トレースを自動送信
     Dev->>Agent: 監視基盤のセットアップを指示
     Agent->>Cloud: サービスアカウント／バケット／BQデータセットを作成
-    CLI->>Reg: スキル・エージェントを登録しガバナンスを適用
+    Agent->>CLI: エージェントの公開を指示
+    CLI->>AReg: エージェントを公開・登録し発見とガバナンスの対象にする
+    Agent->>SReg: スキルの作成／更新／検索／削除を実行
 ```
 
 #### ベストプラクティス
