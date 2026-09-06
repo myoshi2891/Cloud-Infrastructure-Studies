@@ -142,12 +142,23 @@ sequenceDiagram
 
 Online Monitorを機能させるには、エージェント側が特定のOpenTelemetryシグナルをCloud Traceに出力している必要があります。具体的には、エージェント名・説明・会話IDを含む「invoke agentスパン」と、プロンプト・応答・システム指示・ツール定義を含む `gen_ai.client.inference.operation.details` イベントです[^6]。ADKを使っている場合は、次の環境変数を設定することでこれらのテレメトリを有効化します[^6]。
 
-```
+```bash
 OTEL_SEMCONV_STABILITY_OPT_IN='gen_ai_latest_experimental'
 OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT='EVENT_ONLY'
 ```
 
 画像や大きなドキュメントなどマルチモーダルなデータを扱う場合は、トレースのスパンに直接埋め込むのではなく、`OTEL_INSTRUMENTATION_GENAI_UPLOAD_FORMAT` などの環境変数でCloud Storageバケットへ記録する構成が推奨されています[^6]。
+
+> **⚠️ 有効化前に必須のデータ保護要件**
+>
+> `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT` はプロンプト・モデル応答・システム指示の**本文そのもの**をテレメトリとして永続化し、`OTEL_INSTRUMENTATION_GENAI_UPLOAD_FORMAT` はマルチモーダルデータをCloud Storageへ書き出します。エンドユーザー入力にはPII・認証情報・機密文書が含まれ得るため、これらは「観測性の設定」ではなく**個人データの新たな保管先を増やす変更**として扱い、有効化前に次を満たすこと。
+>
+> - **データ分類**：捕捉対象の会話に含まれ得るデータ種別（PII、決済情報、健康情報、社外秘）を事前に棚卸しし、分類に応じて捕捉可否を判断する。分類が未確定のうちは本番で有効化しない。
+> - **マスキング／秘匿化**：スパンやアップロード対象へ書き出す前段でPII・シークレットのリダクションを行う。全文捕捉が不要なら `EVENT_ONLY` などスコープの狭い設定や、開発・ステージング環境限定の有効化にとどめる。
+> - **最小権限のIAM**：トレース・ログ・Cloud Storageバケットの閲覧権限を調査担当に限定する。`roles/storage.objectViewer` などをプロジェクト全体へ広く付与せず、バケット単位で絞る。既定のプロジェクト閲覧者が会話本文を読める状態にしない。
+> - **暗号化**：保存先バケットとログシンクに顧客管理鍵（CMEK）を適用し、転送経路のTLSを含めて暗号化要件を満たすことを確認する。
+> - **保持期間と削除**：Cloud Loggingのリテンション設定とCloud Storageのライフサイクルルールで保持期間の上限を明示し、期限到達で自動削除する。加えて、削除請求（GDPRの消去権など）に応えるための対象特定・削除手順を運用手順として定義する。
+> - **同意と告知**：エンドユーザーの会話本文を保存する旨をプライバシーポリシー・利用規約に反映し、必要な同意取得と越境移転の要件（保存リージョンの選定を含む）を法務・プライバシー担当と確認する。
 
 **ベストプラクティス**
 
@@ -159,12 +170,12 @@ OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT='EVENT_ONLY'
 
 Exam Guideが挙げる3つの選択肢 ―― **ADK evaluation tooling (evalset)**、**Agent Platform Gen AI evaluation service**、**custom autoraters** ―― は、互いに排他的な選択肢ではなく、開発ライフサイクルの段階によって組み合わせて使うものです。
 
-| 観点 | ADK Evaluation（evalset／test file） | Agent Platform Gen AI Evaluation Service | Custom Autoraters（カスタム評価関数） |
-| --- | --- | --- | --- |
-| 主な利用段階 | ローカル開発でのプロンプト・ツール構成の高速なイテレーション[^5] | デプロイ済みエージェントの評価、履歴トレースや外部ログの分析[^5] | 標準指標でカバーできない業務固有の評価ロジックが必要な場合[^7] |
-| 実行方法 | `adk web`（Web UI）、`pytest`、`adk eval`（CLI）、`adk conformance`（回帰テスト）[^4] | Google Cloudコンソール、Agent Platform SDK（`client.evals.evaluate()`）[^5][^7] | Pythonで評価関数を定義し、Evaluation ServiceのSDKに登録[^7] |
-| 得意なこと | ツール呼び出し順序の厳密比較、CI/CDへの組み込み、回帰テスト | マルチターンAutoRaterによる会話全体の評価、失敗パターンのクラスタリング、プロンプト最適化 | LLM-as-judge方式によるドメイン固有スコアリング |
-| 認証方式 | `GOOGLE_API_KEY` またはApplication Default Credentials（品質評価系の指標を使う場合）[^4] | Agent Platform SDKの初期化（プロジェクト・リージョン指定）[^5] | Evaluation Service SDKと同様 |
+| 観点 | ADK Evaluation（evalset／test file） | Agent Platform Gen AI Evaluation Service | Custom LLM Metrics（判定LLMによるカスタム指標） | Custom Code Metrics（決定論的なカスタム評価関数） |
+| --- | --- | --- | --- | --- |
+| 主な利用段階 | ローカル開発でのプロンプト・ツール構成の高速なイテレーション[^5] | デプロイ済みエージェントの評価、履歴トレースや外部ログの分析[^5] | 標準指標でカバーできない主観的・定性的な品質を判定LLMに評価させたい場合[^7] | 正解が機械的に判定できる業務ルール（形式・数値・スキーマ準拠など）を検証したい場合[^7] |
+| 実行方法 | `adk web`（Web UI）、`pytest`、`adk eval`（CLI）、`adk conformance`（回帰テスト）[^4] | Google Cloudコンソール、Agent Platform SDK（`client.evals.evaluate()`）[^5][^7] | 判定用プロンプト（ルーブリック）と採点基準を定義し、Evaluation ServiceのSDKに登録[^7] | Pythonで決定論的な評価関数を定義し、Evaluation ServiceのSDKに登録[^7] |
+| 得意なこと | ツール呼び出し順序の厳密比較、CI/CDへの組み込み、回帰テスト | マルチターンAutoRaterによる会話全体の評価、失敗パターンのクラスタリング、プロンプト最適化 | LLM-as-judge方式によるドメイン固有スコアリング（トーン、コンプライアンス基準への準拠度など） | 再現性のある合否判定（正規表現・JSONスキーマ検証・数値許容誤差など）。判定LLMのコストとばらつきを伴わない |
+| 認証方式 | `GOOGLE_API_KEY` またはApplication Default Credentials（品質評価系の指標を使う場合）[^4] | Agent Platform SDKの初期化（プロジェクト・リージョン指定）[^5] | Evaluation Service SDKと同様（判定モデルの呼び出し権限が必要） | Evaluation Service SDKと同様 |
 
 Agent Platform Gen AI Evaluation Serviceは、次の6段階の反復ワークフローとして整理されています[^5]。
 
@@ -185,7 +196,7 @@ flowchart LR
 - **Multi-turn evaluation**：会話履歴全体を **Multi-Turn AutoRaters** で自動評価する。これらのAutoRaterは意図の抽出を分析し、動的にルーブリックを生成し、指示遵守についての客観的な判定根拠を提示する。
 - **Prompt optimization**：失敗パターンを特定し、システム指示の改善案を反復的に提案・検証する。
 
-「custom autoraters」は、Evaluation Serviceの中で **Custom functions** として位置づけられており、Pythonで独自の評価ロジックを実装できます[^8]。標準のLLM-as-judge指標や `rubric_based_*` 系の指標で表現しきれない、業務固有のスコアリングルール（例：社内コンプライアンス基準への準拠度）を定義したい場合に使用します。評価データセットの用意方法も柔軟で、プロンプトを直接アップロードする方法、テンプレート＋変数ファイルで組み立てる方法、本番ログから直接サンプリングする方法、合成データ生成で大量の一貫したサンプルを作る方法の4通りが用意されています[^8]。
+「custom autoraters」は、Evaluation Serviceの中で **Custom functions** として位置づけられており、Pythonで独自の評価ロジックを実装できます[^8]。標準のLLM-as-judge指標や `rubric_based_*` 系の指標で表現しきれない、業務固有のスコアリングルールを定義したい場合に使用します。実装形態は2つに分かれ、判定LLMにルーブリックを与えて定性的な品質を採点させる **Custom LLM Metrics**（例：社内コンプライアンス基準への準拠度）と、判定LLMを介さず入出力をコードで検証する決定論的な **Custom Code Metrics**（例：JSONスキーマ準拠、数値の許容誤差判定）を、評価したい対象の性質に応じて使い分けます。評価データセットの用意方法も柔軟で、プロンプトを直接アップロードする方法、テンプレート＋変数ファイルで組み立てる方法、本番ログから直接サンプリングする方法、合成データ生成で大量の一貫したサンプルを作る方法の4通りが用意されています[^8]。
 
 失敗の分析についても専用の仕組みがあります。評価結果の中で失敗したケースは自動的に **Loss Clusters（損失クラスタ）** としてグループ化され、どのような種類の失敗が多いのかを俯瞰できます[^9]。
 
@@ -221,7 +232,12 @@ async def test_with_single_test_file():
     )
 ```
 
-「応答品質」だけでなく「リトリーバル品質」も評価対象になる点が試験のポイントです。RAGパイプラインを組み込んだエージェントでは、`hallucinations_v1`（取得したコンテキストに対する応答の裏付け度）のような指標を使うことで、検索結果に基づかない虚偽の応答をしていないかを定量的にチェックできます[^4]。
+「応答品質」だけでなく「リトリーバル品質」も評価対象になる点が試験のポイントです。重要なのは、**この2つは別々の指標で測る必要がある**ことです。
+
+- **応答品質（groundedness）**：`hallucinations_v1` は「取得できたコンテキストに対して応答がどれだけ裏付けられているか」を測る指標であり、検索結果に基づかない虚偽の応答を検出できます[^4]。ただしこれは*応答*の裏付け度であって、**リトリーバル自体の良し悪しは測れません**。検索が的外れな文書しか返さなくても、エージェントが「情報がありません」と答えれば `hallucinations_v1` は高いスコアになり得ます。
+- **リトリーバル品質（retrieval quality）**：検索器が正しい文書を、正しい順序で引けているかを測るには、クエリごとに「正解となる関連文書」を付与したゴールデンデータセットが必要です。その上で **recall@k**（正解文書を上位k件に取りこぼしなく含められたか）、**precision@k**（上位k件の関連度）、**MRR / nDCG**（正解文書がどれだけ上位に並んだか）といった、正解ラベルとの照合に基づく指標で評価します。
+
+つまり `hallucinations_v1` はリトリーバル品質の代理指標にはならないため、RAGパイプラインの評価では「正解文書ラベル付きデータセットによるリトリーバル指標」と「`hallucinations_v1` による応答の裏付け度」の**両方**を並行して計測します。リトリーバル指標が低ければ検索器（チャンク分割、埋め込みモデル、リランカー、top-k）を、リトリーバル指標は高いのに `hallucinations_v1` が低ければ生成側のプロンプト・引用制約を疑う、という切り分けが可能になります。
 
 さらにADKは、**Conformance Testing（適合性テスト）** という回帰テストの仕組みも提供しています[^4]。これは「過去に記録・検証済みの正解となるやりとり（ゴールデンベースライン）」に対して、コード変更後のエージェントの挙動が一致し続けているかを検証する仕組みです。
 
@@ -244,7 +260,7 @@ Conformance Testingのディレクトリ構成は `tests/<category_name>/<test_c
 
 - ゴールデンベースラインは手動で作成せず、`adk conformance create` による自動記録を使う。LLMリクエストやツール呼び出しは複雑で、手動でのYAML作成はミスの元になる[^4]。
 - Conformance Testingは `adk conformance test` としてCI/CDパイプライン（プルリクエスト時のゲートなど）に組み込み、期待される挙動からの逸脱があればマージをブロックする[^4]。
-- リトリーバル品質を見る場合は `hallucinations_v1` のような裏付け度を測る指標を必ず組み合わせ、「もっともらしいが検索結果に基づかない回答」を検出できるようにする[^4]。
+- リトリーバル品質は、クエリごとに正解となる関連文書を付与したゴールデンデータセットを用意し、recall@k・precision@k・nDCGなど**正解ラベルとの照合に基づく検索指標**で測る。`hallucinations_v1` は応答の裏付け度（groundedness）を測る指標であり、リトリーバル品質の代替にはならないため、検索指標と併せて計測して「もっともらしいが検索結果に基づかない回答」を別途検出する[^4]。
 
 ## 4.2 本番ワークロードのデプロイとスケーリング
 
