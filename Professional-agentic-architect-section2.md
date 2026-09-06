@@ -123,7 +123,7 @@ GKE Agent Sandboxは、この上に3つのKubernetesプリミティブを提供�
 |---|---|---|---|---|
 | Antigravityローカル実行 | OSプロセスレベル（Terminal Policyによる実行制御のみ） | 個人開発・プロトタイピング | 低 | 信頼できるコード・小規模な検証 |
 | Cloud Workstations | VMベースの永続的な隔離環境（ユーザー間分離） | チーム開発環境の標準化、リモートでのAntigravity実行 | 中 | 複数人開発、BYOD対応、監査要件がある組織 |
-| GKE Agent Sandbox（gVisor） | カーネルレベル分離（Sentry/Goferによるシステムコール傍受）＋デフォルト拒否ネットワークポリシー | 本番環境でのLLM生成コード実行、マルチテナントSaaS | 高（Kubernetesクラスタ運用が前提） | 大規模・マルチテナント・未信頼コードの実行が常態化する環境 |
+| GKE Agent Sandbox（gVisor） | カーネルレベル分離（Sentry/Goferによるシステムコール傍受）＋マネージドなネットワークポスチャ（Sandbox Router以外からのingressを拒否し、RFC1918レンジ・CoreDNS・メタデータサーバへのegressを拒否。ただしパブリックインターネットへのegressは既定で許可） | 本番環境でのLLM生成コード実行、マルチテナントSaaS | 高（Kubernetesクラスタ運用が前提） | 大規模・マルチテナント・未信頼コードの実行が常態化する環境 |
 
 ```mermaid
 flowchart TD
