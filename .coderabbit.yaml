@@ -3,6 +3,6 @@
 reviews:
     path_filters:
         - '!archive/**'
-        - '!Challenge-Lab/**/*.html'
+        - '!Challenge-Lab/**'
         - '!.coderabbit.yaml'
         - '!.gitignore'
