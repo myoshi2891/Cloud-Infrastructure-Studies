@@ -20,6 +20,11 @@ describe('recommended-books guide theme token ownership', () => {
         expect(globals).toContain('--color-pca-s4-background: #07111e');
         expect(globals).toContain('--color-pca-s4-mermaid-label: #eaf2ff');
         expect(globals).toContain('--color-pca-s4-heading-strong: #e0e8f6');
+
+        for (const slug of GUIDES) {
+            expect(globals).toMatch(new RegExp(`--color-theme-${slug}-bg\\s*:`));
+            expect(globals).toMatch(new RegExp(`--color-theme-${slug}-fg\\s*:`));
+        }
     });
 
     it.each(GUIDES)('%s declares no component-local custom properties', (slug) => {
