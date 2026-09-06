@@ -147,14 +147,20 @@ OTEL_SEMCONV_STABILITY_OPT_IN='gen_ai_latest_experimental'
 OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT='EVENT_ONLY'
 ```
 
-画像や大きなドキュメントなどマルチモーダルなデータを扱う場合は、トレースのスパンに直接埋め込むのではなく、`OTEL_INSTRUMENTATION_GENAI_UPLOAD_FORMAT` などの環境変数でCloud Storageバケットへ記録する構成が推奨されています[^6]。
+画像や大きなドキュメントなどマルチモーダルなデータを扱う場合は、トレースのスパンに直接埋め込むのではなく、環境変数でCloud Storageバケットへ書き出す構成が推奨されています[^6]。アップロードは `OTEL_INSTRUMENTATION_GENAI_UPLOAD_FORMAT` 単体では有効にならず、アップロード用のフック（`OTEL_INSTRUMENTATION_GENAI_COMPLETION_HOOK`）と書き出し先（`OTEL_INSTRUMENTATION_GENAI_UPLOAD_BASE_PATH`）を併せて指定する必要があります[^6]。
+
+```bash
+OTEL_INSTRUMENTATION_GENAI_COMPLETION_HOOK='upload'
+OTEL_INSTRUMENTATION_GENAI_UPLOAD_BASE_PATH='gs://<バケット名>/<プレフィックス>'
+OTEL_INSTRUMENTATION_GENAI_UPLOAD_FORMAT='json'
+```
 
 > **⚠️ 有効化前に必須のデータ保護要件**
 >
 > `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT` はプロンプト・モデル応答・システム指示の**本文そのもの**をテレメトリとして永続化し、`OTEL_INSTRUMENTATION_GENAI_UPLOAD_FORMAT` はマルチモーダルデータをCloud Storageへ書き出します。エンドユーザー入力にはPII・認証情報・機密文書が含まれ得るため、これらは「観測性の設定」ではなく**個人データの新たな保管先を増やす変更**として扱い、有効化前に次を満たすこと。
 >
 > - **データ分類**：捕捉対象の会話に含まれ得るデータ種別（PII、決済情報、健康情報、社外秘）を事前に棚卸しし、分類に応じて捕捉可否を判断する。分類が未確定のうちは本番で有効化しない。
-> - **マスキング／秘匿化**：スパンやアップロード対象へ書き出す前段でPII・シークレットのリダクションを行う。全文捕捉が不要なら `EVENT_ONLY` などスコープの狭い設定や、開発・ステージング環境限定の有効化にとどめる。
+> - **マスキング／秘匿化**：`EVENT_ONLY` は捕捉内容を減らす設定ではなく、プロンプト・モデル応答・ユーザーIDをイベントとして**Cloud Loggingに記録する**設定である。本文の捕捉が許容できない場合は、スパン・イベント・アップロード対象へ書き出す前段でPII・シークレットのリダクションを行うか、`NO_CONTENT` を選択する。なお、Online Monitorが必要とするのは前述の特定のOpenTelemetryシグナル（invoke agentスパンと `gen_ai.client.inference.operation.details` イベント）であり、`EVENT_ONLY` を設定しただけで監視が成立するわけではない。本文捕捉を伴う設定は、まず開発・ステージング環境限定の有効化から始める。
 > - **最小権限のIAM**：トレース・ログ・Cloud Storageバケットの閲覧権限を調査担当に限定する。`roles/storage.objectViewer` などをプロジェクト全体へ広く付与せず、バケット単位で絞る。既定のプロジェクト閲覧者が会話本文を読める状態にしない。
 > - **暗号化**：保存先バケットとログシンクに顧客管理鍵（CMEK）を適用し、転送経路のTLSを含めて暗号化要件を満たすことを確認する。
 > - **保持期間と削除**：Cloud Loggingのリテンション設定とCloud Storageのライフサイクルルールで保持期間の上限を明示し、期限到達で自動削除する。加えて、削除請求（GDPRの消去権など）に応えるための対象特定・削除手順を運用手順として定義する。
