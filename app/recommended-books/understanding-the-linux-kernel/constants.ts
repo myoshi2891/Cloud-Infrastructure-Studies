@@ -726,7 +726,7 @@ export type DiagramId = 'diag-1' | 'diag-2' | 'diag-3' | 'diag-4' | 'diag-5' | '
 export const DIAGRAM_LABELS: Record<DiagramId, string> = {
     'diag-1': "0.1 オペレーティングシステムとカーネルの違いの解説図",
     'diag-2': "0.3 プロセス／カーネルモデル（Process/Kernel Model）の解説図",
-    'diag-3': "0.4 リエントラント（再入可能）カーネルの解説図",
+    'diag-3': "0.4 本書の学習の道筋（章の読み進め順）の解説図",
     'diag-4': "1.5 Unixファイルシステムの概観の解説図",
     'diag-5': "2.1 メモリアドレスの3つの顔の解説図",
     'diag-6': "2.4〜2.5 ページング機構の解説図",
