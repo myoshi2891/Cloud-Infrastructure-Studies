@@ -3,4 +3,4 @@
 reviews:
     path_filters:
         - '!archive/**'
-        - '!Challenge-Lab/**'
+        - '!Challenge-Lab/**/*.html'
