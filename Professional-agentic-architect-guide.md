@@ -303,7 +303,7 @@ flowchart TD
 
 #### 開発ツールとしてのADK（Agent Development Kit）
 
-**Agent Development Kit**（ADK）は、Python・TypeScript・Go・Java・Kotlinに対応した、オープンソースのコードファーストなエージェント構築フレームワークです。Geminiとの親和性が高い一方でモデル非依存・デプロイ先非依存に設計されており、通常のソフトウェア開発に近い感覚でエージェント開発ができます[^8][^9]。
+**Agent Development Kit**（ADK）は、Python・TypeScript・Go・Javaに対応した、オープンソースのコードファーストなエージェント構築フレームワークです。Geminiとの親和性が高い一方でモデル非依存・デプロイ先非依存に設計されており、通常のソフトウェア開発に近い感覚でエージェント開発ができます[^8][^9]。
 
 ADKによる開発は、次のような段階的な拡張パスをたどるのが一般的です。
 
@@ -749,7 +749,8 @@ flowchart TB
 
 ## 学習チェックリスト
 
-- [ ] Workflow Builder（旧 Agent Designer）とCX Agent Studioの違いと、それぞれの状態ベースワークフロー（ページ／遷移ルート／イベントハンドラ）の設定方法を説明できる
+- [ ] CX Agent Studio（およびDialogflow CX）の状態ベースワークフロー（ページ／遷移ルート／イベントハンドラ）の設定方法を説明できる
+- [ ] Workflow Builder（旧 Agent Designer）のフローキャンバスが業務手順を可視化するタスク指向のFlow機能であり、CX Agent Studioの状態ベースワークフローとは別概念であることを説明できる
 - [ ] Gemini Enterpriseへのエンタープライズデータ接続と、非構造化マルチモーダルデータの取り込みの考慮点を説明できる
 - [ ] MCPサーバー・カスタムスキル・セキュアサンドボックス（GKE／Cloud Workstations）を使ったコーディングエージェントの構成を説明できる
 - [ ] Antigravityにおけるスキル・プラグイン・拡張フック・ルール・サブエージェントの役割を説明できる

@@ -307,7 +307,8 @@ flowchart LR
     Sources --> ConnApp["接続アプリ(Workflow Builder)<br/>取り込み+検索/データ更新アクション"]
     Sources --> Ext["Agent Platform拡張機能<br/>ユーザーに代わる外部アクション実行"]
     Conn --> DS["Agent Searchデータストア(構造化/非構造化/Webサイト)"]
-    ConnApp --> DS
+    ConnApp -- "取り込み" --> DS
+    ConnApp -- "検索/データ更新アクション" --> Sources
     DS --> Index["検索インデックス(意味検索+キーワード検索)"]
     Index --> Ground["Geminiによるグラウンディング/引用付き回答生成"]
     Ground --> Agent["Gemini Enterpriseエージェント(Workflow Builder / CX Agent Studio)"]
@@ -410,7 +411,9 @@ flowchart TD
 - [ ] Agent Search（旧Vertex AI Search）のデータストアと、データコネクタ／拡張機能の違いを説明できる
 - [ ] データコネクタでユーザー単位ACLが適用されるための4条件（ACL対応コネクタ・ソース側ACL・必要な権限／スコープ・identity sync）と、データストアと検索アプリが疎結合である利点を説明できる
 - [ ] Agent SearchのMCPサーバー経由でのツール公開の仕組みを理解している
-- [ ] Gemini Embedding 2による統一マルチモーダル埋め込み空間の特徴（対応モダリティ・次元数・タスクタイプ）を説明できる
+- [ ] Gemini Embedding 2による統一マルチモーダル埋め込み空間の特徴（対応モダリティ・入力量の目安・MRLによる次元数の切り詰め）を説明できる
+- [ ] Gemini Embedding 2のカスタムタスク指示形式（`task: search result | query: {content}` のようなプロンプト形式）でタスクを指定できる
+- [ ] 従来のテキスト埋め込みAPIが使う`task_type`列挙値との違いを説明できる
 - [ ] 動画理解における「静的な固定フレームレート処理」と「エージェント型動画理解」の違いを説明できる
 - [ ] マルチモーダルデータセット（Agent Platform）がBigQueryを基盤とすることと、そのコスト構造を理解している
 
