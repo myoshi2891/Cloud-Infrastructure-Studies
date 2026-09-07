@@ -1025,7 +1025,7 @@ flowchart TB
                 <p>
                     データリンク層は、同一のリンク(同一セグメント)上にある隣接ノード間で、ビット列を「フレーム」という単位にまとめ、誤り検出を行ったうえで受け渡す役割を担います。ネットワーク層のIPアドレスとは異なり、この層では<strong
                         >MACアドレス(Media Access Control address)</strong
-                    >という48ビットの物理アドレスが使われます。
+                    >というリンク層アドレス(一般的には48ビット)が使われます。48ビットのEUI-48が主流ですが、IEEE 802.15.4などではEUI-64が使われ、またNICに焼き付けられた値だけでなく、管理者による設定やプライバシー保護目的のランダム化によって変更された値が使われることもあります。
                 </p>
 
                 <h3 id="step2-1">フレーミングと誤り検出</h3>
@@ -1211,8 +1211,12 @@ flowchart TD
     Sense2 --&gt;|使用中| Defer["送信を保留し待機"]
     Defer --&gt; Sense2
     Sense2 --&gt;|一定時間空いている| RTS["必要に応じてRTS&lt;br/&gt;送信要求フレームを送出"]
-    RTS --&gt; CTS["受信側からCTS&lt;br/&gt;送信許可フレームを受信"]
-    CTS --&gt; Send2["データフレームを送信"]
+    RTS --&gt; CTS{"一定時間内に受信側からCTS&lt;br/&gt;送信許可フレームを受信できたか"}
+    CTS --&gt;|"受信した"| Send2["データフレームを送信"]
+    CTS --&gt;|"CTSタイムアウト"| RtsRetry{"RTSの再送回数が&lt;br/&gt;上限に達したか"}
+    RtsRetry --&gt;|"未達"| RtsBackoff["ランダムバックオフ後にRTSを再送"]
+    RtsBackoff --&gt; RTS
+    RtsRetry --&gt;|"上限に達した"| RtsFail["送信失敗&lt;br/&gt;フレームを破棄し上位層へ通知"]
     Send2 --&gt; ACK{"受信側からACKが&lt;br/&gt;返ってきたか"}
     ACK --&gt;|ACKなし=衝突とみなす| Backoff2["ランダムバックオフ後に再送"]
     Backoff2 --&gt; Sense2
@@ -1264,7 +1268,7 @@ flowchart TD
                             <tr class="odd">
                                 <td>Wi-Fi 7</td>
                                 <td>802.11be</td>
-                                <td>Wi-Fi Alliance認証2024年1月、IEEE正式標準化2025年</td>
+                                <td>Wi-Fi Alliance認証2024年1月、IEEE承認2024年9月、標準公開2025年7月</td>
                                 <td>320MHz</td>
                                 <td>MLO(複数リンク同時利用)、4K-QAM</td>
                             </tr>
@@ -1994,7 +1998,7 @@ flowchart LR
                                 <td>Wi-Fi</td>
                                 <td>
                                     Wi-Fi 7(IEEE
-                                    802.11be)が2025年に正式標準化され、2026年通年で全世界の対応機器出荷が約11億台規模に到達する見込み。次世代のWi-Fi
+                                    802.11be)がIEEE承認2024年9月・標準公開2025年7月を経て正式標準化され、2026年通年で全世界の対応機器出荷が約11億台規模に到達する見込み。次世代のWi-Fi
                                     8(802.11bn)は速度よりも複数AP協調やローミングの安定性を重視する方向で、標準化目標は2028年
                                 </td>
                                 <td>Network World</td>
@@ -2063,7 +2067,7 @@ flowchart TD
     Q6 --&gt;|TCP| Q6T{"宛先ポートへの&lt;br/&gt;TCP接続(telnet/nc)は成立するか"}
     Q6 --&gt;|UDP/QUIC| Q6U{"プロトコル固有の応答が返るか&lt;br/&gt;(dig @宛先 / nc -u / curl --http3)"}
     Q6T --&gt;|不可| F5["トランスポート層(TCP)の問題の可能性&lt;br/&gt;宛先サービスがLISTENしているか&lt;br/&gt;経路のFW・ACL・SGで遮断されていないか&lt;br/&gt;戻り経路のルーティングを確認"]
-    Q6U --&gt;|不可| F5U["トランスポート層(UDP/QUIC)の問題の可能性&lt;br/&gt;UDPはコネクションを張らないため&lt;br/&gt;telnet/ncのTCP失敗を障害の根拠にしない&lt;br/&gt;該当UDPポート・QUIC(UDP/443)の許可と&lt;br/&gt;UDPを落とすミドルボックスの有無を確認"]
+    Q6U --&gt;|不可| F5U["トランスポート層(UDP/QUIC)の問題の可能性&lt;br/&gt;UDPはコネクションを張らないため&lt;br/&gt;telnet/ncのTCP失敗を障害の根拠にしない&lt;br/&gt;該当UDPポート(HTTP/3では通例UDP/443)の許可と&lt;br/&gt;UDPを落とすミドルボックスの有無を確認"]
     Q6T --&gt;|可能| Q7{"アプリケーションの応答&lt;br/&gt;(HTTPステータス等)は正常か"}
     Q6U --&gt;|可能| Q7
     Q7 --&gt;|異常| F6["アプリケーション層の問題&lt;br/&gt;アプリログ・証明書・DNSを確認"]
@@ -2317,7 +2321,7 @@ flowchart TD
                             </tr>
                             <tr class="even">
                                 <td>MAC アドレス</td>
-                                <td>データリンク層で機器を識別する48ビットの物理アドレス</td>
+                                <td>データリンク層で機器を識別するリンク層アドレス(一般的には48ビットのEUI-48。EUI-64や設定・ランダム化による値もある)</td>
                             </tr>
                             <tr class="odd">
                                 <td>MTU(Maximum Transmission Unit)</td>
