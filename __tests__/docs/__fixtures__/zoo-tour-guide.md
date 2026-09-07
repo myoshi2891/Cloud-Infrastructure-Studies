@@ -336,6 +336,15 @@ Gemini CLIはこの設定ファイルの`httpUrl` + `headers`の組み合わせ�
 
 ### 6.3 Gemini CLIでの検証手順の意味
 
+`settings.json`の`$ID_TOKEN`はGemini CLIの起動時に環境変数として展開されるため、**CLIを起動する前に**同じシェルでトークンを発行してエクスポートしておく必要があります。
+
+```bash
+export ID_TOKEN="$(gcloud auth print-identity-token)"
+gemini
+```
+
+トークンが失効した場合は`/quit`でCLIを終了し、上記の`export`を再実行してから起動し直します。
+
 - `/mcp`のようなスラッシュコマンドでMCPツール一覧を確認する → 接続が正しく確立されているかを最初に確認するステップ
 - `Where can I find penguins?`という自然文プロンプト → LLMがMCPツール（`fetch_animals_by_species`等）を自律的に選択して呼び出せるかの検証
 - `always allow all tools from the zoo-remote MCP server`を選択 → 開発中は毎回の確認プロンプトを省略できるが、**本番のエージェントに同じ設定を持ち込む場合は、ツールの安全性を精査した上で許可範囲を絞るべき**
@@ -421,7 +430,6 @@ EOF
 ```
 
 ```bash
-cd ./zoo_guide_agent
 python --version
 python -c 'import sys; sys.exit("Python 3.10以上が必要です。処理を中止します。") if sys.version_info < (3, 10) else None'
 ```
@@ -429,7 +437,6 @@ python -c 'import sys; sys.exit("Python 3.10以上が必要です。処理を中
 表示されたバージョンがPython 3.10以上であることを確認します。Python 3.10未満の場合は2つ目のコマンドが失敗するため、ここで処理を中止し、Pythonを更新してから以降の手順を実行してください。要件を満たす場合のみ、仮想環境を作成します。
 
 ```bash
-cd ./zoo_guide_agent
 python -m venv ../zoo_guide_venv
 source ../zoo_guide_venv/bin/activate
 pip install --no-cache-dir -r requirements.txt
