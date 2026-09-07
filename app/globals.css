@@ -155,6 +155,8 @@
     --color-pca-s4-success-border: #1d5a3a;
     --color-pca-s4-success-icon-fg: #08150e;
     --color-pca-s4-checkmark: #08101f;
+    --color-pca-s4-mermaid-label: #eaf2ff;
+    --color-pca-s4-heading-strong: #e0e8f6;
 
     /* PCA Section 5 guide */
     --color-pca-s5-background: #07111e;
@@ -544,6 +546,18 @@
     --color-theme-infrastructure-as-code-bg: hsl(220 55% 40% / 0.25);
     --color-theme-infrastructure-as-code-fg: hsl(220 90% 74%);
 
+    --color-theme-understanding-the-linux-kernel-bg: hsl(220 55% 40% / 0.25);
+    --color-theme-understanding-the-linux-kernel-fg: hsl(220 90% 74%);
+
+    --color-theme-unix-linux-sysadmin-handbook-bg: hsl(220 55% 40% / 0.25);
+    --color-theme-unix-linux-sysadmin-handbook-fg: hsl(220 90% 74%);
+
+    --color-theme-systems-performance-bg: hsl(220 55% 40% / 0.25);
+    --color-theme-systems-performance-fg: hsl(220 90% 74%);
+
+    --color-theme-operating-systems-three-easy-pieces-bg: hsl(220 55% 40% / 0.25);
+    --color-theme-operating-systems-three-easy-pieces-fg: hsl(220 90% 74%);
+
     --navy: #0a2e4d;
     --navy-mid: #123a57;
     --amber: #e8a33d;
@@ -709,6 +723,10 @@ body {
 .card-devops-handbook { --card-accent: var(--color-theme-devops-handbook-fg); }
 .card-release-it { --card-accent: var(--color-theme-release-it-fg); }
 .card-infrastructure-as-code { --card-accent: var(--color-theme-infrastructure-as-code-fg); }
+.card-understanding-the-linux-kernel { --card-accent: var(--color-theme-understanding-the-linux-kernel-fg); }
+.card-unix-linux-sysadmin-handbook { --card-accent: var(--color-theme-unix-linux-sysadmin-handbook-fg); }
+.card-systems-performance { --card-accent: var(--color-theme-systems-performance-fg); }
+.card-operating-systems-three-easy-pieces { --card-accent: var(--color-theme-operating-systems-three-easy-pieces-fg); }
 
 @utility text-gradient-aurora {
     background: linear-gradient(135deg, var(--color-brand-text-start), var(--color-brand-text-end));
@@ -810,6 +828,26 @@ body {
 @utility icon-theme-infrastructure-as-code {
     background: var(--color-theme-infrastructure-as-code-bg);
     color: var(--color-theme-infrastructure-as-code-fg);
+}
+
+@utility icon-theme-understanding-the-linux-kernel {
+    background: var(--color-theme-understanding-the-linux-kernel-bg);
+    color: var(--color-theme-understanding-the-linux-kernel-fg);
+}
+
+@utility icon-theme-unix-linux-sysadmin-handbook {
+    background: var(--color-theme-unix-linux-sysadmin-handbook-bg);
+    color: var(--color-theme-unix-linux-sysadmin-handbook-fg);
+}
+
+@utility icon-theme-systems-performance {
+    background: var(--color-theme-systems-performance-bg);
+    color: var(--color-theme-systems-performance-fg);
+}
+
+@utility icon-theme-operating-systems-three-easy-pieces {
+    background: var(--color-theme-operating-systems-three-easy-pieces-bg);
+    color: var(--color-theme-operating-systems-three-easy-pieces-fg);
 }
 
 /* Provider identity marks: メニューとホームで同じ視覚言語を共有する。 */

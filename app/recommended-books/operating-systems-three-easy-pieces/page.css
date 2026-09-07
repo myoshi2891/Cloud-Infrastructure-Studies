@@ -1,0 +1,590 @@
+/* app/recommended-books/operating-systems-three-easy-pieces/page.css */
+
+.ostep-page {
+    background: var(--color-pca-s4-background);
+    color: var(--color-pca-s4-foreground);
+    min-height: 100vh;
+    font-size: 16px;
+    line-height: 1.85;
+    -webkit-font-smoothing: antialiased;
+}
+
+.ostep-page * {
+    box-sizing: border-box;
+}
+
+.ostep-page a {
+    color: var(--color-pca-s4-accent);
+    text-decoration: none;
+}
+
+.ostep-page a:hover {
+    text-decoration: underline;
+}
+
+/* ---------- layout ---------- */
+.ostep-page .layout {
+    display: block;
+}
+
+/* Sidebar */
+.ostep-page .sidebar {
+    position: fixed;
+    top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px));
+    left: 0;
+    bottom: 0;
+    width: 280px;
+    background: var(--color-pca-s4-sidebar-bg);
+    border-right: 1px solid var(--color-pca-s4-border-soft);
+    overflow-y: auto;
+    padding: 28px 0 40px;
+    z-index: 40;
+}
+
+.ostep-page .sidebar-header {
+    padding: 0 24px 20px;
+    border-bottom: 1px solid var(--color-pca-s4-border-soft);
+    margin-bottom: 16px;
+}
+
+.ostep-page .sidebar-header .kicker {
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    color: var(--color-pca-s4-accent);
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.ostep-page .sidebar-header h2 {
+    font-size: 16px;
+    margin: 6px 0 0;
+    color: var(--color-pca-s4-foreground);
+    line-height: 1.5;
+    font-weight: 700;
+}
+
+.ostep-page .sidebar nav {
+    padding: 0 12px;
+}
+
+.ostep-page .sidebar nav a {
+    display: block;
+    padding: 9px 12px;
+    border-radius: 8px;
+    font-size: 13.5px;
+    color: var(--color-pca-s4-foreground-dim);
+    line-height: 1.5;
+    margin-bottom: 2px;
+    transition:
+        background 0.15s,
+        color 0.15s;
+}
+
+.ostep-page .sidebar nav a:hover {
+    background: var(--color-pca-s4-accent-bg);
+    color: var(--color-pca-s4-foreground);
+    text-decoration: none;
+}
+
+.ostep-page .sidebar nav a.active {
+    background: var(--color-pca-s4-accent-bg);
+    color: var(--color-pca-s4-accent);
+    font-weight: 700;
+}
+
+.ostep-page .sidebar nav a.lvl3 {
+    padding-left: 28px;
+    font-size: 12.5px;
+}
+
+.ostep-page .sidebar-toggle {
+    display: none;
+    position: fixed;
+    top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 14px);
+    left: 14px;
+    z-index: 50;
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    background: var(--color-pca-s4-surface-1);
+    border: 1px solid var(--color-pca-s4-border);
+    color: var(--color-pca-s4-foreground);
+    font-size: 18px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+/* Main content */
+.ostep-page .main {
+    margin-left: 280px;
+    width: calc(100% - 280px);
+    max-width: none;
+    box-sizing: border-box;
+    padding: 56px 64px 120px;
+}
+
+.ostep-page .hero {
+    margin-bottom: 8px;
+}
+
+.ostep-page .hero .kicker {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-pca-s4-accent);
+    margin-bottom: 14px;
+}
+
+.ostep-page .hero h1 {
+    font-size: clamp(28px, 3.6vw, 42px);
+    line-height: 1.35;
+    margin: 0 0 18px;
+    background: linear-gradient(135deg, var(--color-pca-s4-foreground) 0%, var(--color-pca-s4-accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 800;
+}
+
+.ostep-page .hero .meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 32px;
+}
+
+.ostep-page .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: var(--color-pca-s4-surface-1);
+    border: 1px solid var(--color-pca-s4-border);
+    font-size: 12.5px;
+    color: var(--color-pca-s4-foreground-dim);
+}
+
+.ostep-page .pill strong {
+    color: var(--color-pca-s4-foreground);
+}
+
+.ostep-page .main h2 {
+    font-size: 26px;
+    margin: 56px 0 20px;
+    padding-top: 8px;
+    border-top: 1px solid var(--color-pca-s4-border-soft);
+    color: var(--color-pca-s4-foreground);
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 24px);
+}
+
+.ostep-page .main > h2:first-of-type {
+    border-top: none;
+    padding-top: 0;
+    margin-top: 8px;
+}
+
+.ostep-page .main h3 {
+    font-size: 20px;
+    margin: 38px 0 16px;
+    color: var(--color-pca-s4-foreground);
+    font-weight: 700;
+    scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 24px);
+}
+
+.ostep-page .main h3::before {
+    content: '';
+    display: inline-block;
+    width: 5px;
+    height: 18px;
+    background: var(--color-pca-s4-accent);
+    border-radius: 3px;
+    margin-right: 10px;
+    vertical-align: -2px;
+}
+
+.ostep-page .main h4 {
+    font-size: 17px;
+    margin: 28px 0 14px;
+    color: var(--color-pca-s4-foreground);
+    font-weight: 700;
+    scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 24px);
+}
+
+.ostep-page .main p {
+    margin: 0 0 18px;
+    color: var(--color-pca-s4-foreground);
+}
+
+/* リストの点（黒丸）と番号のスタイリング（Tailwind Preflight によるリセットを完全に防止） */
+.ostep-page .main ul:not(.checklist-card ul) {
+    list-style-type: disc !important;
+    list-style-position: outside !important;
+    margin: 0 0 18px;
+    padding-left: 1.6em;
+    color: var(--color-pca-s4-foreground);
+}
+
+.ostep-page .main ol {
+    list-style-type: decimal !important;
+    list-style-position: outside !important;
+    margin: 0 0 18px;
+    padding-left: 1.6em;
+    color: var(--color-pca-s4-foreground);
+}
+
+.ostep-page .main li {
+    margin-bottom: 8px;
+    line-height: 1.8;
+}
+
+.ostep-page .main ul:not(.checklist-card ul) ul {
+    list-style-type: circle !important;
+    list-style-position: outside !important;
+    margin: 6px 0 6px;
+    padding-left: 1.4em;
+}
+
+.ostep-page .main hr {
+    border: none;
+    border-top: 1px solid var(--color-pca-s4-border-soft);
+    margin: 44px 0;
+}
+
+.ostep-page .main strong {
+    color: var(--color-pca-s4-strong);
+    font-weight: 700;
+}
+
+.ostep-page .footnote-ref {
+    margin-left: 2px;
+}
+
+.ostep-page .footnote-ref sup {
+    font-size: 11px;
+    color: var(--color-pca-s4-accent);
+    font-weight: 700;
+}
+
+.ostep-page .main code:not(pre code) {
+    background: var(--color-pca-s4-surface-2);
+    border: 1px solid var(--color-pca-s4-border);
+    border-radius: 5px;
+    padding: 1px 6px;
+    font-size: 0.9em;
+    color: var(--color-pca-s4-code-text);
+    overflow-wrap: break-word;
+}
+
+/* Tables */
+.ostep-page .table-scroll {
+    overflow-x: auto;
+    margin: 0 0 26px;
+    border: 1px solid var(--color-pca-s4-border);
+    border-radius: 12px;
+    background: var(--color-pca-s4-surface-1);
+}
+
+.ostep-page table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 14.5px;
+}
+
+.ostep-page thead th {
+    background: var(--color-pca-s4-accent-bg);
+    color: var(--color-pca-s4-foreground);
+    text-align: left;
+    padding: 12px 16px;
+    font-weight: 700;
+    border-bottom: 1px solid var(--color-pca-s4-border);
+    white-space: nowrap;
+}
+
+.ostep-page tbody td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--color-pca-s4-border-soft);
+    color: var(--color-pca-s4-foreground-dim);
+    vertical-align: top;
+}
+
+.ostep-page tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.ostep-page tbody tr:hover td {
+    background: var(--color-pca-s4-row-hover);
+}
+
+/* Mermaid */
+.ostep-page .mermaid-wrap {
+    width: 100%;
+    margin: 1.5rem auto 2rem;
+    background: var(--color-pca-s4-surface-1);
+    border: 1px solid var(--color-pca-s4-border);
+    border-radius: 14px;
+    padding: 28px 20px;
+    overflow-x: auto;
+}
+
+/* Mermaid ノードの文字色（暗色背景のため高コントラストな明色を保証） */
+.ostep-page .mermaid-wrap .node .nodeLabel,
+.ostep-page .mermaid-wrap .node .nodeLabel *,
+.ostep-page .mermaid-wrap .node text,
+.ostep-page .mermaid-wrap .node tspan {
+    color: var(--color-pca-s4-mermaid-label) !important;
+    fill: var(--color-pca-s4-mermaid-label) !important;
+}
+
+/* Callouts */
+.ostep-page .callout-practice {
+    display: flex;
+    gap: 14px;
+    background: var(--color-pca-s4-success-bg);
+    border: 1px solid var(--color-pca-s4-success-border);
+    border-left: 4px solid var(--color-pca-s4-success);
+    border-radius: 12px;
+    padding: 20px 22px;
+    margin: 0 0 26px;
+}
+
+.ostep-page .callout-practice .icon {
+    flex-shrink: 0;
+    width: 26px;
+    height: 26px;
+    border-radius: 7px;
+    background: var(--color-pca-s4-success);
+    color: var(--color-pca-s4-success-icon-fg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 900;
+}
+
+.ostep-page .callout-practice .body {
+    color: var(--color-pca-s4-foreground);
+}
+
+.ostep-page .callout-practice .label {
+    font-size: 11.5px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    color: var(--color-pca-s4-success);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+}
+
+.ostep-page .callout-practice p {
+    margin: 0;
+    color: var(--color-pca-s4-foreground);
+}
+
+.ostep-page .practice-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    color: var(--color-pca-s4-success);
+    text-transform: uppercase;
+    margin: 0 0 10px;
+}
+
+.ostep-page .practice-label::before {
+    content: '✓';
+    font-size: 13px;
+}
+
+/* Reference grid */
+.ostep-page .ref-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin: 0 0 30px;
+}
+
+.ostep-page .ref-card {
+    display: flex;
+    gap: 12px;
+    background: var(--color-pca-s4-surface-1);
+    border: 1px solid var(--color-pca-s4-border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    min-width: 0;
+}
+
+.ostep-page .ref-card .num {
+    flex-shrink: 0;
+    width: 26px;
+    height: 26px;
+    border-radius: 7px;
+    background: var(--color-pca-s4-accent-bg);
+    color: var(--color-pca-s4-accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.ostep-page .ref-card .txt {
+    font-size: 13px;
+    color: var(--color-pca-s4-foreground-dim);
+    min-width: 0;
+    overflow-wrap: break-word;
+}
+
+.ostep-page .ref-card .txt a {
+    color: var(--color-pca-s4-accent);
+    font-weight: 600;
+}
+
+/* Checklist */
+.ostep-page .checklist-card {
+    background: var(--color-pca-s4-surface-1);
+    border: 1px solid var(--color-pca-s4-border);
+    border-radius: 14px;
+    padding: 8px 22px 12px;
+    margin: 0 0 30px;
+}
+
+.ostep-page .checklist-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--color-pca-s4-border-soft);
+    margin-bottom: 6px;
+}
+
+.ostep-page .checklist-header .title {
+    font-weight: 700;
+    color: var(--color-pca-s4-foreground);
+    font-size: 14.5px;
+}
+
+.ostep-page .checklist-header .count {
+    font-size: 13px;
+    color: var(--color-pca-s4-accent);
+    font-weight: 700;
+}
+
+.ostep-page .checklist-card ul {
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.ostep-page .checklist-card li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 11px 4px;
+    border-radius: 8px;
+    margin: 0;
+    transition: background 0.15s;
+}
+
+.ostep-page .checklist-card li:hover {
+    background: var(--color-pca-s4-checklist-hover);
+}
+
+.ostep-page .checklist-card input[type='checkbox'] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 19px;
+    height: 19px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    border: 1.5px solid var(--color-pca-s4-border);
+    border-radius: 5px;
+    background: var(--color-pca-s4-surface-2);
+    cursor: pointer;
+    position: relative;
+}
+
+.ostep-page .checklist-card input[type='checkbox']:checked {
+    background: var(--color-pca-s4-accent);
+    border-color: var(--color-pca-s4-accent);
+}
+
+.ostep-page .checklist-card input[type='checkbox']:checked::after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 1px;
+    width: 5px;
+    height: 10px;
+    border: solid var(--color-pca-s4-checkmark);
+    border-width: 0 2px 2px 0;
+    transform: rotate(40deg);
+}
+
+.ostep-page .checklist-card label {
+    color: var(--color-pca-s4-foreground);
+    font-size: 14.5px;
+    cursor: pointer;
+    line-height: 1.6;
+}
+
+.ostep-page .checklist-card li:has(input:checked) label {
+    text-decoration: line-through;
+    color: var(--color-pca-s4-foreground-faint);
+}
+
+/* Source metadata block */
+.ostep-page .source-meta {
+    background: var(--color-pca-s4-surface-1);
+    border: 1px solid var(--color-pca-s4-border);
+    border-left: 4px solid var(--color-pca-s4-accent);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin: 0 0 30px;
+}
+
+.ostep-page .source-meta p {
+    margin: 0 0 6px;
+    font-size: 13.5px;
+    color: var(--color-pca-s4-foreground-dim);
+}
+
+.ostep-page .source-meta p:last-child {
+    margin-bottom: 0;
+}
+
+.ostep-page .source-meta em {
+    color: var(--color-pca-s4-foreground);
+    font-style: italic;
+}
+
+/* Responsive */
+@media (max-width: 980px) {
+    .ostep-page .sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.25s ease, visibility 0.25s ease;
+        visibility: hidden;
+        box-shadow: 0 0 40px var(--color-pca-s4-sidebar-shadow);
+    }
+    .ostep-page .sidebar.open {
+        transform: translateX(0);
+        visibility: visible;
+    }
+    .ostep-page .main {
+        margin-left: 0;
+        width: 100%;
+        max-width: none;
+        padding: 80px 20px 100px;
+    }
+    .ostep-page .sidebar-toggle {
+        display: flex;
+    }
+    .ostep-page .ref-grid {
+        grid-template-columns: 1fr;
+    }
+}

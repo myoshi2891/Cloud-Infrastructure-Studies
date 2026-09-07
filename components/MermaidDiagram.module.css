@@ -150,19 +150,19 @@
 
 /* ── Accelerate ガイド classDef 名によるラベル色制御 ──────────────────────────
    hub (#FAF1DF クリーム), box (#EEF1F8 薄青), done (#EAF4EC 薄緑) はすべて明色背景。
-   classDef 名でピンポイントに黒文字を当てる（カラーコード列挙不要）。 */
-.mermaidTarget :global(.hub .nodeLabel),
-.mermaidTarget :global(.hub .nodeLabel *),
-.mermaidTarget :global(.hub text),
-.mermaidTarget :global(.hub tspan),
-.mermaidTarget :global(.box .nodeLabel),
-.mermaidTarget :global(.box .nodeLabel *),
-.mermaidTarget :global(.box text),
-.mermaidTarget :global(.box tspan),
-.mermaidTarget :global(.done .nodeLabel),
-.mermaidTarget :global(.done .nodeLabel *),
-.mermaidTarget :global(.done text),
-.mermaidTarget :global(.done tspan) {
+   他ガイドの暗色ノード（例: OSTEP の濃紺 box）へ波及しないよう .accelerate-page にスコープ。 */
+:global(.accelerate-page) .mermaidTarget :global(.hub .nodeLabel),
+:global(.accelerate-page) .mermaidTarget :global(.hub .nodeLabel *),
+:global(.accelerate-page) .mermaidTarget :global(.hub text),
+:global(.accelerate-page) .mermaidTarget :global(.hub tspan),
+:global(.accelerate-page) .mermaidTarget :global(.box .nodeLabel),
+:global(.accelerate-page) .mermaidTarget :global(.box .nodeLabel *),
+:global(.accelerate-page) .mermaidTarget :global(.box text),
+:global(.accelerate-page) .mermaidTarget :global(.box tspan),
+:global(.accelerate-page) .mermaidTarget :global(.done .nodeLabel),
+:global(.accelerate-page) .mermaidTarget :global(.done .nodeLabel *),
+:global(.accelerate-page) .mermaidTarget :global(.done text),
+:global(.accelerate-page) .mermaidTarget :global(.done tspan) {
     color: #000000 !important;
     fill: #000000 !important;
 }

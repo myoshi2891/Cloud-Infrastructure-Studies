@@ -525,6 +525,30 @@ app/
       NavBar.tsx                    # サイドバーナビ (IntersectionObserver)
       constants.ts                  # Mermaid 図定義（26図）
       page.css                      # ページ固有スタイル
+    understanding-the-linux-kernel/
+      page.tsx                      # 『Understanding the Linux Kernel』完全解説ガイド (Server)
+      UnderstandingTheLinuxKernelGuide.tsx # 本文＋インタラクション (Client。22部、Mermaid 45図、チェックリスト等)
+      NavBar.tsx                    # サイドバーナビ (IntersectionObserver)
+      constants.ts                  # Mermaid 図定義（45図）
+      page.css                      # ページ固有スタイル
+    unix-linux-sysadmin-handbook/
+      page.tsx                      # 『UNIX and Linux System Administration Handbook』完全解説ガイド (Server)
+      UnixLinuxSysadminHandbookGuide.tsx # 本文＋インタラクション (Client。原著4パート・31章、Mermaid 29図、チェックリスト等)
+      NavBar.tsx                    # サイドバーナビ (IntersectionObserver)
+      constants.ts                  # Mermaid 図定義（29図）
+      page.css                      # ページ固有スタイル
+    systems-performance/
+      page.tsx                      # 『Systems Performance: Enterprise and the Cloud』実践ガイド (Server)
+      SystemsPerformanceGuide.tsx   # 本文＋インタラクション (Client。16章+付録、Mermaid 18図、チェックリスト等)
+      NavBar.tsx                    # サイドバーナビ (IntersectionObserver)
+      constants.ts                  # Mermaid 図定義（18図）
+      page.css                      # ページ固有スタイル
+    operating-systems-three-easy-pieces/
+      page.tsx                      # 『Operating Systems: Three Easy Pieces（OSTEP）』完全学習ガイド (Server)
+      OperatingSystemsThreeEasyPiecesGuide.tsx # 本文＋インタラクション (Client。57章+付録、Mermaid 56図、チェックリスト等)
+      NavBar.tsx                    # サイドバーナビ (IntersectionObserver)
+      constants.ts                  # Mermaid 図定義（56図）
+      page.css                      # ページ固有スタイル
 
 
 components/

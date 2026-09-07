@@ -1,0 +1,429 @@
+/* app/recommended-books/systems-performance/page.css */
+
+.systems-performance-page {
+    background: var(--color-pca-s4-background);
+    color: var(--color-pca-s4-foreground);
+    min-height: 100vh;
+}
+
+.systems-performance-page .layout {
+    display: block;
+}
+
+/* Sidebar */
+.systems-performance-page .sidebar {
+    position: fixed;
+    top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px));
+    left: 0;
+    bottom: 0;
+    width: 280px;
+    background: var(--color-pca-s4-sidebar-bg);
+    border-right: 1px solid var(--color-pca-s4-border-soft);
+    overflow-y: auto;
+    padding: 24px 0 40px;
+    z-index: 40;
+}
+
+.systems-performance-page .sidebar-header {
+    padding: 0 20px 16px;
+    border-bottom: 1px solid var(--color-pca-s4-border-soft);
+    margin-bottom: 14px;
+}
+
+.systems-performance-page .sidebar-header .kicker {
+    font-size: 11.5px;
+    letter-spacing: 0.08em;
+    color: var(--color-pca-s4-accent);
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.systems-performance-page .sidebar-header h2 {
+    font-size: 15px;
+    margin: 6px 0 0;
+    color: var(--color-pca-s4-foreground);
+    line-height: 1.45;
+    font-weight: 700;
+}
+
+.systems-performance-page .sidebar nav {
+    padding: 0 10px;
+}
+
+.systems-performance-page .sidebar nav a {
+    display: block;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    color: var(--color-pca-s4-foreground-dim);
+    line-height: 1.45;
+    margin-bottom: 2px;
+    text-decoration: none;
+    transition:
+        background 0.15s,
+        color 0.15s;
+}
+
+.systems-performance-page .sidebar nav a:hover {
+    background: var(--color-pca-s4-accent-bg);
+    color: var(--color-pca-s4-foreground);
+    text-decoration: none;
+}
+
+.systems-performance-page .sidebar nav a.active {
+    background: var(--color-pca-s4-accent-bg);
+    color: var(--color-pca-s4-accent);
+    font-weight: 700;
+}
+
+.systems-performance-page .sidebar nav a.lvl3 {
+    padding-left: 24px;
+    font-size: 12px;
+}
+
+.systems-performance-page .sidebar-toggle {
+    display: none;
+    position: fixed;
+    top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 12px);
+    left: 12px;
+    z-index: 50;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background: var(--color-pca-s4-surface-1);
+    border: 1px solid var(--color-pca-s4-border);
+    color: var(--color-pca-s4-foreground);
+    font-size: 18px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+/* Main content */
+.systems-performance-page .main {
+    margin-left: 280px;
+    width: calc(100% - 280px);
+    max-width: none;
+    padding: 48px 48px 120px;
+    box-sizing: border-box;
+}
+
+.systems-performance-page .hero {
+    margin-bottom: 12px;
+}
+
+.systems-performance-page .hero .kicker {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-pca-s4-accent);
+    margin-bottom: 12px;
+}
+
+.systems-performance-page .hero h1 {
+    font-size: clamp(26px, 3.2vw, 38px);
+    line-height: 1.35;
+    margin: 0 0 16px;
+    background: linear-gradient(135deg, var(--color-pca-s4-foreground) 0%, var(--color-pca-s4-accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 800;
+}
+
+.systems-performance-page .hero .meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 28px;
+}
+
+.systems-performance-page .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: 999px;
+    background: var(--color-pca-s4-surface-1);
+    border: 1px solid var(--color-pca-s4-border);
+    font-size: 12px;
+    color: var(--color-pca-s4-foreground-dim);
+}
+
+.systems-performance-page .pill strong {
+    color: var(--color-pca-s4-foreground);
+}
+
+.systems-performance-page .main h2 {
+    font-size: 24px;
+    margin: 48px 0 18px;
+    padding-top: 12px;
+    border-top: 1px solid var(--color-pca-s4-border-soft);
+    color: var(--color-pca-s4-foreground);
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 24px);
+}
+
+.systems-performance-page .main > h2:first-of-type {
+    border-top: none;
+    padding-top: 0;
+    margin-top: 8px;
+}
+
+.systems-performance-page .main h3 {
+    font-size: 19px;
+    margin: 34px 0 14px;
+    color: var(--color-pca-s4-foreground);
+    font-weight: 700;
+    scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 24px);
+}
+
+.systems-performance-page .main h3::before {
+    content: '';
+    display: inline-block;
+    width: 4px;
+    height: 16px;
+    background: var(--color-pca-s4-accent);
+    border-radius: 2px;
+    margin-right: 8px;
+    vertical-align: -2px;
+}
+
+.systems-performance-page .main p {
+    margin: 0 0 16px;
+    color: var(--color-pca-s4-foreground);
+    line-height: 1.85;
+}
+
+.systems-performance-page .main ul,
+.systems-performance-page .main ol {
+    margin: 0 0 16px;
+    padding-left: 1.4em;
+    color: var(--color-pca-s4-foreground);
+}
+
+.systems-performance-page .main li {
+    margin-bottom: 8px;
+    line-height: 1.75;
+}
+
+.systems-performance-page .main hr {
+    border: none;
+    border-top: 1px solid var(--color-pca-s4-border-soft);
+    margin: 36px 0;
+}
+
+.systems-performance-page .main strong {
+    color: var(--color-pca-s4-strong);
+    font-weight: 700;
+}
+
+.systems-performance-page .main a {
+    color: var(--color-pca-s4-accent);
+    text-decoration: none;
+}
+
+.systems-performance-page .main a:hover {
+    text-decoration: underline;
+}
+
+.systems-performance-page .main code:not(pre code) {
+    background: var(--color-pca-s4-surface-2);
+    border: 1px solid var(--color-pca-s4-border);
+    border-radius: 5px;
+    padding: 1px 6px;
+    font-size: 0.9em;
+    color: var(--color-pca-s4-code-text);
+    overflow-wrap: break-word;
+}
+
+/* Tables */
+.systems-performance-page .table-scroll {
+    overflow-x: auto;
+    margin: 0 0 24px;
+    border: 1px solid var(--color-pca-s4-border);
+    border-radius: 10px;
+    background: var(--color-pca-s4-surface-1);
+}
+
+.systems-performance-page table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 14px;
+}
+
+.systems-performance-page thead th {
+    background: var(--color-pca-s4-accent-bg);
+    color: var(--color-pca-s4-foreground);
+    text-align: left;
+    padding: 10px 14px;
+    font-weight: 700;
+    border-bottom: 1px solid var(--color-pca-s4-border);
+    white-space: nowrap;
+}
+
+.systems-performance-page tbody td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--color-pca-s4-border-soft);
+    color: var(--color-pca-s4-foreground-dim);
+    vertical-align: top;
+}
+
+.systems-performance-page tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.systems-performance-page tbody tr:hover td {
+    background: var(--color-pca-s4-row-hover);
+}
+
+/* Mermaid Diagrams */
+.systems-performance-page .mermaid-wrap {
+    width: 100%;
+    margin: 1.5rem auto 2rem;
+    display: flex;
+    justify-content: center;
+    background: var(--color-pca-s4-surface-1);
+    border: 1px solid var(--color-pca-s4-border);
+    border-radius: 12px;
+    padding: 24px 16px;
+    overflow-x: auto;
+    box-sizing: border-box;
+}
+
+/* Callouts */
+.systems-performance-page .callout-practice {
+    display: flex;
+    gap: 14px;
+    background: var(--color-pca-s4-success-bg);
+    border: 1px solid var(--color-pca-s4-success-border);
+    border-left: 4px solid var(--color-pca-s4-success);
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin: 0 0 24px;
+}
+
+.systems-performance-page .callout-practice .icon {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    background: var(--color-pca-s4-success);
+    color: var(--color-pca-s4-success-icon-fg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 900;
+}
+
+.systems-performance-page .callout-practice .body {
+    color: var(--color-pca-s4-foreground);
+}
+
+.systems-performance-page .callout-practice .label {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    color: var(--color-pca-s4-success);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
+
+.systems-performance-page .callout-practice p {
+    margin: 0;
+    color: var(--color-pca-s4-foreground);
+}
+
+.systems-performance-page .practice-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    color: var(--color-pca-s4-success);
+    text-transform: uppercase;
+    margin: 0 0 10px;
+}
+
+.systems-performance-page .practice-label::before {
+    content: '✓';
+    font-size: 13px;
+}
+
+/* Reference Grid */
+.systems-performance-page .ref-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin: 0 0 28px;
+}
+
+.systems-performance-page .ref-card {
+    display: flex;
+    gap: 12px;
+    background: var(--color-pca-s4-surface-1);
+    border: 1px solid var(--color-pca-s4-border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    min-width: 0;
+}
+
+.systems-performance-page .ref-card .num {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    background: var(--color-pca-s4-accent-bg);
+    color: var(--color-pca-s4-accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11.5px;
+    font-weight: 800;
+}
+
+.systems-performance-page .ref-card .txt {
+    font-size: 12.5px;
+    color: var(--color-pca-s4-foreground-dim);
+    min-width: 0;
+    overflow-wrap: break-word;
+}
+
+.systems-performance-page .ref-card .txt a {
+    color: var(--color-pca-s4-accent);
+    font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 980px) {
+    .systems-performance-page .sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.25s ease, visibility 0.25s ease;
+        visibility: hidden;
+        box-shadow: 0 0 40px var(--color-pca-s4-sidebar-shadow);
+    }
+
+    .systems-performance-page .sidebar.open {
+        transform: translateX(0);
+        visibility: visible;
+    }
+
+    .systems-performance-page .main {
+        margin-left: 0;
+        width: 100%;
+        max-width: none;
+        padding: 72px 18px 90px;
+    }
+
+    .systems-performance-page .sidebar-toggle {
+        display: flex;
+    }
+
+    .systems-performance-page .ref-grid {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,0 +1,580 @@
+/* app/recommended-books/unix-linux-sysadmin-handbook/page.css */
+
+.unix-linux-sysadmin-handbook-page {
+    background: var(--color-pca-s4-background);
+    color: var(--color-pca-s4-foreground);
+    min-height: 100vh;
+}
+
+.unix-linux-sysadmin-handbook-page .layout {
+    display: block;
+}
+
+/* Sidebar */
+.unix-linux-sysadmin-handbook-page .sidebar {
+    position: fixed;
+    top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px));
+    left: 0;
+    bottom: 0;
+    width: 280px;
+    background: var(--color-pca-s4-sidebar-bg);
+    border-right: 1px solid var(--color-pca-s4-border-soft);
+    overflow-y: auto;
+    padding: 24px 0 40px;
+    z-index: 40;
+}
+
+.unix-linux-sysadmin-handbook-page .sidebar-header {
+    padding: 0 20px 16px;
+    border-bottom: 1px solid var(--color-pca-s4-border-soft);
+    margin-bottom: 14px;
+}
+
+.unix-linux-sysadmin-handbook-page .sidebar-header .kicker {
+    font-size: 11.5px;
+    letter-spacing: 0.08em;
+    color: var(--color-pca-s4-accent);
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.unix-linux-sysadmin-handbook-page .sidebar-header h2 {
+    font-size: 15px;
+    margin: 6px 0 0;
+    color: var(--color-pca-s4-foreground);
+    line-height: 1.45;
+    font-weight: 700;
+}
+
+.unix-linux-sysadmin-handbook-page .sidebar nav {
+    padding: 0 10px;
+}
+
+.unix-linux-sysadmin-handbook-page .sidebar nav a {
+    display: block;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    color: var(--color-pca-s4-foreground-dim);
+    line-height: 1.45;
+    margin-bottom: 2px;
+    text-decoration: none;
+    transition:
+        background 0.15s,
+        color 0.15s;
+}
+
+.unix-linux-sysadmin-handbook-page .sidebar nav a:hover {
+    background: var(--color-pca-s4-accent-bg);
+    color: var(--color-pca-s4-foreground);
+    text-decoration: none;
+}
+
+.unix-linux-sysadmin-handbook-page .sidebar nav a.active {
+    background: var(--color-pca-s4-accent-bg);
+    color: var(--color-pca-s4-accent);
+    font-weight: 700;
+}
+
+.unix-linux-sysadmin-handbook-page .sidebar nav a.lvl3 {
+    padding-left: 24px;
+    font-size: 12px;
+}
+
+.unix-linux-sysadmin-handbook-page .sidebar-toggle {
+    display: none;
+    position: fixed;
+    top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 12px);
+    left: 14px;
+    z-index: 50;
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    background: var(--color-pca-s4-surface-1);
+    border: 1px solid var(--color-pca-s4-border);
+    color: var(--color-pca-s4-foreground);
+    font-size: 18px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+/* Main Content */
+.unix-linux-sysadmin-handbook-page .main {
+    margin-left: 280px;
+    width: calc(100% - 280px);
+    max-width: none;
+    box-sizing: border-box;
+    padding: 48px 48px 120px;
+}
+
+.unix-linux-sysadmin-handbook-page .hero {
+    margin-bottom: 24px;
+}
+
+.unix-linux-sysadmin-handbook-page .hero .kicker {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-pca-s4-accent);
+    margin-bottom: 12px;
+}
+
+.unix-linux-sysadmin-handbook-page .hero h1 {
+    font-size: clamp(26px, 3.2vw, 38px);
+    line-height: 1.35;
+    margin: 0 0 16px;
+    background: linear-gradient(135deg, var(--color-pca-s4-foreground) 0%, var(--color-pca-s4-accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 800;
+}
+
+.unix-linux-sysadmin-handbook-page .hero .meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 24px;
+}
+
+.unix-linux-sysadmin-handbook-page .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: var(--color-pca-s4-surface-1);
+    border: 1px solid var(--color-pca-s4-border);
+    font-size: 12.5px;
+    color: var(--color-pca-s4-foreground-dim);
+}
+
+.unix-linux-sysadmin-handbook-page .pill strong {
+    color: var(--color-pca-s4-foreground);
+}
+
+.unix-linux-sysadmin-handbook-page .main h2 {
+    font-size: 24px;
+    margin: 52px 0 18px;
+    padding-top: 14px;
+    border-top: 1px solid var(--color-pca-s4-border-soft);
+    color: var(--color-pca-s4-foreground);
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 20px);
+}
+
+.unix-linux-sysadmin-handbook-page .main > h2:first-of-type {
+    border-top: none;
+    padding-top: 0;
+    margin-top: 8px;
+}
+
+.unix-linux-sysadmin-handbook-page .main h3 {
+    font-size: 19px;
+    margin: 36px 0 16px;
+    color: var(--color-pca-s4-foreground);
+    font-weight: 700;
+    scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 20px);
+}
+
+.unix-linux-sysadmin-handbook-page .main h3::before {
+    content: '';
+    display: inline-block;
+    width: 5px;
+    height: 18px;
+    background: var(--color-pca-s4-accent);
+    border-radius: 3px;
+    margin-right: 10px;
+    vertical-align: -2px;
+}
+
+.unix-linux-sysadmin-handbook-page .main h4 {
+    font-size: 16.5px;
+    margin: 28px 0 12px;
+    color: var(--color-pca-s4-heading-strong);
+    font-weight: 700;
+    scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 20px);
+}
+
+.unix-linux-sysadmin-handbook-page .main h5 {
+    font-size: 15px;
+    margin: 22px 0 10px;
+    color: var(--color-pca-s4-accent);
+    font-weight: 700;
+}
+
+.unix-linux-sysadmin-handbook-page .main p {
+    margin: 0 0 18px;
+    color: var(--color-pca-s4-foreground);
+    line-height: 1.85;
+}
+
+.unix-linux-sysadmin-handbook-page .main blockquote {
+    margin: 0 0 20px;
+    padding: 12px 18px;
+    border-left: 4px solid var(--color-pca-s4-accent-soft);
+    background: var(--color-pca-s4-surface-1);
+    border-radius: 0 8px 8px 0;
+    color: var(--color-pca-s4-foreground-dim);
+    font-size: 0.95em;
+}
+
+.unix-linux-sysadmin-handbook-page .main blockquote p {
+    margin: 0;
+}
+
+/* リストスタイリングの完全保証（Tailwind preflight対策） */
+.unix-linux-sysadmin-handbook-page .main ul {
+    list-style-type: disc;
+    margin: 0 0 18px;
+    padding-left: 1.6em;
+    color: var(--color-pca-s4-foreground);
+    line-height: 1.85;
+}
+
+.unix-linux-sysadmin-handbook-page .main ol {
+    list-style-type: decimal;
+    margin: 0 0 18px;
+    padding-left: 1.6em;
+    color: var(--color-pca-s4-foreground);
+    line-height: 1.85;
+}
+
+.unix-linux-sysadmin-handbook-page .main li {
+    margin-bottom: 8px;
+}
+
+.unix-linux-sysadmin-handbook-page .main hr {
+    border: none;
+    border-top: 1px solid var(--color-pca-s4-border-soft);
+    margin: 44px 0;
+}
+
+.unix-linux-sysadmin-handbook-page .main strong {
+    color: var(--color-pca-s4-strong);
+    font-weight: 700;
+}
+
+.unix-linux-sysadmin-handbook-page .main a {
+    color: var(--color-pca-s4-accent);
+    text-decoration: none;
+}
+
+.unix-linux-sysadmin-handbook-page .main a:hover {
+    text-decoration: underline;
+}
+
+.unix-linux-sysadmin-handbook-page .footnote-ref {
+    margin-left: 2px;
+}
+
+.unix-linux-sysadmin-handbook-page .footnote-ref sup {
+    font-size: 11px;
+    color: var(--color-pca-s4-accent);
+    font-weight: 700;
+}
+
+.unix-linux-sysadmin-handbook-page .main code:not(pre code) {
+    background: var(--color-pca-s4-surface-2);
+    border: 1px solid var(--color-pca-s4-border);
+    border-radius: 5px;
+    padding: 1px 6px;
+    font-size: 0.9em;
+    color: var(--color-pca-s4-code-text);
+    overflow-wrap: anywhere;
+}
+
+/* Tables */
+.unix-linux-sysadmin-handbook-page .table-scroll {
+    overflow-x: auto;
+    margin: 0 0 26px;
+    border: 1px solid var(--color-pca-s4-border);
+    border-radius: 12px;
+    background: var(--color-pca-s4-surface-1);
+}
+
+.unix-linux-sysadmin-handbook-page table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 14.5px;
+}
+
+.unix-linux-sysadmin-handbook-page thead th {
+    background: var(--color-pca-s4-accent-bg);
+    color: var(--color-pca-s4-foreground);
+    text-align: left;
+    padding: 12px 16px;
+    font-weight: 700;
+    border-bottom: 1px solid var(--color-pca-s4-border);
+    white-space: nowrap;
+}
+
+.unix-linux-sysadmin-handbook-page tbody td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--color-pca-s4-border-soft);
+    color: var(--color-pca-s4-foreground-dim);
+    vertical-align: top;
+}
+
+.unix-linux-sysadmin-handbook-page tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.unix-linux-sysadmin-handbook-page tbody tr:hover td {
+    background: var(--color-pca-s4-row-hover);
+}
+
+/* Mermaid Wrapper */
+.unix-linux-sysadmin-handbook-page .mermaid-wrap {
+    width: 100%;
+    display: flex;
+    justify-content: safe center;
+    overflow-x: auto;
+    background: var(--color-pca-s4-surface-1);
+    border: 1px solid var(--color-pca-s4-border);
+    border-radius: 14px;
+    padding: 28px 20px;
+    margin: 1.5rem auto 2rem;
+}
+
+.unix-linux-sysadmin-handbook-page .mermaid-wrap svg {
+    flex-shrink: 0;
+    max-width: 100% !important;
+    height: auto !important;
+}
+
+/* Callouts */
+.unix-linux-sysadmin-handbook-page .callout-practice {
+    display: flex;
+    gap: 14px;
+    background: var(--color-pca-s4-success-bg);
+    border: 1px solid var(--color-pca-s4-success-border);
+    border-left: 4px solid var(--color-pca-s4-success);
+    border-radius: 12px;
+    padding: 20px 22px;
+    margin: 0 0 26px;
+}
+
+.unix-linux-sysadmin-handbook-page .callout-practice .icon {
+    flex-shrink: 0;
+    width: 26px;
+    height: 26px;
+    border-radius: 7px;
+    background: var(--color-pca-s4-success);
+    color: var(--color-pca-s4-success-icon-fg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 900;
+}
+
+.unix-linux-sysadmin-handbook-page .callout-practice .body {
+    color: var(--color-pca-s4-foreground);
+}
+
+.unix-linux-sysadmin-handbook-page .callout-practice .label {
+    font-size: 11.5px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    color: var(--color-pca-s4-success);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+}
+
+.unix-linux-sysadmin-handbook-page .callout-practice p {
+    margin: 0;
+    color: var(--color-pca-s4-foreground);
+}
+
+.unix-linux-sysadmin-handbook-page .practice-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    color: var(--color-pca-s4-success);
+    text-transform: uppercase;
+    margin: 0 0 10px;
+}
+
+.unix-linux-sysadmin-handbook-page .practice-label::before {
+    content: '✓';
+    font-size: 13px;
+}
+
+/* Reference grid */
+.unix-linux-sysadmin-handbook-page .ref-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin: 0 0 30px;
+}
+
+.unix-linux-sysadmin-handbook-page .ref-card {
+    display: flex;
+    gap: 12px;
+    background: var(--color-pca-s4-surface-1);
+    border: 1px solid var(--color-pca-s4-border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    min-width: 0;
+}
+
+.unix-linux-sysadmin-handbook-page .ref-card .num {
+    flex-shrink: 0;
+    width: 26px;
+    height: 26px;
+    border-radius: 7px;
+    background: var(--color-pca-s4-accent-bg);
+    color: var(--color-pca-s4-accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.unix-linux-sysadmin-handbook-page .ref-card .txt {
+    font-size: 13px;
+    color: var(--color-pca-s4-foreground-dim);
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.unix-linux-sysadmin-handbook-page .ref-card .txt a {
+    color: var(--color-pca-s4-accent);
+    font-weight: 600;
+}
+
+/* Checklist */
+.unix-linux-sysadmin-handbook-page .checklist-card {
+    background: var(--color-pca-s4-surface-1);
+    border: 1px solid var(--color-pca-s4-border);
+    border-radius: 14px;
+    padding: 8px 22px 12px;
+    margin: 0 0 30px;
+}
+
+.unix-linux-sysadmin-handbook-page .checklist-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--color-pca-s4-border-soft);
+    margin-bottom: 6px;
+}
+
+.unix-linux-sysadmin-handbook-page .checklist-header .title {
+    font-weight: 700;
+    color: var(--color-pca-s4-foreground);
+    font-size: 14.5px;
+}
+
+.unix-linux-sysadmin-handbook-page .checklist-header .count {
+    font-size: 13px;
+    color: var(--color-pca-s4-accent);
+    font-weight: 700;
+}
+
+.unix-linux-sysadmin-handbook-page .checklist-card ul {
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.unix-linux-sysadmin-handbook-page .checklist-card li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 11px 4px;
+    border-radius: 8px;
+    margin: 0;
+    transition: background 0.15s;
+}
+
+.unix-linux-sysadmin-handbook-page .checklist-card li:hover {
+    background: var(--color-pca-s4-checklist-hover);
+}
+
+.unix-linux-sysadmin-handbook-page .checklist-card input[type='checkbox'] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 19px;
+    height: 19px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    border: 1.5px solid var(--color-pca-s4-border);
+    border-radius: 5px;
+    background: var(--color-pca-s4-surface-2);
+    cursor: pointer;
+    position: relative;
+}
+
+.unix-linux-sysadmin-handbook-page .checklist-card input[type='checkbox']:checked {
+    background: var(--color-pca-s4-accent);
+    border-color: var(--color-pca-s4-accent);
+}
+
+.unix-linux-sysadmin-handbook-page .checklist-card input[type='checkbox']:checked::after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 1px;
+    width: 5px;
+    height: 10px;
+    border: solid var(--color-pca-s4-checkmark);
+    border-width: 0 2px 2px 0;
+    transform: rotate(40deg);
+}
+
+.unix-linux-sysadmin-handbook-page .checklist-card label {
+    color: var(--color-pca-s4-foreground);
+    font-size: 14.5px;
+    cursor: pointer;
+    line-height: 1.6;
+}
+
+.unix-linux-sysadmin-handbook-page .checklist-card li:has(input:checked) label {
+    text-decoration: line-through;
+    color: var(--color-pca-s4-foreground-faint);
+}
+
+/* Footnotes (pandoc) */
+.unix-linux-sysadmin-handbook-page aside.footnotes {
+    display: none;
+}
+
+/* Responsive */
+@media (max-width: 980px) {
+    .unix-linux-sysadmin-handbook-page .sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.25s ease, visibility 0.25s ease;
+        visibility: hidden;
+        box-shadow: 0 0 40px var(--color-pca-s4-sidebar-shadow);
+    }
+
+    .unix-linux-sysadmin-handbook-page .sidebar.open {
+        transform: translateX(0);
+        visibility: visible;
+    }
+
+    .unix-linux-sysadmin-handbook-page .main {
+        margin-left: 0;
+        width: 100%;
+        max-width: none;
+        padding: 80px 20px 100px;
+    }
+
+    .unix-linux-sysadmin-handbook-page .sidebar-toggle {
+        display: flex;
+    }
+
+    .unix-linux-sysadmin-handbook-page .ref-grid {
+        grid-template-columns: 1fr;
+    }
+}

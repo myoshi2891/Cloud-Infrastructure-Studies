@@ -1,7 +1,14 @@
 import { readFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 
-const guide = readFileSync('Zoo-tour-guide-mcp-adk-challenge-lab-guide.md', 'utf8');
+// 移行元の Challenge-Lab/ は .gitignore 済みで CI に存在しないため、
+// コミット済み fixture を読む（CLAUDE.md「移行忠実性テストは移行元アーカイブを読まない」）。
+const guide = readFileSync(
+    join(dirname(fileURLToPath(import.meta.url)), '__fixtures__', 'zoo-tour-guide.md'),
+    'utf8'
+);
 
 /**
  * ガイド内の開始見出し `heading` から終了見出し `nextHeading` までの本文を返す。

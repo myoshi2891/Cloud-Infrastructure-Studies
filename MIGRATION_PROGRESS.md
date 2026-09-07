@@ -1,6 +1,122 @@
 # 移行作業進捗管理ドキュメント (Migration Progress)
 
-(最終更新日: 2026-09-02)
+(最終更新日: 2026-09-05)
+
+## 2026-09-05: 推薦図書『Operating Systems: Three Easy Pieces（OSTEP）』完全学習ガイド 100%全量移行 (完了)
+
+### 目的
+
+`Operating-Systems-Three-Easy-Pieces.html` を、Next.js App Router 5ファイル構成 (`page.tsx`, `OperatingSystemsThreeEasyPiecesGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/recommended-books/operating-systems-three-easy-pieces` ルートへ移行。グローバルナビゲーションの「Books」配下に追加。見出し(h1:1, h2:18, h3:58, h4:1)、全39個のテーブル、56個のMermaid図解、全リスト(19箇所/50件)、全外部リンク(12件)・全本文(119件)・学習チェックリスト(17件)・参考文献カード(12件)を一切の省略・要約なしで100%全量移植。ここでの「100%全量」は移行元HTMLからNext.jsへの転写範囲を指す。ガイド本文自体は原著OSTEPの逐語訳ではなく、原著の構成に沿って要点を独自に再構成した内容である（ガイド冒頭の「この記事について」に明記）。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for operating-systems-three-easy-pieces` (`80a1888b`)
+- [x] **Step 1 (Red)**: `test(books): add failing tests for operating-systems-three-easy-pieces` (`0a385000`)
+- [x] **Step 2 (Green)**: `feat(books): implement operating-systems-three-easy-pieces to pass tests` (`00239270`)
+- [x] **Step 3 (Refactor)**: `refactor(books): integrate operating-systems-three-easy-pieces into routing and update docs` (`f1b5d0d3`)
+- [x] **Step 4 (Archive & Sync)**: `chore(docs): update MIGRATION_PROGRESS.md and archive operating-systems-three-easy-pieces sources`
+
+### 関連ファイル
+
+- [app/recommended-books/operating-systems-three-easy-pieces/page.tsx](app/recommended-books/operating-systems-three-easy-pieces/page.tsx)
+- [app/recommended-books/operating-systems-three-easy-pieces/OperatingSystemsThreeEasyPiecesGuide.tsx](app/recommended-books/operating-systems-three-easy-pieces/OperatingSystemsThreeEasyPiecesGuide.tsx)
+- [app/recommended-books/operating-systems-three-easy-pieces/NavBar.tsx](app/recommended-books/operating-systems-three-easy-pieces/NavBar.tsx)
+- [app/recommended-books/operating-systems-three-easy-pieces/constants.ts](app/recommended-books/operating-systems-three-easy-pieces/constants.ts)
+- [app/recommended-books/operating-systems-three-easy-pieces/page.css](app/recommended-books/operating-systems-three-easy-pieces/page.css)
+- [`__tests__/recommended-books/operating-systems-three-easy-pieces/page.test.tsx`](__tests__/recommended-books/operating-systems-three-easy-pieces/page.test.tsx)
+- [`__tests__/recommended-books/operating-systems-three-easy-pieces/NavBar.test.tsx`](__tests__/recommended-books/operating-systems-three-easy-pieces/NavBar.test.tsx)
+- [docs/migration-inventory/operating-systems-three-easy-pieces.json](docs/migration-inventory/operating-systems-three-easy-pieces.json)
+- [archive/Books/html/Operating-Systems-Three-Easy-Pieces.html](archive/Books/html/Operating-Systems-Three-Easy-Pieces.html)
+- [archive/Books/md/Operating-Systems-Three-Easy-Pieces.md](archive/Books/md/Operating-Systems-Three-Easy-Pieces.md)
+
+---
+
+## 2026-09-05: 推薦図書『Systems Performance: Enterprise and the Cloud』実践ガイド 100%全量移行 (完了)
+
+### 目的
+
+`Systems-performance-guide.html` を、Next.js App Router 5ファイル構成 (`page.tsx`, `SystemsPerformanceGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/recommended-books/systems-performance` ルートへ移行。グローバルナビゲーションの「Books」配下に追加。見出し(h1:1, h2:17, h3:24)、全9個のテーブル、18個のMermaid図解、全リスト(13箇所/49件)、全外部リンク(22件)・全本文(56段落)・参考文献カード(22件)を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for systems-performance` (`c028168e`)
+- [x] **Step 1 (Red)**: `test(books): add failing tests for systems-performance` (`61439ea4`)
+- [x] **Step 2 (Green)**: `feat(books): implement systems-performance to pass tests` (`98df147b`)
+- [x] **Step 3 (Refactor)**: `refactor(books): integrate systems-performance into routing and update docs` (`1ee70136`)
+- [x] **Step 4 (Archive & Sync)**: `chore(docs): update MIGRATION_PROGRESS.md and archive systems-performance sources`
+
+### 関連ファイル
+
+- [app/recommended-books/systems-performance/page.tsx](app/recommended-books/systems-performance/page.tsx)
+- [app/recommended-books/systems-performance/SystemsPerformanceGuide.tsx](app/recommended-books/systems-performance/SystemsPerformanceGuide.tsx)
+- [app/recommended-books/systems-performance/NavBar.tsx](app/recommended-books/systems-performance/NavBar.tsx)
+- [app/recommended-books/systems-performance/constants.ts](app/recommended-books/systems-performance/constants.ts)
+- [app/recommended-books/systems-performance/page.css](app/recommended-books/systems-performance/page.css)
+- [`__tests__/recommended-books/systems-performance/page.test.tsx`](__tests__/recommended-books/systems-performance/page.test.tsx)
+- [`__tests__/recommended-books/systems-performance/NavBar.test.tsx`](__tests__/recommended-books/systems-performance/NavBar.test.tsx)
+- [docs/migration-inventory/systems-performance.json](docs/migration-inventory/systems-performance.json)
+- [archive/Books/html/Systems-performance-guide.html](archive/Books/html/Systems-performance-guide.html)
+- [archive/Books/md/Systems-performance-guide.md](archive/Books/md/Systems-performance-guide.md)
+
+---
+
+## 2026-09-05: 推薦図書『UNIX and Linux System Administration Handbook』完全解説ガイド 100%全量移行 (完了)
+
+### 目的
+
+`Unix-linux-sysadmin-handbook-guide.html` を、Next.js App Router 5ファイル構成 (`page.tsx`, `UnixLinuxSysadminHandbookGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/recommended-books/unix-linux-sysadmin-handbook` ルートへ移行。グローバルナビゲーションの「Books」配下に追加。見出し(h1:1, h2:9, h3:41, h4:115)、全39個のテーブル、29個のMermaid図解、全リスト(140件)、全外部リンク(64件)・全本文(121段落)・実践チェックリスト・参考文献一覧を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for unix-linux-sysadmin-handbook` (`d0ba3849`)
+- [x] **Step 1 (Red)**: `test(books): add failing tests for unix-linux-sysadmin-handbook` (`fc5fb69c`)
+- [x] **Step 2 (Green)**: `feat(books): implement unix-linux-sysadmin-handbook to pass tests` (`dc9c72cf`)
+- [x] **Step 3 (Refactor)**: `refactor(books): integrate unix-linux-sysadmin-handbook into routing and update docs` (`df35b68e`)
+- [x] **Step 4 (Archive & Sync)**: `chore(docs): update MIGRATION_PROGRESS.md and archive unix-linux-sysadmin-handbook sources`
+
+### 関連ファイル
+
+- [app/recommended-books/unix-linux-sysadmin-handbook/page.tsx](app/recommended-books/unix-linux-sysadmin-handbook/page.tsx)
+- [app/recommended-books/unix-linux-sysadmin-handbook/UnixLinuxSysadminHandbookGuide.tsx](app/recommended-books/unix-linux-sysadmin-handbook/UnixLinuxSysadminHandbookGuide.tsx)
+- [app/recommended-books/unix-linux-sysadmin-handbook/NavBar.tsx](app/recommended-books/unix-linux-sysadmin-handbook/NavBar.tsx)
+- [app/recommended-books/unix-linux-sysadmin-handbook/constants.ts](app/recommended-books/unix-linux-sysadmin-handbook/constants.ts)
+- [app/recommended-books/unix-linux-sysadmin-handbook/page.css](app/recommended-books/unix-linux-sysadmin-handbook/page.css)
+- [`__tests__/recommended-books/unix-linux-sysadmin-handbook/page.test.tsx`](__tests__/recommended-books/unix-linux-sysadmin-handbook/page.test.tsx)
+- [`__tests__/recommended-books/unix-linux-sysadmin-handbook/NavBar.test.tsx`](__tests__/recommended-books/unix-linux-sysadmin-handbook/NavBar.test.tsx)
+- [docs/migration-inventory/unix-linux-sysadmin-handbook.json](docs/migration-inventory/unix-linux-sysadmin-handbook.json)
+- [archive/Books/html/Unix-linux-sysadmin-handbook-guide.html](archive/Books/html/Unix-linux-sysadmin-handbook-guide.html)
+- [archive/Books/md/Unix-linux-sysadmin-handbook-guide.md](archive/Books/md/Unix-linux-sysadmin-handbook-guide.md)
+
+---
+
+## 2026-09-05: 推薦図書『Understanding the Linux Kernel』完全解説ガイド 100%全量移行 (完了)
+
+### 目的
+
+`Understanding-linux-kernel-guide.html` を、Next.js App Router 5ファイル構成 (`page.tsx`, `UnderstandingTheLinuxKernelGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/recommended-books/understanding-the-linux-kernel` ルートへ移行。グローバルナビゲーションの「Books」配下に追加。見出し(h1:1, h2:31, h3:96)、全17個のテーブル、45個のMermaid図解、全リスト(72件)、全外部リンク・全本文・実践チェックリスト(19件)・参考文献一覧を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 0 (Inventory)**: `chore(migration): add content inventory for understanding-the-linux-kernel` (`8a6138ef`)
+- [x] **Step 1 (Red)**: `test(books): add failing tests for understanding-the-linux-kernel` (`645467f4`)
+- [x] **Step 2 (Green)**: `feat(books): implement understanding-the-linux-kernel to pass tests` (`43e0526f`)
+- [x] **Step 3 (Refactor)**: `refactor(books): integrate understanding-the-linux-kernel into routing and update docs` (`309d03ec`)
+- [x] **Step 4 (Archive & Sync)**: `chore(docs): update MIGRATION_PROGRESS.md and archive understanding-linux-kernel sources`
+
+### 関連ファイル
+
+- [app/recommended-books/understanding-the-linux-kernel/page.tsx](app/recommended-books/understanding-the-linux-kernel/page.tsx)
+- [app/recommended-books/understanding-the-linux-kernel/UnderstandingTheLinuxKernelGuide.tsx](app/recommended-books/understanding-the-linux-kernel/UnderstandingTheLinuxKernelGuide.tsx)
+- [app/recommended-books/understanding-the-linux-kernel/NavBar.tsx](app/recommended-books/understanding-the-linux-kernel/NavBar.tsx)
+- [app/recommended-books/understanding-the-linux-kernel/constants.ts](app/recommended-books/understanding-the-linux-kernel/constants.ts)
+- [app/recommended-books/understanding-the-linux-kernel/page.css](app/recommended-books/understanding-the-linux-kernel/page.css)
+- [`__tests__/recommended-books/understanding-the-linux-kernel/page.test.tsx`](__tests__/recommended-books/understanding-the-linux-kernel/page.test.tsx)
+- [`__tests__/recommended-books/understanding-the-linux-kernel/NavBar.test.tsx`](__tests__/recommended-books/understanding-the-linux-kernel/NavBar.test.tsx)
+- [docs/migration-inventory/understanding-the-linux-kernel.json](docs/migration-inventory/understanding-the-linux-kernel.json)
+- [archive/Books/html/Understanding-linux-kernel-guide.html](archive/Books/html/Understanding-linux-kernel-guide.html)
+- [archive/Books/md/Understanding-linux-kernel-guide.md](archive/Books/md/Understanding-linux-kernel-guide.md)
+
+---
 
 ## 2026-09-02: Google Cloud Professional Cloud Developer（PCD）Section 4「Google Cloudサービスとのアプリケーション統合」学習ガイド 100%全量移行 (完了)
 

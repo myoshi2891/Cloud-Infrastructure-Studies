@@ -1,0 +1,1600 @@
+{
+    "source": "Unix-linux-sysadmin-handbook-guide.html",
+    "h1": ["UNIX and Linux System Administration Handbook 実践ガイド"],
+    "h2": [
+        "UNIX and Linux System Administration Handbook 実践ガイド",
+        "この文書の使い方",
+        "全体構成（原著4パート・31章）",
+        "第1部: 基本管理 (Basic Administration)",
+        "第2部: ネットワーキング (Networking)",
+        "第3部: ストレージ (Storage)",
+        "第4部: 運用 (Operations)",
+        "学習ロードマップ（初学者向け推奨進行順）",
+        "参考文献・出典一覧"
+    ],
+    "h3": [
+        "第1章: どこから始めるか (Where to Start)",
+        "第2章: ブートとシステム管理デーモン (Booting and System Management Daemons)",
+        "第3章: アクセス制御とrootの権限 (Access Control and Rootly Powers)",
+        "第4章: プロセス制御 (Process Control)",
+        "第5章: ファイルシステム (The Filesystem)",
+        "第6章: ソフトウェアのインストールと管理 (Software Installation and Management)",
+        "第7章: スクリプティングとシェル (Scripting and the Shell)",
+        "第8章: ユーザー管理 (User Management)",
+        "第9章: クラウドコンピューティング (Cloud Computing)",
+        "第10章: ロギング (Logging)",
+        "第11章: ドライバとカーネル (Drivers and the Kernel)",
+        "第12章: 印刷 (Printing)",
+        "第13章: TCP/IPネットワーキング (TCP/IP Networking)",
+        "第14章: 物理ネットワーキング (Physical Networking)",
+        "第15章: IPルーティング (IP Routing)",
+        "第16章: DNS - ドメインネームシステム (DNS: The Domain Name System)",
+        "第17章: シングルサインオン (Single Sign-On)",
+        "第18章: 電子メール (Electronic Mail)",
+        "第19章: Webホスティング (Web Hosting)",
+        "第20章: ストレージ (Storage)",
+        "第21章: ネットワークファイルシステム (The Network File System, NFS)",
+        "第22章: SMB (Server Message Block)",
+        "第23章: 構成管理 (Configuration Management)",
+        "第24章: 仮想化 (Virtualization)",
+        "第25章: コンテナ (Containers)",
+        "第26章: 継続的インテグレーションとデリバリー (Continuous Integration and Delivery, CI/CD)",
+        "第27章: セキュリティ (Security)",
+        "第28章: モニタリング (Monitoring)",
+        "第29章: パフォーマンス分析 (Performance Analysis)",
+        "第30章: データセンターの基礎 (Data Center Basics)",
+        "第31章: 方法論・ポリシー・組織政治 (Methodology, Policy, and Politics)",
+        "原著書誌情報",
+        "第2章（Booting / systemd）関連",
+        "第3章（Access Control / sudo）関連",
+        "第16章（DNS/DNSSEC）関連",
+        "第20章（Storage / LVM / RAID）関連",
+        "第23章（Configuration Management / Ansible）関連",
+        "第25章（Containers / Docker / Kubernetes）関連",
+        "第27章（Security / SSHハードニング）関連",
+        "第28章（Monitoring / SRE Golden Signals）関連",
+        "第29章（Performance Analysis / USE法）関連"
+    ],
+    "h4": [
+        "① 何のための章か",
+        "② 初学者向けの基礎解説",
+        "③ ベストプラクティス",
+        "④ ディストリビューション選定の勘所",
+        "① 何のための章か",
+        "② 初学者向けの基礎解説",
+        "③ ベストプラクティス",
+        "④ 主要コマンドリファレンス",
+        "① 何のための章か",
+        "② 初学者向けの基礎解説",
+        "③ ベストプラクティス",
+        "④ コマンドリファレンス",
+        "① 何のための章か",
+        "② 初学者向けの基礎解説",
+        "③ ベストプラクティス",
+        "④ コマンドリファレンス",
+        "① 何のための章か",
+        "② 初学者向けの基礎解説",
+        "③ ベストプラクティス",
+        "④ コマンドリファレンス",
+        "① 何のための章か",
+        "② 初学者向けの基礎解説",
+        "③ ベストプラクティス",
+        "④ コマンドリファレンス",
+        "① 何のための章か",
+        "② 初学者向けの基礎解説",
+        "③ ベストプラクティス",
+        "④ コマンドリファレンス",
+        "① 何のための章か",
+        "② 初学者向けの基礎解説",
+        "③ ベストプラクティス",
+        "④ コマンドリファレンス",
+        "① 何のための章か",
+        "② 初学者向けの基礎解説",
+        "③ ベストプラクティス",
+        "① 何のための章か",
+        "② 初学者向けの基礎解説",
+        "③ ベストプラクティス",
+        "④ コマンドリファレンス",
+        "① 何のための章か",
+        "② 初学者向けの基礎解説",
+        "③ ベストプラクティス",
+        "④ コマンドリファレンス",
+        "① 何のための章か",
+        "② 初学者向けの基礎解説",
+        "③ ベストプラクティス",
+        "④ コマンドリファレンス",
+        "① 何のための章か",
+        "② 初学者向けの基礎解説",
+        "③ ベストプラクティス",
+        "④ コマンドリファレンス",
+        "① 何のための章か",
+        "② 初学者向けの基礎解説",
+        "③ ベストプラクティス",
+        "① 何のための章か",
+        "② 初学者向けの基礎解説",
+        "③ ベストプラクティス",
+        "① 何のための章か",
+        "② 初学者向けの基礎解説",
+        "③ ベストプラクティス",
+        "④ コマンドリファレンス",
+        "① 何のための章か",
+        "② 初学者向けの基礎解説",
+        "③ ベストプラクティス",
+        "① 何のための章か",
+        "② 初学者向けの基礎解説",
+        "③ ベストプラクティス",
+        "① 何のための章か",
+        "② 初学者向けの基礎解説",
+        "③ ベストプラクティス",
+        "① 何のための章か",
+        "② 初学者向けの基礎解説",
+        "③ ベストプラクティス",
+        "④ コマンドリファレンス",
+        "① 何のための章か",
+        "② 初学者向けの基礎解説",
+        "③ ベストプラクティス",
+        "④ コマンドリファレンス",
+        "① 何のための章か",
+        "② 初学者向けの基礎解説",
+        "③ ベストプラクティス",
+        "④ コマンドリファレンス",
+        "① 何のための章か",
+        "② 初学者向けの基礎解説",
+        "③ ベストプラクティス",
+        "④ コマンドリファレンス",
+        "① 何のための章か",
+        "② 初学者向けの基礎解説",
+        "③ ベストプラクティス",
+        "① 何のための章か",
+        "② 初学者向けの基礎解説",
+        "③ ベストプラクティス",
+        "④ コマンドリファレンス",
+        "① 何のための章か",
+        "② 初学者向けの基礎解説",
+        "③ ベストプラクティス",
+        "④ 主要ツール",
+        "① 何のための章か",
+        "② 初学者向けの基礎解説",
+        "③ ベストプラクティス",
+        "④ コマンドリファレンス",
+        "① 何のための章か",
+        "② 初学者向けの基礎解説",
+        "③ ベストプラクティス",
+        "④ コマンドリファレンス／主要ツール",
+        "① 何のための章か",
+        "② 初学者向けの基礎解説",
+        "③ ベストプラクティス",
+        "④ コマンドリファレンス",
+        "① 何のための章か",
+        "② 初学者向けの基礎解説",
+        "③ ベストプラクティス",
+        "① 何のための章か",
+        "② 初学者向けの基礎解説",
+        "③ ベストプラクティス"
+    ],
+    "th": [
+        "パート",
+        "章番号",
+        "章タイトル（原題）",
+        "必須業務",
+        "具体的な内容",
+        "ディストリビューション系統",
+        "代表例",
+        "主な用途",
+        "Unit種別",
+        "拡張子",
+        "役割",
+        "コマンド",
+        "用途",
+        "コマンド",
+        "用途",
+        "シグナル",
+        "番号",
+        "意味",
+        "コマンド",
+        "用途",
+        "コマンド",
+        "用途",
+        "系統",
+        "パッケージ形式",
+        "低レベルツール",
+        "高レベル（依存解決込み）ツール",
+        "操作",
+        "Debian系 (apt)",
+        "Red Hat系 (dnf)",
+        "コマンド",
+        "用途",
+        "コマンド",
+        "用途",
+        "概念",
+        "説明",
+        "コマンド",
+        "用途",
+        "コマンド",
+        "用途",
+        "構成要素",
+        "役割",
+        "コマンド",
+        "用途",
+        "コマンド",
+        "用途",
+        "項目",
+        "概要",
+        "指標",
+        "測定対象",
+        "値と測定時点",
+        "コマンド",
+        "用途",
+        "技術",
+        "役割",
+        "RAIDレベル",
+        "方式",
+        "最小ディスク数",
+        "耐障害性",
+        "特徴",
+        "ファイルシステム",
+        "得意な用途",
+        "特記事項",
+        "コマンド",
+        "用途",
+        "コマンド",
+        "用途",
+        "コマンド",
+        "用途",
+        "コマンド",
+        "用途",
+        "隔離技術",
+        "役割",
+        "コマンド",
+        "用途",
+        "カテゴリ",
+        "代表的ツール",
+        "設定項目",
+        "推奨値",
+        "理由",
+        "コマンド",
+        "用途",
+        "シグナル",
+        "説明",
+        "ツール",
+        "役割",
+        "コマンド",
+        "用途",
+        "要素",
+        "概要"
+    ],
+    "td": [
+        "第1部: 基本管理 (Basic Administration)",
+        "1〜12",
+        "Where to Start／Booting／Access Control／Process Control／Filesystem／Software Installation／Scripting／User Management／Cloud Computing／Logging／Drivers and the Kernel／Printing",
+        "第2部: ネットワーキング (Networking)",
+        "13〜19",
+        "TCP/IP／Physical Networking／IP Routing／DNS／Single Sign-On／Electronic Mail／Web Hosting",
+        "第3部: ストレージ (Storage)",
+        "20〜22",
+        "Storage／NFS／SMB",
+        "第4部: 運用 (Operations)",
+        "23〜31",
+        "Configuration Management／Virtualization／Containers／CI/CD／Security／Monitoring／Performance Analysis／Data Center Basics／Methodology, Policy, and Politics",
+        "ハードウェアとインフラの追加・削除",
+        "サーバー調達、クラウドインスタンスの起動・廃止",
+        "自動化",
+        "手作業の繰り返しをスクリプト・IaCに置き換える",
+        "定常メンテナンス",
+        "パッチ適用、アップグレード、証明書更新",
+        "ユーザーサポート",
+        "アカウント発行、権限付与、問い合わせ対応",
+        "トラブルシューティング",
+        "障害の切り分けと復旧（＝「消火活動」）",
+        "Debian系",
+        "Ubuntu LTS, Debian",
+        "クラウド、コンテナベースイメージ、幅広いドキュメント",
+        "Red Hat系",
+        "RHEL, Rocky Linux, AlmaLinux",
+        "エンタープライズ、長期サポート、CIS/STIG準拠が容易",
+        "SUSE系",
+        "openSUSE, SLES",
+        "ヨーロッパ圏エンタープライズ、YaST管理",
+        "Arch系",
+        "Arch Linux",
+        "ローリングリリース、学習用途",
+        "Service",
+        ".service",
+        "デーモン・プロセスの起動管理（nginx, postgresqlなど）",
+        "Socket",
+        ".socket",
+        "ソケットベースのアクティベーション（遅延起動）",
+        "Target",
+        ".target",
+        "複数Unitのグルーピング（旧runlevel相当）",
+        "Timer",
+        ".timer",
+        "cronに代わるスケジュール実行",
+        "Mount / Automount",
+        ".mount / .automount",
+        "ファイルシステムのマウント管理",
+        "Device",
+        ".device",
+        "udevが検出したデバイスの表現",
+        "/usr/lib/systemd/system/",
+        "パッケージが提供する既定Unit（最も優先度が低い）",
+        "/run/systemd/system/",
+        "実行時に生成される一時Unit",
+        "/etc/systemd/system/",
+        "管理者による作成・上書き（最優先）",
+        "systemctl start/stop/restart <unit>",
+        "サービスの起動・停止・再起動",
+        "systemctl enable/disable <unit>",
+        "次回起動時の自動起動設定",
+        "systemctl status <unit>",
+        "状態・直近ログの確認",
+        "systemctl list-units --failed",
+        "失敗したUnitの一覧",
+        "systemd-analyze blame",
+        "起動時間のボトルネック分析",
+        "systemd-analyze critical-chain",
+        "起動のクリティカルパス表示",
+        "journalctl -b",
+        "今回起動分のログ表示",
+        "chmod u+x,g-w file",
+        "パーミッション変更（シンボリックモード）",
+        "chmod 750 file",
+        "パーミッション変更（8進数モード）",
+        "chown user:group file",
+        "所有者・グループの変更",
+        "visudo",
+        "sudoers編集（構文チェック付き）",
+        "sudo -l",
+        "自分に許可されたsudoコマンド一覧",
+        "getfacl / setfacl",
+        "ACL（拡張アクセス制御リスト）の確認・設定",
+        "SIGHUP",
+        "1",
+        "設定再読み込みの慣習的合図（端末切断の原義）",
+        "SIGINT",
+        "2",
+        "Ctrl+Cによる割り込み",
+        "SIGKILL",
+        "9",
+        "強制終了（プロセス側で捕捉・無視不可）",
+        "SIGTERM",
+        "15",
+        "正常終了の要求（既定のkillシグナル、捕捉可能）",
+        "SIGSTOP / SIGCONT",
+        "19 / 18（Linux x86/ARM）",
+        "一時停止・再開。番号はアーキテクチャ依存（Alpha/SPARC・MIPSでは異なる）なので、コマンドでは kill -STOP / kill -CONT のように名前で指定する",
+        "ps aux / ps -ef",
+        "全プロセス一覧",
+        "top / htop",
+        "リアルタイムリソース監視",
+        "kill -TERM <pid>",
+        "正常終了要求",
+        "kill -KILL <pid>",
+        "強制終了（kill -9 と同義。番号より名前指定を推奨）",
+        "pgrep / pkill",
+        "名前によるプロセス検索・終了",
+        "nice -n 10 cmd",
+        "優先度を下げて実行",
+        "systemd-cgtop",
+        "cgroup単位のリソース使用状況",
+        "df -h",
+        "マウントポイントごとの空き容量",
+        "du -sh <dir>",
+        "ディレクトリの使用量集計",
+        "mount / umount",
+        "ファイルシステムのマウント・アンマウント",
+        "lsblk",
+        "ブロックデバイス一覧の階層表示",
+        "find / -xdev -size +100M",
+        "大容量ファイルの検索",
+        "stat <file>",
+        "inode情報の詳細表示",
+        "Debian系",
+        ".deb",
+        "dpkg",
+        "apt / apt-get",
+        "Red Hat系",
+        ".rpm",
+        "rpm",
+        "dnf（RHEL8以降。旧yumの後継）",
+        "メタデータ更新",
+        "apt update",
+        "dnf makecache",
+        "インストール",
+        "apt install <pkg>",
+        "dnf install <pkg>",
+        "アップグレード",
+        "apt upgrade",
+        "dnf upgrade",
+        "削除",
+        "apt remove <pkg>",
+        "dnf remove <pkg>",
+        "検索",
+        "apt search <keyword>",
+        "dnf search <keyword>",
+        "インストール済み一覧",
+        "apt list --installed",
+        "dnf list installed",
+        "パッケージ情報",
+        "apt show <pkg>",
+        "dnf info <pkg>",
+        "grep / grep -E",
+        "パターン検索（egrep は非推奨。grep -E を使う）",
+        "sed 's/old/new/g'",
+        "ストリーム編集・置換",
+        "awk '{print $N}'",
+        "フィールド抽出・集計",
+        "xargs",
+        "標準入力から引数を構築して実行",
+        "cut -d, -f1",
+        "区切り文字によるフィールド切り出し",
+        "shellcheck script.sh",
+        "シェルスクリプトの静的解析",
+        "useradd -m -s /bin/bash alice",
+        "ユーザー作成（ホームディレクトリ付き）",
+        "usermod -aG docker alice",
+        "補助グループへの追加。警告: rootfulなDockerデーモンでは docker グループ所属はホストへのroot相当の権限付与に等しい（任意のホストパスを特権コンテナでマウントできるため）。まずrootless Dockerの利用を検討し、rootfulで運用する場合は信頼できるユーザーのみを追加する",
+        "usermod -L alice",
+        "パスワードロック（パスワードハッシュを無効化するのみ。SSH公開鍵認証やsudo経由のログインは引き続き可能なため、アカウント全体を止めるには usermod -L -e 1 alice やシェル変更・鍵の削除を併用する）",
+        "passwd -e alice",
+        "次回ログイン時のパスワード変更強制",
+        "chage -l alice",
+        "パスワード有効期限の確認",
+        "id alice",
+        "所属UID/GIDの確認",
+        "IaaS / PaaS / SaaS",
+        "インフラ／プラットフォーム／ソフトウェアそれぞれをサービスとして提供する層",
+        "リージョン / アベイラビリティゾーン",
+        "地理的な分散単位。障害時の可用性設計の基盤",
+        "セキュリティグループ / VPC",
+        "クラウド上の仮想ネットワーク境界とファイアウォール",
+        "IAM（Identity and Access Management）",
+        "クラウドリソースへのアクセス制御。OSのユーザー管理と同様「最小権限の原則」が鉄則",
+        "journalctl -u <unit>",
+        "特定サービスのログ表示",
+        "journalctl -b",
+        "今回起動分のログ",
+        "journalctl -f",
+        "ログのリアルタイム追跡（tail -f相当）",
+        "journalctl --since \"1 hour ago\"",
+        "時間範囲指定",
+        "logrotate -d /etc/logrotate.conf",
+        "logrotate設定のドライラン確認",
+        "uname -r",
+        "現在のカーネルバージョン確認",
+        "lsmod",
+        "ロード済みモジュール一覧",
+        "modprobe <module>",
+        "モジュールのロード（依存解決込み）",
+        "dmesg -T",
+        "カーネルログの表示（人間可読な時刻付き）",
+        "sysctl -a",
+        "カーネルパラメータの一覧",
+        "cupsd",
+        "印刷デーモン本体",
+        "PPDファイル",
+        "プリンタ固有の機能定義",
+        "印刷キュー",
+        "ジョブの順序管理",
+        "Webインターフェース（localhost:631）",
+        "ブラウザからの管理画面",
+        "lpstat -p",
+        "プリンタ状態の確認",
+        "lpadmin -p <name> -E -v <uri>",
+        "プリンタの追加・有効化",
+        "cancel <job-id>",
+        "印刷ジョブのキャンセル",
+        "ip addr show",
+        "インターフェースのIPアドレス確認",
+        "ip route show",
+        "ルーティングテーブル表示",
+        "ss -tulnp",
+        "リスニングポート一覧（netstatの後継）",
+        "tcpdump -i eth0 port 443",
+        "パケットキャプチャ",
+        "dig / nslookup",
+        "DNS問い合わせ",
+        "curl -v https://example.com",
+        "HTTP通信の詳細確認",
+        "Ethernet規格",
+        "1GbE, 10GbE, 25/40/100GbEなど。データセンターでは25GbE以上が主流になりつつある",
+        "二重化（Bonding/LACP）",
+        "複数の物理NICを論理的に束ね、帯域拡張と冗長性を両立",
+        "SDN（Software-Defined Networking）",
+        "制御プレーンとデータプレーンを分離し、ネットワーク構成をソフトウェアで一元管理",
+        "TLD署名率",
+        "ルートゾーンに委任されたTLDのうち、DSレコードを保有する割合",
+        "約92%（2023年9月時点）",
+        "2LD署名率",
+        ".com・.net 配下の第2レベルドメインのうち、署名済みの割合",
+        "一桁%台（2023年9月時点）",
+        "リゾルバ検証率",
+        "DNSSEC検証を行う再帰リゾルバ経由で解決される問い合わせの割合。上記2つ（署名側の指標）とは別軸の検証側の指標",
+        "約30%（2023年9月時点）",
+        "dig example.com A",
+        "Aレコードの問い合わせ",
+        "dig +trace example.com",
+        "権威委任チェーンの追跡",
+        "dig +dnssec example.com",
+        "DNSSEC署名情報付きで問い合わせ",
+        "named-checkzone",
+        "BINDゾーンファイルの構文検証",
+        "unbound-control status",
+        "Unboundの稼働状況確認",
+        "SPF",
+        "送信元IPが正規のものかDNS TXTレコードで検証",
+        "DKIM",
+        "メール本文への電子署名で改ざん検知",
+        "DMARC",
+        "SPF/DKIMの認証結果に加え、認証されたドメインがヘッダFromのドメインと一致するか（identifier alignment）を評価。整合する認証結果が1つもない場合の処理（隔離・拒否など）を p ポリシーで宣言",
+        "RAID 0",
+        "ストライピング",
+        "2",
+        "なし",
+        "高速だが1台故障で全損",
+        "RAID 1",
+        "ミラーリング",
+        "2",
+        "1台故障まで耐える",
+        "単純・信頼性高いが容量効率50%",
+        "RAID 5",
+        "パリティ分散",
+        "3",
+        "1台故障まで耐える",
+        "容量効率が良いが書き込み性能に制約",
+        "RAID 6",
+        "二重パリティ",
+        "4",
+        "2台故障まで耐える",
+        "大容量ディスクでのリビルド中障害に強い",
+        "RAID 10",
+        "ミラー+ストライプ",
+        "4",
+        "各ミラーペアで1台まで",
+        "高速・高信頼性、容量効率50%",
+        "ext4",
+        "汎用・互換性重視",
+        "縮小可能、枯れた実績、小ファイル/メタデータ操作が多いワークロードに強い",
+        "XFS",
+        "大容量ファイル・DB・高スループット",
+        "RHEL系の既定FS。拡張のみ可能で縮小不可（アーキテクチャ上の制約）",
+        "Btrfs",
+        "スナップショット・圧縮・整合性検証",
+        "openSUSE/Fedora既定。RAID5/6機能は本番非推奨とされる場合がある",
+        "ZFS",
+        "エンタープライズストレージ全般",
+        "チェックサム・重複排除・スナップショットを統合提供",
+        "pvcreate / vgcreate / lvcreate",
+        "LVMの物理・ボリュームグループ・論理ボリューム作成",
+        "lvextend -L +50G /dev/vg/lv",
+        "論理ボリュームの拡張",
+        "mdadm --create /dev/md0 --level=1 --raid-devices=2 /dev/sdb /dev/sdc",
+        "ソフトウェアRAID作成。警告: 指定したデバイス上の既存データは破壊またはアクセス不能になる。実行前に lsblk で /dev/sdb /dev/sdc の実体を確認し、未マウントかつデータのないRAID専用ディスク（またはパーティション）だけを指定すること。必要なデータは事前にバックアップする",
+        "mdadm --detail /dev/md0",
+        "RAIDアレイの状態確認",
+        "smartctl -a /dev/sda",
+        "ディスクのS.M.A.R.T.情報確認",
+        "mkfs.xfs / mkfs.ext4",
+        "ファイルシステム作成",
+        "exportfs -av",
+        "/etc/exports の設定を反映",
+        "showmount -e server",
+        "サーバーが公開しているエクスポート一覧（NFSv3の MOUNT プロトコル / rpc.mountd に依存）。MOUNTサービスを持たないNFSv4専用サーバーでは失敗する",
+        "exportfs -s（サーバー側）",
+        "サーバー上でアクティブなエクスポートを /etc/exports 形式で表示する。サーバーにログインできる場合の確認手段",
+        "mount -t nfs4 server:/ /mnt → ls /mnt",
+        "クライアント側からの確認手順。NFSv4の疑似ルート（pseudo-root）をマウントし、ls でクライアントから見える名前空間を実際にたどる",
+        "mount -t nfs4 server:/data /mnt",
+        "NFSv4マウント",
+        "nfsstat",
+        "NFS統計情報の確認",
+        "testparm",
+        "smb.conf の構文チェック",
+        "smbclient -L server",
+        "共有一覧の確認",
+        "pdbedit -L",
+        "Sambaユーザーデータベースの一覧",
+        "smbstatus",
+        "現在の接続状況確認",
+        "ansible-playbook site.yml --check",
+        "ドライラン実行",
+        "ansible-playbook site.yml --diff",
+        "変更差分の表示",
+        "ansible all -m ping",
+        "疎通確認",
+        "ansible-vault encrypt secrets.yml",
+        "秘密情報の暗号化",
+        "ansible-lint",
+        "Playbookの静的解析",
+        "Namespaces",
+        "PID・ネットワーク・マウント・ホスト名などの「見える範囲」をプロセスごとに分離",
+        "cgroups (Control Groups)",
+        "CPU・メモリ・I/O帯域の割当上限を強制",
+        "OverlayFS",
+        "イメージレイヤーをCopy-on-Writeで重ね合わせ、ディスク使用量とビルド時間を削減",
+        "docker build -t app:1.0 .",
+        "イメージビルド",
+        "docker run --rm -it app:1.0",
+        "コンテナ起動（使い捨て）",
+        "docker ps",
+        "稼働中コンテナ一覧",
+        "kubectl get pods",
+        "Kubernetes Pod一覧",
+        "kubectl describe pod <name>",
+        "Podの詳細・イベント確認",
+        "kubectl logs <pod>",
+        "ログ確認",
+        "CI/CDプラットフォーム",
+        "GitHub Actions, GitLab CI, Jenkins, CircleCI",
+        "コンテナレジストリ",
+        "Docker Hub, GitHub Container Registry, Amazon ECR",
+        "脆弱性スキャン",
+        "Trivy, Grype, Snyk",
+        "デプロイ戦略ツール",
+        "Argo CD (GitOps), Spinnaker",
+        "PasswordAuthentication",
+        "no",
+        "パスワード認証経路を無効化し、総当たり攻撃の対象を減らす",
+        "KbdInteractiveAuthentication",
+        "no",
+        "UsePAM yes の環境では keyboard-interactive 経由でパスワード認証が残るため、併せて無効化する（MFAを keyboard-interactive で実装する場合はこの限りではない）",
+        "PermitRootLogin",
+        "prohibit-password（鍵のみ許可）または no",
+        "rootへの直接攻撃面を縮小",
+        "PubkeyAuthentication",
+        "yes",
+        "鍵ベース認証を有効化",
+        "MaxAuthTries",
+        "3",
+        "総当たりの試行回数を制限",
+        "鍵の種類",
+        "Ed25519（ssh-keygen -t ed25519）",
+        "RSAより高速で鍵長が短い。RFC 8032のEdDSAは署名時のnonceを秘密鍵とメッセージから決定的に導出するため、署名処理が乱数生成器の品質に依存しない（一方で鍵生成には十分なエントロピーが必要であり、弱い乱数生成器で作られた秘密鍵が安全になるわけではない）",
+        "sshd -t",
+        "sshd_config構文チェック（適用前に必須）",
+        "fail2ban-client status sshd",
+        "ブルートフォース対策の状況確認",
+        "auditctl -l",
+        "現在の監査ルール一覧",
+        "ausearch -m USER_LOGIN",
+        "監査ログの検索",
+        "lynis audit system",
+        "ローカルセキュリティ監査ツール",
+        "レイテンシ (Latency)",
+        "リクエスト処理にかかる時間。成功時と失敗時を分けて計測することが重要",
+        "トラフィック (Traffic)",
+        "システムへの需要（リクエスト数等）。他3指標を解釈する文脈を与える",
+        "エラー (Errors)",
+        "失敗したリクエストの比率・件数",
+        "飽和度 (Saturation)",
+        "リソースがどれだけ限界に近いか（CPU使用率、キュー長等）",
+        "Prometheus",
+        "メトリクス収集・時系列データベース・アラートルール評価",
+        "Grafana",
+        "ダッシュボード可視化",
+        "Alertmanager",
+        "アラートの重複排除・グルーピング・ルーティング",
+        "Node Exporter",
+        "ホストレベルメトリクス（CPU/メモリ/ディスク）の公開",
+        "OpenTelemetry",
+        "メトリクス・ログ・トレースの統一計装標準",
+        "vmstat 1",
+        "CPU/メモリ/スワップの概況（1秒間隔）",
+        "mpstat -P ALL 1",
+        "コアごとのCPU使用率",
+        "iostat -xz 1",
+        "ディスクI/Oの詳細統計",
+        "sar -n DEV 1",
+        "ネットワークインターフェース統計",
+        "perf top",
+        "リアルタイムでCPUを消費している関数の表示",
+        "pidstat 1",
+        "プロセス単位のリソース使用状況",
+        "冗長電源 (N+1 / 2N)",
+        "UPS・発電機・電源系統の二重化レベル",
+        "冷却方式",
+        "ホット/コールドアイル分離、CRAC/CRAHユニット",
+        "ラック単位管理",
+        "U（ラックユニット）単位での機器配置・配線・重量分散",
+        "Tier分類（Uptime Institute）",
+        "Tier I〜IVでデータセンターの可用性レベルを分類"
+    ],
+    "listItems": [
+        "各章は「① 何のための章か」「② 初学者向けの基礎解説」「③ ベストプラクティス」「④ コマンド／設定リファレンス」の順で構成しています。",
+        "Web検索で一次情報・著名開発者の発信元URLを確認できた主要章のみ、章末に「出典」を設けています（2026年8月27日時点）。全出典は巻末の「参考文献・出典一覧」に集約しています。",
+        "コマンド例はUbuntu 24.04 LTS（Debian系）とRHEL 9 / Rocky Linux 9（Red Hat系）の両方を意識して記載し、ディストリビューション差異がある箇所は明示しています。",
+        "変更を加える前に必ず現状の設定をバックアップ・バージョン管理下に置く（/etc を Git 管理するなど）。",
+        "本番環境で初めて実行するコマンドはない、を原則にする（検証環境・ステージングで先に試す）。",
+        "「なぜこの設定にしたか」をコミットメッセージやREADMEに残す — 半年後の自分は他人と同じである。",
+        "アップストリームのUnitファイルは直接編集しない。systemctl edit <unit> でオーバーライドファイル（/etc/systemd/system/<unit>.d/override.conf）を作成する — パッケージ更新時に上書き消失しない。",
+        "Unitファイルを作成・変更したら必ず systemctl daemon-reload を実行する。これを忘れると変更が反映されない、最も典型的なハマりどころ。",
+        "After= は起動順序を制御するだけで依存関係を意味しない。実際の依存を強制するには Requires= または Wants= と組み合わせる。",
+        "障害調査は systemctl status <unit> → journalctl -u <unit> -xe の順で行う（ログ・終了コード・プロセスツリーが一括で見える）。",
+        "準備完了シグナルが必要なサービスには Type=notify と sd_notify()（systemd-notify）を使う。",
+        "滅多に使わないサービスはソケットアクティベーションでメモリ消費を抑える。",
+        "rootパスワードを直接配布しない。個々のユーザーに専用アカウントを発行し、必要な操作だけを sudo で許可する（最小権限の原則）。",
+        "/etc/sudoers は必ず visudo で編集する（構文エラーを事前検知し、自分自身をロックアウトする事故を防ぐ）。",
+        "ALL=(ALL) ALL のような包括的な許可はroot直渡しと同義。実行を許すコマンドをできる限り具体的に絞る（例: dbadmin ALL=(ALL) /bin/systemctl restart postgresql）。",
+        "NOPASSWD は真に必要な自動化アカウント以外では避ける。",
+        "sudoersにエディタ（vi/vim/nano/emacs）や less・find・awk など、シェルエスケープが可能なバイナリを許可しない — GTFOBinsに掲載されている典型的な権限昇格経路になる。",
+        "高セキュリティ環境では timestamp_timeout=0 として、sudo実行のたびにパスワード再入力を要求する。",
+        "auditd でsudo実行・/etc/passwd や /etc/shadow の変更を監査ログに記録する。",
+        "プロセスを止めるときは、まず SIGTERM（既定の kill）で正常終了を試み、応答がない場合のみ SIGKILL にエスカレートする。いきなり kill -9 はリソース解放処理やDBのコミットを妨げる可能性がある。",
+        "長時間稼働のサービスはsystemdの管理下に置き、生プロセスとして nohup や & で放置しない（再起動・クラッシュ時の自動復旧、リソース上限、ログの一元化が失われるため）。",
+        "CPU/メモリの過剰消費を防ぐには nice/renice による優先度調整より、systemdの CPUQuota= / MemoryMax=（cgroup v2ベースのリソース制御）を使うほうが確実。",
+        "ゾンビプロセスが大量発生している場合は「親プロセスが wait() を呼んでいない」実装上のバグを疑う。",
+        "/（ルート）、/var、/home は可能な限り別パーティション（別論理ボリューム）に分離する。ログの肥大化やユーザーデータの増加が、OS起動に必須のルート領域を圧迫する事故を防ぐ。",
+        "ファイルシステムの選定は用途で使い分ける（詳細は第20章）。一般用途はext4、大容量・高スループットが必要ならXFS、スナップショットや圧縮が必要ならBtrfs。",
+        "df -h と du -sh は似て非なる情報を返す。df はマウントポイント単位の空き容量、du は指定パス配下の実使用量。両方を定期的に確認する運用を組み込む。",
+        "シンボリックリンクとハードリンクの違い（ハードリンクは同一inodeを共有し別ファイルシステムをまたげない）を理解した上でバックアップ設計を行う。",
+        "本番サーバーでは自動アップグレード（unattended-upgrades 等）はセキュリティパッチのみに限定し、メジャーバージョンアップは計画的なメンテナンスウィンドウで実施する。",
+        "パッケージのGPG署名検証を無効化しない（--allow-unauthenticated 等のフラグは緊急時以外使わない）。",
+        "依存関係の破損を避けるため、異なる系統のパッケージマネージャー（例: apt と手動 make install）を同一ファイルに対して混在させない。",
+        "apt-mark hold <pkg> / dnf versionlock で、意図せぬバージョンアップを防ぎたいパッケージを固定する。",
+        "コンテナイメージのビルドでは、パッケージキャッシュを最後にクリア（apt-get clean 等）してイメージサイズを削減する。",
+        "スクリプト冒頭に #!/usr/bin/env bash と set -euo pipefail を必ず入れる。3つのオプションは役割が異なるので分けて理解する。 -e は非ゼロ終了で停止するが、すべての非ゼロ終了ステータスで停止するわけではない。if/while/until の条件部、&&・|| の左辺、! を付けたコマンドに現れるパイプラインは例外として扱われ、非ゼロで終了しても停止しない。これらの箇所ではパイプライン全体の終了ステータスを $? で明示的に確認する。 -o pipefail は「パイプライン全体の終了ステータスの決まり方」を変えるオプションである。無効時のパイプラインの終了ステータスは最後の要素のものだけで、最後以外の要素が失敗しても終了ステータスには反映されない（例: false | true は 0）。有効時は最後に非ゼロで終了した要素のステータスが採用されるため、途中の失敗でもパイプライン全体が非ゼロになり得る（false | true は 1）。 ただし pipefail を有効にしても「どの要素が失敗したか」までは分からない。パイプライン全体の成否は $? で、要素ごとの終了ステータスは配列 PIPESTATUS（\"${PIPESTATUS[@]}\"）で、それぞれ別々に確認する。 -u は未定義変数の参照をエラーにする。",
+        "-e は非ゼロ終了で停止するが、すべての非ゼロ終了ステータスで停止するわけではない。if/while/until の条件部、&&・|| の左辺、! を付けたコマンドに現れるパイプラインは例外として扱われ、非ゼロで終了しても停止しない。これらの箇所ではパイプライン全体の終了ステータスを $? で明示的に確認する。",
+        "-o pipefail は「パイプライン全体の終了ステータスの決まり方」を変えるオプションである。無効時のパイプラインの終了ステータスは最後の要素のものだけで、最後以外の要素が失敗しても終了ステータスには反映されない（例: false | true は 0）。有効時は最後に非ゼロで終了した要素のステータスが採用されるため、途中の失敗でもパイプライン全体が非ゼロになり得る（false | true は 1）。",
+        "ただし pipefail を有効にしても「どの要素が失敗したか」までは分からない。パイプライン全体の成否は $? で、要素ごとの終了ステータスは配列 PIPESTATUS（\"${PIPESTATUS[@]}\"）で、それぞれ別々に確認する。",
+        "-u は未定義変数の参照をエラーにする。",
+        "変数展開は常にダブルクォートで囲む（\"$var\"）。スペースを含むファイル名でのワードスプリッティング事故を防ぐ。",
+        "shellcheck で静的解析を通してからデプロイする。",
+        "冪等性（何度実行しても同じ結果になること）を意識する。ファイル追記型の操作は、既存行の存在チェックを先に行う。",
+        "複雑なロジックが必要になったら、シェルではなくPythonなど汎用言語への切り替えを検討する（原著もこの判断基準を明示的に推奨している）。",
+        "退職・異動が発生したら即座にアカウントを無効化する。ローカルアカウントでは usermod -L（パスワードロック）だけでは不十分で、① アカウント期限の設定（usermod -e 1 / chage -E 0）、② 登録済みSSH公開鍵（.ssh/authorized_keys）の無効化または削除、③ 既存セッションの終了（loginctl terminate-user <user> または該当プロセスの終了）をあわせて実施する。usermod -L は鍵認証や稼働中セッションを止められない点に注意。削除は監査証跡のため一定期間経過後に行う。",
+        "共有アカウントを作らない。誰が何をしたかの追跡可能性（アカウンタビリティ）を最優先する。",
+        "パスワードポリシーは pam_pwquality で強制し、加えて可能な限りSSH鍵認証・多要素認証（MFA）へ移行する。",
+        "定期的に（四半期ごと等）アカウント棚卸しを行い、不要な特権グループ所属を洗い出す。",
+        "サービスアカウントにはログインシェルを /usr/sbin/nologin に設定し、対話的ログインを禁止する。",
+        "インスタンスへの設定はSSH経由の手作業ではなく cloud-init またはConfiguration Management（第23章）で自動化し、「作り直せば元通り」を実現する（イミュータブルインフラの考え方）。",
+        "コスト管理はタグ付けから始める（プロジェクト・環境・所有者タグを全リソースに強制）。未使用のボリューム・IPアドレスの棚卸しを定期実行する。",
+        "IAMロールは「必要な操作だけ」を許可するカスタムポリシーを基本とし、AdministratorAccess のような包括的権限をアプリケーションに付与しない。",
+        "マルチAZ・マルチリージョン構成は「単一障害点をなくす」ためのものであり、コストとのトレードオフを事業要件に照らして判断する。",
+        "ログは「見るためのもの」ではなく「機械が処理するためのもの」と捉え、可能な限り構造化（JSON等）で出力する。",
+        "journald の永続化を有効にする（既定では /run 上の揮発領域のみの場合がある）。/etc/systemd/journald.conf で Storage=persistent を設定し、再起動後もログが残るようにする。",
+        "logrotate で世代数・サイズ上限・圧縮を必ず設定し、/var/log がディスクを圧迫してサービス停止を招く事故を防ぐ。",
+        "セキュリティ監査対象のログ（認証ログ、sudo実行ログ）は改ざん防止のため、生成元とは別のサーバーへ即座に転送する。",
+        "大規模環境ではログ量そのものをコスト要因として管理する — 何を・どのレベルで・どこまで残すかの「ロギングポリシー」を明文化する。",
+        "本番サーバーには可能な限りディストリビューションが提供するLTSカーネルを使う。独自ビルドカーネルは保守コストが高く、セキュリティパッチ適用が遅れがちになる。",
+        "カーネルアップデート後は必ず再起動して新カーネルで正常起動することを確認する（クラウドでは事前にスナップショットを取得）。",
+        "dmesg はカーネルが生成する一次情報であり、ハードウェア障害・OOM Killer発動・ドライバエラーの初動調査で最初に確認する。",
+        "Secure Boot有効環境、または CONFIG_MODULE_SIG_FORCE=y / 起動パラメータ module.sig_enforce=1 が有効な環境では、未署名・未信頼のカーネルモジュールはカーネルがロードを拒否する（modprobe が Key was rejected by service で失敗し、dmesg に Loading of unsigned module is rejected が記録される）。第三者モジュールを使う場合は、正しい手順として自前のMOK（Machine Owner Key）を作成し、kmodsign / scripts/sign-file でモジュールを署名したうえで mokutil --import <公開鍵> で鍵を登録し、再起動時のMOK Managerで登録を承認する。DKMSは登録済みの鍵を使ってカーネル更新のたびに自動再署名できる。",
+        "署名検証の無効化（Secure Bootの無効化や module.sig_enforce=0）は、ブートチェーンの改ざん検知とルートキット対策を放棄することと引き換えの例外措置であり、恒久運用では採用しない。検証環境で一時的に用いる場合も、対象ホストと期間を限定する。",
+        "印刷サーバーの管理インターフェース（ポート631）は信頼できるネットワークセグメントに限定し、インターネットに公開しない。",
+        "共有プリンタキューは部署単位でACLを設定し、意図しないジョブ投入（誤送信によるコスト・情報漏洩）を防ぐ。",
+        "IPv4アドレス枯渇と将来の拡張性を考慮し、新規インフラはIPv6デュアルスタック対応を初期設計に組み込む。",
+        "サブネット設計は将来の成長を見込んで余裕を持たせる（過度に細かい /30 等の割当は後で行き詰まる）。",
+        "ネットワークトラブル時は ping（疎通）→ traceroute（経路）→ ss/netstat（ローカルソケット状態）→ tcpdump（パケットキャプチャ）の順で切り分ける。",
+        "本番環境のファイアウォールルールは「デフォルト拒否、必要な通信のみ許可（default deny）」を原則とする。",
+        "サーバーの物理NICは可能な限り2枚以上を異なるスイッチに接続し、スイッチ単体障害に耐える構成にする。LACP（802.3ad）ボンディングを使えるのは、MLAG・スタック・MC-LAGなど接続先スイッチが単一の論理ピアとして動作する場合に限られる。互いに独立したスイッチへ接続する構成では active-backup（mode=1）を使う。",
+        "ラック配線は将来の増設・トラブルシューティングを見据え、ラベリングと配線図の維持を怠らない。",
+        "Wi-Fiは管理用ネットワークとしては極力使わず、帯域外管理（IPMI/iDRAC/iLO等の専用ポート）を用意する。",
+        "小規模・単純なネットワークでは静的ルートで十分。動的ルーティングは複数経路・冗長化が必要な規模から導入を検討する。",
+        "ルーティングテーブルの変更は必ず現在の到達性を確認した上で行う（リモート作業中の誤設定は自分自身を隔離するリスクがある — コンソールアクセスを確保してから作業する）。",
+        "権威DNSサーバーと再帰リゾルバの役割を混同しない。権威サーバーはゾーン情報を「答える」役割、再帰リゾルバは外部への「問い合わせを代行する」役割で、同一サーバーに同居させると設定ミスやキャッシュポイズニングのリスクが増す。",
+        "重要なドメイン（ログインポータル、決済関連）はDNSSECでゾーンに署名し、自組織が管理する再帰リゾルバ側でも検証（validation）を有効化する。",
+        "ゾーンファイルの変更はTTLを考慮した計画的なロールアウトを行う（切り替え直前は一時的にTTLを短縮しておく）。",
+        "名前解決のトラブルシューティングは dig +trace で権威委任のチェーンを実際にたどって確認する。",
+        "新規に自前で認証機構を実装しない。実績のあるIdP（Keycloak, Okta, Azure AD等）とOIDC/SAMLの標準プロトコルに乗る。",
+        "サービスアカウント・機械間通信にはmTLSやOAuth2クライアントクレデンシャルフローを用い、人間用の認証情報を流用しない。",
+        "トークンの有効期限は業務要件と天秤にかけた上で短めに設定し、リフレッシュトークンのローテーションを行う。",
+        "自組織ドメインからの送信メールには必ずSPF・DKIM・DMARCの3点セットを設定する。未設定はフィッシングへの悪用や、正規メールの迷惑メール判定を招く。",
+        "メールサーバーをオープンリレーにしない（第三者中継を許可しない設定を確認する）。",
+        "大量配信（マーケティングメール等）はレピュテーション管理された専用サービス（SES, SendGrid等）に分離し、トランザクションメールのIPレピュテーションを守る。",
+        "TLS証明書の自動更新を必ず設定し、手動更新に頼らない（有効期限切れによるサービス停止は最も「防げたはずの」障害の一つ）。",
+        "HTTPは常にHTTPSへリダイレクトし、Strict-Transport-Security（HSTS）ヘッダーを設定する。",
+        "リバースプロキシでリクエストレート制限・タイムアウトを設定し、単一の遅いバックエンドがサービス全体を巻き込まないようにする。",
+        "静的アセットはCDN経由で配信し、オリジンサーバーの負荷を下げる。",
+        "本番用途ではRAID 5は避け、RAID 6またはRAID 10を優先する。大容量ディスク（10TB超）ではリビルド中の追加故障確率が無視できず、RAID 5は実質的にデータ損失リスクを内包する。",
+        "mdadm（ソフトウェアRAID）+ LVM（論理ボリューム管理）+ XFS/ext4（ファイルシステム）を組み合わせるのが、ディスク冗長性・柔軟なリサイズ・実績のあるFSを両立する定番構成。",
+        "RAIDやディスクの健康状態を smartctl と mdadm --detail で定期監視し、故障予兆をアラート化する。",
+        "XFSはオンラインでの拡張はできるが縮小できない、という制約をボリューム設計時に織り込む。将来的な縮小が必要な用途では縮小可能なext4を選ぶ。縮小はアンマウント → resize2fs（FS縮小）→ lvreduce（LV縮小）の順で行う（逆順はデータ破壊を招く）。",
+        "LVM thin provisioningはファイルシステムの縮小手段ではなく、割り当ての遅延によって過剰プロビジョニングを可能にする仕組みである。thinプールのデータ領域またはメタデータ領域が枯渇すると書き込みが失敗するため、使用率の監視と自動拡張の設定が必須。",
+        "バックアップは「RAIDの代わり」ではない。RAIDは可用性のための冗長化であり、誤削除・ランサムウェア・論理障害からはバックアップでしか守れない。",
+        "新規構築ではNFSv3ではなくNFSv4系を採用する。ポート集約によりファイアウォール設定が単純化し、セキュリティも向上する。",
+        "no_root_squash は特別な理由がない限り避ける（既定の root_squash はクライアント側rootの権限をサーバー側で無権限ユーザーへマッピングし、権限昇格の悪用を防ぐ）。",
+        "パフォーマンスが重要な用途では、マウントオプション（rsize/wsize）をネットワーク帯域・レイテンシに合わせてチューニングする。",
+        "NFSサーバーの単一障害点化を避けるため、重要用途ではHA構成や、クラウドではマネージドファイルサービス（EFS, Filestore等）の利用を検討する。",
+        "SMBv1/CIFSは既知の重大な脆弱性（EternalBlue等）があるため、必ず無効化しSMBv2/v3のみを許可する（方言の設定）。",
+        "認証プロトコルは方言とは別に設定する。特にNTLMv1は容易に破られるため使用を禁止し、NTLMv2以上またはKerberosに限定する。",
+        "Samba設定ファイル smb.conf の共有定義は、Linux側のファイルパーミッションと二重に整合性を取る（SMB側ACLとPOSIXパーミッションの不一致がアクセス不能・過剰許可の原因になりやすい）。",
+        "Active Directoryとの統合（winbindまたはsssd）を使い、ローカルSambaユーザーの二重管理を避ける。",
+        "command/shell モジュールの多用を避け、package/service/copy/template等の専用モジュールを優先する。専用モジュールは状態チェックを内蔵しており冪等性が保証されるが、shellは明示的に creates=/changed_when を書かない限り毎回「変更あり」と報告してしまう。",
+        "Playbook・Role・インベントリはすべてGitでバージョン管理し、レビュープロセスを経てから適用する（インフラの変更もコードレビューの対象にする）。",
+        "変更適用前に必ず --check（ドライラン）モードで差分を確認する習慣をつける。",
+        "環境差異（開発・ステージング・本番）は変数ファイルで分離し、Playbook本体はロジックを共通化する。",
+        "秘密情報（パスワード・APIキー）は平文でリポジトリに置かず、ansible-vault や外部シークレットマネージャーと連携する。",
+        "本番環境ではType-1（ベアメタル型）ハイパーバイザーを採用する。ホストOSを経由しない分、オーバーヘッドが小さく攻撃対象領域（アタックサーフェス）も狭い。",
+        "仮想マシンのリソース（CPU/メモリ）は物理ホストに対して過剰にオーバーコミットしない。特にメモリのオーバーコミットはスワップ多発によるレイテンシ悪化を招く。",
+        "ゲストOSにも独立してセキュリティパッチ適用・監視を行う。ハイパーバイザーが安全でもゲストが脆弱なら意味がない。",
+        "コンテナはrootユーザーで実行しない（USER ディレクティブで非特権ユーザーを指定）。rootで動くコンテナは、コンテナエスケープが発生した際にホストへの権限昇格リスクを高める。",
+        "イメージは最小構成のベースイメージ（distroless, alpine等）を使い、不要なパッケージ・シェルを含めない — 攻撃対象領域の縮小とイメージサイズ削減を両立する。",
+        "コンテナは「軽量なVM」ではなく「隔離されたプロセス」である、という認識を持つ。永続化が必要なデータはコンテナ内に置かず、ボリュームや外部ストレージに分離する。",
+        "本番運用では単発の docker run ではなく、Kubernetes等のオーケストレーターで自己修復（クラッシュ時再起動）・水平スケーリングを構成する。",
+        "VMとコンテナは「どちらか一方」ではなく併用が一般的（VMでセキュリティ境界を確保し、その中でコンテナを高密度に稼働させる）。",
+        "パイプラインの各ステージは「早く失敗する（fail fast）」順に並べる。実行コストの軽いLintを最初に、時間のかかる統合テストを後段に配置し、フィードバックループを最短化する。",
+        "テストが通らない限りマージできないブランチ保護ルールを設定し、「グリーンなmain」を常に維持する。",
+        "本番デプロイはBlue-GreenまたはCanaryなど、即座にロールバック可能な戦略を採用する。",
+        "CI環境自体もIaCで管理し、CIツールの設定変更もコードレビューの対象にする。",
+        "ビルドしたコンテナイメージは脆弱性スキャンを通し、既知のCVEを含むイメージを本番に出さない。",
+        "SSH鍵を設定したら、必ず新しいセッションで鍵ログインが成功することを確認してからパスワード認証を無効化する。順序を間違えると自分自身をロックアウトする典型的な事故につながる。",
+        "OpenSSHは定期的にCVEが報告される（例: CVE-2026-35414。authorized_keys の cert-authority エントリで principals= に複数のprincipalを指定し、かつCAが複数の許可principal名をコンマ区切りで証明書へエンコードした場合にのみ制限を回避できた。TrustedUserCAKeys と AuthorizedPrincipalsFile を用いる経路は影響を受けず、OpenSSH 10.3で修正済み）。最新パッチの適用を常に追跡する。",
+        "CIS BenchmarkやDISA STIGなど、業界標準の構成ベースラインをディストリビューションごとに適用する。RHEL系とDebian系ではパス・パッケージ名・PAMモジュール設定が異なるため、系統別に手順・Ansible Roleを用意する。",
+        "auditd を導入し、root権限でのコマンド実行、/etc/passwd・/etc/shadow・/etc/sudoers への変更を監査ログに記録する。",
+        "脆弱性スキャンとパッチ適用は「知る」で終わらせず、SLA（例: Critical脆弱性は72時間以内に適用）を運用ルールとして明文化する。",
+        "レイテンシは平均値ではなくパーセンタイル（p50/p95/p99）で監視する。平均値は少数の極端に遅いリクエストを覆い隠してしまう。",
+        "エラーは件数ではなく比率（エラーレート）でアラートを設定する。トラフィックが変動する環境では件数ベースの閾値は意味をなさなくなる。",
+        "静的な閾値だけでなく、predict_linear() のような変化率ベースの予測で「このままいくと何分後に閾値超過するか」を検知し、飽和が実際に発生する前にアラートを上げる。",
+        "アラート疲れ（Alert Fatigue）を避けるため、「人間が今すぐ対応すべきもの」だけをページ通知にし、それ以外はダッシュボード・チケットに留める。",
+        "SLI（Service Level Indicator）とSLO（目標値）を先に定義し、監視項目をそこから逆算する（何でも測るのではなく、ユーザー体験に直結する指標を測る）。",
+        "調査の最初の60秒でシステム全体を俯瞰する（Brendan Gregg氏が「Linux Performance Analysis in 60,000 Milliseconds」として体系化した手法）。uptime（負荷平均）→ dmesg（直近のカーネルエラー）→ vmstat（CPU/メモリ概況）→ mpstat（コア別使用率）→ pidstat（プロセス別リソース）→ iostat（ディスクI/O）→ sar（ネットワーク統計）の順に俯瞰し、当たりをつけてから深掘りツールに進む。",
+        "平均値だけでなく分布（パーセンタイル、ヒストグラム）を見る。平均は外れ値を隠す。",
+        "perf やeBPFベースのツール（bpftrace等）で、実際にCPUを消費しているコードパスをフレームグラフとして可視化し、推測ではなくデータで原因を特定する。",
+        "USE法は「何が正常でないか」を機械的に洗い出すためのチェックリストであり、原因の特定そのものはリソースごとの専用ツールでの深掘りが必要になる、という位置づけを理解する。",
+        "単一のデータセンター・単一の電源系統に全てのインフラを集約しない。事業継続計画（BCP）の観点から、地理的・電源的な分散を検討する。",
+        "ラック内の配線・機器配置は「後で誰が見ても分かる」ことを基準に、ラベリングとドキュメント（DCIM: Data Center Infrastructure Management）を継続的に更新する。",
+        "温度・湿度・電力使用量（PUE: Power Usage Effectiveness）を継続的にモニタリングし、冷却効率の劣化を早期発見する。",
+        "ポストモーテムは「個人の失敗」ではなく「プロセス・システムの欠陥」に焦点を当てて記述する。個人を非難する文化は、次に同様の問題に気づいた人が報告をためらう萎縮効果を生む。",
+        "変更管理（Change Management）は、変更内容・ロールバック手順・影響範囲を事前に文書化してから実施する。「本番で試しながら考える」を避ける。",
+        "トイル（Toil：手作業で繰り返され、長期的価値を生まない作業）を定期的に棚卸しし、自動化への投資判断材料にする。",
+        "技術的な意思決定であっても、影響を受けるステークホルダー（他チーム、事業側）への説明責任を果たす。技術的に正しいことと、組織的に受け入れられることは必ずしも一致しない。",
+        "オンコール担当者の燃え尽きを防ぐため、ローテーション設計・エスカレーションパスの明確化・「起こされた後の休息」を制度として保証する。"
+    ],
+    "links": [
+        {
+            "text": "https://www.oreilly.com/library/view/unix-and-linux/9780134278308/",
+            "href": "https://www.oreilly.com/library/view/unix-and-linux/9780134278308/"
+        },
+        {
+            "text": "https://www.oreilly.com/library/view/unix-and-linux/9780134278308/",
+            "href": "https://www.oreilly.com/library/view/unix-and-linux/9780134278308/"
+        },
+        {
+            "text": "https://devtoolbox.dedyn.io/blog/systemd-complete-guide",
+            "href": "https://devtoolbox.dedyn.io/blog/systemd-complete-guide"
+        },
+        {
+            "text": "https://mastodon.social/@pid_eins/116803790296454733",
+            "href": "https://mastodon.social/@pid_eins/116803790296454733"
+        },
+        {
+            "text": "https://www.theregister.com/2026/01/29/lennart_poettering_quits_microsoft/",
+            "href": "https://www.theregister.com/2026/01/29/lennart_poettering_quits_microsoft/"
+        },
+        {
+            "text": "https://docs.oracle.com/en/operating-systems/oracle-linux/9/security/security-FollowthePrincipleofLeastPrivilege.html",
+            "href": "https://docs.oracle.com/en/operating-systems/oracle-linux/9/security/security-FollowthePrincipleofLeastPrivilege.html"
+        },
+        {
+            "text": "https://www.decryptiondigest.com/blog/linux-sudo-sudoers-security-hardening-privilege-escalation-guide",
+            "href": "https://www.decryptiondigest.com/blog/linux-sudo-sudoers-security-hardening-privilege-escalation-guide"
+        },
+        {
+            "text": "https://kevwells.com/mastering-sudo-enforcing-least-privilege-in-linux/",
+            "href": "https://kevwells.com/mastering-sudo-enforcing-least-privilege-in-linux/"
+        },
+        {
+            "text": "https://docs.redhat.com/",
+            "href": "https://docs.redhat.com/"
+        },
+        {
+            "text": "https://manpages.debian.org/",
+            "href": "https://manpages.debian.org/"
+        },
+        {
+            "text": "https://www.pearson.com/en-us/subject-catalog/p/unix-and-linux-system-administration-handbook/P200000000513/9780137460359",
+            "href": "https://www.pearson.com/en-us/subject-catalog/p/unix-and-linux-system-administration-handbook/P200000000513/9780137460359"
+        },
+        {
+            "text": "https://www.pearson.com/en-us/subject-catalog/p/unix-and-linux-system-administration-handbook/P200000000513/9780137460359",
+            "href": "https://www.pearson.com/en-us/subject-catalog/p/unix-and-linux-system-administration-handbook/P200000000513/9780137460359"
+        },
+        {
+            "text": "https://controld.com/blog/dns-security-best-practices/",
+            "href": "https://controld.com/blog/dns-security-best-practices/"
+        },
+        {
+            "text": "https://www.shpv.fr/blog/dnssec-configuration/",
+            "href": "https://www.shpv.fr/blog/dnssec-configuration/"
+        },
+        {
+            "text": "https://sesamedisk.com/secure-dns-updates-rfc-2136-ipv6-dnssec-2026/",
+            "href": "https://sesamedisk.com/secure-dns-updates-rfc-2136-ipv6-dnssec-2026/"
+        },
+        {
+            "text": "https://www.fosslinux.com/158254/linux-storage-deep-dive-lvm-mdadm-and-zfs-raid.htm",
+            "href": "https://www.fosslinux.com/158254/linux-storage-deep-dive-lvm-mdadm-and-zfs-raid.htm"
+        },
+        {
+            "text": "https://www.linuxteck.com/linux-file-system-comparison-ext4-xfs-btrfs/",
+            "href": "https://www.linuxteck.com/linux-file-system-comparison-ext4-xfs-btrfs/"
+        },
+        {
+            "text": "https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/7/html/storage_administration_guide/ch-xfs",
+            "href": "https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/7/html/storage_administration_guide/ch-xfs"
+        },
+        {
+            "text": "https://spacelift.io/blog/ansible-infrastructure-as-code",
+            "href": "https://spacelift.io/blog/ansible-infrastructure-as-code"
+        },
+        {
+            "text": "https://oneuptime.com/blog/post/2026-01-24-ansible-changed-status-idempotency/view",
+            "href": "https://oneuptime.com/blog/post/2026-01-24-ansible-changed-status-idempotency/view"
+        },
+        {
+            "text": "https://oneuptime.com/blog/post/2026-02-21-how-to-write-idempotent-ansible-tasks/view",
+            "href": "https://oneuptime.com/blog/post/2026-02-21-how-to-write-idempotent-ansible-tasks/view"
+        },
+        {
+            "text": "https://northflank.com/blog/containers-vs-virtual-machines",
+            "href": "https://northflank.com/blog/containers-vs-virtual-machines"
+        },
+        {
+            "text": "https://aws.amazon.com/compare/the-difference-between-docker-vm/",
+            "href": "https://aws.amazon.com/compare/the-difference-between-docker-vm/"
+        },
+        {
+            "text": "https://luminhkhuong.dev/technical-knowledge/devops/vm-docker-k8s-explained/",
+            "href": "https://luminhkhuong.dev/technical-knowledge/devops/vm-docker-k8s-explained/"
+        },
+        {
+            "text": "https://www.falconinternet.net/blog/ssh-hardening-guide-2026",
+            "href": "https://www.falconinternet.net/blog/ssh-hardening-guide-2026"
+        },
+        {
+            "text": "https://www.decryptiondigest.com/blog/linux-server-security-hardening-cis-benchmark",
+            "href": "https://www.decryptiondigest.com/blog/linux-server-security-hardening-cis-benchmark"
+        },
+        {
+            "text": "https://wiki.mozilla.org/Security/Guidelines/OpenSSH",
+            "href": "https://wiki.mozilla.org/Security/Guidelines/OpenSSH"
+        },
+        {
+            "text": "https://sre.google/sre-book/monitoring-distributed-systems/",
+            "href": "https://sre.google/sre-book/monitoring-distributed-systems/"
+        },
+        {
+            "text": "https://betterstack.com/community/guides/monitoring/sre-golden-signals/",
+            "href": "https://betterstack.com/community/guides/monitoring/sre-golden-signals/"
+        },
+        {
+            "text": "https://www.sherlocks.ai/blog/four-golden-signals-of-sre",
+            "href": "https://www.sherlocks.ai/blog/four-golden-signals-of-sre"
+        },
+        {
+            "text": "https://www.brendangregg.com/usemethod.html",
+            "href": "https://www.brendangregg.com/usemethod.html"
+        },
+        {
+            "text": "https://www.brendangregg.com/",
+            "href": "https://www.brendangregg.com/"
+        },
+        {
+            "text": "https://en.wikipedia.org/wiki/Brendan_Gregg",
+            "href": "https://en.wikipedia.org/wiki/Brendan_Gregg"
+        },
+        {
+            "text": "https://sre.google/sre-book/monitoring-distributed-systems/",
+            "href": "https://sre.google/sre-book/monitoring-distributed-systems/"
+        },
+        {
+            "text": "https://www.oreilly.com/library/view/unix-and-linux/9780134278308/",
+            "href": "https://www.oreilly.com/library/view/unix-and-linux/9780134278308/"
+        },
+        {
+            "text": "https://www.pearson.com/en-us/subject-catalog/p/unix-and-linux-system-administration-handbook/P200000000513/9780137460359",
+            "href": "https://www.pearson.com/en-us/subject-catalog/p/unix-and-linux-system-administration-handbook/P200000000513/9780137460359"
+        },
+        {
+            "text": "https://www.informit.com/store/unix-and-linux-system-administration-handbook-9780134278315",
+            "href": "https://www.informit.com/store/unix-and-linux-system-administration-handbook-9780134278315"
+        },
+        {
+            "text": "https://devtoolbox.dedyn.io/blog/systemd-complete-guide",
+            "href": "https://devtoolbox.dedyn.io/blog/systemd-complete-guide"
+        },
+        {
+            "text": "https://mastodon.social/@pid_eins/116803790296454733",
+            "href": "https://mastodon.social/@pid_eins/116803790296454733"
+        },
+        {
+            "text": "https://www.theregister.com/2026/01/29/lennart_poettering_quits_microsoft/",
+            "href": "https://www.theregister.com/2026/01/29/lennart_poettering_quits_microsoft/"
+        },
+        {
+            "text": "https://docs.oracle.com/en/operating-systems/oracle-linux/9/security/security-FollowthePrincipleofLeastPrivilege.html",
+            "href": "https://docs.oracle.com/en/operating-systems/oracle-linux/9/security/security-FollowthePrincipleofLeastPrivilege.html"
+        },
+        {
+            "text": "https://www.decryptiondigest.com/blog/linux-sudo-sudoers-security-hardening-privilege-escalation-guide",
+            "href": "https://www.decryptiondigest.com/blog/linux-sudo-sudoers-security-hardening-privilege-escalation-guide"
+        },
+        {
+            "text": "https://kevwells.com/mastering-sudo-enforcing-least-privilege-in-linux/",
+            "href": "https://kevwells.com/mastering-sudo-enforcing-least-privilege-in-linux/"
+        },
+        {
+            "text": "https://controld.com/blog/dns-security-best-practices/",
+            "href": "https://controld.com/blog/dns-security-best-practices/"
+        },
+        {
+            "text": "https://www.shpv.fr/blog/dnssec-configuration/",
+            "href": "https://www.shpv.fr/blog/dnssec-configuration/"
+        },
+        {
+            "text": "https://sesamedisk.com/secure-dns-updates-rfc-2136-ipv6-dnssec-2026/",
+            "href": "https://sesamedisk.com/secure-dns-updates-rfc-2136-ipv6-dnssec-2026/"
+        },
+        {
+            "text": "https://www.fosslinux.com/158254/linux-storage-deep-dive-lvm-mdadm-and-zfs-raid.htm",
+            "href": "https://www.fosslinux.com/158254/linux-storage-deep-dive-lvm-mdadm-and-zfs-raid.htm"
+        },
+        {
+            "text": "https://www.linuxteck.com/linux-file-system-comparison-ext4-xfs-btrfs/",
+            "href": "https://www.linuxteck.com/linux-file-system-comparison-ext4-xfs-btrfs/"
+        },
+        {
+            "text": "https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/7/html/storage_administration_guide/ch-xfs",
+            "href": "https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/7/html/storage_administration_guide/ch-xfs"
+        },
+        {
+            "text": "https://spacelift.io/blog/ansible-infrastructure-as-code",
+            "href": "https://spacelift.io/blog/ansible-infrastructure-as-code"
+        },
+        {
+            "text": "https://oneuptime.com/blog/post/2026-01-24-ansible-changed-status-idempotency/view",
+            "href": "https://oneuptime.com/blog/post/2026-01-24-ansible-changed-status-idempotency/view"
+        },
+        {
+            "text": "https://oneuptime.com/blog/post/2026-02-21-how-to-write-idempotent-ansible-tasks/view",
+            "href": "https://oneuptime.com/blog/post/2026-02-21-how-to-write-idempotent-ansible-tasks/view"
+        },
+        {
+            "text": "https://northflank.com/blog/containers-vs-virtual-machines",
+            "href": "https://northflank.com/blog/containers-vs-virtual-machines"
+        },
+        {
+            "text": "https://aws.amazon.com/compare/the-difference-between-docker-vm/",
+            "href": "https://aws.amazon.com/compare/the-difference-between-docker-vm/"
+        },
+        {
+            "text": "https://luminhkhuong.dev/technical-knowledge/devops/vm-docker-k8s-explained/",
+            "href": "https://luminhkhuong.dev/technical-knowledge/devops/vm-docker-k8s-explained/"
+        },
+        {
+            "text": "https://www.falconinternet.net/blog/ssh-hardening-guide-2026",
+            "href": "https://www.falconinternet.net/blog/ssh-hardening-guide-2026"
+        },
+        {
+            "text": "https://www.decryptiondigest.com/blog/linux-server-security-hardening-cis-benchmark",
+            "href": "https://www.decryptiondigest.com/blog/linux-server-security-hardening-cis-benchmark"
+        },
+        {
+            "text": "https://wiki.mozilla.org/Security/Guidelines/OpenSSH",
+            "href": "https://wiki.mozilla.org/Security/Guidelines/OpenSSH"
+        },
+        {
+            "text": "https://sre.google/sre-book/monitoring-distributed-systems/",
+            "href": "https://sre.google/sre-book/monitoring-distributed-systems/"
+        },
+        {
+            "text": "https://betterstack.com/community/guides/monitoring/sre-golden-signals/",
+            "href": "https://betterstack.com/community/guides/monitoring/sre-golden-signals/"
+        },
+        {
+            "text": "https://www.sherlocks.ai/blog/four-golden-signals-of-sre",
+            "href": "https://www.sherlocks.ai/blog/four-golden-signals-of-sre"
+        },
+        {
+            "text": "https://www.brendangregg.com/usemethod.html",
+            "href": "https://www.brendangregg.com/usemethod.html"
+        },
+        {
+            "text": "https://www.brendangregg.com/",
+            "href": "https://www.brendangregg.com/"
+        },
+        {
+            "text": "https://en.wikipedia.org/wiki/Brendan_Gregg",
+            "href": "https://en.wikipedia.org/wiki/Brendan_Gregg"
+        }
+    ],
+    "bodyContent": [
+        {
+            "kind": "annotation",
+            "text": "System Administration UNIX and Linux System Administration Handbook 実践ガイド この文書の使い方 全体構成（原著4パート・31章） 第1部: 基本管理 (Basic Administration) 第1章: どこから始めるか (Where to Start) 第2章: ブートとシステム管理デーモン (Booting and System Management Daemons) 第3章: アクセス制御とrootの権限 (Access Control and Rootly Powers) 第4章: プロセス制御 (Process Control) 第5章: ファイルシステム (The Filesystem) 第6章: ソフトウェアのインストールと管理 (Software Installation and Management) 第7章: スクリプティングとシェル (Scripting and the Shell) 第8章: ユーザー管理 (User Management) 第9章: クラウドコンピューティング (Cloud Computing) 第10章: ロギング (Logging) 第11章: ドライバとカーネル (Drivers and the Kernel) 第12章: 印刷 (Printing) 第2部: ネットワーキング (Networking) 第13章: TCP/IPネットワーキング (TCP/IP Networking) 第14章: 物理ネットワーキング (Physical Networking) 第15章: IPルーティング (IP Routing) 第16章: DNS - ドメインネームシステム (DNS: The Domain Name System) 第17章: シングルサインオン (Single Sign-On) 第18章: 電子メール (Electronic Mail) 第19章: Webホスティング (Web Hosting) 第3部: ストレージ (Storage) 第20章: ストレージ (Storage) 第21章: ネットワークファイルシステム (The Network File System, NFS) 第22章: SMB (Server Message Block) 第4部: 運用 (Operations) 第23章: 構成管理 (Configuration Management) 第24章: 仮想化 (Virtualization) 第25章: コンテナ (Containers) 第26章: 継続的インテグレーションとデリバリー (Continuous Integration and Delivery, CI/CD) 第27章: セキュリティ (Security) 第28章: モニタリング (Monitoring) 第29章: パフォーマンス分析 (Performance Analysis) 第30章: データセンターの基礎 (Data Center Basics) 第31章: 方法論・ポリシー・組織政治 (Methodology, Policy, and Politics) 学習ロードマップ（初学者向け推奨進行順） 参考文献・出典一覧 原著書誌情報 第2章（Booting / systemd）関連 第3章（Access Control / sudo）関連 第16章（DNS/DNSSEC）関連 第20章（Storage / LVM / RAID）関連 第23章（Configuration Management / Ansible）関連 第25章（Containers / Docker / Kubernetes）関連 第27章（Security / SSHハードニング）関連 第28章（Monitoring / SRE Golden Signals）関連 第29章（Performance Analysis / USE法）関連"
+        },
+        {
+            "kind": "paragraph",
+            "text": "初学者のためのステップバイステップ・ベストプラクティス解説"
+        },
+        {
+            "kind": "paragraph",
+            "text": "本ガイドは、Evi Nemeth・Garth Snyder・Trent R. Hein・Ben Whaley・Dan Mackin著『UNIX and Linux System Administration Handbook, 5th Edition』（O'Reilly / Addison-Wesley Professional, 2017年刊, ISBN-13: 978-0-13-427755-4）の全31章構成に沿って、2026年8月時点の最新プラクティスを補いながら再構成した学習用ドキュメントです。原著は1232ページに及ぶ「システム管理者のバイブル」と呼ばれる書籍で、Tim O'Reilly（O'Reilly Media創業者）が「自分たちの物差しにした数少ない本の一つ」と評したことでも知られています。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "原著書誌情報: https://www.oreilly.com/library/view/unix-and-linux/9780134278308/"
+        },
+        {
+            "kind": "paragraph",
+            "text": "システム管理者（sysadmin）という職務の輪郭を掴むための導入章です。原著は「バックアップの監督」「ローカルドキュメントの整備」「消火活動（トラブル対応）」を必須業務の代表例として挙げています。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "システム管理は「サーバーを立てたら終わり」ではなく、継続的な責務です。原著が定義する必須業務は次の5つに整理できます。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "初心者がまず身につけるべきは、「推測せず、まず一次情報を確認する」という姿勢です。man ページ、ディストリビューションの公式ドキュメント、そしてIETFのRFCが最も信頼できる一次情報源になります。"
+        },
+        {
+            "kind": "annotation",
+            "text": "✓ ベストプラクティス 変更を加える前に必ず現状の設定をバックアップ・バージョン管理下に置く（/etc を Git 管理するなど）。 本番環境で初めて実行するコマンドはない、を原則にする（検証環境・ステージングで先に試す）。 「なぜこの設定にしたか」をコミットメッセージやREADMEに残す — 半年後の自分は他人と同じである。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "出典: UNIX and Linux System Administration Handbook, 5th Edition 目次・書誌情報（O'Reilly） — https://www.oreilly.com/library/view/unix-and-linux/9780134278308/"
+        },
+        {
+            "kind": "paragraph",
+            "text": "電源投入からログインプロンプトが表示されるまでの一連の流れと、その後のサービス管理を担う systemd を理解する章です。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "現代のLinuxディストリビューションのほとんど（Ubuntu, RHEL, Fedora, Arch, Debian等）は systemd をPID 1（最初に起動するプロセス）として採用しています。systemdは2010年にLennart PoetteringとKay Sieverによって開発され、SysVinitの命令的（imperative）なシェルスクリプト方式に代わり、宣言的（declarative）なUnitファイルで「何を」「いつ」「何に依存して」起動するかを記述する方式を導入しました。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "Unitファイルの優先順位（後者が前者を上書き）:"
+        },
+        {
+            "kind": "annotation",
+            "text": "✓ ベストプラクティス アップストリームのUnitファイルは直接編集しない。systemctl edit <unit> でオーバーライドファイル（/etc/systemd/system/<unit>.d/override.conf）を作成する — パッケージ更新時に上書き消失しない。 Unitファイルを作成・変更したら必ず systemctl daemon-reload を実行する。これを忘れると変更が反映されない、最も典型的なハマりどころ。 After= は起動順序を制御するだけで依存関係を意味しない。実際の依存を強制するには Requires= または Wants= と組み合わせる。 障害調査は systemctl status <unit> → journalctl -u <unit> -xe の順で行う（ログ・終了コード・プロセスツリーが一括で見える）。 準備完了シグナルが必要なサービスには Type=notify と sd_notify()（systemd-notify）を使う。 滅多に使わないサービスはソケットアクティベーションでメモリ消費を抑える。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "出典: DevToolbox「Systemd: The Complete Guide for 2026」 — https://devtoolbox.dedyn.io/blog/systemd-complete-guide ／ Lennart Poettering氏 Mastodon投稿（systemd v261の新機能解説, 2026年6月） — https://mastodon.social/@pid_eins/116803790296454733 ／ The Register「Systemd daddy quits Microsoft to prove Linux can be trusted」（2026年1月） — https://www.theregister.com/2026/01/29/lennart_poettering_quits_microsoft/"
+        },
+        {
+            "kind": "paragraph",
+            "text": "「誰が」「何に」「どこまで」アクセスできるかを制御する、Linuxセキュリティの根幹を扱います。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "標準UNIXアクセス制御は、ファイルごとに「所有者（owner）」「グループ（group）」「その他（other）」の3主体に対し、「読み（r）」「書き（w）」「実行（x）」の3権限を割り当てる方式です。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "rootアカウントはUID 0を持ち、通常のパーミッションチェックをすべてバイパスできる特別な存在です。現代の運用では「rootに直接ログインする」のではなく、一般ユーザーが sudo を介して一時的にroot権限を借りる方式が標準になっています。"
+        },
+        {
+            "kind": "annotation",
+            "text": "✓ ベストプラクティス rootパスワードを直接配布しない。個々のユーザーに専用アカウントを発行し、必要な操作だけを sudo で許可する（最小権限の原則）。 /etc/sudoers は必ず visudo で編集する（構文エラーを事前検知し、自分自身をロックアウトする事故を防ぐ）。 ALL=(ALL) ALL のような包括的な許可はroot直渡しと同義。実行を許すコマンドをできる限り具体的に絞る（例: dbadmin ALL=(ALL) /bin/systemctl restart postgresql）。 NOPASSWD は真に必要な自動化アカウント以外では避ける。 sudoersにエディタ（vi/vim/nano/emacs）や less・find・awk など、シェルエスケープが可能なバイナリを許可しない — GTFOBinsに掲載されている典型的な権限昇格経路になる。 高セキュリティ環境では timestamp_timeout=0 として、sudo実行のたびにパスワード再入力を要求する。 auditd でsudo実行・/etc/passwd や /etc/shadow の変更を監査ログに記録する。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "出典: Oracle Linux公式ドキュメント「Follow the Principle of Least Privilege」 — https://docs.oracle.com/en/operating-systems/oracle-linux/9/security/security-FollowthePrincipleofLeastPrivilege.html ／ DecryptionDigest「Linux sudo sudoers Hardening 2026」 — https://www.decryptiondigest.com/blog/linux-sudo-sudoers-security-hardening-privilege-escalation-guide ／ Kevin Wells氏「Mastering sudo: Enforcing Least Privilege in Linux」 — https://kevwells.com/mastering-sudo-enforcing-least-privilege-in-linux/"
+        },
+        {
+            "kind": "paragraph",
+            "text": "実行中プログラム（プロセス）のライフサイクル、シグナルによる制御、リソース管理を扱います。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "プロセスは生成（fork）されてから終了するまで、いくつかの状態を遷移します。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "プロセスへの介入は「シグナル」を通じて行います。よく使うシグナルは次の通りです。"
+        },
+        {
+            "kind": "annotation",
+            "text": "✓ ベストプラクティス プロセスを止めるときは、まず SIGTERM（既定の kill）で正常終了を試み、応答がない場合のみ SIGKILL にエスカレートする。いきなり kill -9 はリソース解放処理やDBのコミットを妨げる可能性がある。 長時間稼働のサービスはsystemdの管理下に置き、生プロセスとして nohup や & で放置しない（再起動・クラッシュ時の自動復旧、リソース上限、ログの一元化が失われるため）。 CPU/メモリの過剰消費を防ぐには nice/renice による優先度調整より、systemdの CPUQuota= / MemoryMax=（cgroup v2ベースのリソース制御）を使うほうが確実。 ゾンビプロセスが大量発生している場合は「親プロセスが wait() を呼んでいない」実装上のバグを疑う。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "ファイル・ディレクトリがディスク上でどう組織されるか、そして標準的なディレクトリ配置（FHS）を理解する章です。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "Linuxのファイルシステム階層は、Filesystem Hierarchy Standard (FHS) にゆるく準拠しています。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "/proc と /sys は物理ディスク上に実体を持たない仮想ファイルシステムで、カーネルの内部状態をファイルのように読み書きできるインターフェースです。"
+        },
+        {
+            "kind": "annotation",
+            "text": "✓ ベストプラクティス /（ルート）、/var、/home は可能な限り別パーティション（別論理ボリューム）に分離する。ログの肥大化やユーザーデータの増加が、OS起動に必須のルート領域を圧迫する事故を防ぐ。 ファイルシステムの選定は用途で使い分ける（詳細は第20章）。一般用途はext4、大容量・高スループットが必要ならXFS、スナップショットや圧縮が必要ならBtrfs。 df -h と du -sh は似て非なる情報を返す。df はマウントポイント単位の空き容量、du は指定パス配下の実使用量。両方を定期的に確認する運用を組み込む。 シンボリックリンクとハードリンクの違い（ハードリンクは同一inodeを共有し別ファイルシステムをまたげない）を理解した上でバックアップ設計を行う。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "パッケージマネージャーを通じたソフトウェアの導入・更新・削除、依存関係解決の仕組みを扱います。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "主要ディストリビューションのパッケージ管理系統は大きく2つに分かれます。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "近年はディストリビューション非依存のパッケージ形式（Flatpak, Snap, AppImage）や、言語エコシステム固有のパッケージマネージャー（pip, npm, cargo）も併用されるのが一般的です。"
+        },
+        {
+            "kind": "annotation",
+            "text": "✓ ベストプラクティス 本番サーバーでは自動アップグレード（unattended-upgrades 等）はセキュリティパッチのみに限定し、メジャーバージョンアップは計画的なメンテナンスウィンドウで実施する。 パッケージのGPG署名検証を無効化しない（--allow-unauthenticated 等のフラグは緊急時以外使わない）。 依存関係の破損を避けるため、異なる系統のパッケージマネージャー（例: apt と手動 make install）を同一ファイルに対して混在させない。 apt-mark hold <pkg> / dnf versionlock で、意図せぬバージョンアップを防ぎたいパッケージを固定する。 コンテナイメージのビルドでは、パッケージキャッシュを最後にクリア（apt-get clean 等）してイメージサイズを削減する。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "出典: Red Hat公式ドキュメント（RHEL 9 dnfパッケージ管理） — https://docs.redhat.com/ ／ Debian公式 apt マニュアル — https://manpages.debian.org/"
+        },
+        {
+            "kind": "paragraph",
+            "text": "反復作業を自動化するためのシェルスクリプトの基礎と、堅牢なスクリプトを書くための作法を扱います。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "シェルはコマンドの「パイプ」と「リダイレクト」によって小さなツールを組み合わせる、UNIX哲学の中核です。"
+        },
+        {
+            "kind": "annotation",
+            "text": "✓ ベストプラクティス スクリプト冒頭に #!/usr/bin/env bash と set -euo pipefail を必ず入れる。3つのオプションは役割が異なるので分けて理解する。 -e は非ゼロ終了で停止するが、すべての非ゼロ終了ステータスで停止するわけではない。if/while/until の条件部、&&・|| の左辺、! を付けたコマンドに現れるパイプラインは例外として扱われ、非ゼロで終了しても停止しない。これらの箇所ではパイプライン全体の終了ステータスを $? で明示的に確認する。 -o pipefail は「パイプライン全体の終了ステータスの決まり方」を変えるオプションである。無効時のパイプラインの終了ステータスは最後の要素のものだけで、最後以外の要素が失敗しても終了ステータスには反映されない（例: false | true は 0）。有効時は最後に非ゼロで終了した要素のステータスが採用されるため、途中の失敗でもパイプライン全体が非ゼロになり得る（false | true は 1）。 ただし pipefail を有効にしても「どの要素が失敗したか」までは分からない。パイプライン全体の成否は $? で、要素ごとの終了ステータスは配列 PIPESTATUS（\"${PIPESTATUS[@]}\"）で、それぞれ別々に確認する。 -u は未定義変数の参照をエラーにする。 変数展開は常にダブルクォートで囲む（\"$var\"）。スペースを含むファイル名でのワードスプリッティング事故を防ぐ。 shellcheck で静的解析を通してからデプロイする。 冪等性（何度実行しても同じ結果になること）を意識する。ファイル追記型の操作は、既存行の存在チェックを先に行う。 複雑なロジックが必要になったら、シェルではなくPythonなど汎用言語への切り替えを検討する（原著もこの判断基準を明示的に推奨している）。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "ユーザーアカウント・グループの作成、認証情報の管理、ライフサイクル（入社〜退職）を扱います。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "Linuxのユーザー情報は /etc/passwd（ユーザー基本情報）、/etc/shadow（パスワードハッシュ）、/etc/group（グループ情報）に保存されます。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "大規模組織では、ローカルアカウントの手動管理はスケールしません。LDAP・Active Directory・クラウドIAM（第17章 SSO参照）と連携した一元管理が標準です。"
+        },
+        {
+            "kind": "annotation",
+            "text": "✓ ベストプラクティス 退職・異動が発生したら即座にアカウントを無効化する。ローカルアカウントでは usermod -L（パスワードロック）だけでは不十分で、① アカウント期限の設定（usermod -e 1 / chage -E 0）、② 登録済みSSH公開鍵（.ssh/authorized_keys）の無効化または削除、③ 既存セッションの終了（loginctl terminate-user <user> または該当プロセスの終了）をあわせて実施する。usermod -L は鍵認証や稼働中セッションを止められない点に注意。削除は監査証跡のため一定期間経過後に行う。 共有アカウントを作らない。誰が何をしたかの追跡可能性（アカウンタビリティ）を最優先する。 パスワードポリシーは pam_pwquality で強制し、加えて可能な限りSSH鍵認証・多要素認証（MFA）へ移行する。 定期的に（四半期ごと等）アカウント棚卸しを行い、不要な特権グループ所属を洗い出す。 サービスアカウントにはログインシェルを /usr/sbin/nologin に設定し、対話的ログインを禁止する。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "自前のデータセンターに代わり、AWS・GCP・Azure等のクラウドプラットフォーム上でシステムを構築・運用する際の考え方を扱います。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "クラウドの本質は「所有」から「利用」への転換です。原著は主要プラットフォームごとのVPS（仮想プライベートサーバー）クイックスタートを解説していますが、共通して押さえるべき概念は以下の通りです。"
+        },
+        {
+            "kind": "annotation",
+            "text": "✓ ベストプラクティス インスタンスへの設定はSSH経由の手作業ではなく cloud-init またはConfiguration Management（第23章）で自動化し、「作り直せば元通り」を実現する（イミュータブルインフラの考え方）。 コスト管理はタグ付けから始める（プロジェクト・環境・所有者タグを全リソースに強制）。未使用のボリューム・IPアドレスの棚卸しを定期実行する。 IAMロールは「必要な操作だけ」を許可するカスタムポリシーを基本とし、AdministratorAccess のような包括的権限をアプリケーションに付与しない。 マルチAZ・マルチリージョン構成は「単一障害点をなくす」ためのものであり、コストとのトレードオフを事業要件に照らして判断する。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "出典: 各クラウドプロバイダ公式ドキュメント（AWS, GCP, Azure）の一般提供情報に基づく。原著第9章「Cloud Computing」構成 — UNIX and Linux System Administration Handbook, 5th Edition, Pearson目次 — https://www.pearson.com/en-us/subject-catalog/p/unix-and-linux-system-administration-handbook/P200000000513/9780137460359"
+        },
+        {
+            "kind": "paragraph",
+            "text": "システムやアプリケーションが生成するログの収集・保存・ローテーション・分析を扱います。障害調査とセキュリティ監査の生命線です。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "現代のLinuxでは、systemd-journald が主要なログ収集基盤となり、従来の syslog（rsyslog / syslog-ng）と併用されるのが一般的です。"
+        },
+        {
+            "kind": "annotation",
+            "text": "✓ ベストプラクティス ログは「見るためのもの」ではなく「機械が処理するためのもの」と捉え、可能な限り構造化（JSON等）で出力する。 journald の永続化を有効にする（既定では /run 上の揮発領域のみの場合がある）。/etc/systemd/journald.conf で Storage=persistent を設定し、再起動後もログが残るようにする。 logrotate で世代数・サイズ上限・圧縮を必ず設定し、/var/log がディスクを圧迫してサービス停止を招く事故を防ぐ。 セキュリティ監査対象のログ（認証ログ、sudo実行ログ）は改ざん防止のため、生成元とは別のサーバーへ即座に転送する。 大規模環境ではログ量そのものをコスト要因として管理する — 何を・どのレベルで・どこまで残すかの「ロギングポリシー」を明文化する。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "出典: UNIX and Linux System Administration Handbook, 5th Edition 第10章「Logging」構成（systemdジャーナル・syslog・ログローテーションの3本柱） — Pearson目次 — https://www.pearson.com/en-us/subject-catalog/p/unix-and-linux-system-administration-handbook/P200000000513/9780137460359"
+        },
+        {
+            "kind": "paragraph",
+            "text": "カーネルのバージョニング、デバイスドライバ、ロード可能カーネルモジュール（LKM）の管理を扱います。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "Linuxカーネルはモジュール方式を採用しており、必要なドライバを実行中のカーネルに動的に組み込む（insmod/modprobe）ことができます。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "カーネルのバージョン番号は メジャー.マイナー.パッチ（例: 6.8.0）の形式で管理され、安定版・LTS（Long Term Support）版の選定がサーバー運用の可用性に直結します。"
+        },
+        {
+            "kind": "annotation",
+            "text": "✓ ベストプラクティス 本番サーバーには可能な限りディストリビューションが提供するLTSカーネルを使う。独自ビルドカーネルは保守コストが高く、セキュリティパッチ適用が遅れがちになる。 カーネルアップデート後は必ず再起動して新カーネルで正常起動することを確認する（クラウドでは事前にスナップショットを取得）。 dmesg はカーネルが生成する一次情報であり、ハードウェア障害・OOM Killer発動・ドライバエラーの初動調査で最初に確認する。 Secure Boot有効環境、または CONFIG_MODULE_SIG_FORCE=y / 起動パラメータ module.sig_enforce=1 が有効な環境では、未署名・未信頼のカーネルモジュールはカーネルがロードを拒否する（modprobe が Key was rejected by service で失敗し、dmesg に Loading of unsigned module is rejected が記録される）。第三者モジュールを使う場合は、正しい手順として自前のMOK（Machine Owner Key）を作成し、kmodsign / scripts/sign-file でモジュールを署名したうえで mokutil --import <公開鍵> で鍵を登録し、再起動時のMOK Managerで登録を承認する。DKMSは登録済みの鍵を使ってカーネル更新のたびに自動再署名できる。 署名検証の無効化（Secure Bootの無効化や module.sig_enforce=0）は、ブートチェーンの改ざん検知とルートキット対策を放棄することと引き換えの例外措置であり、恒久運用では採用しない。検証環境で一時的に用いる場合も、対象ホストと期間を限定する。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "CUPS（Common UNIX Printing System）を用いた印刷サービスの構成を扱います。クラウドネイティブな環境では優先度は下がりますが、オフィス・研究機関のオンプレミス環境では依然として現役の知識です。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "CUPSはIPP（Internet Printing Protocol）を用いて、ネットワークプリンタへのジョブ投入・キュー管理・ドライバ変換を担います。"
+        },
+        {
+            "kind": "annotation",
+            "text": "✓ ベストプラクティス 印刷サーバーの管理インターフェース（ポート631）は信頼できるネットワークセグメントに限定し、インターネットに公開しない。 共有プリンタキューは部署単位でACLを設定し、意図しないジョブ投入（誤送信によるコスト・情報漏洩）を防ぐ。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "インターネットとイントラネットの通信基盤であるTCP/IPプロトコルスイートの基礎を扱います。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "TCP/IPは階層化されたモデルで理解すると全体像が掴みやすくなります。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "IPアドレスは32ビット（IPv4）または128ビット（IPv6）の識別子で、サブネットマスク（CIDR表記, 例: /24）によってネットワーク部とホスト部を区切ります。"
+        },
+        {
+            "kind": "annotation",
+            "text": "✓ ベストプラクティス IPv4アドレス枯渇と将来の拡張性を考慮し、新規インフラはIPv6デュアルスタック対応を初期設計に組み込む。 サブネット設計は将来の成長を見込んで余裕を持たせる（過度に細かい /30 等の割当は後で行き詰まる）。 ネットワークトラブル時は ping（疎通）→ traceroute（経路）→ ss/netstat（ローカルソケット状態）→ tcpdump（パケットキャプチャ）の順で切り分ける。 本番環境のファイアウォールルールは「デフォルト拒否、必要な通信のみ許可（default deny）」を原則とする。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "Ethernet・Wi-Fi・SDN（ソフトウェア定義ネットワーキング）・配線・機材選定など、物理層〜データリンク層の実務を扱います。"
+        },
+        {
+            "kind": "annotation",
+            "text": "✓ ベストプラクティス サーバーの物理NICは可能な限り2枚以上を異なるスイッチに接続し、スイッチ単体障害に耐える構成にする。LACP（802.3ad）ボンディングを使えるのは、MLAG・スタック・MC-LAGなど接続先スイッチが単一の論理ピアとして動作する場合に限られる。互いに独立したスイッチへ接続する構成では active-backup（mode=1）を使う。 ラック配線は将来の増設・トラブルシューティングを見据え、ラベリングと配線図の維持を怠らない。 Wi-Fiは管理用ネットワークとしては極力使わず、帯域外管理（IPMI/iDRAC/iLO等の専用ポート）を用意する。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "パケットが送信元から宛先までどのように転送されるか、静的・動的ルーティングの仕組みを扱います。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "動的ルーティングプロトコル（OSPF, BGPなど）は、経路情報をルーター間で自動交換し、経路変化に追従します。BGPはインターネット全体の経路制御を担う「インターネットの背骨」です。"
+        },
+        {
+            "kind": "annotation",
+            "text": "✓ ベストプラクティス 小規模・単純なネットワークでは静的ルートで十分。動的ルーティングは複数経路・冗長化が必要な規模から導入を検討する。 ルーティングテーブルの変更は必ず現在の到達性を確認した上で行う（リモート作業中の誤設定は自分自身を隔離するリスクがある — コンソールアクセスを確保してから作業する）。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "人間可読なドメイン名をIPアドレスへ変換する、インターネットの「電話帳」の仕組みと構築方法を扱います。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "DNSSECは、DNS応答に暗号署名を付与し、キャッシュポイズニングなどの改ざん攻撃から保護する拡張です。ただし普及状況を語る数値は測定時点・測定対象・指標によって大きく異なるため、必ず分けて読む必要があります。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "TLDという「器」はほぼ署名済みである一方、その配下の実ドメインはほとんど署名されておらず、署名されていても検証されるとは限らない——この署名側と検証側のギャップが繰り返し指摘されています。"
+        },
+        {
+            "kind": "annotation",
+            "text": "✓ ベストプラクティス 権威DNSサーバーと再帰リゾルバの役割を混同しない。権威サーバーはゾーン情報を「答える」役割、再帰リゾルバは外部への「問い合わせを代行する」役割で、同一サーバーに同居させると設定ミスやキャッシュポイズニングのリスクが増す。 重要なドメイン（ログインポータル、決済関連）はDNSSECでゾーンに署名し、自組織が管理する再帰リゾルバ側でも検証（validation）を有効化する。 ゾーンファイルの変更はTTLを考慮した計画的なロールアウトを行う（切り替え直前は一時的にTTLを短縮しておく）。 名前解決のトラブルシューティングは dig +trace で権威委任のチェーンを実際にたどって確認する。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "出典: ControlD「DNS Security Best Practices For Forward-Thinking Businesses」 — https://controld.com/blog/dns-security-best-practices/ ／ SHPV「DNSSEC en 2026」（ルートゾーン署名率・主要TLD採用率の実測値） — https://www.shpv.fr/blog/dnssec-configuration/ ／ Sesame Disk「Secure DNS Updates in 2026」（DNSSEC署名済みゾーン8%・エンドツーエンド検証1%未満の指摘） — https://sesamedisk.com/secure-dns-updates-rfc-2136-ipv6-dnssec-2026/"
+        },
+        {
+            "kind": "paragraph",
+            "text": "一度の認証で複数システムへアクセスできるSSOの仕組み（Kerberos, SAML, OIDC）を扱います。なおLDAPはSSOのプロトコルそのものではなく、ユーザー・グループ情報を保持するディレクトリ（および認証バックエンド）であり、上記のSSO技術と組み合わせて使われる構成要素です。ユーザーのSSO（認証）に用いるのはOIDCであり、OAuth 2.0はAPIアクセスを委任するための認可フレームワークです。OIDCはOAuth 2.0の上に構築された認証レイヤーであり、OAuth 2.0単体は認証方式ではない点に注意してください。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "Kerberosはチケットベースの認証プロトコルで、企業内Active Directory環境の中核をなします。SAML/OIDCはWebアプリケーション向けの現代的な標準です。"
+        },
+        {
+            "kind": "annotation",
+            "text": "✓ ベストプラクティス 新規に自前で認証機構を実装しない。実績のあるIdP（Keycloak, Okta, Azure AD等）とOIDC/SAMLの標準プロトコルに乗る。 サービスアカウント・機械間通信にはmTLSやOAuth2クライアントクレデンシャルフローを用い、人間用の認証情報を流用しない。 トークンの有効期限は業務要件と天秤にかけた上で短めに設定し、リフレッシュトークンのローテーションを行う。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "SMTPによるメール配送の仕組みと、なりすまし対策（SPF/DKIM/DMARC）を扱います。"
+        },
+        {
+            "kind": "annotation",
+            "text": "✓ ベストプラクティス 自組織ドメインからの送信メールには必ずSPF・DKIM・DMARCの3点セットを設定する。未設定はフィッシングへの悪用や、正規メールの迷惑メール判定を招く。 メールサーバーをオープンリレーにしない（第三者中継を許可しない設定を確認する）。 大量配信（マーケティングメール等）はレピュテーション管理された専用サービス（SES, SendGrid等）に分離し、トランザクションメールのIPレピュテーションを守る。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "Webサーバー・リバースプロキシ・TLS終端・スケールアウト構成を扱います。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "TLS証明書は現在、Let's Encryptに代表される無料の自動発行認証局が普及し、certbot や acme.sh によるACMEプロトコル自動更新が標準的です。"
+        },
+        {
+            "kind": "annotation",
+            "text": "✓ ベストプラクティス TLS証明書の自動更新を必ず設定し、手動更新に頼らない（有効期限切れによるサービス停止は最も「防げたはずの」障害の一つ）。 HTTPは常にHTTPSへリダイレクトし、Strict-Transport-Security（HSTS）ヘッダーを設定する。 リバースプロキシでリクエストレート制限・タイムアウトを設定し、単一の遅いバックエンドがサービス全体を巻き込まないようにする。 静的アセットはCDN経由で配信し、オリジンサーバーの負荷を下げる。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "物理ディスク〜RAID〜LVM〜ファイルシステムに至るストレージスタック全体の設計を扱います。"
+        },
+        {
+            "kind": "annotation",
+            "text": "✓ ベストプラクティス 本番用途ではRAID 5は避け、RAID 6またはRAID 10を優先する。大容量ディスク（10TB超）ではリビルド中の追加故障確率が無視できず、RAID 5は実質的にデータ損失リスクを内包する。 mdadm（ソフトウェアRAID）+ LVM（論理ボリューム管理）+ XFS/ext4（ファイルシステム）を組み合わせるのが、ディスク冗長性・柔軟なリサイズ・実績のあるFSを両立する定番構成。 RAIDやディスクの健康状態を smartctl と mdadm --detail で定期監視し、故障予兆をアラート化する。 XFSはオンラインでの拡張はできるが縮小できない、という制約をボリューム設計時に織り込む。将来的な縮小が必要な用途では縮小可能なext4を選ぶ。縮小はアンマウント → resize2fs（FS縮小）→ lvreduce（LV縮小）の順で行う（逆順はデータ破壊を招く）。 LVM thin provisioningはファイルシステムの縮小手段ではなく、割り当ての遅延によって過剰プロビジョニングを可能にする仕組みである。thinプールのデータ領域またはメタデータ領域が枯渇すると書き込みが失敗するため、使用率の監視と自動拡張の設定が必須。 バックアップは「RAIDの代わり」ではない。RAIDは可用性のための冗長化であり、誤削除・ランサムウェア・論理障害からはバックアップでしか守れない。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "出典: FOSS Linux「Linux Storage Deep Dive: LVM, mdadm, ZFS RAID」（Arjun K.氏, 2026年6月） — https://www.fosslinux.com/158254/linux-storage-deep-dive-lvm-mdadm-and-zfs-raid.htm ／ LinuxTeck「Linux File System Comparison ext4 xfs btrfs — Best Choice for Production 2026」 — https://www.linuxteck.com/linux-file-system-comparison-ext4-xfs-btrfs/ ／ Red Hat公式ドキュメント「Chapter 3. The XFS File System」 — https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/7/html/storage_administration_guide/ch-xfs"
+        },
+        {
+            "kind": "paragraph",
+            "text": "複数のクライアントからネットワーク越しにファイルシステムを共有するNFSの仕組みを扱います。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "現行の主流はNFSv4で、単一ポート（TCP 2049）での通信・統合されたロック機構・Kerberosによる強固な認証（sec=krb5p）をサポートします。"
+        },
+        {
+            "kind": "annotation",
+            "text": "✓ ベストプラクティス 新規構築ではNFSv3ではなくNFSv4系を採用する。ポート集約によりファイアウォール設定が単純化し、セキュリティも向上する。 no_root_squash は特別な理由がない限り避ける（既定の root_squash はクライアント側rootの権限をサーバー側で無権限ユーザーへマッピングし、権限昇格の悪用を防ぐ）。 パフォーマンスが重要な用途では、マウントオプション（rsize/wsize）をネットワーク帯域・レイテンシに合わせてチューニングする。 NFSサーバーの単一障害点化を避けるため、重要用途ではHA構成や、クラウドではマネージドファイルサービス（EFS, Filestore等）の利用を検討する。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "Windows環境との相互運用を担うSMB/CIFSプロトコルと、Linux側実装であるSambaを扱います。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "Sambaは、LinuxサーバーをWindowsファイルサーバー・ドメインコントローラとして機能させるオープンソース実装です。混在環境（Windows端末＋Linuxサーバー）では依然として重要な選択肢です。"
+        },
+        {
+            "kind": "annotation",
+            "text": "✓ ベストプラクティス SMBv1/CIFSは既知の重大な脆弱性（EternalBlue等）があるため、必ず無効化しSMBv2/v3のみを許可する（方言の設定）。 認証プロトコルは方言とは別に設定する。特にNTLMv1は容易に破られるため使用を禁止し、NTLMv2以上またはKerberosに限定する。 Samba設定ファイル smb.conf の共有定義は、Linux側のファイルパーミッションと二重に整合性を取る（SMB側ACLとPOSIXパーミッションの不一致がアクセス不能・過剰許可の原因になりやすい）。 Active Directoryとの統合（winbindまたはsssd）を使い、ローカルSambaユーザーの二重管理を避ける。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "サーバー台数が増えても手作業を繰り返さず、「あるべき状態」をコードで宣言し自動的に収束させる構成管理ツール（Ansible, Puppet, Chef等）を扱います。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "Ansibleはエージェントレス（管理対象にソフトウェアを事前導入する必要がない）でSSH経由に処理を実行する構成管理ツールとして、現在最も広く使われているツールの一つです。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "冪等性（idempotency）が構成管理の中核概念です。同じPlaybookを何度実行しても、既に望ましい状態であれば「何もしない」、そうでなければ「差分だけを適用する」という性質を指します。"
+        },
+        {
+            "kind": "annotation",
+            "text": "✓ ベストプラクティス command/shell モジュールの多用を避け、package/service/copy/template等の専用モジュールを優先する。専用モジュールは状態チェックを内蔵しており冪等性が保証されるが、shellは明示的に creates=/changed_when を書かない限り毎回「変更あり」と報告してしまう。 Playbook・Role・インベントリはすべてGitでバージョン管理し、レビュープロセスを経てから適用する（インフラの変更もコードレビューの対象にする）。 変更適用前に必ず --check（ドライラン）モードで差分を確認する習慣をつける。 環境差異（開発・ステージング・本番）は変数ファイルで分離し、Playbook本体はロジックを共通化する。 秘密情報（パスワード・APIキー）は平文でリポジトリに置かず、ansible-vault や外部シークレットマネージャーと連携する。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "出典: Spacelift「Infrastructure as Code with Ansible: Tutorial」 — https://spacelift.io/blog/ansible-infrastructure-as-code ／ OneUptime「How to Fix 'Changed Status' Idempotency Issues」（command/shellモジュールの冪等性問題と対処） — https://oneuptime.com/blog/post/2026-01-24-ansible-changed-status-idempotency/view ／ OneUptime「How to Write Idempotent Ansible Tasks」 — https://oneuptime.com/blog/post/2026-02-21-how-to-write-idempotent-ansible-tasks/view"
+        },
+        {
+            "kind": "paragraph",
+            "text": "1台の物理マシン上で複数の独立したOS環境を動かす仮想化技術（ハイパーバイザー）を扱います。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "LinuxではKVM（Kernel-based Virtual Machine）がType-1ハイパーバイザーの標準実装であり、多くのクラウドプラットフォームの基盤技術でもあります。"
+        },
+        {
+            "kind": "annotation",
+            "text": "✓ ベストプラクティス 本番環境ではType-1（ベアメタル型）ハイパーバイザーを採用する。ホストOSを経由しない分、オーバーヘッドが小さく攻撃対象領域（アタックサーフェス）も狭い。 仮想マシンのリソース（CPU/メモリ）は物理ホストに対して過剰にオーバーコミットしない。特にメモリのオーバーコミットはスワップ多発によるレイテンシ悪化を招く。 ゲストOSにも独立してセキュリティパッチ適用・監視を行う。ハイパーバイザーが安全でもゲストが脆弱なら意味がない。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "仮想マシンより軽量なプロセスレベルの隔離技術であるコンテナ（Docker, Podman, Kubernetes）を扱います。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "コンテナは仮想マシンとは異なり、ハードウェアをエミュレートせず、Linuxカーネルの機能（namespaces と cgroups）を用いてホストOS上のプロセスを隔離します。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "単体のコンテナランタイム（Docker/Podman）は1台のホストに閉じますが、複数ホストにまたがるオーケストレーション（スケジューリング・自己修復・スケーリング）を担うのがKubernetesです。"
+        },
+        {
+            "kind": "annotation",
+            "text": "✓ ベストプラクティス コンテナはrootユーザーで実行しない（USER ディレクティブで非特権ユーザーを指定）。rootで動くコンテナは、コンテナエスケープが発生した際にホストへの権限昇格リスクを高める。 イメージは最小構成のベースイメージ（distroless, alpine等）を使い、不要なパッケージ・シェルを含めない — 攻撃対象領域の縮小とイメージサイズ削減を両立する。 コンテナは「軽量なVM」ではなく「隔離されたプロセス」である、という認識を持つ。永続化が必要なデータはコンテナ内に置かず、ボリュームや外部ストレージに分離する。 本番運用では単発の docker run ではなく、Kubernetes等のオーケストレーターで自己修復（クラッシュ時再起動）・水平スケーリングを構成する。 VMとコンテナは「どちらか一方」ではなく併用が一般的（VMでセキュリティ境界を確保し、その中でコンテナを高密度に稼働させる）。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "出典: Northflank「Containers vs virtual machines: key differences and when to use each (2026)」 — https://northflank.com/blog/containers-vs-virtual-machines ／ AWS公式「Docker vs VM」比較ドキュメント — https://aws.amazon.com/compare/the-difference-between-docker-vm/ ／ Luminhkhuong Engineering Knowledge Base「VMs vs. Docker vs. Kubernetes」（namespaces/cgroups/OverlayFS/OCIランタイムスタックの技術解説） — https://luminhkhuong.dev/technical-knowledge/devops/vm-docker-k8s-explained/"
+        },
+        {
+            "kind": "paragraph",
+            "text": "コード変更をビルド・テスト・デプロイまで自動化するパイプラインの設計を扱います。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "「継続的デリバリー（Continuous Delivery）」は本番デプロイ可能な状態を常に維持することを指し、「継続的デプロイ（Continuous Deployment）」はそこからさらに人手の承認なしで自動的に本番反映することを指します。両者はしばしば混同されますが、明確に異なる概念です。"
+        },
+        {
+            "kind": "annotation",
+            "text": "✓ ベストプラクティス パイプラインの各ステージは「早く失敗する（fail fast）」順に並べる。実行コストの軽いLintを最初に、時間のかかる統合テストを後段に配置し、フィードバックループを最短化する。 テストが通らない限りマージできないブランチ保護ルールを設定し、「グリーンなmain」を常に維持する。 本番デプロイはBlue-GreenまたはCanaryなど、即座にロールバック可能な戦略を採用する。 CI環境自体もIaCで管理し、CIツールの設定変更もコードレビューの対象にする。 ビルドしたコンテナイメージは脆弱性スキャンを通し、既知のCVEを含むイメージを本番に出さない。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "システム全体を防御するための多層防御（Defense in Depth）の考え方、SSH強化、脆弱性管理、監査を扱います。"
+        },
+        {
+            "kind": "annotation",
+            "text": "✓ ベストプラクティス SSH鍵を設定したら、必ず新しいセッションで鍵ログインが成功することを確認してからパスワード認証を無効化する。順序を間違えると自分自身をロックアウトする典型的な事故につながる。 OpenSSHは定期的にCVEが報告される（例: CVE-2026-35414。authorized_keys の cert-authority エントリで principals= に複数のprincipalを指定し、かつCAが複数の許可principal名をコンマ区切りで証明書へエンコードした場合にのみ制限を回避できた。TrustedUserCAKeys と AuthorizedPrincipalsFile を用いる経路は影響を受けず、OpenSSH 10.3で修正済み）。最新パッチの適用を常に追跡する。 CIS BenchmarkやDISA STIGなど、業界標準の構成ベースラインをディストリビューションごとに適用する。RHEL系とDebian系ではパス・パッケージ名・PAMモジュール設定が異なるため、系統別に手順・Ansible Roleを用意する。 auditd を導入し、root権限でのコマンド実行、/etc/passwd・/etc/shadow・/etc/sudoers への変更を監査ログに記録する。 脆弱性スキャンとパッチ適用は「知る」で終わらせず、SLA（例: Critical脆弱性は72時間以内に適用）を運用ルールとして明文化する。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "出典: Falcon Internet Blog「Hardening SSH in 2026」（CVE-2026-35414の解説とハードニングチェックリスト） — https://www.falconinternet.net/blog/ssh-hardening-guide-2026 ／ DecryptionDigest「Linux Server Security Hardening 2026: CIS Benchmarks, Auditd」 — https://www.decryptiondigest.com/blog/linux-server-security-hardening-cis-benchmark ／ Mozilla Wiki「Security/Guidelines/OpenSSH」 — https://wiki.mozilla.org/Security/Guidelines/OpenSSH"
+        },
+        {
+            "kind": "paragraph",
+            "text": "システムの健全性を継続的に可視化し、障害を未然に検知・対処する監視基盤の設計を扱います。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "Google SREチームが提唱する「4大シグナル（Four Golden Signals）」は、監視すべき指標を絞り込むための実践的な枠組みです。"
+        },
+        {
+            "kind": "annotation",
+            "text": "✓ ベストプラクティス レイテンシは平均値ではなくパーセンタイル（p50/p95/p99）で監視する。平均値は少数の極端に遅いリクエストを覆い隠してしまう。 エラーは件数ではなく比率（エラーレート）でアラートを設定する。トラフィックが変動する環境では件数ベースの閾値は意味をなさなくなる。 静的な閾値だけでなく、predict_linear() のような変化率ベースの予測で「このままいくと何分後に閾値超過するか」を検知し、飽和が実際に発生する前にアラートを上げる。 アラート疲れ（Alert Fatigue）を避けるため、「人間が今すぐ対応すべきもの」だけをページ通知にし、それ以外はダッシュボード・チケットに留める。 SLI（Service Level Indicator）とSLO（目標値）を先に定義し、監視項目をそこから逆算する（何でも測るのではなく、ユーザー体験に直結する指標を測る）。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "出典: Google SRE Book「Monitoring Distributed Systems」（4大シグナルの原典） — https://sre.google/sre-book/monitoring-distributed-systems/ ／ Better Stack Community「The Four Golden Signals for SRE Monitoring」 — https://betterstack.com/community/guides/monitoring/sre-golden-signals/ ／ Sherlocks.ai「The Four Golden Signals of SRE」（p99/エラーレート/predict_linear()によるアラート設計） — https://www.sherlocks.ai/blog/four-golden-signals-of-sre"
+        },
+        {
+            "kind": "paragraph",
+            "text": "「システムが遅い」という曖昧な訴えを、再現可能な手順でボトルネックの特定に落とし込む方法論を扱います。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "Netflix・Intel・OpenAIで性能エンジニアとして活躍したBrendan Gregg氏が提唱したUSE法（Utilization, Saturation, Errors）は、あらゆるハードウェアリソースに対して機械的に適用できる、体系的なボトルネック特定手法です。"
+        },
+        {
+            "kind": "annotation",
+            "text": "✓ ベストプラクティス 調査の最初の60秒でシステム全体を俯瞰する（Brendan Gregg氏が「Linux Performance Analysis in 60,000 Milliseconds」として体系化した手法）。uptime（負荷平均）→ dmesg（直近のカーネルエラー）→ vmstat（CPU/メモリ概況）→ mpstat（コア別使用率）→ pidstat（プロセス別リソース）→ iostat（ディスクI/O）→ sar（ネットワーク統計）の順に俯瞰し、当たりをつけてから深掘りツールに進む。 平均値だけでなく分布（パーセンタイル、ヒストグラム）を見る。平均は外れ値を隠す。 perf やeBPFベースのツール（bpftrace等）で、実際にCPUを消費しているコードパスをフレームグラフとして可視化し、推測ではなくデータで原因を特定する。 USE法は「何が正常でないか」を機械的に洗い出すためのチェックリストであり、原因の特定そのものはリソースごとの専用ツールでの深掘りが必要になる、という位置づけを理解する。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "出典: Brendan Gregg氏 公式サイト「The USE Method」 — https://www.brendangregg.com/usemethod.html ／ Brendan Gregg氏 公式サイト（Netflix Tech Blogでの「Linux Performance Analysis in 60,000 Milliseconds」への言及、および2026年時点の近況：Intel退社・OpenAI入社） — https://www.brendangregg.com/ ／ Wikipedia「Brendan Gregg」（USE法・フレームグラフの功績、2013年USENIX LISA Outstanding Achievement Award） — https://en.wikipedia.org/wiki/Brendan_Gregg"
+        },
+        {
+            "kind": "paragraph",
+            "text": "物理的なデータセンター運用（電源、冷却、ラック、DCIM）の基礎知識を扱います。クラウド中心の現在でも、オンプレミス設備やコロケーションを扱う組織には必須の知識です。"
+        },
+        {
+            "kind": "annotation",
+            "text": "✓ ベストプラクティス 単一のデータセンター・単一の電源系統に全てのインフラを集約しない。事業継続計画（BCP）の観点から、地理的・電源的な分散を検討する。 ラック内の配線・機器配置は「後で誰が見ても分かる」ことを基準に、ラベリングとドキュメント（DCIM: Data Center Infrastructure Management）を継続的に更新する。 温度・湿度・電力使用量（PUE: Power Usage Effectiveness）を継続的にモニタリングし、冷却効率の劣化を早期発見する。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "技術力だけでは解決できない「組織の中でどう機能するか」——インシデント対応プロセス、ポストモーテム文化、変更管理、ステークホルダーとのコミュニケーションを扱う、原著の締めくくりの章です。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "Google SREの実践で広く知られるブレームレス・ポストモーテム（blameless postmortem）は、「誰が悪かったか」ではなく「なぜシステムがその失敗を許してしまったか」を問う障害分析の文化です。"
+        },
+        {
+            "kind": "annotation",
+            "text": "✓ ベストプラクティス ポストモーテムは「個人の失敗」ではなく「プロセス・システムの欠陥」に焦点を当てて記述する。個人を非難する文化は、次に同様の問題に気づいた人が報告をためらう萎縮効果を生む。 変更管理（Change Management）は、変更内容・ロールバック手順・影響範囲を事前に文書化してから実施する。「本番で試しながら考える」を避ける。 トイル（Toil：手作業で繰り返され、長期的価値を生まない作業）を定期的に棚卸しし、自動化への投資判断材料にする。 技術的な意思決定であっても、影響を受けるステークホルダー（他チーム、事業側）への説明責任を果たす。技術的に正しいことと、組織的に受け入れられることは必ずしも一致しない。 オンコール担当者の燃え尽きを防ぐため、ローテーション設計・エスカレーションパスの明確化・「起こされた後の休息」を制度として保証する。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "出典: Google SRE Book「A Collection of Best Practices for Production Services」「Example Postmortem」（Appendix B, D） — https://sre.google/sre-book/monitoring-distributed-systems/ の関連章（Google Cloud SRE Book, sre.google公開）"
+        },
+        {
+            "kind": "paragraph",
+            "text": "原著の章立ては網羅的ですが、初学者が実務で最初に触れる優先度で並べ替えると、以下のような学習パスが効率的です。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "本ガイド作成にあたり、2026年8月27日時点でWeb検索により確認した情報源です。書籍そのものの一次情報に加え、著名な国際的開発者・組織による最新（2026年）の実務知見を優先的に参照しました。"
+        },
+        {
+            "kind": "paragraph",
+            "text": "本ガイドはUNIX and Linux System Administration Handbook, 5th Editionの構成に基づく学習用二次資料であり、原著の著作権はEvi Nemeth、Garth Snyder、Trent R. Hein、Ben Whaley、Dan Mackin、およびPearson Educationに帰属します。原著の完全な内容・詳細な手順については、必ず原著（ISBN-13: 978-0-13-427755-4）をご参照ください。"
+        }
+    ],
+    "counts": {
+        "table": 39,
+        "diagram": 29,
+        "codeBlock": 0,
+        "figure": 0
+    },
+    "structures": {
+        "tableColumnHeaders": [
+            3, 2, 3, 3, 0, 2, 2, 3, 2, 2, 4, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 2, 2, 5, 3, 2, 2, 2,
+            2, 2, 2, 2, 3, 2, 2, 2, 2, 2
+        ],
+        "codeLines": []
+    }
+}

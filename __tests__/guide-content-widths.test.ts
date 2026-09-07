@@ -48,6 +48,10 @@ const guideLayouts = [
     ['app/recommended-books/the-devops-handbook/page.css', '.the-devops-handbook-page .sidebar', '.the-devops-handbook-page .main'],
     ['app/recommended-books/release-it/page.css', '.release-it-page .sidebar', '.release-it-page .main'],
     ['app/recommended-books/infrastructure-as-code/page.css', '.infrastructure-as-code-page .sidebar', '.infrastructure-as-code-page .main'],
+    ['app/recommended-books/understanding-the-linux-kernel/page.css', '.understanding-the-linux-kernel-page .sidebar', '.understanding-the-linux-kernel-page .main'],
+    ['app/recommended-books/unix-linux-sysadmin-handbook/page.css', '.unix-linux-sysadmin-handbook-page .sidebar', '.unix-linux-sysadmin-handbook-page .main'],
+    ['app/recommended-books/systems-performance/page.css', '.systems-performance-page .sidebar', '.systems-performance-page .main'],
+    ['app/recommended-books/operating-systems-three-easy-pieces/page.css', '.ostep-page .sidebar', '.ostep-page .main'],
 ] as const;
 
 describe('all sidebar guide layouts', () => {

@@ -1,0 +1,3517 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>
+            コンピュータネットワーク入門ガイド ― トップダウンアプローチで学ぶインターネットの仕組み
+        </title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            :root {
+                --bg: #07111e;
+                --bg-card: #0d1a2b;
+                --bg-card-2: #101f33;
+                --border: #1d3350;
+                --border-soft: #16283f;
+                --text: #dbe4f3;
+                --text-dim: #8fa2c0;
+                --text-faint: #6a7d9c;
+                --accent: #7c9eff;
+                --accent-soft: #3a4f80;
+                --accent-bg: #15233d;
+                --danger: #ff8fa3;
+                --danger-bg: #3a1420;
+                --warn: #ffbd6e;
+                --warn-bg: #3a2810;
+                --success: #7fe0a8;
+                --success-bg: #0f2c1e;
+                --sidebar-w: 300px;
+                --font-jp: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', sans-serif;
+            }
+            * {
+                box-sizing: border-box;
+            }
+            html,
+            body {
+                overflow-x: hidden;
+            }
+            body {
+                margin: 0;
+                background: var(--bg);
+                color: var(--text);
+                font-family: var(--font-jp);
+                font-size: 16px;
+                line-height: 1.85;
+                -webkit-font-smoothing: antialiased;
+            }
+            a {
+                color: var(--accent);
+                text-decoration: none;
+            }
+            a:hover {
+                text-decoration: underline;
+            }
+
+            /* ---------- layout ---------- */
+            .layout {
+                display: block;
+            }
+
+            /* Sidebar */
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                width: var(--sidebar-w);
+                background: #060d17;
+                border-right: 1px solid var(--border-soft);
+                overflow-y: auto;
+                padding: 28px 0 40px;
+                z-index: 50;
+            }
+            .sidebar-header {
+                padding: 0 24px 20px;
+                border-bottom: 1px solid var(--border-soft);
+                margin-bottom: 16px;
+            }
+            .sidebar-header .kicker {
+                font-size: 12px;
+                letter-spacing: 0.08em;
+                color: var(--accent);
+                font-weight: 700;
+                text-transform: uppercase;
+            }
+            .sidebar-header h2 {
+                font-size: 16px;
+                margin: 6px 0 0;
+                color: var(--text);
+                line-height: 1.5;
+                font-weight: 700;
+            }
+            .sidebar nav {
+                padding: 0 12px;
+            }
+            .sidebar nav a {
+                display: block;
+                padding: 9px 12px;
+                border-radius: 8px;
+                font-size: 13.5px;
+                color: var(--text-dim);
+                line-height: 1.5;
+                margin-bottom: 2px;
+                transition:
+                    background 0.15s,
+                    color 0.15s;
+            }
+            .sidebar nav a:hover {
+                background: var(--accent-bg);
+                color: var(--text);
+                text-decoration: none;
+            }
+            .sidebar nav a.active {
+                background: var(--accent-bg);
+                color: var(--accent);
+                font-weight: 700;
+            }
+            .sidebar nav a.lvl3 {
+                padding-left: 28px;
+                font-size: 12.5px;
+            }
+            .sidebar-toggle {
+                display: none;
+                position: fixed;
+                top: 14px;
+                left: 14px;
+                z-index: 60;
+                width: 42px;
+                height: 42px;
+                border-radius: 10px;
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                color: var(--text);
+                font-size: 18px;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+            }
+
+            /* Main content */
+            .main {
+                margin-left: var(--sidebar-w);
+                padding: 56px 64px 120px;
+            }
+            .hero {
+                margin-bottom: 8px;
+            }
+            .hero .kicker {
+                font-size: 13px;
+                font-weight: 700;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+                color: var(--accent);
+                margin-bottom: 14px;
+            }
+            .hero h1 {
+                font-size: clamp(28px, 3.6vw, 42px);
+                line-height: 1.35;
+                margin: 0 0 18px;
+                background: linear-gradient(135deg, #dbe4f3 0%, #7c9eff 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                font-weight: 800;
+            }
+            .hero .meta-row {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+                margin-bottom: 32px;
+            }
+            .pill {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                padding: 6px 14px;
+                border-radius: 999px;
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                font-size: 12.5px;
+                color: var(--text-dim);
+            }
+            .pill strong {
+                color: var(--text);
+            }
+
+            .main h2 {
+                font-size: 26px;
+                margin: 56px 0 20px;
+                padding-top: 8px;
+                border-top: 1px solid var(--border-soft);
+                color: var(--text);
+                font-weight: 800;
+                letter-spacing: -0.01em;
+                scroll-margin-top: 24px;
+            }
+            .main > h2:first-of-type {
+                border-top: none;
+                padding-top: 0;
+                margin-top: 8px;
+            }
+            .main h3 {
+                font-size: 20px;
+                margin: 38px 0 16px;
+                color: var(--text);
+                font-weight: 700;
+                scroll-margin-top: 24px;
+            }
+            .main h3::before {
+                content: '';
+                display: inline-block;
+                width: 5px;
+                height: 18px;
+                background: var(--accent);
+                border-radius: 3px;
+                margin-right: 10px;
+                vertical-align: -2px;
+            }
+            .main p {
+                margin: 0 0 18px;
+                color: var(--text);
+            }
+            .main ul,
+            .main ol {
+                margin: 0 0 18px;
+                padding-left: 1.4em;
+                color: var(--text);
+            }
+            .main li {
+                margin-bottom: 8px;
+            }
+            .main hr {
+                border: none;
+                border-top: 1px solid var(--border-soft);
+                margin: 44px 0;
+            }
+            .main strong {
+                color: #f0f4fc;
+                font-weight: 700;
+            }
+            .footnote-ref {
+                margin-left: 2px;
+            }
+            .footnote-ref sup {
+                font-size: 11px;
+                color: var(--accent);
+                font-weight: 700;
+            }
+            .main code:not(pre code) {
+                background: var(--bg-card-2);
+                border: 1px solid var(--border);
+                border-radius: 5px;
+                padding: 1px 6px;
+                font-size: 0.9em;
+                color: #ffd08a;
+                overflow-wrap: break-word;
+                word-break: break-word;
+            }
+
+            /* Tables */
+            .table-scroll {
+                overflow-x: auto;
+                margin: 0 0 26px;
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                background: var(--bg-card);
+            }
+            table {
+                border-collapse: collapse;
+                width: 100%;
+                font-size: 14.5px;
+            }
+            thead th {
+                background: var(--accent-bg);
+                color: var(--text);
+                text-align: left;
+                padding: 12px 16px;
+                font-weight: 700;
+                border-bottom: 1px solid var(--border);
+                white-space: nowrap;
+            }
+            tbody td {
+                padding: 12px 16px;
+                border-bottom: 1px solid var(--border-soft);
+                color: var(--text-dim);
+                vertical-align: top;
+            }
+            tbody tr:last-child td {
+                border-bottom: none;
+            }
+            tbody tr:hover td {
+                background: rgba(124, 158, 255, 0.04);
+            }
+
+            /* Mermaid */
+            pre.mermaid {
+                width: 100%;
+                display: flex;
+                justify-content: safe center;
+                overflow-x: auto;
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-radius: 14px;
+                padding: 28px 20px;
+                margin: 0 0 30px;
+            }
+            pre.mermaid svg {
+                flex-shrink: 0;
+            }
+            pre.mermaid p {
+                color: inherit;
+                margin: 0;
+            }
+
+            /* Callouts */
+            .callout-practice {
+                display: flex;
+                gap: 14px;
+                background: var(--success-bg);
+                border: 1px solid #1d5a3a;
+                border-left: 4px solid var(--success);
+                border-radius: 12px;
+                padding: 20px 22px;
+                margin: 0 0 26px;
+            }
+            .callout-practice .icon {
+                flex-shrink: 0;
+                width: 26px;
+                height: 26px;
+                border-radius: 7px;
+                background: var(--success);
+                color: #08150e;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 14px;
+                font-weight: 900;
+            }
+            .callout-practice .body {
+                color: var(--text);
+            }
+            .callout-practice .label {
+                font-size: 11.5px;
+                font-weight: 800;
+                letter-spacing: 0.06em;
+                color: var(--success);
+                text-transform: uppercase;
+                margin-bottom: 6px;
+            }
+            .callout-practice p {
+                margin: 0;
+                color: var(--text);
+            }
+
+            .practice-label {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 12px;
+                font-weight: 800;
+                letter-spacing: 0.06em;
+                color: var(--success);
+                text-transform: uppercase;
+                margin: 0 0 10px;
+            }
+            .practice-label::before {
+                content: '✓';
+                font-size: 13px;
+            }
+
+            /* Reference grid */
+            .ref-grid {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 12px;
+                margin: 0 0 30px;
+            }
+            .ref-card {
+                display: flex;
+                gap: 12px;
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                padding: 14px 16px;
+                min-width: 0;
+            }
+            .ref-card .num {
+                flex-shrink: 0;
+                width: 26px;
+                height: 26px;
+                border-radius: 7px;
+                background: var(--accent-bg);
+                color: var(--accent);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 12px;
+                font-weight: 800;
+            }
+            .ref-card .txt {
+                font-size: 13px;
+                color: var(--text-dim);
+                min-width: 0;
+                overflow-wrap: break-word;
+                word-break: break-word;
+            }
+            .ref-card .txt a {
+                color: var(--accent);
+                font-weight: 600;
+            }
+
+            /* Checklist */
+            .checklist-card {
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-radius: 14px;
+                padding: 8px 22px 12px;
+                margin: 0 0 30px;
+            }
+            .checklist-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 14px 0;
+                border-bottom: 1px solid var(--border-soft);
+                margin-bottom: 6px;
+            }
+            .checklist-header .title {
+                font-weight: 700;
+                color: var(--text);
+                font-size: 14.5px;
+            }
+            .checklist-header .count {
+                font-size: 13px;
+                color: var(--accent);
+                font-weight: 700;
+            }
+            .checklist-card ul {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+            .checklist-card li {
+                display: flex;
+                align-items: flex-start;
+                gap: 12px;
+                padding: 11px 4px;
+                border-radius: 8px;
+                margin: 0;
+                transition: background 0.15s;
+            }
+            .checklist-card li:hover {
+                background: rgba(124, 158, 255, 0.05);
+            }
+            .checklist-card input[type='checkbox'] {
+                appearance: none;
+                -webkit-appearance: none;
+                width: 19px;
+                height: 19px;
+                flex-shrink: 0;
+                margin-top: 2px;
+                border: 1.5px solid var(--border);
+                border-radius: 5px;
+                background: var(--bg-card-2);
+                cursor: pointer;
+                position: relative;
+            }
+            .checklist-card input[type='checkbox']:checked {
+                background: var(--accent);
+                border-color: var(--accent);
+            }
+            .checklist-card input[type='checkbox']:checked::after {
+                content: '';
+                position: absolute;
+                left: 5px;
+                top: 1px;
+                width: 5px;
+                height: 10px;
+                border: solid #08101f;
+                border-width: 0 2px 2px 0;
+                transform: rotate(40deg);
+            }
+            .checklist-card label {
+                color: var(--text);
+                font-size: 14.5px;
+                cursor: pointer;
+                line-height: 1.6;
+            }
+            .checklist-card li:has(input:checked) label {
+                text-decoration: line-through;
+                color: var(--text-faint);
+            }
+
+            /* Footnotes (pandoc) */
+            aside.footnotes {
+                display: none;
+            } /* replaced entirely by ref-grid */
+
+            /* Responsive */
+            @media (max-width: 980px) {
+                .sidebar {
+                    transform: translateX(-100%);
+                    transition: transform 0.25s ease;
+                    box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+                }
+                .sidebar.open {
+                    transform: translateX(0);
+                }
+                .main {
+                    margin-left: 0;
+                    padding: 80px 20px 100px;
+                }
+                .sidebar-toggle {
+                    display: flex;
+                }
+                .ref-grid {
+                    grid-template-columns: 1fr;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="layout">
+            <button
+                class="sidebar-toggle"
+                id="sidebarToggle"
+                type="button"
+                aria-label="メニュー"
+                aria-controls="sidebar"
+                aria-expanded="false"
+            >
+                ☰
+            </button>
+            <aside class="sidebar" id="sidebar">
+                <div class="sidebar-header">
+                    <div class="kicker">Computer Networking</div>
+                    <h2>トップダウンアプローチ入門ガイド</h2>
+                </div>
+                <nav id="sidebarNav">
+                    <a href="#本ガイドについて" class="">本ガイドについて</a>
+                    <a href="#第0部-なぜトップダウンアプローチなのか" class=""
+                        >第0部: なぜ「トップダウンアプローチ」なのか</a
+                    >
+                    <a href="#インターネットの規模感2026年8月時点" class="lvl3"
+                        >インターネットの規模感(2026年8月時点)</a
+                    >
+                    <a href="#インターネットを2つの視点で捉える" class="lvl3"
+                        >インターネットを2つの視点で捉える</a
+                    >
+                    <a href="#第1部-コンピュータネットワークとインターネットの基礎" class=""
+                        >第1部: コンピュータネットワークとインターネットの基礎</a
+                    >
+                    <a href="#11-ネットワークのエッジとコア" class="lvl3"
+                        >1.1 ネットワークの「エッジ」と「コア」</a
+                    >
+                    <a href="#12-パケット交換-vs-回線交換" class="lvl3"
+                        >1.2 パケット交換 vs 回線交換</a
+                    >
+                    <a href="#13-プロトコル階層とカプセル化" class="lvl3"
+                        >1.3 プロトコル階層とカプセル化</a
+                    >
+                    <a href="#14-遅延損失スループットの4要素" class="lvl3"
+                        >1.4 遅延・損失・スループットの4要素</a
+                    >
+                    <a href="#第2部-アプリケーション層" class="">第2部: アプリケーション層</a>
+                    <a href="#21-ネットワークアプリケーションのアーキテクチャ" class="lvl3"
+                        >2.1 ネットワークアプリケーションのアーキテクチャ</a
+                    >
+                    <a href="#22-webとプロトコルの進化-http11--http2--http3" class="lvl3"
+                        >2.2 Webとプロトコルの進化: HTTP/1.1 → HTTP/2 → HTTP/3</a
+                    >
+                    <a href="#23-dns-インターネットのディレクトリサービス" class="lvl3"
+                        >2.3 DNS: インターネットのディレクトリサービス</a
+                    >
+                    <a href="#24-電子メールとソケットプログラミングの基礎" class="lvl3"
+                        >2.4 電子メールとソケットプログラミングの基礎</a
+                    >
+                    <a href="#第3部-トランスポート層" class="">第3部: トランスポート層</a>
+                    <a href="#31-udpとtcp-2つの対照的な選択肢" class="lvl3"
+                        >3.1 UDPとTCP: 2つの対照的な選択肢</a
+                    >
+                    <a href="#32-tcpコネクションの確立-3ウェイハンドシェイク" class="lvl3"
+                        >3.2 TCPコネクションの確立: 3ウェイハンドシェイク</a
+                    >
+                    <a href="#33-信頼性のあるデータ転送の原理" class="lvl3"
+                        >3.3 信頼性のあるデータ転送の原理</a
+                    >
+                    <a href="#34-フロー制御と輻輳制御の違い" class="lvl3"
+                        >3.4 フロー制御と輻輳制御の違い</a
+                    >
+                    <a href="#35-輻輳制御アルゴリズムの進化" class="lvl3"
+                        >3.5 輻輳制御アルゴリズムの進化</a
+                    >
+                    <a href="#36-quic-トランスポート層とセキュリティ層の融合" class="lvl3"
+                        >3.6 QUIC: トランスポート層とセキュリティ層の融合</a
+                    >
+                    <a href="#第4部-ネットワーク層データプレーン" class=""
+                        >第4部: ネットワーク層:データプレーン</a
+                    >
+                    <a href="#41-ルータの内部構造" class="lvl3">4.1 ルータの内部構造</a>
+                    <a href="#42-ipv4とipv6" class="lvl3">4.2 IPv4とIPv6</a>
+                    <a href="#43-natnetwork-address-translation" class="lvl3"
+                        >4.3 NAT(Network Address Translation)</a
+                    >
+                    <a href="#44-汎用転送とsdnのデータプレーン" class="lvl3"
+                        >4.4 汎用転送とSDNのデータプレーン</a
+                    >
+                    <a href="#第5部-ネットワーク層コントロールプレーン" class=""
+                        >第5部: ネットワーク層:コントロールプレーン</a
+                    >
+                    <a href="#51-ルーティングアルゴリズムの2大分類" class="lvl3"
+                        >5.1 ルーティングアルゴリズムの2大分類</a
+                    >
+                    <a href="#52-自律システム間のルーティング-bgp" class="lvl3"
+                        >5.2 自律システム間のルーティング: BGP</a
+                    >
+                    <a href="#53-bgpのセキュリティ-rpkiとルート原点検証rov" class="lvl3"
+                        >5.3 BGPのセキュリティ: RPKIとルート原点検証(ROV)</a
+                    >
+                    <a href="#54-sdnのコントロールプレーン" class="lvl3"
+                        >5.4 SDNのコントロールプレーン</a
+                    >
+                    <a href="#第6部-リンク層とlan" class="">第6部: リンク層とLAN</a>
+                    <a href="#61-リンク層が提供するサービス" class="lvl3"
+                        >6.1 リンク層が提供するサービス</a
+                    >
+                    <a href="#62-多重アクセスプロトコル" class="lvl3">6.2 多重アクセスプロトコル</a>
+                    <a href="#63-イーサネットスイッチ-vs-ルータ" class="lvl3"
+                        >6.3 イーサネットスイッチ vs ルータ</a
+                    >
+                    <a href="#64-vlan仮想lan" class="lvl3">6.4 VLAN(仮想LAN)</a>
+                    <a href="#第7部-無線とモバイルネットワーク" class=""
+                        >第7部: 無線とモバイルネットワーク</a
+                    >
+                    <a href="#71-無線リンク特有の課題" class="lvl3">7.1 無線リンク特有の課題</a>
+                    <a href="#72-wi-fiieee-80211の進化" class="lvl3"
+                        >7.2 Wi-Fi(IEEE 802.11)の進化</a
+                    >
+                    <a href="#73-モバイルネットワーク-4g5gから6gへ" class="lvl3"
+                        >7.3 モバイルネットワーク: 4G/5Gから6Gへ</a
+                    >
+                    <a href="#74-モビリティ管理" class="lvl3">7.4 モビリティ管理</a>
+                    <a href="#第8部-コンピュータネットワークにおけるセキュリティ" class=""
+                        >第8部: コンピュータネットワークにおけるセキュリティ</a
+                    >
+                    <a href="#81-暗号の基礎-対称鍵暗号と公開鍵暗号" class="lvl3"
+                        >8.1 暗号の基礎: 対称鍵暗号と公開鍵暗号</a
+                    >
+                    <a href="#82-tlshttpsハンドシェイクの流れ" class="lvl3"
+                        >8.2 TLS/HTTPSハンドシェイクの流れ</a
+                    >
+                    <a href="#83-耐量子暗号post-quantum-cryptographyへの移行" class="lvl3"
+                        >8.3 耐量子暗号(Post-Quantum Cryptography)への移行</a
+                    >
+                    <a href="#84-メッセージの完全性認証" class="lvl3">8.4 メッセージの完全性認証</a>
+                    <a href="#85-ファイアウォールとidsips" class="lvl3"
+                        >8.5 ファイアウォールとIDS/IPS</a
+                    >
+                    <a href="#86-ddos攻撃の脅威動向" class="lvl3">8.6 DDoS攻撃の脅威動向</a>
+                    <a href="#第9部-2026年8月時点の最新動向" class=""
+                        >第9部: 2026年8月時点の最新動向</a
+                    >
+                    <a href="#91-まとめ表-2026年8月時点の主要指標" class="lvl3"
+                        >9.1 まとめ表: 2026年8月時点の主要指標</a
+                    >
+                    <a href="#92-これらのトレンドから読み取れる設計思想の変化" class="lvl3"
+                        >9.2 これらのトレンドから読み取れる設計思想の変化</a
+                    >
+                    <a href="#学習ロードマップ" class="">学習ロードマップ</a>
+                    <a href="#理解度チェックリスト" class="">理解度チェックリスト</a>
+                    <a href="#用語集" class="">用語集</a>
+                    <a href="#参考文献" class="">参考文献</a>
+                    <a href="#書籍原典に関する公式情報" class="lvl3">書籍・原典に関する公式情報</a>
+                    <a href="#アプリケーション層--httpquic関連" class="lvl3"
+                        >アプリケーション層 / HTTP・QUIC関連</a
+                    >
+                    <a href="#dns--暗号化dns関連" class="lvl3">DNS / 暗号化DNS関連</a>
+                    <a href="#トランスポート層--輻輳制御bbr関連" class="lvl3"
+                        >トランスポート層 / 輻輳制御(BBR)関連</a
+                    >
+                    <a href="#ネットワーク層--ipv6普及動向" class="lvl3"
+                        >ネットワーク層 / IPv6普及動向</a
+                    >
+                    <a href="#コントロールプレーン--bgprpkiセキュリティ関連" class="lvl3"
+                        >コントロールプレーン / BGP・RPKIセキュリティ関連</a
+                    >
+                    <a href="#リンク層無線--wi-fi6g関連" class="lvl3"
+                        >リンク層・無線 / Wi-Fi・6G関連</a
+                    >
+                    <a href="#セキュリティ--耐量子暗号pqc関連" class="lvl3"
+                        >セキュリティ / 耐量子暗号(PQC)関連</a
+                    >
+                    <a href="#セキュリティ--ddos脅威動向関連" class="lvl3"
+                        >セキュリティ / DDoS脅威動向関連</a
+                    >
+                </nav>
+            </aside>
+            <main class="main">
+                <div class="hero">
+                    <div class="kicker">A Top-Down Approach &middot; 初学者向け解説ガイド</div>
+                    <h1>
+                        コンピュータネットワーク入門ガイド ―
+                        トップダウンアプローチで学ぶインターネットの仕組み
+                    </h1>
+                    <div class="meta-row">
+                        <span class="pill">対象 <strong>初学者</strong></span>
+                        <span class="pill">構成 <strong>全10部</strong></span>
+                        <span class="pill">図解 <strong>Mermaid 41点</strong></span>
+                        <span class="pill">参考文献 <strong>31件</strong></span>
+                    </div>
+                </div>
+
+                <p>
+                    本ガイドは、James F. Kurose・Keith W. Ross両氏による著名な教科書『Computer
+                    Networking: A Top-Down Approach』(Pearson社刊、第8版)が採用している
+                    <strong
+                        >「アプリケーション層から物理層へ降りていくトップダウンアプローチ」</strong
+                    >
+                    という学習順序・構成方針を参考にしつつ、その原則・概念を初学者向けに独自の説明・図解・具体例で再構成した解説ガイドです。書籍本文の引用・転載は一切行っておらず、目次構成は著者の公式サイト(gaia.cs.umass.edu/kurose_ross)およびPearson社公式カタログページで確認した情報に基づいています。内容には2026年8月30日時点の最新動向(HTTP/3・IPv6・BGPセキュリティ・耐量子暗号など)を独自にWeb調査のうえ追加しています。
+                </p>
+
+                <h2 id="本ガイドについて">本ガイドについて</h2>
+
+                <p>
+                    <strong>対象読者</strong>:
+                    プログラミング経験はあるが、ネットワークの仕組みを体系的に学んだことがない初学者(ソフトウェアエンジニア、QAエンジニア、インフラエンジニアを目指す方など)
+                </p>
+
+                <p><strong>学び方の特徴 ― なぜ「トップダウン」なのか</strong></p>
+
+                <p>
+                    多くのネットワーク入門書は、物理層(電気信号やケーブル)から始めてアプリケーション層へと「積み上げていく」ボトムアップ方式を取ります。しかし、私たちが日常的に触れているのは常に
+                    <strong>アプリケーション</strong
+                    >(Webブラウザ、チャットアプリ、動画配信)です。トップダウンアプローチは、身近な「アプリケーションがなぜ動くのか」という疑問から出発し、その裏側にある層を一段ずつ掘り下げていくことで、モチベーションを維持しながら深い理解に到達できるという教育的な狙いを持っています。
+                </p>
+
+                <pre class="mermaid">
+flowchart TD
+    subgraph APPROACH["学習の進み方"]
+        direction LR
+        A["① アプリケーション層&lt;br/&gt;身近なWeb/DNS/メールから開始"] --&gt; B["② トランスポート層&lt;br/&gt;信頼性・輻輳制御を学ぶ"]
+        B --&gt; C["③ ネットワーク層&lt;br/&gt;ルーティングの仕組みを学ぶ"]
+        C --&gt; D["④ リンク層&lt;br/&gt;LANやWi-Fiの仕組みを学ぶ"]
+        D --&gt; E["⑤ 物理層への接続&lt;br/&gt;無線・モバイル・セキュリティを横断的に理解"]
+    end
+
+    classDef stepFill fill:#132a4a,stroke:#7c9eff,color:#e8eefc
+    class A,B,C,D,E stepFill</pre
+                >
+
+                <p><strong>このガイドの構成(全10部)</strong></p>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>部</th>
+                                <th>タイトル</th>
+                                <th>対応する章(原書)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>第0部</td>
+                                <td>なぜ「トップダウンアプローチ」なのか</td>
+                                <td>Preface / Ch.1 導入</td>
+                            </tr>
+                            <tr class="even">
+                                <td>第1部</td>
+                                <td>コンピュータネットワークとインターネットの基礎</td>
+                                <td>Chapter 1</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>第2部</td>
+                                <td>アプリケーション層</td>
+                                <td>Chapter 2</td>
+                            </tr>
+                            <tr class="even">
+                                <td>第3部</td>
+                                <td>トランスポート層</td>
+                                <td>Chapter 3</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>第4部</td>
+                                <td>ネットワーク層:データプレーン</td>
+                                <td>Chapter 4</td>
+                            </tr>
+                            <tr class="even">
+                                <td>第5部</td>
+                                <td>ネットワーク層:コントロールプレーン</td>
+                                <td>Chapter 5</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>第6部</td>
+                                <td>リンク層とLAN</td>
+                                <td>Chapter 6</td>
+                            </tr>
+                            <tr class="even">
+                                <td>第7部</td>
+                                <td>無線とモバイルネットワーク</td>
+                                <td>Chapter 7</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>第8部</td>
+                                <td>コンピュータネットワークにおけるセキュリティ</td>
+                                <td>Chapter 8</td>
+                            </tr>
+                            <tr class="even">
+                                <td>第9部</td>
+                                <td>2026年8月時点の最新動向(独自追加)</td>
+                                <td>―</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p>
+                    補足として、学習ロードマップ・理解度チェックリスト・用語集・参考文献を末尾に収録しています。
+                </p>
+
+                <hr />
+
+                <h2 id="第0部-なぜトップダウンアプローチなのか">
+                    第0部: なぜ「トップダウンアプローチ」なのか
+                </h2>
+
+                <h3 id="インターネットの規模感2026年8月時点">
+                    インターネットの規模感(2026年8月時点)
+                </h3>
+
+                <p>
+                    具体的な数字から始めましょう。2026年、インターネットは以下のような規模で稼働しています。
+                </p>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>指標</th>
+                                <th>数値</th>
+                                <th>出典年月</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>Google経由のIPv6アクセス率(世界平均)</td>
+                                <td>約50% (2026/3/28に初めて50%超え)</td>
+                                <td>2026年4月</td>
+                            </tr>
+                            <tr class="even">
+                                <td>APNIC計測によるIPv6対応ユーザー比率(IPv6 capability)</td>
+                                <td>約42〜43%</td>
+                                <td>2026年4月</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>HTTP/3の利用比率</td>
+                                <td>
+                                    Cloudflare網が観測するHTTP(S)リクエストに占める割合としてCloudflare
+                                    Radarが継続公開(最新値はRadarで確認)
+                                </td>
+                                <td>継続計測</td>
+                            </tr>
+                            <tr class="even">
+                                <td>RPKI(経路正当性検証)でカバーされる経路の割合</td>
+                                <td>約67%</td>
+                                <td><a href="#ref18">参考文献18</a>(日次変動するため要再確認)</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>Cloudflareが2025年に緩和したDDoS攻撃件数</td>
+                                <td>4,710万件(前年比121%増)</td>
+                                <td>2026年3月(<a href="#ref29">参考文献29</a>)</td>
+                            </tr>
+                            <tr class="even">
+                                <td>観測史上最大のDDoS攻撃規模(帯域)</td>
+                                <td>31.4 Tbps・約35秒間(Aisuru-Kimwolfボットネット)</td>
+                                <td>
+                                    2025年11月(Cloudflare 2025 Q4レポートで公表。<a href="#ref29"
+                                        >参考文献29</a
+                                    >)
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>観測史上最大のDDoS攻撃規模(パケットレート)</td>
+                                <td>
+                                    14.1 Bpps(Aisuruボットネット。29.7 Tbpsの帯域記録とは別個の攻撃)
+                                </td>
+                                <td>Cloudflare 2025 Q3レポート(<a href="#ref28">参考文献28</a>)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p>
+                    これらの数字が示すのは、インターネットが「決まった仕様に従う静的なシステム」ではなく、<strong>日々進化し続ける巨大な分散システム</strong>だということです。だからこそ、個別の技術の暗記ではなく、「なぜこの層が必要なのか」「どんな問題を解決するために設計されたのか」という原理原則を学ぶことが重要になります。
+                </p>
+
+                <h3 id="インターネットを2つの視点で捉える">インターネットを2つの視点で捉える</h3>
+
+                <pre class="mermaid">
+flowchart LR
+    subgraph VIEW1["視点①: ハードウェア/ソフトウェアの集合として"]
+        direction TB
+        H1["ホスト(エンドシステム)"] --- L1["通信リンク"]
+        L1 --- R1["パケット交換機(ルータ/スイッチ)"]
+    end
+
+    subgraph VIEW2["視点②: 分散アプリケーションのための基盤として"]
+        direction TB
+        A1["アプリケーション&lt;br/&gt;(Web/動画/チャット)"] --&gt; A2["通信インフラを利用する&lt;br/&gt;プログラミングインターフェース(ソケット)"]
+    end
+
+    classDef v1 fill:#0f2540,stroke:#5c7cfa,color:#dbe4ff
+    classDef v2 fill:#132a4a,stroke:#7c9eff,color:#e8eefc
+    class H1,L1,R1 v1
+    class A1,A2 v2</pre
+                >
+
+                <p>
+                    インターネットは、<strong>エンドシステム(ホスト)</strong>・<strong>アクセスネットワーク</strong>・<strong>通信リンク</strong>・<strong>パケット交換機</strong>という物理的な構成要素の集合体であると同時に、アプリケーション開発者に対して<strong>通信サービスを提供するプラットフォーム</strong>でもあります。この二重の見方を持つことが、ネットワークを学ぶ最初の一歩です。
+                </p>
+
+                <hr />
+
+                <h2 id="第1部-コンピュータネットワークとインターネットの基礎">
+                    第1部: コンピュータネットワークとインターネットの基礎
+                </h2>
+
+                <h3 id="11-ネットワークのエッジとコア">1.1 ネットワークの「エッジ」と「コア」</h3>
+
+                <p>
+                    インターネットの構造は、大きく<strong>エッジ(端)</strong>と<strong>コア(中心部)</strong>に分けて理解すると見通しが良くなります。
+                </p>
+
+                <pre class="mermaid">
+flowchart TB
+    subgraph EDGE["ネットワークのエッジ"]
+        PC["家庭のPC/スマホ"]
+        SRV["Webサーバ・クラウド"]
+    end
+
+    subgraph ACCESS["アクセスネットワーク"]
+        FIBER["光ファイバー(FTTH)"]
+        CABLE["ケーブルTV回線"]
+        MOBILE["4G/5Gモバイル網"]
+        WIFI["Wi-Fi"]
+    end
+
+    subgraph CORE["ネットワークのコア"]
+        direction LR
+        R1((ルータ)) --- R2((ルータ))
+        R2 --- R3((ルータ))
+        R3 --- R1
+        R1 --- R4((ルータ))
+    end
+
+    PC --- FIBER --- R1
+    PC --- WIFI --- R2
+    PC --- MOBILE --- R3
+    SRV --- CABLE --- R4
+
+    classDef edgeFill fill:#132a4a,stroke:#7c9eff,color:#e8eefc
+    classDef accessFill fill:#1a3350,stroke:#5c7cfa,color:#dbe4ff
+    classDef coreFill fill:#0f2540,stroke:#4c6ef5,color:#c9d6ff
+    class PC,SRV edgeFill
+    class FIBER,CABLE,MOBILE,WIFI accessFill
+    class R1,R2,R3,R4 coreFill</pre
+                >
+
+                <ul>
+                    <li>
+                        <strong>エッジ</strong>:
+                        私たちが直接触れるホスト(PC、スマホ、サーバ)。アプリケーションが動く場所。
+                    </li>
+                    <li>
+                        <strong>アクセスネットワーク</strong>:
+                        エッジをネットワークのコアに接続する「最初の1ホップ」。光ファイバー、ケーブル、モバイル、Wi-Fiなど。
+                    </li>
+                    <li>
+                        <strong>コア</strong>:
+                        相互接続されたルータの網。パケットを転送する役割に徹する。
+                    </li>
+                </ul>
+
+                <h3 id="12-パケット交換-vs-回線交換">1.2 パケット交換 vs 回線交換</h3>
+
+                <p>
+                    ネットワークコアがデータを転送する方式には、歴史的に2つのアプローチがあります。
+                </p>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>比較項目</th>
+                                <th>回線交換(Circuit Switching)</th>
+                                <th>パケット交換(Packet Switching)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>帯域の確保方法</td>
+                                <td>通信開始時に専用の帯域を事前予約</td>
+                                <td>予約なし。必要なときにリンクを共有</td>
+                            </tr>
+                            <tr class="even">
+                                <td>代表例</td>
+                                <td>従来の電話網</td>
+                                <td>インターネット全体</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>利点</td>
+                                <td>通信品質が保証される(遅延が一定)</td>
+                                <td>リンクをより効率的に共有できる</td>
+                            </tr>
+                            <tr class="even">
+                                <td>欠点</td>
+                                <td>アイドル時間中も帯域が無駄になる</td>
+                                <td>混雑時に遅延・パケット損失が発生しうる</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>多重化の方式</td>
+                                <td>FDM(周波数分割)/TDM(時分割)</td>
+                                <td>統計的多重化(Statistical Multiplexing)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <pre class="mermaid">
+flowchart LR
+    subgraph CS["回線交換: 専用帯域を確保"]
+        direction LR
+        CA[A] -.専用スロット.-&gt; CB[交換機] -.専用スロット.-&gt; CC[B]
+    end
+    subgraph PS["パケット交換: 統計的多重化で共有"]
+        direction LR
+        PA[A] --&gt;|パケット1| PR[ルータ]
+        PX[X] --&gt;|パケット2| PR
+        PR --&gt;|順不同で転送| PB[B]
+        PR --&gt;|順不同で転送| PY[Y]
+    end
+
+    classDef csFill fill:#1a3350,stroke:#5c7cfa,color:#dbe4ff
+    classDef psFill fill:#132a4a,stroke:#7c9eff,color:#e8eefc
+    class CA,CB,CC csFill
+    class PA,PX,PR,PB,PY psFill</pre
+                >
+
+                <p>
+                    インターネットがパケット交換を採用した理由は、テキストデータ・動画・音声のようにトラフィックが「バースト的」な性質を持つアプリケーションに対して、統計的多重化のほうが資源を効率よく使えるためです。ただしその代償として、<strong>遅延やパケット損失が保証されない</strong>という性質を受け入れる必要があります。
+                </p>
+
+                <h3 id="13-プロトコル階層とカプセル化">1.3 プロトコル階層とカプセル化</h3>
+
+                <p>
+                    ネットワーク機能を独立した層に分割する「レイヤードアーキテクチャ」は、複雑なシステムを管理可能にするための設計原則です。インターネットでは慣習的に5層モデルが使われます。
+                </p>
+
+                <pre class="mermaid">
+flowchart TD
+    APP["アプリケーション層&lt;br/&gt;HTTP・DNS・SMTPなど / メッセージ(message)"]
+    TRANS["トランスポート層&lt;br/&gt;TCP・UDP / TCPセグメント(segment)・UDPデータグラム(datagram)"]
+    NET["ネットワーク層&lt;br/&gt;IP・ルーティング / データグラム(datagram)"]
+    LINK["リンク層&lt;br/&gt;Ethernet・Wi-Fi / フレーム(frame)"]
+    PHY["物理層&lt;br/&gt;ビット列の伝送 / bit"]
+
+    APP --&gt; TRANS --&gt; NET --&gt; LINK --&gt; PHY
+
+    classDef layerFill fill:#132a4a,stroke:#7c9eff,color:#e8eefc
+    class APP,TRANS,NET,LINK,PHY layerFill</pre
+                >
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>層</th>
+                                <th>役割</th>
+                                <th>データ単位</th>
+                                <th>処理する機器の例</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>アプリケーション層</td>
+                                <td>
+                                    ネットワークアプリケーションのためのプロトコル(HTTP、DNS、SMTP)
+                                </td>
+                                <td>メッセージ</td>
+                                <td>ホストのみ</td>
+                            </tr>
+                            <tr class="even">
+                                <td>トランスポート層</td>
+                                <td>プロセス間の論理的な通信(TCP/UDP)</td>
+                                <td>TCPセグメント / UDPデータグラム</td>
+                                <td>ホストのみ</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>ネットワーク層</td>
+                                <td>送信元から宛先へのデータグラム経路制御</td>
+                                <td>データグラム</td>
+                                <td>ホスト・ルータ</td>
+                            </tr>
+                            <tr class="even">
+                                <td>リンク層</td>
+                                <td>隣接ノード間でのフレーム転送</td>
+                                <td>フレーム</td>
+                                <td>ホスト・ルータ・スイッチ</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>物理層</td>
+                                <td>フレーム内の個々のビットの伝送</td>
+                                <td>ビット</td>
+                                <td>ホスト・ルータ・スイッチ</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p>
+                    <strong>補足: OSI参照モデルとの違い</strong>
+                    大学の教科書や資格試験ではしばしば7層のOSI参照モデルが登場しますが、実際のインターネットは5層(または、セッション層とプレゼンテーション層を省いた4層とする流儀もある)モデルで説明されるのが一般的です。OSIのセッション層・プレゼンテーション層に相当する機能は、実務上はアプリケーション自身が必要に応じて実装しています。
+                </p>
+
+                <p>
+                    <strong>カプセル化(Encapsulation)</strong>
+                    とは、上位層のデータに下位層がヘッダ情報を付加していく仕組みです。
+                </p>
+
+                <pre class="mermaid">
+flowchart LR
+    M["メッセージ&lt;br/&gt;(アプリケーション層データ)"] --&gt; S["トランスポート層PDU&lt;br/&gt;= トランスポートヘッダ + M"]
+    S --&gt; D["データグラム&lt;br/&gt;= ネットワークヘッダ + トランスポート層PDU"]
+    D --&gt; F["フレーム&lt;br/&gt;= リンクヘッダ + データグラム"]
+
+    classDef encapFill fill:#132a4a,stroke:#7c9eff,color:#e8eefc
+    class M,S,D,F encapFill</pre
+                >
+
+                <p>
+                    パケットがルータを通過するとき、基本的な転送判断に使われるのはリンク層とネットワーク層のヘッダだけで、トランスポート層より上のペイロードには触れません。この「関心の分離」こそが、レイヤードアーキテクチャの本質的な利点です。ただしこれはあくまで基本転送の話であり、ACLやファイアウォール機能を持つルータはパケットフィルタリングのためにIPプロトコル番号やTCP/UDPの送信元・宛先ポート番号といったL4ヘッダまで参照します。
+                </p>
+
+                <h3 id="14-遅延損失スループットの4要素">1.4 遅延・損失・スループットの4要素</h3>
+
+                <p>パケットがルータを通過する際に発生する遅延は、4つの成分に分解できます。</p>
+
+                <pre class="mermaid">
+flowchart LR
+    ARR["パケット到着"] --&gt; PROC["処理遅延&lt;br/&gt;(Processing Delay)&lt;br/&gt;ヘッダ検査・誤り検出"]
+    PROC --&gt; QUEUE["キューイング遅延&lt;br/&gt;(Queuing Delay)&lt;br/&gt;出力リンクが空くまでの待ち時間"]
+    QUEUE --&gt; TRANS2["伝送遅延&lt;br/&gt;(Transmission Delay)&lt;br/&gt;= パケット長 ÷ リンク帯域"]
+    TRANS2 --&gt; PROP["伝搬遅延&lt;br/&gt;(Propagation Delay)&lt;br/&gt;= 物理的距離 ÷ 伝搬速度"]
+    PROP --&gt; NEXT["次のホップへ"]
+
+    classDef delayFill fill:#132a4a,stroke:#7c9eff,color:#e8eefc
+    class ARR,PROC,QUEUE,TRANS2,PROP,NEXT delayFill</pre
+                >
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>遅延の種類</th>
+                                <th>決まる要因</th>
+                                <th>変動しやすさ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>処理遅延</td>
+                                <td>ルータの処理性能</td>
+                                <td>通常マイクロ秒オーダーで小さい</td>
+                            </tr>
+                            <tr class="even">
+                                <td>キューイング遅延</td>
+                                <td>トラフィック量・輻輳状況</td>
+                                <td>大きく変動する(輻輳時に支配的)</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>伝送遅延</td>
+                                <td>パケット長とリンクの帯域幅</td>
+                                <td>リンクごとに固定</td>
+                            </tr>
+                            <tr class="even">
+                                <td>伝搬遅延</td>
+                                <td>物理的な距離と伝搬速度(光ファイバーで約2×10^8 m/s)</td>
+                                <td>距離が決まれば固定</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p>
+                    キューイング遅延は特に重要です。トラフィック強度(到着率×パケット長 ÷
+                    リンク帯域)が1に近づくにつれ、キューイング遅延は急激に増大します。これは輻輳制御(第3部で詳しく扱います)が必要になる根本的な理由です。
+                </p>
+
+                <p>
+                    <strong>スループット</strong
+                    >は「単位時間あたりに転送できるビット数」であり、送信元から宛先までの経路上で<strong>最も帯域の狭いリンク(ボトルネックリンク)</strong>によって上限が決まります。
+                </p>
+
+                <hr />
+
+                <h2 id="第2部-アプリケーション層">第2部: アプリケーション層</h2>
+
+                <h3 id="21-ネットワークアプリケーションのアーキテクチャ">
+                    2.1 ネットワークアプリケーションのアーキテクチャ
+                </h3>
+
+                <pre class="mermaid">
+flowchart TB
+    subgraph CS_ARCH["クライアント・サーバ方式"]
+        direction LR
+        C1[クライアント] --&gt; S1[常時稼働のサーバ]
+        C2[クライアント] --&gt; S1
+        C3[クライアント] --&gt; S1
+    end
+
+    subgraph P2P_ARCH["P2P(Peer-to-Peer)方式"]
+        direction LR
+        P1((ピア)) --- P2((ピア))
+        P2 --- P3((ピア))
+        P3 --- P1
+        P1 --- P4((ピア))
+    end
+
+    classDef csFill fill:#132a4a,stroke:#7c9eff,color:#e8eefc
+    classDef p2pFill fill:#1a3350,stroke:#5c7cfa,color:#dbe4ff
+    class C1,C2,C3,S1 csFill
+    class P1,P2,P3,P4 p2pFill</pre
+                >
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>方式</th>
+                                <th>特徴</th>
+                                <th>代表例</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>クライアント・サーバ</td>
+                                <td>
+                                    サーバが常時稼働し固定IPを持つ。クライアント同士は直接通信しない
+                                </td>
+                                <td>Web、メール、多くのSaaS</td>
+                            </tr>
+                            <tr class="even">
+                                <td>P2P</td>
+                                <td>
+                                    常時稼働のサーバに依存せず、ピア同士が直接データをやり取りする
+                                </td>
+                                <td>ファイル共有、一部のビデオ会議基盤</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p>
+                    アプリケーション同士の通信は、OSではなく<strong>プロセス</strong>間で行われます。プロセスは<strong>ソケット</strong>というAPIを通じてトランスポート層にメッセージを渡します。ソケットは「アプリケーション層とトランスポート層の間のドア」に例えられます。プロセスを特定するには、<strong
+                        >トランスポートプロトコル + IPアドレス + ポート番号</strong
+                    >の組が使われます(例:
+                    <code>443/tcp</code>
+                    はTCP上のHTTPS)。さらにTCPでは、個々の接続は<strong>送信元IPアドレス・送信元ポート番号・宛先IPアドレス・宛先ポート番号の4タプル</strong>で識別されるため、同じ宛先ポートに向かう多数の接続を1台のサーバが同時に区別できます。
+                </p>
+
+                <h3 id="22-webとプロトコルの進化-http11--http2--http3">
+                    2.2 Webとプロトコルの進化: HTTP/1.1 → HTTP/2 → HTTP/3
+                </h3>
+
+                <pre class="mermaid">
+flowchart LR
+    H1["HTTP/1.1&lt;br/&gt;(1997年)&lt;br/&gt;持続的接続を既定とするが&lt;br/&gt;1接続上のリクエストは逐次処理&lt;br/&gt;(HoLブロッキング)"] --&gt; H2["HTTP/2&lt;br/&gt;(2015年)&lt;br/&gt;1つのTCP接続上で&lt;br/&gt;複数ストリームを多重化"]
+    H2 --&gt; H3["HTTP/3&lt;br/&gt;(2022年, RFC 9114)&lt;br/&gt;TCPをやめてQUIC(UDPベース)上で&lt;br/&gt;多重化を実現"]
+
+    classDef httpFill fill:#132a4a,stroke:#7c9eff,color:#e8eefc
+    class H1,H2,H3 httpFill</pre
+                >
+
+                <p>
+                    HTTP/2はTCP上で複数のリクエストを1本の接続に多重化することでHTTP/1.1のHead-of-Line
+                    Blocking(先頭パケット詰まり)を解消しましたが、<strong>TCP自体が「順序を保証するバイトストリーム」であるため、1つのパケットが失われると、それに関係しない他のストリームまで待たされてしまう</strong>という問題(トランスポート層でのHOLブロッキング)が残っていました。HTTP/3はTCPを捨て、UDPベースの新しいトランスポートプロトコルであるQUIC(RFC
+                    9000)を採用することでこれを解決しています。
+                </p>
+
+                <p>
+                    <strong>普及状況の確認方法</strong>: HTTP/3の利用比率は、Cloudflare
+                    Radar(Cloudflare網が観測するHTTP(S)リクエストを分母とする計測)で継続的に公開されています。特定時点の比率や高速化の効果は、計測対象・分母・比較条件(対HTTP/2か対HTTP/1.1か、回線条件はどうか)によって大きく変わるため、数値を引用する際は必ず一次ソース側の定義とあわせて確認してください。
+                </p>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>プロトコル</th>
+                                <th>トランスポート</th>
+                                <th>主な利点</th>
+                                <th>主な欠点/制約</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>HTTP/1.1</td>
+                                <td>TCP</td>
+                                <td>単純で理解しやすい</td>
+                                <td>
+                                    持続接続でも1本の接続上でリクエストが順番に処理され、先行応答が遅れると後続が待たされるアプリケーション層のHOLブロッキングが起きる
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>HTTP/2</td>
+                                <td>TCP</td>
+                                <td>ストリーム多重化、ヘッダ圧縮(HPACK)</td>
+                                <td>TCPレベルのHOLブロッキングが残る</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>HTTP/3</td>
+                                <td>QUIC(UDP)</td>
+                                <td>
+                                    トランスポート層までHOLブロッキング解消、0-RTT再接続、コネクションマイグレーション
+                                </td>
+                                <td>UDPをブロックするファイアウォール環境での互換性課題</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 id="23-dns-インターネットのディレクトリサービス">
+                    2.3 DNS: インターネットのディレクトリサービス
+                </h3>
+
+                <p>
+                    DNS(Domain Name System)は、人間が読める名前(例:
+                    <code>www.example.com</code
+                    >)をIPアドレスに変換する分散データベースです。単一のサーバに問い合わせるのではなく、<strong>階層構造</strong>を持つ多数のサーバが協調して動作します。
+                </p>
+
+                <pre class="mermaid">
+flowchart TD
+    ROOT["ルートDNSサーバ&lt;br/&gt;(世界に13系統)"] --&gt; TLD["TLD(トップレベルドメイン)サーバ&lt;br/&gt;.com / .jp / .org など"]
+    TLD --&gt; AUTH["権威DNSサーバ&lt;br/&gt;example.com の名前解決を担当"]
+
+    CLIENT["クライアント"] --&gt; LOCAL["ローカルDNSリゾルバ&lt;br/&gt;(ISPや8.8.8.8など)"]
+    LOCAL --&gt;|① ルートに問い合わせ| ROOT
+    LOCAL --&gt;|② TLDに問い合わせ| TLD
+    LOCAL --&gt;|③ 権威サーバに問い合わせ| AUTH
+    AUTH --&gt;|④ IPアドレスを回答| LOCAL
+    LOCAL --&gt;|⑤ 結果をキャッシュして返答| CLIENT
+
+    classDef dnsFill fill:#132a4a,stroke:#7c9eff,color:#e8eefc
+    class ROOT,TLD,AUTH,CLIENT,LOCAL dnsFill</pre
+                >
+
+                <p>DNSは名前解決だけでなく、以下のような役割も担っています。</p>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>DNSレコードタイプ</th>
+                                <th>用途</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>A / AAAA</td>
+                                <td>ホスト名とIPv4/IPv6アドレスの対応</td>
+                            </tr>
+                            <tr class="even">
+                                <td>CNAME</td>
+                                <td>別名(エイリアス)の定義</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>MX</td>
+                                <td>メールサーバの指定</td>
+                            </tr>
+                            <tr class="even">
+                                <td>NS</td>
+                                <td>ドメインの権威DNSサーバの指定</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>TXT</td>
+                                <td>SPF/DKIM等の検証情報やドメイン所有証明</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p>
+                    <strong>DNSの安全性・プライバシーに関する2026年時点の動向</strong
+                    >:従来のDNSは平文でやり取りされ、経路上の第三者に盗聴・改ざんされるリスクがありました。標準のトランスポートは通常UDP/53ですが、512バイトを超える大きな応答(EDNS0で拡張しない場合の切り詰め時)やゾーン転送(AXFR/IXFR)ではTCP/53も使用されます。いずれも平文である点は変わりません。これに対応するため、以下の暗号化DNSプロトコルの普及が進んでいます。
+                </p>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>プロトコル</th>
+                                <th>トランスポート</th>
+                                <th>特徴</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>DoT (DNS over TLS)</td>
+                                <td>TLS/853番ポート</td>
+                                <td>OSレベルで全アプリのDNSを一括暗号化しやすい</td>
+                            </tr>
+                            <tr class="even">
+                                <td>DoH (DNS over HTTPS)</td>
+                                <td>HTTPS/443番ポート</td>
+                                <td>
+                                    通常のWeb通信に紛れるためブロックされにくい。Firefoxは米国ユーザーに対してDoHをデフォルトで有効化している
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>DoQ (DNS over QUIC)</td>
+                                <td>QUIC/853番ポート</td>
+                                <td>
+                                    モバイル網での接続切り替えに強く、モバイルOSでの採用が進行中
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p>
+                    <strong>補足: TLS拡張によるSNIの秘匿(ECH)</strong>:ECH(Encrypted Client
+                    Hello)はDNSプロトコルではなく、TLS 1.3の拡張(RFC
+                    9849)です。TLSハンドシェイクの冒頭で平文送信されるClientHello、とりわけ接続先ホスト名を示すSNIを暗号化し、経路上の観測者からアクセス先ドメインを隠します。暗号化DNSで名前解決を秘匿しても、続くTLS接続でSNIが平文のままなら接続先は露見するため、ECHは暗号化DNSを補完する別レイヤの仕組みとして理解してください。
+                </p>
+
+                <h3 id="24-電子メールとソケットプログラミングの基礎">
+                    2.4 電子メールとソケットプログラミングの基礎
+                </h3>
+
+                <p>電子メールは歴史的に3つのプロトコルの組み合わせで成り立っています。</p>
+
+                <pre class="mermaid">
+flowchart LR
+    SENDER["送信者のメールクライアント"] --&gt;|SMTP| SSRV["送信側メールサーバ"]
+    SSRV --&gt;|SMTP| RSRV["受信側メールサーバ"]
+    RSRV --&gt;|IMAP/POP3| RECV["受信者のメールクライアント"]
+
+    classDef mailFill fill:#132a4a,stroke:#7c9eff,color:#e8eefc
+    class SENDER,SSRV,RSRV,RECV mailFill</pre
+                >
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>プロトコル</th>
+                                <th>役割</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>SMTP (Simple Mail Transfer Protocol)</td>
+                                <td>
+                                    メールサーバ間・クライアントからサーバへのメール<strong
+                                        >送信</strong
+                                    >
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>POP3 (Post Office Protocol)</td>
+                                <td>
+                                    クライアントがサーバから受信メールを<strong>取得</strong>(ダウンロード後は基本削除)
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>IMAP (Internet Message Access Protocol)</td>
+                                <td>
+                                    サーバ上でメールを管理したまま<strong>同期的に</strong>アクセス(複数端末での利用に向く)
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p>
+                    アプリケーション開発の観点では、これらのプロトコルはすべて「ソケットAPI」を通じてトランスポート層のサービス(TCP/UDP)を利用しています。ソケットプログラミングを理解することは、任意のカスタムプロトコルを設計・実装する第一歩です。
+                </p>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>ソケットの種類</th>
+                                <th>使用するトランスポートプロトコル</th>
+                                <th>適した用途</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>ストリームソケット</td>
+                                <td>TCP</td>
+                                <td>信頼性が必要な通信(Web、メール、ファイル転送)</td>
+                            </tr>
+                            <tr class="even">
+                                <td>データグラムソケット</td>
+                                <td>UDP</td>
+                                <td>
+                                    低遅延・リアルタイム性が重要な通信(DNS問い合わせ、動画配信の一部、オンラインゲーム)
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <hr />
+
+                <h2 id="第3部-トランスポート層">第3部: トランスポート層</h2>
+
+                <h3 id="31-udpとtcp-2つの対照的な選択肢">3.1 UDPとTCP: 2つの対照的な選択肢</h3>
+
+                <p>
+                    トランスポート層の最も重要な役割は、ネットワーク層が提供する「ホスト間通信」を「プロセス間通信」へと拡張することです。インターネットではSCTPやDCCP、QUIC(UDP上に構築される)など複数のトランスポートプロトコルが使われていますが、本ガイドではまず代表的な2つ、性格の対照的なTCPとUDPを比較します。
+                </p>
+
+                <pre class="mermaid">
+flowchart TB
+    subgraph UDP_BOX["UDP: User Datagram Protocol"]
+        direction TB
+        U1["コネクションレス"]
+        U2["信頼性の保証なし(送りっぱなし)"]
+        U3["ヘッダが軽量(8バイト)"]
+        U4["輻輳制御を行わない"]
+    end
+
+    subgraph TCP_BOX["TCP: Transmission Control Protocol"]
+        direction TB
+        T1["コネクション型(事前にハンドシェイク)"]
+        T2["信頼性のあるデータ転送を保証"]
+        T3["フロー制御・輻輳制御を実施"]
+        T4["順序制御・再送機能を持つ"]
+    end
+
+    classDef udpFill fill:#1a3350,stroke:#5c7cfa,color:#dbe4ff
+    classDef tcpFill fill:#132a4a,stroke:#7c9eff,color:#e8eefc
+    class U1,U2,U3,U4 udpFill
+    class T1,T2,T3,T4 tcpFill</pre
+                >
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>比較項目</th>
+                                <th>UDP</th>
+                                <th>TCP</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>コネクション</td>
+                                <td>なし</td>
+                                <td>あり(3ウェイハンドシェイク)</td>
+                            </tr>
+                            <tr class="even">
+                                <td>信頼性</td>
+                                <td>保証しない</td>
+                                <td>保証する(再送・順序制御)</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>輻輳制御</td>
+                                <td>なし</td>
+                                <td>あり</td>
+                            </tr>
+                            <tr class="even">
+                                <td>ヘッダサイズ</td>
+                                <td>8バイト</td>
+                                <td>20バイト以上</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>適した用途</td>
+                                <td>DNS、動画配信の一部、リアルタイム通信、QUICの基盤</td>
+                                <td>Web、メール、ファイル転送</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 id="32-tcpコネクションの確立-3ウェイハンドシェイク">
+                    3.2 TCPコネクションの確立: 3ウェイハンドシェイク
+                </h3>
+
+                <pre class="mermaid">
+sequenceDiagram
+    participant C as クライアント
+    participant S as サーバ
+
+    C-&gt;&gt;S: ① SYN (シーケンス番号 x)
+    S-&gt;&gt;C: ② SYN + ACK (シーケンス番号 y, 確認応答番号 x+1)
+    C-&gt;&gt;S: ③ ACK (確認応答番号 y+1)
+    Note over C,S: コネクション確立完了、データ転送開始</pre
+                >
+
+                <p>
+                    3ウェイハンドシェイクによって、両者は「相手が確かに存在し、送受信能力があること」と「初期シーケンス番号」を確認し合います。これにより、後続のデータ転送で正確な順序制御・再送制御が可能になります。
+                </p>
+
+                <h3 id="33-信頼性のあるデータ転送の原理">3.3 信頼性のあるデータ転送の原理</h3>
+
+                <p>
+                    信頼性のない下位層(ネットワーク層)の上に、信頼性のあるサービスを構築するには、以下のような仕組みの組み合わせが必要です。
+                </p>
+
+                <pre class="mermaid">
+flowchart TD
+    A["チェックサム&lt;br/&gt;ビット誤りの検出"] --&gt; B["確認応答(ACK)&lt;br/&gt;受信成功の通知"]
+    B --&gt; C["タイマーと再送&lt;br/&gt;ACKが届かない場合に再送"]
+    C --&gt; D["シーケンス番号&lt;br/&gt;重複・順序入れ替わりの検出"]
+    D --&gt; E["ウィンドウ方式&lt;br/&gt;複数パケットを連続送信し効率化"]
+
+    classDef rdtFill fill:#132a4a,stroke:#7c9eff,color:#e8eefc
+    class A,B,C,D,E rdtFill</pre
+                >
+
+                <p>
+                    TCPはこれらすべてを組み合わせ、さらに<strong>パイプライン化</strong>(確認を待たずに複数セグメントを送信し続ける)によってスループットを最大化しています。
+                </p>
+
+                <h3 id="34-フロー制御と輻輳制御の違い">3.4 フロー制御と輻輳制御の違い</h3>
+
+                <p>初学者が混同しやすい2つの概念を区別しましょう。</p>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>項目</th>
+                                <th>フロー制御(Flow Control)</th>
+                                <th>輻輳制御(Congestion Control)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>目的</td>
+                                <td>受信側のバッファ溢れを防ぐ</td>
+                                <td>ネットワーク内部の混雑を防ぐ</td>
+                            </tr>
+                            <tr class="even">
+                                <td>誰の都合か</td>
+                                <td><strong>受信側</strong>の処理能力に合わせる</td>
+                                <td><strong>ネットワーク経路全体</strong>の余力に合わせる</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>制御に使う情報</td>
+                                <td>受信ウィンドウサイズ(受信側が通知)</td>
+                                <td>
+                                    パケット損失・遅延・ECNマーキングなどのネットワークからの信号
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 id="35-輻輳制御アルゴリズムの進化">3.5 輻輳制御アルゴリズムの進化</h3>
+
+                <pre class="mermaid">
+flowchart LR
+    TAHOE["TCP Tahoe&lt;br/&gt;(1988年)&lt;br/&gt;損失=輻輳とみなしウィンドウを大幅縮小"] --&gt; RENO["TCP Reno&lt;br/&gt;(1990年)&lt;br/&gt;高速再送・高速回復を追加"]
+    RENO --&gt; CUBIC["CUBIC&lt;br/&gt;(2008年〜)&lt;br/&gt;3次関数でウィンドウを調整、&lt;br/&gt;Linuxの長年のデフォルト"]
+    CUBIC --&gt; BBR["BBR&lt;br/&gt;(2016年, Google)&lt;br/&gt;損失ではなく帯域・RTTの&lt;br/&gt;実測モデルで制御"]
+    BBR --&gt; BBR3["BBRv3&lt;br/&gt;(2023年〜)&lt;br/&gt;再送率12%削減を実証、&lt;br/&gt;2026年時点でLinuxカーネル&lt;br/&gt;本流への統合を検討中"]
+
+    classDef ccFill fill:#132a4a,stroke:#7c9eff,color:#e8eefc
+    class TAHOE,RENO,CUBIC,BBR,BBR3 ccFill</pre
+                >
+
+                <p>
+                    <strong>損失ベース(Loss-based)輻輳制御の限界</strong>:
+                    CUBICのような従来型アルゴリズムは「パケット損失=輻輳のシグナル」とみなしますが、高速・長距離のネットワークや無線網では、輻輳とは無関係な理由でパケットが失われることが増えており、この前提が崩れつつあります。
+                </p>
+
+                <p>
+                    <strong>モデルベース輻輳制御の登場</strong>:
+                    Googleが2016年に発表したBBR(Bottleneck Bandwidth and Round-trip propagation
+                    time)は、実際のボトルネック帯域と最小RTTを継続的に推定し、そのモデルに基づいて送信レートを調整するアプローチを取ります。BBRv3は2026年時点でもLinuxカーネル本流(mainline)への統合は検討中の段階にとどまりますが、Google自身の実運用データでは旧バージョン比で再送率が12%減少したことが報告されています(2023年7月25日のIETF
+                    117 CCWG発表資料「BBRv3: Algorithm Bug Fixes and Public Internet
+                    Deployment」。<a href="#ref9">参考文献9</a>)。
+                </p>
+
+                <h3 id="36-quic-トランスポート層とセキュリティ層の融合">
+                    3.6 QUIC: トランスポート層とセキュリティ層の融合
+                </h3>
+
+                <p>
+                    QUICはUDPの上に構築された新しいトランスポートプロトコルであり、従来「TCP +
+                    TLS」に分かれていた機能を統合しています。
+                </p>
+
+                <pre class="mermaid">
+flowchart TB
+    subgraph OLD["従来のスタック(HTTP/2まで)"]
+        direction TB
+        OA["アプリケーション(HTTP/2)"] --&gt; OT["TLS"]
+        OT --&gt; OTCP["TCP"]
+        OTCP --&gt; OIP["IP"]
+    end
+
+    subgraph NEW["QUICベースのスタック(HTTP/3)"]
+        direction TB
+        NA["アプリケーション(HTTP/3)"] --&gt; NQ["QUIC&lt;br/&gt;(暗号化・多重化・輻輳制御を統合)"]
+        NQ --&gt; NUDP["UDP"]
+        NUDP --&gt; NIP["IP"]
+    end
+
+    classDef oldFill fill:#1a3350,stroke:#5c7cfa,color:#dbe4ff
+    classDef newFill fill:#132a4a,stroke:#7c9eff,color:#e8eefc
+    class OA,OT,OTCP,OIP oldFill
+    class NA,NQ,NUDP,NIP newFill</pre
+                >
+
+                <p>QUICの主要な設計上の利点:</p>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>機能</th>
+                                <th>説明</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>ストリームレベルの独立性</td>
+                                <td>
+                                    1つのストリームでのパケット損失が他のストリームをブロックしない
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>1-RTT/0-RTTハンドシェイク</td>
+                                <td>
+                                    TLS
+                                    1.3の暗号ハンドシェイクをコネクション確立と統合し、再接続時は0-RTTも可能
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>コネクションマイグレーション</td>
+                                <td>
+                                    Wi-Fiからモバイル網への切り替えなど、IPアドレスが変わってもコネクションを維持
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>アンプ攻撃対策</td>
+                                <td>
+                                    サーバはクライアントのアドレス検証が完了するまで、そのクライアントから受信したバイト数の3倍を超えて送信してはならないと規定(RFC
+                                    9000)
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <hr />
+
+                <h2 id="第4部-ネットワーク層データプレーン">
+                    第4部: ネットワーク層:データプレーン
+                </h2>
+
+                <p>
+                    ネットワーク層は「データプレーン」と「コントロールプレーン」という2つの機能に分けて理解すると、SDN(Software-Defined
+                    Networking)などの現代的な設計思想も含めて整理しやすくなります。
+                </p>
+
+                <pre class="mermaid">
+flowchart TB
+    subgraph DATA["データプレーン(第4部)"]
+        DP1["個々のルータがパケットを&lt;br/&gt;入力ポートから出力ポートへ&lt;br/&gt;実際に転送する処理"]
+    end
+    subgraph CONTROL["コントロールプレーン(第5部)"]
+        CP1["転送テーブルをどう構築するか&lt;br/&gt;を決めるルーティングロジック"]
+    end
+    CONTROL --&gt;|転送テーブルを設定| DATA
+
+    classDef dataFill fill:#132a4a,stroke:#7c9eff,color:#e8eefc
+    classDef ctrlFill fill:#1a3350,stroke:#5c7cfa,color:#dbe4ff
+    class DP1 dataFill
+    class CP1 ctrlFill</pre
+                >
+
+                <h3 id="41-ルータの内部構造">4.1 ルータの内部構造</h3>
+
+                <pre class="mermaid">
+flowchart LR
+    IN1["入力ポート1"] --&gt; FAB["スイッチング&lt;br/&gt;ファブリック"]
+    IN2["入力ポート2"] --&gt; FAB
+    IN3["入力ポート3"] --&gt; FAB
+    FAB --&gt; OUT1["出力ポート1"]
+    FAB --&gt; OUT2["出力ポート2"]
+    FAB --&gt; OUT3["出力ポート3"]
+    RCP["ルーティング&lt;br/&gt;プロセッサ"] -.転送テーブルを配布.-&gt; FAB
+
+    classDef portFill fill:#1a3350,stroke:#5c7cfa,color:#dbe4ff
+    classDef coreFill fill:#132a4a,stroke:#7c9eff,color:#e8eefc
+    class IN1,IN2,IN3,OUT1,OUT2,OUT3 portFill
+    class FAB,RCP coreFill</pre
+                >
+
+                <p>
+                    各入力ポートは、宛先IPアドレスに対して<strong
+                        >最長プレフィックスマッチ(Longest Prefix Match)</strong
+                    >を行い、転送テーブルから出力ポートを決定します。出力ポートでのキューイングは、第1部で説明したキューイング遅延の主要な発生源です。
+                </p>
+
+                <h3 id="42-ipv4とipv6">4.2 IPv4とIPv6</h3>
+
+                <pre class="mermaid">
+flowchart LR
+    subgraph V4["IPv4"]
+        direction TB
+        V4A["32ビットアドレス&lt;br/&gt;(約43億個)"]
+        V4B["1980年代に設計"]
+        V4C["アドレス枯渇(2011年にIANAプール枯渇)"]
+    end
+    subgraph V6["IPv6"]
+        direction TB
+        V6A["128ビットアドレス&lt;br/&gt;(約340澗個)"]
+        V6B["1998年に設計"]
+        V6C["ヘッダ構造を簡素化・拡張ヘッダで柔軟性確保"]
+    end
+
+    classDef v4Fill fill:#1a3350,stroke:#5c7cfa,color:#dbe4ff
+    classDef v6Fill fill:#132a4a,stroke:#7c9eff,color:#e8eefc
+    class V4A,V4B,V4C v4Fill
+    class V6A,V6B,V6C v6Fill</pre
+                >
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>項目</th>
+                                <th>IPv4</th>
+                                <th>IPv6</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>アドレス長</td>
+                                <td>32ビット</td>
+                                <td>128ビット</td>
+                            </tr>
+                            <tr class="even">
+                                <td>アドレス表記例</td>
+                                <td><code>192.0.2.1</code></td>
+                                <td><code>2001:db8::1</code></td>
+                            </tr>
+                            <tr class="odd">
+                                <td>ヘッダのオプション</td>
+                                <td>可変長オプションフィールドあり</td>
+                                <td>拡張ヘッダとして分離、基本ヘッダは固定長で高速処理向き</td>
+                            </tr>
+                            <tr class="even">
+                                <td>フラグメンテーション</td>
+                                <td>ルータ上で実施可能</td>
+                                <td>送信元ホストのみが実施(ルータは行わない)</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>NATとの関係</td>
+                                <td>アドレス不足を補うため広くNATが使われる</td>
+                                <td>アドレス空間が十分でありEnd-to-Endの直接接続が原則可能</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p>
+                    <strong>2026年8月時点のIPv6普及状況</strong>:
+                    Google計測ではユーザーの世界平均IPv6アクセス率が2026年3月28日に初めて50%を突破しました(50.10%)。ただし国ごとの差は大きく、フランス(73%)・インド(72%)・サウジアラビア(65%)のように先行する国がある一方、スペイン(10%)・エジプト(4%)のように普及が遅れている地域もあります。APNIC
+                    Labsの計測ではやや異なる方法論により約42〜43%という数値が示されており、複数の計測ソースを比較する視点が重要です。
+                </p>
+
+                <h3 id="43-natnetwork-address-translation">4.3 NAT(Network Address Translation)</h3>
+
+                <p>IPv4アドレス枯渇への現実的な対処として広く使われているのがNATです。</p>
+
+                <pre class="mermaid">
+flowchart LR
+    subgraph LAN["家庭内ネットワーク(プライベートIP)"]
+        H1["192.168.1.10"]
+        H2["192.168.1.11"]
+    end
+    NAT["NATルータ&lt;br/&gt;(グローバルIP: 203.0.113.5)"]
+    INTERNET["インターネット"]
+
+    H1 --&gt;|送信元: 192.168.1.10:5000| NAT
+    H2 --&gt;|送信元: 192.168.1.11:5001| NAT
+    NAT --&gt;|送信元を書き換えて送出&lt;br/&gt;203.0.113.5:6000&lt;br/&gt;203.0.113.5:6001| INTERNET
+
+    classDef lanFill fill:#1a3350,stroke:#5c7cfa,color:#dbe4ff
+    classDef natFill fill:#132a4a,stroke:#7c9eff,color:#e8eefc
+    class H1,H2 lanFill
+    class NAT,INTERNET natFill</pre
+                >
+
+                <p>
+                    NATは複数の家庭内デバイスを1つのグローバルIPアドレスで外部と通信させることを可能にし、IPv4アドレス枯渇の実質的な緩和策として機能してきました。ただし、外部から内部ホストへの直接接続が困難になる(P2P通信やサーバ公開の妨げになる)という副作用もあり、これがIPv6移行が求められる技術的理由の一つです。
+                </p>
+
+                <h3 id="44-汎用転送とsdnのデータプレーン">4.4 汎用転送とSDNのデータプレーン</h3>
+
+                <p>
+                    従来のルータは主に宛先IPアドレスに基づいて転送を決定し(ACLによるフィルタリングなどは補助的な機能に留まっていました)、SDN(Software-Defined
+                    Networking)の考え方では、より汎用的な「マッチ+アクション」ルールに基づいてパケットを処理します(OpenFlowプロトコルなどが代表例)。
+                </p>
+
+                <pre class="mermaid">
+flowchart TB
+    subgraph TRADITIONAL["従来型ルータ"]
+        T1["主に宛先IPアドレスで&lt;br/&gt;転送を決定&lt;br/&gt;(ACLは補助的)"]
+    end
+    subgraph SDN_DP["SDNデータプレーン"]
+        S1["送信元/宛先IP・ポート番号・&lt;br/&gt;VLANタグなど複数フィールドの組み合わせで&lt;br/&gt;マッチし、転送/破棄/書き換え等の&lt;br/&gt;アクションを実行"]
+    end
+    CONTROLLER["中央集権的なSDNコントローラ"] -.フローテーブルを配布.-&gt; SDN_DP
+
+    classDef tradFill fill:#1a3350,stroke:#5c7cfa,color:#dbe4ff
+    classDef sdnFill fill:#132a4a,stroke:#7c9eff,color:#e8eefc
+    class T1 tradFill
+    class S1,CONTROLLER sdnFill</pre
+                >
+
+                <p>
+                    この汎用性により、ロードバランシング・ファイアウォール・トラフィックエンジニアリングといった多様な機能を、専用ハードウェアではなくソフトウェア制御によって柔軟に実現できるようになります。
+                </p>
+
+                <hr />
+
+                <h2 id="第5部-ネットワーク層コントロールプレーン">
+                    第5部: ネットワーク層:コントロールプレーン
+                </h2>
+
+                <h3 id="51-ルーティングアルゴリズムの2大分類">
+                    5.1 ルーティングアルゴリズムの2大分類
+                </h3>
+
+                <pre class="mermaid">
+flowchart TB
+    subgraph LS["リンクステート型(例: OSPF)"]
+        direction TB
+        LS1["同一エリア内のトポロジー情報を&lt;br/&gt;エリア内の全ルータがフラッディングで共有"]
+        LS2["各ルータが独立して&lt;br/&gt;ダイクストラ法で最短経路を計算"]
+    end
+    subgraph DV["距離ベクトル型(例: RIP)"]
+        direction TB
+        DV1["隣接ルータとのみ&lt;br/&gt;経路情報(距離)を交換"]
+        DV2["ベルマン・フォード法に基づき&lt;br/&gt;反復的に経路表を更新"]
+    end
+
+    classDef lsFill fill:#132a4a,stroke:#7c9eff,color:#e8eefc
+    classDef dvFill fill:#1a3350,stroke:#5c7cfa,color:#dbe4ff
+    class LS1,LS2 lsFill
+    class DV1,DV2 dvFill</pre
+                >
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>比較項目</th>
+                                <th>リンクステート型</th>
+                                <th>距離ベクトル型</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>情報共有範囲</td>
+                                <td>同一エリア内の全ルータへフラッディング</td>
+                                <td>隣接ルータのみと交換</td>
+                            </tr>
+                            <tr class="even">
+                                <td>収束速度</td>
+                                <td>比較的速い</td>
+                                <td>遅くなりがち(カウント・トゥ・インフィニティ問題)</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>計算量</td>
+                                <td>各ノードでO(n²)程度のダイクストラ計算</td>
+                                <td>反復計算だが1ノードあたりの負荷は軽い</td>
+                            </tr>
+                            <tr class="even">
+                                <td>代表プロトコル</td>
+                                <td>OSPF、IS-IS</td>
+                                <td>RIP(現在はほぼ使われず教育目的が中心)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p>
+                    これらは主に<strong>単一の管理主体内(AS内)</strong>で使われる<strong>内部ゲートウェイプロトコル(IGP)</strong>です。
+                </p>
+
+                <h3 id="52-自律システム間のルーティング-bgp">
+                    5.2 自律システム間のルーティング: BGP
+                </h3>
+
+                <p>
+                    インターネットは、単一の管理者が存在しない<strong
+                        >自律システム(AS: Autonomous System)</strong
+                    >の集合体です。AS間の経路制御を担うのがBGP(Border Gateway Protocol)です。
+                </p>
+
+                <pre class="mermaid">
+flowchart TB
+    subgraph AS1["AS 100"]
+        R1A["ルータA"] --- R1B["ルータB"]
+    end
+    subgraph AS2["AS 200"]
+        R2A["ルータC"] --- R2B["ルータD"]
+    end
+    subgraph AS3["AS 300"]
+        R3A["ルータE"]
+    end
+
+    R1B --&gt;|eBGP| R2A
+    R2B --&gt;|eBGP| R3A
+    R1A -.iBGP.-&gt; R1B
+    R2A -.iBGP.-&gt; R2B
+
+    classDef asFill fill:#132a4a,stroke:#7c9eff,color:#e8eefc
+    class R1A,R1B,R2A,R2B,R3A asFill</pre
+                >
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>BGPの種類</th>
+                                <th>説明</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>eBGP (External BGP)</td>
+                                <td>異なるAS間でのルート広告</td>
+                            </tr>
+                            <tr class="even">
+                                <td>iBGP (Internal BGP)</td>
+                                <td>同一AS内のBGPルータ間でのルート伝播</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p>
+                    BGPはリンクステート型でも純粋な距離ベクトル型でもなく、<strong>パスベクトル型</strong>と呼ばれる方式を採用しています。各ルート広告には経由したASの一覧(ASパス)が含まれ、ループ検出やポリシーベースの経路選択(コスト最小化ではなく、ビジネス上の契約関係に基づく選択)を可能にしています。
+                </p>
+
+                <h3 id="53-bgpのセキュリティ-rpkiとルート原点検証rov">
+                    5.3 BGPのセキュリティ: RPKIとルート原点検証(ROV)
+                </h3>
+
+                <p>
+                    BGPは1980年代に設計された当初、経路情報の真正性を検証する仕組みを持っていませんでした。これにより、誤設定や悪意ある行為によって「本来別の組織が所有するIPプレフィックスを、自分のASが起点であるかのように広告してしまう」<strong>BGPハイジャック</strong>が起こりえます。
+                </p>
+
+                <pre class="mermaid">
+sequenceDiagram
+    participant Owner as 正当な所有者(AS100)
+    participant Attacker as 悪意あるAS(AS666)
+    participant Victim as 被害を受けるAS
+
+    Owner-&gt;&gt;Victim: 正規のプレフィックス広告(203.0.113.0/24, origin AS100)
+    Attacker-&gt;&gt;Victim: 偽装した広告(203.0.113.0/24, origin AS666)
+    Note over Victim: RPKI検証なしの場合、&lt;br/&gt;より詳細なプレフィックスは&lt;br/&gt;Longest Prefix Match により転送で優先される。&lt;br/&gt;同一プレフィックス同士では AS_PATH の短さが&lt;br/&gt;BGP経路選択の一要素として働く&lt;br/&gt;(常に最優先の基準ではない)ため&lt;br/&gt;通信がハイジャックされる恐れ</pre
+                >
+
+                <p>
+                    この問題への対処として普及が進んでいるのがRPKI(Resource Public Key
+                    Infrastructure)です。
+                </p>
+
+                <pre class="mermaid">
+flowchart LR
+    HOLDER["プレフィックス保有者"] --&gt;|ROA・経路原点認可を発行| REPO["RPKIリポジトリ"]
+    REPO --&gt;|同期| VALIDATOR["ルータ側の検証キャッシュ&lt;br/&gt;(RPKI Validator)"]
+    ROUTER["BGPルータ"] --&gt;|受信した経路のオリジンASを問い合わせ| VALIDATOR
+    VALIDATOR --&gt;|Valid / Invalid / NotFoundを応答| ROUTER
+    ROUTER --&gt;|検証状態に応じてローカルポリシーを適用&lt;br/&gt;採用・優先度低下・拒否などを事業者が決定| ACCEPT["採用する経路テーブル"]
+
+    classDef rpkiFill fill:#132a4a,stroke:#7c9eff,color:#e8eefc
+    class HOLDER,REPO,VALIDATOR,ROUTER,ACCEPT rpkiFill</pre
+                >
+
+                <p>
+                    <strong>2026年時点の普及状況</strong>: <a href="#ref18">参考文献18</a>(RIPE
+                    LabsのAntonio
+                    Prado氏による分析を引用したIPregistryの記事)によると、RPKIのROAでカバーされる経路の割合はグローバルで約67%に達しています。日次で変動する指標のため、最新値はHurricane
+                    ElectricのRPKI &amp; ASPA Adoption Report(<a href="#ref16">参考文献16</a
+                    >)やNLnet Labsのルーティング関連ツール群(<a href="#ref17">参考文献17</a
+                    >)などで観測日とあわせて確認してください。Sparkle(AS6762)のような大手Tier-1トランジット事業者も、2026年2月3日からRPKI無効経路を拒否する側へ移行しました(<a
+                        href="#ref15"
+                        >参考文献15</a
+                    >。Cloudflareの「Is BGP safe yet?」が同社を無効経路を拒否する事業者として掲載)。
+                </p>
+
+                <p>
+                    一方で、2026年7月21日にRIPE Labsが公開したAntonio Prado氏の分析(<a href="#ref19"
+                        >参考文献19</a
+                    >)では、経路原点検証(ROV)は「経路操作」「経路一貫性」「ポリシー違反」「セッションベース攻撃」という4つの攻撃カテゴリのうち一部にしか対応できないことが指摘されており、<strong>RPKIは万能ではなく、より広範な監視と組み合わせる必要がある</strong>という認識が広がっています。
+                </p>
+
+                <h3 id="54-sdnのコントロールプレーン">5.4 SDNのコントロールプレーン</h3>
+
+                <pre class="mermaid">
+flowchart TB
+    APP1["アプリケーション&lt;br/&gt;(負荷分散)"] --&gt; NORTH["ノースバウンドAPI"]
+    APP2["アプリケーション&lt;br/&gt;(ファイアウォール)"] --&gt; NORTH
+    NORTH --&gt; CTRL["SDNコントローラ&lt;br/&gt;(ネットワークOS)"]
+    CTRL --&gt; SOUTH["サウスバウンドAPI&lt;br/&gt;(例: OpenFlow)"]
+    SOUTH --&gt; SW1["スイッチ1"]
+    SOUTH --&gt; SW2["スイッチ2"]
+    SOUTH --&gt; SW3["スイッチ3"]
+
+    classDef sdnFill fill:#132a4a,stroke:#7c9eff,color:#e8eefc
+    class APP1,APP2,NORTH,CTRL,SOUTH,SW1,SW2,SW3 sdnFill</pre
+                >
+
+                <p>
+                    従来、ルーティングロジック(コントロールプレーン)は各ルータに分散して実装されていましたが、SDNでは<strong>論理的に中央集権化されたコントローラ</strong>がネットワーク全体を俯瞰して転送ルールを決定します。これにより、ネットワーク全体を1つのプログラムとして扱える(=プログラマブルにできる)柔軟性が得られます。
+                </p>
+
+                <hr />
+
+                <h2 id="第6部-リンク層とlan">第6部: リンク層とLAN</h2>
+
+                <h3 id="61-リンク層が提供するサービス">6.1 リンク層が提供するサービス</h3>
+
+                <pre class="mermaid">
+flowchart TD
+    FR["フレーミング&lt;br/&gt;ビット列をフレーム単位に区切る"] --&gt; ADDR["リンクアドレッシング&lt;br/&gt;MACアドレスによる識別"]
+    ADDR --&gt; ERR["誤り検出&lt;br/&gt;CRC(巡回冗長検査)"]
+    ERR --&gt; ACCESS["メディアアクセス制御&lt;br/&gt;共有リンクの利用調整"]
+
+    classDef llFill fill:#132a4a,stroke:#7c9eff,color:#e8eefc
+    class FR,ADDR,ERR,ACCESS llFill</pre
+                >
+
+                <h3 id="62-多重アクセスプロトコル">6.2 多重アクセスプロトコル</h3>
+
+                <p>
+                    複数のホストが1つの共有伝送媒体(古典的なイーサネットの同軸ケーブルや、無線LANの空間)を利用する場合、「誰がいつ送信してよいか」を調整する必要があります。
+                </p>
+
+                <pre class="mermaid">
+flowchart LR
+    subgraph CSMACD["CSMA/CD(有線イーサネットの伝統的方式)"]
+        direction TB
+        CD1["送信前にキャリアを検知(Carrier Sense)"]
+        CD2["送信中も衝突を検知(Collision Detection)"]
+        CD3["衝突を検知したら送信を中断しランダム時間待機"]
+    end
+    subgraph CSMACA["CSMA/CA(無線LANで使用)"]
+        direction TB
+        CA1["送信前にキャリアを検知"]
+        CA2["衝突の検出が困難なため&lt;br/&gt;事前にランダムバックオフ"]
+        CA3["ACKによる受信確認で&lt;br/&gt;成功/失敗を判断"]
+    end
+
+    classDef cdFill fill:#1a3350,stroke:#5c7cfa,color:#dbe4ff
+    classDef caFill fill:#132a4a,stroke:#7c9eff,color:#e8eefc
+    class CD1,CD2,CD3 cdFill
+    class CA1,CA2,CA3 caFill</pre
+                >
+
+                <p>
+                    現代の有線イーサネットはスイッチによる<strong>全二重専用リンク</strong>が主流であり、衝突自体がほぼ発生しません。しかし無線LANでは共有媒体の性質上、CSMA/CAベースの調整が今も本質的に必要です。
+                </p>
+
+                <h3 id="63-イーサネットスイッチ-vs-ルータ">6.3 イーサネットスイッチ vs ルータ</h3>
+
+                <p>初学者が混同しやすい「スイッチ」と「ルータ」の違いを整理します。</p>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>比較項目</th>
+                                <th>イーサネットスイッチ(リンク層)</th>
+                                <th>ルータ(ネットワーク層)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>転送の判断基準</td>
+                                <td>宛先MACアドレス</td>
+                                <td>宛先IPアドレス</td>
+                            </tr>
+                            <tr class="even">
+                                <td>アドレステーブルの構築方法</td>
+                                <td>自己学習(送信元MACを見て自動的に学習)</td>
+                                <td>ルーティングプロトコルによる転送テーブルの構築</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>ブロードキャストドメイン</td>
+                                <td>VLAN未分割のスイッチは1つのブロードキャストドメインを構成</td>
+                                <td>ブロードキャストドメインを分割する</td>
+                            </tr>
+                            <tr class="even">
+                                <td>プラグアンドプレイ性</td>
+                                <td>高い(設定不要で自己学習)</td>
+                                <td>相対的に設定が必要</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <pre class="mermaid">
+flowchart TB
+    subgraph SWDOMAIN["スイッチが構成するLAN(1つのブロードキャストドメイン)"]
+        PC1["PC1"] --- SW["スイッチ"]
+        PC2["PC2"] --- SW
+        PC3["PC3"] --- SW
+    end
+    SW --- RTR["ルータ"]
+    RTR --- WAN["別のネットワーク/インターネット"]
+
+    classDef swFill fill:#1a3350,stroke:#5c7cfa,color:#dbe4ff
+    classDef rtFill fill:#132a4a,stroke:#7c9eff,color:#e8eefc
+    class PC1,PC2,PC3,SW swFill
+    class RTR,WAN rtFill</pre
+                >
+
+                <h3 id="64-vlan仮想lan">6.4 VLAN(仮想LAN)</h3>
+
+                <p>
+                    物理的な配線を変更せずに、論理的にブロードキャストドメインを分割する技術がVLANです。
+                </p>
+
+                <pre class="mermaid">
+flowchart LR
+    subgraph PHYS["物理的には同じスイッチ"]
+        SW2["スイッチ(VLANタグ対応)"]
+    end
+    SW2 -.VLAN 10.-&gt; DEPT_A["経理部門のポート群"]
+    SW2 -.VLAN 20.-&gt; DEPT_B["開発部門のポート群"]
+
+    classDef vlanFill fill:#132a4a,stroke:#7c9eff,color:#e8eefc
+    class SW2,DEPT_A,DEPT_B vlanFill</pre
+                >
+
+                <p>
+                    VLANは、ブロードキャストドメインを部門ごとに分割してブロードキャストトラフィックを抑制する仕組みであり、物理的な配線変更なしにネットワークの論理構成を柔軟に変更できるという運用上のメリットをもたらします。ただしVLANはそれ単体でアクセス制御を提供するセキュリティ境界ではありません。VLAN間はルーティングされれば通信できてしまうため、部門間の通信を制限するにはVLAN間ルーティング経路上のACLやファイアウォールが別途必要です。
+                </p>
+
+                <hr />
+
+                <h2 id="第7部-無線とモバイルネットワーク">第7部: 無線とモバイルネットワーク</h2>
+
+                <h3 id="71-無線リンク特有の課題">7.1 無線リンク特有の課題</h3>
+
+                <pre class="mermaid">
+flowchart TB
+    A["A"] -.電波が届く.-&gt; B["B"]
+    B -.電波が届く.-&gt; C["C"]
+    A -."Aの電波はCに届かない&lt;br/&gt;(隠れ端末問題)".-x C
+
+    classDef wFill fill:#132a4a,stroke:#7c9eff,color:#e8eefc
+    class A,B,C wFill</pre
+                >
+
+                <p>無線通信には有線にはない固有の課題があります。</p>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>課題</th>
+                                <th>説明</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>隠れ端末問題</td>
+                                <td>
+                                    AとCが互いの電波を検知できないため、Bへ同時送信し衝突が発生しても双方が気づけない
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>信号減衰とマルチパスフェージング</td>
+                                <td>障害物・反射により信号強度が予測しづらく変動する</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>誤り率の高さ</td>
+                                <td>
+                                    有線に比べてビット誤りが発生しやすく、上位層の輻輳制御アルゴリズムの前提(損失=輻輳)が崩れやすい
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 id="72-wi-fiieee-80211の進化">7.2 Wi-Fi(IEEE 802.11)の進化</h3>
+
+                <pre class="mermaid">
+flowchart LR
+    WIFI4["Wi-Fi 4&lt;br/&gt;802.11n (2009)"] --&gt; WIFI5["Wi-Fi 5&lt;br/&gt;802.11ac (2013)"]
+    WIFI5 --&gt; WIFI6["Wi-Fi 6&lt;br/&gt;802.11ax (2019)"]
+    WIFI6 --&gt; WIFI6E["Wi-Fi 6E&lt;br/&gt;6GHz帯拡張 (2021)"]
+    WIFI6E --&gt; WIFI7["Wi-Fi 7&lt;br/&gt;802.11be&lt;br/&gt;(2025年7月正式公開)"]
+
+    classDef wifiFill fill:#132a4a,stroke:#7c9eff,color:#e8eefc
+    class WIFI4,WIFI5,WIFI6,WIFI6E,WIFI7 wifiFill</pre
+                >
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>規格</th>
+                                <th>周波数帯</th>
+                                <th>特徴</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>Wi-Fi 6 (802.11ax)</td>
+                                <td>2.4/5GHz</td>
+                                <td>OFDMAによる複数ユーザーの効率的な多重化</td>
+                            </tr>
+                            <tr class="even">
+                                <td>Wi-Fi 6E</td>
+                                <td>2.4/5/6GHz</td>
+                                <td>6GHz帯という広く空いた新スペクトラムを追加</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>Wi-Fi 7 (802.11be)</td>
+                                <td>2.4/5/6GHz</td>
+                                <td>Multi-Link Operation(複数帯域を同時利用)、理論値最大46Gbps</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p>
+                    <strong>2026年時点の状況</strong>: IEEE 802.11be(Wi-Fi
+                    7)は2024年に規格が確定・2025年7月に正式公開され、2026年には主要スマートフォン・ノートPCへの標準搭載が進み、ABI
+                    Researchの予測ではWi-Fi
+                    7対応アクセスポイントの年間出荷台数が1億1,790万台に達する見込みとされています。
+                </p>
+
+                <h3 id="73-モバイルネットワーク-4g5gから6gへ">
+                    7.3 モバイルネットワーク: 4G/5Gから6Gへ
+                </h3>
+
+                <pre class="mermaid">
+flowchart LR
+    G4["4G LTE&lt;br/&gt;下りOFDMA・上りSC-FDMA、&lt;br/&gt;パケット交換に統一"] --&gt; G5["5G NR&lt;br/&gt;ネットワークスライシング、&lt;br/&gt;超低遅延(URLLC)"]
+    G5 --&gt; G6["6G(標準化中)&lt;br/&gt;3GPP Release 21で&lt;br/&gt;仕様策定が進行中"]
+
+    classDef mobFill fill:#132a4a,stroke:#7c9eff,color:#e8eefc
+    class G4,G5,G6 mobFill</pre
+                >
+
+                <p>
+                    <strong>2026年時点の6G標準化動向</strong>:
+                    2026年6月にシンガポールで開催された3GPPプレナリ会合では、6Gの仕様策定に向けたRelease
+                    21のタイムラインが合意され、無線インターフェースの波形方式やチャネル符号化などの基礎技術に関する決定が行われました。3GPPはRelease
+                    21のASN.1/OpenAPI
+                    freeze(プロトコル記述の凍結)を2029年3月のマイルストーンとして設定しています。これはITU-Rへのfull
+                    system
+                    definitionの提出(2030年半ばを予定)とは別の節目であり、2029年3月時点で6G仕様のすべてが完成するわけではない点に注意してください。商用化は2030年前後になると見られています。
+                </p>
+
+                <h3 id="74-モビリティ管理">7.4 モビリティ管理</h3>
+
+                <p>
+                    デバイスが基地局(またはアクセスポイント)間を移動する際、進行中の通信セッションを維持するための仕組みが必要です。
+                </p>
+
+                <pre class="mermaid">
+sequenceDiagram
+    participant Device as モバイル端末
+    participant AP1 as 旧アクセスポイント
+    participant AP2 as 新アクセスポイント
+    participant Anchor as アンカーポイント(HAなど)
+
+    Device-&gt;&gt;AP1: 通信中
+    Note over Device: 移動によりAP1の電波が弱まる
+    Device-&gt;&gt;AP2: 新しいAPに接続(ハンドオフ)
+    AP2-&gt;&gt;Anchor: 位置更新を通知
+    Anchor-&gt;&gt;AP2: 以降のトラフィックをAP2経由に転送
+    Note over Device,Anchor: 通信を継続したままハンドオフ完了</pre
+                >
+
+                <p>
+                    QUICが持つ「コネクションマイグレーション」機能(第3部参照)は、まさにこの種のネットワーク切り替えに対して、トランスポート層のレベルで対応する現代的なアプローチです。
+                </p>
+
+                <hr />
+
+                <h2 id="第8部-コンピュータネットワークにおけるセキュリティ">
+                    第8部: コンピュータネットワークにおけるセキュリティ
+                </h2>
+
+                <h3 id="81-暗号の基礎-対称鍵暗号と公開鍵暗号">
+                    8.1 暗号の基礎: 対称鍵暗号と公開鍵暗号
+                </h3>
+
+                <pre class="mermaid">
+flowchart TB
+    subgraph SYM["対称鍵暗号"]
+        direction TB
+        S1["送信者と受信者が同じ鍵を共有"]
+        S2["高速だが鍵配送の問題がある"]
+        S3["例: AES"]
+    end
+    subgraph ASYM["公開鍵暗号"]
+        direction TB
+        A1["公開鍵で暗号化、秘密鍵で復号"]
+        A2["鍵配送問題を解決するが低速"]
+        A3["例: RSA"]
+    end
+    HYBRID["実際のTLSでは&lt;br/&gt;公開鍵暗号技術による鍵交換&lt;br/&gt;(ECDHEなどの鍵合意)を行い、&lt;br/&gt;その後は対称鍵暗号で&lt;br/&gt;高速に通信する「ハイブリッド方式」を採用"]
+
+    SYM --- HYBRID
+    ASYM --- HYBRID
+
+    classDef symFill fill:#1a3350,stroke:#5c7cfa,color:#dbe4ff
+    classDef asymFill fill:#132a4a,stroke:#7c9eff,color:#e8eefc
+    classDef hybFill fill:#0f2540,stroke:#4c6ef5,color:#c9d6ff
+    class S1,S2,S3 symFill
+    class A1,A2,A3 asymFill
+    class HYBRID hybFill</pre
+                >
+
+                <h3 id="82-tlshttpsハンドシェイクの流れ">8.2 TLS/HTTPSハンドシェイクの流れ</h3>
+
+                <pre class="mermaid">
+sequenceDiagram
+    participant C as クライアント
+    participant S as サーバ
+
+    C-&gt;&gt;S: ① ClientHello(対応する暗号スイート・key_shareの提示)
+    S-&gt;&gt;C: ② ServerHello(key_share) ここでハンドシェイク鍵が確定
+    Note over C,S: 以降のハンドシェイクメッセージは暗号化される
+    S-&gt;&gt;C: ③ EncryptedExtensions(暗号化された拡張情報)
+    S-&gt;&gt;C: ④ Certificate(サーバ証明書)
+    S-&gt;&gt;C: ⑤ CertificateVerify(証明書の秘密鍵による署名)
+    S-&gt;&gt;C: ⑥ Finished(ハンドシェイク全体のMAC)
+    Note over C: 証明書チェーンをCA(認証局)の公開鍵で検証し&lt;br/&gt;CertificateVerifyの署名を証明書の公開鍵で検証し&lt;br/&gt;Finishedのハンドシェイクトランスクリプト上のMACを検証
+    C-&gt;&gt;S: ⑦ Finished(クライアント側の検証完了)
+    Note over C,S: TLS 1.3では1-RTTでハンドシェイク完了&lt;br/&gt;(再接続時は0-RTTも可能)
+    C-&gt;&gt;S: ⑧ 暗号化されたアプリケーションデータ(HTTPなど)</pre
+                >
+
+                <p>
+                    TLS 1.3(RFC 8446)は、TLS
+                    1.2までと比べてハンドシェイクに必要な往復回数を1-RTTに削減し、非推奨の脆弱な暗号アルゴリズムを整理することでセキュリティと性能の両方を改善しました。
+                </p>
+
+                <h3 id="83-耐量子暗号post-quantum-cryptographyへの移行">
+                    8.3 耐量子暗号(Post-Quantum Cryptography)への移行
+                </h3>
+
+                <p>
+                    将来、大規模な量子コンピュータが実用化されると、現在広く使われている公開鍵暗号(RSA、楕円曲線暗号)の多くが解読可能になると予測されています。これに備え、NISTは2024年8月にML-KEM(FIPS
+                    203)・ML-DSA(FIPS 204)・SLH-DSA(FIPS 205)という耐量子暗号標準を確定しました。
+                </p>
+
+                <pre class="mermaid">
+flowchart LR
+    CLASSIC["従来の鍵交換&lt;br/&gt;(X25519など楕円曲線暗号)"] --&gt; HYBRID2["ハイブリッド鍵交換&lt;br/&gt;X25519 + ML-KEM-768&lt;br/&gt;(移行期の推奨構成)"]
+    HYBRID2 --&gt; FUTURE["将来的な完全移行&lt;br/&gt;(ML-KEM単体)"]
+
+    classDef pqFill fill:#132a4a,stroke:#7c9eff,color:#e8eefc
+    class CLASSIC,HYBRID2,FUTURE pqFill</pre
+                >
+
+                <p>
+                    <strong>なぜ「ハイブリッド方式」なのか</strong>:
+                    Cloudflareの技術ブログによれば、ML-KEMのような新しい耐量子アルゴリズムに未知の脆弱性が将来発見される可能性に備え、実績のあるX25519(従来の楕円曲線暗号)と組み合わせるハイブリッド方式が業界標準のアプローチとして採用されています。片方が破られても、もう片方が安全性を担保する「ベルト・アンド・サスペンダーズ(念には念を)」の考え方です。
+                </p>
+
+                <p>
+                    <strong>2026年時点の普及状況</strong>:
+                    ChromeはX25519MLKEM768をバージョン124(2024年4月)からデスクトップでデフォルト有効化しており、Cloudflareの2026年テレメトリでは、Cloudflareに到達するTLS
+                    1.3ハンドシェイクの30%以上が既に耐量子鍵交換で保護されています。Windows 11
+                    24H2のCNG(Cryptography Next
+                    Generation)APIにもML-KEMサポートが追加されるなど、OSレベルでの対応も進んでいます。一方、耐量子<strong>署名</strong>(証明書の真正性検証に使う部分)は鍵サイズが大きく処理コストが高いため、鍵交換ほどには普及が進んでおらず、2026年時点でも公開の耐量子証明書はほとんど流通していない、という「非対称な移行状況」がCloudflareの分析で指摘されています。
+                </p>
+
+                <h3 id="84-メッセージの完全性認証">8.4 メッセージの完全性認証</h3>
+
+                <p>暗号化(盗聴防止)と完全性検証(改ざん検出)は別の概念です。</p>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>目的</th>
+                                <th>用いる仕組み</th>
+                                <th>検出できること</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>機密性</td>
+                                <td>暗号化(AESなど)</td>
+                                <td>第三者による内容の盗み見を防ぐ</td>
+                            </tr>
+                            <tr class="even">
+                                <td>完全性</td>
+                                <td>メッセージ認証コード(MAC)、デジタル署名</td>
+                                <td>経路上でのデータ改ざんを検出する</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>認証</td>
+                                <td>デジタル証明書、公開鍵基盤(PKI)</td>
+                                <td>通信相手が名乗っている本人であることを確認する</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 id="85-ファイアウォールとidsips">8.5 ファイアウォールとIDS/IPS</h3>
+
+                <pre class="mermaid">
+flowchart LR
+    INTERNET["インターネット"] --&gt; FW["ファイアウォール&lt;br/&gt;(ステートフルパケットフィルタ)"]
+    FW --&gt; IDS["IDS/IPS&lt;br/&gt;(侵入検知/防御システム)"]
+    IDS --&gt; LAN2["社内/家庭内ネットワーク"]
+
+    classDef secFill fill:#132a4a,stroke:#7c9eff,color:#e8eefc
+    class INTERNET,FW,IDS,LAN2 secFill</pre
+                >
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>機構</th>
+                                <th>役割</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>パケットフィルタリングファイアウォール</td>
+                                <td>
+                                    IPアドレス・ポート番号・プロトコルなどのヘッダ情報に基づき通過可否を判定
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>ステートフルファイアウォール</td>
+                                <td>
+                                    コネクションの状態(TCPハンドシェイクの進行状況など)を追跡し、文脈に応じた判定を行う
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>IDS(侵入検知システム)</td>
+                                <td>
+                                    既知の攻撃パターン(シグネチャ)や異常な振る舞いを検知し警告する
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>IPS(侵入防御システム)</td>
+                                <td>検知した悪意あるトラフィックを能動的に遮断する</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 id="86-ddos攻撃の脅威動向">8.6 DDoS攻撃の脅威動向</h3>
+
+                <p>
+                    DoS(サービス拒否)攻撃を多数の分散したホストから同時に行うのがDDoS(Distributed
+                    DoS)攻撃です。
+                </p>
+
+                <pre class="mermaid">
+flowchart TB
+    BOT1["ボット1"] --&gt; TARGET["攻撃対象サーバ"]
+    BOT2["ボット2"] --&gt; TARGET
+    BOT3["ボット3"] --&gt; TARGET
+    BOTN["...(数百万台規模のボットネット)"] --&gt; TARGET
+    TARGET --&gt;|正規の処理能力を超過| DOWN["サービス停止/著しい遅延"]
+
+    classDef botFill fill:#1a3350,stroke:#5c7cfa,color:#dbe4ff
+    classDef tgtFill fill:#132a4a,stroke:#7c9eff,color:#e8eefc
+    class BOT1,BOT2,BOT3,BOTN botFill
+    class TARGET,DOWN tgtFill</pre
+                >
+
+                <p>
+                    <strong>2026年時点のデータ(Cloudflare)</strong>:
+                    2025年にCloudflareが緩和したDDoS攻撃は4,710万件(前年比121%増)に達し、2025年12月にはAisuru-Kimwolfボットネット(推定100万〜400万台の感染デバイスで構成)による観測史上最大となる31.4Tbps・毎秒141億パケットの攻撃を35秒間にわたり記録しました。2026年上半期(H1)のレポートでは、1Tbpsを超える超大規模(hyper-volumetric)攻撃が第1四半期から第2四半期にかけて519%増加し、DNS/CLDAPリフレクション攻撃が主要な攻撃ベクトルとなっていることが報告されています。一方で、全体の96.62%の攻撃は500Mbps未満・90.60%は10分未満で終了する「短時間・小規模」なものであり、<strong>自動化された迅速な検知・緩和の仕組みが人手による対応能力を上回る規模で求められている</strong>という傾向が示されています。
+                </p>
+
+                <hr />
+
+                <h2 id="第9部-2026年8月時点の最新動向">第9部: 2026年8月時点の最新動向</h2>
+
+                <p>
+                    書籍の原則的な内容は普遍性が高い一方、実際のインターネットは絶えず進化しています。本ガイド作成時点(2026年8月30日)における主要トレンドを層ごとに整理します。
+                </p>
+
+                <pre class="mermaid">
+flowchart TD
+    subgraph L_APP["アプリケーション層"]
+        T1["HTTP/3が世界トラフィックの約35%に到達&lt;br/&gt;(Cloudflare計測)"]
+        T2["DoH/DoQ/ECHなど暗号化DNSの普及進行"]
+    end
+    subgraph L_TRANS["トランスポート層"]
+        T3["BBRv3のLinuxカーネル本格統合が進行"]
+        T4["QUIC/HTTP3のエンタープライズ実装が成熟"]
+    end
+    subgraph L_NET["ネットワーク層"]
+        T5["IPv6アクセス率が世界平均で初めて50%突破"]
+        T6["BGP RPKI経路検証カバー率67%超え、&lt;br/&gt;ただし4分類の攻撃のうち一部にしか対応せず"]
+    end
+    subgraph L_LINK["リンク・無線層"]
+        T7["Wi-Fi 7が主流機種に標準搭載"]
+        T8["3GPP Release 21で6G仕様策定が本格化&lt;br/&gt;(完成目標2029年)"]
+    end
+    subgraph L_SEC["セキュリティ層"]
+        T9["耐量子鍵交換がTLS 1.3ハンドシェイクの30%超に到達"]
+        T10["DDoS攻撃が史上最大の31.4Tbpsを記録、&lt;br/&gt;自動防御が必須に"]
+    end
+
+    classDef trendFill fill:#132a4a,stroke:#7c9eff,color:#e8eefc
+    class T1,T2,T3,T4,T5,T6,T7,T8,T9,T10 trendFill</pre
+                >
+
+                <h3 id="91-まとめ表-2026年8月時点の主要指標">
+                    9.1 まとめ表: 2026年8月時点の主要指標
+                </h3>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>領域</th>
+                                <th>指標</th>
+                                <th>数値</th>
+                                <th>出典</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>アプリケーション層</td>
+                                <td>HTTP/3グローバルトラフィック比率</td>
+                                <td>約35%</td>
+                                <td>Cloudflare Radar</td>
+                            </tr>
+                            <tr class="even">
+                                <td>アプリケーション層</td>
+                                <td>Firefox米国ユーザーのDoH有効化率</td>
+                                <td>85%超</td>
+                                <td>Mozilla報告</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>ネットワーク層</td>
+                                <td>Google経由IPv6アクセス率(世界平均)</td>
+                                <td>50.10%(2026/3/28)</td>
+                                <td>Google / ISOC Pulse</td>
+                            </tr>
+                            <tr class="even">
+                                <td>ネットワーク層</td>
+                                <td>RPKIカバー経路割合</td>
+                                <td>67.43%(2026/6/29)</td>
+                                <td>Hurricane Electric</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>リンク・無線層</td>
+                                <td>Wi-Fi 7対応AP年間出荷予測</td>
+                                <td>1億1,790万台</td>
+                                <td>ABI Research/WBA</td>
+                            </tr>
+                            <tr class="even">
+                                <td>リンク・無線層</td>
+                                <td>6G仕様完成目標</td>
+                                <td>2029年前半(Release 21)</td>
+                                <td>3GPP</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>セキュリティ層</td>
+                                <td>耐量子鍵交換のTLS 1.3ハンドシェイク比率</td>
+                                <td>30%超</td>
+                                <td>Cloudflare Radar</td>
+                            </tr>
+                            <tr class="even">
+                                <td>セキュリティ層</td>
+                                <td>史上最大DDoS攻撃規模</td>
+                                <td>31.4 Tbps</td>
+                                <td>Cloudflare 2026脅威レポート</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 id="92-これらのトレンドから読み取れる設計思想の変化">
+                    9.2 これらのトレンドから読み取れる設計思想の変化
+                </h3>
+
+                <ol>
+                    <li>
+                        <strong>「信頼してから検証する」から「常に検証する」へ</strong>:
+                        RPKI、TLS証明書検証の強化、ゼロトラストアーキテクチャの浸透は、いずれも「経路情報やアイデンティティを暗黙に信頼しない」という共通した設計思想の表れです。
+                    </li>
+                    <li>
+                        <strong>トランスポート層とセキュリティ層の融合</strong>:
+                        QUICがTCP+TLSを統合したように、「性能」と「セキュリティ」を別々の層として積み上げるのではなく、最初から統合的に設計する流れが強まっています。
+                    </li>
+                    <li>
+                        <strong>モデルベースの制御へのシフト</strong>:
+                        BGPのRPKIやBBRの帯域推定モデルのように、静的なルールベースの制御から、実測データに基づく動的なモデルベース制御へと重心が移っています。
+                    </li>
+                    <li>
+                        <strong>自動化・スケールへの対応</strong>:
+                        DDoS攻撃の規模がテラビット級に達する中、人間の判断を待たない自動防御システムが前提になりつつあります。
+                    </li>
+                </ol>
+
+                <hr />
+
+                <h2 id="学習ロードマップ">学習ロードマップ</h2>
+
+                <pre class="mermaid">
+flowchart TD
+    STEP1["Step 1&lt;br/&gt;第1部: レイヤードアーキテクチャと&lt;br/&gt;遅延・損失の基礎概念を理解する"] --&gt; STEP2["Step 2&lt;br/&gt;第2部・第3部: HTTP/DNS/TCP/UDPの&lt;br/&gt;挙動をパケットキャプチャ(Wireshark等)で&lt;br/&gt;実際に観測してみる"]
+    STEP2 --&gt; STEP3["Step 3&lt;br/&gt;第4部・第5部: 自宅ルータの設定画面や&lt;br/&gt;traceroute/pingコマンドで&lt;br/&gt;経路制御を体感する"]
+    STEP3 --&gt; STEP4["Step 4&lt;br/&gt;第6部・第7部: 家庭内LANの構成や&lt;br/&gt;Wi-Fiのチャンネル設定を&lt;br/&gt;実際に確認・調整してみる"]
+    STEP4 --&gt; STEP5["Step 5&lt;br/&gt;第8部: 自分がよく使うWebサイトの&lt;br/&gt;TLS証明書やセキュリティヘッダを&lt;br/&gt;ブラウザの開発者ツールで確認する"]
+    STEP5 --&gt; STEP6["Step 6&lt;br/&gt;第9部: Cloudflare Radar・APNIC Labs等の&lt;br/&gt;公開ダッシュボードを定期的に見る習慣をつけ、&lt;br/&gt;技術トレンドを継続的に追う"]
+
+    classDef roadFill fill:#132a4a,stroke:#7c9eff,color:#e8eefc
+    class STEP1,STEP2,STEP3,STEP4,STEP5,STEP6 roadFill</pre
+                >
+
+                <p><strong>実践のヒント</strong>:</p>
+
+                <ul>
+                    <li>
+                        <code>traceroute</code
+                        >(Windowsでは<code>tracert</code>)コマンドで、自宅から任意のWebサイトまでの経路上のルータ(ホップ)を実際に確認してみましょう。第1部・第5部の内容が具体的な経験として結びつきます。
+                    </li>
+                    <li>
+                        ブラウザの開発者ツール(F12)の「Network」パネルで、実際のWebサイト通信がHTTP/1.1・HTTP/2・HTTP/3のどれを使っているか確認してみましょう。
+                    </li>
+                    <li>
+                        <code>dig</code
+                        >や<code>nslookup</code>コマンドでDNS問い合わせの過程を観察し、第2部のDNS階層構造を実際に確認してみましょう。
+                    </li>
+                </ul>
+
+                <hr />
+
+                <h2 id="理解度チェックリスト">理解度チェックリスト</h2>
+
+                <div class="checklist-card">
+                    <div class="checklist-header">
+                        <span class="title">理解度チェックリスト</span
+                        ><span class="count">0 / 19 完了</span>
+                    </div>
+                    <ul>
+                        <li>
+                            <input id="chk1" type="checkbox" /><label for="chk1"
+                                >レイヤードアーキテクチャにおける5つの層とそれぞれのデータ単位(メッセージ/セグメント/データグラム/フレーム/ビット)を説明できる</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk2" type="checkbox" /><label for="chk2"
+                                >パケット交換と回線交換の違いと、インターネットがパケット交換を採用している理由を説明できる</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk3" type="checkbox" /><label for="chk3"
+                                >処理遅延・キューイング遅延・伝送遅延・伝搬遅延の4つを区別できる</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk4" type="checkbox" /><label for="chk4"
+                                >クライアント・サーバ方式とP2P方式の違いを説明できる</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk5" type="checkbox" /><label for="chk5"
+                                >HTTP/1.1からHTTP/2、HTTP/3への進化とそれぞれが解決した問題を説明できる</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk6" type="checkbox" /><label for="chk6"
+                                >DNSの階層構造(ルート/TLD/権威サーバ)と名前解決の流れを説明できる</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk7" type="checkbox" /><label for="chk7"
+                                >TCPとUDPの違いを、信頼性・輻輳制御の観点から説明できる</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk8" type="checkbox" /><label for="chk8"
+                                >TCPの3ウェイハンドシェイクの流れを図示できる</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk9" type="checkbox" /><label for="chk9"
+                                >フロー制御と輻輳制御の違いを説明できる</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk10" type="checkbox" /><label for="chk10"
+                                >輻輳制御アルゴリズムが損失ベース(CUBIC)からモデルベース(BBR)へ進化した背景を説明できる</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk11" type="checkbox" /><label for="chk11"
+                                >IPv4とIPv6の違い、NATの役割を説明できる</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk12" type="checkbox" /><label for="chk12"
+                                >リンクステート型と距離ベクトル型ルーティングの違いを説明できる</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk13" type="checkbox" /><label for="chk13"
+                                >BGPがAS間ルーティングでどのような役割を果たすか説明できる</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk14" type="checkbox" /><label for="chk14"
+                                >RPKI/ROVがBGPハイジャック対策にどう役立つか、また限界があるかを説明できる</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk15" type="checkbox" /><label for="chk15"
+                                >イーサネットスイッチとルータの違いを、転送判断基準の観点から説明できる</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk16" type="checkbox" /><label for="chk16"
+                                >無線通信特有の「隠れ端末問題」を説明できる</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk17" type="checkbox" /><label for="chk17"
+                                >TLSハンドシェイクの流れと、対称鍵・公開鍵暗号の使い分けを説明できる</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk18" type="checkbox" /><label for="chk18"
+                                >耐量子暗号への移行が「ハイブリッド方式」で進められている理由を説明できる</label
+                            >
+                        </li>
+                        <li>
+                            <input id="chk19" type="checkbox" /><label for="chk19"
+                                >DDoS攻撃の仕組みと、近年の攻撃規模の傾向を説明できる</label
+                            >
+                        </li>
+                    </ul>
+                </div>
+
+                <hr />
+
+                <h2 id="用語集">用語集</h2>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>用語</th>
+                                <th>説明</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>AS(自律システム)</td>
+                                <td>
+                                    インターネットにおいて単一の管理主体が運用するネットワークの集合
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>BGP</td>
+                                <td>
+                                    AS間の経路情報を交換するためのパスベクトル型ルーティングプロトコル
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>カプセル化</td>
+                                <td>上位層のデータに下位層がヘッダを付加していく処理</td>
+                            </tr>
+                            <tr class="even">
+                                <td>キューイング遅延</td>
+                                <td>
+                                    出力リンクが空くのを待つ間にパケットがバッファに滞留する時間
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>コネクションマイグレーション</td>
+                                <td>
+                                    ネットワークが切り替わってもコネクションを維持する仕組み(QUICの特徴)
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>最長プレフィックスマッチ</td>
+                                <td>
+                                    転送テーブル中で宛先アドレスに最も長く一致するエントリを選ぶ検索方式
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>自己学習(スイッチ)</td>
+                                <td>
+                                    イーサネットスイッチが送信元MACアドレスを見て自動的にアドレステーブルを構築する仕組み
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>隠れ端末問題</td>
+                                <td>
+                                    無線通信で、送信端末同士が互いの電波を検知できず衝突が起きる問題
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>統計的多重化</td>
+                                <td>
+                                    帯域を事前予約せず、必要な時にリンクを複数の通信で共有する方式
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>耐量子暗号(PQC)</td>
+                                <td>
+                                    量子コンピュータによる解読に耐性を持つよう設計された暗号方式
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>ハイブリッド鍵交換</td>
+                                <td>
+                                    従来の暗号方式と新しい耐量子暗号方式を組み合わせて安全性を高める鍵交換方式
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>パスベクトル型ルーティング</td>
+                                <td>
+                                    経路情報に経由したASの一覧を含めることでループ検出等を行う方式
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>フロー制御</td>
+                                <td>受信側の処理能力を超えないよう送信量を調整する仕組み</td>
+                            </tr>
+                            <tr class="even">
+                                <td>輻輳制御</td>
+                                <td>ネットワーク内部の混雑状況に応じて送信量を調整する仕組み</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>ボトルネックリンク</td>
+                                <td>送信元から宛先までの経路上で最も帯域幅が狭いリンク</td>
+                            </tr>
+                            <tr class="even">
+                                <td>最長経路 / RTT</td>
+                                <td>パケットが往復するのにかかる時間(Round-Trip Time)</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>ROA(経路原点認可)</td>
+                                <td>
+                                    プレフィックス保有者がどのASにそのプレフィックスの広告を許可するかを暗号署名で示す記録
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>RPKI</td>
+                                <td>BGP経路の正当性を暗号学的に検証するための基盤技術</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>QUIC</td>
+                                <td>
+                                    UDP上に構築された、暗号化・多重化・輻輳制御を統合する新しいトランスポートプロトコル
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>ECH(Encrypted Client Hello)</td>
+                                <td>
+                                    TLSハンドシェイク中に接続先ホスト名(SNI)を暗号化する拡張仕様
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>Multi-Link Operation</td>
+                                <td>Wi-Fi 7で導入された、複数の周波数帯を同時に使う技術</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <hr />
+
+                <h2 id="参考文献">参考文献</h2>
+
+                <p>
+                    本ガイドは以下の一次情報源(公式ドキュメント・著名な国際的組織・開発者による発信)を優先的に参照して作成しました。文中の「参考文献N」という番号表記は、このリストの番号に対応しています。
+                </p>
+
+                <h3 id="書籍原典に関する公式情報">書籍・原典に関する公式情報</h3>
+
+                <div class="ref-grid">
+                    <div class="ref-card" id="ref1">
+                        <div class="num">1</div>
+                        <div class="txt">
+                            Kurose, J. F., Ross, K. W.
+                            <em>Computer Networking: A Top-Down Approach</em>, 8th Edition —
+                            著者公式サイト(目次PDF)。<a
+                                href="https://gaia.cs.umass.edu/kurose_ross/Kurose_Ross_TOC_8E.pdf"
+                                >https://gaia.cs.umass.edu/kurose_ross/Kurose_Ross_TOC_8E.pdf</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref2">
+                        <div class="num">2</div>
+                        <div class="txt">
+                            Pearson社公式カタログページ(第8版) —
+                            <a
+                                href="https://www.pearson.com/en-us/subject-catalog/p/computer-networking/P200000003334?view=educator"
+                                >https://www.pearson.com/en-us/subject-catalog/p/computer-networking/P200000003334?view=educator</a
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <h3 id="アプリケーション層--httpquic関連">アプリケーション層 / HTTP・QUIC関連</h3>
+
+                <div class="ref-grid">
+                    <div class="ref-card" id="ref3">
+                        <div class="num">3</div>
+                        <div class="txt">
+                            Cloudflare Developers「HTTP/3 (with QUIC)」公式ドキュメント —
+                            <a
+                                href="https://developers.cloudflare.com/speed/optimization/protocol/http3/"
+                                >https://developers.cloudflare.com/speed/optimization/protocol/http3/</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref4">
+                        <div class="num">4</div>
+                        <div class="txt">
+                            Cloudflare Blog「Async QUIC and HTTP/3 made easy: tokio-quiche is now
+                            open-source」—
+                            <a
+                                href="https://blog.cloudflare.com/async-quic-and-http-3-made-easy-tokio-quiche-is-now-open-source/"
+                                >https://blog.cloudflare.com/async-quic-and-http-3-made-easy-tokio-quiche-is-now-open-source/</a
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <h3 id="dns--暗号化dns関連">DNS / 暗号化DNS関連</h3>
+
+                <div class="ref-grid">
+                    <div class="ref-card" id="ref5">
+                        <div class="num">5</div>
+                        <div class="txt">
+                            業界動向を踏まえたDoH/DoQ/ECH解説記事「Encrypted DNS Reaches a Turning
+                            Point as DoQ Adoption Accelerates」—
+                            <a
+                                href="https://pbxscience.com/encrypted-dns-reaches-a-turning-point-as-doq-adoption-accelerates/"
+                                >https://pbxscience.com/encrypted-dns-reaches-a-turning-point-as-doq-adoption-accelerates/</a
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <h3 id="トランスポート層--輻輳制御bbr関連">トランスポート層 / 輻輳制御(BBR)関連</h3>
+
+                <div class="ref-grid">
+                    <div class="ref-card" id="ref6">
+                        <div class="num">6</div>
+                        <div class="txt">
+                            Google「BBR congestion control」公式リポジトリ —
+                            <a href="https://github.com/google/bbr"
+                                >https://github.com/google/bbr</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref7">
+                        <div class="num">7</div>
+                        <div class="txt">
+                            IETF Datatracker「BBR Congestion Control」(draft-ietf-ccwg-bbr) —
+                            <a href="https://datatracker.ietf.org/doc/draft-ietf-ccwg-bbr/"
+                                >https://datatracker.ietf.org/doc/draft-ietf-ccwg-bbr/</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref8">
+                        <div class="num">8</div>
+                        <div class="txt">
+                            Phoronix「Google's BBRv3 TCP Congestion Control Showing Great Results,
+                            Will Be Upstreamed To Linux」—
+                            <a href="https://www.phoronix.com/news/Google-BBRv3-Linux"
+                                >https://www.phoronix.com/news/Google-BBRv3-Linux</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref9">
+                        <div class="num">9</div>
+                        <div class="txt">
+                            Cardwell, N. et al.「BBRv3: Algorithm Bug Fixes and Public Internet
+                            Deployment」IETF 117 CCWG発表資料(2023年7月) —
+                            <a
+                                href="https://datatracker.ietf.org/meeting/117/materials/slides-117-ccwg-bbrv3-algorithm-bug-fixes-and-public-internet-deployment-00"
+                                >https://datatracker.ietf.org/meeting/117/materials/slides-117-ccwg-bbrv3-algorithm-bug-fixes-and-public-internet-deployment-00</a
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <h3 id="ネットワーク層--ipv6普及動向">ネットワーク層 / IPv6普及動向</h3>
+
+                <div class="ref-grid">
+                    <div class="ref-card" id="ref10">
+                        <div class="num">10</div>
+                        <div class="txt">
+                            APNIC Blog「Google hits 50% IPv6」—
+                            <a href="https://blog.apnic.net/2026/04/28/google-hits-50-ipv6/"
+                                >https://blog.apnic.net/2026/04/28/google-hits-50-ipv6/</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref11">
+                        <div class="num">11</div>
+                        <div class="txt">
+                            Internet Society Pulse「18 Years Later, IPv6 Reaches Majority」—
+                            <a
+                                href="https://pulse.internetsociety.org/en/blog/2026/04/18-years-later-ipv6-reaches-majority/"
+                                >https://pulse.internetsociety.org/en/blog/2026/04/18-years-later-ipv6-reaches-majority/</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref12">
+                        <div class="num">12</div>
+                        <div class="txt">
+                            Google公式IPv6統計ページ —
+                            <a href="https://www.google.com/intl/en/ipv6/statistics.html"
+                                >https://www.google.com/intl/en/ipv6/statistics.html</a
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <h3 id="コントロールプレーン--bgprpkiセキュリティ関連">
+                    コントロールプレーン / BGP・RPKIセキュリティ関連
+                </h3>
+
+                <div class="ref-grid">
+                    <div class="ref-card" id="ref13">
+                        <div class="num">13</div>
+                        <div class="txt">
+                            Cloudflare Blog「Helping build a safer Internet by measuring BGP RPKI
+                            Route Origin Validation」—
+                            <a href="https://blog.cloudflare.com/rpki-updates-data/"
+                                >https://blog.cloudflare.com/rpki-updates-data/</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref14">
+                        <div class="num">14</div>
+                        <div class="txt">
+                            IETF Datatracker: Job Snijders氏によるRFC・Internet-Draft一覧 —
+                            <a href="https://datatracker.ietf.org/person/Job%20Snijders"
+                                >https://datatracker.ietf.org/person/Job%20Snijders</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref15">
+                        <div class="num">15</div>
+                        <div class="txt">
+                            Cloudflare「Is BGP safe yet?」(RPKI無効経路を拒否する事業者の一覧を掲載)
+                            — <a href="https://isbgpsafeyet.com/">https://isbgpsafeyet.com/</a>
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref16">
+                        <div class="num">16</div>
+                        <div class="txt">
+                            Hurricane Electric「RPKI &amp; ASPA Adoption Report」(BGP
+                            Toolkit、日次更新) —
+                            <a href="https://bgp.he.net/report/rpki_and_aspa"
+                                >https://bgp.he.net/report/rpki_and_aspa</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref17">
+                        <div class="num">17</div>
+                        <div class="txt">
+                            NLnet
+                            Labsのルーティング関連ツール群(Routinator/Krill/RTRTRなど、RPKI・BGPの計測と検証のためのオープンソースツール)
+                            —
+                            <a href="https://nlnetlabs.nl/projects/routing/about/"
+                                >https://nlnetlabs.nl/projects/routing/about/</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref18">
+                        <div class="num">18</div>
+                        <div class="txt">
+                            IPregistry Blog「RPKI Covers 67% of Routes, But Four Attack Classes Slip
+                            Right Past It」(RIPE Labs Antonio Prado氏の分析を引用) —
+                            <a href="https://ipregistry.co/blog/rpki-blind-spots/"
+                                >https://ipregistry.co/blog/rpki-blind-spots/</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref19">
+                        <div class="num">19</div>
+                        <div class="txt">
+                            RIPE Labs, Antonio Prado他「Beyond Origin Validation: Four Classes of
+                            Routing Attack Nobody Is Validating」(2026年7月21日) —
+                            <a
+                                href="https://labs.ripe.net/author/antonio-prado/beyond-origin-validation-four-classes-of-routing-attack-nobody-is-validating/"
+                                >https://labs.ripe.net/author/antonio-prado/beyond-origin-validation-four-classes-of-routing-attack-nobody-is-validating/</a
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <h3 id="リンク層無線--wi-fi6g関連">リンク層・無線 / Wi-Fi・6G関連</h3>
+
+                <div class="ref-grid">
+                    <div class="ref-card" id="ref20">
+                        <div class="num">20</div>
+                        <div class="txt">
+                            IEEE 802.11be技術論文「Wi-Fi 7: Feature Summary and Performance
+                            Evaluation」—
+                            <a href="https://arxiv.org/pdf/2309.15951"
+                                >https://arxiv.org/pdf/2309.15951</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref21">
+                        <div class="num">21</div>
+                        <div class="txt">
+                            Wireless Broadband Alliance「Wireless Broadband Alliance Reveals its
+                            Wi-Fi Predictions for 2026 and Beyond」—
+                            <a
+                                href="https://wballiance.com/wireless-broadband-alliance-reveals-its-wi-fi-predictions-for-2026-and-beyond/"
+                                >https://wballiance.com/wireless-broadband-alliance-reveals-its-wi-fi-predictions-for-2026-and-beyond/</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref22">
+                        <div class="num">22</div>
+                        <div class="txt">
+                            Ericsson公式ブログ「6G standardization milestones and RAN decisions」—
+                            <a
+                                href="https://www.ericsson.com/en/blog/2026/6/6g-standardization-key-milestones-and-ran-decisions"
+                                >https://www.ericsson.com/en/blog/2026/6/6g-standardization-key-milestones-and-ran-decisions</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref23">
+                        <div class="num">23</div>
+                        <div class="txt">
+                            Qualcomm公式ブログ「Building the 6G standard: What 3GPP's June 2026
+                            plenary decisions mean for device makers」—
+                            <a
+                                href="https://www.qualcomm.com/news/onq/2026/06/6g-standardization-release-21-milestones"
+                                >https://www.qualcomm.com/news/onq/2026/06/6g-standardization-release-21-milestones</a
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <h3 id="セキュリティ--耐量子暗号pqc関連">セキュリティ / 耐量子暗号(PQC)関連</h3>
+
+                <div class="ref-grid">
+                    <div class="ref-card" id="ref24">
+                        <div class="num">24</div>
+                        <div class="txt">
+                            Cloudflare Blog「The state of the post-quantum Internet」—
+                            <a href="https://blog.cloudflare.com/pq-2024/"
+                                >https://blog.cloudflare.com/pq-2024/</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref25">
+                        <div class="num">25</div>
+                        <div class="txt">
+                            Cloudflare Blog「State of the post-quantum Internet in 2025」—
+                            <a href="https://blog.cloudflare.com/pq-2025/"
+                                >https://blog.cloudflare.com/pq-2025/</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref26">
+                        <div class="num">26</div>
+                        <div class="txt">
+                            Cloudflare Blog「Conventional cryptography is under threat. Upgrade to
+                            post-quantum cryptography with Cloudflare Zero Trust.」—
+                            <a href="https://blog.cloudflare.com/post-quantum-zero-trust/"
+                                >https://blog.cloudflare.com/post-quantum-zero-trust/</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref27">
+                        <div class="num">27</div>
+                        <div class="txt">
+                            Cloudflare Blog「Cloudflare One is the first SASE offering modern
+                            post-quantum encryption across the full platform」—
+                            <a href="https://blog.cloudflare.com/post-quantum-sase/"
+                                >https://blog.cloudflare.com/post-quantum-sase/</a
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <h3 id="セキュリティ--ddos脅威動向関連">セキュリティ / DDoS脅威動向関連</h3>
+
+                <div class="ref-grid">
+                    <div class="ref-card" id="ref28">
+                        <div class="num">28</div>
+                        <div class="txt">
+                            Cloudflare Blog「Cloudflare's 2025 Q3 DDoS threat report — including
+                            Aisuru, the apex of botnets」(29.7 Tbps・14.1 Bpps記録) —
+                            <a href="https://blog.cloudflare.com/ddos-threat-report-2025-q3/"
+                                >https://blog.cloudflare.com/ddos-threat-report-2025-q3/</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref29">
+                        <div class="num">29</div>
+                        <div class="txt">
+                            Cloudflare Blog「2025 Q4 DDoS threat report: A record-setting 31.4 Tbps
+                            attack caps a year of massive DDoS assaults」(31.4
+                            Tbps記録、年間4,710万件・前年比121%増) —
+                            <a href="https://blog.cloudflare.com/ddos-threat-report-2025-q4/"
+                                >https://blog.cloudflare.com/ddos-threat-report-2025-q4/</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref30">
+                        <div class="num">30</div>
+                        <div class="txt">
+                            Cloudflare Radar「Reports」(脅威インテリジェンス公開ダッシュボード) —
+                            <a href="https://radar.cloudflare.com/reports"
+                                >https://radar.cloudflare.com/reports</a
+                            >
+                        </div>
+                    </div>
+                    <div class="ref-card" id="ref31">
+                        <div class="num">31</div>
+                        <div class="txt">
+                            Cloudflare公式プレスリリース「Cloudflare 2026 Threat Intelligence
+                            Report」—
+                            <a
+                                href="https://www.cloudflare.com/press/press-releases/2026/cloudflare-2026-threat-intelligence-report-nation-state-actors-and/"
+                                >https://www.cloudflare.com/press/press-releases/2026/cloudflare-2026-threat-intelligence-report-nation-state-actors-and/</a
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <hr />
+
+                <p>
+                    <em
+                        >本ガイドは教育目的の独自解説コンテンツであり、Kurose &amp;
+                        Ross両氏および出版元Pearson社の著作物を複製・転載するものではありません。原著の学習を補完する目的でご活用ください。原著の正式な内容については、書店・出版社の正規販売チャネル(Pearson、Amazon等)をご利用いただくか、大学図書館等でのアクセスをご検討ください。</em
+                    >
+                </p>
+            </main>
+        </div>
+        <script
+            src="https://cdn.jsdelivr.net/npm/mermaid@11.13.0/dist/mermaid.min.js"
+            integrity="sha384-tI0sDqjGJcqrQ8e/XKiQGS+ee11v5knTNWx2goxMBxe4DO9U0uKlfxJtYB9ILZ4j"
+            crossorigin="anonymous"
+        ></script>
+        <script>
+            (function () {
+                'use strict';
+
+                // ---------- Mermaid init + render ----------
+                // NOTE: deviates from the supplied skeleton here. The original
+                // document.fonts.load()+healOverflowingLabels() post-render DOM-patch
+                // pattern is a confirmed regression (detaches edges from nodes after
+                // mermaid.run() resolves). Standing fix: a system font stack for
+                // mermaid's own SVG text (sidesteps the webfont metric-mismatch that
+                // motivated the heal function in the first place) + mermaid.run() as
+                // the only post-init action, no later DOM surgery.
+                var MERMAID_FONT_STACK =
+                    '-apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", Meiryo, sans-serif';
+
+                function initMermaid() {
+                    if (typeof mermaid === 'undefined') {
+                        console.warn('mermaid not loaded');
+                        return;
+                    }
+                    var fontFamily = MERMAID_FONT_STACK;
+                    mermaid.initialize({
+                        startOnLoad: false,
+                        theme: 'base',
+                        securityLevel: 'loose',
+                        fontFamily: fontFamily,
+                        themeVariables: {
+                            fontSize: '16px',
+                            background: '#0d1a2b',
+                            primaryColor: '#12233b',
+                            primaryTextColor: '#dbe4f3',
+                            primaryBorderColor: '#2c4770',
+                            lineColor: '#4a6390',
+                            secondaryColor: '#101f33',
+                            tertiaryColor: '#101f33',
+                            edgeLabelBackground: '#0d1a2b',
+                            clusterBkg: '#0d1a2b',
+                            clusterBorder: '#2c4770',
+                            nodeTextColor: '#dbe4f3',
+                        },
+                        flowchart: {
+                            useMaxWidth: false,
+                            htmlLabels: true,
+                            subGraphTitleMargin: { top: 12, bottom: 18 },
+                            nodeSpacing: 70,
+                            rankSpacing: 60,
+                            curve: 'basis',
+                        },
+                    });
+
+                    try {
+                        mermaid.run({ querySelector: 'pre.mermaid' }).catch(function (err) {
+                            console.error('mermaid render error', err);
+                        });
+                    } catch (e) {
+                        console.error('mermaid run failed', e);
+                    }
+                }
+
+                try {
+                    initMermaid();
+                } catch (e) {
+                    console.error('mermaid init failed', e);
+                }
+
+                // ---------- Sidebar toggle (mobile) ----------
+                var sidebar = document.getElementById('sidebar');
+                var toggle = document.getElementById('sidebarToggle');
+                function syncToggleState() {
+                    if (!toggle || !sidebar) return;
+                    toggle.setAttribute(
+                        'aria-expanded',
+                        sidebar.classList.contains('open') ? 'true' : 'false',
+                    );
+                }
+                if (toggle) {
+                    toggle.addEventListener('click', function () {
+                        sidebar.classList.toggle('open');
+                        syncToggleState();
+                    });
+                }
+                document.querySelectorAll('#sidebarNav a').forEach(function (a) {
+                    a.addEventListener('click', function () {
+                        sidebar.classList.remove('open');
+                        syncToggleState();
+                    });
+                });
+                syncToggleState();
+
+                // ---------- Scroll-spy ----------
+                var navLinks = Array.from(document.querySelectorAll('#sidebarNav a'));
+                var linkMap = new Map();
+                navLinks.forEach(function (a) {
+                    var id = decodeURIComponent(a.getAttribute('href').slice(1));
+                    linkMap.set(id, a);
+                });
+
+                var headings = Array.from(linkMap.keys())
+                    .map(function (id) {
+                        return document.getElementById(id);
+                    })
+                    .filter(Boolean);
+
+                var spyObserver = new IntersectionObserver(
+                    function (entries) {
+                        entries.forEach(function (entry) {
+                            var link = linkMap.get(entry.target.id);
+                            if (!link) return;
+                            if (entry.isIntersecting) {
+                                navLinks.forEach(function (a) {
+                                    a.classList.remove('active');
+                                });
+                                link.classList.add('active');
+                            }
+                        });
+                    },
+                    { rootMargin: '-15% 0px -75% 0px', threshold: 0 },
+                );
+
+                headings.forEach(function (h) {
+                    spyObserver.observe(h);
+                });
+
+                // ---------- Checklist progress ----------
+                document.querySelectorAll('.checklist-card').forEach(function (card) {
+                    var boxes = card.querySelectorAll('input[type="checkbox"]');
+                    var counter = card.querySelector('.count');
+                    function update() {
+                        var checked = card.querySelectorAll(
+                            'input[type="checkbox"]:checked',
+                        ).length;
+                        if (counter) counter.textContent = checked + ' / ' + boxes.length + ' 完了';
+                    }
+                    boxes.forEach(function (b) {
+                        b.addEventListener('change', update);
+                    });
+                    update();
+                });
+            })();
+        </script>
+    </body>
+</html>

@@ -25,7 +25,11 @@ export type ColorKey =
     | 'card-devops-handbook'
     | 'card-release-it'
     | 'card-infrastructure-as-code'
-    | 'card-pcd';
+    | 'card-pcd'
+    | 'card-understanding-the-linux-kernel'
+    | 'card-unix-linux-sysadmin-handbook'
+    | 'card-systems-performance'
+    | 'card-operating-systems-three-easy-pieces';
 
 export interface Exam {
     id: string;
@@ -62,6 +66,10 @@ export const cardColorMap: Record<ColorKey, string> = {
     'card-release-it': 'card-release-it',
     'card-infrastructure-as-code': 'card-infrastructure-as-code',
     'card-pcd': 'card-pcd',
+    'card-understanding-the-linux-kernel': 'card-understanding-the-linux-kernel',
+    'card-unix-linux-sysadmin-handbook': 'card-unix-linux-sysadmin-handbook',
+    'card-systems-performance': 'card-systems-performance',
+    'card-operating-systems-three-easy-pieces': 'card-operating-systems-three-easy-pieces',
 };
 
 export const providerMeta: Record<
@@ -765,6 +773,90 @@ const ALL_EXAMS: Exam[] = [
             {
                 label: '完全解説ガイド',
                 href: '/recommended-books/infrastructure-as-code',
+                pct: '完全解説',
+            },
+        ],
+        badge: '名著ガイド',
+        icon: '📚',
+        provider: 'Books',
+    },
+    {
+        id: 'understanding-the-linux-kernel',
+        label: 'Understanding the Linux Kernel',
+        abbr: 'Linux Kernel',
+        level: 'OS & Kernel Internals',
+        score: '22部 / 45図解',
+        color: 'card-understanding-the-linux-kernel',
+        href: '/recommended-books/understanding-the-linux-kernel',
+        description:
+            '『Understanding the Linux Kernel, 3rd Edition』の目次構成・章立てを土台にしつつ、初学者向けに再構成し、2026年最新カーネル動向（EEVDF、io_uring、eBPF、Rust for Linux 等）までを体系的に解説する完全ガイド。',
+        domains: [
+            {
+                label: '完全解説ガイド',
+                href: '/recommended-books/understanding-the-linux-kernel',
+                pct: '完全解説',
+            },
+        ],
+        badge: '名著ガイド',
+        icon: '📚',
+        provider: 'Books',
+    },
+    {
+        id: 'unix-linux-sysadmin-handbook',
+        label: 'UNIX and Linux System Administration Handbook',
+        abbr: 'SysAdmin Handbook',
+        level: 'System Administration',
+        score: '4部31章 / 29図解',
+        color: 'card-unix-linux-sysadmin-handbook',
+        href: '/recommended-books/unix-linux-sysadmin-handbook',
+        description:
+            '『UNIX and Linux System Administration Handbook, 5th Edition』の原著4パート・31章構成を土台に、2026年最新動向までを網羅した初学者のための完全実践ガイド。',
+        domains: [
+            {
+                label: '完全実践ガイド',
+                href: '/recommended-books/unix-linux-sysadmin-handbook',
+                pct: '完全解説',
+            },
+        ],
+        badge: '名著ガイド',
+        icon: '📚',
+        provider: 'Books',
+    },
+    {
+        id: 'systems-performance',
+        label: 'Systems Performance: Enterprise and the Cloud',
+        abbr: 'Systems Performance',
+        level: 'Performance Engineering',
+        score: '16章+付録 / 18図解',
+        color: 'card-systems-performance',
+        href: '/recommended-books/systems-performance',
+        description:
+            'Brendan Gregg 著『Systems Performance: Enterprise and the Cloud, 2nd Edition』（詳解 システム・パフォーマンス 第2版）を軸に、メソドロジ・ツール・OS・クラウド特有の論点を整理した完全実践ガイド。',
+        domains: [
+            {
+                label: '完全実践ガイド',
+                href: '/recommended-books/systems-performance',
+                pct: '完全解説',
+            },
+        ],
+        badge: '名著ガイド',
+        icon: '📚',
+        provider: 'Books',
+    },
+    {
+        id: 'operating-systems-three-easy-pieces',
+        label: 'Operating Systems: Three Easy Pieces (OSTEP)',
+        abbr: 'OSTEP',
+        level: 'Operating Systems',
+        score: '57章+付録 / 56図解',
+        color: 'card-operating-systems-three-easy-pieces',
+        href: '/recommended-books/operating-systems-three-easy-pieces',
+        description:
+            'Remzi H. Arpaci-Dusseau, Andrea C. Arpaci-Dusseau 著『Operating Systems: Three Easy Pieces（OSTEP）』を軸に、仮想化・並行性・永続性の3大テーマを初学者向けに体系的に解説した完全学習ガイド。',
+        domains: [
+            {
+                label: '初学者向け学習ガイド',
+                href: '/recommended-books/operating-systems-three-easy-pieces',
                 pct: '完全解説',
             },
         ],
