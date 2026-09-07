@@ -6,7 +6,7 @@
 
 ### 目的
 
-`Operating-Systems-Three-Easy-Pieces.html` を、Next.js App Router 5ファイル構成 (`page.tsx`, `OperatingSystemsThreeEasyPiecesGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/recommended-books/operating-systems-three-easy-pieces` ルートへ移行。グローバルナビゲーションの「Books」配下に追加。見出し(h1:1, h2:18, h3:58, h4:1)、全39個のテーブル、56個のMermaid図解、全リスト(19箇所/50件)、全外部リンク(12件)・全本文(119件)・学習チェックリスト(17件)・参考文献カード(12件)を一切の省略・要約なしで100%全量移植。
+`Operating-Systems-Three-Easy-Pieces.html` を、Next.js App Router 5ファイル構成 (`page.tsx`, `OperatingSystemsThreeEasyPiecesGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/recommended-books/operating-systems-three-easy-pieces` ルートへ移行。グローバルナビゲーションの「Books」配下に追加。見出し(h1:1, h2:18, h3:58, h4:1)、全39個のテーブル、56個のMermaid図解、全リスト(19箇所/50件)、全外部リンク(12件)・全本文(119件)・学習チェックリスト(17件)・参考文献カード(12件)を一切の省略・要約なしで100%全量移植。ここでの「100%全量」は移行元HTMLからNext.jsへの転写範囲を指す。ガイド本文自体は原著OSTEPの逐語訳ではなく、原著の構成に沿って要点を独自に再構成した内容である（ガイド冒頭の「この記事について」に明記）。
 
 ### 完了済みステップ
 
