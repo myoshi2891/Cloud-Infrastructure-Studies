@@ -779,6 +779,7 @@ export const DIAGRAMS: Record<DiagramId, string> = {
         Lib["Cライブラリ (glibc/musl)"]
     end
     subgraph KernelSpace["カーネル空間 (Kernel Space)"]
+        SyscallEntry["システムコール入口<br/>(entry_SYSCALL_64 / sys_call_table)"]
         Sched["プロセススケジューラ"]
         MM["メモリ管理"]
         VFS["仮想ファイルシステム"]
@@ -789,10 +790,11 @@ export const DIAGRAMS: Record<DiagramId, string> = {
 
     App1 -- "システムコール" --> Lib
     App2 -- "システムコール" --> Lib
-    Lib -- "int 0x80 / syscall命令" --> Sched
-    Lib --> MM
-    Lib --> VFS
-    Lib --> Net
+    Lib -- "int 0x80 / syscall命令" --> SyscallEntry
+    SyscallEntry --> Sched
+    SyscallEntry --> MM
+    SyscallEntry --> VFS
+    SyscallEntry --> Net
     Sched --> HW
     MM --> HW
     VFS --> Drv
@@ -803,7 +805,7 @@ export const DIAGRAMS: Record<DiagramId, string> = {
     classDef warnFill fill:#5c3a1a,stroke:#d9904a,color:#ffffff;
     classDef successFill fill:#1a4a2a,stroke:#4ad97a,color:#ffffff;
     class App1,App2,Lib highlightFill
-    class Sched,MM,VFS,Net,Drv warnFill
+    class SyscallEntry,Sched,MM,VFS,Net,Drv warnFill
     class HW successFill`,
 
     'diag-2': `sequenceDiagram
