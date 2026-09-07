@@ -353,8 +353,9 @@ Gemini Embedding 2 は Matryoshka Representation Learning（MRL）に対応し�
 |---|---|
 | `RETRIEVAL_DOCUMENT` | データ取り込み時に、検索対象のドキュメントをインデックス化する |
 | `RETRIEVAL_QUERY` | 検索時に、ユーザーの質問文を埋め込む |
-| `SEMANTIC_SIMILARITY` | クラスタリングや重複排除タスク |
+| `SEMANTIC_SIMILARITY` | 2つのテキストがどれだけ意味的に近いかを測る意味的テキスト類似度（STS）タスク |
 | `CLASSIFICATION` | カテゴリ分類タスク |
+| `CLUSTERING` | クラスタリングや重複排除タスク |
 
 同一の意味空間にテキストと画像・動画の埋め込みベクトルがマッピングされるため、「テキストで画像を検索する」「画像で動画を検索する」といったクロスモーダル検索が実現できます[^30]。
 
